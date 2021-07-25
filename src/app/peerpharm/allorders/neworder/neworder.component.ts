@@ -1,5 +1,6 @@
 import {
   Component,
+  ElementRef,
   EventEmitter,
   OnInit,
   Output,
@@ -16,6 +17,7 @@ import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
 import { InventoryService } from "src/app/services/inventory.service";  
+import { ItemsService } from "src/app/services/items.service";
 
 @Component({
   selector: "app-neworder",
@@ -25,6 +27,8 @@ import { InventoryService } from "src/app/services/inventory.service";
 export class NeworderComponent implements OnInit {
   @Output() closed: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild("amounts") amounts;
+  @ViewChild("problematics") problematics: ElementRef
+  
   orderItemForm: FormGroup;
   orderForm: FormGroup;
   orderNumber: string;
@@ -51,6 +55,9 @@ export class NeworderComponent implements OnInit {
   materialsNotEnoughAmount: [];
   waitForAmounts: boolean = false;
   newOrderAllowed: boolean = false;
+  problematicComponents: any[]
+  problematicMaterials: any[]
+  formuleExist: boolean = false
 
   constructor(
     private modalService: NgbModal,
@@ -60,6 +67,7 @@ export class NeworderComponent implements OnInit {
     private toastSrv: ToastrService,
     private authService: AuthService,
     private inventoryService: InventoryService,
+    private itemsService: ItemsService
  
   ) {
     this.orderForm = fb.group({
@@ -85,6 +93,10 @@ export class NeworderComponent implements OnInit {
       hasLicense: [false, Validators.required],
       exploded: [false, Validators.required],
       productionApproved: [false, Validators.required],
+      problematic: [false, Validators.required],
+      formuleExist: [false, Validators.required],
+      problematicMaterials: [[], Validators.required],
+      problematicComponents: [[], Validators.required],
     });
   }
 
@@ -155,41 +167,41 @@ export class NeworderComponent implements OnInit {
     }
   }
 
-  checkAmounts() {
-    if (
-      this.orderItemForm.controls["netWeightK"].value != "" &&
-      this.orderItemForm.controls["quantity"].value != "" &&
-      this.orderItemForm.controls["netWeightK"].value != null &&
-      this.orderItemForm.controls["quantity"].value != null
-    ) {
-      this.waitForAmounts = true;
-      this.modalService.open(this.amounts);
+  // checkAmounts() {
+  //   if (
+  //     this.orderItemForm.controls["netWeightK"].value != "" &&
+  //     this.orderItemForm.controls["quantity"].value != "" &&
+  //     this.orderItemForm.controls["netWeightK"].value != null &&
+  //     this.orderItemForm.controls["quantity"].value != null
+  //   ) {
+  //     this.waitForAmounts = true;
+  //     this.modalService.open(this.amounts);
 
-      let weightKG =
-        (Number(this.orderItemForm.controls["netWeightK"].value) *
-          Number(this.orderItemForm.controls["quantity"].value)) /
-        1000;
-      let formule = this.orderItemForm.controls["itemN"].value;
-      //check amounts
-      this.inventoryService
-        .reduceMaterialAmounts('0',formule, weightKG, false)
-        .subscribe((response) => {
-          this.materialsNotEnoughAmount = response.materials;
-          if (response.materials.length > 0) {
-            let materialNames = <any>[];
-            for (let material of response.materials) {
-              this.inventoryService
-                .getMaterialByNumber(material.material, "material")
-                .subscribe((material) => {
-                  materialNames.push(material[0].componentName);
-                });
-            }
-            this.materialsNotEnoughAmount = materialNames;
-            setTimeout(() => (this.waitForAmounts = false), 3000);
-          }
-        });
-    } else this.toastSrv.warning("יש להזין משקל נטו וכמות");
-  }
+  //     let weightKG =
+  //       (Number(this.orderItemForm.controls["netWeightK"].value) *
+  //         Number(this.orderItemForm.controls["quantity"].value)) /
+  //       1000;
+  //     let formule = this.orderItemForm.controls["itemN"].value;
+  //     //check amounts
+  //     this.inventoryService
+  //       .reduceMaterialAmounts('0',formule, weightKG, false)
+  //       .subscribe((response) => {
+  //         this.materialsNotEnoughAmount = response.materials;
+  //         if (response.materials.length > 0) {
+  //           let materialNames = <any>[];
+  //           for (let material of response.materials) {
+  //             this.inventoryService
+  //               .getMaterialByNumber(material.material, "material")
+  //               .subscribe((material) => {
+  //                 materialNames.push(material[0].componentName);
+  //               });
+  //           }
+  //           this.materialsNotEnoughAmount = materialNames;
+  //           setTimeout(() => (this.waitForAmounts = false), 3000);
+  //         }
+  //       });
+  //   } else this.toastSrv.warning("יש להזין משקל נטו וכמות");
+  // }
 
   addNewItemOrder(post) {
     if (
@@ -223,6 +235,10 @@ export class NeworderComponent implements OnInit {
           hasLicense: post.hasLicense,
           exploded: post.exploded,
           productionApproved: post.productionApproved,
+          problematic: post.problematic,
+          formuleExist: post.formuleExist,
+          problematicComponents: post.problematicComponents,
+          problematicMaterials: post.problematicMaterials,
           shippingMethod: this.shippingMethod,
           batch: "",
           price: "",
@@ -286,6 +302,20 @@ export class NeworderComponent implements OnInit {
         if(res[0].licsensNumber != "") {
           if(new Date(res[0].licsensDate) > new Date())  this.orderItemForm.controls.hasLicense.setValue(true);
         }
+
+        //check for problematic ingredients
+        this.itemsService.checkForProblematicItems(itemNumber).subscribe(data => {
+          this.problematicMaterials = data.problematicMaterials
+          this.problematicComponents = data.problematicComponents
+          this.formuleExist = data.formuleFound
+          this.modalService.open(this.problematics)
+          if(!data.formuleFound || data.problematicMaterials.length > 0 || data.problematicComponents.length > 0) {
+            this.orderItemForm.controls.problematic.setValue(true)
+            this.orderItemForm.controls.formuleExist.setValue(data.formuleFound)
+            this.orderItemForm.controls.problematicMaterials.setValue(data.problematicMaterials)
+            this.orderItemForm.controls.problematicComponents.setValue(data.problematicComponents)
+          }
+        })
         
         this.orderSer.getAllOpenOrderItemsByItemNumber(itemNumber).subscribe((data) => {
             if (data.length > 0) {

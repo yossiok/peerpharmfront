@@ -79,7 +79,9 @@
     <tr>
       <th> # <button><img style="width:35px;height:35px;" (click)="exportAsXLSXOrders()"
             src="../../../assets/images/excel.png" /></button></th>
-      <th></th>
+      <th>
+        <img src="../../../../assets/images/allOrder.png" class="reportImg"  alt="Problematics Report" ngbTooltip="Problems Report" (click)="exportProblems()">
+      </th>
       <th *ngIf="openFormule"></th>
       <th></th>
       <th *ngIf="showingAllOrders || multi">Order Number</th>
@@ -1085,6 +1087,10 @@
         <div class="m-5">
           <h5>Exploded?</h5><br>
           <input class="form-control" type="checkbox" [(ngModel)]="productionItemStatus.exploded">
+        </div>
+        <div class="m-5">
+          <h5>Problem free?</h5><br>
+          <input class="form-control" type="checkbox" [(ngModel)]="productionItemStatus.problematic">
         </div>
         <div class="m-5">
           <h4>Ready for Production?</h4><br>

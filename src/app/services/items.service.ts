@@ -119,6 +119,11 @@ export class ItemsService {
     return this.http.get(url).pipe(map(res => res.json()))
   }
 
+  checkForProblematicItems(itemNumber) {
+    let url = this.baseUrl + "item/checkforproblematic?itemNumber="+itemNumber;
+    return this.http.get(url).pipe(map(res => res.json()))
+  }
+
 
   newFloor(newFloor) {
 

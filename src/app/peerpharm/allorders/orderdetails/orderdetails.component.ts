@@ -551,7 +551,7 @@ export class OrderdetailsComponent implements OnInit {
   openItemStatus(orderItem, content) {
     
     this.productionItemStatus = {...orderItem}
-    delete this.productionItemStatus._id
+    // delete this.productionItemStatus._id
     this.modalService.open(content)
     // this.productionItemStatusIndex = index
   }
@@ -1614,6 +1614,23 @@ export class OrderdetailsComponent implements OnInit {
 
   }
 
+  //Report of all problematic items
+  exportProblems() {
+    let problematicItems = this.ordersItems.filter(item => item.problematic)
+    let unwinded = []
+    for ( let item of problematicItems) {
+      unwinded.push(item)
+      for(let c of item.problematicComponents){
+        unwinded.push(c)
+      }
+      for(let m of item.problematicMaterials){
+        unwinded.push(m)
+      }
+    }
+    let sort = ['orderNumber', 'itemNumber', 'formuleExist', 'componentN', 'componentName']
+    this.excelService.exportAsExcelFile(unwinded, 'דו"ח פריטים בעייתיים', sort)
+  }
+
 
 
 
@@ -1712,18 +1729,19 @@ export class OrderdetailsComponent implements OnInit {
       //get all orderItem-demands
       await this.orderService.getOrderComponents(this.internalNumArr).subscribe(async res => {
 
+        let temp = [...this.ordersItems]
         //res = all items(products) from order
         await res.forEach(async item => {
-
-          
+    
           // orderItem = orderItem from current order
-          let orderItem = this.ordersItems.find(o => o.itemNumber == item.itemNumber)
+          let orderItem = temp.find(o => o.itemNumber == item.itemNumber)
+          let orderItemIndex = temp.findIndex(o => o.itemNumber == item.itemNumber)
+          temp.splice(orderItemIndex, 1)
 
           //assign order number and weight to orderItem
           if (orderItem) {
             item.orderNumber = orderItem.orderNumber
             item.weight = orderItem.netWeightGr
-
           }
           else item.orderNumber = ''
 
