@@ -145,6 +145,11 @@ export class FormsService {
     let url = this.baseUrl + "formDetails/deleteQAPalletById";
     return this.http.post(url, JSON.stringify({id:palletId}), this.options).pipe(map(res => res.json()));
   }
+  updateFormDetails(formDetails){
+    
+    let url = this.baseUrl + "formDetails/update";
+    return this.http.post(url, JSON.stringify({formDetails}), this.options).pipe(map(res => res.json()));
+  }
   cancelPackListById(pLId){
     ;
     let url = this.baseUrl + "formDetails/cancelPLById";
