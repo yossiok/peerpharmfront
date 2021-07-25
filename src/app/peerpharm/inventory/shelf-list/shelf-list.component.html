@@ -22,7 +22,6 @@
         <option value="component">Rosh HaAyin - Components</option>
         <option value="Rosh HaAyin products">Rosh HaAyin - Products</option>
         <option value="NEW KASEM">New Kasem</option>
-        <!-- <option value="5cf64e77e32883115c39dc56">Materials - Outside</option> -->
       </select>
     </div>
     <div class="col-2">
@@ -92,8 +91,6 @@
             </td>
             <td><button [disabled]="updatingAmount" [style.cursor]="updatingAmount ? 'progress' : 'pointer'" (click)="updateShelfAmount(shelf)" class="btn btn-danger">Update Amounts</button></td>
             
-            <!-- <td (click)="editShelfAmount(shelf.item,shelf.position)" *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
-            <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position"><i class="fa fa-save" (click)="updateShelfAmount(shelf)"></i></td> -->
           </tr>
         </tbody>
       </table>

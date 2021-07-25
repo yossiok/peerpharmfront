@@ -64,7 +64,6 @@
       <td>Category</td>
       <td>Materials</td>
       <td>PH</td>
-      <!-- <td>Formule Category</td> -->
       <td>Date Created</td>
       <td>Formule Type</td>
       <td>Approval</td>
@@ -77,7 +76,6 @@
     </tr>
   </thead>
   <ng-container>
-    <!-- [ngClass]="{ firstApproval: formule.approval == 1 , secondApproval: formule.approval == 2 }" -->
     <tr
       [style.background]="formule.approval && formule.approval == 1 ? 'lightgreen' : ''"
       style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
@@ -130,13 +128,6 @@
         <input #formulePhTo type="text" [value]="formule.phTo" />
       </td>
 
-      <!-- <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
-        {{ formule.formuleCategory }}
-      </td>
-      <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
-        <input #formuleCategory type="text" [value]="formule.formuleCategory" />
-      </td> -->
-
       <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
         {{ formule.date | date: "dd/MM/yyyy" }}
       </td>
@@ -154,7 +145,6 @@
           aria-hidden="true"
         ></i>
       </td>
-      <!-- <td><button class="deleteBtn" (click)="deleteFormule(formule._id)">Delete</button></td> -->
       <td>
         <button
           class="btn btn-info"
@@ -171,9 +161,6 @@
         />
       </td>
       <td><img style="width:30px;" (click)="deleteFormule(formule._id)" src="../../../../assets/images/deleteBtn.png"></td>
-      <!-- <td><button style="float:right;background: green;box-shadow: inset 0px 1px 4px 0px;border:1px solid rgb(217, 228, 217);" (click)="copyFormule(currDoc,i)">Copy Formule</button></td> -->
-
-      <!-- <td  (click)="edit(batch._id)" ><i class="ti-trash text-danger m-r-10; cursor: pointer" (click)="deleteBatch(batch)"></i></td> -->
 
       <td *ngIf="formule._id == EditRowId">
         <i
@@ -324,9 +311,6 @@
                     </td>
                   
                     <td  style="width: 10%;"(click)="edit(item.itemNumber,phase.phaseName)">{{ i + 1 }}</td>
-                    <!-- <td *ngIf="item.itemNumber===EditRowId" (click)="edit(item.itemNumber)">
-                      <input [(ngModel)]="updateItemIndex" type="number">
-                    </td> -->
                    
                     <td style="width: 10%;"></td> 
                     <td style="width: 10%;"></td> 
@@ -661,7 +645,6 @@
                   <th scope="col">Material Name</th>
                   <th scope="col">--Weight--</th>
                   <th scope="col">%</th>
-                  <!-- <th scope="col">Item Instructions</th> -->
                   <th scope="col">Temp</th>
                   <th scope="col">Phase Instructions</th>
                 </tr>
@@ -683,19 +666,15 @@
                       >
                         {{ phase.phaseName }}
                       </td>
-                      <!-- <td *ngIf="i==0" [attr.rowspan]="phase.items.length" class="phase">{{phase.phaseName}}</td> -->
                       <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="padding:5px">{{ item.itemNumber }}</td>
                       <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="padding:5px">{{ item.itemName }}</td>
                       
                       <td style="padding:5px"></td>
                      
     
-                      <!-- <td>{{ item.remarks }}</td> -->
-                      <!-- <td>{{item.quantity}}&nbsp; {{item.quantityUnits}}</td> -->
                      
                       <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="padding:5px">{{ item.percentage }}%</td>
                       <td style="padding:5px"></td>
-                      <!-- <td>{{item.temp}}</td> -->
                       <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="padding:5px">{{item.itemRemarks}}{{item.remarks}}</td>
                       <td style="padding:5px"
                         *ngIf="i == 0"
@@ -752,18 +731,6 @@
 
         <h4 style="text-align: center;margin-top: 5px;">אישור ניקיון מיקסר:__________</h4>
       </div>
-
-      <!-- <div class="container text-center">
-        <div class="row">
-          <div class="col-12">
-            <ul>
-              <li>Seransense SF DDM has been temporarily replaced by:</li>
-              <li>Silicone 556 - 0.50%</li>
-              <li>Silicon 9000/3196 - 1.00%</li>
-            </ul>
-          </div>
-        </div>
-      </div> -->
     </div>
   </ng-template>
 </div>
@@ -967,7 +934,6 @@
         <th>שם פריט</th>
         <th>מספר פריט</th>
         <th>משקל</th>
-        <!-- <th>כמות לפני אחוזים</th> -->
       </tr>
     </thead>
     <tbody>
@@ -976,7 +942,6 @@
         <td>{{obj.discription}}</td>
         <td (click)="changeItemQuantity(obj.itemNumber)">{{obj.itemNumber}}</td>
         <td>{{obj.netWeightGr}}</td>
-        <!-- <td>{{obj.calculatedAmount}}</td> -->
       </tr>
     </tbody>
   </table>

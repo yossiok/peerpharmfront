@@ -7,14 +7,6 @@
     </div>
     <div>
         <div *ngFor="let component of components">
-            <!-- <h4>מצא ספקים לפי מספר קומפוננט</h4>
-                <input type="number" [(ngModel)]="component.componentN" class="form-control">
-            <button (click)="findSuppsForComp(component)">מצא ספקים</button>
-
-            <div class="mt-4">
-                <h3>או</h3>
-            </div>
-            <h4>מצא ספקים לפי מאפייני קומפוננטים</h4> -->
             <form [formGroup]="mainForm" (ngSubmit)="findSuppliers()">
             <div class="row mt-2 border border-secondary p-2 m-2">
 
@@ -56,12 +48,6 @@
                             <option *ngFor="let type of cmptTypes2" [value]="type">{{type}}</option>
                         </select>
                     </div>
-                    <!-- <div class="col-2">
-                        <select class="form-control" formControlName="componentType3">
-                            <option disabled value="0">לפי סוג 3</option>
-                            <option *ngFor="let type of cmptTypes3" [value]="type">{{type}}</option>
-                        </select>
-                    </div> -->
                     <div class="col-2">
                         <label>חומר</label>
                         <select class="form-control" formControlName="material">
@@ -69,12 +55,6 @@
                             <option *ngFor="let material of cmptMaterials" [value]="material">{{material}}</option>
                         </select>
                     </div>
-                    <!-- <div class="col-2">
-                        <select class="form-control" formControlName="material2">
-                            <option disabled value="0">לפי חומר 2</option>
-                            <option *ngFor="let material of cmptMaterials2" [value]="material">{{material}}</option>
-                        </select>
-                    </div> -->
                     <div class="col-2">
                         <label>סוג אריזה</label>
                         <select class="form-control" formControlName="packageType">

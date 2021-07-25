@@ -52,9 +52,6 @@
                   formControlName="formuleNumber"
                   (focusout)="findFormule($event)"
                   />
-                <!-- <div *ngIf="errorItemNumber" style="font-size: 10pt; color: red;">
-                  Not valid Item number
-                </div> -->
               </div>
             </div>
   
@@ -113,21 +110,7 @@
              
               </div>
   
-            <!-- <div *ngFor="let order of this.productionScheduleObject.orders">
-              <app-production-orders
-                #childOrders
-                (sumQuantityChild)="UpdateTotalQuantity($event)"
-              ></app-production-orders>
-            </div>
-            <div class="m-t-40 row">
-              <button
-                class="btn btn-success m-r-10 col-2"
-                type="button"
-                (click)="RealtedOrders()"
-              >
-                Add Related Orders
-              </button>
-            </div> -->
+    
   
             <div class="form-group row" style="margin-top:30px">
               <label for="example-number-input" class="col-2 col-form-label"
@@ -159,35 +142,7 @@
                 />
               </div>
             </div>
-  <!-- 
-            <div class="form-group row" style="margin-top:30px">
-              <label for="example-number-input" class="col-2 col-form-label"
-                >Last Updated:</label
-              >
-              <div class="col-10">
-                <input
-                  class="form-control"
-                  type="date"
-                  value=""
-                  formControlName="lastUpdated"
-                />
-              </div>
-            </div> -->
-  
-            <!-- <div class="form-group row" style="margin-top:30px">
-              <label for="example-number-input" class="col-2 col-form-label"
-                >Last Updated User:</label
-              >
-              <div class="col-10">
-                <input
-                  class="form-control"
-                  type="text"
-                  value=""
-                  formControlName="lastUpdatedUser"
-                />
-              </div>
-            </div> -->
-  
+
   
   
   

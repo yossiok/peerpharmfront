@@ -13,7 +13,6 @@
 					<button class="btn btn-info"type="button" (click)="searchPlateByName(filterPlatesName)">חפש</button>&nbsp;&nbsp;
 					<button class="btn btn-default"type="button" (click)="getAllPlates()">הצג הכל</button>		
 				</div>
-				<!-- <input type='text' placeholder='חפש גלופה לפי מספר' id='searchPallet_input' onkeyup="searchItem2()"> -->
 
 				<table>
 					<tbody id='palletsTbody'>
@@ -88,16 +87,6 @@
 							<br>
 						</label>
 						<button class="btn btn-success" [disabled]="!selectedFiles" (click)="upload()">Upload</button>
-						<!--<div class="custom-file">
-							  	<input type="file" style='display: none' required (change)="selectFile($event)">
-							<label class="custom-file-label" for="validatedCustomFile"><span>{{imgPath}}</span></label>
-							<button class="btn btn-success" [disabled]="!selectedFiles" (click)="upload()">Upload</button>
-						  </div>
-											<label class="btn btn-default">
-							<input type="file" (change)="selectFile($event)">
-						</label>
-
-						<button class="btn btn-success" [disabled]="!selectedFiles" (click)="upload()">Upload</button>-->
 
 					</td>
 				</tr>

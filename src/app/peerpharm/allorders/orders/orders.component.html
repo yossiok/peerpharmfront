@@ -54,7 +54,6 @@
       <button (click)="loadOrders()" class='btn btn-info form-control'> Load </button>
     </div>
     <div class="col-2">
-      <!-- <button (click)="loadOrdersItems()" class='btn btn-info form-control'> Show Items </button> -->
     </div>
     <div class="col-2"></div>
     <div class="col-1">
@@ -109,15 +108,12 @@
       </thead>
       <tbody>
         <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let order of orders; let i = index" [style.background-color]="order.color" (blur)="saveEdit(false, '')">
-          <!-- <tr *ngFor="let order of orders; let i = index" [style.background-color]="order.color" (blur)="saveEdit(false, '')" > -->
           <td style="width:3%;">{{i+1}}</td>
           <td style="width:3%;" (click)="edit('')">
             <input type="checkbox" [(ngModel)]="order.isSelected" name="orderSelect">
           </td>
           <td (click)="edit('')">
             <a target="_blank" routerLink='/peerpharm/allorders/orderitems/{{order.orderNumber}}'>
-              <!-- <a routerLink="/orderitems/{{order._id}}">-->
-              <!--<a  [routerLink]=['orderitems/{{order._id}}']>-->
               {{order.orderNumber}}
 
             </a>
@@ -149,9 +145,6 @@
           <td style="width: 10%; height: 100%; overflow-wrap: normal; overflow-y: auto;" *ngIf="order._id!==EditRowId"
             (click)="edit(order._id)">{{order.orderRemarks}}</td>
 
-          <!-- <td *ngIf="order._id===EditRowId">
-              <input #orderType type='text' [value]="order.type" style='width:170px'>
-            </td> -->
           <td style="width:7%;" *ngIf="order._id!==EditRowId">{{order.type}}</td>
           <td style="width:7%;" *ngIf="order._id===EditRowId">
             <select #orderType type='text' [value]="order.type" style='width:100px'>
@@ -181,9 +174,6 @@
           </td>
           <td style="width: 4%"></td>
           <td style="width: 5%">
-            <!--<img *ngIf="order._id!==EditRowId" src='/assets/images/deleteBtn.png' style='width:40px' (click)="deleteOrder(order)">
-            <img *ngIf="order._id!==EditRowId" src='/assets/images/aprroved.png' style='width:32px' (click)="saveEdit(true, order._id)">
-            <img *ngIf="order._id===EditRowId" src='/assets/images/update2.png' style='width:30px; cursor: pointer' (click)="saveEdit()">-->
             <i class="ti-trash text-danger m-r-10" *ngIf="order._id!==EditRowId" (click)="deleteOrder(order)"
               style="cursor:pointer"></i>&nbsp;
             <i class="ti-check text-success m-r-10" *ngIf="order._id!==EditRowId" (click)="saveEdit(true, order._id)"

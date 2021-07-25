@@ -452,15 +452,6 @@ Filter By Order: <input (change)="filterByOrderNumber($event)" type="number">
     printSectionId="print-section" 
     ngxPrint>Print
   </button>
-    <!-- <button
-      *ngIf="!printBarcodeId"
-      (click)="printBarcode()"
-      class="btn btn-success m-r-10 m-t-10"
-      type="button"
-
-    >
-      Save
-    </button> -->
     <a
       *ngIf="printBarcodeId"
       class="btn btn-success m-r-10 m-t-10"
@@ -557,41 +548,7 @@ Filter By Order: <input (change)="filterByOrderNumber($event)" type="number">
     </div>
     <br>
 
-      <!-- <div *ngIf="showCustomerFlag" class="form-group row">
-        <label for="customerName"><strong>Customer Name</strong>:</label>
-        <input class="form-control" type="text" formControlName="costumer" />
-        <button
-          type="button"
-          class="btn removeBtn btn-success m-r-10"
-          (click)="RemoveFields('customer')"
-        >
-          Remove
-        </button>
-      </div> -->
-<!-- 
-      <div *ngIf="showOrderNumFlag" class="form-group row">
-        <label for="orderNumber"><strong>Order Number:</strong></label>
-        <input class="form-control" type="text" formControlName="orderN" />
-        <button
-          type="button"
-          class="btn removeBtn btn-success m-r-10"
-          (click)="RemoveFields('orderN')"
-        >
-          Remove
-        </button>
-      </div> -->
-
-      <!-- <div *ngIf="showItemFlag" class="form-group row">
-        <label for="itemNumber"><strong>Item Number:</strong></label>
-        <input class="form-control" type="text" formControlName="item" />
-        <button
-          type="button"
-          class="btn removeBtn btn-success m-r-10"
-          (click)="RemoveFields('item')"
-        >
-          Remove
-        </button>
-      </div> -->
+   
 
       <div *ngIf="showProductFlag" class="form-group row">
         <label for="productName"><strong>Product Name:</strong></label>
@@ -727,16 +684,7 @@ Filter By Order: <input (change)="filterByOrderNumber($event)" type="number">
         [attr.id]="create_table"
       >
 
-         <!-- <tr>
-          <td>
-            <span *ngIf="showBatch">Delivery Address:{{ printBarkod.batch }}</span> 
-          </td>
-        </tr>
-         <tr>
-          <td> 
-            <span style="margin-left:10px;" *ngIf="showExp">Date: {{ printBarkod.date }}</span>
-          </td>
-        </tr> -->
+       
         
         <tr>
           <td>
@@ -779,9 +727,6 @@ Filter By Order: <input (change)="filterByOrderNumber($event)" type="number">
          <tr>
           <td><span *ngIf="showVolume">{{ volumeK }}</span></td>
         </tr>
-        <!-- <tr>
-          <td *ngIf="showItemNumber">Vendor Style - #2087</td>
-        </tr> -->
         <tr>
           <td><span style="margin-left:10px;" *ngIf="showPcsCarton">{{ printBarkod.pcsCtn }} Units / Ctn</span></td>
         </tr>
@@ -800,15 +745,9 @@ Filter By Order: <input (change)="filterByOrderNumber($event)" type="number">
           <span>Tel: 972-3-9024055 Fax: 972-3-9024015</span>
         </td>
         </tr>
-        <!-- <tr *ngIf="showCustomerFlag">
-          <td>{{ schedLine.costumer }}</td>
-        </tr> -->
         <tr *ngIf="showOtherFlag">
           <td>{{ other }}</td>
         </tr>
-        <!-- <tr *ngIf="showPackingCodeFlag">
-          <td>Packing Code:{{ printBarkod.packingCode }}</td>
-        </tr> -->
       </table>
     </div>
 
@@ -821,15 +760,7 @@ Filter By Order: <input (change)="filterByOrderNumber($event)" type="number">
     printSectionId="print-sectionHul" 
     ngxPrint>Print
   </button>
-    <!-- <button
-      *ngIf="!printBarcodeId"
-      (click)="printBarcode()"
-      class="btn btn-success m-r-10 m-t-10"
-      type="button"
 
-    >
-      Save
-    </button> -->
     <a
       *ngIf="printBarcodeId"
       class="btn btn-success m-r-10 m-t-10"

@@ -124,16 +124,7 @@
                   <td *ngIf="!editItem && !stockitem.isStock">
                     Orders: <span *ngFor="let order of stockitem.customerOrders">{{order}},&nbsp;</span>
                   </td>
-                  <!-- <td *ngIf="editItem && itemIndex == i && stockitem.isStock">Stock</td> -->
                   <td *ngIf="editItem && itemIndex == i">
-                    <!-- <ng-container *ngFor="let order of stockitem.customerOrders; let j = index">
-                      <input  type="text" (change)="changeOrder(i, order, j)" [ngModelOptions]="{standalone: true}" [(ngModel)]="order"
-                      [style.width]="'77px'">
-                      <button placement="bottom" ngbTooltip="Delete this order" (click)="deleteCusomerOrderNumber(i,j)">X</button>
-                    </ng-container>
-                    <br>
-                    <button placement="bottom" ngbTooltip="Add customer order" (click)="wow = true">+</button>
-                    <input *ngIf="wow" type="text" (change)="addOrderToPurchase(i, $event)"> -->
 
                     Orders: <span *ngFor="let order of newPurchase.value.stockitems[i].customerOrders">{{order}},&nbsp;</span> <br>
                     <input placeholder="Order Number" maxlength="4" type="number" #customerOrderNumber2>
@@ -142,14 +133,6 @@
 
 
                   </td>
-
-
-                  <!--test-->
-                  <!-- <div *ngIf="!itemForm.get('isStock').value">
-                    <input placeholder="Order Number" maxlength="4" type="number" #customerOrderNumber>
-                    <button type="button" (click)="addCusomerOrderNumberToItem(customerOrderNumber)"><i class="fas fa-plus"></i></button>
-                    Orders: <span *ngFor="let order of itemForm.get('customerOrders').value">{{order}},&nbsp;</span>
-                </div> -->
 
                   <td *ngIf="!editItem">{{stockitem.quantity}}</td>
                   <td *ngIf="editItem && itemIndex == i">
@@ -211,13 +194,9 @@
                   <td><i *ngIf="!disabled  && editItem && itemIndex == i" placement="top" ngbTooltip="Edit Item" (click)="openToEdit(i)"
                       class="click fa fa-pencil-alt text-primary"></i></td>
 
-                  <!-- <td *ngIf="!disabled && !editItem"><i (click)="editItem = !editItem"
-                      class="click fa fa-times text-primary"></i></td> -->
                   <td><i *ngIf="!disabled && editItem && itemIndex == i" placement="top" ngbTooltip="Exit Edit" (click)="editItem = !editItem"
                       class="click fa fa-times text-primary"></i></td>
 
-                  <!-- <td *ngIf="!disabled && !editItem"><i (click)="updateItems(stockitem)"
-                      class="click fa fa-save text-primary h4"></i></td> -->
                   <td><i *ngIf="!disabled && editItem && itemIndex == i" (click)="updateItems(stockitem)"
                       class="click fa fa-save text-primary h4"></i></td>
 
@@ -404,14 +383,6 @@
               <option value="material">Material</option>
             </select>
           </div>
-          <!-- <div class="col form-group">
-            <span class="red float-left h4">*</span>
-            <label>Status</label>
-            <select formControlName="status" class="form-control">
-              <option value="open" selected="true">open</option>
-              <option value="waitingForApproval">ממתין לאישור</option>
-            </select>
-          </div> -->
           <div class="col form-group">
             <label>Arrival Date</label>
             <input formControlName="itemArrival" class="form-control" type="date">
@@ -603,16 +574,11 @@
                  
                   <td>{{stockitem.name}}</td>
 
-                  <!-- <th *ngIf="stockitem.isStock">Stock</th>
-                  <th *ngIf="!stockitem.isStock">
-                    Orders: <span *ngFor="let order of stockitem.customerOrders">{{order}},&nbsp;</span>
-                  </th> -->
-
+              
                   <td *ngIf="!editItem && stockitem.isStock">Stock</td>
                   <td *ngIf="!editItem && !stockitem.isStock">
                     Orders: <span *ngFor="let order of stockitem.customerOrders">{{order}},&nbsp;</span>
                   </td>
-                  <!-- <td *ngIf="editItem && itemIndex == i && stockitem.isStock">Stock</td> -->
                   <td *ngIf="editItem && itemIndex == i">
                     <ng-container *ngFor="let order of stockitem.customerOrders; let j = index">
                       <input  type="text" (change)="changeOrder(i, order, j)" [ngModelOptions]="{standalone: true}" [(ngModel)]="order"
@@ -680,7 +646,6 @@
 
     <div class="container bg-white border border-primary shadow-lg text-center p-5">
 
-      <!-- <form [formGroup]="deliveryCertificateForm" (ngSubmit)="saveCertificate()"> -->
       <div class="row mt-2"><span class="red">*</span> שדה חובה </div>
       <div class="row mt-2">
         <div class="col-md-4 form-group">
@@ -844,13 +809,6 @@
                 <td>{{deliveryCert.deliveryArrivalDate | date:'d/M/YY'}}</td>
                 <td>
                   <table style="overflow: auto;" class="table">
-                    <!-- <thead>
-                      <tr>
-                        <th>מספר פריט</th>
-                        <th>שם פריט</th>
-                        <th>כמות</th>
-                      </tr>
-                    </thead> -->
                     <tbody>
                       <tr *ngFor="let item of deliveryCert.stockitems">
                         <td>{{item.number}}</td>

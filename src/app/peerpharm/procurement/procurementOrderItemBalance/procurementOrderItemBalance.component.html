@@ -19,11 +19,9 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
       <th><b>Item Name</b></th>
       <th><b>Measure</b></th>
       <th><b>Order Quantity</b></th>
-      <!-- <th><b>Price</b></th> -->
       <th><b>Supplied Quantity</b></th>
       <th><b>Order Date</b></th>
       <th><b>Remaining Quantity</b></th>
-      <!-- <th><b>Remainning Quantity Value</b></th> -->
     </tr>
   </thead>
   <tbody id="table_body">
@@ -43,11 +41,9 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
       <td>{{ line.itemName }}</td>
       <td>{{ line.measure }}</td>
       <td>{{ line.orderQnt }}</td>
-      <!-- <td>{{ line.price }}</td> -->
       <td>{{ line.suppliedQnt}}</td>
       <td>{{ line.orderDate}}</td>
       <td>{{ line.remainingQnt }}</td>
-      <!-- <td>{{ line.remainingQntValue }}</td> -->
     </tr>
   </tbody>
 </table>

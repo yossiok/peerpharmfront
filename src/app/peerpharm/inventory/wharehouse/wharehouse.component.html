@@ -237,11 +237,6 @@
               </div>
              
 
-              <!-- if taking out stock from wh -->
-              <!-- <div class="col-sm-3"  *ngIf="dir!='in' && dir!='shelfChange'"> 
-                      <label>מס' הזמנה</label>
-                      <input type="text" class="form-control" placeholder="Related Order Number" formControlName="relatedOrder">
-                    </div> -->
               <!-- if recieving stock to wh  -->
               <div class="col-sm-1" *ngIf="dir=='in'">
                 <label>הגעת משלוח</label>
@@ -260,15 +255,8 @@
                     (click)="checkLineValidation(itemLine.value, $event.value)">
                       Add
                   </button>
-                  <!-- <button type="submit" (click)="checkLineValidation(itemLine.value, $event.value)"
-                    style="cursor: pointer; position: absolute; bottom: 0px;">
-                    <img (click)="checkLineValidation(itemLine.value, $event.value)" src="assets/images/add.png" width="30px" style="cursor: pointer;" />
-                  </button> -->
                 </div>
             </div>
-            <!-- <div *ngIf="dir=='in'">
-              <h3 (click)="open(packMaterialForm)"><u>טופס קבלת חומר אריזה</u></h3>
-            </div> -->
             <div>
               <label class="text-danger">{{curentWhareHouseName}} Wharehouse Shelf List:</label>&nbsp;
               <ng-container *ngFor="let shelf of currItemShelfs">
@@ -351,7 +339,6 @@
 
         <!--  --> <br>
         <div class="ShouldBeNav">
-          <!-- <button class="btn btn-success" (click)="createInventoryRow('item' , this)">add / הוסף</button> &nbsp;&nbsp; -->
           <button class="btn btn-warning" (click)="cleanList()">Reset / אפס</button>&nbsp;&nbsp;
           <button class="btn btn-info" (click)="sendList()">Submit / שלח שינויים <i class="ti-check m-l-10"></i></button>
           <button (click)="printCertifAgain()" class="btn btn-success ml-3">Print</button>
@@ -393,13 +380,8 @@
             </table>
           </div>
           <div class="col-sm-2"></div>
-          <!-- <div *ngIf="loadingToTable" class="col-sm-3">
-            <img style="width:60px" src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
-          </div>
-          <div *ngIf="!loadingToTable" class="col-sm-3">
-          </div> -->
+      
         </div>
-        <!-- </form> -->
       
 
     </div>
@@ -576,14 +558,7 @@
       '.signatures' : { 'margin' : '50px'},
       '.cellPadding' : { 'padding' : '15px 0px'}
       }" printTitle="תעודת העברה" printSectionId="print-section" ngxPrint>print</button>
-  <!-- <button (click)="printStockTransferCertificate()">click</button> -->
 </div>
-<!-- '.reciverNameLine' : {'width': '100px'},
-'.reciverSignatureLine' : {'width': '100px'},
-'.reciverDateLine' : {'width': '100px'}, -->
-
-<!-- '.signatures > p > span'  : {'width': '70px', 'display': 'inline-block' , 'border-bottom' : 'solid 1px'} -->
-
 <ng-template #packMaterialForm let-modal>
   <div class="modal-header">
     <h4 class="modal-title" style="text-align:center;margin-left:auto;margin-right:auto;" id="modal-basic-title">טופס
@@ -733,4 +708,3 @@
       '.signatures' : { 'margin' : '50px'},
       '.cellPadding' : { 'padding' : '15px 0px'}
       }" printTitle="תעודת קבלה" printSectionId="print-section2" ngxPrint>print</button>
-  <!-- <button (click)="printStockTransferCertificate()">click</button> -->

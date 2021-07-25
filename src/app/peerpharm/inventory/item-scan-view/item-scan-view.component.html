@@ -21,7 +21,6 @@
               <tr>
                 <th><b>מדף</b></th>
                 <th><b>כמות</b></th>
-                <!-- <th>מחסן</th> -->
               </tr>
 
               <tr *ngFor="let shelfAmount of itemAmountsData">
@@ -34,7 +33,6 @@
                 <td *ngIf="shelfAmount.whName == whName">
                   {{ shelfAmount.batchNumArr }}
                 </td>
-                <!-- <td>{{shelfAmount.wh}}</td> -->
               </tr>
             </tbody>
           </table>
@@ -173,7 +171,6 @@
               placeholder="כמות"
               [(ngModel)]="newItemShelfQnt"
             />
-            <!-- <input *ngIf="stockType=='product'" class="col-sm-2 ml-1" type="text" placeholder="אצווה"  [(ngModel)]="newItemShelfBatchNumber"> -->
             <select
               *ngIf="stockType == 'product'"
               class="col-sm-2 ml-1"
@@ -211,8 +208,6 @@
                 "
                 >Batch: {{ itemShelf.batchNumber }}</span
               >&nbsp;<br />
-              <!-- <span *ngIf="itemShelf.arrivalDate!='undefined'">arrival date: {{itemShelf.arrivalDate  | date: 'dd/MM/yyyy' }}</span>&nbsp;<br>
-                    <span *ngIf="itemShelf.itemType!='component' && itemShelf.expirationDate!='undefined'">expiration date: {{itemShelf.expirationDate}}</span>&nbsp;       -->
             </div>
           </ng-container>
         </div>
@@ -287,8 +282,6 @@
                   </td>
                 </tr>
               </tbody>
-              <!-- <tbody id='changesTbody' dir='rtl'>
-                        </tbody> -->
             </table>
           </div>
         </div>
@@ -303,8 +296,6 @@
   </div>
 
   <div class="modal-footer">
-    <!-- <button id="newCbtn" (click)="writeNewComponent()">הקם מוצר</button>
-          <button id="updateDataBtn" style='display:none'>עדכן מידע</button> -->
   </div>
   <!-- END OF MODAL CONTENT -->
 </div>

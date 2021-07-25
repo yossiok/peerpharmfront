@@ -51,7 +51,6 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
 
             <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:8%; padding:5px">{{arrival.supplierNumber}}</td>
             <td *ngIf="arrival._id==EditRowId"  style="width:5%; padding:5px">
-              <!-- <input disabled #supplierNumber  type='text'  [value]="arrival.supplierNumber" > -->
             </td>
 
             <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:6%; padding:5px">{{arrival.totalQnt}} {{arrival.packageType}}</td>
@@ -62,7 +61,6 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
 
             <td *ngIf="arrival._id!=EditRowId" (click)="edit(arrival._id)" style="width:8%; padding:5px">{{arrival.supplierName}}</td>
             <td  *ngIf="arrival._id==EditRowId"  style="width:8%; padding:5px">
-              <!-- <input #supplierName type='text' [value]="arrival.supplierName" style='width:170px'> -->
               
               <input class="form-control is-valid"  #supplierName type="text" [value]="arrival.supplierName" name='supplierName' (keyup)="filterSuppliers(supplierName.value)">
               <ul *ngIf="supplierName.value !=''" class="list-group" id="myList" style="overflow-y: auto; max-height: 200px;">
@@ -106,14 +104,10 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
     </table>
  
 
-    <!-- 
-    [printStyle]="{ 'body' : {'margin-top': '5px' }, '#itemNumber': {'margin-top': '10px'  }, 'table' : {'text-align': 'right','width': '80%'} }"
-     -->
 
               <!-- PRINT BARCODE SECTION -->
             <div 
             >
-            <!-- <button #printBtn  -->
                 <button #printBtn style="visibility: hidden"
               [printStyle]="{ 'body' : {'margin-top': '20px' }, 'table' : {'text-align': 'center','width': '100%'} , 'td': {'border-top': 'solid black 1px'} }"
               printSectionId="print-section"
@@ -121,7 +115,6 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
               </button>
     
                 <div class="row clearfix" id="print-section" style="visibility: hidden">
-              <!-- <div class="row clearfix" id="print-section"   > -->
                   <table
                     class="barcodeTbl"
                     dir="rtl"
@@ -152,18 +145,10 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
                       <td><span [style.font-size.px]="25" >ת.קבלה: </span> {{ arrivalDate | date: 'dd/MM/yyyy' }}</td>
                   </tr>
                 
-                  <!-- <tr>
-                    <td colspan="2"><span [style.font-size.px]="25" >ת.יצור: </span> {{ productionDate | date: 'dd/MM/yyyy' }}</td>
-                  </tr>
-                  <tr>
-                    <td colspan="2"><span [style.font-size.px]="25" >ת.קבלה: </span> {{ arrivalDate | date: 'dd/MM/yyyy' }}</td>
-                  </tr> -->
-                  <!-- <tr>
-                  </tr> -->
+           
 
                   <tr>
                     <td colspan="2" id='barcode'>
-                      <!-- <ngx-barcode [bc-value]="bcValue" [bc-display-value]="true"></ngx-barcode> -->
 
 
                       <ngx-barcode [bc-element-type]="elementType" [bc-value]="bcValue" [bc-format]="format"
@@ -174,35 +159,11 @@ From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (chang
                       [bc-margin-bottom]="marginBottom" [bc-margin-left]="marginLeft" [bc-margin-right]="marginRight">
                     </ngx-barcode>
 
-                 <!--   <ngx-barcode 
-                    [bc-element-type]="elementType" 
-                    [bc-value]="bcValue" 
-                    [bc-format]="format" 
-                    [bc-line-color]="lineColor"
-                    [bc-width]="width"
-                    [bc-height]="height" 
-                    [bc-display-value]="displayValue" 
-                    [bc-font-options]="fontOptions" 
-                    [bc-font]="font"
-                    [bc-text-align]="textAlign" 
-                    [bc-text-position]="textPosition" 
-                    [bc-text-margin]="textMargin" 
-                    [bc-font-size]="fontSize" 
-                    [bc-background]="background"
-                    [bc-margin]="margin"  
-                    [bc-margin-top]="marginTop" 
-                    [bc-margin-bottom]="marginBottom" 
-                    [bc-margin-left]="marginLeft" 
-                    [bc-margin-right]="marginRight">
-                  </ngx-barcode>-->
                     </td>
                   </tr>
                   <tr>
                     <td><span [style.font-size.px]="15" >מיקום: </span> {{ position }}</td>
                   </tr>
-                  <!-- <tr>
-                    <td  >{{ bcValue }}</td>
-                  </tr> -->
                 </table>
               </div>
             </div>

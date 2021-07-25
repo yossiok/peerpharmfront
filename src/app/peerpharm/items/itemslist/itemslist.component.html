@@ -60,7 +60,6 @@
             <th>Item number</th>
             <th>Name</th>
             <th>Volume/Net Weight</th>
-            <!-- <th style="width:7%; padding:5px">Net Weight</th> -->
             <th>Sticker</th>
             <th>Barcode</th>
             <th>Limited License</th>
@@ -70,8 +69,6 @@
             <th>Pallet 2</th>
             <th>Pallet 3</th>
             <th></th>
-            <!-- <th style="padding:5px">Pallet 2</th>
-    <th style="padding:5px">Pallet 3</th> -->
           </tr>
         </thead>
         <tbody id="table_body">
@@ -97,56 +94,7 @@
             </td>
             <td style="word-wrap: break-word;color:black">{{ item.barcodeK }}</td>
             <td>
-              <!-- <img
-          *ngIf="
-            item.licenceItemsQuotaLimit &&
-            item.licenceItemsQuotaLimit < item.licenceCurrItemsQnt
-          "
-          style="width: 25px; height: 25px;"
-          src="../../../../assets/images/alert2.png"
-          alt=""
-        /> -->
-              <!-- <input *ngIf="item.licenceItemsQuotaLimit" [(ngModel)]="item.licenceHasItemsQuotaLimition" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right; width:45%;"> -->
-              <!-- <input
-          *ngIf="item.licenceItemsQuotaLimit"
-          [(ngModel)]="item.licenceItemsQuotaLimit"
-          type="number"
-          style="width: 65px; float: left;"
-          (focusout)="
-            updateLicenseQuotaLimitation(
-              $event,
-              item.itemNumber,
-              item.licsensNumber,
-              item.licenceCurrItemsQnt,
-              item.licenceExprationDate,
-              item.licenceFileLink,
-              item.licenceLastUpdateDate,
-              item.licenceLastUpdateUser,
-              item.licenceNotifaction
-            )
-          "
-          min="1"
-        /> -->
-              <!-- <input *ngIf="!item.licenceItemsQuotaLimit" type="checkbox" (change)="updateLicenseQuotaLimitation($event,item.itemNumber,item.licsensNumber,item.licenceCurrItemsQnt,item.licenceExprationDate, item.licenceFileLink,item.licenceLastUpdateDate, item.licenceLastUpdateUser, item.licenceNotifaction)" style="float: right; width:45%;"> -->
-              <!-- <input
-          *ngIf="!item.licenceItemsQuotaLimit"
-          type="number"
-          style="width: 65px; float: left;"
-          (focusout)="
-            updateLicenseQuotaLimitation(
-              $event,
-              item.itemNumber,
-              item.licsensNumber,
-              item.licenceCurrItemsQnt,
-              item.licenceExprationDate,
-              item.licenceFileLink,
-              item.licenceLastUpdateDate,
-              item.licenceLastUpdateUser,
-              item.licenceNotifaction
-            )
-          "
-          min="1"
-        /> -->
+           
 
             </td>
             <td style="color:black" (click)="edit(item._id)" *ngIf="item._id != EditRowId">{{ item.licsensNumber }}</td>
@@ -164,8 +112,6 @@
             <td style="color:black">{{ item.pallet3 }}</td>
             <td *ngIf="item._id == EditRowId" style="width:3%"><i (click)="saveEdit(item._id)" class="fa fa-check"></i>
             </td>
-            <!-- <td>{{item.pallet2}}</td>
-    <td>{{item.pallet3}}</td> -->
           </tr>
         </tbody>
       </table>
@@ -188,13 +134,6 @@
     <br />this can take some time
   </h1>
 </div>
-<!-- &nbsp;&nbsp; <input *ngIf="!hasMoreItemsToload" matInput  placeholder="Item name" (change)="changeText($event)" /> -->
 
 
 
-
-
-
-<!-- <input class="form-control" #file type="file" />
-<label class="form-control">Upload Excel</label>
-<button (click)="sendExcelToData(file)">Upload</button> -->
