@@ -335,14 +335,13 @@ export const PeerPharmRputs: Routes = [
     component: NewFormuleComponent,
     // canActivate:[TwoFactor]
   },
-  {
-    path: 'formule/addnewformule/:id',
-    data: {
-      title: 'edit-formule'
-    },
-    component: FormuleComponent,
-    // canActivate:[TwoFactor]
-  },
+  // {
+  //   path: 'formule/addnewformule/:id',
+  //   data: {
+  //     title: 'edit-formule'
+  //   },
+  //   component: FormuleComponent,
+  // },
   {
     path: 'formule/all-formules',
     data: {
