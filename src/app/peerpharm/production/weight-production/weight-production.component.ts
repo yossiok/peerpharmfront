@@ -29,17 +29,6 @@ export class WeightProductionComponent implements OnInit {
   @ViewChild('formuleNumberElement') formuleNumberElement: ElementRef;
   @ViewChild('formuleNumber') formuleNumber: ElementRef;
 
-  // currentFormule: any;
-  // currentFormule2: any;
-  // formuleNumber: any;
-  // formuleNumber2: any;
-  // formuleUnitWeight:any;
-  // formuleUnitWeight2:any;
-  // formuleWeight: any;
-  // formuleWeight2: any;
-  // formuleOrder: any;
-  // formuleOrder2: any;
-  // isSplitted: boolean = false;
   formules: FormuleWeight[] = [{
     formuleNumber: '',
     formuleWeight: 0,
