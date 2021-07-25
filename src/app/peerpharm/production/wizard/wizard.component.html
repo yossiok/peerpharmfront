@@ -16,14 +16,11 @@
     <input type="number" class='inputStyle' #qntInput>
     <button class="btn btn-lg btn-info bigBtn" (click)="checkItemQnt($event)">Enter Quantity</button>
     <h3 *ngIf="wrongQnt" style="color:red;" class="msgQnt">Wrong Qauntity</h3>
-    <!-- <h3 *ngIf="sugestedItem">{{sugestedItem}}</h3> -->
   </div>
   <div *ngIf="step ==3">
     <h2>Step3 - Continue</h2>
     <button class="btn btn-lg btn-success bigBtn" (click)="nextMaterial()">NEXT MATERIAL</button>
-    <!-- <input type="number" class='inputStyle' (change)="checkItemQnt($event)"> -->
     <h3 *ngIf="correctQnt" style="color:green;" >Correct Item and Quantity</h3>
-    <!-- <h3 *ngIf="sugestedItem">{{sugestedItem}}</h3> -->
   </div>
   <div *ngIf="step ==4">
     <h1>Finished Formula</h1>

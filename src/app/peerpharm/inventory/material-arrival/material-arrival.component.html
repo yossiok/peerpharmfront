@@ -287,7 +287,6 @@
 
 
         <div *ngIf="requiresFromFull">
-          <!-- <div > -->
           <h2 style='text-align: center;'>Material Arrival</h2>
           <form class="mh-85 container-fluid" [formGroup]="newMaterialArrival">
 
@@ -380,8 +379,6 @@
                   <option value="999">אחר</option>
                   <option *ngFor="let order of lastOrders" [value]="order.orderNumber">{{order.orderNumber}}</option>
                 </select>
-                <!-- <input type="text" (change)="checkIfIOrderExist($event)" class="form-control is-valid"
-                placeholder="Order number" formControlName="cmxOrderN" name='cmxOrderN'> -->
               </div>
             </div>
             <div class="form-row w-100 flex-row-reverse">
@@ -491,10 +488,7 @@
         <div class="modal-header" style="direction: rtl;">
           <h4 class="modal-title" id="modal-basic-title" style="cursor : pointer;" (click)="chooseOnlySupplier()">פריטים
             של ספר מספר: {{ supplierModalInfo.suplierNumber }} <br>שם ספק: {{ supplierModalInfo.suplierName }} </h4>
-          <!-- <h4 class="modal-title" id="modal-basic-title">פריטים של ספק </h4> -->
-          <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
           <button type="button" class="close" aria-label="Close" (click)="c('Cross click')" style="margin-left: 0">
-            <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -575,18 +569,15 @@
 
 
 
-<!-- <div class="container" [style.height]="screenHeight+'px'"> -->
 
 
 <!-- PRINT BARCODE SECTION -->
 <div style="visibility: hidden">
-  <!-- <button #printBtn style="visibility: hidden" -->
   <button #printBtn
     [printStyle]="{ 'body' : {'margin-top': '5px' }, '#itemNumber': {'margin-top': '10px'  }, 'table' : {'text-align': 'right','width': '80%'} }"
     printSectionId="print-section" ngxPrint>print
   </button>
 
-  <!-- <div class="row clearfix" id="print-section" style="visibility: hidden"> -->
   <div class="row clearfix" id="print-section" style="visibility: hidden">
     <table class="barcodeTbl" dir="rtl" [style.margin.px]="15" [style.width.px]="360" [style.max-height.px]="600"
       [style.font-size.px]="40" style.font-weight="900" style.font-family="Arial" [style.border.px]="0">
@@ -640,7 +631,6 @@
     </div>
     <div class="modal-body">
 
-      <!-- <i class="ti-check text-success m-r-10" (click)="setOrderItemDone(item)" style="cursor: pointer;"></i> -->
 
       <h5 class="alert alert-secondary">הוכנס למחסן ראשי</h5>
 

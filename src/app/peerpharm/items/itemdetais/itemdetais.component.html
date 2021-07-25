@@ -292,10 +292,6 @@
                                             <option value="Swedish">Swedish</option>
                                         </select>
                                     </div>
-                                    <!-- <div>
-                                  <input id="id_stickerLanguge" *ngIf="mainLanguage==true" class="productionInput"
-                                  [(ngModel)]=itemShown.StickerLanguageK>
-                                </div> -->
                                     <div *ngIf="mainLanguage==false">
                                         <p>---</p>
                                     </div>
@@ -1067,7 +1063,6 @@
                                         (change)="selectFile($event, 'laser1')"><br>
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('laser1')"
                                         *ngIf='laser1File'>>></button>
-                                    <!-- <img for="fileee" class="laserImg2" id="id_img4" src="../../../../assets/images/uploadImage.jpg" *ngIf="!itemShown.laserImage1"> -->
                                 </div>
                                 <div class="col-6">
                                     <input type="file" name="filee" id="id_itemImg2"
@@ -1146,8 +1141,6 @@
                                 </div>
                                 <div class="col-2">
 
-                                    <!-- <input class="form-control" type=t ext id="id_cartonNo" ------------------ BEFORE ----------------
-        (focusout)="loadPackagDetails(itemShown.cartonNumber, 'carton')" [(ngModel)]=itemShown.cartonNumber> -->
                                     <input class="form-control" type=t ext id="id_cartonNo"
                                         (focusout)="loadCartonName(itemShown.cartonNumber)"
                                         [(ngModel)]=itemShown.cartonNumber>
@@ -1225,14 +1218,6 @@
                                     <input class="form-control" type="text" ext id="id_pcsCarton"
                                         [(ngModel)]=itemShown.PcsCarton2>
 
-                                    <!-- <input type=t ext id="id_Palette" class="form-control"
-                                        [(ngModel)]=itemShown.paletteType2> -->
-                                    <!-- <select id="id_pumpDirection" class="form-control"
-                                        [(ngModel)]=itemShown.pumpDirection2>
-                                        <option value="-">-</option>
-                                        <option value="Right">{{ 'Right' | translate }}</option>
-                                        <option value="Left">{{ 'Left' | translate }}</option>
-                                    </select> -->
                                 </div>
                                 <div class="col-3">
                                     <input [(ngModel)]="itemShown.cartonName2" class="form-control"

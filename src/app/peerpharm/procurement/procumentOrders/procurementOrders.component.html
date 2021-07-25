@@ -89,7 +89,7 @@
                 חפש לפי קטגוריה <select (change)="filterPurchaseOrders()" formControlName="category"
                   class="form-control rounded-pill">
                   <option selected="true" disabled="disabled">בחר קטגוריה</option>
-                  <option [value]="null">הכל</option>
+                  <option value="">הכל</option>
                   <option value='bottle_Glass'>בקבוק זכוכית</option>
                   <option value='bottle_Plastic'>בקבוק פלסטיק</option>
                   <option value='jar_Glass'>צנצנת זכוכית</option>
@@ -343,12 +343,13 @@
 
 
 
+
 <div *ngIf="printBill==true" id="myModal3" class="modal3 position-fixed modal-inner"
   style='border:1px; border-radius:5px;z-index: 1; left:300px;top:160px;font-size:20px;'>
   <div id="billing-section">
     <div class="modal-content" id='modelC'>
       <div style="display: inline-block;" id="material-header" class="modal-header">
-        country
+
         <div class="row">
           <div class="col-5">
             <img src="../../../../assets/images/logo.png">
@@ -433,7 +434,7 @@
           <thead>
             <tr>
               <th>#</th>
-              <th *ngIf="showImage">Image</th>
+              <th *ngIf="showImage == true">Image</th>
               <th>Item</th>
               <th>SupplierN</th>
               <th>Item Name</th>
@@ -449,15 +450,15 @@
           <tbody>
             <tr *ngFor="let item of currentItems;let i = index;">
               <td>{{i+1}}</td>
-              <td *ngIf="showImage"><img style="width:50px;" alt="Item Image" [src]="item.img"></td>
+              <td *ngIf="showImage == true"><img style="width:50px;" alt="Item Image" [src]="item.img"></td>
               <td>{{item.number}}</td>
               <td>{{item.componentNs}}</td>
               <td>{{item.name}}</td>
               <td>{{item.remarks}}</td>
               <td>{{item.quantity}}</td>
 
-              <td>{{item.price | number | currency:item.coin}}</td>
-              <td>{{item.totalPrice | number | currency:item.coin}}</td>
+              <td>{{item.price | currency:item.coin}}</td>
+              <td>{{item.itemPrice | currency:item.coin}}</td>
               <td><span *ngIf="item.localTotal">{{item.localTotal | number}}{{nisSymbol}}</span></td>
 
             </tr>
@@ -468,7 +469,7 @@
               <td></td>
               <td></td>
               <td></td>
-              <td><b>{{totalOrderQnt}}</b></td>
+              <td><b>{{totalAmount}}</b></td>
               <td></td>
               <td><b *ngIf="printSum">{{totalPrice}}{{currCoin}}</b></td>
               <td><b>{{totalPriceNis | number}}{{nisSymbol}}</b></td>
@@ -481,10 +482,10 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td><b>{{totalOrderQnt}}</b></td>
+                <td><b>{{totalAmount}}</b></td>
                 <td></td>
                 <td dir="rtl"><b *ngIf="printSum">{{totalPrice | number}}{{currCoin}}</b></td>
-                <td><b>{{totalPriceNis | number | currency: 'ILS'}}{{nisSymbol}}</b></td>
+                <td><b>{{totalPriceNis | number}}{{nisSymbol}}</b></td>
               </tr>
             </ng-container>
           </tbody>

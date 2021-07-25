@@ -5,7 +5,6 @@
     <div class="modal-header" style="text-align: right;">
       <span style="float:left; margin-left:0px; font-size: 40px; " class="close" id="closeId2" (click)="closeMadal()">&times;</span>
       <h2>{{procurementModalHeader}}</h2>
-      <!-- <button (click)="copyOldData()">copyOld</button> -->
     </div>
     <div class="modal-body" style="text-align: right; overflow-y:scroll; overflow-x:hidden; height: 500px; padding-left: 0px">
       <div class="addNewExpectedArrival">
@@ -20,21 +19,13 @@
                 (click)='chooseExpectedDateUpdateType("multiItems", $event)'>
                 עדכן צפי הגעה למספר פריטים 
                 </button>
-                <!-- <button #orderBtn type="button" class="list-group-item"
-                (click)='chooseExpectedDateUpdateType("order", $event)'>
-                עדכן צפי הגעה להזמנת רכש שלמה
-              </button> -->
               </div>
           </div>
 
           <div *ngIf="updateTypeView!=null" >
             <form [formGroup]="newItemProcurmentDetails">
               <div class="form-row d-flex flex-row-reverse" style="width:100%; float: right;">
-                  <!-- <div class="form-group col-md-3 alignRightInModal">
-                    <label >מק"ט-פריט ספק</label>
-                    <input 
-                    type="text" formControlName="componentNs" class="form-control"  >
-                  </div> -->
+    
                   <div class="form-group col-md-3">
                     <label >מספר ספק</label>
                     <input type="text" formControlName="suplierN" class="form-control">
@@ -95,7 +86,6 @@
 
                 </div>
                 <div class="form-row d-flex flex-row-reverse" style="width:100%; float: right;">
-                  <!-- <label >פריטים לעדכון:</label> -->
                   <table>
                     <tr>
                       
@@ -163,8 +153,6 @@
                         <input type="radio" value="sea" formControlName="shippingMethod" class="form-control">
                         <label>ים</label>    
                     </div>
-                    <!-- <input type="radio" value="air" formControlName="shippingMethod" class="form-control">אוויר
-                    <input type="radio" value="sea" formControlName="shippingMethod" class="form-control">ים -->
                   </div>
                   <div class="form-group col-md-6">
                     <label >הערות</label>
@@ -179,8 +167,6 @@
             </div>
 
           </div>
-          <!-- <div *ngIf="updateTypeView=='multiItems'" ></div>
-          <div *ngIf="updateTypeView=='order'" ></div> -->
 
       <div class="viewExpectedArrivals">
         <h5>הזמנות רכש קיימות לפריט</h5>
@@ -239,13 +225,7 @@
                         <div >
                             {{expectedArrival.transporterName}}
                         </div>
-                        <!-- <div *ngIf="expectedArrival._id===EditRowId && expectedArrival.jobNumber===EditJobN">
-                            <input *ngIf="expectedArrival.jobNumber===EditJobN" type="text" [value]="changedLine.transporterName" >
-                        </div> -->
                     </td>
-                    <!-- <td *ngIf="expectedArrival._id===EditRowId"  >
-                        <input type="text" [value]="changedLine.transporterName" >
-                    </td>   -->
                     <td *ngIf="expectedArrival._id!==EditRowId" (click)="edit(expectedArrival._id)">
                         {{expectedArrival.jobNumber}}               
                     </td> 

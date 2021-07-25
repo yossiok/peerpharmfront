@@ -29,17 +29,6 @@ export class WeightProductionComponent implements OnInit {
   @ViewChild('formuleNumberElement') formuleNumberElement: ElementRef;
   @ViewChild('formuleNumber') formuleNumber: ElementRef;
 
-  // currentFormule: any;
-  // currentFormule2: any;
-  // formuleNumber: any;
-  // formuleNumber2: any;
-  // formuleUnitWeight:any;
-  // formuleUnitWeight2:any;
-  // formuleWeight: any;
-  // formuleWeight2: any;
-  // formuleOrder: any;
-  // formuleOrder2: any;
-  // isSplitted: boolean = false;
   formules: FormuleWeight[] = [{
     formuleNumber: '',
     formuleWeight: 0,
@@ -217,7 +206,7 @@ export class WeightProductionComponent implements OnInit {
       else {
         for (let j = 0; j < this.formules[i].data.phases.length; j++) {
           for (let k = 0; k < this.formules[i].data.phases[j].items.length; k++) {
-            if (this.formules[i].data.phases[j].items[k].percentage != this.formules[i + 1].data.phases[j].items[k].percentage) {
+            if (Number(this.formules[i].data.phases[j].items[k].percentage) != Number(this.formules[i + 1].data.phases[j].items[k].percentage)) {
               this.formules[i].data.phases[j].items[k].color = 'orange'
               this.formules[i + 1].data.phases[j].items[k].color = 'orange'
             }

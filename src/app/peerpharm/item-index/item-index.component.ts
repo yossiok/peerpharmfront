@@ -90,7 +90,6 @@ export class ItemIndexComponent implements OnInit {
     productNumber: new FormControl(''),
     fromDate: new FormControl(new Date()),
     toDate: new FormControl(null),
-    movementType: new FormControl('in', Validators.required),
     amount: new FormControl(null),
     amountDir: new FormControl('higherThan')
   })
@@ -215,6 +214,10 @@ export class ItemIndexComponent implements OnInit {
 
   filter(key, value) {
     this.itemMovements = this.itemMovementsCopy.filter(movement => movement[key] == value)
+  }
+
+  fetchProducts(){
+    
   }
 
   checkIfItemExist(ev) {

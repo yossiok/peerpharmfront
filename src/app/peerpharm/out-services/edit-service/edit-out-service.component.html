@@ -27,10 +27,6 @@
                     <option value="canceled">canceled</option>
                 </select>
             </div>
-            <!-- <div>
-                <h3>סוג שירות:</h3>
-                <h4>{{addOutservice.value.type}}</h4>
-            </div> -->
             <div>
                 <h3>תאריך ביצוע:</h3>
                 <h4 *ngIf="!editDetails">{{addOutservice.value.date | date: 'short'}}</h4>
