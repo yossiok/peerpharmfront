@@ -237,10 +237,12 @@
                   <table *ngIf="component.purchaseOrders.length > 0" style="zoom:0.7">
                     <thead class="text-white">
                       <tr>
-                        <th class="text-white">Order Number</th>
-                        <th class="text-white">Order Date</th>
-                        <th class="text-white">Amount</th>
-                        <th class="text-white">Arrival Date</th>
+                        <th class="text-white">PO #</th>
+                        <th class="text-white">PO Date</th>
+                        <th class="text-white">PO Arrival Date</th>
+                        <th class="text-white">PO Amount</th>
+                        <th class="text-white">PO Delivered</th>
+                        <th class="text-white">Supplier</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -250,8 +252,10 @@
                           <tr *ngIf="item.number == component.componentN">
                             <td>{{purchase.orderNumber}}</td>
                             <td>{{purchase.creationDate | date: 'dd/MM/yyyy'}}</td>
-                            <td>{{item.quantity}}</td>
                             <td>{{purchase.arrivalDate | date: 'dd/MM/yyyy'}}</td>
+                            <td>{{item.quantity}}</td>
+                            <td>{{purchase.arrivedAmount}}</td>
+                            <td>{{purchase.supplierNumber}} - {{purchase.supplierName}}</td>
                           </tr>
                         </ng-container>
                       </ng-container>

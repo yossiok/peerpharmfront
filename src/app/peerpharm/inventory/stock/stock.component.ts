@@ -600,6 +600,7 @@ export class StockComponent implements OnInit {
         for(let purchase of purchases) {
           for (let item of purchase.stockitems) {
             if(item.number == component.componentN) {
+              purchase.arrivedAmount = item.arrivedAmount ? item.arrivedAmount : null
               component.purchaseOrders? component.purchaseOrders.push(purchase) : component.purchaseOrders = [purchase]
             }
           }
