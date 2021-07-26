@@ -36,6 +36,7 @@ export class NewPricingComponent implements OnInit {
     productName: new FormControl(''),
     productNumber: new FormControl(null),
     customer: new FormControl(''),
+    costumerId: new FormControl(null),
     itemComponents: new FormControl([]),
     date: new FormControl(new Date(), Validators.required),
     formuleNumber: new FormControl(null),
@@ -45,10 +46,11 @@ export class NewPricingComponent implements OnInit {
     PPML: new FormControl(null), //Price for ml amount
     processingFee: new FormControl(null),
     oneTimeExp: new FormControl(null),
-    deliveryConds: new FormControl(null),
+    deliveryConds: new FormControl(''),
     deliveryFee: new FormControl(null),
     diffExp: new FormControl(null),
     remarks: new FormControl(''),
+    otherExp: new FormControl(null),
   })
 
 
@@ -232,6 +234,7 @@ export class NewPricingComponent implements OnInit {
 
   calculateFinalPrice() {
     let finalPrice = 0
+    let otherExp = 0
     this.newPricingForm.controls.componentsPrice.setValue(0)
 
     for (let component of this.newPricingForm.value.itemComponents) {
@@ -240,15 +243,18 @@ export class NewPricingComponent implements OnInit {
     }
 
     finalPrice = this.newPricingForm.value.componentsPrice +
-      this.newPricingForm.value.PPML + this.newPricingForm.value.processingFee +
-      this.newPricingForm.value.oneTimeExp + this.newPricingForm.value.deliveryConds +
-      this.newPricingForm.value.deliveryFee + this.newPricingForm.value.diffExp
+      this.newPricingForm.value.PPML + this.newPricingForm.value.processingFee
+    otherExp = this.newPricingForm.value.oneTimeExp + this.newPricingForm.value.deliveryFee + 
+      this.newPricingForm.value.diffExp
 
     this.newPricingForm.controls.productPrice.setValue(finalPrice)
+    this.newPricingForm.controls.otherExp.setValue(otherExp)
   }
 
   savePricing() {
     this.loading = true
+    let costumer = this.customers.find(c => c.costumerName == this.newPricingForm.value.customer)
+    if(costumer) this.newPricingForm.controls.customerId.setValue(costumer.costumerId)
     if (this.biddingToUpdate) {
       // update
       let updatedBidding = {...this.newPricingForm.value, number: this.biddingToUpdate.number}

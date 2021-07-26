@@ -59,26 +59,32 @@
             <div class="row mt-2 border-info border-bottom w-50">
                 <label>Processing Fee: {{newPricingForm.value.processingFee | currency: 'ILS'}}</label>
             </div>
-            <div class="row mt-2 border-info border-bottom w-50">
+            
+            <div class="mt-4">
+                <label>Total Product Price: {{newPricingForm.value.productPrice | currency: 'ILS'}}</label>
+            </div>
+
+            <!-- <div class="row mt-4 border-info border-bottom w-50">
                 <label>One Time Expenses: {{newPricingForm.value.oneTimeExp | currency: 'ILS'}}</label>
             </div>
             <div class="row mt-2 border-info border-bottom w-50">
-                <label>Delivery Conditions: {{newPricingForm.value.deliveryConds | currency: 'ILS'}}</label>
+                <label>Delivery Conditions: {{newPricingForm.value.deliveryConds}}</label>
             </div>
             <div class="row mt-2 border-info border-bottom w-50">
                 <label>Delivery Fee: {{newPricingForm.value.deliveryFee | currency: 'ILS'}}</label>
             </div>
             <div class="row mt-2 border-info border-bottom w-50">
                 <label>Different Expenses: {{newPricingForm.value.diffExp | currency: 'ILS'}}</label>
-            </div>
+            </div> -->
             <div class="row mt-2 border-info border-bottom w-50">
                 <label>Remarks:</label>
                 <h5>{{newPricingForm.value.remarks}}</h5>
             </div>
-
-            <div class="mt-4">
-                <label>Total Product Price: {{newPricingForm.value.productPrice | currency: 'ILS'}}</label>
+            <div class="row mt-4 border-info border-bottom w-50">
+                <label>Other Expenses:</label>
+                <h5>{{newPricingForm.value.otherExp | currency: 'ILS'}}</h5>
             </div>
+
         </div>
 
     </div>
@@ -218,8 +224,8 @@
                                 class="form-control w-25" (keyup)="calculateFinalPrice()">
                         </div>
                         <div class="form-group">
-                            <input type="number" placeholder="Delivery Conditions" formControlName="deliveryConds"
-                                class="form-control w-25" (keyup)="calculateFinalPrice()">
+                            <textarea cols="30" rows="5" placeholder="Delivery Conditions" formControlName="deliveryConds"></textarea>
+
                         </div>
                         <div class="form-group">
                             <input type="number" placeholder="Shipping / Delivery" formControlName="deliveryFee"
