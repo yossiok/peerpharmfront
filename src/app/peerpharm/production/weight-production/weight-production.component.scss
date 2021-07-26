@@ -1,8 +1,14 @@
 select:focus,input:focus,textarea:focus {
- 
     border-color: #2962FF ;
     box-shadow: 0 0 5px #2962FF ;
-  
+}
+
+.click {
+  cursor: pointer;
+}
+
+.minimizer:hover {
+  background-color: rgb(145, 186, 228);
 }
 
 .header-detail {

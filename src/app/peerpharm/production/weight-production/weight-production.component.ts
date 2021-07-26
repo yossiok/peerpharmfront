@@ -38,6 +38,8 @@ export class WeightProductionComponent implements OnInit {
     exist: true
   }];
 
+  currentFormule:FormuleWeight
+
   finalFormule: FormuleWeight;
   finalWeight: number = 0;
   allMaterialArrivals: any[];
@@ -166,18 +168,20 @@ export class WeightProductionComponent implements OnInit {
 
     this.showHeader = !this.showHeader
     for (let formule of this.formules) {
-      if (formule.formuleNumber != '' && formule.formuleWeight != '') {
+      if (this.currentFormule.formuleNumber != '' && this.currentFormule.formuleWeight != '') {
 
         //get formule weight per unit
-        this.itemService.getItemData(formule.formuleNumber).subscribe(data => formule.formuleUnitWeight = data[0].netWeightK)
-        this.formuleSrv.getFormuleByNumber(formule.formuleNumber).subscribe(data => {
+        this.itemService.getItemData(this.currentFormule.formuleNumber).subscribe(data => this.currentFormule.formuleUnitWeight = data[0].netWeightK)
+        this.formuleSrv.getFormuleByNumber(this.currentFormule.formuleNumber).subscribe(data => {
           if (data == null) {
-            this.toastSrv.error(`Formule Number ${formule.formuleNumber} Not Found!`)
+            this.toastSrv.error(`Formule Number ${this.currentFormule.formuleNumber} Not Found!`)
             return
           }
           else {
-            formule.data = this.formuleCalculate(data, formule.formuleWeight);
-            this.finalWeight += Number(formule.formuleWeight)
+            this.currentFormule.data = this.formuleCalculate(data, this.currentFormule.formuleWeight);
+            this.finalWeight += Number(this.currentFormule.formuleWeight)
+            let temp = {...this.currentFormule}
+            this.formules.push(temp)
           }
         })
       } else {
