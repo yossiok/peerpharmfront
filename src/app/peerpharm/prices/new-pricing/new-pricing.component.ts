@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CostumersService } from 'src/app/services/costumers.service';
@@ -16,11 +16,14 @@ import { Currencies } from '../../procurement/Currencies';
 })
 export class NewPricingComponent implements OnInit {
 
+  @ViewChild('firstComponent') firstComponent: ElementRef
+  @Input() biddingToUpdate
+  @Output() getAll: EventEmitter<any> = new EventEmitter<any>()
+
   // itemComponents: any[] = []
   customers: any[] = []
   projectNumber: number
   currentStep: number = 1
-  showPricingDetails: boolean = false;
   loading: boolean = false;
   chooseExisting: boolean = false;
   newCustomer: boolean = false
@@ -75,13 +78,14 @@ export class NewPricingComponent implements OnInit {
     this.getCustomers()
     this.getLastBiddingNumber()
     this.getCurrencies()
+    if (this.biddingToUpdate) this.newPricingForm.patchValue(this.biddingToUpdate)
   }
 
   ngOnChanges() {
     console.log('on changes')
     this.calculateFinalPrice()
   }
-  
+
   ngDoCheck() {
     console.log('do check')
     this.calculateFinalPrice()
@@ -150,7 +154,7 @@ export class NewPricingComponent implements OnInit {
   addComponent() {
     let c = { ...this.newComponent }
     this.newPricingForm.value.itemComponents.push(c)
-    this.newPricingForm.controls.componentsPrice.setValue(this.newPricingForm.value.componentsPrice + c.price + c.shippingPrice) 
+    this.newPricingForm.controls.componentsPrice.setValue(this.newPricingForm.value.componentsPrice + c.price + c.shippingPrice)
     this.newComponent = {
       price: 0,
       shippingPrice: 0,
@@ -159,6 +163,7 @@ export class NewPricingComponent implements OnInit {
       componentNumber: '',
       componentName: '',
     }
+    this.firstComponent.nativeElement.focus()
   }
 
   // formuleCalculate(data, formuleWeight) {
@@ -229,7 +234,7 @@ export class NewPricingComponent implements OnInit {
     let finalPrice = 0
     this.newPricingForm.controls.componentsPrice.setValue(0)
 
-    for(let component of this.newPricingForm.value.itemComponents) {
+    for (let component of this.newPricingForm.value.itemComponents) {
       component.finalPrice = component.price + component.shippingPrice
       this.newPricingForm.controls.componentsPrice.setValue(this.newPricingForm.value.componentsPrice + component.finalPrice)
     }
@@ -244,12 +249,26 @@ export class NewPricingComponent implements OnInit {
 
   savePricing() {
     this.loading = true
-    this.pricingService.addPricing(this.newPricingForm.value).subscribe(res => {
-      this.loading = false;
-      this.showPricingDetails = false
-      if (res.msg == 1) this.toastr.success('New Bidding Saved.')
-      else this.toastr.error('Something gone bad.')
-    })
+    if (this.biddingToUpdate) {
+      // update
+      let updatedBidding = {...this.newPricingForm.value, number: this.biddingToUpdate.number}
+      this.pricingService.updatePricing(updatedBidding).subscribe(res => {
+        this.loading = false;
+        if (res.msg == 1) {
+          this.toastr.success('Bidding Updated.')
+          this.getAll.emit()
+        } 
+        else this.toastr.error('Something gone bad.')
+      })
+    }
+    else {
+      // save
+      this.pricingService.addPricing(this.newPricingForm.value).subscribe(res => {
+        this.loading = false;
+        if (res.msg == 1) this.toastr.success('New Bidding Saved.')
+        else this.toastr.error('Something gone bad.')
+      })
+    }
   }
 
 }

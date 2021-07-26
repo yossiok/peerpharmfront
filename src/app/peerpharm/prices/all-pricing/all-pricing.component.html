@@ -1,4 +1,4 @@
-<div class="wrapper">
+<!-- <div class="wrapper">
     <div class="box click" (click)="openBidding(bidding)" *ngFor="let bidding of biddings">
         <div class="bidding-line">
             <h3>For: {{bidding.customer}}</h3>
@@ -12,63 +12,158 @@
             <h4>Total Price: {{bidding.productPrice}}</h4>
         </div>
     </div>
+</div> -->
+
+
+<div class="m-5">
+    <div class="row mt-4">
+        <div class="col-12">
+            <table class="table table-hover">
+                <thead class="text-center">
+                    <tr>
+                        <th>Biddding no.</th>
+                        <th>Creation Date</th>
+                        <th>Product Name</th>
+                        <th>Product Number</th>
+                        <th>Customer</th>
+                        <th>remarks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let bidding of biddings" class="click" (click)="openBidding(bidding)">
+                        <td class="text-center">{{bidding.number}}</td>
+                        <td class="text-center">{{bidding.date | date: 'dd/MM/yy'}}</td>
+                        <td class="text-center">{{bidding.productName}}</td>
+                        <td class="text-center">{{bidding.productNumber}}</td>
+                        <td class="text-center">{{bidding.customer}}</td>
+                        <td class="text-center">{{bidding.remarks}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 
-<div *ngIf="showBiddingDetails" class="container fixed-top bg-warning mx-auto my-auto text-center w-100 p-5 modal-inner">
-    <i class="fa fa-times float-right click h2 block" (click)="closeBidding()"></i>
-    <h1>For: {{chosenBidding.customer}}</h1>
-    <h2>Product {{chosenBidding.productNumber}} - {{chosenBidding.productName}}</h2>
+<div *ngIf="showBiddingDetails" class="bidding mx-auto my-auto text-center w-75 p-5 modal-inner">
+    <i class="fa fa-times float-right click h2 p-2 block" (click)="closeBidding()"></i>
+    <button class="btn btn-info float-left" (click)="editBidding = true">
+        Edit &nbsp;<i class="fa fa-pencil-alt"></i>
+    </button>
+
+    <button class="btn btn-outline-success"
+        [printStyle]="{tr : {'border': 'solid 1px black'}, td : {'border': 'solid 1px black'}}" printSectionId="bidding"
+        ngxPrint>
+        Print
+        <i class="fas fa-print"></i>
+    </button>
 
 
-    <div class="row mt-4">
-        <div class="col-1">
-            <img src="../../../assets/images/excel.png" alt="excel export"
-                
-                style="width: 35px; float: left; cursor: pointer;">
-        </div>
-        <div class="col-10">
-            <h2 class="text-info">Bidding Details</h2>
-        </div>
-        <div class="col-1">
-        </div>
-    </div>
 
+    <!--Presentation-->
+    <div *ngIf="!editBidding">
 
-    <div class="container mt-5">
         <div class="row mt-4">
-            <div class="col-12">
-                <table class="table table-hover">
-                    <thead class="text-center">
-                        <tr>
-                            <th>Component</th>
-                            <th></th>
-                            <th>Price</th>
-                            <th>Shipping</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let component of chosenBidding.itemComponents">
-                            <td>{{component.componentNumber}}</td>
-                            <td>{{component.componentName}}</td>
-                            <td>{{component.price}}</td>
-                            <td>{{component.shippingPrice}}</td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td>{{chosenBidding.productPrice}}</td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="col-1">
+                <img src="../../../assets/images/excel.png" alt="excel export"
+                    style="width: 35px; float: left; cursor: pointer;">
+            </div>
+            <div class="col-10">
+                <h2>Bidding {{chosenBidding.number}}</h2>
+            </div>
+            <div class="col-1">
             </div>
         </div>
+        <div id="bidding">
+
+            <h3>For: {{chosenBidding.customer}}</h3>
+            <h3>Product {{chosenBidding.productNumber}} - {{chosenBidding.productName}}</h3>
+
+            <div class="row mt-4 border-bottom w-50">
+                <label>Date: &nbsp;</label>
+                <span class="text-info"> {{chosenBidding.date | date: 'dd/MM/yyyy'}}</span>
+            </div>
+            <!-- <div class="row mt-2 border-bottom w-50">
+                <label>Customer: </label>
+                <h4 class="text-info">{{chosenBidding.customer}}</h4>
+            </div> -->
+            <!-- <div class="row mt-2 border-bottom w-50">
+                <label>Product Name: {{chosenBidding.productName}}</label>
+            </div> -->
+            <div class="row mt-2 border-bottom w-50">
+                <label>bulk {{chosenBidding.ML}} ml: &nbsp;</label>
+                <h4 class="text-info"> {{chosenBidding.PPML | currency: 'ILS'}}</h4>
+            </div>
+
+            <h3>Components:</h3>
+            <div class="container mt-5 ml-5">
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <table class="table table-hover w-50">
+                            <thead class="text-center">
+                                <tr>
+                                    <th>Component</th>
+                                    <th></th>
+                                    <th>Price</th>
+                                    <th>Shipping</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let component of chosenBidding.itemComponents">
+                                    <td>{{component.componentN}}</td>
+                                    <td>{{component.componentName}}</td>
+                                    <td>{{component.price | currency: 'ILS'}}</td>
+                                    <td>{{component.shippingPrice | currency: 'ILS'}}</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td>{{chosenBidding.componentsPrice | currency: 'ILS'}}</td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2 border-bottom w-50">
+                <label>Processing Fee: {{chosenBidding.processingFee | currency: 'ILS'}}</label>
+            </div>
+            <div class="row mt-2 border-bottom w-50">
+                <label>One Time Expenses: {{chosenBidding.oneTimeExp | currency: 'ILS'}}</label>
+            </div>
+            <div class="row mt-2 border-bottom w-50">
+                <label>Delivery Conditions: {{chosenBidding.deliveryConds | currency: 'ILS'}}</label>
+            </div>
+            <div class="row mt-2 border-bottom w-50">
+                <label>Delivery Fee: {{chosenBidding.deliveryFee | currency: 'ILS'}}</label>
+            </div>
+            <div class="row mt-2 border-bottom w-50">
+                <label>Different Expenses: {{chosenBidding.diffExp | currency: 'ILS'}}</label>
+            </div>
+            <div class="row mt-2 border-bottom w-50">
+                <label>Remarks:</label>
+                <h5>{{chosenBidding.remarks}}</h5>
+            </div>
+
+            <div class="mt-4">
+                <label>Total Product Price: {{chosenBidding.productPrice | currency: 'ILS'}}</label>
+            </div>
+        </div>
+
+
     </div>
+
+    <div *ngIf="editBidding">
+        <app-new-pricing [biddingToUpdate]="chosenBidding" (getAll)="getAllBiddings()"></app-new-pricing>
+    </div>
+
 
     <div class="row mt-4">
 
-        <button class="btn btn-danger" (click)="deleteBidding(chosenBidding.number)">Delete Bidding</button>
+
+        <button class="btn btn-danger float-right" (click)="deleteBidding(chosenBidding.number)"><i
+                class="fa fa-times"></i> Delete Bidding</button>
     </div>
 
 

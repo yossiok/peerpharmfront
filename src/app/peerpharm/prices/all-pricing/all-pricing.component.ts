@@ -11,6 +11,7 @@ export class AllPricingComponent implements OnInit {
   biddings: any[] = [];
   chosenBidding: any = {}
   showBiddingDetails: boolean = false
+  editBidding: boolean = false
 
   constructor(
     private pricingService: PricingService,
@@ -18,34 +19,41 @@ export class AllPricingComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getAllBiddings()
+  }
+
+  getAllBiddings() {
     this.pricingService.getAllPricings().subscribe(biddings => {
       this.biddings = biddings;
+      this.showBiddingDetails = false
     })
   }
 
-  openBidding(bidding){
+  openBidding(bidding) {
     this.chosenBidding = bidding;
     this.showBiddingDetails = true;
   }
 
-  closeBidding(){
+  closeBidding() {
     this.showBiddingDetails = false;
     this.chosenBidding = {}
   }
 
   deleteBidding(biddingNumber) {
-    if(confirm(`Delete Bidding ${biddingNumber} ?`))
-    this.pricingService.deletePricing(biddingNumber).subscribe(data => {
-      if(data.ok == 1) {
-        let biddingIndex = this.biddings.findIndex(bidding => bidding.number == biddingNumber)
-        this.biddings.splice(biddingIndex, 1)
-        this.showBiddingDetails = false;
-        this.toastr.success('Bidding Deleted')
-      } 
-      else this.toastr.error('Something Went Wrong.')
-    })
+    if (confirm(`Delete Bidding ${biddingNumber} ?`))
+      this.pricingService.deletePricing(biddingNumber).subscribe(data => {
+        if (data.ok == 1) {
+          this.getAllBiddings()
+          this.toastr.success('Bidding Deleted')
+        }
+        else this.toastr.error('Something Went Wrong.')
+      })
   }
 
-  
+  saveBidding() {
+
+  }
+
+
 
 }

@@ -19,6 +19,10 @@ export class PricingService {
     return <Observable<any>>this.http.post(this.url, pricing)
   }
 
+  updatePricing(pricing): Observable<any> {
+    return <Observable<any>>this.http.post(`${this.url}/update`, pricing)
+  }
+
   deletePricing(pricingNumber): Observable<any> {
     return <Observable<any>>this.http.get(`${this.url}/delete?pricingNumber=${pricingNumber}`)
   }

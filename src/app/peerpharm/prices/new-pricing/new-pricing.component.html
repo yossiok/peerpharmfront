@@ -24,26 +24,29 @@
         </div>
 
         <div id="bidding">
-        
+
 
             <h2>Bidding Details</h2>
             <div class="row mt-4">
                 <label>Date: &nbsp;</label>
                 <span class="text-info"> {{newPricingForm.value.date | date: 'dd/MM/yyyy'}}</span>
             </div>
-            <div class="row mt-2">
+            <div class="row mt-2 border-info border-bottom w-50">
                 <label>Customer: </label>
                 <h4 class="text-info">{{newPricingForm.value.customer}}</h4>
             </div>
-            <div class="row mt-2">
-                <label>Product Name: {{newPricingForm.value.productName}}</label>
+            <div class="row mt-2 border-info border-bottom w-50">
+                <label>Product Name: <span class="h5 text-info">{{newPricingForm.value.productName}}</span></label>
             </div>
-            <div class="row mt-2">
-                <label>bulk:</label>
+            <div class="row mt-2 border-info border-bottom w-50">
+                <label>Product Number: <span class="h5 text-info">{{newPricingForm.value.productNumber}}</span></label>
+            </div>
+            <div class="row mt-2 border-info border-bottom w-50">
+                <label>bulk {{newPricingForm.value.ML}} ml:</label>
                 <h4 class="text-info"> {{newPricingForm.value.PPML | currency: 'ILS'}}</h4>
             </div>
 
-            <div class="row mt-2">
+            <div class="row mt-2 border-info border-bottom w-50">
                 <h3>Components:</h3>
                 <ul>
                     <li *ngFor="let component of newPricingForm.value.itemComponents">
@@ -53,22 +56,22 @@
             </div>
 
 
-            <div class="row mt-2">
+            <div class="row mt-2 border-info border-bottom w-50">
                 <label>Processing Fee: {{newPricingForm.value.processingFee | currency: 'ILS'}}</label>
             </div>
-            <div class="row mt-2">
+            <div class="row mt-2 border-info border-bottom w-50">
                 <label>One Time Expenses: {{newPricingForm.value.oneTimeExp | currency: 'ILS'}}</label>
             </div>
-            <div class="row mt-2">
+            <div class="row mt-2 border-info border-bottom w-50">
                 <label>Delivery Conditions: {{newPricingForm.value.deliveryConds | currency: 'ILS'}}</label>
             </div>
-            <div class="row mt-2">
+            <div class="row mt-2 border-info border-bottom w-50">
                 <label>Delivery Fee: {{newPricingForm.value.deliveryFee | currency: 'ILS'}}</label>
             </div>
-            <div class="row mt-2">
+            <div class="row mt-2 border-info border-bottom w-50">
                 <label>Different Expenses: {{newPricingForm.value.diffExp | currency: 'ILS'}}</label>
             </div>
-            <div class="row mt-2">
+            <div class="row mt-2 border-info border-bottom w-50">
                 <label>Remarks:</label>
                 <h5>{{newPricingForm.value.remarks}}</h5>
             </div>
@@ -83,32 +86,42 @@
         <form [formGroup]="newPricingForm" (ngSubmit)="savePricing()">
             <mat-tab-group [selectedIndex]="currentTab">
 
-                <mat-tab disabled label="Customer">
-                    <div class="p-5">
-                        <h2 class="mt-4">1. Customer</h2>
+                <mat-tab disabled label="Product & Customer Details">
+                    <div class="p-5 mx-auto">
+                        <!-- <h2 class="mt-4">Customer</h2> -->
                         <h4 class="click p-2 w-25" (click)="chooseExisting = true; newCustomer = false">Choose Existing
                         </h4>
-                        <select *ngIf="chooseExisting" class="form-control" formControlName="customer">
+                        <!-- <p>Or:</p> -->
+                        <h4 class="click p-2 w-25" (click)="newCustomer = true; chooseExisting = false">New Customer
+                        </h4>
+                        <select *ngIf="chooseExisting" class="form-control w-25" formControlName="customer">
                             <option disabled value="">Customer</option>
                             <option value="No Customer">No Customer</option>
                             <option *ngFor="let customer of customers" [value]="customer.costumerName">
                                 {{customer.costumerName}}</option>
                         </select>
-                        <p>Or:</p>
-                        <h4 class="click p-2 w-25" (click)="newCustomer = true; chooseExisting = false">New Customer
-                        </h4>
-                        <input *ngIf="newCustomer" type="text" class="form-control" formControlName="customer">
-                        <button type="button" class="m-2 btn btn-primary" (click)="upgradeTab()">Next</button>
+                        <input *ngIf="newCustomer" placeholder="Enter Customer Name" type="text"
+                            class="form-control w-25" formControlName="customer">
+                    </div>
+                    <div class="pl-5 mx-auto">
+                        <h4>Product Name</h4>
+                        <input type="text" placeholder="Product Name" class="form-control w-25"
+                            formControlName="productName">
+                        <h4 class="mt-2">Product Number</h4>
+                        <input type="text" placeholder="Product Number" class="form-control w-25"
+                            formControlName="productNumber">
+                        <button type="button" class="m-4 btn btn-primary" (click)="upgradeTab()">Next</button>
                     </div>
                 </mat-tab>
 
                 <mat-tab disabled label="Formule">
-                    <div class="p-5">
-                        <h2 class="mt-4">2. Formule</h2>
+                    <div class="p-5 mx-auto">
+                        <h2 class="mt-4">Formule</h2>
                         <div class="form-group">
                             <label>Enter Formule Number</label>
-                            <input type="number" class="form-control w-25" formControlName="formuleNumber">
-                            <button type="button" class="btn btn-warning" (click)="calculatePPK()">Calculate
+                            <input type="number" placeholder="Formule Number" class="form-control w-25"
+                                formControlName="formuleNumber">
+                            <button type="button" class="btn btn-outline-primary" (click)="calculatePPK()">Calculate
                                 Price per Kilo</button>
                             <p *ngIf="newPricingForm.value.PPK">price per kilo: {{newPricingForm.value.PPK | currency:
                                 'ILS'}}</p>
@@ -117,7 +130,7 @@
                         <div class="form-group">
                             <label>Enter Netto Weight in Gr.</label>
                             <input type="number" placeholder="gr / ml" class="form-control w-25" formControlName="ML">
-                            <button type="button" (click)="calculateForML()" class="btn btn-warning">
+                            <button type="button" (click)="calculateForML()" class="btn btn-outline-primary">
                                 Calculate Price For Netto Weight
                             </button>
                             <p *ngIf="newPricingForm.value.PPML">formule price: {{newPricingForm.value.PPML | currency:
@@ -129,11 +142,11 @@
                 </mat-tab>
 
                 <mat-tab disabled label="Components">
-                    <div class="p-5">
-                        <h2>3. Components: </h2>
+                    <div class="p-5 mx-auto">
+                        <h2>Components: </h2>
                         <label class="mt-2">Enter Component Number or Edit details yourself</label><br>
 
-                        <input class="m-2" type="number" placeholder="component Number"
+                        <input class="m-2" type="number" #firstComponent placeholder="component Number"
                             (change)="getCmptDetails($event)" [ngModelOptions]="{standalone: true}"
                             [(ngModel)]="newComponent.componentN">
                         <input class="m-2" type="text" placeholder="component Name"
@@ -142,7 +155,7 @@
                             [(ngModel)]="newComponent.price">
                         <input class="m-2" type="number" placeholder="shipping" [ngModelOptions]="{standalone: true}"
                             [(ngModel)]="newComponent.shippingPrice">
-                        <button class="btn btn-success" type="button" (click)="addComponent()">Add Component</button>
+                        <button class="btn btn-outline-primary" type="button" (click)="addComponent()">Add Component</button>
                         <div class="row mt-4">
                             <div class="col-12">
                                 <table class="table table-bordered">
@@ -194,8 +207,8 @@
                 </mat-tab>
 
                 <mat-tab disabled label="Final Fees">
-                    <div class="p-5">
-                        <h2>4. Final Fees:</h2>
+                    <div class="p-5 mx-auto">
+                        <h2>Final Fees:</h2>
                         <div class="form-group">
                             <input type="number" placeholder="Processing Fee" formControlName="processingFee"
                                 class="form-control w-25" (keyup)="calculateFinalPrice()">
