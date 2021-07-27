@@ -84,12 +84,12 @@ export class NewPricingComponent implements OnInit {
   }
 
   ngOnChanges() {
-    console.log('on changes')
+    // console.log('on changes')
     this.calculateFinalPrice()
   }
 
   ngDoCheck() {
-    console.log('do check')
+    // console.log('do check')
     this.calculateFinalPrice()
   }
 

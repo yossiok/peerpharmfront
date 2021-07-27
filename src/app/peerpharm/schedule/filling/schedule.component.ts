@@ -34,6 +34,7 @@ export class ScheduleComponent implements OnInit {
   buttonColor7: string = "#B8ECF1";
   buttonColor8: string = "#B8ECF1";
   buttonColor9: string = "#B8ECF1";
+  buttonColor10: string = "#B8ECF1";
   today: any;
   pcsCarton: any;
   barcodeK: any;
@@ -299,7 +300,7 @@ export class ScheduleComponent implements OnInit {
         if (sced.batch && sced.batch != "") {
           let batches = sced.batch.split('+')
           if (batches.length > 1) {
-            
+
             sced.batchSpecStatus = 999
           }
           else {
@@ -447,6 +448,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor7 = '#B8ECF1';
         this.buttonColor8 = '#B8ECF1';
         this.buttonColor9 = '#B8ECF1';
+        this.buttonColor10 = '#B8ECF1';
         this.scheduleData = this.scheduleDataCopy
         break;
       case 'tube':
@@ -459,6 +461,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor7 = '#B8ECF1';
         this.buttonColor8 = '#B8ECF1';
         this.buttonColor9 = '#B8ECF1';
+        this.buttonColor10 = '#B8ECF1';
         this.scheduleData = this.scheduleDataCopy
         break;
       case 'mkp':
@@ -471,6 +474,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor7 = '#B8ECF1';
         this.buttonColor8 = '#B8ECF1';
         this.buttonColor9 = '#B8ECF1';
+        this.buttonColor10 = '#B8ECF1';
         this.scheduleData = this.scheduleDataCopy
         break;
       case 'sachet':
@@ -483,6 +487,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor7 = '#B8ECF1';
         this.buttonColor8 = '#B8ECF1';
         this.buttonColor9 = '#B8ECF1';
+        this.buttonColor10 = '#B8ECF1';
         this.scheduleData = this.scheduleDataCopy
         break;
       case 'laser':
@@ -495,6 +500,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor7 = '#B8ECF1';
         this.buttonColor8 = '#B8ECF1';
         this.buttonColor9 = '#B8ECF1';
+        this.buttonColor10 = '#B8ECF1';
         this.scheduleData = this.scheduleDataCopy
         break;
       case 'stickers':
@@ -507,37 +513,8 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor7 = '#B8ECF1';
         this.buttonColor8 = '#B8ECF1';
         this.buttonColor9 = '#B8ECF1';
+        this.buttonColor10 = '#B8ECF1';
         this.scheduleData = this.scheduleDataCopy
-        break;
-      case 'unpacked':
-        this.buttonColor = '#B8ECF1';
-        this.buttonColor2 = '#B8ECF1';
-        this.buttonColor3 = '#B8ECF1';
-        this.buttonColor4 = '#B8ECF1';
-        this.buttonColor5 = '#B8ECF1';
-        this.buttonColor6 = '#B8ECF1';
-        this.buttonColor7 = 'yellow';
-        this.buttonColor8 = '#B8ECF1';
-        this.buttonColor9 = '#B8ECF1';
-
-        ;
-        this.scheduleData = this.unPackedSchedules
-        this.scheduleData.map(line => {
-          line.date2 = moment(line.date).format('DD/MM/YY');
-          line.date3 = moment(line.date).format('YYYY-MM-DD')
-          return line
-        })
-        // this.scheduleData.sort(function(o1,o2){
-        //   return o1.date ? -1 : o2.date ? 1 : 0;
-        // });
-
-        // this.scheduleData.sort(function(a,b){
-
-        //   let value = Number(new Date(a.date)) - Number(new Date(b.date))
-        //   return value
-
-        // });
-
         break;
       case 'mkp2':
         this.buttonColor = '#B8ECF1';
@@ -549,6 +526,7 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor7 = '#B8ECF1';
         this.buttonColor8 = '#2962FF';
         this.buttonColor9 = '#B8ECF1';
+        this.buttonColor10 = '#B8ECF1';
         this.scheduleData = this.scheduleDataCopy
         break;
       case 'packaging':
@@ -561,7 +539,39 @@ export class ScheduleComponent implements OnInit {
         this.buttonColor7 = '#B8ECF1';
         this.buttonColor8 = '#B8ECF1';
         this.buttonColor9 = '#2962FF';
+        this.buttonColor10 = '#B8ECF1';
         this.scheduleData = this.scheduleDataCopy
+        break;
+      case 'cream':
+        this.buttonColor = '#B8ECF1';
+        this.buttonColor2 = '#B8ECF1';
+        this.buttonColor3 = '#B8ECF1';
+        this.buttonColor4 = '#B8ECF1';
+        this.buttonColor5 = '#B8ECF1';
+        this.buttonColor6 = '#B8ECF1';
+        this.buttonColor7 = '#B8ECF1';
+        this.buttonColor8 = '#B8ECF1';
+        this.buttonColor9 = '#B8ECF1';
+        this.buttonColor10 = '#2962FF';
+        this.scheduleData = this.scheduleDataCopy
+        break;
+      case 'unpacked':
+        this.buttonColor = '#B8ECF1';
+        this.buttonColor2 = '#B8ECF1';
+        this.buttonColor3 = '#B8ECF1';
+        this.buttonColor4 = '#B8ECF1';
+        this.buttonColor5 = '#B8ECF1';
+        this.buttonColor6 = '#B8ECF1';
+        this.buttonColor7 = 'yellow';
+        this.buttonColor8 = '#B8ECF1';
+        this.buttonColor9 = '#B8ECF1';
+        this.buttonColor10 = '#B8ECF1';
+        this.scheduleData = this.unPackedSchedules
+        this.scheduleData.map(line => {
+          line.date2 = moment(line.date).format('DD/MM/YY');
+          line.date3 = moment(line.date).format('YYYY-MM-DD')
+          return line
+        })
         break;
     }
     this.typeShown = type;
@@ -766,8 +776,8 @@ export class ScheduleComponent implements OnInit {
     this.newBatchChange = false;
 
     //In case something goes wrong, enable clicking agaib
-    setTimeout(()=> {
-      if(this.openingPrintModal) {
+    setTimeout(() => {
+      if (this.openingPrintModal) {
         this.toastSrv.error('I am sorry, but something went wrong. Please try again.')
         this.openingPrintModal = false
       }
@@ -778,8 +788,8 @@ export class ScheduleComponent implements OnInit {
       line.volumeK = data[0].volumeKey + ' ml';
       line.netoW = data[0].netWeightK;
       line.grossW = data[0].grossUnitWeightK;
-      
-      if(line.batch != "") {
+
+      if (line.batch != "") {
         this.batchService.getBatchData(line.batch).subscribe(data => {
           if (data.length > 0 && data[0].expration) line.exp = data[0].expration.slice(0, 11);
           this.printScheduleFillingForm.patchValue(line)
@@ -804,22 +814,22 @@ export class ScheduleComponent implements OnInit {
         this.toastSrv.info('No batch.')
         line.exp = ""
         this.printScheduleFillingForm.patchValue(line)
-  
-          this.modalService
-            .open(content, { ariaLabelledBy: 'modal-basic-title' })
-            .result.then(
-              result => {
-                if (result === 'Saved') {
-                  this.onSubmit();
-                }
-                this.closeResult = `Closed with: ${result}`;
-              },
-              reason => {
-                this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+
+        this.modalService
+          .open(content, { ariaLabelledBy: 'modal-basic-title' })
+          .result.then(
+            result => {
+              if (result === 'Saved') {
+                this.onSubmit();
               }
-            );
-          this.showPrintBtn = true;
-          this.openingPrintModal = false;
+              this.closeResult = `Closed with: ${result}`;
+            },
+            reason => {
+              this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+            }
+          );
+        this.showPrintBtn = true;
+        this.openingPrintModal = false;
       }
 
 

@@ -331,6 +331,20 @@
             <tr>
               <td></td>
               <td>
+                <h5>Set Cooking Schedule: </h5>
+              </td>
+              <td><input #cookingDate type='date'></td>
+              <td><input #cookingMarks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
+              <td>&nbsp;&nbsp;&nbsp;<button class='btn btn-info'
+                  (click)="setCookingSchedule(item, cookingDate, cookingMarks)">Set</button></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
                 <h5>Set Barcode Print: </h5>
               </td>
               <td><input #mkpProdDate type='date'></td>

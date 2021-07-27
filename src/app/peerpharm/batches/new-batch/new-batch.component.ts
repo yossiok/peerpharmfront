@@ -5,6 +5,7 @@ import { BatchesService } from 'src/app/services/batches.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
+import { OrdersService } from 'src/app/services/orders.service';
 
 @Component({
   selector: 'app-new-batch',
@@ -14,12 +15,16 @@ import { AuthService } from 'src/app/services/auth.service';
 export class NewBatchComponent implements OnInit {
 
   @ViewChild('printBtn') printBtn: ElementRef;
+  @ViewChild('currentOrderNumber') currentOrderNumber: ElementRef
+
   allStickers: any[] = [];
   batchDefaultNumber: string = '21pp';
   lastBatch: any;
   today: Date = new Date();
   disableButton: boolean;
   newBatchAllowed: boolean = false;
+  oneItem: boolean = true;
+  currentItems: number[] = []
 
   newBatchForm: FormGroup = new FormGroup({
     order: new FormControl('', Validators.required),
@@ -32,7 +37,8 @@ export class NewBatchComponent implements OnInit {
     weightKg: new FormControl('', Validators.required),
     weightQtyLeft: new FormControl(0, Validators.required),
     batchNumber: new FormControl(this.batchDefaultNumber, [Validators.required, Validators.minLength(5)]),
-    batchCreated: new FormControl(0, Validators.required)
+    batchCreated: new FormControl(0, Validators.required),
+    itemsToCook: new FormControl([], Validators.required)
   })
 
   constructor(
@@ -40,7 +46,8 @@ export class NewBatchComponent implements OnInit {
     private toastSrv: ToastrService,
     private itemSrv: ItemsService,
     private batchService: BatchesService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private orderService: OrdersService) { }
 
   ngOnInit() {
     this.getLastBatch();
@@ -52,6 +59,40 @@ export class NewBatchComponent implements OnInit {
       this.lastBatch = data;
     })
   }
+
+
+  //************************************************************************************************************************************** */
+
+  getOrderDetails(e) {
+    let orderNumber = e.target.value
+    //get all items from order:
+    this.orderService.getItemsFromOrder(orderNumber).subscribe(res => {
+      if(res.length > 0) {
+        this.currentItems = res
+      } else this.toastSrv.error('No items on this order')
+    })
+  }
+
+  saveItem(e) {
+    let itemNumber = e.target.value.split(',')[0]
+    let itemName = e.target.value.split(',')[1]
+    this.newBatchForm.value.itemsToCook.push({
+      orderNumber: this.currentOrderNumber.nativeElement.value,
+      itemNumber,
+      itemName
+    })
+  }
+
+
+
+
+
+
+
+
+  //************************************************************************************************************************************** */
+
+
 
   fillItemName(ev) {
     var itemNumber = ev.target.value;

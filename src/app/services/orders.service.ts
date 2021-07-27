@@ -200,6 +200,13 @@ export class OrdersService {
     )
   }
 
+  getItemsFromOrder(orderNumber) {
+    let url = this.baseUrl + 'orderitem/itemsByOrder?orderNumber=' + orderNumber;
+    return this.http.get(url).pipe(
+      map(reponse => reponse.json())
+    )
+  }
+
 
   //edit item in order
   editItemOrder(orderItem): Observable<any> {

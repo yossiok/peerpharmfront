@@ -224,6 +224,9 @@ export class OrderdetailsComponent implements OnInit {
   @ViewChild('cartonRemarks') cartonRemarks: ElementRef;
   @ViewChild('packageRemarks') packageRemarks: ElementRef;
   @ViewChild('itemProdStatus') itemProdStatus: ElementRef;
+  @ViewChild('cookingDate') cookingDate: ElementRef;
+  @ViewChild('cookingShift') cookingShift: ElementRef;
+  @ViewChild('cookingMarks') cookingMarks: ElementRef;
 
   @ViewChild('date') date: ElementRef;
   @ViewChild('shift') shift: ElementRef;
@@ -1165,7 +1168,43 @@ export class OrderdetailsComponent implements OnInit {
     }
   }
 
+  setCookingSchedule(item, cookingDate, cookingMarks) {
 
+    if(cookingDate.value == '') this.toastSrv.error('Please fill a valid date.', 'Invalid Date!') 
+    else {
+
+      let obj = { item, cookingDate: cookingDate.value, cookingMarks: cookingMarks.value }
+      console.log(obj)
+      
+    let scheduleLine = {
+      positionN: '',
+      orderN: item.orderNumber,
+      item: item.itemNumber,
+      costumer: this.costumer,
+      productName: item.discription,
+      batch: item.batch.trim(),
+      packageP: '',
+      qty: item.quantity,
+      qtyRdy: '',
+      date: cookingDate.value,
+      marks: cookingMarks.value, //marks needs to br issued - setSchedule() && setBatch() updating this value and destroy the last orderItems remarks
+      shift: '',
+      mkp: 'cream',
+      status: 'open',
+      productionLine: '',
+      pLinePositionN: 999,
+      itemImpRemark: '',
+      batchStatus: item.batchSpecStatus
+    }
+    
+    this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => {
+      console.log(res)
+    })
+  }
+  }
+  
+  
+  
   async setSchedule(item, type) {
 
     // check date

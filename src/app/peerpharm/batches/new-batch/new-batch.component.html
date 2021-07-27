@@ -16,37 +16,72 @@
 
   <hr class="mt-4 bg-info">
 
-  <div class="row">
+
+  <div class="container bg-light shadow-lg p-4">
+    <div class="row">
+      <div class="col-12">
+        <!--get order items on change-->
+        <input type="number" class="form-control w-25" #currentOrderNumber (change)="getOrderDetails($event)"
+          placeholder="order number">
+        <select class="form-control w-50" (change)="saveItem($event)" #currentItem>
+          <!--updated when order number is entered-->
+          <option disabled value="">Choose Item</option>
+          <option value="value">test</option>
+          <option *ngFor="let item of currentItems" [value]="[item.itemNumber, item.discription]">{{item.itemNumber}} -
+            {{item.discription}}</option>
+        </select>
+        <!-- <button class="float-left btn btn-outline-secondary"><i
+            class="fa fa-plus"></i></button> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="ml-5 mr-5">
+    <div class="row">
+      <div class="col-2 border border-black" *ngFor="let item of newBatchForm.value.itemsToCook">
+        <p>Order: {{item.orderNumber}}</p> 
+        <p>Item: {{item.itemNumber}} - {{item.itemName}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="oneItem" class="row">
     <div class="container bg-white shadow-lg p-4">
       <form [formGroup]="newBatchForm" (ngSubmit)="addNewBatch(false)">
         <div class="row mt-4">
           <div class="col-3"></div>
           <div class="col-3">
-            <label style="margin-bottom: 0" class="form-control"><b>Order Number</b></label>
-            <label style="margin-bottom: 0" class="form-control"><b>Item Number</b></label>
-            <label style="margin-bottom: 0" class="form-control"><b>Name</b></label>
             <label style="margin-bottom: 0" class="form-control"><b>Production Date</b></label>
+            <!--4-->
             <label style="margin-bottom: 0" class="form-control"><b>Expires in (years)</b></label>
+            <!--5-->
             <label style="margin-bottom: 0" class="form-control"><b>Barrels</b></label>
+            <!--6-->
             <label style="margin-bottom: 0" class="form-control"><b>KG</b></label>
+            <!--7-->
             <label style="margin-bottom: 0" class="form-control"><b>PH</b></label>
+            <!--8-->
             <label style="margin-bottom: 0" class="form-control"><b>Batch</b></label>
+            <!--9-->
           </div>
           <div class="col-3">
-            <input type="text" formControlName="order" class="form-control">
-            <input type="text" (change)="fillItemName($event)" formControlName="item" class="form-control">
-            <input type="text" formControlName="itemName" class="form-control">
             <input type="date" formControlName="produced" value="{{ today | date:'yyyy-MM-dd' }}" class="form-control">
+            <!--4-->
             <select formControlName="expration" class="form-control">
+              <!--5-->
               <option value=2>2</option>
               <option value=3>3</option>
               <option value=4 selected='true'>4</option>
               <option value=5>5</option>
             </select>
             <input type="number" formControlName="barrels" class="form-control">
+            <!--6-->
             <input type="text" formControlName="weightKg" class="form-control">
+            <!--7-->
             <input type="text" formControlName="ph" class="form-control">
+            <!--8-->
             <input type="text" formControlName="batchNumber" minlength="5" class="form-control">
+            <!--9-->
           </div>
           <div class="col-3"></div>
         </div>
@@ -54,22 +89,22 @@
         <div class="row mt-4">
           <div class="col-4"></div>
           <div class="col-4">
-            <button type="submit" class="btn btn-danger form-control" *ngIf="newBatchAllowed"
-            [disabled]="disableButton" [style.cursor]="disableButton ? 'not-allowed' : 'pointer'">Add Batch
-          </button>
+            <button type="submit" class="btn btn-danger form-control" *ngIf="newBatchAllowed" [disabled]="disableButton"
+              [style.cursor]="disableButton ? 'not-allowed' : 'pointer'">Add Batch
+            </button>
           </div>
           <div class="col-4"></div>
         </div>
       </form>
 
-        <div class="row mt-4">
-          <div class="col-4"></div>
-          <div class="col-4">
-            <button (click)="addNewBatch(true)" class="btn btn-success form-control">Print Sticker
-            </button>
-          </div>
-          <div class="col-4"></div>
+      <div class="row mt-4">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <button (click)="addNewBatch(true)" class="btn btn-success form-control">Print Sticker
+          </button>
         </div>
+        <div class="col-4"></div>
+      </div>
 
       <div class="row">
         <div class="col-4"></div>
