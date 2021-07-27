@@ -47,8 +47,8 @@
 
 <div *ngIf="showBiddingDetails" class="bidding mx-auto my-auto text-center w-75 p-5 modal-inner">
     <i class="fa fa-times float-right click h2 p-2 block" (click)="closeBidding()"></i>
-    <button class="btn btn-info float-left" (click)="editBidding = true">
-        Edit &nbsp;<i class="fa fa-pencil-alt"></i>
+    <button class="btn btn-info float-left" [ngbTooltip]="editBidding ? 'Exit editing' : 'Edit'" (click)="editBidding = !editBidding">
+        {{editBidding ? 'Back' : 'Edit'}} &nbsp;<i class="fa" [ngClass]="setClass()"></i>
     </button>
 
     <button class="btn btn-outline-success"
@@ -141,8 +141,9 @@
     </div>
 
     <div class="row mt-4">
-        <button class="btn btn-danger float-right" (click)="deleteBidding(chosenBidding.number)"><i
-                class="fa fa-times"></i> Delete Bidding</button>
+        <button class="btn btn-danger float-right" (click)="deleteBidding(chosenBidding.number)">
+            <i class="fas fa-trash"></i> Delete Bidding
+        </button>
     </div>
 
 

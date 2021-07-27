@@ -20,7 +20,11 @@
     height: 50px;
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
-  }
+}
+
+::ng-deep .mat-tab-label-content {
+  color: chocolate !important
+}
 
   // Hide arrows from input type number  :
 /*********************************************** ********************/

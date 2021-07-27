@@ -92,17 +92,15 @@
         <form [formGroup]="newPricingForm" (ngSubmit)="savePricing()">
             <mat-tab-group [selectedIndex]="currentTab">
 
-                <mat-tab disabled label="Product & Customer Details">
+                <mat-tab [disabled]="!biddingToUpdate" label="Product & Customer Details">
                     <div class="p-5 mx-auto">
-                        <!-- <h2 class="mt-4">Customer</h2> -->
-                        <h4 class="click p-2 w-25" (click)="chooseExisting = true; newCustomer = false">Choose Existing
+                        <!-- <h4 class="mt-4">Customer</h4> -->
+                        <h4 class="click p-2 w-25" (click)="chooseExisting = true; newCustomer = false">Choose Customer
                         </h4>
-                        <!-- <p>Or:</p> -->
                         <h4 class="click p-2 w-25" (click)="newCustomer = true; chooseExisting = false">New Customer
                         </h4>
                         <select *ngIf="chooseExisting" class="form-control w-25" formControlName="customer">
-                            <option disabled value="">Customer</option>
-                            <option value="No Customer">No Customer</option>
+                            <option disabled value="">Choose Customer</option>
                             <option *ngFor="let customer of customers" [value]="customer.costumerName">
                                 {{customer.costumerName}}</option>
                         </select>
@@ -116,16 +114,16 @@
                         <h4 class="mt-2">Product Number</h4>
                         <input type="text" placeholder="Product Number" class="form-control w-25"
                             formControlName="productNumber">
-                        <button type="button" class="m-4 btn btn-primary" (click)="upgradeTab()">Next</button>
+                        <button *ngIf="!biddingToUpdate" type="button" class="m-4 btn btn-primary" (click)="upgradeTab()">Next</button>
                     </div>
                 </mat-tab>
 
-                <mat-tab disabled label="Formule">
+                <mat-tab [disabled]="!biddingToUpdate" label="Formule">
                     <div class="p-5 mx-auto">
                         <h2 class="mt-4">Formule</h2>
                         <div class="form-group">
                             <label>Enter Formule Number</label>
-                            <input type="number" placeholder="Formule Number" class="form-control w-25"
+                            <input type="text" placeholder="Formule Number" class="form-control w-25"
                                 formControlName="formuleNumber">
                             <button type="button" class="btn btn-outline-primary" (click)="calculatePPK()">Calculate
                                 Price per Kilo</button>
@@ -142,14 +140,14 @@
                             <p *ngIf="newPricingForm.value.PPML">formule price: {{newPricingForm.value.PPML | currency:
                                 'ILS'}}</p>
                         </div>
-                        <button type="button" class="m-2 btn btn-secondary" (click)="downGradeTab()">Previous</button>
-                        <button type="button" class="m-2 btn btn-primary" (click)="upgradeTab()">Next</button>
+                        <button *ngIf="!biddingToUpdate" type="button" class="m-2 btn btn-secondary" (click)="downGradeTab()">Previous</button>
+                        <button *ngIf="!biddingToUpdate" type="button" class="m-2 btn btn-primary" (click)="upgradeTab()">Next</button>
                     </div>
                 </mat-tab>
 
-                <mat-tab disabled label="Components">
+                <mat-tab [disabled]="!biddingToUpdate" label="Components">
                     <div class="p-5 mx-auto">
-                        <h2>Components: </h2>
+                        <h2>Components </h2>
                         <label class="mt-2">Enter Component Number or Edit details yourself</label><br>
 
                         <input class="m-2" type="number" #firstComponent placeholder="component Number"
@@ -205,43 +203,49 @@
                         </div>
 
                         <div class="mt-2">
-                            <button type="button" class="m-2 btn btn-secondary"
+                            <button *ngIf="!biddingToUpdate" type="button" class="m-2 btn btn-secondary"
                                 (click)="downGradeTab()">Previous</button>
-                            <button type="button" class="m-2 btn btn-primary" (click)="upgradeTab()">Next</button>
+                            <button *ngIf="!biddingToUpdate" type="button" class="m-2 btn btn-primary" (click)="upgradeTab()">Next</button>
                         </div>
                     </div>
                 </mat-tab>
 
-                <mat-tab disabled label="Final Fees">
+                <mat-tab [disabled]="!biddingToUpdate" label="Final Fees">
                     <div class="p-5 mx-auto">
-                        <h2>Final Fees:</h2>
+                        <h2>Final Fees</h2>
                         <div class="form-group">
-                            <input type="number" placeholder="Processing Fee" formControlName="processingFee"
-                                class="form-control w-25" (keyup)="calculateFinalPrice()">
+                            <label for="">Processing Fee</label>
+                            <input type="number" placeholder="processing fee" formControlName="processingFee"
+                            class="form-control w-25" (keyup)="calculateFinalPrice()">
                         </div>
                         <div class="form-group">
-                            <input type="number" placeholder="One-time expenses" formControlName="oneTimeExp"
-                                class="form-control w-25" (keyup)="calculateFinalPrice()">
+                            <label for="">One-time Expenses</label>
+                            <input type="number" placeholder="one-time expenses" formControlName="oneTimeExp"
+                            class="form-control w-25" (keyup)="calculateFinalPrice()">
                         </div>
                         <div class="form-group">
-                            <textarea cols="30" rows="5" placeholder="Delivery Conditions" formControlName="deliveryConds"></textarea>
-
+                            <label for="">Delivery Conditions</label>
+                            <textarea cols="30" rows="5" placeholder="delivery conditions" formControlName="deliveryConds"></textarea>
+                            
                         </div>
                         <div class="form-group">
-                            <input type="number" placeholder="Shipping / Delivery" formControlName="deliveryFee"
-                                class="form-control w-25" (keyup)="calculateFinalPrice()">
+                            <label for="">Shipping / Delivery</label>
+                            <input type="number" placeholder="shipping / delivery" formControlName="deliveryFee"
+                            class="form-control w-25" (keyup)="calculateFinalPrice()">
                         </div>
                         <div class="form-group">
-                            <input type="number" placeholder="Different Expenses" formControlName="diffExp"
-                                class="form-control w-25" (keyup)="calculateFinalPrice()">
+                            <label for="">Different Expenses</label>
+                            <input type="number" placeholder="different expenses" formControlName="diffExp"
+                            class="form-control w-25" (keyup)="calculateFinalPrice()">
                         </div>
                         <div class="form-group">
+                            <label for="">Remarks</label>
                             <textarea cols="30" rows="5" placeholder="remarks" formControlName="remarks"></textarea>
                         </div>
                         <div class="mt-2">
-                            <button type="button" class="m-2 btn btn-secondary"
+                            <button *ngIf="!biddingToUpdate" type="button" class="m-2 btn btn-secondary"
                                 (click)="downGradeTab()">Previous</button>
-                            <button type="submit" class="m-2 btn btn-success"
+                            <button type="submit" class="m-2 btn btn-success" [ngClass]="biddingToUpdate ? 'h1' : ''"
                                 (click)="formSubmitted = true">Done!</button>
                         </div>
                     </div>

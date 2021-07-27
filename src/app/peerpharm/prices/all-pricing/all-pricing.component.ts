@@ -54,6 +54,11 @@ export class AllPricingComponent implements OnInit {
 
   }
 
+  setClass() {
+    if(this.editBidding) return 'fa-arrow-left'
+    else return 'fa-pencil-alt'
+  }
+
 
 
 }

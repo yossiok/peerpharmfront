@@ -39,7 +39,7 @@ export class NewPricingComponent implements OnInit {
     costumerId: new FormControl(null),
     itemComponents: new FormControl([]),
     date: new FormControl(new Date(), Validators.required),
-    formuleNumber: new FormControl(null),
+    formuleNumber: new FormControl(''),
     PPK: new FormControl(null), //Price Per KILO
     ML: new FormControl(null), //desired mililiters
     componentsPrice: new FormControl(0),
