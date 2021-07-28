@@ -20,27 +20,30 @@
   <div class="container bg-light shadow-lg p-4">
     <div class="row">
       <div class="col-12">
-        <!--get order items on change-->
         <input type="number" class="form-control w-25" #currentOrderNumber (change)="getOrderDetails($event)"
           placeholder="order number">
-        <select class="form-control w-50" (change)="saveItem($event)" #currentItem>
-          <!--updated when order number is entered-->
+        <select class="form-control w-50" (change)="saveItem($event)">
           <option disabled value="">Choose Item</option>
           <option value="value">test</option>
           <option *ngFor="let item of currentItems" [value]="[item.itemNumber, item.discription]">{{item.itemNumber}} -
             {{item.discription}}</option>
         </select>
-        <!-- <button class="float-left btn btn-outline-secondary"><i
-            class="fa fa-plus"></i></button> -->
       </div>
     </div>
   </div>
 
-  <div class="ml-5 mr-5">
-    <div class="row">
-      <div class="col-2 border border-black" *ngFor="let item of newBatchForm.value.itemsToCook">
-        <p>Order: {{item.orderNumber}}</p> 
-        <p>Item: {{item.itemNumber}} - {{item.itemName}}</p>
+  <div class="container">
+    <div class="row small">
+      <div *ngFor="let item of newBatchForm.value.itemsToCook; let i = index" 
+        [style.background]="item.itemNumber == newBatchForm.value.chosenFormule ? 'rgb(158, 185, 236)' : ''" 
+        class="col-2 border border-black click hover" 
+        (click)="setMainFormule(item)">
+        <i class="float-left fa fa-times text-danger" ngbTooltip="Remove" (click)="removeItem(i)"></i>
+        <div [ngbTooltip]="item.itemNumber == newBatchForm.value.chosenFormule ? 'Main Formule' : 'Set as main formule'">
+          <p>Order: {{item.orderNumber}}</p> 
+          <p>Item: {{item.itemNumber}} - {{item.itemName}}</p>
+          <input type="number" [(ngModel)]="item.weightKg">
+        </div>
       </div>
     </div>
   </div>
@@ -138,9 +141,10 @@
         <div style="border-bottom: 1px solid black;" class="col-6">
           <span>ת.ייצור: </span>{{newBatchForm.controls['produced'].value | date: 'yyyy-MM-dd' }}
         </div>
-        <div style="border-bottom: 1px solid black;" class="col-6">
-          <span>מק"ט: </span>{{newBatchForm.controls['item'].value}}
-        </div>
+        <!-- <div style="border-bottom: 1px solid black;" class="col-6">
+          <span>מק"טים: </span>
+          <span *ngFor="let item of newBatchForm.value.itemsToCook">{{item.itemNumber}}</span>
+        </div> -->
       </div>
 
       <div class="row">
@@ -155,6 +159,8 @@
       <div class="row">
         <div style="border-bottom: 1px solid black;" class="col-12">
           <span>מ' הזמנה: </span>{{newBatchForm.controls['order'].value}} {{newBatchForm.order}}
+          <span>הזמנות: </span>
+          <span *ngFor="let item of newBatchForm.value.itemsToCook">הזמנה {{item.orderNumber}}, מק"ט {{item.itemNumber}}</span>
         </div>
       </div>
 

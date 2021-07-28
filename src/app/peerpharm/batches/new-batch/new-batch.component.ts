@@ -27,9 +27,7 @@ export class NewBatchComponent implements OnInit {
   currentItems: number[] = []
 
   newBatchForm: FormGroup = new FormGroup({
-    order: new FormControl('', Validators.required),
-    item: new FormControl('', Validators.required),
-    itemName: new FormControl('', Validators.required),
+    chosenFormule: new FormControl('', Validators.required),
     produced: new FormControl(new Date(this.today), Validators.required),
     expration: new FormControl('', Validators.required),
     barrels: new FormControl('', Validators.required),
@@ -67,7 +65,7 @@ export class NewBatchComponent implements OnInit {
     let orderNumber = e.target.value
     //get all items from order:
     this.orderService.getItemsFromOrder(orderNumber).subscribe(res => {
-      if(res.length > 0) {
+      if (res.length > 0) {
         this.currentItems = res
       } else this.toastSrv.error('No items on this order')
     })
@@ -83,6 +81,13 @@ export class NewBatchComponent implements OnInit {
     })
   }
 
+  setMainFormule(item) {
+    this.newBatchForm.controls.chosenFormule.setValue(item.itemNumber)
+  }
+
+  removeItem(i) {
+    this.newBatchForm.value.itemsToCook.splice(i, 1)
+  }
 
 
 
@@ -134,8 +139,8 @@ export class NewBatchComponent implements OnInit {
     expirationDate.setFullYear(Number(expirationDate.getFullYear()) + Number(expirationYear))
     this.newBatchForm.controls.expration.setValue(expirationDate)
 
-    if (this.newBatchForm.controls.item.value == '' || this.newBatchForm.controls.batchNumber.value.length < 5) {
-      this.toastSrv.error('You must fill all the fields')
+    if (this.newBatchForm.controls.batchNumber.value.length < 5) {
+      this.toastSrv.error('Batch number must include at least 5 charchters', 'Invalid Batch Number')
     } else {
       if (justStickers) {
         // just print stickers
@@ -151,42 +156,48 @@ export class NewBatchComponent implements OnInit {
               }, 2000)
             }
           }
-          else this.toastSrv.error('Batch not exist.')
+          else this.toastSrv.error('', 'Batch not exist.')
         })
 
 
       }
       // add batch AND REDUCE AMOUNTS!!!
       else {
-        if (confirm("באטצ' יתווסף למערכת והכמויות יירדו מהמלאי. האם להמשיך?")) {
-
-          this.disableButton = true
-          this.toastSrv.info("Adding Batch. Please wait...")
-          let con = true
-          // reduce materials from itemShells
-          this.inventorySrv.reduceMaterialAmounts(this.newBatchForm.controls.batchNumber.value, this.newBatchForm.controls.item.value, this.newBatchForm.controls.weightKg.value, true).subscribe(data => {
-            this.disableButton = false
-            if (data == 'Formule Not Found') {
-              this.toastSrv.error(data)
-              con = confirm("פורמולה לא קיימת. כמויות לא ירדו מהמלאי. להוסיף באטצ' בכל זאת?")
+        if (this.newBatchForm.value.chosenFormule == '') {
+          this.toastSrv.error('Please Choose Main Formule')
+        }
+        else {
+          if (confirm("באטצ' יתווסף למערכת והכמויות יירדו מהמלאי. האם להמשיך?")) {
+            this.disableButton = true
+            this.toastSrv.info("Adding Batch. Please wait...")
+            let con = true
+            // reduce materials from itemShells
+            this.inventorySrv.reduceMaterialAmounts(this.newBatchForm.controls.batchNumber.value, this.newBatchForm.controls.chosenFormule.value, this.newBatchForm.controls.weightKg.value, true).subscribe(data => {
               this.disableButton = false
-            }
-            if (data.materials && data.updatedShells) this.toastSrv.success('Amounts reduced. Shelfs updated.')
-            if (con) {
-              // add batch to batches list
-              this.batchService.addBatch(this.newBatchForm.value).subscribe(data => {
-                if (data.msg = 'succsess') {
-                  this.printBtn.nativeElement.click();
-                  this.toastSrv.success('באטצ נוסף בהצלחה !')
-                  this.newBatchForm.reset()
-                  this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
-                  this.allStickers = [];
-                  this.getLastBatch();
-                }
-                else this.toastSrv.error('Something went wrong.')
-              })
-            }
-          })
+              if (data == 'Formule Not Found') {
+                this.toastSrv.error(data)
+                con = confirm("פורמולה לא קיימת. כמויות לא ירדו מהמלאי. להוסיף באטצ' בכל זאת?")
+                this.disableButton = false
+              }
+              if (data.materials && data.updatedShells) this.toastSrv.success('Amounts reduced. Shelfs updated.')
+              if (con) {
+                // add batch to batches list
+                this.batchService.addBatch(this.newBatchForm.value).subscribe(data => {
+                  if (data.msg = 'succsess') {
+                    this.printBtn.nativeElement.click();
+                    this.toastSrv.success('באטצ נוסף בהצלחה !')
+                    this.newBatchForm.reset()
+                    this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
+                    this.newBatchForm.controls.itemsToCook.setValue([])
+                    this.allStickers = [];
+                    this.getLastBatch();
+                  }
+                  else if (data.msg == 'Batch Allready Exist') this.toastSrv.error('Please fill a different batch number.','Batch number allready exist.')
+                  else this.toastSrv.error('Something went wrong.')
+                })
+              }
+            })
+          }
         }
       }
     }

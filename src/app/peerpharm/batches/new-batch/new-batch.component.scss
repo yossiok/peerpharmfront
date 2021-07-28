@@ -4,4 +4,16 @@
 
 button, input {
     border-radius: 5px;
-  }
+}
+
+.click {
+    cursor: pointer;
+}
+
+.hover:hover {
+    background-color: rgb(158, 185, 236);
+}
+
+.small {
+    font-size: 20px;
+}
