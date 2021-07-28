@@ -18,13 +18,14 @@
 
 
   <div class="container bg-light shadow-lg p-4">
+    <h3>Add Item</h3>
     <div class="row">
       <div class="col-12">
+        <input type="number" class="form-control w-25" placeholder="KG" #itemWeight>
         <input type="number" class="form-control w-25" #currentOrderNumber (change)="getOrderDetails($event)"
           placeholder="order number">
-        <select class="form-control w-50" (change)="saveItem($event)">
+        <select class="form-control w-50" (change)="saveItem($event, itemWeight)">
           <option disabled value="">Choose Item</option>
-          <option value="value">test</option>
           <option *ngFor="let item of currentItems" [value]="[item.itemNumber, item.discription]">{{item.itemNumber}} -
             {{item.discription}}</option>
         </select>
@@ -41,8 +42,8 @@
         <i class="float-left fa fa-times text-danger" ngbTooltip="Remove" (click)="removeItem(i)"></i>
         <div [ngbTooltip]="item.itemNumber == newBatchForm.value.chosenFormule ? 'Main Formule' : 'Set as main formule'">
           <p>Order: {{item.orderNumber}}</p> 
-          <p>Item: {{item.itemNumber}} - {{item.itemName}}</p>
-          <input type="number" [(ngModel)]="item.weightKg">
+          <p class="text-info">Item: {{item.itemNumber}} - {{item.itemName}}</p>
+          <p class="text-warning">{{item.weightKg}}KG</p>
         </div>
       </div>
     </div>
@@ -60,8 +61,6 @@
             <!--5-->
             <label style="margin-bottom: 0" class="form-control"><b>Barrels</b></label>
             <!--6-->
-            <label style="margin-bottom: 0" class="form-control"><b>KG</b></label>
-            <!--7-->
             <label style="margin-bottom: 0" class="form-control"><b>PH</b></label>
             <!--8-->
             <label style="margin-bottom: 0" class="form-control"><b>Batch</b></label>
@@ -79,8 +78,6 @@
             </select>
             <input type="number" formControlName="barrels" class="form-control">
             <!--6-->
-            <input type="text" formControlName="weightKg" class="form-control">
-            <!--7-->
             <input type="text" formControlName="ph" class="form-control">
             <!--8-->
             <input type="text" formControlName="batchNumber" minlength="5" class="form-control">
@@ -158,9 +155,8 @@
 
       <div class="row">
         <div style="border-bottom: 1px solid black;" class="col-12">
-          <span>מ' הזמנה: </span>{{newBatchForm.controls['order'].value}} {{newBatchForm.order}}
-          <span>הזמנות: </span>
-          <span *ngFor="let item of newBatchForm.value.itemsToCook">הזמנה {{item.orderNumber}}, מק"ט {{item.itemNumber}}</span>
+          <span>הזמנות / פריטים: </span>
+          <span *ngFor="let item of newBatchForm.value.itemsToCook">הזמנה {{item.orderNumber}}, מק"ט {{item.itemNumber}}, משקל {{item.weightKg}}</span>
         </div>
       </div>
 

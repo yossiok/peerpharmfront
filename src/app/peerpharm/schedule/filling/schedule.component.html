@@ -307,7 +307,7 @@
                 <input #productName type="text" [value]="line.productName" class="form-control" />
               </td>
               <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-                <textarea disabled style="box-shadow: none !important;" rows="2" cols="10"> {{ line.batch }} </textarea>
+                <textarea disabled style="height: 113px; width: 84px; box-shadow: none !important;" rows="2" cols="10"> {{ line.batch }} </textarea>
               </td>
               <td *ngIf="line._id === EditRowId">
                 <input #batch type="text" [value]="line.batch" class="form-control" />

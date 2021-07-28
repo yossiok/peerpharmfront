@@ -32,7 +32,7 @@ export class NewBatchComponent implements OnInit {
     expration: new FormControl('', Validators.required),
     barrels: new FormControl('', Validators.required),
     ph: new FormControl('', Validators.required),
-    weightKg: new FormControl('', Validators.required),
+    weightKg: new FormControl(0, Validators.required),
     weightQtyLeft: new FormControl(0, Validators.required),
     batchNumber: new FormControl(this.batchDefaultNumber, [Validators.required, Validators.minLength(5)]),
     batchCreated: new FormControl(0, Validators.required),
@@ -50,6 +50,14 @@ export class NewBatchComponent implements OnInit {
   ngOnInit() {
     this.getLastBatch();
     this.newBatchAllowed = this.authService.loggedInUser.authorization.includes("newBatch") ? true : false
+  }
+
+  ngDoCheck() {
+    let finalWeight = 0
+    for (let item of this.newBatchForm.value.itemsToCook) {
+      finalWeight += item.weightKg
+    }
+    this.newBatchForm.controls.weightKg.setValue(finalWeight)
   }
 
   getLastBatch() {
@@ -71,13 +79,14 @@ export class NewBatchComponent implements OnInit {
     })
   }
 
-  saveItem(e) {
+  saveItem(e, itemWeight) {
     let itemNumber = e.target.value.split(',')[0]
     let itemName = e.target.value.split(',')[1]
     this.newBatchForm.value.itemsToCook.push({
       orderNumber: this.currentOrderNumber.nativeElement.value,
       itemNumber,
-      itemName
+      itemName,
+      weightKg: itemWeight.value
     })
   }
 
@@ -186,11 +195,13 @@ export class NewBatchComponent implements OnInit {
                   if (data.msg = 'succsess') {
                     this.printBtn.nativeElement.click();
                     this.toastSrv.success('באטצ נוסף בהצלחה !')
-                    this.newBatchForm.reset()
-                    this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
-                    this.newBatchForm.controls.itemsToCook.setValue([])
-                    this.allStickers = [];
-                    this.getLastBatch();
+                    // setTimeout(()=> {
+                    //   this.newBatchForm.reset()
+                    //   this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
+                    //   this.newBatchForm.controls.itemsToCook.setValue([])
+                    //   this.allStickers = [];
+                    //   this.getLastBatch();
+                    // }, 5000)
                   }
                   else if (data.msg == 'Batch Allready Exist') this.toastSrv.error('Please fill a different batch number.','Batch number allready exist.')
                   else this.toastSrv.error('Something went wrong.')
