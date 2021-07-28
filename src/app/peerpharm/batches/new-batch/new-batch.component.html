@@ -20,11 +20,15 @@
   <div class="container bg-light shadow-lg p-4">
     <h3>Add Item</h3>
     <div class="row">
-      <div class="col-12">
-        <input type="number" class="form-control w-25" placeholder="KG" #itemWeight>
-        <input type="number" class="form-control w-25" #currentOrderNumber (change)="getOrderDetails($event)"
+      <div class="col-4">
+        <input type="number" class="form-control w-75" placeholder="KG" #itemWeight>
+      </div>
+      <div class="col-4">
+        <input type="number" class="form-control w-75" #currentOrderNumber (change)="getOrderDetails($event)"
           placeholder="order number">
-        <select class="form-control w-50" (change)="saveItem($event, itemWeight)">
+      </div>
+      <div class="col-4">
+        <select class="form-control" (change)="saveItem($event, itemWeight)">
           <option disabled value="">Choose Item</option>
           <option *ngFor="let item of currentItems" [value]="[item.itemNumber, item.discription]">{{item.itemNumber}} -
             {{item.discription}}</option>
@@ -35,21 +39,28 @@
 
   <div class="container">
     <div class="row small">
-      <div *ngFor="let item of newBatchForm.value.itemsToCook; let i = index" 
-        [style.background]="item.itemNumber == newBatchForm.value.chosenFormule ? 'rgb(158, 185, 236)' : ''" 
-        class="col-2 border border-black click hover" 
-        (click)="setMainFormule(item)">
+      <div *ngFor="let item of newBatchForm.value.itemsToCook; let i = index"
+        [style.background]="item.itemNumber == newBatchForm.value.chosenFormule ? 'rgb(158, 185, 236)' : ''"
+        class="col-2 border border-black click hover" (click)="setMainFormule(item)">
         <i class="float-left fa fa-times text-danger" ngbTooltip="Remove" (click)="removeItem(i)"></i>
-        <div [ngbTooltip]="item.itemNumber == newBatchForm.value.chosenFormule ? 'Main Formule' : 'Set as main formule'">
-          <p>Order: {{item.orderNumber}}</p> 
-          <p class="text-info">Item: {{item.itemNumber}} - {{item.itemName}}</p>
+        <div
+          [ngbTooltip]="item.itemNumber == newBatchForm.value.chosenFormule ? 'Main Formule' : 'Set as main formule'">
+          <p class="font-italic">Order {{item.orderNumber}}</p>
+          <p class="text-info smaller"><span class="font-weight-bold">item {{item.itemNumber}}</span> - {{item.itemName}}</p>
           <p class="text-warning">{{item.weightKg}}KG</p>
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-4"></div>
+      <div class="col-4">
+        <h4 class="text-center">Final Weight: {{newBatchForm.value.weightKg}} KG</h4>
+      </div>
+      <div class="col-4"></div>
+    </div>
   </div>
 
-  <div *ngIf="oneItem" class="row">
+  <div class="row" [ngClass]="checkPointerAllowed()">
     <div class="container bg-white shadow-lg p-4">
       <form [formGroup]="newBatchForm" (ngSubmit)="addNewBatch(false)">
         <div class="row mt-4">
@@ -155,8 +166,9 @@
 
       <div class="row">
         <div style="border-bottom: 1px solid black;" class="col-12">
-          <span>הזמנות / פריטים: </span>
-          <span *ngFor="let item of newBatchForm.value.itemsToCook">הזמנה {{item.orderNumber}}, מק"ט {{item.itemNumber}}, משקל {{item.weightKg}}</span>
+          <span>הזמנות / פריטים: </span><br>
+          <span *ngFor="let item of newBatchForm.value.itemsToCook">הזמנה {{item.orderNumber}}, מק"ט
+            {{item.itemNumber}}, משקל {{item.weightKg}} <br></span>
         </div>
       </div>
 
