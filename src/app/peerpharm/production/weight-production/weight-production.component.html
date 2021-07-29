@@ -32,18 +32,18 @@
     <div class="col-2"></div>
     <div class="col-2">
       <input id="formuleNumber" #formuleNumber 
-        (change)="checkFormule(formule)" placeholder="Formule Number" class="form-control rounded-pill">
+        (change)="checkFormule($event)" placeholder="Formule Number" class="form-control rounded-pill">
     </div>
     <div class="col-2">
-      <input  [disabled]="!currentFormule.exist" #orderNumber placeholder="Order Number"
+      <input [disabled]="!formuleExist" #orderNumber placeholder="Order Number"
         class="form-control rounded-pill">
     </div>
     <div class="col-2">
-      <input *formuleWeight [disabled]="!currentFormule.exist" placeholder="Weight"
+      <input #formuleWeight [disabled]="!formuleExist" placeholder="Weight"
         class="form-control rounded-pill">
     </div>
     <div class="col-2">
-      <button (click)="startWeight()" class="btn btn-info form-control rounded-pill">Go.</button>
+      <button (click)="go()" class="btn btn-info form-control rounded-pill">Go.</button>
     </div>
     <!-- <div *ngIf="i != 0" class="col-2">
       <button class="btn btn-danger rounded-pill mx-auto" (click)="eraseLast()">
@@ -54,11 +54,6 @@
   <div class="row mt-2">
   </div>
 
-
-  <hr>
-
-
-
   <div *ngIf="printStickerBtn == true" class="row p-2">
     <div class="col-12">
       <button (click)="printBarcode()" [useExistingCss]="true" printSectionId="print-section" ngxPrint
@@ -68,20 +63,20 @@
 
 </div>
 
-<!-- *ngIf="formules.length > 0 && !finalFormule"  -->
 <div 
+*ngIf="formules.length > 0 && !finalFormule" 
 class=" mt-2 text-center p-2 rounded shadow">
   <div class="row mt-3 d-flex flex-row">
-    <!-- *ngFor="let formule of formules"  -->
     <div 
+    *ngFor="let formule of formules" 
     class="col-3">
       <div>
         <div class="d-flex flex-row justify-content-between">
 
           <div>
-            <i *ngIf="currentFormule.data.approval == 1" class="fa fa-check bg-success text-white p-2" aria-hidden="true">
+            <i *ngIf="fotmule.data.approval == 1" class="fa fa-check bg-success text-white p-2" aria-hidden="true">
               Approved</i>
-            <i *ngIf="currentFormule.data.approval != 1" class="fa fa-times bg-danger text-white p-2" aria-hidden="true"> Not
+            <i *ngIf="fotmule.data.approval != 1" class="fa fa-times bg-danger text-white p-2" aria-hidden="true"> Not
               Approved</i>
           </div>
           <div>
@@ -90,22 +85,22 @@ class=" mt-2 text-center p-2 rounded shadow">
           </div>
         </div>
         <h5>
-          Formule <span class="header-detail ml-2">{{currentFormule.data.formuleNumber}}</span>
+          Formule <span class="header-detail ml-2">{{fotmule.data.formuleNumber}}</span>
         </h5>
         <h5>
-          <span class="header-detail">{{currentFormule.data.formuleName}}</span>
+          <span class="header-detail">{{fotmule.data.formuleName}}</span>
         </h5>
         <span>
-          Order Number: <span class="header-detail">{{currentFormule.formuleOrder}}</span>
+          Order Number: <span class="header-detail">{{fotmule.formuleOrder}}</span>
         </span>
         <span>
-          Weight: <span class="header-detail">{{currentFormule.formuleWeight}}</span>
+          Weight: <span class="header-detail">{{fotmule.formuleWeight}}</span>
         </span>
         <span>
-          Weight per Unit:: <span class="header-detail">{{currentFormule.formuleUnitWeight}}</span>
+          Weight per Unit:: <span class="header-detail">{{fotmule.formuleUnitWeight}}</span>
         </span>
         <span>
-          PH: <span class="header-detail">{{currentFormule.data.phFrom}}-{{currentFormule.data.phTo}}</span>
+          PH: <span class="header-detail">{{fotmule.data.phFrom}}-{{fotmule.data.phTo}}</span>
         </span>
       </div>
       <table class="table table-hover">
@@ -119,7 +114,7 @@ class=" mt-2 text-center p-2 rounded shadow">
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngFor="let phase of currentFormule.data.phases">
+          <ng-container *ngFor="let phase of fotmule.data.phases">
             <tr *ngFor="let item of phase.items; let i = index">
               <td style="padding:5px" *ngIf="i == 0" [attr.rowspan]="phase.items.length" class="phase">{{phase.phaseName
                 }}</td>

@@ -1,18 +1,14 @@
-<div></div>
-
 <div class="d-flex flex-row justify-content-center">
 
     <div class="mt-8 mr-5">
         <img *ngIf="item" class="image1" [src]="item.imgMain1" alt="Image 1 Missing">
     </div>
+
     <div *ngIf="item.imgMain2" class="mt-8 mr-5">
         <img *ngIf="item" class="image1" [src]="item.imgMain2" alt="Image 2 Missing">
     </div>
 
     <div>
-
-
-
         <div class="container mt-5">
             <div class="row mt-5">
                 <input type="number" placeholder="Product Number" #productNumber> &nbsp;&nbsp;
@@ -27,8 +23,6 @@
                     <h2>{{item.name}} {{item.subName}} {{item.discriptionK}}</h2>
                 </div>
                 <div class="row mt-2">
-
-
                     <div class="col-4">
                         <table *ngIf="item" class="bg-warning text-dark">
                             <thead class="text-center">
@@ -59,23 +53,22 @@
                                     <td></td>
                                     <td>{{item.formulePrice}}</td>
                                     <td></td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                                 <tr *ngIf="allowed">
                                     <td>Total Item Price:</td>
                                     <td></td>
                                     <td>{{totalItemPrice}}</td>
                                     <td>{{totalShippingPrice}}</td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-
-                    <div class="col-3"></div>
-
-
-                    <div class="col-1"></div>
+                    <div class="col-8"></div>
                 </div>
-
                 <div *ngIf="item">
                     <div class="row mt-4">
                         <h3>Customers Purchasing Item {{item.itemNumber}}</h3>
@@ -101,7 +94,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <div class="float-left small p-5 mr-5">
@@ -121,9 +113,10 @@
     <h3 class="text-center">Purchases for item {{selectedComponent.componentNumber}}</h3>
     <div class="row">
         <div class="col-3">
-            <button class="btn btn-warning" (click)="selectedStatus = selectedStatus == 'open' ? 'closed' : 'open'">Change
+            <button class="btn btn-warning"
+                (click)="selectedStatus = selectedStatus == 'open' ? 'closed' : 'open'">Change
                 Status</button>
-                <p class="bg-dark text-warning p-2">Status = {{selectedStatus}}</p>
+            <p class="bg-dark text-warning p-2">Status = {{selectedStatus}}</p>
         </div>
         <div class="col-6">
             <table class="bg-warning text-dark">
@@ -156,7 +149,6 @@
         </div>
         <div class="col-3">
             <img class="image m-2" [src]="selectedComponent.imgUrl" alt="Component image missing..">
-
         </div>
     </div>
 </div>
