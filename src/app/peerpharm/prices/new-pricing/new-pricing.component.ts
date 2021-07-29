@@ -252,9 +252,10 @@ export class NewPricingComponent implements OnInit {
   }
 
   savePricing() {
+    debugger
     this.loading = true
     let costumer = this.customers.find(c => c.costumerName == this.newPricingForm.value.customer)
-    if(costumer) this.newPricingForm.controls.customerId.setValue(costumer.costumerId)
+    if(costumer) this.newPricingForm.controls.costumerId.setValue(costumer.costumerId)
     if (this.biddingToUpdate) {
       // update
       let updatedBidding = {...this.newPricingForm.value, number: this.biddingToUpdate.number}
