@@ -1197,8 +1197,14 @@ export class OrderdetailsComponent implements OnInit {
       batchStatus: item.batchSpecStatus
     }
     
+    let bool = true
+    setTimeout(()=> {
+      if(bool) this.toastSrv.error('Something went wrong.','!')
+    }, 7000)
     this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => {
-      console.log(res)
+      bool = false
+      if(res.mkp == 'cream') this.toastSrv.success(`Schedule set to ${res.date.slice(0,10)}`)
+      else this.toastSrv.error('Something went wrong.','!')
     })
   }
   }

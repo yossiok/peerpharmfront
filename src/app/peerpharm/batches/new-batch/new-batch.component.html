@@ -20,19 +20,31 @@
   <div class="container bg-light shadow-lg p-4">
     <h3>Add Item</h3>
     <div class="row">
-      <div class="col-4">
-        <input type="number" class="form-control w-75" placeholder="KG" #itemWeight>
-      </div>
-      <div class="col-4">
-        <input type="number" class="form-control w-75" #currentOrderNumber (change)="getOrderDetails($event)"
+      <div class="col-2">
+        <label for="">Order Number</label>
+        <input type="number" class="form-control" #currentOrderNumber (change)="getOrderDetails($event)"
           placeholder="order number">
       </div>
-      <div class="col-4">
-        <select class="form-control" (change)="saveItem($event, itemWeight)">
+      <div class="col-2">
+        <label for="">Item Number</label>
+        <input type="number" class="form-control" placeholder="item number" #itemNumber (change)="checkItem($event)">
+        <!-- <select class="form-control" (change)="saveItem($event, itemWeight)">
           <option disabled value="">Choose Item</option>
           <option *ngFor="let item of currentItems" [value]="[item.itemNumber, item.discription]">{{item.itemNumber}} -
             {{item.discription}}</option>
-        </select>
+        </select> -->
+      </div>
+      <div class="col-5">
+        <label for="">Item Name</label>
+        <input type="text" placeholder="item name" class="form-control" #itemName disabled>
+      </div>
+      <div class="col-2">
+        <label for="">Formule Weight</label>
+        <input type="number" class="form-control w-75" placeholder="KG" #itemWeight>
+      </div>
+      <div class="col-1">
+        <label for="">Add</label>
+        <button (click)="saveItem()" class="btn btn-outline-info form-control batchbtn"><i class="fa fa-plus"></i></button>
       </div>
     </div>
   </div>
@@ -157,7 +169,7 @@
 
       <div class="row">
         <div style="border-bottom: 1px solid black;" class="col-6">
-          <span>ת.תפוגה: </span>{{newBatchForm.controls['expration'].value}}
+          <span>ת.תפוגה: </span>{{newBatchForm.controls['expration'].value | date: 'yyyy-MM-dd'}}
         </div>
         <div style="border-bottom: 1px solid black;" class="col-6">
           <span>PH: </span>{{newBatchForm.controls['ph'].value}}{{newBatchForm.ph}}
@@ -174,7 +186,7 @@
 
       <div class="row">
         <div style="border-bottom: 1px solid black;" class="col-6">
-          <span>משקל: </span>{{newBatchForm.controls['weightKg'].value}}
+          <span>משקל סה"כ: </span>{{newBatchForm.controls['weightKg'].value}}
         </div>
         <div style="border-bottom: 1px solid black;" class="col-6">
           <span>חביות: </span>{{sticker.printNum}}

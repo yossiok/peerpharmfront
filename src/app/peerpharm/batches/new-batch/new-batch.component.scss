@@ -2,6 +2,11 @@
     border: 1px solid black;
 }
 
+label {
+    font-size: 15px;
+
+}
+
 button, input {
     border-radius: 5px;
 }
@@ -24,6 +29,10 @@ button, input {
 
 .disable-pointer {
     pointer-events: none;
+}
+
+.batchbtn {
+    margin-bottom: 16px;
 }
 
 // Hide arrows from input type number  :

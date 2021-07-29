@@ -17,6 +17,8 @@ export class NewBatchComponent implements OnInit {
   @ViewChild('printBtn') printBtn: ElementRef;
   @ViewChild('currentOrderNumber') currentOrderNumber: ElementRef
   @ViewChild('itemWeight') itemWeight: ElementRef
+  @ViewChild('itemNumber') itemNumber: ElementRef
+  @ViewChild('itemName') itemName: ElementRef
 
   allStickers: any[] = [];
   batchDefaultNumber: string = '21pp';
@@ -24,7 +26,7 @@ export class NewBatchComponent implements OnInit {
   today: Date = new Date();
   disableButton: boolean;
   newBatchAllowed: boolean = false;
-  currentItems: number[] = []
+  currentItems: any[] = []
 
   newBatchForm: FormGroup = new FormGroup({
     chosenFormule: new FormControl('', Validators.required),
@@ -68,7 +70,7 @@ export class NewBatchComponent implements OnInit {
   }
 
 
-  //************************************************************************************************************************************** */
+  //*****************************************************changing batch process********************************************************************************* */
 
   getOrderDetails(e) {
     let orderNumber = e.target.value
@@ -80,19 +82,33 @@ export class NewBatchComponent implements OnInit {
     })
   }
 
-  saveItem(e, itemWeight) {
-    let itemNumber = e.target.value.split(',')[0]
-    let itemName = e.target.value.split(',')[1]
+  checkItem(e) {
+    let item = this.currentItems.find(i => i.itemNumber == e.target.value)
+    if(!item) this.toastSrv.error('Item does not exist in this order.','Unmatch Item!')
+    else {
+      this.itemName.nativeElement.value = item.discription
+    }
+  }
+
+  saveItem() {
+
+    //check
+    let itemNumber = this.itemNumber.nativeElement.value
+    let itemName = this.itemName.nativeElement.value
+    let itemWeight = this.itemWeight.nativeElement.value
+    let orderNumber = this.currentOrderNumber.nativeElement.value
     this.newBatchForm.value.itemsToCook.push({
-      orderNumber: this.currentOrderNumber.nativeElement.value,
+      orderNumber,
       itemNumber,
       itemName,
-      weightKg: itemWeight.value
+      weightKg: itemWeight
     })
     this.itemWeight.nativeElement.value = null
     this.currentOrderNumber.nativeElement.value = null
+    this.itemNumber.nativeElement.value = null
+    this.itemName.nativeElement.value = null
     this.currentItems = []
-    this.itemWeight.nativeElement.focus()
+    this.currentOrderNumber.nativeElement.focus()
   }
 
   setMainFormule(item) {

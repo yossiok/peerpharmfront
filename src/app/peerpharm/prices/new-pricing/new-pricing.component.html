@@ -31,17 +31,46 @@
                 <label>Date: &nbsp;</label>
                 <span class="text-info"> {{newPricingForm.value.date | date: 'dd/MM/yyyy'}}</span>
             </div>
-            <div class="row mt-2 border-info border-bottom w-50">
+            <div class="row mt-2">
                 <label>Customer: </label>
                 <h4 class="text-info">{{newPricingForm.value.customer}}</h4>
             </div>
-            <div class="row mt-2 border-info border-bottom w-50">
+            <div class="row mt-2">
                 <label>Product Name: <span class="h5 text-info">{{newPricingForm.value.productName}}</span></label>
             </div>
-            <div class="row mt-2 border-info border-bottom w-50">
+            <div class="row mt-2">
                 <label>Product Number: <span class="h5 text-info">{{newPricingForm.value.productNumber}}</span></label>
             </div>
-            <div class="row mt-2 border-info border-bottom w-50">
+
+            <h4 class="mt-4">Price Details:</h4>
+            <div class="row">
+                <table class="table table-bordered">
+                    <thead class="text-center">
+                        <th colspan="3"></th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>bulk</td>
+                            <td>{{newPricingForm.value.ML}} ml</td>
+                            <td>{{newPricingForm.value.PPML | currency: 'ILS'}}</td>
+                        </tr>
+                        <tr *ngFor="let component of newPricingForm.value.itemComponents">
+                            <td>component {{component.componentN}} - {{component.componentName}}</td>
+                            <td></td>
+                            <td>{{component.price | currency: 'ILS'}} <span *ngIf="component.shippingPrice"> +
+                                    {{component.shippingPrice | currency: 'ILS'}} (Shipping)</span></td>
+                        </tr>
+                        <tr>
+                            <td>Processing Fee</td>
+                            <td></td>
+                            <td>{{newPricingForm.value.processingFee | currency: 'ILS'}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <!-- <div class="row mt-2 border-info border-bottom w-50">
                 <label>bulk {{newPricingForm.value.ML}} ml:</label>
                 <h4 class="text-info"> {{newPricingForm.value.PPML | currency: 'ILS'}}</h4>
             </div>
@@ -58,8 +87,8 @@
 
             <div class="row mt-2 border-info border-bottom w-50">
                 <label>Processing Fee: {{newPricingForm.value.processingFee | currency: 'ILS'}}</label>
-            </div>
-            
+            </div> -->
+
             <div class="mt-4">
                 <label>Total Product Price: {{newPricingForm.value.productPrice | currency: 'ILS'}}</label>
             </div>
@@ -114,7 +143,8 @@
                         <h4 class="mt-2">Product Number</h4>
                         <input type="text" placeholder="Product Number" class="form-control w-25"
                             formControlName="productNumber">
-                        <button *ngIf="!biddingToUpdate" type="button" class="m-4 btn btn-primary" (click)="upgradeTab()">Next</button>
+                        <button *ngIf="!biddingToUpdate" type="button" class="m-4 btn btn-primary"
+                            (click)="upgradeTab()">Next</button>
                     </div>
                 </mat-tab>
 
@@ -140,8 +170,10 @@
                             <p *ngIf="newPricingForm.value.PPML">formule price: {{newPricingForm.value.PPML | currency:
                                 'ILS'}}</p>
                         </div>
-                        <button *ngIf="!biddingToUpdate" type="button" class="m-2 btn btn-secondary" (click)="downGradeTab()">Previous</button>
-                        <button *ngIf="!biddingToUpdate" type="button" class="m-2 btn btn-primary" (click)="upgradeTab()">Next</button>
+                        <button *ngIf="!biddingToUpdate" type="button" class="m-2 btn btn-secondary"
+                            (click)="downGradeTab()">Previous</button>
+                        <button *ngIf="!biddingToUpdate" type="button" class="m-2 btn btn-primary"
+                            (click)="upgradeTab()">Next</button>
                     </div>
                 </mat-tab>
 
@@ -159,7 +191,8 @@
                             [(ngModel)]="newComponent.price">
                         <input class="m-2" type="number" placeholder="shipping" [ngModelOptions]="{standalone: true}"
                             [(ngModel)]="newComponent.shippingPrice">
-                        <button class="btn btn-outline-primary" type="button" (click)="addComponent()">Add Component</button>
+                        <button class="btn btn-outline-primary" type="button" (click)="addComponent()">Add
+                            Component</button>
                         <div class="row mt-4">
                             <div class="col-12">
                                 <table class="table table-bordered">
@@ -205,7 +238,8 @@
                         <div class="mt-2">
                             <button *ngIf="!biddingToUpdate" type="button" class="m-2 btn btn-secondary"
                                 (click)="downGradeTab()">Previous</button>
-                            <button *ngIf="!biddingToUpdate" type="button" class="m-2 btn btn-primary" (click)="upgradeTab()">Next</button>
+                            <button *ngIf="!biddingToUpdate" type="button" class="m-2 btn btn-primary"
+                                (click)="upgradeTab()">Next</button>
                         </div>
                     </div>
                 </mat-tab>
@@ -216,27 +250,28 @@
                         <div class="form-group">
                             <label for="">Processing Fee</label>
                             <input type="number" placeholder="processing fee" formControlName="processingFee"
-                            class="form-control w-25" (keyup)="calculateFinalPrice()">
+                                class="form-control w-25" (keyup)="calculateFinalPrice()">
                         </div>
                         <div class="form-group">
                             <label for="">One-time Expenses</label>
                             <input type="number" placeholder="one-time expenses" formControlName="oneTimeExp"
-                            class="form-control w-25" (keyup)="calculateFinalPrice()">
+                                class="form-control w-25" (keyup)="calculateFinalPrice()">
                         </div>
                         <div class="form-group">
                             <label for="">Delivery Conditions</label>
-                            <textarea cols="30" rows="5" placeholder="delivery conditions" formControlName="deliveryConds"></textarea>
-                            
+                            <textarea cols="30" rows="5" placeholder="delivery conditions"
+                                formControlName="deliveryConds"></textarea>
+
                         </div>
                         <div class="form-group">
                             <label for="">Shipping / Delivery</label>
                             <input type="number" placeholder="shipping / delivery" formControlName="deliveryFee"
-                            class="form-control w-25" (keyup)="calculateFinalPrice()">
+                                class="form-control w-25" (keyup)="calculateFinalPrice()">
                         </div>
                         <div class="form-group">
                             <label for="">Different Expenses</label>
                             <input type="number" placeholder="different expenses" formControlName="diffExp"
-                            class="form-control w-25" (keyup)="calculateFinalPrice()">
+                                class="form-control w-25" (keyup)="calculateFinalPrice()">
                         </div>
                         <div class="form-group">
                             <label for="">Remarks</label>
