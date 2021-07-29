@@ -24,22 +24,20 @@
         </div>
 
         <div id="bidding">
-
-
             <h2>Bidding Details</h2>
             <div class="row mt-4">
                 <label>Date: &nbsp;</label>
                 <span class="text-info"> {{newPricingForm.value.date | date: 'dd/MM/yyyy'}}</span>
             </div>
             <div class="row mt-2">
-                <label>Customer: </label>
+                <label>Customer: &nbsp;</label>
                 <h4 class="text-info">{{newPricingForm.value.customer}}</h4>
             </div>
             <div class="row mt-2">
-                <label>Product Name: <span class="h5 text-info">{{newPricingForm.value.productName}}</span></label>
+                <label>Product Name: &nbsp;<span class="h5 text-info">{{newPricingForm.value.productName}}</span></label>
             </div>
             <div class="row mt-2">
-                <label>Product Number: <span class="h5 text-info">{{newPricingForm.value.productNumber}}</span></label>
+                <label>Product Number: &nbsp;<span class="h5 text-info">{{newPricingForm.value.productNumber}}</span></label>
             </div>
 
             <h4 class="mt-4">Price Details:</h4>
@@ -68,50 +66,17 @@
                     </tbody>
                 </table>
             </div>
-
-
-            <!-- <div class="row mt-2 border-info border-bottom w-50">
-                <label>bulk {{newPricingForm.value.ML}} ml:</label>
-                <h4 class="text-info"> {{newPricingForm.value.PPML | currency: 'ILS'}}</h4>
-            </div>
-
-            <div class="row mt-2 border-info border-bottom w-50">
-                <h3>Components:</h3>
-                <ul>
-                    <li *ngFor="let component of newPricingForm.value.itemComponents">
-                        {{component.componentName}} - {{component.finalPrice | currency: 'ILS'}}
-                    </li>
-                </ul>
-            </div>
-
-
-            <div class="row mt-2 border-info border-bottom w-50">
-                <label>Processing Fee: {{newPricingForm.value.processingFee | currency: 'ILS'}}</label>
-            </div> -->
-
             <div class="mt-4">
-                <label>Total Product Price: {{newPricingForm.value.productPrice | currency: 'ILS'}}</label>
+                <label>Total Product Price:</label>
+                <h5>{{newPricingForm.value.productPrice | currency: 'ILS'}}</h5>
             </div>
-
-            <!-- <div class="row mt-4 border-info border-bottom w-50">
-                <label>One Time Expenses: {{newPricingForm.value.oneTimeExp | currency: 'ILS'}}</label>
-            </div>
-            <div class="row mt-2 border-info border-bottom w-50">
-                <label>Delivery Conditions: {{newPricingForm.value.deliveryConds}}</label>
-            </div>
-            <div class="row mt-2 border-info border-bottom w-50">
-                <label>Delivery Fee: {{newPricingForm.value.deliveryFee | currency: 'ILS'}}</label>
-            </div>
-            <div class="row mt-2 border-info border-bottom w-50">
-                <label>Different Expenses: {{newPricingForm.value.diffExp | currency: 'ILS'}}</label>
-            </div> -->
-            <div class="row mt-2 border-info border-bottom w-50">
-                <label>Remarks:</label>
-                <h5>{{newPricingForm.value.remarks}}</h5>
-            </div>
-            <div class="row mt-4 border-info border-bottom w-50">
+            <div class="row">
                 <label>Other Expenses:</label>
                 <h5>{{newPricingForm.value.otherExp | currency: 'ILS'}}</h5>
+            </div>
+            <div class="row">
+                <label>Remarks:</label>
+                <h5>{{newPricingForm.value.remarks}}</h5>
             </div>
 
         </div>
@@ -234,6 +199,11 @@
 
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="">Processing Fee</label>
+                            <input type="number" placeholder="processing fee" formControlName="processingFee"
+                                class="form-control w-25" (keyup)="calculateFinalPrice()">
+                        </div>
 
                         <div class="mt-2">
                             <button *ngIf="!biddingToUpdate" type="button" class="m-2 btn btn-secondary"
@@ -247,11 +217,7 @@
                 <mat-tab [disabled]="!biddingToUpdate" label="Final Fees">
                     <div class="p-5 mx-auto">
                         <h2>Final Fees</h2>
-                        <div class="form-group">
-                            <label for="">Processing Fee</label>
-                            <input type="number" placeholder="processing fee" formControlName="processingFee"
-                                class="form-control w-25" (keyup)="calculateFinalPrice()">
-                        </div>
+                    
                         <div class="form-group">
                             <label for="">One-time Expenses</label>
                             <input type="number" placeholder="one-time expenses" formControlName="oneTimeExp"
@@ -259,7 +225,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">Delivery Conditions</label>
-                            <textarea cols="30" rows="5" placeholder="delivery conditions"
+                            <textarea class="form-control w-25" cols="30" rows="5" placeholder="delivery conditions"
                                 formControlName="deliveryConds"></textarea>
 
                         </div>
@@ -275,7 +241,7 @@
                         </div>
                         <div class="form-group">
                             <label for="">Remarks</label>
-                            <textarea cols="30" rows="5" placeholder="remarks" formControlName="remarks"></textarea>
+                            <textarea class="form-control w-25" cols="20" rows="5" placeholder="remarks" formControlName="remarks"></textarea>
                         </div>
                         <div class="mt-2">
                             <button *ngIf="!biddingToUpdate" type="button" class="m-2 btn btn-secondary"
