@@ -12,8 +12,6 @@ interface FormuleWeight {
   formuleOrder: any;
   formuleUnitWeight: any;
   data: any;
-  exist: boolean
-
 }
 
 @Component({
@@ -28,26 +26,23 @@ export class WeightProductionComponent implements OnInit {
   @ViewChild('reduceMaterialAmount') reduceMaterialAmount: ElementRef;
   @ViewChild('formuleNumberElement') formuleNumberElement: ElementRef;
   @ViewChild('formuleNumber') formuleNumber: ElementRef;
+  @ViewChild('formuleWeight') formuleWeight: ElementRef;
+  @ViewChild('orderNumber') orderNumber: ElementRef;
 
-  formules: FormuleWeight[] = [{
-    formuleNumber: '',
-    formuleWeight: 0,
-    formuleUnitWeight: 0,
-    formuleOrder: '',
-    data: {},
-    exist: true
-  }];
+  formules: FormuleWeight[] = [];
 
   finalFormule: FormuleWeight;
-  finalWeight: number = 0;
   allMaterialArrivals: any[];
   materialShelfs: any[] = []
-  materialArrivals: Boolean = false;
-  printStickerBtn: Boolean = false;
+  shelfPosition: any
   kgToRemove: any;
   shelfNumber: any;
-  shelfPosition
   earlierExpiries: any = []
+  finalWeight: number = 0;
+  formuleExist: boolean = true
+  materialArrivals: Boolean = false;
+  printStickerBtn: Boolean = false;
+  edit: boolean = false;
 
 
   barcode = {
@@ -59,12 +54,10 @@ export class WeightProductionComponent implements OnInit {
   }
   materialName: any;
   materialNumber: any;
-  showHeader: boolean = true;
-  edit: boolean = false;
 
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
 
-    if (this.formules.length == 1 && this.formules[0].data.phases && event.key === 'Enter') {
+    if (this.formules.length == 1 && this.formules[0].data.phases && event.key === 'Enter' && this.formules[0].formuleNumber == this.formuleNumber.nativeElement.value) {
       this.chooseFormule(this.formules[0])
     }
   }
@@ -76,114 +69,69 @@ export class WeightProductionComponent implements OnInit {
     private modalService: NgbModal,
     private itemService: ItemsService) { }
 
-  ngOnInit() { 
-    setTimeout(()=> this.formuleNumber.nativeElement.focus(), 500)
+  ngOnInit() {
+    setTimeout(() => {
+      this.formuleNumber.nativeElement.focus()
+    }, 500)
   }
 
-  addFormule() {
-    this.formules.push({
-      formuleNumber: '',
-      formuleUnitWeight: 0,
-      formuleOrder: '',
-      formuleWeight: 0,
-      data: {},
-      exist: true
-    })
-  }
-
-  eraseLast() {
-    this.formules.pop()
-  }
-
-
-  getMaterialByNumber() {
-
-    this.inventorySrv.getMaterialtByComponentN(this.barcode.materialNumber).subscribe(data => {
-      if (data) {
-        this.barcode.materialName = data[0].componentName
-      }
-    })
-
-    this.inventorySrv.getMaterialArrivalByNumber(this.barcode.materialNumber).subscribe(data => {
-      ;
-      if (data) {
-        this.allMaterialArrivals = data.reverse();
-        this.materialArrivals = true;
-      } else {
-        this.toastSrv.error('No Material Arrivals')
-      }
-
-
-
-    })
-  }
-
-  checkIfIdExist(event) {
-    var materialId = event.target.value;
-    var materialArrival = this.allMaterialArrivals.find(a => a._id == materialId)
-    if (materialArrival) {
-      this.toastSrv.success('You can now print the sticker')
-      this.printStickerBtn = true;
-    } else {
-      this.barcode.materialId = '';
-      this.toastSrv.error('Wrong Material')
-    }
-  }
-
-  printBarcode() {
-    this.printStickerBtn = false;
-    this.materialArrivals = false;
-    this.barcode = {
-      materialId: '',
-      materialNumber: '',
-      materialName: '',
-      weight: '',
-      formuleNumber: ''
-    };
+  deleteFormule(i) {
+    if(confirm('להסיר פורמולה?')) this.formules.splice(i, 1)
   }
 
   newProcess() {
-    this.showHeader = !this.showHeader
     this.formules = []
-    this.addFormule()
     this.finalFormule = null
     this.finalWeight = 0
+    this.formuleNumber.nativeElement.value = ''
+    this.orderNumber.nativeElement.value = ''
+    this.formuleWeight.nativeElement.value = ''
+    this.formuleNumber.nativeElement.focus()
   }
 
-  checkFormule(formule) {
-    this.formuleSrv.getFormuleByNumber(formule.formuleNumber).subscribe(data => {
+  checkFormule(e) {
+    this.formuleSrv.getFormuleByNumber(e.target.value).subscribe(data => {
       if (data == null) {
-        this.toastSrv.error(`Formule Number ${formule.formuleNumber} Not Found!`)
-        formule.exist = false
+        this.toastSrv.error(`Formule Number ${e.target.value} Not Found!`)
+        this.formuleExist = false
       }
       else {
-        formule.exist = true
+        this.formuleExist = true
       }
     })
   }
 
-  startWeight() {
-
-    this.showHeader = !this.showHeader
-    for (let formule of this.formules) {
-      if (formule.formuleNumber != '' && formule.formuleWeight != '') {
-
-        //get formule weight per unit
-        this.itemService.getItemData(formule.formuleNumber).subscribe(data => formule.formuleUnitWeight = data[0].netWeightK)
-        this.formuleSrv.getFormuleByNumber(formule.formuleNumber).subscribe(data => {
-          if (data == null) {
-            this.toastSrv.error(`Formule Number ${formule.formuleNumber} Not Found!`)
-            return
-          }
-          else {
-            formule.data = this.formuleCalculate(data, formule.formuleWeight);
-            this.finalWeight += Number(formule.formuleWeight)
-          }
-        })
-      } else {
-        this.toastSrv.error('Please fill all fields')
-      }
+  go() {
+    if (this.formuleNumber.nativeElement.value != '' && this.formuleWeight.nativeElement.value != '') {
+      this.itemService.getItemData(this.formuleNumber.nativeElement.value).subscribe(itemData => {
+        this.addFormuleWeight(itemData)
+        this.formuleNumber.nativeElement.focus()
+      })
+    } else {
+      this.toastSrv.error('Please fill all fields')
+      this.formuleNumber.nativeElement.focus()
     }
+  }
+
+  addFormuleWeight(itemData) {
+    let formuleWeight: FormuleWeight = {
+      formuleNumber: this.formuleNumber.nativeElement.value,
+      formuleWeight: this.formuleWeight.nativeElement.value,
+      formuleOrder: this.orderNumber.nativeElement.value,
+      formuleUnitWeight: itemData[0].netWeightK,
+      data: {}
+    }
+    this.formuleSrv.getFormuleByNumber(this.formuleNumber.nativeElement.value).subscribe(data => {
+      if (data == null) {
+        this.toastSrv.error(`Formule Number ${this.formuleNumber.nativeElement.value} Not Found!`)
+        return
+      }
+      else {
+        formuleWeight.data = this.formuleCalculate(data, this.formuleWeight.nativeElement.value);
+        this.finalWeight += Number(this.formuleWeight.nativeElement.value)
+        this.formules.push(formuleWeight)
+      }
+    })
   }
 
   formuleCalculate(data, formuleWeight) {
@@ -195,13 +143,12 @@ export class WeightProductionComponent implements OnInit {
     return data
   }
 
-
-
   compareFormules() {
     for (let i = 0; i < this.formules.length - 1; i++) {
       if (_.isEqual(this.formules[i].data.phases, this.formules[i + 1].data.phases)) {
         // console.log(_.differenceWith(this.formules[i].data, this.formules[i+1].data, _.isEqual))
         this.finalFormule = this.formules[i]
+        this.toastSrv.success('Twin Formules!')
       }
       else {
         for (let j = 0; j < this.formules[i].data.phases.length; j++) {
@@ -220,8 +167,6 @@ export class WeightProductionComponent implements OnInit {
     this.finalFormule = { ...formule }
     this.finalFormule.data = this.formuleCalculate(this.finalFormule.data, this.finalWeight)
   }
-
-
 
   printFormule() {
     this.printFormuleBtn.nativeElement.click();
@@ -249,10 +194,6 @@ export class WeightProductionComponent implements OnInit {
   //   }
   // }
 
-
-
-
-
   weightProduction(materialNumber, materialName, ev, kgProd) {
 
     // First, we need to check if there is an older expired (פג תוקף)
@@ -270,9 +211,6 @@ export class WeightProductionComponent implements OnInit {
           this.openReduceMaterialModal(materialName, materialNumber, response.shelfPosition, kgProd)
       }
     })
-
-
-
     // this.kgToRemove = kgProd
 
     // if(materialArrivalReqNum != ''){
@@ -297,6 +235,48 @@ export class WeightProductionComponent implements OnInit {
     this.kgToRemove = kgProd
     this.modalService.open(this.reduceMaterialAmount)
   }
+
+  getMaterialByNumber() {
+    this.inventorySrv.getMaterialtByComponentN(this.barcode.materialNumber).subscribe(data => {
+      if (data) {
+        this.barcode.materialName = data[0].componentName
+      }
+    })
+
+    this.inventorySrv.getMaterialArrivalByNumber(this.barcode.materialNumber).subscribe(data => {
+      if (data) {
+        this.allMaterialArrivals = data.reverse();
+        this.materialArrivals = true;
+      } else {
+        this.toastSrv.error('No Material Arrivals')
+      }
+    })
+  }
+
+  checkIfIdExist(event) {
+    var materialId = event.target.value;
+    var materialArrival = this.allMaterialArrivals.find(a => a._id == materialId)
+    if (materialArrival) {
+      this.toastSrv.success('You can now print the sticker')
+      this.printStickerBtn = true;
+    } else {
+      this.barcode.materialId = '';
+      this.toastSrv.error('Wrong Material')
+    }
+  }
+
+  printBarcode() {
+    this.printStickerBtn = false;
+    this.materialArrivals = false;
+    this.barcode = {
+      materialId: '',
+      materialNumber: '',
+      materialName: '',
+      weight: '',
+      formuleNumber: ''
+    };
+  }
+
 
 
 }

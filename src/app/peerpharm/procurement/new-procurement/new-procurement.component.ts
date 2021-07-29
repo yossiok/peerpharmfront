@@ -698,7 +698,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         let latestArrivalItem = this.newPurchase.value.stockitems.reduce((latestItem, item)=> {
           return item.itemArrival > latestItem.itemArrival ? item : latestItem
         }, this.newPurchase.value.stockitems[0])
-        this.newPurchase.controls.arrivalDate.setValue(latestArrivalItem.itemArrival)
+        if(latestArrivalItem.itemArrival != '') this.newPurchase.controls.arrivalDate.setValue(latestArrivalItem.itemArrival)
         
         this.procurementService.updatePurchaseOrder(this.newPurchase.value).subscribe(data => {
           this.sendingPurchase = false;

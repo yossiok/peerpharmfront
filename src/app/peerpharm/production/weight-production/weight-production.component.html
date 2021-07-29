@@ -17,47 +17,35 @@
 <div class="row mt-4"></div>
 
 
+<div>
 
-<div *ngIf="showHeader" class="container bg-white text-center p-4 rounded-pill shadow">
 
-  <div class="row mt-5" *ngFor="let formule of formules; let i = index">
+<div class="container bg-white text-center  rounded-pill shadow">
+  <div class="row mt-2 p-4">
+    <div class="col-2"></div>
     <div class="col-2">
-      <input id="formuleNumber" #formuleNumber [(ngModel)]="formule.formuleNumber" (change)="checkFormule(formule)" 
-        placeholder="Formule Number" class="form-control rounded-pill">
+      <input id="formuleNumber" #formuleNumber 
+        (change)="checkFormule($event)" placeholder="Formule Number" class="form-control rounded-pill">
     </div>
     <div class="col-2">
-      <input [(ngModel)]="formule.formuleOrder" [disabled]="!formule.exist" placeholder="Order Number" class="form-control rounded-pill">
+      <input [disabled]="!formuleExist" #orderNumber placeholder="Order Number"
+        class="form-control rounded-pill">
     </div>
     <div class="col-2">
-      <input [(ngModel)]="formule.formuleWeight" [disabled]="!formule.exist" placeholder="Weight" class="form-control rounded-pill">
+      <input #formuleWeight [disabled]="!formuleExist" placeholder="Weight"
+        class="form-control rounded-pill">
     </div>
     <div class="col-2">
-      <button [disabled]="!formule.exist"  class="btn btn-warning rounded-pill mx-auto" (click)="addFormule()">
-        Add Process</button>
+      <button (click)="go()" class="btn btn-info form-control rounded-pill">Go.</button>
     </div>
-    <div *ngIf="i != 0" class="col-2">
+    <!-- <div *ngIf="i != 0" class="col-2">
       <button class="btn btn-danger rounded-pill mx-auto" (click)="eraseLast()">
         X</button>
-    </div>
+    </div> -->
   </div>
 
   <div class="row mt-2">
   </div>
-
-
-  <hr>
-
-  <div class="row mt-3">
-    <div class="col-2"></div>
-    <div class="col-2"></div>
-    <div class="col-2">
-      <button (click)="startWeight()" class="btn btn-info form-control rounded-pill">Start</button>
-    </div>
-    <div class="col-4">
-    </div>
-    <div class="col-2"></div>
-  </div>
-
 
   <div *ngIf="printStickerBtn == true" class="row p-2">
     <div class="col-12">
@@ -68,18 +56,28 @@
 
 </div>
 
-<div  *ngIf="formules.length > 0 && !finalFormule" class=" mt-2 text-center p-2 rounded shadow">
+<div 
+*ngIf="formules.length > 0 && !finalFormule" 
+class=" mt-2 text-center p-2 rounded shadow">
   <div class="row mt-3 d-flex flex-row">
-    <div *ngFor="let formule of formules" class="col-3">
+    <div 
+    *ngFor="let formule of formules; let index = i" 
+    class="col-3">
       <div>
         <div class="d-flex flex-row justify-content-between">
-          
+
           <div>
-            <i *ngIf="formule.data.approval == 1" class="fa fa-check bg-success text-white p-2" aria-hidden="true"> Approved</i>
-            <i *ngIf="formule.data.approval != 1" class="fa fa-times bg-danger text-white p-2" aria-hidden="true"> Not Approved</i>
+            <i *ngIf="formule.data.approval == 1" class="fa fa-check text-success text-white p-2" aria-hidden="true">
+              Approved</i>
+            <i *ngIf="formule.data.approval != 1" class="fa fa-times text-danger p-2" aria-hidden="true"> Not
+              Approved</i>
           </div>
           <div>
-            <button class="btn btn-primary" (click)="chooseFormule(formule)"><span *ngIf="formules.length > 1"></span> Choose this formule</button>
+            <button class="click btn btn-outline-primary" (click)="chooseFormule(formule)"><span *ngIf="formules.length > 1"></span>
+              Choose this formule</button>
+          </div>
+          <div>
+              <button ngbTooltip="Remove" class="click btn btn-outline-danger" (click)="deleteFormule(i)"><i class="fa fa-times h3"></i></button>
           </div>
         </div>
         <h5>
@@ -114,18 +112,18 @@
         <tbody>
           <ng-container *ngFor="let phase of formule.data.phases">
             <tr *ngFor="let item of phase.items; let i = index">
-              <td style="padding:5px" *ngIf="i == 0" [attr.rowspan]="phase.items.length"
-                class="phase">{{phase.phaseName }}</td>
+              <td style="padding:5px" *ngIf="i == 0" [attr.rowspan]="phase.items.length" class="phase">{{phase.phaseName
+                }}</td>
               <td style="padding:5px" [style.background]="item.color">{{ item.itemNumber }}</td>
               <td style="padding:5px" [style.background]="item.color">{{ item.itemName }}</td>
               <td *ngIf="!edit" style="padding:5px" [style.background]="item.color">{{ item.percentage }}%</td>
               <td *ngIf="edit" style="padding:5px">
-                <input type="number" [ngModelOptions]="{standalone: true}"  [(ngModel)]="item.percentage">
+                <input type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="item.percentage">
               </td>
               <td style="padding:5px">{{ item.kgProd | number }}</td>
             </tr>
           </ng-container>
-    
+
         </tbody>
       </table>
     </div>
@@ -135,7 +133,7 @@
 
 <div id="formuleSection" class="row mt-3 d-flex flex-row" *ngIf="finalFormule">
   <div>
- 
+
     <table class="table table-bordered">
       <thead class="text-info">
         <tr>
@@ -151,33 +149,33 @@
       </thead>
 
       <tbody>
-  
-
-          <tr *ngFor="let formule of formules; let i = index">
-            <td>{{formule.data.formuleNumber}}</td>
-            <td>{{formule.data.formuleName}}</td>
-            <td>{{formule.formuleOrder}}</td>
-            <td class="text-center">{{formule.formuleWeight}}KG</td>
-            <td>{{formule.formuleUnitWeight}}gr.</td>
-            <td>{{formule.data.phFrom}}-{{formule.data.phTo}}</td>
-            <td></td>
-          </tr>
-          <tr class="bg-light">
-            <td style="font-weight: bold">Date:</td>
-            <td><input style="height: 60px;" type="text"></td>
-            <td style="font-weight: bold">Batch:</td>
-            <td><input style="height: 60px;" type="text" value="21pp"></td>
-            <td style="font-weight: bold">Final PH:</td>
-            <td><input style="height: 60px;" type="text"></td>
-          </tr>
-         
-          
-        </tbody>
-      </table>
-      <h2>Batch Weight: {{finalWeight}}KG</h2>
 
 
-<div class="row mt-4"></div>
+        <tr *ngFor="let formule of formules; let i = index">
+          <td>{{formule.data.formuleNumber}}</td>
+          <td>{{formule.data.formuleName}}</td>
+          <td>{{formule.formuleOrder}}</td>
+          <td class="text-center">{{formule.formuleWeight}}KG</td>
+          <td>{{formule.formuleUnitWeight}}gr.</td>
+          <td>{{formule.data.phFrom}}-{{formule.data.phTo}}</td>
+          <td></td>
+        </tr>
+        <tr class="bg-light">
+          <td style="font-weight: bold">Date:</td>
+          <td><input style="height: 60px;" type="text"></td>
+          <td style="font-weight: bold">Batch:</td>
+          <td><input style="height: 60px;" type="text" value="21pp"></td>
+          <td style="font-weight: bold">Final PH:</td>
+          <td><input style="height: 60px;" type="text"></td>
+        </tr>
+
+
+      </tbody>
+    </table>
+    <h2>Batch Weight: {{finalWeight}}KG</h2>
+
+
+    <div class="row mt-4"></div>
 
 
     <table class="table table-hover">
@@ -308,4 +306,6 @@
     <button type="button" class="btn btn-danger" (click)="reduceAmountFromShelf()">Reduce</button>
     <button type="button" class="btn btn-secondary" (click)="c('Close click')">Close</button>
   </div>
-</ng-template>
+</ng-template> 
+
+</div>
