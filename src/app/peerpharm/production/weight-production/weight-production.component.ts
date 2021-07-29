@@ -42,6 +42,7 @@ export class WeightProductionComponent implements OnInit {
   formuleExist: boolean = true
   materialArrivals: Boolean = false;
   printStickerBtn: Boolean = false;
+  edit: boolean = false;
 
 
   barcode = {
@@ -53,12 +54,10 @@ export class WeightProductionComponent implements OnInit {
   }
   materialName: any;
   materialNumber: any;
-  showHeader: boolean = true;
-  edit: boolean = false;
 
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
 
-    if (this.formules.length == 1 && this.formules[0].data.phases && event.key === 'Enter') {
+    if (this.formules.length == 1 && this.formules[0].data.phases && event.key === 'Enter' && this.formules[0].formuleNumber == this.formuleNumber.nativeElement.value) {
       this.chooseFormule(this.formules[0])
     }
   }
@@ -76,26 +75,18 @@ export class WeightProductionComponent implements OnInit {
     }, 500)
   }
 
-  addFormule() {
-    this.formules.push({
-      formuleNumber: '',
-      formuleUnitWeight: 0,
-      formuleOrder: '',
-      formuleWeight: 0,
-      data: {},
-    })
-  }
-
-  eraseLast() {
-    this.formules.pop()
+  deleteFormule(i) {
+    if(confirm('להסיר פורמולה?')) this.formules.splice(i, 1)
   }
 
   newProcess() {
-    this.showHeader = !this.showHeader
     this.formules = []
-    this.addFormule()
     this.finalFormule = null
     this.finalWeight = 0
+    this.formuleNumber.nativeElement.value = ''
+    this.orderNumber.nativeElement.value = ''
+    this.formuleWeight.nativeElement.value = ''
+    this.formuleNumber.nativeElement.focus()
   }
 
   checkFormule(e) {
@@ -114,9 +105,11 @@ export class WeightProductionComponent implements OnInit {
     if (this.formuleNumber.nativeElement.value != '' && this.formuleWeight.nativeElement.value != '') {
       this.itemService.getItemData(this.formuleNumber.nativeElement.value).subscribe(itemData => {
         this.addFormuleWeight(itemData)
+        this.formuleNumber.nativeElement.focus()
       })
     } else {
       this.toastSrv.error('Please fill all fields')
+      this.formuleNumber.nativeElement.focus()
     }
   }
 
@@ -155,11 +148,12 @@ export class WeightProductionComponent implements OnInit {
       if (_.isEqual(this.formules[i].data.phases, this.formules[i + 1].data.phases)) {
         // console.log(_.differenceWith(this.formules[i].data, this.formules[i+1].data, _.isEqual))
         this.finalFormule = this.formules[i]
+        this.toastSrv.success('Twin Formules!')
       }
       else {
         for (let j = 0; j < this.formules[i].data.phases.length; j++) {
           for (let k = 0; k < this.formules[i].data.phases[j].items.length; k++) {
-            if (this.formules[i].data.phases[j].items[k].percentage != this.formules[i + 1].data.phases[j].items[k].percentage) {
+            if (Number(this.formules[i].data.phases[j].items[k].percentage) != Number(this.formules[i + 1].data.phases[j].items[k].percentage)) {
               this.formules[i].data.phases[j].items[k].color = 'orange'
               this.formules[i + 1].data.phases[j].items[k].color = 'orange'
             }

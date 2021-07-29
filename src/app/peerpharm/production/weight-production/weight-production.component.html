@@ -1,4 +1,4 @@
-<!-- <div class="row">
+<div class="row">
   <div class="col-2">
     <button class="btn btn-primary rounded-pill" (click)="newProcess()">New Process</button>
   </div>
@@ -15,20 +15,13 @@
   <button class="btn btn-primary rounded-pill" (click)="edit = !edit">Edit Percentage</button>
 </div>
 <div class="row mt-4"></div>
--->
+
 
 <div>
 
 
 <div class="container bg-white text-center  rounded-pill shadow">
-  <div class="row">
-    <div class="col-2"></div>
-    <i *ngIf="showHeader" (click)="showHeader = !showHeader"
-      class="fas fa-window-minimize h3 p-1 click minimizer rounded"></i>
-    <i *ngIf="!showHeader" (click)="showHeader = !showHeader"
-      class="far fa-window-maximize h3 p-1 click minimizer rounded"></i>
-  </div>
-  <div *ngIf="showHeader" class="row mt-2 p-4">
+  <div class="row mt-2 p-4">
     <div class="col-2"></div>
     <div class="col-2">
       <input id="formuleNumber" #formuleNumber 
@@ -68,39 +61,42 @@
 class=" mt-2 text-center p-2 rounded shadow">
   <div class="row mt-3 d-flex flex-row">
     <div 
-    *ngFor="let formule of formules" 
+    *ngFor="let formule of formules; let index = i" 
     class="col-3">
       <div>
         <div class="d-flex flex-row justify-content-between">
 
           <div>
-            <i *ngIf="fotmule.data.approval == 1" class="fa fa-check bg-success text-white p-2" aria-hidden="true">
+            <i *ngIf="formule.data.approval == 1" class="fa fa-check text-success text-white p-2" aria-hidden="true">
               Approved</i>
-            <i *ngIf="fotmule.data.approval != 1" class="fa fa-times bg-danger text-white p-2" aria-hidden="true"> Not
+            <i *ngIf="formule.data.approval != 1" class="fa fa-times text-danger p-2" aria-hidden="true"> Not
               Approved</i>
           </div>
           <div>
-            <button class="btn btn-primary" (click)="chooseFormule(formule)"><span *ngIf="formules.length > 1"></span>
+            <button class="click btn btn-outline-primary" (click)="chooseFormule(formule)"><span *ngIf="formules.length > 1"></span>
               Choose this formule</button>
+          </div>
+          <div>
+              <button ngbTooltip="Remove" class="click btn btn-outline-danger" (click)="deleteFormule(i)"><i class="fa fa-times h3"></i></button>
           </div>
         </div>
         <h5>
-          Formule <span class="header-detail ml-2">{{fotmule.data.formuleNumber}}</span>
+          Formule <span class="header-detail ml-2">{{formule.data.formuleNumber}}</span>
         </h5>
         <h5>
-          <span class="header-detail">{{fotmule.data.formuleName}}</span>
+          <span class="header-detail">{{formule.data.formuleName}}</span>
         </h5>
         <span>
-          Order Number: <span class="header-detail">{{fotmule.formuleOrder}}</span>
+          Order Number: <span class="header-detail">{{formule.formuleOrder}}</span>
         </span>
         <span>
-          Weight: <span class="header-detail">{{fotmule.formuleWeight}}</span>
+          Weight: <span class="header-detail">{{formule.formuleWeight}}</span>
         </span>
         <span>
-          Weight per Unit:: <span class="header-detail">{{fotmule.formuleUnitWeight}}</span>
+          Weight per Unit:: <span class="header-detail">{{formule.formuleUnitWeight}}</span>
         </span>
         <span>
-          PH: <span class="header-detail">{{fotmule.data.phFrom}}-{{fotmule.data.phTo}}</span>
+          PH: <span class="header-detail">{{formule.data.phFrom}}-{{formule.data.phTo}}</span>
         </span>
       </div>
       <table class="table table-hover">
@@ -114,7 +110,7 @@ class=" mt-2 text-center p-2 rounded shadow">
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngFor="let phase of fotmule.data.phases">
+          <ng-container *ngFor="let phase of formule.data.phases">
             <tr *ngFor="let item of phase.items; let i = index">
               <td style="padding:5px" *ngIf="i == 0" [attr.rowspan]="phase.items.length" class="phase">{{phase.phaseName
                 }}</td>
