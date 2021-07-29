@@ -28,6 +28,8 @@ export class WeightProductionComponent implements OnInit {
   @ViewChild('reduceMaterialAmount') reduceMaterialAmount: ElementRef;
   @ViewChild('formuleNumberElement') formuleNumberElement: ElementRef;
   @ViewChild('formuleNumber') formuleNumber: ElementRef;
+  @ViewChild('formuleWeight') formuleWeight: ElementRef;
+  @ViewChild('orderNumber') orderNumber: ElementRef;
 
   formules: FormuleWeight[] = [{
     formuleNumber: '',
@@ -79,7 +81,10 @@ export class WeightProductionComponent implements OnInit {
     private itemService: ItemsService) { }
 
   ngOnInit() { 
-    setTimeout(()=> this.formuleNumber.nativeElement.focus(), 500)
+    setTimeout(()=> {
+      this.formuleNumber.nativeElement.focus()
+      this.formuleNumber.nativeElement.click()
+    }, 1000)
   }
 
   addFormule() {
@@ -167,27 +172,35 @@ export class WeightProductionComponent implements OnInit {
   startWeight() {
 
     this.showHeader = !this.showHeader
-    for (let formule of this.formules) {
-      if (this.currentFormule.formuleNumber != '' && this.currentFormule.formuleWeight != '') {
+    // for (let formule of this.formules) {
+      if (this.formuleNumber.nativeElement.value != '' && this.formuleWeight.nativeElement.value != '') {
 
         //get formule weight per unit
-        this.itemService.getItemData(this.currentFormule.formuleNumber).subscribe(data => this.currentFormule.formuleUnitWeight = data[0].netWeightK)
-        this.formuleSrv.getFormuleByNumber(this.currentFormule.formuleNumber).subscribe(data => {
-          if (data == null) {
-            this.toastSrv.error(`Formule Number ${this.currentFormule.formuleNumber} Not Found!`)
-            return
-          }
-          else {
-            this.currentFormule.data = this.formuleCalculate(data, this.currentFormule.formuleWeight);
-            this.finalWeight += Number(this.currentFormule.formuleWeight)
-            let temp = {...this.currentFormule}
-            this.formules.push(temp)
-          }
-        })
+        this.itemService.getItemData(this.currentFormule.formuleNumber).subscribe(itemData => {
+          this.addFormuleWeight(itemData)
+        }) 
+     
       } else {
         this.toastSrv.error('Please fill all fields')
       }
-    }
+    // }
+  }
+
+  addFormuleWeight(itemData) {
+    let formuleWeight: FormuleWeight
+    formuleWeight.formuleUnitWeight = itemData[0].netWeightK
+    this.formuleSrv.getFormuleByNumber(this.formuleNumber.nativeElement.value).subscribe(data => {
+      if (data == null) {
+        this.toastSrv.error(`Formule Number ${this.formuleNumber.nativeElement.value} Not Found!`)
+        return
+      }
+      else {
+        formuleWeight.data = this.formuleCalculate(data, this.formuleWeight.nativeElement.value);
+        this.finalWeight += Number(this.currentFormule.formuleWeight)
+        let temp = {...this.currentFormule}
+        this.formules.push(temp)
+      }
+    })
   }
 
   formuleCalculate(data, formuleWeight) {
