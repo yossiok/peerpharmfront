@@ -493,9 +493,13 @@ export class ProcurementOrdersComponent implements OnInit {
       case 'closed': return 'brown'
       case 'waitingForApproval': return 'orange'
       case 'approvedBySupplier': return 'lightgreen'
-      case 'supplied': return '#09d5e8'
+      case 'supplied': return '#09d5e8' //delivered
       case 'canceled': return '#9198a3'
       case 'sentBySupplier': return '#17e610'
+      case 'ETD': return '#1553e6'
+      case 'ETA': return '#15abe6'
+      case 'ready': return '#2f732d'
+      case 'cstClear': return '#e615e6'
     }
   }
 
@@ -598,10 +602,10 @@ export class ProcurementOrdersComponent implements OnInit {
     this.supplierService.getSuppliersByNumber(supplierNumber).subscribe(data => {
       ;
       this.currentSupplier = data[0]
-      if (this.currentSupplier.import == 'outOfIsrael') {
+      if (this.currentSupplier.origin == 'import') {
         this.country = true;
 
-      } else if (this.currentSupplier.import != 'outOfIsrael' && (line.stockitems[0].coin).toLowerCase() != 'nis') {
+      } else if (this.currentSupplier.origin != 'import' && (line.stockitems[0].coin).toLowerCase() != 'nis') {
         this.country = true;
 
       } else {

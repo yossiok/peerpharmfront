@@ -159,7 +159,7 @@
     <div class="col-2">
       <label class="form-control text-success">Currency</label>
     </div><div class="col-2">
-      <label class="form-control text-success">Import</label>
+      <label class="form-control text-success">Origin</label>
     </div>
   </div>
   <div class="row mt-2">
@@ -179,9 +179,9 @@
       <input type="text" class="form-control" [(ngModel)]="currentSupplier.currency">
     </div>
     <div class="col-2">
-      <select class="form-control" [(ngModel)]="currentSupplier.import">
+      <select class="form-control" [(ngModel)]="currentSupplier.origin">
         <option value=""></option>
-        <option value="outOfIsrael">Out Of Israel</option>
+        <option value="import">import</option>
         <option value="israel">Israel</option>
       </select>
     </div>

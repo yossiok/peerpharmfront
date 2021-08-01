@@ -128,6 +128,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       supplierNumber: ["", Validators.required],
       supplierCountry: [""],
       supplierEmail: [''],
+      origin: [''],
       creationDate: [this.formatDate(new Date()), Validators.required],
       arrivalDate: [{ value: this.formatDate(new Date()), disabled: this.disabled && this.isEdit }],
       stockitems: [[], Validators.required],
@@ -138,6 +139,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       orderType: ['', Validators.required],
       remarks: [''],
       status: ['open'],
+      statusChange: [this.formatDate(new Date())],
+      statusUpdates: [[]],
       deliveryCerts: [[]],
       outOfCountry: [false],
       recommendId: [''],
@@ -195,7 +198,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         status: 'open',
         deliveryCerts: [],
         outOfCountry: false,
-        recommendId: this.requestToPurchase._id
+        recommendId: this.requestToPurchase._id,
 
       })
     }
@@ -211,6 +214,9 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       if (!this.purchaseData.supplierCountry) this.purchaseData.supplierCountry = ''
       if (!this.purchaseData.shippingPercentage) this.purchaseData.shippingPercentage = 0
       if (!this.purchaseData.finalPurchasePrice) this.purchaseData.finalPurchasePrice = 0
+      if (!this.purchaseData.origin) this.purchaseData.origin = ''
+      if (!this.purchaseData.statusUpdates) this.purchaseData.statusUpdates = []
+      if (!this.purchaseData.statusChange) this.purchaseData.statusChange = null
       this.newPurchase.setValue(this.purchaseData as PurchaseData);
       this.newPurchase.controls.orderType.setValue(this.purchaseData.orderType);
     }
@@ -237,6 +243,9 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         if (!changes.purchaseData.currentValue.user) changes.purchaseData.currentValue.user = ''
         if (!changes.purchaseData.currentValue.shippingPercentage) changes.purchaseData.currentValue.shippingPercentage = 0
         if (!changes.purchaseData.currentValue.finalPurchasePrice) changes.purchaseData.currentValue.finalPurchasePrice = 0
+        if (!changes.purchaseData.currentValue.origin) changes.purchaseData.currentValue.origin = ''
+        if (!changes.purchaseData.currentValue.statusUpdates) changes.purchaseData.currentValue.statusUpdates = []
+        if (!changes.purchaseData.currentValue.statusChange) changes.purchaseData.currentValue.statusChange = null
         this.newPurchase.setValue(changes.purchaseData.currentValue)
       }
     }
@@ -273,7 +282,37 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     })
   }
 
+  hebStat(engStat) {
+    switch (engStat) {
+      case 'approvedBySupplier': return 'approved'
+      case 'waitingForApproval': return 'waiting approval'
+      case 'open': return 'open'
+      case 'closed': return 'closed'
+      case 'supplied': return 'delivered'
+      case 'canceled': return 'canceled'
+      case 'sentBySupplier': return 'sent by supplier'
+      case 'ETD': return 'shipped'
+      case 'ETA': return 'arrived'
+      case 'ready': return 'ready'
+      case 'cstClear': return 'custom cleared'
+    }
+  }
 
+  setStatusColor(status) {
+    switch (status) {
+      case 'open': return ''
+      case 'closed': return 'brown'
+      case 'waitingForApproval': return 'orange'
+      case 'approvedBySupplier': return 'lightgreen'
+      case 'supplied': return '#09d5e8' //delivered
+      case 'canceled': return '#9198a3'
+      case 'sentBySupplier': return '#17e610'
+      case 'ETD': return '#1553e6'
+      case 'ETA': return '#15abe6'
+      case 'ready': return '#2f732d'
+      case 'cstClear': return '#e615e6'
+    }
+  }
 
 
   //Materials
@@ -309,6 +348,9 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
     if (this.currSupplier.country) {
       this.newPurchase.controls.supplierCountry.setValue(this.currSupplier.country)
+    }
+    if (this.currSupplier.origin) {
+      this.newPurchase.controls.origin.setValue(this.currSupplier.origin)
     }
   }
 
