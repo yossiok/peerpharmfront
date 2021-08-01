@@ -43,6 +43,7 @@ export class WeightProductionComponent implements OnInit {
   materialArrivals: Boolean = false;
   printStickerBtn: Boolean = false;
   edit: boolean = false;
+  showPill: boolean = true
 
 
   barcode = {
@@ -57,9 +58,13 @@ export class WeightProductionComponent implements OnInit {
 
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
 
-    if (this.formules.length == 1 && this.formules[0].data.phases && event.key === 'Enter' && this.formules[0].formuleNumber == this.formuleNumber.nativeElement.value) {
+    if (this.formules.length == 1 && this.formules[0].data.phases && event.key === 'Enter' && this.formuleNumber.nativeElement.value == '') {
       this.chooseFormule(this.formules[0])
     }
+
+    if(event.key === 'F2') this.newProcess()
+    if(event.key === 'F4') this.compareFormules()
+    if(event.key === 'F10') this.printFormule()
   }
 
   constructor(
@@ -80,13 +85,14 @@ export class WeightProductionComponent implements OnInit {
   }
 
   newProcess() {
+    this.showPill = true
     this.formules = []
     this.finalFormule = null
     this.finalWeight = 0
     this.formuleNumber.nativeElement.value = ''
     this.orderNumber.nativeElement.value = ''
     this.formuleWeight.nativeElement.value = ''
-    this.formuleNumber.nativeElement.focus()
+    setTimeout(()=>this.formuleNumber.nativeElement.focus(),500)
   }
 
   checkFormule(e) {
@@ -105,10 +111,7 @@ export class WeightProductionComponent implements OnInit {
     if (this.formuleNumber.nativeElement.value != '' && this.formuleWeight.nativeElement.value != '') {
       this.itemService.getItemData(this.formuleNumber.nativeElement.value).subscribe(itemData => {
         this.addFormuleWeight(itemData)
-        this.formuleNumber.nativeElement.value = ''
-        this.formuleWeight.nativeElement.value = ''
-        this.formuleNumber.nativeElement.value = ''
-        this.formuleNumber.nativeElement.focus()
+       
       })
     } else {
       this.toastSrv.error('Please fill all fields')
@@ -135,6 +138,10 @@ export class WeightProductionComponent implements OnInit {
         this.finalWeight += Number(this.formuleWeight.nativeElement.value)
         this.formules.push(formuleWeight)
       }
+      this.formuleNumber.nativeElement.value = ''
+      this.formuleWeight.nativeElement.value = ''
+      this.formuleNumber.nativeElement.value = ''
+      this.formuleNumber.nativeElement.focus()
     })
   }
 
@@ -168,6 +175,7 @@ export class WeightProductionComponent implements OnInit {
   }
 
   chooseFormule(formule) {
+    this.showPill = false
     this.finalFormule = { ...formule }
     this.finalFormule.data = this.formuleCalculate(this.finalFormule.data, this.finalWeight)
   }

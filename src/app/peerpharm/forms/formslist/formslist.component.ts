@@ -27,25 +27,50 @@ export class FormslistComponent implements OnInit {
   }
 
   getForms() {
-    this.showLoader = true
-    this.formsService.getAllForms(this.year).subscribe(forms => {
-      if (forms) {
-        forms.map(form => {
-          let dateStr = this.year + "/01/01";
-          try {
-            let dateSAsArrray = form.fillingDate.split('/');
-            dateStr = dateSAsArrray[2] + "/" + dateSAsArrray[1] + "/" + dateSAsArrray[0];
-          } catch (e) { console.log(e) }
-          form.formatedDate = new Date(dateStr);
-          return form;
-        })
-        forms.sort((a, b) => b.formatedDate - a.formatedDate)
-        this.showLoader = false;
-        this.forms = forms;
-        this.formsCopy = forms;
-      }
 
-    });
+    this.showLoader = true
+
+    if (this.year == '2020' || this.year == '2021') {
+      this.formsService.getAllForms(this.year).subscribe(forms => {
+        if (forms) {
+          forms.map(form => {
+            let dateStr = this.year + "/01/01";
+            try {
+              let dateSAsArrray = form.fillingDate.split('/');
+              dateStr = dateSAsArrray[2] + "/" + dateSAsArrray[1] + "/" + dateSAsArrray[0];
+            } catch (e) { console.log(e) }
+            form.formatedDate = new Date(dateStr);
+            return form;
+          })
+          forms.sort((a, b) => b.formatedDate - a.formatedDate)
+          this.showLoader = false;
+          this.forms = forms;
+          this.formsCopy = forms;
+        }
+      });
+    }
+
+    else if (this.year == '2018' || this.year == '2019') {
+      this.formsService.getFormsFromArchive(this.year).subscribe(forms => {
+        if (forms) {
+          forms.map(form => {
+            let dateStr = this.year + "/01/01";
+            try {
+              let dateSAsArrray = form.fillingDate.split('/');
+              dateStr = dateSAsArrray[2] + "/" + dateSAsArrray[1] + "/" + dateSAsArrray[0];
+            } catch (e) { console.log(e) }
+            form.formatedDate = new Date(dateStr);
+            return form;
+          })
+          forms.sort((a, b) => b.formatedDate - a.formatedDate)
+          this.showLoader = false;
+          this.forms = forms;
+          this.formsCopy = forms;
+        }
+
+      })
+    }
+
   }
   sortFormsByFormNumber() {
     this.forms.reverse()

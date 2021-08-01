@@ -1,13 +1,13 @@
 <div class="row">
   <div class="col-2">
-    <button class="btn btn-primary rounded-pill" (click)="newProcess()">New Process</button>
+    <button class="btn btn-primary rounded-pill" (click)="newProcess()">New Process - F2</button>
   </div>
   <div class="col-3">
-    <button class="btn btn-secondary rounded-pill" (click)="compareFormules()">Compare Formules</button>
+    <button class="btn btn-secondary rounded-pill" (click)="compareFormules()">Compare Formules - F4</button>
   </div>
   <div class="col-2">
     <button (click)="printFormule()" [disabled]="!finalFormule" [style.cursor]="finalFormule ? 'pointer' : 'not-allowed'" 
-        class="btn btn-success form-control rounded-pill">Print</button>
+        class="btn btn-success form-control rounded-pill">Print - F10</button>
     <button #printFormuleBtn [printStyle]="{td : {'border-top': 'solid 1px'}, th : {'border': 'solid 1px'}}"
     printSectionId="formuleSection" ngxPrint style="display: none;"></button>
   </div>
@@ -20,7 +20,7 @@
 <div>
 
 
-<div class="container bg-white text-center  rounded-pill shadow">
+<div *ngIf="showPill" class="container bg-white text-center  rounded-pill shadow">
   <div class="row mt-2 p-4">
     <div class="col-2"></div>
     <div class="col-2">

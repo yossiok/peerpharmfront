@@ -229,6 +229,12 @@ export class FormsService {
     if(year) url = this.baseUrl + 'formDetails?year='+year
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
+  getFormsFromArchive(year: string) {
+    let url = this.baseUrl + 'formDetails/archive?year='+year;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   getAllUnfinished() {
     let url = this.baseUrl + 'formDetails/getformsfillednotready?limit=100';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
