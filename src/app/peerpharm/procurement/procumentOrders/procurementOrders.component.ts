@@ -484,6 +484,10 @@ export class ProcurementOrdersComponent implements OnInit {
       case 'supplied': return 'delivered'
       case 'canceled': return 'canceled'
       case 'sentBySupplier': return 'sent by supplier'
+      case 'ETD': return 'shipped'
+      case 'ETA': return 'arrived'
+      case 'ready': return 'ready'
+      case 'cstClear': return 'custom cleared'
     }
   }
 
@@ -500,6 +504,22 @@ export class ProcurementOrdersComponent implements OnInit {
       case 'ETA': return '#15abe6'
       case 'ready': return '#2f732d'
       case 'cstClear': return '#e615e6'
+    }
+  }
+
+  setStatusTextColor(status) {
+    switch (status) {
+      case 'open': return 'black'
+      case 'closed': return 'white'
+      case 'waitingForApproval': return 'black'
+      case 'approvedBySupplier': return 'black'
+      case 'supplied': return 'black' //delivered
+      case 'canceled': return 'white'
+      case 'sentBySupplier': return 'black'
+      case 'ETD': return 'white'
+      case 'ETA': return 'white'
+      case 'ready': return 'black'
+      case 'cstClear': return 'black'
     }
   }
 
@@ -854,22 +874,24 @@ export class ProcurementOrdersComponent implements OnInit {
         for (let purchaseOrder of this.procurementData) {
           if (purchaseOrder.stockitems) purchaseOrder.stockitems.map(item => {
             allItems.push({
-              orderNumber: purchaseOrder.orderNumber,
-              orderStatus: purchaseOrder.status,
-              itemNumber: item.number,
+              Supplier: purchaseOrder.supplierNumber+" - "+purchaseOrder.supplierName,
+              origin: purchaseOrder.origin,
+              PONum: purchaseOrder.orderNumber,
+              POstatus: purchaseOrder.status,
+              itemNum: item.number,
               itemName: item.name,
-              componentType: item.componentType,
-              orderedAmount: item.quantity,
-              arrivedAmount: item.arrivedAmount,
+              Type: item.componentType,
+              Price: item.price,
+              Po_Amount: item.quantity,
+              Po_Delivered: item.arrivedAmount,
+              PO_Date: purchaseOrder.creationDate,
+              PO_Requested_Date: purchaseOrder.arrivalData,
               measurement: item.measurement,
-              itemPrice: item.price,
               totalPriceNIS: item.localTotal,
               coin: item.coin,
               supplierItemNum: item.supplierItemNum,
               shippingPrice: item.shippingPrice,
               remarks: item.remarks
-
-
             })
           })
         }

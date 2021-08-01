@@ -140,7 +140,12 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       remarks: [''],
       status: ['open'],
       statusChange: [this.formatDate(new Date())],
-      statusUpdates: [[]],
+      statusUpdates: [[{
+        prev: null,
+        date: this.formatDate(new Date()),
+        new: 'open',
+        user: this.authService.loggedInUser.userName
+      }]],
       deliveryCerts: [[]],
       outOfCountry: [false],
       recommendId: [''],
@@ -311,6 +316,22 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       case 'ETA': return '#15abe6'
       case 'ready': return '#2f732d'
       case 'cstClear': return '#e615e6'
+    }
+  }
+
+  setStatusTextColor(status) {
+    switch (status) {
+      case 'open': return 'black'
+      case 'closed': return 'white'
+      case 'waitingForApproval': return 'black'
+      case 'approvedBySupplier': return 'black'
+      case 'supplied': return 'black' //delivered
+      case 'canceled': return 'white'
+      case 'sentBySupplier': return 'black'
+      case 'ETD': return 'white'
+      case 'ETA': return 'white'
+      case 'ready': return 'black'
+      case 'cstClear': return 'black'
     }
   }
 

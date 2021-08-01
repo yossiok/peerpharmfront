@@ -913,8 +913,8 @@
 
 <ng-template #status>
   <h3>Status Updates</h3>
-  <div class="row mt-3 bg-muted">
-    <div *ngIf="purchaseData.deliveryCerts" style="background: #d5cff9" class="col-12 shadow rounded">
+  <div class="row mt-3">
+    <div class="col-12 shadow rounded">
       <table style="overflow: auto;" class="table table-striped">
         <thead>
           <tr>
@@ -925,10 +925,11 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let status of purchaseData.statusUpdates; let i = index">
-            <td>{{status.prev}}</td>
+          <tr *ngFor="let status of purchaseData.statusUpdates; let i = index"
+            [style.background]="setStatusColor(status.new)" [style.color]="setStatusTextColor(status.new)">
+            <td>{{hebStat(status.prev)}}</td>
             <td>{{status.date | date: 'dd/MM/yyyy'}}</td>
-            <td>{{status.new}}</td>
+            <td>{{hebStat(status.new)}}</td>
             <td>{{status.user}}</td>
           </tr>
         </tbody>
