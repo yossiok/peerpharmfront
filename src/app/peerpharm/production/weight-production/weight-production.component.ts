@@ -105,6 +105,9 @@ export class WeightProductionComponent implements OnInit {
     if (this.formuleNumber.nativeElement.value != '' && this.formuleWeight.nativeElement.value != '') {
       this.itemService.getItemData(this.formuleNumber.nativeElement.value).subscribe(itemData => {
         this.addFormuleWeight(itemData)
+        this.formuleNumber.nativeElement.value = ''
+        this.formuleWeight.nativeElement.value = ''
+        this.formuleNumber.nativeElement.value = ''
         this.formuleNumber.nativeElement.focus()
       })
     } else {
@@ -119,6 +122,7 @@ export class WeightProductionComponent implements OnInit {
       formuleWeight: this.formuleWeight.nativeElement.value,
       formuleOrder: this.orderNumber.nativeElement.value,
       formuleUnitWeight: itemData[0].netWeightK,
+      // formuleUnitWeight: itemData[0] ? itemData[0].netWeightK : 0,
       data: {}
     }
     this.formuleSrv.getFormuleByNumber(this.formuleNumber.nativeElement.value).subscribe(data => {
