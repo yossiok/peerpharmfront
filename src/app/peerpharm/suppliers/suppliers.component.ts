@@ -265,6 +265,9 @@ export class SuppliersComponent implements OnInit {
         delete object.color
         delete object.supplierAmount
         delete object.recommendationNumber
+        delete object.import
+        delete object._id
+        delete object.priceList
       })
     }
     this.excelService.exportAsExcelFile(data, fileName);

@@ -784,6 +784,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         try {
           this.calculateShipping(this.newPurchase.controls.finalPurchasePrice.value, this.newPurchase.controls.sumShippingCost.value, 0, 0, false)
           this.setFinalStatus(ev)
+          // location.reload()
         } catch {
           this.toastr.error('יש להזין נתוני העמסה')
         }
@@ -797,7 +798,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     this.procurementService.setPurchaseStatus(this.newPurchase.value).subscribe(data => {
       if (data) {
         this.toastr.success('סטטוס עודכן בהצלחה !')
-        location.reload()
       }
       else this.toastr.error('משהו השתבש...')
     })

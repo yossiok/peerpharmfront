@@ -5,14 +5,6 @@
       <form [formGroup]="newPurchase">
         <div class="row mt-3">
           <div class="col-3">
-            <span (click)="open(status)" [style.background]="setStatusColor(purchaseData.status)" class="click h4 p-3 rounded-pill">{{hebStat(purchaseData.status)}}</span>
-          </div>
-          <div class="col-6">
-            <h3 class="p-2">Purchase {{purchaseData.orderNumber}}</h3>
-            <h3 class="p-2">{{purchaseData.supplierName}}</h3>
-            <h4 class="p-2">{{purchaseData.supplierEmail}}</h4>
-          </div>
-          <div class="col-2">
             <h4>{{purchaseData.creationDate | date:'dd/MM/yy'}} &nbsp;&nbsp;
               <i class="fas fa-arrow-right"></i>&nbsp;&nbsp;
               <span *ngIf="purchaseData.arrivalDate && purchaseData.arrivalDate != purchaseData.creationDate" class="click"
@@ -26,29 +18,37 @@
               <input type="date" formControlName="arrivalDate">
             </h4>
           </div>
+          <div class="col-6">
+            <h3 class="p-2">Purchase {{purchaseData.orderNumber}}</h3>
+            <h3 class="p-2">{{purchaseData.supplierName}}</h3>
+            <h4 class="p-2">{{purchaseData.supplierEmail}}</h4>
+          </div>
+          <div class="col-2">
+            <button *ngIf="editPurchaseAllowed" (click)="disabled = false"
+              [ngClass]="!disabled ? 'btn-secondary' : 'btn-outline-secondary'" class="btn rounded-pill form-control">Edit
+              Purchase</button>
+          </div>
           <div class="col-1">
             <i (click)="closeOrderModal.emit(false); selectedItems = []"
             class="click fa fa-times h2 close p-2"></i>
           </div>
         </div>
         <div class="row"></div>
-
+        
         <div class="row">
           <div class="col-2">
             <button class="btn btn-primary rounded-pill form-control" (click)="open(recieveDeliveryCertificate)">
               New Certificate</button>
-          </div>
-          <div class="col-2">
-            <button (click)="open(receiveInvoice)" class="btn btn-primary rounded-pill form-control">New
-              Invoice</button>
-          </div>
-          <div class="col-5">
-            <button class="btn btn-warning rounded-pill" (click)="open(sumShipping)">הזן נתוני העמסה</button>
-          </div>
-          <div class="col-2">
-            <button *ngIf="editPurchaseAllowed" (click)="disabled = false"
-              class="btn btn-warning rounded-pill form-control">Edit
-              Purchase</button>
+            </div>
+            <div class="col-2">
+              <button (click)="open(receiveInvoice)" class="btn btn-primary rounded-pill form-control">New
+                Invoice</button>
+              </div>
+              <div class="col-5">
+                <button class="btn btn-outline-primary rounded-pill w-50" (click)="open(sumShipping)">הזן נתוני העמסה</button>
+              </div>
+              <div class="col-2">
+            Current status: <span (click)="open(status)" ngbTooltip="click to watch" [style.background]="setStatusColor(purchaseData.status)" class="click h4 p-3 rounded-pill">{{hebStat(purchaseData.status)}} {{purchaseData.statusChange | date: 'dd/MM/yy'}}</span>
           </div>
           <div class="col-1">
           
@@ -64,18 +64,18 @@
           <div class="col-2">
             <select *ngIf="editPurchaseAllowed" [disabled]="disabled" (change)="setPurchaseStatus($event)"
               class="form-control rounded-pill">
-              <option selected="true" disabled="disabled">Choose Status</option>
-              <option value="approvedBySupplier">approved</option>
-              <option value="waitingForApproval">waiting approval</option>
-              <option value="sentBySupplier">sent by supplier</option>
+              <option selected="true" disabled="disabled">Update Status</option>
               <option value="open">open</option>
-              <option value="supplied">delivered</option>
-              <option value="canceled">canceled</option>
-              <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="ETA">arrived(E.T.A)</option>
-              <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="ETD">shipped(E.T.D)</option>
+              <option value="waitingForApproval">waiting approval</option>
+              <option value="approvedBySupplier">approved</option>
               <option value="ready">ready</option>
+              <option value="sentBySupplier">sent by supplier</option>
+              <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="ETD">shipped(E.T.D)</option>
+              <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="ETA">arrived(E.T.A)</option>
               <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="cstClear">custom cleared</option>
-              <option [style.background]="'red'" value="closed">Close Order</option>
+              <option value="supplied">delivered</option>
+              <option class="h4 border border-top" [style.background]="'brown'" [style.color]="'white'" value="canceled">canceled</option>
+              <option class="h4 border border-bottom" [style.background]="'red'" value="closed">Close Order</option>
             </select>
           </div>
           <div class="col-1"></div>
@@ -382,7 +382,7 @@
         <div class="row">
           <div class="col form-group">
             <span class="red float-left h4">*</span>
-            <label>Component Type</label>
+            <label>Item Type</label>
             <select formControlName="orderType" type="text" class="form-control" placeholder="Order Type">
               <option value="component">Component</option>
               <option value="material">Material</option>
@@ -912,8 +912,8 @@
 </ng-template>
 
 <ng-template #status>
-  <h3>Status Updates</h3>
-  <div class="row mt-3">
+  <h3 class="m-2">Status Updates</h3>
+  <div class="row m-2">
     <div class="col-12 shadow rounded">
       <table style="overflow: auto;" class="table table-striped">
         <thead>
