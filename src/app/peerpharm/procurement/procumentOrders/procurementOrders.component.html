@@ -81,8 +81,13 @@
                   <!-- <option value="supplied">supplied</option> -->
                   <option value="waitingForApproval">waiting approval</option>
                   <option value="approvedBySupplier">approved</option>
+                  <option value="sentBySupplier">sent by supplier</option>
                   <option value="supplied">delivered</option>
                   <option value="canceled">canceled</option>
+                  <option value="ready">ready</option>
+                  <option value="ETD">shipped(E.T.D)</option>
+                  <option value="ETA">arrived(E.T.A)</option>
+                  <option value="cstClear">cust.cleared</option>
                 </select>
               </div>
               <div class="col-2">
@@ -185,9 +190,8 @@
                 <tr>
                   <th><b>#</b></th>
                   <th><b>Purchase Number</b></th>
-                  <th><b>Supplier Name</b></th>
-                  <th><b>Supplier Number</b></th>
-                  <th><b>Supplier Country</b></th>
+                  <th><b>Supplier</b></th>
+                  <th><b>Origin</b></th>
                   <th><b>Creation Date</b></th>
                   <th><b>Arrival Date</b></th>
                   <th><b>Customer Order</b></th>
@@ -204,9 +208,8 @@
                   <td class="click" (click)="viewOrderDetails(i)" style="cursor: pointer;"><span
                       style="color:blue;">{{line.orderNumber}}</span>
                   </td>
-                  <td>{{ line.supplierName }}</td>
-                  <td>{{ line.supplierNumber }}</td>
-                  <td>{{ line.supplierCountry }}</td>
+                  <td>{{line.supplierNumber}} - {{line.supplierName}}</td>
+                  <td>{{line.origin}}</td>
                   <td>{{ line.creationDate | date: 'dd/MM/yyyy' }}</td>
                   <td *ngIf="EditRowId != line.orderNumber">
                     {{ line.arrivalDate | date: 'dd/MM/yyyy' }}</td>
@@ -234,8 +237,8 @@
                   <td *ngIf="EditRowId == line.orderNumber">
                     <textarea [value]="line.remarks" #purchaseRemarks></textarea>
                   </td>
-                  <td [style.background]="setStatusColor(line.status)"
-                    [style.color]="line.status == 'closed' ? 'white' : ''"><label>{{hebStat(line.status)}}</label></td>
+                  <td [style.background]="setStatusColor(line.status)" [style.color]="setStatusTextColor(line.status)">
+                    <label>{{hebStat(line.status)}} {{line.statusChange | date: 'dd/MM'}}</label></td>
                   <td><button class="btn btn-primary" (click)="printOrder(line)">Print</button></td>
                   <td>{{line.user}}</td>
                 </tr>

@@ -484,6 +484,10 @@ export class ProcurementOrdersComponent implements OnInit {
       case 'supplied': return 'delivered'
       case 'canceled': return 'canceled'
       case 'sentBySupplier': return 'sent by supplier'
+      case 'ETD': return 'shipped'
+      case 'ETA': return 'arrived'
+      case 'ready': return 'ready'
+      case 'cstClear': return 'custom cleared'
     }
   }
 
@@ -493,9 +497,29 @@ export class ProcurementOrdersComponent implements OnInit {
       case 'closed': return 'brown'
       case 'waitingForApproval': return 'orange'
       case 'approvedBySupplier': return 'lightgreen'
-      case 'supplied': return '#09d5e8'
+      case 'supplied': return '#09d5e8' //delivered
       case 'canceled': return '#9198a3'
       case 'sentBySupplier': return '#17e610'
+      case 'ETD': return '#1553e6'
+      case 'ETA': return '#15abe6'
+      case 'ready': return '#2f732d'
+      case 'cstClear': return '#e615e6'
+    }
+  }
+
+  setStatusTextColor(status) {
+    switch (status) {
+      case 'open': return 'black'
+      case 'closed': return 'white'
+      case 'waitingForApproval': return 'black'
+      case 'approvedBySupplier': return 'black'
+      case 'supplied': return 'black' //delivered
+      case 'canceled': return 'white'
+      case 'sentBySupplier': return 'black'
+      case 'ETD': return 'white'
+      case 'ETA': return 'white'
+      case 'ready': return 'black'
+      case 'cstClear': return 'black'
     }
   }
 
@@ -598,10 +622,10 @@ export class ProcurementOrdersComponent implements OnInit {
     this.supplierService.getSuppliersByNumber(supplierNumber).subscribe(data => {
       ;
       this.currentSupplier = data[0]
-      if (this.currentSupplier.import == 'outOfIsrael') {
+      if (this.currentSupplier.origin == 'import') {
         this.country = true;
 
-      } else if (this.currentSupplier.import != 'outOfIsrael' && (line.stockitems[0].coin).toLowerCase() != 'nis') {
+      } else if (this.currentSupplier.origin != 'import' && (line.stockitems[0].coin).toLowerCase() != 'nis') {
         this.country = true;
 
       } else {
@@ -850,22 +874,24 @@ export class ProcurementOrdersComponent implements OnInit {
         for (let purchaseOrder of this.procurementData) {
           if (purchaseOrder.stockitems) purchaseOrder.stockitems.map(item => {
             allItems.push({
-              orderNumber: purchaseOrder.orderNumber,
-              orderStatus: purchaseOrder.status,
-              itemNumber: item.number,
+              Supplier: purchaseOrder.supplierNumber+" - "+purchaseOrder.supplierName,
+              origin: purchaseOrder.origin,
+              PONum: purchaseOrder.orderNumber,
+              POstatus: purchaseOrder.status,
+              itemNum: item.number,
               itemName: item.name,
-              componentType: item.componentType,
-              orderedAmount: item.quantity,
-              arrivedAmount: item.arrivedAmount,
+              Type: item.componentType,
+              Price: item.price,
+              Po_Amount: item.quantity,
+              Po_Delivered: item.arrivedAmount,
+              PO_Date: purchaseOrder.creationDate,
+              PO_Requested_Date: purchaseOrder.arrivalData,
               measurement: item.measurement,
-              itemPrice: item.price,
               totalPriceNIS: item.localTotal,
               coin: item.coin,
               supplierItemNum: item.supplierItemNum,
               shippingPrice: item.shippingPrice,
               remarks: item.remarks
-
-
             })
           })
         }
