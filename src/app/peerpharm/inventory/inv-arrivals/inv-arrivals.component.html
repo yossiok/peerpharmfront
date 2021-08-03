@@ -5,7 +5,7 @@
         <h3>הכנסה למלאי</h3>
         <div class="row mt-4">
 
-            <div class="col-1">
+            <div class="col-2">
                 <label>מחסן</label>
                 <select class="form-control" formControlName="whareHouseID" #first>
                     <option disabled value="">בחר מחסן</option>
@@ -14,13 +14,13 @@
                 </select>
             </div>
 
-            <div class="col-1">
+            <div class="col-2">
                 <label>
                     פריט (לפי מספר)
                 </label>
                 <input type="number" formControlName="item" (change)="getShelfs()" class="form-control">
             </div>
-            <div class="col-1">
+            <div class="col-2">
                 <label class="d-block">
                     (לפי שם) פריט
                 </label>
@@ -31,7 +31,7 @@
                     </option>
                 </select>
             </div>
-            <div class="col-1">
+            <div class="col-2">
                 <label>מדף</label>
                 <select class="form-control" formControlName="shell_id_in_whareHouse">
                     <option disabled value="">בחר מדף</option>
@@ -40,11 +40,11 @@
                     </option>
                 </select>
             </div>
-            <div class="col-1">
+            <div class="col-2">
                 <label>כמות</label>
                 <input type="number" formControlName="amount" class="form-control">
             </div>
-            <div class="col-1 d-flex flex-column justify-content-around">
+            <div class="col-2 d-flex flex-column justify-content-around">
                 <button type="submit" [disabled]="!componentArrival.valid" 
                     [style.cursor]="componentArrival.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">הכנס</button>
                 <button type="button" class="btn btn-secondary" (click)="componentArrival.reset()">נקה נתונים</button>
@@ -55,7 +55,7 @@
     </form>
 
     <!-- All Arrivals -->
-    <div class="row mt-4 w-50">
+    <div class="row mt-4 w-100">
         <table class="table table-hover">
             <thead class="bg-info text-white">
                 <tr>

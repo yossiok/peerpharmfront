@@ -8,7 +8,7 @@ export class HeadingsWHPipe implements PipeTransform {
     var heading;
     switch (value) {
       case "in":
-        heading = "קבלת סחורה למחסן";
+        heading = "";
         break;
       case "out":
         heading = "הוצאת סחורה מהמחסן";
@@ -16,7 +16,10 @@ export class HeadingsWHPipe implements PipeTransform {
       case "production":
          heading = "העברת סחורה לייצור";
         break;
-      case "shellChange":
+      case "inCertif":
+         heading = "קבלת סחורה מתעודה";
+        break;
+      case "shelfChange":
         heading = "העברת סחורה למדף אחר";
         break;
       case "managment":

@@ -1,452 +1,476 @@
-
 <div class="container-fluid bg-white text-center p-2">
   <div class="row">
-  <div class="col-8">
+    <div class="col-8">
 
-  <div class="row mt-2">
-    <div class="col-4">
-    </div>
-    <div class="col-4">
-      <ul class="nav nav-tabs justify-content-end">
-        <li class="nav-item">
-          <a class="nav-link" style="cursor:pointer;" (click)="dirSet('whManagment','')"
-            [ngStyle]="{'background-color': WhMngNavBtnColor}">ניהול מחסן</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" style="cursor:pointer;" (click)="dirSet('stkManagment','')"
-            [ngStyle]="{'background-color': StkMngNavBtnColor}">ניהול סחורה</a>
-        </li>
-      </ul>
-    </div>
-    <div class="col-4"></div>
-  </div>
-
-  <div *ngIf="dir=='managment'" class="row m-1">
-    <div class="container">
-
-      <div class="row mt-5">
-        <div class="col-4"></div>
+      <div class="row mt-2">
         <div class="col-4">
-         <h2 (click)="addNewWHDiv = !addNewWHDiv" class="text-warning click mask-1 w-100 rounded">הוספת מחסן חדש</h2>
         </div>
-        <div class="col-4"></div>
-      </div>
-
-      <div *ngIf="addNewWHDiv" class="row">
-        <div class="col-4"></div>
-        <div class="col-2">
-          <input class="form-control" type=text id='wh' #whName placeholder="WhareHouse Name">
-        </div>
-        <div class="col-2">
-          <button class="form-control" id='updateWh' class='btn btn-warning' (click)="addNewWhareHouse(whName.value)">
-            Add New WhareHouse</button>
-        </div>
-        <div class="col-4"></div>
-      </div>
-    
-    
-  
-      <div id='resultDiv' style='background-color: #D6D6D6  ;width:300px; font-weight: bold;'>
-  
-      </div>
-
-
-      <div class="row mt-5">
-        <div class="col-4"></div>
         <div class="col-4">
-          <h2 (click)="existingWHDiv = !existingWHDiv" class="text-warning click mask-1 w-100 rounded">פעולות בתוך מחסן קיים</h2>
+          <ul class="nav nav-tabs justify-content-end">
+            <li class="nav-item">
+              <a class="nav-link" style="cursor:pointer;" (click)="dirSet('whManagment','')"
+                [ngStyle]="{'background-color': WhMngNavBtnColor}">ניהול מחסן</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" style="cursor:pointer;" (click)="dirSet('stkManagment','')"
+                [ngStyle]="{'background-color': StkMngNavBtnColor}">ניהול סחורה</a>
+            </li>
+          </ul>
         </div>
         <div class="col-4"></div>
       </div>
 
-      <div *ngIf="existingWHDiv">
-
-        
-        <div class="row mt-2">
-          <div class="col-4"></div>
-          <div class="col-2">
-            <label class="form-control">בחר מחסן</label>
-          </div>
-          <div class="col-2">
-            <select #wh class="form-control" (change)="getShelfsList(wh.value)">
-              <option></option>
-              <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>
-            </select>
-            
-          </div>
-          <div class="col-4"></div>
-        </div>
-        
-        
-        <div class="row mt-5">
-          <div class="col-4"></div>
-          <div class="col-4">
-            <label (click)="addShelfDiv = !addShelfDiv" class="form-control text-success click mask-2">הוספת מדף חדש</label>
-          </div>
-          <div class="col-4"></div>
-        </div>
-        
-        <div *ngIf="addShelfDiv" class="row">
-          <div class="col-2"></div>
-          <div class="col-2"></div>
-          <div class="col-2">
-            <input class="form-control" #shelf placeholder="הוסף מדף">
-          </div>
-          <div class="col-2">
-            <button class='btn btn-success form-control' (click)="addNewShelf(shelf.value)">Add
-              Shelf</button>
-            </div>
-            <div class="col-2"></div>
-            <div class="col-2"></div>
-          </div>
+      <div *ngIf="dir=='managment'" class="row m-1">
+        <div class="container">
 
           <div class="row mt-5">
             <div class="col-4"></div>
             <div class="col-4">
-              <label (click)="findShelfDiv = !findShelfDiv" class="form-control text-info click mask-3">חיפוש מדף קיים</label>
+              <h2 (click)="addNewWHDiv = !addNewWHDiv" class="text-warning click mask-1 w-100 rounded">הוספת מחסן חדש
+              </h2>
             </div>
             <div class="col-4"></div>
           </div>
-          
-          
-          <div *ngIf="findShelfDiv" class="row">
-            <div class="col-2"></div>
-            <div class="col-2"></div>
+
+          <div *ngIf="addNewWHDiv" class="row">
+            <div class="col-4"></div>
             <div class="col-2">
-              <input class="form-control" #searchS placeholder="חפש מדף">
+              <input class="form-control" type=text id='wh' #whName placeholder="WhareHouse Name">
             </div>
             <div class="col-2">
-              <button class='btn btn-info form-control' (click)="searchShelf(searchS.value)">Find Shelf</button>
+              <button class="form-control" id='updateWh' class='btn btn-warning'
+                (click)="addNewWhareHouse(whName.value)">
+                Add New WhareHouse</button>
             </div>
-            <div class="col-2"></div>
-            <div class="col-2"></div>
+            <div class="col-4"></div>
           </div>
 
-          <div *ngIf="shelfs.length == 0 && loadShelfs" class="bigLoader"></div>
-          
-          <div *ngIf="shelfs.length > 0" style="height: 300px;overflow-y: auto;" class="row mt-5">
-            <div [style.background-color]="response.color">{{response.body}}</div>
-            <table class="table ml-10">
-              <thead class="bg-success text-white">
-                <tr>
-                  <th>Details</th>
-                  <th>Id</th>
-                  <th>Position</th>
-                  
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let shelf of shelfs;">
-                  <td>
-                    <tr *ngFor="let item of shelf.itemsArr">
-                      <td><b>Item:</b>{{item.item}}</td>
-                      <td><b>Amount:</b>{{item.amount}}</td>
-                    </tr>
+
+
+          <div id='resultDiv' style='background-color: #D6D6D6  ;width:300px; font-weight: bold;'>
+
+          </div>
+
+
+          <div class="row mt-5">
+            <div class="col-4"></div>
+            <div class="col-4">
+              <h2 (click)="existingWHDiv = !existingWHDiv" class="text-warning click mask-1 w-100 rounded">פעולות בתוך
+                מחסן קיים</h2>
+            </div>
+            <div class="col-4"></div>
+          </div>
+
+          <div *ngIf="existingWHDiv">
+
+
+            <div class="row mt-2">
+              <div class="col-4"></div>
+              <div class="col-2">
+                <label class="form-control">בחר מחסן</label>
+              </div>
+              <div class="col-2">
+                <select #wh class="form-control" (change)="getShelfsList(wh.value)">
+                  <option></option>
+                  <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>
+                </select>
+
+              </div>
+              <div class="col-4"></div>
+            </div>
+
+
+            <div class="row mt-5">
+              <div class="col-4"></div>
+              <div class="col-4">
+                <label (click)="addShelfDiv = !addShelfDiv" class="form-control text-success click mask-2">הוספת מדף
+                  חדש</label>
+              </div>
+              <div class="col-4"></div>
+            </div>
+
+            <div *ngIf="addShelfDiv" class="row">
+              <div class="col-2"></div>
+              <div class="col-2"></div>
+              <div class="col-2">
+                <input class="form-control" #shelf placeholder="הוסף מדף">
+              </div>
+              <div class="col-2">
+                <button class='btn btn-success form-control' (click)="addNewShelf(shelf.value)">Add
+                  Shelf</button>
+              </div>
+              <div class="col-2"></div>
+              <div class="col-2"></div>
+            </div>
+
+            <div class="row mt-5">
+              <div class="col-4"></div>
+              <div class="col-4">
+                <label (click)="findShelfDiv = !findShelfDiv" class="form-control text-info click mask-3">חיפוש מדף
+                  קיים</label>
+              </div>
+              <div class="col-4"></div>
+            </div>
+
+
+            <div *ngIf="findShelfDiv" class="row">
+              <div class="col-2"></div>
+              <div class="col-2"></div>
+              <div class="col-2">
+                <input class="form-control" #searchS placeholder="חפש מדף">
+              </div>
+              <div class="col-2">
+                <button class='btn btn-info form-control' (click)="searchShelf(searchS.value)">Find Shelf</button>
+              </div>
+              <div class="col-2"></div>
+              <div class="col-2"></div>
+            </div>
+
+            <div *ngIf="shelfs.length == 0 && loadShelfs" class="bigLoader"></div>
+
+            <div *ngIf="shelfs.length > 0" style="height: 300px;overflow-y: auto;" class="row mt-5">
+              <div [style.background-color]="response.color">{{response.body}}</div>
+              <table class="table ml-10">
+                <thead class="bg-success text-white">
+                  <tr>
+                    <th>Details</th>
+                    <th>Id</th>
+                    <th>Position</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let shelf of shelfs;">
+                    <td>
+                  <tr *ngFor="let item of shelf.itemsArr">
+                    <td><b>Item:</b>{{item.item}}</td>
+                    <td><b>Amount:</b>{{item.amount}}</td>
+                  </tr>
                   </td>
                   <td>{{shelf._id}}</td>
                   <td>{{shelf.position}}</td>
-                  
-                </tr>
-              </tbody>
-            </table>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div id='shell_wh_div' style='background-color: #D6D6D6  ;width:300px; font-weight: bold;'>
+            </div>
+
+
           </div>
-          <div id='shell_wh_div' style='background-color: #D6D6D6  ;width:300px; font-weight: bold;'>
-          </div>
-          
-          
         </div>
       </div>
-      </div>
- 
 
-  <div *ngIf="screen == 'stkManagment'" class="row mt-5">
-    <div class="col-2">
-     
-    </div>
-    <div class="col-2">
-      <button (click)="dirSet('stkManagment','inCertif')" class='btn btn-info form-control'>קבלת סחורה מתעודה</button>
-    </div>
-    <div class="col-2">
-      <button (click)="dirSet('stkManagment','out')" class='btn btn-info form-control'>הוצאת סחורה</button>
-    </div>
-    <div class="col-2">
-      <button (click)="dirSet('stkManagment','shelfChange')" class='btn btn-info form-control'>שינוי מדף</button>
-    </div>
-    <div class="col-2">
+
+      <div class="m-5 p-5" *ngIf="screen == 'stkManagment'">
+
+        <div class="m-2 p-4 border border-black">
+          <app-inv-arrivals></app-inv-arrivals>
+        </div>
+
+      <div *ngIf="screen == 'stkManagment'" class="row mt-5">
+        <div class="col-3">
+
+        </div>
+        <div class="col-3">
+          <button (click)="dirSet('stkManagment','inCertif')" class='btn btn-info form-control'>קבלת סחורה
+            מתעודה</button>
+        </div>
+        <div class="col-3">
+          <button (click)="dirSet('stkManagment','out')" class='btn btn-info form-control'>הוצאת סחורה</button>
+        </div>
+        <div class="col-3">
+          <button (click)="dirSet('stkManagment','shelfChange')" class='btn btn-info form-control'>שינוי מדף</button>
+        </div>
+        <!-- <div class="col-3">
       <button (click)="dirSet('stkManagment','in')" class='btn btn-info form-control'>קבלת סחורה</button>
-    </div>
-    <div class="col-2"></div>
-  </div>
+    </div> -->
+        <div class="col-3"></div>
+      </div>
 
-  <div class="row">
-    <div class="col-12 mt-3">
-      <h4 class="text-danger">{{ dir | headingsWH  }}</h4>
-    </div>
-  </div>
+      <div class="row">
+        <div class="col-12 mt-3">
+          <h4 class="text-danger">{{ dir | headingsWH }}</h4>
+        </div>
+      </div>
 
-  <div class="row mt-3">
-    <div class="col-5"></div>
-    <div class="col-2">
-      
-        <select style="text-align-last:center;" class="form-control" #wh (change)="setWhareHouse(wh.value)">
-          <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>
-        </select>
-        <small class="text-danger">{{curentWhareHouseName}} Wharehouse</small>
-        <span *ngIf='whareHouses.length == 0'><img src="../../../../assets/images/refreshData.png"
-            style="cursor: pointer; width: 40px; " (click)="getUserWhs()"> </span>
-  
-    </div>
-    <div class="col-5"></div>
-  </div>
+      <div class="row mt-3">
+        <div class="col-5"></div>
+        <div class="col-2">
 
-  <div class="row mt-3">
-    <div class="col-12">
+          <select style="text-align-last:center;" class="form-control" #wh (change)="setWhareHouse(wh.value)">
+            <option *ngFor="let wh of whareHouses;">{{wh.name}}</option>
+          </select>
+          <small class="text-danger">{{curentWhareHouseName}} Wharehouse</small>
+          <span *ngIf='whareHouses.length == 0'><img src="../../../../assets/images/refreshData.png"
+              style="cursor: pointer; width: 40px; " (click)="getUserWhs()"> </span>
 
-      <div *ngIf="dir!='' && dir!='managment' && dir != 'inCertif'  && dir!='watchShelfs'">
+        </div>
+        <div class="col-5"></div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-12">
+
+          <div *ngIf="dir!='' && dir!='managment' && dir != 'inCertif'  && dir!='watchShelfs'">
 
 
-        <ng-container *ngIf="!multiInputLines">
-          <form class="form-horizontal itemsList" [formGroup]="itemLine">
-            <div class="form-group row">
-              <div class="col-sm-2">
-                <img class="compImgInWh"  [src]="currImageComp"/>
-              </div>
-              <div class="col-sm-1">
-                <label>מספר פריט</label>
-                <input type="text" class="form-control" placeholder="Item Number" formControlName="itemNumber"
-                  (blur)="searchItemShelfs($event)">
-              </div>
-              <div *ngIf="dir == 'in'" class="col-sm-1">
-                <label>הזמנת רכש</label>
-                <select type="text" class="form-control" formControlName="purchaseNumber">
-                  <option *ngFor="let order of itemPurchaseOrders" [value]="order.orderNumber">{{order.orderNumber}}</option>
-                </select>
-               
-              </div>
-              <div *ngIf="dir == 'out'" class="col-sm-1">
-                <label>מספר הזמנה</label>
-                <input type="number" class="form-control" placeholder="Order Number" formControlName="relatedOrder">
-              </div>
-              <div class="col-sm-1">
-                <label>מדף</label>
-                <input type="text" class="form-control" placeholder="Position" formControlName="position">
-              </div>
-              <div class="col-sm-1">
-                <label>כמות</label>
-                <input type="number" class="form-control" placeholder="Amount" formControlName="amount" min="0">
-              </div>
-             
+            <ng-container *ngIf="!multiInputLines">
+              <form class="form-horizontal itemsList" [formGroup]="itemLine">
+                <div class="form-group row">
+                  <div class="col-sm-2">
+                    <img class="compImgInWh" [src]="currImageComp" />
+                  </div>
+                  <div class="col-sm-1">
+                    <label>מספר פריט</label>
+                    <input type="text" class="form-control" placeholder="Item Number" formControlName="itemNumber"
+                      (blur)="searchItemShelfs($event)">
+                  </div>
+                  <div *ngIf="dir == 'in'" class="col-sm-1">
+                    <label>הזמנת רכש</label>
+                    <select type="text" class="form-control" formControlName="purchaseNumber">
+                      <option *ngFor="let order of itemPurchaseOrders" [value]="order.orderNumber">{{order.orderNumber}}
+                      </option>
+                    </select>
 
-              <!-- if recieving stock to wh  -->
-              <div class="col-sm-1" *ngIf="dir=='in'">
-                <label>הגעת משלוח</label>
-                <input type="date" class="form-control" placeholder="Arrival Date" formControlName="arrivalDate">
-              </div>
-              <div class="col-sm-1" *ngIf="dir=='in'">
-                <label>תעודת משלוח</label>
-                <input type="text" class="form-control" placeholder="Delivery Note" formControlName="deliveryNote">
-              </div>
-              <div class="col-sm-1" *ngIf="dir=='shelfChange'">
-                <label>מדף חדש</label>
-                <input type="text" class="form-control" placeholder="New Position" formControlName="destShelf">
-              </div>
-                <div  class="col-sm-1" style="position: relative;">
-                  <button  class="btn btn-success h-100 w-75" [disabled]="addingItem" [style.cursor]="addingItem ? 'not-allowed' : 'pointer'"
-                    (click)="checkLineValidation(itemLine.value, $event.value)">
+                  </div>
+                  <div *ngIf="dir == 'out'" class="col-sm-1">
+                    <label>מספר הזמנה</label>
+                    <input type="number" class="form-control" placeholder="Order Number" formControlName="relatedOrder">
+                  </div>
+                  <div class="col-sm-1">
+                    <label>מדף</label>
+                    <input type="text" class="form-control" placeholder="Position" formControlName="position">
+                  </div>
+                  <div class="col-sm-1">
+                    <label>כמות</label>
+                    <input type="number" class="form-control" placeholder="Amount" formControlName="amount" min="0">
+                  </div>
+
+
+                  <!-- if recieving stock to wh  -->
+                  <div class="col-sm-1" *ngIf="dir=='in'">
+                    <label>הגעת משלוח</label>
+                    <input type="date" class="form-control" placeholder="Arrival Date" formControlName="arrivalDate">
+                  </div>
+                  <div class="col-sm-1" *ngIf="dir=='in'">
+                    <label>תעודת משלוח</label>
+                    <input type="text" class="form-control" placeholder="Delivery Note" formControlName="deliveryNote">
+                  </div>
+                  <div class="col-sm-1" *ngIf="dir=='shelfChange'">
+                    <label>מדף חדש</label>
+                    <input type="text" class="form-control" placeholder="New Position" formControlName="destShelf">
+                  </div>
+                  <div class="col-sm-1" style="position: relative;">
+                    <button class="btn btn-success h-100 w-75" [disabled]="addingItem"
+                      [style.cursor]="addingItem ? 'not-allowed' : 'pointer'"
+                      (click)="checkLineValidation(itemLine.value, $event.value)">
                       Add
-                  </button>
-                </div>
-            </div>
-            <div>
-              <label class="text-danger">{{curentWhareHouseName}} Wharehouse Shelf List:</label>&nbsp;
-              <ng-container *ngFor="let shelf of currItemShelfs">
-                <span (click)="loadShelfToInput(shelf.position, $event)" class="rounded border border-info shadow p-2 m-2 text-center" style="cursor: pointer;">
-                  <b>{{shelf.position}}</b>: {{shelf.amount}} units
-                </span>
-              </ng-container>
-            </div>
-          </form>
-
-        </ng-container>
-
-        <!-- multiLines for inventory requests load -->
-        <ng-container *ngIf="multiInputLines">
-          <div *ngFor="let itemFromInvReq of multiLinesArr ; let i = index">
-            <form class="form-horizontal itemsList">
-              <div class="form-group row">
-
-                <div class="col-sm-2">
-                  <label>מספר פריט</label>
-                  <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Item number"
-                    [value]="itemFromInvReq.itemNumber" (blur)="searchItemShelfs()">
-                </div>
-                <div class="col-sm-2">
-                  <label>מדף</label>
-                  <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Position"
-                    [value]="itemFromInvReq.position">
-                </div>
-                <div class="col-sm-1">
-                  <label>כמות</label>
-                  <input #lineqnt{{i}} [attr.data-lineid]="i" style="width:80px !important;" name="multiLineQntInput"
-                    type="number" class="form-control" placeholder="Amount" min="0" [(ngModel)]="itemFromInvReq.qnt">
-                </div>
-                <!-- if taking out stock from wh -->
-                <div class="col-sm-4 row">
-                  <div class="col-sm-4">
-                    <label>מס' בקשת מלאי</label>
-                    <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Related Request Number"
-                      [value]="itemFromInvReq.reqNum" disabled>
-                  </div>
-                  <div class="col-sm-4">
-                    <label>מס' הזמנה</label>
-                    <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Related Order Number"
-                      [value]="itemFromInvReq.relatedOrder" disabled>
-                  </div>
-                  <div class="col-sm-4">
-                    <label>הערות</label>
-                    <input [attr.data-lineid]="i" type="text" class="form-control" [value]="itemFromInvReq.remarks">
+                    </button>
                   </div>
                 </div>
-                <div class="col-sm-1" style="position: relative;">
-                  <button [attr.data-lineid]="i" type="submit"
-                    (click)="checkLineValidation(itemFromInvReq,i, $event , qnt)"
-                    style="cursor: pointer; position: absolute; bottom: 0px;">
-                    <img src="assets/images/add.png" width="30px" style="cursor: pointer;" />
-                  </button>
+                <div>
+                  <label class="text-danger">{{curentWhareHouseName}} Wharehouse Shelf List:</label>&nbsp;
+                  <ng-container *ngFor="let shelf of currItemShelfs">
+                    <span (click)="loadShelfToInput(shelf.position, $event)"
+                      class="rounded border border-info shadow p-2 m-2 text-center" style="cursor: pointer;">
+                      <b>{{shelf.position}}</b>: {{shelf.amount}} units
+                    </span>
+                  </ng-container>
                 </div>
-                <div class="col-sm-1" style="position: relative;">
-                  <button [attr.data-lineid]="i" type="button" (click)="deleteLine(itemFromInvReq,i,$event)"
-                    style="cursor: pointer; position: absolute; bottom: 0px;">
-                    <img src="assets/images/deleteBtn.png" width="30px" style="cursor: pointer;" />
-                  </button>
-                </div>
+              </form>
+
+            </ng-container>
+
+            <!-- multiLines for inventory requests load -->
+            <ng-container *ngIf="multiInputLines">
+              <div *ngFor="let itemFromInvReq of multiLinesArr ; let i = index">
+                <form class="form-horizontal itemsList">
+                  <div class="form-group row">
+
+                    <div class="col-sm-2">
+                      <label>מספר פריט</label>
+                      <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Item number"
+                        [value]="itemFromInvReq.itemNumber" (blur)="searchItemShelfs()">
+                    </div>
+                    <div class="col-sm-2">
+                      <label>מדף</label>
+                      <input [attr.data-lineid]="i" type="text" class="form-control" placeholder="Position"
+                        [value]="itemFromInvReq.position">
+                    </div>
+                    <div class="col-sm-1">
+                      <label>כמות</label>
+                      <input #lineqnt{{i}} [attr.data-lineid]="i" style="width:80px !important;"
+                        name="multiLineQntInput" type="number" class="form-control" placeholder="Amount" min="0"
+                        [(ngModel)]="itemFromInvReq.qnt">
+                    </div>
+                    <!-- if taking out stock from wh -->
+                    <div class="col-sm-4 row">
+                      <div class="col-sm-4">
+                        <label>מס' בקשת מלאי</label>
+                        <input [attr.data-lineid]="i" type="text" class="form-control"
+                          placeholder="Related Request Number" [value]="itemFromInvReq.reqNum" disabled>
+                      </div>
+                      <div class="col-sm-4">
+                        <label>מס' הזמנה</label>
+                        <input [attr.data-lineid]="i" type="text" class="form-control"
+                          placeholder="Related Order Number" [value]="itemFromInvReq.relatedOrder" disabled>
+                      </div>
+                      <div class="col-sm-4">
+                        <label>הערות</label>
+                        <input [attr.data-lineid]="i" type="text" class="form-control" [value]="itemFromInvReq.remarks">
+                      </div>
+                    </div>
+                    <div class="col-sm-1" style="position: relative;">
+                      <button [attr.data-lineid]="i" type="submit"
+                        (click)="checkLineValidation(itemFromInvReq,i, $event , qnt)"
+                        style="cursor: pointer; position: absolute; bottom: 0px;">
+                        <img src="assets/images/add.png" width="30px" style="cursor: pointer;" />
+                      </button>
+                    </div>
+                    <div class="col-sm-1" style="position: relative;">
+                      <button [attr.data-lineid]="i" type="button" (click)="deleteLine(itemFromInvReq,i,$event)"
+                        style="cursor: pointer; position: absolute; bottom: 0px;">
+                        <img src="assets/images/deleteBtn.png" width="30px" style="cursor: pointer;" />
+                      </button>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label>Item Position {{curentWhareHouseName}} Wharehouse:</label>&nbsp;
+                    <ng-container *ngFor="let shelf of itemFromInvReq.currItemShelfs">
+                      <span [attr.data-lineid]="i"
+                        style="border: grey solid; border-style: outset; margin-left:5px; cursor:pointer; padding: 3px; cursor: pointer;"
+                        (click)="loadShelfToInput(shelf.position, $event)">{{shelf.position}}: {{shelf.amount}}
+                        units</span>&nbsp;&nbsp;
+                    </ng-container>
+                  </div>
+                </form>
+
               </div>
+            </ng-container>
 
-              <div>
-                <label>Item Position {{curentWhareHouseName}} Wharehouse:</label>&nbsp;
-                <ng-container *ngFor="let shelf of itemFromInvReq.currItemShelfs">
-                  <span [attr.data-lineid]="i"
-                    style="border: grey solid; border-style: outset; margin-left:5px; cursor:pointer; padding: 3px; cursor: pointer;"
-                    (click)="loadShelfToInput(shelf.position, $event)">{{shelf.position}}: {{shelf.amount}}
-                    units</span>&nbsp;&nbsp;
-                </ng-container>
+
+            <!--  --> <br>
+            <div class="ShouldBeNav">
+              <button class="btn btn-warning" (click)="cleanList()">Reset / אפס</button>&nbsp;&nbsp;
+              <button class="btn btn-info" (click)="sendList()">Submit / שלח שינויים <i
+                  class="ti-check m-l-10"></i></button>
+              <button (click)="printCertifAgain()" class="btn btn-success ml-3">Print</button>
+            </div>
+
+            <br>
+
+            <div class="form-group row">
+              <div class="col-sm-2"></div>
+              <div class="col-sm-8">
+                <table class='table'>
+                  <thead class='bg-info text-white'>
+                    <tr>
+                      <th>#</th>
+                      <th>Item Number</th>
+                      <th>Item Name</th>
+                      <th>Position</th>
+                      <th>Amount</th>
+                      <th *ngIf="dir!='in'">Related Order</th>
+                      <th *ngIf="dir=='in'">Arrival Date</th>
+                      <th *ngIf="dir=='in'">Delivery Note</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <ng-container *ngFor="let reqItem of inventoryUpdateList; let i =index">
+                    <tr>
+                      <td>{{i+1}}</td>
+                      <td>{{reqItem.item}}</td>
+                      <td>{{reqItem.itemName}}</td>
+                      <td>{{reqItem.position}}</td>
+                      <td>{{reqItem.amount}}</td>
+                      <td *ngIf="dir!='in'">{{reqItem.relatedOrder}}</td>
+                      <td *ngIf="dir=='in'">{{reqItem.arrivalDate}}</td>
+                      <td *ngIf="dir=='in'">{{reqItem.deliveryNoteNum}}</td>
+                      <td><img src="assets/images/delete.png" (click)="deleteRow(i)" width="30px"
+                          style="cursor: pointer;" /></td>
+                    </tr>
+                  </ng-container>
+                </table>
               </div>
-            </form>
+              <div class="col-sm-2"></div>
+
+            </div>
+
 
           </div>
-        </ng-container>
 
-
-        <!--  --> <br>
-        <div class="ShouldBeNav">
-          <button class="btn btn-warning" (click)="cleanList()">Reset / אפס</button>&nbsp;&nbsp;
-          <button class="btn btn-info" (click)="sendList()">Submit / שלח שינויים <i class="ti-check m-l-10"></i></button>
-          <button (click)="printCertifAgain()" class="btn btn-success ml-3">Print</button>
         </div>
 
-        <br>
+      </div>
+    </div>
 
-        <div class="form-group row">
-          <div class="col-sm-2"></div>
-          <div class="col-sm-8">
-            <table class='table'>
-              <thead class='bg-info text-white'>
-                <tr>
-                  <th>#</th>
-                  <th>Item Number</th>
-                  <th>Item Name</th>
-                  <th>Position</th>
-                  <th>Amount</th>
-                  <th *ngIf="dir!='in'">Related Order</th>
-                  <th *ngIf="dir=='in'">Arrival Date</th>
-                  <th *ngIf="dir=='in'">Delivery Note</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <ng-container *ngFor="let reqItem of inventoryUpdateList; let i =index">
-                <tr>
-                  <td>{{i+1}}</td>
-                  <td>{{reqItem.item}}</td>
-                  <td>{{reqItem.itemName}}</td>
-                  <td>{{reqItem.position}}</td>
-                  <td>{{reqItem.amount}}</td>
-                  <td *ngIf="dir!='in'">{{reqItem.relatedOrder}}</td>
-                  <td *ngIf="dir=='in'">{{reqItem.arrivalDate}}</td>
-                  <td *ngIf="dir=='in'">{{reqItem.deliveryNoteNum}}</td>
-                  <td><img src="assets/images/delete.png" (click)="deleteRow(i)" width="30px"
-                      style="cursor: pointer;" /></td>
-                </tr>
-              </ng-container>
+    </div>
+
+    <div class="col-4">
+      <div style='display: inline-block; vertical-align: top;'>
+        <app-inventory-requests *ngIf="screen!='whManagment'" (outPutItemsArray)="getChildArr($event)">
+        </app-inventory-requests>
+      </div>
+      <div *ngIf="screen=='whManagment'" class="container">
+        <div class="row">
+          <div class="col">
+            <h3 class="text-info">Print Sticker</h3>
+          </div>
+        </div>
+
+        <div class="row mt-3">
+          <div class="col">
+            <input [(ngModel)]="stickerItem" class="form-control" placeholder="Item Number">
+          </div>
+          <div class="col">
+            <input [(ngModel)]="stickerQty" class="form-control" placeholder="Quantity">
+          </div>
+          <div class="col">
+            <input [(ngModel)]="stickerRemarks" class="form-control" placeholder="Remarks">
+          </div>
+        </div>
+
+        <div style="display: none;" class="row mt-3">
+          <div id="printSticker" class="col">
+            <table style="margin-left:60px !important" class="table text-center">
+              <tr style="text-align: center;">
+                <td style="border:none;width:3px"></td>
+                <td>
+                  <h1 style="font-size: 80px;">Item: {{stickerItem}}</h1>
+                </td>
+                <td style="border:none;width:3px"></td>
+              </tr>
+              <tr style="text-align: center;">
+                <td style="border:none;width:4px"></td>
+                <td>
+                  <h2 style="font-size: 60px;">Quantity: {{stickerQty}}</h2>
+                </td>
+                <td style="border:none;width:4px"></td>
+              </tr>
+              <tr style="text-align: center;">
+                <td style="border:none;width:5px"></td>
+                <td>
+                  <h3 style="font-size: 45px;">{{stickerRemarks}}</h3>
+                </td>
+                <td style="border:none;width:5px"></td>
+              </tr>
             </table>
           </div>
-          <div class="col-sm-2"></div>
-      
         </div>
-      
 
-    </div>
+        <div class="row mt-3">
+          <div class="col">
+            <button printSectionId="printSticker" ngxPrint class="btn btn-info">Print Sticker</button>
+          </div>
+        </div>
 
-    </div>
- 
-  </div>
-</div>
-
-<div class="col-4">
-     <div style='display: inline-block; vertical-align: top;'>
-    <app-inventory-requests *ngIf="screen!='whManagment'" (outPutItemsArray)="getChildArr($event)">
-    </app-inventory-requests>
-  </div>
-  <div *ngIf="screen=='whManagment'" class="container">
-    <div class="row">
-      <div class="col">
-        <h3 class="text-info">Print Sticker</h3>
-      </div>
-    </div>
-
-    <div class="row mt-3">
-      <div class="col">
-        <input [(ngModel)]="stickerItem" class="form-control" placeholder="Item Number">
-      </div>
-      <div class="col">
-        <input [(ngModel)]="stickerQty" class="form-control" placeholder="Quantity">
-      </div>
-      <div class="col">
-        <input [(ngModel)]="stickerRemarks" class="form-control" placeholder="Remarks">
-      </div>
-    </div>
-
-    <div style="display: none;" class="row mt-3">
-      <div id="printSticker" class="col">
-        <table style="margin-left:60px !important" class="table text-center">
-          <tr style="text-align: center;">
-            <td style="border:none;width:3px"></td>
-            <td><h1 style="font-size: 80px;">Item: {{stickerItem}}</h1></td>
-            <td style="border:none;width:3px"></td>
-          </tr>
-          <tr style="text-align: center;">
-            <td style="border:none;width:4px"></td>
-            <td><h2 style="font-size: 60px;">Quantity: {{stickerQty}}</h2></td>
-            <td style="border:none;width:4px"></td>
-          </tr>
-          <tr style="text-align: center;">
-            <td style="border:none;width:5px"></td>
-            <td><h3 style="font-size: 45px;">{{stickerRemarks}}</h3></td>
-            <td style="border:none;width:5px"></td>
-          </tr>
-        </table>
-      </div>
-    </div>
-
-    <div class="row mt-3">
-      <div class="col">
-        <button printSectionId="printSticker" ngxPrint  class="btn btn-info">Print Sticker</button>
       </div>
     </div>
 
   </div>
-</div>
-
-</div>
 </div>
 
 <div class="row">
@@ -456,7 +480,7 @@
 
     </div>
 
-    
+
   </div>
 
 
@@ -484,9 +508,9 @@
         <span><u>למחסן:</u></span>&nbsp;&nbsp;
         <span *ngIf="curentWhareHouseName=='Rosh HaAyin'">רכיבים-קאסם</span>&nbsp;&nbsp;&nbsp;
         <span *ngIf="curentWhareHouseName=='Kasem'">רכיבים-ראש העין</span>&nbsp;&nbsp;&nbsp;
-        <span ></span>
+        <span></span>
         <span><u>תאריך:</u></span>&nbsp;&nbsp;
-        <span>{{today  | date :'dd-MM-yyyy'  }}</span>&nbsp;&nbsp;
+        <span>{{today | date :'dd-MM-yyyy' }}</span>&nbsp;&nbsp;
 
       </p>
       <br>
@@ -500,7 +524,7 @@
             <th>כמות</th>
             <th class='itemNamePrint'>שם פריט</th>
             <th>פריט מק"ט ספק</th>
-           
+
           </tr>
           <ng-container *ngFor="let reqItem of listToPrint; let i =index">
             <tr>
@@ -511,7 +535,7 @@
               <td>{{reqItem.amount}}</td>
               <td class='itemNamePrint'>{{reqItem.itemName}}</td>
               <td>{{reqItem.supplierItemNumber}}</td>
-         
+
             </tr>
           </ng-container>
         </tbody>
@@ -571,131 +595,133 @@
       </thead>
       <tbody id="table_body" dir="rtl">
         <tr style="background-color: rgb(230, 233, 236);">
-          <td>במידה ולא:<input [(ngModel)]="packingMaterialCheck.orderCompareIfFalse" type="text"/></td>
+          <td>במידה ולא:<input [(ngModel)]="packingMaterialCheck.orderCompareIfFalse" type="text" /></td>
           <td>כן<input [(ngModel)]="packingMaterialCheck.orderCompareTrue" type="checkbox" /></td>
           <td>וודא שהחומר אריזה שהתקבל מתאים להזמנה</td>
 
         </tr>
         <tr>
-            <td>במידה ולא:<input [(ngModel)]="packingMaterialCheck.packageQuantityIfFalse" style="background: rgb(230, 233, 236)" type="text"/></td>
-            <td>כן<input checked [(ngModel)]="packingMaterialCheck.packageQuantityTrue" type="checkbox" /></td>
+          <td>במידה ולא:<input [(ngModel)]="packingMaterialCheck.packageQuantityIfFalse"
+              style="background: rgb(230, 233, 236)" type="text" /></td>
+          <td>כן<input checked [(ngModel)]="packingMaterialCheck.packageQuantityTrue" type="checkbox" /></td>
           <td>וודא שהאריזה שהתקבלה בכמות שהוזמנה</td>
         </tr>
         <tr style="background-color: rgb(230, 233, 236);">
-            <td>במידה ולא:<input [(ngModel)]="packingMaterialCheck.packageCompleteIfFalse" type="text"/></td>
-            <td>כן<input  checked [(ngModel)]="packingMaterialCheck.packageCompleteTrue" type="checkbox" /></td>
+          <td>במידה ולא:<input [(ngModel)]="packingMaterialCheck.packageCompleteIfFalse" type="text" /></td>
+          <td>כן<input checked [(ngModel)]="packingMaterialCheck.packageCompleteTrue" type="checkbox" /></td>
           <td>וודא שהאריזות שלמות ואין פגיעות במוצרים</td>
         </tr>
         <tr>
-            <td>במידה ולא:<input [(ngModel)]="packingMaterialCheck.packageSealedIfFalse" style="background: rgb(230, 233, 236)" type="text"/></td>
-            <td>כן<input checked [(ngModel)]="packingMaterialCheck.packageSealedTrue" type="checkbox" /></td>
+          <td>במידה ולא:<input [(ngModel)]="packingMaterialCheck.packageSealedIfFalse"
+              style="background: rgb(230, 233, 236)" type="text" /></td>
+          <td>כן<input checked [(ngModel)]="packingMaterialCheck.packageSealedTrue" type="checkbox" /></td>
           <td>וודא שהאריזות אטומות לכניסה של אבק</td>
         </tr>
         <tr style="background-color: rgb(230, 233, 236);">
-            <td>במידה ולא:<input [(ngModel)]="packingMaterialCheck.printingCompleteIfFalse" type="text"/></td>
-            <td>כן<input checked [(ngModel)]="packingMaterialCheck.printingCompleteTrue" type="checkbox" /></td>
+          <td>במידה ולא:<input [(ngModel)]="packingMaterialCheck.printingCompleteIfFalse" type="text" /></td>
+          <td>כן<input checked [(ngModel)]="packingMaterialCheck.printingCompleteTrue" type="checkbox" /></td>
           <td>במידה והתקבל חומר אריזה מודפס - נא וודא תקינות ההדפסה לנדרש</td>
         </tr>
         <tr>
           <td></td>
-          <td><span>הערות:</span><input [(ngModel)]="packingMaterialCheck.remarks" type="text"/></td>
-          
-          
+          <td><span>הערות:</span><input [(ngModel)]="packingMaterialCheck.remarks" type="text" /></td>
+
+
         </tr>
         <tr>
-          <td>חתימה:<input [(ngModel)]="packingMaterialCheck.signature" type="text"/></td>
+          <td>חתימה:<input [(ngModel)]="packingMaterialCheck.signature" type="text" /></td>
         </tr>
-      
+
       </tbody>
     </table>
   </div>
   <div class="modal-footer">
-      <button class="btn btn-success" (click)="sendPackingMaterialCheck()">שלח</button>
+    <button class="btn btn-success" (click)="sendPackingMaterialCheck()">שלח</button>
   </div>
 </ng-template>
 
 
 
 <div id="print-section2" style="direction: rtl; text-align: right; display: none; ">
-    <header>
-      <h1>פאר פארם בע"מ</h1>
-      <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256 </p>
-      <p>
-        <span>טלפון 03-9024055</span>&nbsp;&nbsp;
-        <span>פקס 03-9024015</span>&nbsp;&nbsp;
-        <span>דואר אלקטרוני peerpharm@barak.net.il</span>&nbsp;&nbsp;
-        <span>ח.פ: 511899023</span>
-      </p>
-    </header>
-    <main>
-      <h2>תעודת קליטה מס' {{certificateReception}}</h2>
-      <p class='originDestWh'>
-        <span><u>ממחסן:</u></span>&nbsp;&nbsp;
-        <span *ngIf="curentWhareHouseName=='Kasem'">רכיבים-קאסם</span>&nbsp;&nbsp;
-        <span *ngIf="curentWhareHouseName=='Rosh HaAyin'">רכיבים-ראש העין</span>&nbsp;&nbsp;
-        <span><u>למחסן:</u></span>&nbsp;&nbsp;
-        <span *ngIf="curentWhareHouseName=='Rosh HaAyin'">רכיבים-קאסם</span>&nbsp;&nbsp;&nbsp;
-        <span *ngIf="curentWhareHouseName=='Kasem'">רכיבים-ראש העין</span>&nbsp;&nbsp;&nbsp;
-        <span ></span>
-        <span><u>תאריך:</u></span>&nbsp;&nbsp;
-        <span>{{today  | date :'dd-MM-yyyy'  }}</span>&nbsp;&nbsp;
+  <header>
+    <h1>פאר פארם בע"מ</h1>
+    <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256 </p>
+    <p>
+      <span>טלפון 03-9024055</span>&nbsp;&nbsp;
+      <span>פקס 03-9024015</span>&nbsp;&nbsp;
+      <span>דואר אלקטרוני peerpharm@barak.net.il</span>&nbsp;&nbsp;
+      <span>ח.פ: 511899023</span>
+    </p>
+  </header>
+  <main>
+    <h2>תעודת קליטה מס' {{certificateReception}}</h2>
+    <p class='originDestWh'>
+      <span><u>ממחסן:</u></span>&nbsp;&nbsp;
+      <span *ngIf="curentWhareHouseName=='Kasem'">רכיבים-קאסם</span>&nbsp;&nbsp;
+      <span *ngIf="curentWhareHouseName=='Rosh HaAyin'">רכיבים-ראש העין</span>&nbsp;&nbsp;
+      <span><u>למחסן:</u></span>&nbsp;&nbsp;
+      <span *ngIf="curentWhareHouseName=='Rosh HaAyin'">רכיבים-קאסם</span>&nbsp;&nbsp;&nbsp;
+      <span *ngIf="curentWhareHouseName=='Kasem'">רכיבים-ראש העין</span>&nbsp;&nbsp;&nbsp;
+      <span></span>
+      <span><u>תאריך:</u></span>&nbsp;&nbsp;
+      <span>{{today | date :'dd-MM-yyyy' }}</span>&nbsp;&nbsp;
 
-      </p>
-      <br>
-      <table>
-        <tbody>
+    </p>
+    <br>
+    <table>
+      <tbody>
+        <tr>
+          <th>#</th>
+          <th>מספר פריט</th>
+          <th>מיקום</th>
+          <th>כמות</th>
+          <th class='itemNamePrint'>שם פריט</th>
+          <th>פריט מק"ט ספק</th>
+
+        </tr>
+        <ng-container *ngFor="let reqItem of listToPrint; let i =index">
           <tr>
-            <th>#</th>
-            <th>מספר פריט</th>
-            <th>מיקום</th>
-            <th>כמות</th>
-            <th class='itemNamePrint'>שם פריט</th>
-            <th>פריט מק"ט ספק</th>
-          
+            <td class="cellPadding">{{i+1}}</td>
+            <td>{{reqItem.item}}</td>
+            <td>{{reqItem.position}}</td>
+            <td>{{reqItem.amount}}</td>
+            <td class='itemNamePrint'>{{reqItem.itemName}}</td>
+            <td>{{reqItem.supplierItemNumber}}</td>
+
           </tr>
-          <ng-container *ngFor="let reqItem of listToPrint; let i =index">
-            <tr>
-              <td class="cellPadding">{{i+1}}</td>
-              <td>{{reqItem.item}}</td>
-              <td>{{reqItem.position}}</td>
-              <td>{{reqItem.amount}}</td>
-              <td class='itemNamePrint'>{{reqItem.itemName}}</td>
-              <td>{{reqItem.supplierItemNumber}}</td>
-            
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
-    </main>
-    <div class="signatures">
-      <p>
-        <span>שם המקבל:</span>&nbsp;&nbsp;
-        <span>
-          <u>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          </u>
-        </span>&nbsp;&nbsp;
-        <span>חתימה:</span>&nbsp;&nbsp;
-        <span>
-          <u>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          </u>
-        </span>&nbsp;&nbsp;
-        <span>תאריך:</span>&nbsp;&nbsp;
-        <span>
-          <u>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          </u>
-        </span>&nbsp;&nbsp;
-      </p>
-    </div>
-    <footer>
-    </footer>
+        </ng-container>
+      </tbody>
+    </table>
+  </main>
+  <div class="signatures">
+    <p>
+      <span>שם המקבל:</span>&nbsp;&nbsp;
+      <span>
+        <u>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </u>
+      </span>&nbsp;&nbsp;
+      <span>חתימה:</span>&nbsp;&nbsp;
+      <span>
+        <u>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </u>
+      </span>&nbsp;&nbsp;
+      <span>תאריך:</span>&nbsp;&nbsp;
+      <span>
+        <u>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </u>
+      </span>&nbsp;&nbsp;
+    </p>
   </div>
-  <button style='display: none;' #printBtn2 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl'}, 
+  <footer>
+  </footer>
+</div>
+<button style='display: none;' #printBtn2 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl'}, 
       header : {'border-bottom': 'solid 1px'},
       main : {'border-bottom': 'solid 1px' },
       table :{ 'text-align': 'right' },

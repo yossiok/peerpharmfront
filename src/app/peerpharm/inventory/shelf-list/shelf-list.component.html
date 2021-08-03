@@ -9,6 +9,7 @@
   <div class="row mt-4">
     <div class="col-1">
       <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}" style="background: none;border:none" printSectionId="print-section" ngxPrint><img src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>  
+      <img style="width: 50px; height: 50px" (click)="exportShelfListToXl()" src="../../../../assets/images/excel.png" alt="">
     </div>
   
     <div class="col-2">

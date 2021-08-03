@@ -156,6 +156,7 @@ import { NewPricingComponent } from './prices/new-pricing/new-pricing.component'
 import { ItemIndexComponent } from './item-index/item-index.component';
 import { ItemSuppliersComponent } from './items/item-suppliers/item-suppliers.component';
 import { InvArrivalsComponent } from './inventory/inv-arrivals/inv-arrivals.component';
+import { InventoryReportsComponent } from './inventory/inventory-reports/inventory-reports.component';
 
 
 
@@ -303,7 +304,8 @@ import { InvArrivalsComponent } from './inventory/inv-arrivals/inv-arrivals.comp
     NewPricingComponent,
     ItemIndexComponent,
     ItemSuppliersComponent,
-    InvArrivalsComponent
+    InvArrivalsComponent,
+    InventoryReportsComponent
   ],
   entryComponents:[AddProcurementItemDialog],
   providers: [ HttpClientModule,   

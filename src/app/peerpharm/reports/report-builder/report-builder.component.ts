@@ -178,7 +178,7 @@ export class ReportBuilderComponent implements OnInit {
           //comibne ItemshellData to contain shellData
           this.itemSellData.map(z => {
             let shell = this.ShellData.find(x => x._id == z.shell_id_in_whareHouse);
-            z.warehouse = shell.whName;
+            if(shell) z.warehouse = shell.whName;
             return z;
           });
           this.columnDefs = this.itemShellColumns;

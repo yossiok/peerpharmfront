@@ -49,6 +49,7 @@
             <th>#</th>
             <th>Supplier Number</th>
             <th>Name</th>
+            <th>Origin</th>
             <th>Country</th>
             <th>Address</th>
             <th>Email</th>
@@ -62,6 +63,7 @@
             <td style="text-decoration: underline;cursor: pointer;" (click)="openData('Update Supplier', i)">
               {{supplier.suplierNumber}}</td>
             <td>{{supplier.suplierName}}</td>
+            <td>{{supplier.origin}}</td>
             <td>{{supplier.country}}</td>
             <td>{{supplier.city}} , {{supplier.address}}</td>
             <td>{{supplier.email}}</td>

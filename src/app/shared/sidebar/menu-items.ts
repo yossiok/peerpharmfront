@@ -284,6 +284,14 @@ export const ROUTES: RouteInfo[] = [
         class: '',
         extralink: false,
         submenu: []
+      },
+      {
+        path: '/peerpharm/inventory/reports',
+        title: 'Inventory Reports',
+        icon: 'fas fa-tree',
+        class: '',
+        extralink: false,
+        submenu: []
       }
     ]
   },

@@ -1,0 +1,30 @@
+
+<div *ngIf="!loader">
+    <form [formGroup]="reportForm" (ngSubmit)="getInvRep()">
+        <div class="row">
+            <div class="col-1">
+                <label>item type:</label> 
+                <select class="form-control" formControlName="itemType">
+                    <option value="all">all</option>
+                    <option value="material">materials</option>
+                    <option value="component">components</option>
+                    <option value="product">products</option>
+                </select>
+            </div>
+            <div class="col-1">
+                <label for="">Component Type:</label>
+                <select class="form-control" formControlName="cmptType">
+                    <option *ngFor="let type of cmptTypes" [value]="type">{{type}}</option>
+                </select>
+            </div>
+            <div class="col-1">
+                <label for="">&nbsp;</label>
+                <button class="form-control btn btn-primary" type="submit">Get inventory Report</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="bigLoader" *ngIf="loader">
+    <h4 class="text-info p-5">Making Report</h4>
+</div>

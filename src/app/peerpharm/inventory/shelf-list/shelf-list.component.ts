@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { CostumersService } from 'src/app/services/costumers.service';
+import { ExcelService } from 'src/app/services/excel.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ItemsService } from 'src/app/services/items.service';
 
@@ -40,7 +41,12 @@ export class ShelfListComponent implements OnInit {
     this.editShelfAmount('','')
   }
 
-  constructor(private costumerSrv:CostumersService,private toastSrv:ToastrService,private itemService:ItemsService,private inventorySrv:InventoryService) { }
+  constructor(
+    private costumerSrv:CostumersService,
+    private toastSrv:ToastrService,
+    private itemService:ItemsService,
+    private inventorySrv:InventoryService,
+    private xlSrv: ExcelService) { }
 
   ngOnInit() {
     this.getAllCostumers();
@@ -125,6 +131,11 @@ export class ShelfListComponent implements OnInit {
       })
     }
   
+  }
+
+  exportShelfListToXl(){
+    let shelfs = [...this.allShelfs]
+    this.xlSrv.exportAsExcelFile(shelfs, 'Shelf Report')
   }
 
   updateShelfAmount(shelf){

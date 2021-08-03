@@ -478,6 +478,13 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  //Reports:
+
+  getInvRep(reportForm) {
+    let url = this.baseUrl+"component/inventoryreport"
+    return this.http.post(url, JSON.stringify(reportForm), this.options).pipe(map(reponse => reponse.json()));
+  }
+
 
 
 
