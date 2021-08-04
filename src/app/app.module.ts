@@ -18,10 +18,6 @@ import { HttpModule } from '@angular/http';
 import { Routes, RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 //
-import {NeworderComponent} from './peerpharm/allorders/neworder/neworder.component'
-import {OrderdetailsComponent} from './peerpharm/allorders/orderdetails/orderdetails.component'
-import {OrdersComponent} from './peerpharm/allorders/orders/orders.component'
-import { AllordersComponent } from './peerpharm/allorders/allorders/allorders.component';
 
 //
  
@@ -53,8 +49,6 @@ import { NgxBarcodeModule } from 'ngx-barcode';
 import { TestPipePipe } from './pipes/test-pipe.pipe';
 import { ConfirmModalComponent } from './services/confirm.modal.service'; 
 import { OrdersService } from './services/orders.service';
-import { ReportBuilderComponent } from './peerpharm/reports/report-builder/report-builder.component';
-import { AgGridModule } from 'ag-grid-angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandlerService } from './services/error-handler.service';

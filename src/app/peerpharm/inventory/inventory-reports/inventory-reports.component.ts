@@ -39,7 +39,12 @@ export class InventoryReportsComponent implements OnInit {
     this.inventorySer.getInvRep(this.reportForm.value).subscribe(data => {
       this.loader = false
       if (this.reportForm.value.itemType == 'product') {
-        data.map( item => item.name ? item.name = `${item.name[0]} ${item.subName[0]} ${item.description[0]}` : null)
+        data.map( item => {
+          item.name ? item.name = `${item.name[0]} ${item.subName[0]} ${item.description[0]}` : null
+          delete item.subName
+          delete item.description
+        })
+          
       }
       else {
         data.map(item=>{

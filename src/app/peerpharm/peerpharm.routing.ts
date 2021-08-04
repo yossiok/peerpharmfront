@@ -49,7 +49,6 @@ import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view
 import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated-orders.component';
 import { CleaningFormsComponent } from './forms/cleaning-forms/cleaning-forms.component';
 import { FirstAidComponent } from './forms/first-aid/first-aid.component';
-import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.component';
 import { PackingListComponent } from './qa/packing-list/packing-list.component';
 import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
 import { NewFormuleComponent } from './new-formule/new-formule.component';
@@ -320,13 +319,6 @@ export const PeerPharmRputs: Routes = [
       title: 'Allocated Orders'
     },
     component: AllocatedOrdersComponent,
-  },
-  {
-    path: 'inventory/change-shelf',
-    data: {
-      title: 'Change Shelf'
-    },
-    component: ChangeShelfComponent,
   },
   {
     path: 'taskboard/main',

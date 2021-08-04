@@ -123,7 +123,6 @@ import { AllFormulesComponent } from './formules/all-formules/all-formules.compo
 import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
 import { AddProcurementItemDialog } from './procurement/add-procurement-item-dialog/add-procurement-item-dialog';
 import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated-orders.component';
-import { ChangeShelfComponent } from './inventory/change-shelf/change-shelf.component';
 import { PackingListComponent } from './qa/packing-list/packing-list.component';
 import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component'; 
 import { ItemdetaisComponent } from './items/itemdetais/itemdetais.component';
@@ -157,6 +156,7 @@ import { ItemIndexComponent } from './item-index/item-index.component';
 import { ItemSuppliersComponent } from './items/item-suppliers/item-suppliers.component';
 import { InvArrivalsComponent } from './inventory/inv-arrivals/inv-arrivals.component';
 import { InventoryReportsComponent } from './inventory/inventory-reports/inventory-reports.component';
+import { ShelfChangeComponent } from './inventory/shelf-change/shelf-change.component';
 
 
 
@@ -210,7 +210,6 @@ import { InventoryReportsComponent } from './inventory/inventory-reports/invento
     AllFormulesComponent,
     ItemMovementReportsComponent,
     FormuleProductionComponent,
-    ChangeShelfComponent,
     FormuleComponent,
     CalendarComponent,
     AddFormuleComponent,
@@ -305,7 +304,8 @@ import { InventoryReportsComponent } from './inventory/inventory-reports/invento
     ItemIndexComponent,
     ItemSuppliersComponent,
     InvArrivalsComponent,
-    InventoryReportsComponent
+    InventoryReportsComponent,
+    ShelfChangeComponent
   ],
   entryComponents:[AddProcurementItemDialog],
   providers: [ HttpClientModule,   
