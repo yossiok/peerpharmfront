@@ -426,6 +426,11 @@ export class InventoryService {
     return this.http.post(url, JSON.stringify({allArrivals}), this.options).pipe(map(res => res.json()));
   }
 
+  changeItemPosition(shelfChange) {
+    let url = this.baseUrl + "itemShell/shelfChange";
+    return this.http.post(url, JSON.stringify(shelfChange), this.options).pipe(map(res => res.json()));
+  }
+
 
   getItemMovements(itemNumber) {
     let url = this.baseUrl + "itemmovement?id=" + itemNumber;

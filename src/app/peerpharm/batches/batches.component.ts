@@ -200,7 +200,10 @@ export class BatchesComponent implements OnInit {
   }
 
   startInterval() {
-    this.myRefresh = setInterval(() => { this.getAllBatchesYear(); }, 1000 * 60 * 3);
+    this.myRefresh = setInterval(() => { 
+
+      this.getAllBatchesYear(); 
+    }, 1000 * 60 * 5);
   }
 
 
