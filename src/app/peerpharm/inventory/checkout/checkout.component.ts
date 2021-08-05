@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { InventoryService } from 'src/app/services/inventory.service';
@@ -13,9 +13,9 @@ export class CheckoutComponent implements OnInit {
   @ViewChild('nameSelect') nameSelect: ElementRef
   @ViewChild('printBtn2') printBtn2: ElementRef
   @ViewChild('first') first: ElementRef
+  @Input() allWhareHouses: any[];
 
   itemNames: any[];
-  allWhareHouses: any[];
   shellNums: any[];
   certificateReception: number;
   outGoing: any[] = []
@@ -25,7 +25,7 @@ export class CheckoutComponent implements OnInit {
   componentCheckout: FormGroup = new FormGroup({
     itemType: new FormControl('component', Validators.required),
     item: new FormControl(null, Validators.required),
-    amount: new FormControl(500, Validators.required),
+    amount: new FormControl(null, Validators.required),
     shell_id_in_whareHouse: new FormControl(null, Validators.required),
     position: new FormControl(''),
     whareHouseID: new FormControl(null, Validators.required),
@@ -41,13 +41,6 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(()=>this.first.nativeElement.focus(),500) 
-    this.getWhs()
-  }
-
-  getWhs() {
-    this.inventoryService.getWhareHousesList().subscribe(whs => {
-      this.allWhareHouses = whs
-    })
   }
 
   getShelfs() {
@@ -110,9 +103,9 @@ export class CheckoutComponent implements OnInit {
           }
           this.sending = false
           this.toastr.success('שינויים נשמרו בהצלחה', 'נשמר')
-          this.outGoing = []
           setTimeout(()=> {
             this.printBtn2.nativeElement.click()
+            setTimeout(()=> this.outGoing = [], 1000)
           }, 500)
         }
       }

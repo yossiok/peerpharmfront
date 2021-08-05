@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { InventoryService } from 'src/app/services/inventory.service';
@@ -13,9 +13,9 @@ export class ShelfChangeComponent implements OnInit {
   @ViewChild('nameSelect') nameSelect: ElementRef
   @ViewChild('printBtn2') printBtn2: ElementRef
   @ViewChild('first') first: ElementRef
+  @Input() allWhareHouses: any[];
 
   itemNames: any[];
-  allWhareHouses: any[];
   shelfsWithItem: any[]
   shellNums: any[];
   certificateReception: number;
@@ -26,7 +26,7 @@ export class ShelfChangeComponent implements OnInit {
   shelfChange: FormGroup = new FormGroup({
     itemType: new FormControl('component', Validators.required),
     item: new FormControl(null, Validators.required),
-    amount: new FormControl(500, Validators.required),
+    amount: new FormControl(null, Validators.required),
     old_shell_id_in_whareHouse: new FormControl(null, Validators.required),
     new_shell_id_in_whareHouse: new FormControl(null, Validators.required),
     whareHouseID: new FormControl(null, Validators.required),
@@ -40,22 +40,21 @@ export class ShelfChangeComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => this.first.nativeElement.focus(), 500)
-    this.getWhs()
-  }
-
-  getWhs() {
-    this.inventoryService.getWhareHousesList().subscribe(whs => {
-      this.allWhareHouses = whs
-    })
   }
 
   getShelfs() {
     if (!this.shelfChange.value.whareHouseID) this.toastr.error('אנא בחר מחסן.')
     else if (!this.shelfChange.value.item) this.toastr.error('אנא הזן מספר פריט.')
-    else this.inventoryService.getShelfListForItemInWhareHouse2(this.shelfChange.value.item, this.shelfChange.value.whareHouseID)
+    else if(this.shelfChange.value.item) this.inventoryService.getShelfListForItemInWhareHouse2(this.shelfChange.value.item, this.shelfChange.value.whareHouseID)
       .subscribe(res => {
-        if (res.msg) this.toastr.error('בעיה בהזנת הנתונים.')
-        else if (res.length == 0) this.toastr.error('הפריט לא נמצא על אף אחד מהמדפים במחסן זה.')
+        if (res.msg) {
+          this.toastr.error('בעיה בהזנת הנתונים.')
+          this.shelfsWithItem = []
+        } 
+        else if (res.length == 0) {
+          this.toastr.error('הפריט לא נמצא על אף אחד מהמדפים במחסן זה.')
+          this.shelfsWithItem = []
+        } 
         else {
           this.shelfsWithItem = res
           //stupid bug:

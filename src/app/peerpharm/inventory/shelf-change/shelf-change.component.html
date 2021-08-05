@@ -45,7 +45,7 @@
                 <input type="number" formControlName="amount" class="form-control" >
 
                 <label>מדף חדש</label>
-                <select class="form-control" formControlName="new_shell_id_in_whareHouse" (change)="test($event)">
+                <select class="form-control" formControlName="new_shell_id_in_whareHouse">
                     <option disabled value="">בחר מדף</option>
                     <option *ngFor="let shellNum of shellNums" [value]="shellNum._id">
                         {{shellNum.position}}

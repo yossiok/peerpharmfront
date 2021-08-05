@@ -188,15 +188,15 @@
       </div>
 
       <div class="m-2 p-4 border border-black" *ngIf="dir=='in'">
-        <app-inv-arrivals></app-inv-arrivals>
+        <app-inv-arrivals [allWhareHouses]="whareHouses"></app-inv-arrivals>
       </div>
 
       <div class="m-2 p-4 border border-primary bg-secondary text-white" *ngIf="dir=='shelfChange'">
-        <app-shelf-change></app-shelf-change>
+        <app-shelf-change [allWhareHouses]="whareHouses"></app-shelf-change>
       </div>
 
       <div class="m-2 p-4 border border-primary bg-warning" *ngIf="dir=='out'">
-        <app-checkout></app-checkout>
+        <app-checkout [allWhareHouses]="whareHouses"></app-checkout>
       </div>
 
       <div *ngIf="multiInputLines" class="row">
