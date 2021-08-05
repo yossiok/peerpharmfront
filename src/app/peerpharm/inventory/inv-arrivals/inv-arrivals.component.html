@@ -7,7 +7,7 @@
 
             <div class="col-2">
                 <label>מחסן</label>
-                <select class="form-control" formControlName="whareHouseID" #first>
+                <select class="form-control" (change)="itemNumber ? getShelfs() : null" formControlName="whareHouseID" #first>
                     <option disabled value="">בחר מחסן</option>
                     <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
                     </option>
@@ -18,9 +18,9 @@
                 <label>
                     פריט (לפי מספר)
                 </label>
-                <input type="number" formControlName="item" (change)="getShelfs()" class="form-control">
+                <input type="number" [disabled]="disabled" formControlName="item" (change)="getShelfs()" class="form-control">
             </div>
-            <div class="col-2">
+            <div *ngIf="!disabled" class="col-2">
                 <label class="d-block">
                     (לפי שם) פריט
                 </label>

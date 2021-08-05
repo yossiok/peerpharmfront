@@ -14,6 +14,7 @@ export class ShelfChangeComponent implements OnInit {
   @ViewChild('printBtn2') printBtn2: ElementRef
   @ViewChild('first') first: ElementRef
   @Input() allWhareHouses: any[];
+  @Input() itemNumber: number;
 
   itemNames: any[];
   shelfsWithItem: any[]
@@ -22,6 +23,7 @@ export class ShelfChangeComponent implements OnInit {
   allArrivals: any[] = []
   today = new Date()
   sending: boolean = false
+  disabled: boolean = false
 
   shelfChange: FormGroup = new FormGroup({
     itemType: new FormControl('component', Validators.required),
@@ -40,6 +42,10 @@ export class ShelfChangeComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => this.first.nativeElement.focus(), 500)
+    if(this.itemNumber) {
+      this.disabled = true
+      this.shelfChange.controls.item.setValue(this.itemNumber)
+    } 
   }
 
   getShelfs() {

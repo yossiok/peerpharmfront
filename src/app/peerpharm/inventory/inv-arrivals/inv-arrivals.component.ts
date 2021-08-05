@@ -14,6 +14,7 @@ export class InvArrivalsComponent implements OnInit {
   @ViewChild('printBtn2') printBtn2: ElementRef
   @ViewChild('first') first: ElementRef
   @Input() allWhareHouses: any[];
+  @Input() itemNumber: number;
 
   itemNames: any[];
   shellNums: any[];
@@ -21,6 +22,7 @@ export class InvArrivalsComponent implements OnInit {
   allArrivals: any[] = []
   today = new Date()
   sending: boolean = false
+  disabled: boolean = false
 
   componentArrival: FormGroup = new FormGroup({
     itemType: new FormControl('component', Validators.required),
@@ -41,6 +43,10 @@ export class InvArrivalsComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(()=>this.first.nativeElement.focus(),500) 
+    if(this.itemNumber) {
+      this.disabled = true
+      this.componentArrival.controls.item.setValue(this.itemNumber)
+    } 
   }
 
   getShelfs() {

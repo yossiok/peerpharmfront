@@ -115,6 +115,7 @@ export class StockComponent implements OnInit {
   // resCmpt: any;
 
   @ViewChild('numberSearchInput') numberSearchInput: ElementRef;
+  @ViewChild('invAmounts') invAmounts: ElementRef;
 
   itemmoveBtnTitle: string = "Item Movements";
   loadingMovements: boolean = false;
@@ -352,6 +353,7 @@ export class StockComponent implements OnInit {
   lastCustomerOrders: any;
   supPurchases: any[] = []
   allowPriceUpdate: boolean = false
+  dir: string
 
   // currentFileUpload: File; //for img upload creating new component
 
@@ -1187,24 +1189,25 @@ export class StockComponent implements OnInit {
 
 
   dirSet(direction) {
-    if (direction == "shelfChange") {
-      this.amountChangeDir = 'shelfChange';
-      this.sehlfChangeNavBtnColor = "#1affa3";
-      this.amountChangeNavBtnColor = "";
-      this.amountForPalletBtnColor = "";
-    }
-    else if (direction == 'withdrawForPallet') {
-      this.amountChangeDir = 'withdrawForPallet';
-      this.sehlfChangeNavBtnColor = "";
-      this.amountForPalletBtnColor = "#1affa3";
-      this.amountChangeNavBtnColor = "";
-    }
-    else {
-      this.amountChangeDir = '';
-      this.sehlfChangeNavBtnColor = "";
-      this.amountForPalletBtnColor = "";
-      this.amountChangeNavBtnColor = "#1affa3";
-    }
+    this.dir = direction
+    // if (direction == "shelfChange") {
+    //   this.amountChangeDir = 'shelfChange';
+    //   this.sehlfChangeNavBtnColor = "#1affa3";
+    //   this.amountChangeNavBtnColor = "";
+    //   this.amountForPalletBtnColor = "";
+    // }
+    // else if (direction == 'withdrawForPallet') {
+    //   this.amountChangeDir = 'withdrawForPallet';
+    //   this.sehlfChangeNavBtnColor = "";
+    //   this.amountForPalletBtnColor = "#1affa3";
+    //   this.amountChangeNavBtnColor = "";
+    // }
+    // else {
+    //   this.amountChangeDir = '';
+    //   this.sehlfChangeNavBtnColor = "";
+    //   this.amountForPalletBtnColor = "";
+    //   this.amountChangeNavBtnColor = "#1affa3";
+    // }
   }
 
 
@@ -1568,6 +1571,7 @@ export class StockComponent implements OnInit {
 
     this.openModalHeader = "כמויות פריט במלאי  " + cmptNumber;
     this.openAmountsModal = true;
+    this.dir = ""
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
     this.itemIdForAllocation = cmptId;
     //get product (and TBD materials) batchs for select
