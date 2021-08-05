@@ -173,6 +173,10 @@
           <app-shelf-change></app-shelf-change>
         </div>
 
+        <div class="m-2 p-4 border border-primary bg-warning">
+          <app-checkout></app-checkout>
+        </div>
+
       <div *ngIf="screen == 'stkManagment'" class="row mt-5">
         <div class="col-3">
 
@@ -184,9 +188,9 @@
         <div class="col-3">
           <button (click)="dirSet('stkManagment','out')" class='btn btn-info form-control'>הוצאת סחורה</button>
         </div>
-        <div class="col-3">
+        <!-- <div class="col-3">
           <button (click)="dirSet('stkManagment','shelfChange')" class='btn btn-info form-control'>שינוי מדף</button>
-        </div>
+        </div> -->
         <!-- <div class="col-3">
       <button (click)="dirSet('stkManagment','in')" class='btn btn-info form-control'>קבלת סחורה</button>
     </div> -->

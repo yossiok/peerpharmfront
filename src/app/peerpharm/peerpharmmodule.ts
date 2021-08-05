@@ -157,6 +157,7 @@ import { ItemSuppliersComponent } from './items/item-suppliers/item-suppliers.co
 import { InvArrivalsComponent } from './inventory/inv-arrivals/inv-arrivals.component';
 import { InventoryReportsComponent } from './inventory/inventory-reports/inventory-reports.component';
 import { ShelfChangeComponent } from './inventory/shelf-change/shelf-change.component';
+import { CheckoutComponent } from './inventory/checkout/checkout.component';
 
 
 
@@ -305,7 +306,8 @@ import { ShelfChangeComponent } from './inventory/shelf-change/shelf-change.comp
     ItemSuppliersComponent,
     InvArrivalsComponent,
     InventoryReportsComponent,
-    ShelfChangeComponent
+    ShelfChangeComponent,
+    CheckoutComponent
   ],
   entryComponents:[AddProcurementItemDialog],
   providers: [ HttpClientModule,   
