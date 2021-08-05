@@ -165,45 +165,47 @@
 
       <div class="m-5 p-5" *ngIf="screen == 'stkManagment'">
 
-        <div class="m-2 p-4 border border-black">
-          <app-inv-arrivals></app-inv-arrivals>
-        </div>
-
-        <div class="m-2 p-4 border border-primary bg-secondary text-white">
-          <app-shelf-change></app-shelf-change>
-        </div>
-
-        <div class="m-2 p-4 border border-primary bg-warning">
-          <app-checkout></app-checkout>
-        </div>
+     
 
       <div *ngIf="screen == 'stkManagment'" class="row mt-5">
         <div class="col-3">
 
         </div>
-        <div class="col-3">
+        <!-- <div class="col-3">
           <button (click)="dirSet('stkManagment','inCertif')" class='btn btn-info form-control'>קבלת סחורה
             מתעודה</button>
+        </div> -->
+        <div class="col-3">
+          <button [ngClass]="dir == 'out' ? 'btn-info' : 'btn-outline-info'" (click)="dirSet('stkManagment','out')" class='btn form-control'>הוצאת סחורה</button>
         </div>
         <div class="col-3">
-          <button (click)="dirSet('stkManagment','out')" class='btn btn-info form-control'>הוצאת סחורה</button>
+          <button [ngClass]="dir == 'shelfChange' ? 'btn-info' : 'btn-outline-info'" (click)="dirSet('stkManagment','shelfChange')" class='btn form-control'>שינוי מדף</button>
         </div>
-        <!-- <div class="col-3">
-          <button (click)="dirSet('stkManagment','shelfChange')" class='btn btn-info form-control'>שינוי מדף</button>
-        </div> -->
-        <!-- <div class="col-3">
-      <button (click)="dirSet('stkManagment','in')" class='btn btn-info form-control'>קבלת סחורה</button>
-    </div> -->
+        <div class="col-3">
+      <button [ngClass]="dir == 'in' ? 'btn-info' : 'btn-outline-info'" (click)="dirSet('stkManagment','in')" class='btn form-control'>קבלת סחורה</button>
+    </div>
         <div class="col-3"></div>
       </div>
 
-      <div class="row">
+      <div class="m-2 p-4 border border-black" *ngIf="dir=='in'">
+        <app-inv-arrivals></app-inv-arrivals>
+      </div>
+
+      <div class="m-2 p-4 border border-primary bg-secondary text-white" *ngIf="dir=='shelfChange'">
+        <app-shelf-change></app-shelf-change>
+      </div>
+
+      <div class="m-2 p-4 border border-primary bg-warning" *ngIf="dir=='out'">
+        <app-checkout></app-checkout>
+      </div>
+
+      <div *ngIf="multiInputLines" class="row">
         <div class="col-12 mt-3">
           <h4 class="text-danger">{{ dir | headingsWH }}</h4>
         </div>
       </div>
 
-      <div class="row mt-3">
+      <div *ngIf="multiInputLines" class="row mt-3">
         <div class="col-5"></div>
         <div class="col-2">
 
@@ -223,7 +225,7 @@
 
           <div *ngIf="dir!='' && dir!='managment' && dir != 'inCertif'  && dir!='watchShelfs'">
 
-
+<!-- 
             <ng-container *ngIf="!multiInputLines">
               <form class="form-horizontal itemsList" [formGroup]="itemLine">
                 <div class="form-group row">
@@ -257,7 +259,6 @@
                   </div>
 
 
-                  <!-- if recieving stock to wh  -->
                   <div class="col-sm-1" *ngIf="dir=='in'">
                     <label>הגעת משלוח</label>
                     <input type="date" class="form-control" placeholder="Arrival Date" formControlName="arrivalDate">
@@ -289,7 +290,7 @@
                 </div>
               </form>
 
-            </ng-container>
+            </ng-container> -->
 
             <!-- multiLines for inventory requests load -->
             <ng-container *ngIf="multiInputLines">
@@ -361,7 +362,7 @@
 
 
             <!--  --> <br>
-            <div class="ShouldBeNav">
+            <div *ngIf="multiInputLines" class="ShouldBeNav">
               <button class="btn btn-warning" (click)="cleanList()">Reset / אפס</button>&nbsp;&nbsp;
               <button class="btn btn-info" (click)="sendList()">Submit / שלח שינויים <i
                   class="ti-check m-l-10"></i></button>
@@ -370,7 +371,7 @@
 
             <br>
 
-            <div class="form-group row">
+            <div class="form-group row" *ngIf="multiInputLines">
               <div class="col-sm-2"></div>
               <div class="col-sm-8">
                 <table class='table'>
