@@ -138,6 +138,10 @@ export class BatchesMkpComponent implements OnInit {
   this.currentOrderN = this.newMkpBatch.order
   this.currentPH = this.newMkpBatch.ph
   this.currentWeightKG =this.newMkpBatch.weightKg
+
+  if(this.currentExpDate == "" || this.currentBatchNumber == "" || this.currentExpDate == "" || this.currentProduced == "" || this.currentWeightKG == "") {
+    this.toastSr.error('אנא מלא את כל הפרטים', 'בעיה בהזנת נתונים')
+  }
   
 
 

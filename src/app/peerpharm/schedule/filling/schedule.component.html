@@ -1,6 +1,11 @@
 <div class="container-fluid text-center bg-white">
   <div class="row fixNoaStupidStuff">
-    <div class="col-4 fixNoaStupidStuff"></div>
+    <div class="col-4 fixNoaStupidStuff">
+      <button type="button" class="btn btn-success" [printStyle]="{tr : {'border': 'solid 1px black'}, td : {'border': 'solid 1px black'}}" printSectionId="print-schedule-section"
+      ngxPrint>
+      Print Schedule
+    </button>
+    </div>
     <div class="col-4 fixNoaStupidStuff">
       <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info">Filling Schedule</h1>
       <h2>
@@ -162,7 +167,7 @@
     </div>
   </div>
 
-  <div class="row fixNoaStupidStuff">
+  <div id="print-schedule-section" class="row fixNoaStupidStuff">
     <div class="col-12 fixNoaStupidStuff">
       <table class="table table-striped table-hover">
         <thead style="box-shadow: inset 0px 0px 4px 1px black;" class="bg-info text-white">

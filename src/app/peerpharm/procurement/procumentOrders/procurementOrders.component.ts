@@ -893,7 +893,7 @@ export class ProcurementOrdersComponent implements OnInit {
               Po_Amount: item.quantity,
               Po_Delivered: item.arrivedAmount,
               PO_Date: new Date(purchaseOrder.creationDate),
-              PO_Requested_Date: purchaseOrder.arrivalData,
+              PO_Requested_Date: purchaseOrder.arrivalDate ? new Date(purchaseOrder.arrivalDate) : null,
               measurement: item.measurement,
               totalPriceNIS: item.localTotal,
               supplierItemNum: item.supplierItemNum,
