@@ -128,6 +128,7 @@ export class ProcurementOrdersComponent implements OnInit {
     supplier: new FormControl(null),
     supplier2: new FormControl(null),
     itemNumber: new FormControl(null),
+    origin: new FormControl(null),
   })
 
 
@@ -400,6 +401,7 @@ export class ProcurementOrdersComponent implements OnInit {
     let orderNumber = this.filterForm.value.orderNumber
     let itemNumber = this.filterForm.value.itemNumber
     let supplier = this.filterForm.value.supplier
+    let origin = this.filterForm.value.origin
     
 
     if (status) {
@@ -442,6 +444,10 @@ export class ProcurementOrdersComponent implements OnInit {
 
     if(supplier) {
       this.procurementData = this.procurementData.filter(purchOrder => purchOrder.supplierName.toLowerCase().includes(supplier))
+    }
+
+    if(origin) {
+      this.procurementData = this.procurementData.filter(purchOrder => purchOrder.origin ? purchOrder.origin == origin : false)
     }
 
 
@@ -878,17 +884,18 @@ export class ProcurementOrdersComponent implements OnInit {
               origin: purchaseOrder.origin,
               PONum: purchaseOrder.orderNumber,
               POstatus: purchaseOrder.status,
+              POstatusChange: new Date(purchaseOrder.statusChange),
               itemNum: item.number,
               itemName: item.name,
               Type: item.componentType,
               Price: item.price,
+              coin: item.coin,
               Po_Amount: item.quantity,
               Po_Delivered: item.arrivedAmount,
-              PO_Date: purchaseOrder.creationDate,
+              PO_Date: new Date(purchaseOrder.creationDate),
               PO_Requested_Date: purchaseOrder.arrivalData,
               measurement: item.measurement,
               totalPriceNIS: item.localTotal,
-              coin: item.coin,
               supplierItemNum: item.supplierItemNum,
               shippingPrice: item.shippingPrice,
               remarks: item.remarks

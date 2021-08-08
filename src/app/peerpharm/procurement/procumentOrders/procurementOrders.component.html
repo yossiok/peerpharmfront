@@ -137,6 +137,13 @@
                   <option *ngFor="let user of users" [value]="user.userName">{{user.userName}}</option>
                 </select>
               </div>
+              <div class="col-1">
+                חפש לפי מקור (origin) <select (change)="filterPurchaseOrders()" formControlName="origin"
+                  class="form-control rounded-pill">
+                  <option value="israel">ארץ</option>
+                  <option value="import">חו"ל</option>
+                </select>
+              </div>
               <!-- <div class="col-1">
                   טען את כל הפריטים
                   <button (click)="loadPurchasesItems()" class="btn btn-primary form-control">Load Items</button>
