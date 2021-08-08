@@ -12,7 +12,7 @@
                 date:'dd/MM/yy'}}</span>
               <span *ngIf="!purchaseData.arrivalDate || purchaseData.arrivalDate == purchaseData.creationDate" class="click"
                 (click)="editArrivalDateForPurchase = !editArrivalDateForPurchase"><button class="btn btn-primary">Set
-                  Arrival Date</button></span>
+                  Requested Date</button></span>
             </h4>
             <h4 *ngIf="editArrivalDateForPurchase">
               <input type="date" formControlName="arrivalDate">
@@ -105,7 +105,7 @@
                   <th>Price</th>
                   <th *ngIf="!editItem">shipping</th>
                   <th *ngIf="editItem">Coin</th>
-                  <th>Arrival Date</th>
+                  <th>Requested Date</th>
                   <th>Remarks</th>
                 </tr>
               </thead>
@@ -290,7 +290,7 @@
               </div>
               <div class="col-6 d-flex flex-row">
                 <div class="col-6 ml-10">
-                  <label>Item Arrival Date</label>
+                  <label>Item Requested Date</label>
                   <input formControlName="itemArrival" class="form-control" type="date" placeholder="Item Arrival">
                 </div>
                 <div class="col-6 ml-10">
@@ -389,7 +389,7 @@
             </select>
           </div>
           <div class="col form-group">
-            <label>Arrival Date</label>
+            <label>Requested Date</label>
             <input formControlName="itemArrival" class="form-control" type="date">
           </div>
         </div>
@@ -509,7 +509,7 @@
               </div>
               <div class="col-6 d-flex flex-row">
                 <div class="col-6 ml-10">
-                  <label>Item Arrival Date</label>
+                  <label>Item Requested Date</label>
                   <input formControlName="itemArrival" type="date" class="form-control" placeholder="Item Arrival">
                 </div>
                 <div class="col-6 ml-10">
@@ -567,7 +567,7 @@
                   <th>Measurement</th>
                   <th>Quantity</th>
                   <th>Price</th>
-                  <th>Arrival Date</th>
+                  <th>Requested Date</th>
                   <th>-</th>
                   <th>-</th>
                 </tr>

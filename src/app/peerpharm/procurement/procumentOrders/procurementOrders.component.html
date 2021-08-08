@@ -170,7 +170,7 @@
                   Creation Date: <input class="form-control rounded-pill" formControlName="creationDate" (change)="dateChange()" #fromDateStr type="date">
                 </div>
                 <div class="col-1">
-                  Arrival Date: <input class="form-control rounded-pill" formControlName="arrivalDate" (change)="dateChange()" #toDateStr type="date">
+                  Requested Date: <input class="form-control rounded-pill" formControlName="arrivalDate" (change)="dateChange()" #toDateStr type="date">
                 </div> -->
             </div>
             <div class="row mt-4">
@@ -200,7 +200,7 @@
                   <th><b>Supplier</b></th>
                   <th><b>Origin</b></th>
                   <th><b>Creation Date</b></th>
-                  <th><b>Arrival Date</b></th>
+                  <th><b>Requested Date</b></th>
                   <th><b>Customer Order</b></th>
                   <th><b>Remarks</b></th>
                   <th><b>Status</b></th>
@@ -331,7 +331,7 @@
             <th>Comax Number</th>
             <th>Reference Number</th>
             <th>Arrived Amount</th>
-            <th>Arrival Date</th>
+            <th>Requested Date</th>
           </tr>
         </thead>
         <tbody>
@@ -387,7 +387,7 @@
             printSectionId="billing-section"
             [printStyle]="{th : {'border': '1px solid black'}, td : {'border': '1px solid black'},tr : {'border': '1px solid black'}}"><b>Order:{{currentOrder.orderNumber}}</b></button>
           <p style="margin-left:300px;">Order Date:{{orderDate | date: 'dd/MM/yyyy'}}</p>
-          <p style="margin-left:300px;">Arrival Date:{{arrivalDate | date: 'dd/MM/yyyy'}}</p>
+          <p style="margin-left:300px;">Requested Date:{{arrivalDate | date: 'dd/MM/yyyy'}}</p>
         </div>
 
         <div class="col-4">
