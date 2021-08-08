@@ -71,6 +71,7 @@ export class InvArrivalsComponent implements OnInit {
   }
 
   getAllShellsOfWhareHouse() {
+    this.componentArrival.controls.isNewItemShell.setValue(true)
     this.inventoryService.getWhareHouseShelfList(this.componentArrival.value.whareHouseID).subscribe(res => {
       this.shellNums = res.map(shell => {
         shell.shell_id_in_whareHouse = shell._id

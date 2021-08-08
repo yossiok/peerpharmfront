@@ -1321,15 +1321,15 @@
         <div class="col-3"></div>
       </div>
 
-      <div class="m-2 p-4 border border-black" *ngIf="dir=='in'">
+      <div [style.width]="'1094px'" class="m-2 p-4 border border-black" *ngIf="dir=='in'">
         <app-inv-arrivals [itemNumber]="resCmpt.componentN" [allWhareHouses]="whareHouses"></app-inv-arrivals>
       </div>
 
-      <div class="m-2 p-4 border border-primary bg-secondary text-white" *ngIf="dir=='shelfChange'">
+      <div [style.width]="'1094px'" class="m-2 p-4 border border-primary bg-secondary text-white" *ngIf="dir=='shelfChange'">
         <app-shelf-change [itemNumber]="resCmpt.componentN" [allWhareHouses]="whareHouses"></app-shelf-change>
       </div>
 
-      <div class="m-2 p-4 border border-primary bg-warning" *ngIf="dir=='out'">
+      <div [style.width]="'1094px'" class="m-2 p-4 border border-primary bg-warning" *ngIf="dir=='out'">
         <app-checkout [itemNumber]="resCmpt.componentN" [allWhareHouses]="whareHouses"></app-checkout>
       </div>
 

@@ -2,7 +2,7 @@
 
 
     <form [formGroup]="componentCheckout" (ngSubmit)="addToOutGoing()">
-        <h3>הוצאה מהמלאי</h3>
+        <h3>הוצאת סחורה</h3>
         <div class="row mt-4">
 
             <div class="col-2">
@@ -14,7 +14,7 @@
                 </select>
             </div>
 
-            <div class="col-2">
+            <div *ngIf="!disabled" class="col-2">
                 <label>
                     פריט (לפי מספר)
                 </label>
