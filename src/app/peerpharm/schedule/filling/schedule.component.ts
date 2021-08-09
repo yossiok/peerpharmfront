@@ -234,14 +234,16 @@ export class ScheduleComponent implements OnInit {
 
       console.log(this.scheduleLine);
 
+      var date = moment(this.scheduleLine.date);
+      if(!date.isValid()) this.toastSrv.error('אנא הזיני תאריך תקין', 'תאריך לא תקין!')
+      else {
+
       this.scheduleService
         .setNewProductionSchedule(this.scheduleLine)
         .subscribe(res => {
           if (res.msg == 'Failed') this.toastSrv.error('Schedule not Saved! Please check all fields')
           else {
-
             this.scheduleData.push(res);
-
             this.scheduleLine.scheduleId = '';
             this.scheduleLine.scheduleId = '';
             this.scheduleLine.positionN = '';
@@ -263,6 +265,7 @@ export class ScheduleComponent implements OnInit {
             this.scheduleLine.itemImpRemark = '';
           }
         });
+      }
     } else {
       alert('מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.');
     }

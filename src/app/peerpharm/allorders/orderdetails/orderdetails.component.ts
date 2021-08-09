@@ -552,8 +552,8 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   openItemStatus(orderItem, content) {
-    
-    this.productionItemStatus = {...orderItem}
+
+    this.productionItemStatus = { ...orderItem }
     // delete this.productionItemStatus._id
     this.modalService.open(content)
     // this.productionItemStatusIndex = index
@@ -561,7 +561,7 @@ export class OrderdetailsComponent implements OnInit {
 
   setOrderItemStatus() {
     this.orderService.setProductionStatus(this.productionItemStatus).subscribe(response => {
-      if(response.n == 1) this.toastSrv.success('Status changed successfully.', 'Status Change')
+      if (response.n == 1) this.toastSrv.success('Status changed successfully.', 'Status Change')
     })
   }
 
@@ -749,7 +749,7 @@ export class OrderdetailsComponent implements OnInit {
 
 
   loadMaterialsForFormule() {
-    if(this.selectedArr.length == 0) this.toastSrv.error('Please select Order Items')
+    if (this.selectedArr.length == 0) this.toastSrv.error('Please select Order Items')
     else {
       this.toastSrv.info('This might take a few seconds...', 'Please Wait')
       this.loadData = true
@@ -788,7 +788,7 @@ export class OrderdetailsComponent implements OnInit {
       delete m.phaseRemarks
       delete m.itemRemarks
     })
-    this.excelService.exportAsExcelFile(matsForEx, 'Materials Explosion '+this.number+" "+new Date())
+    this.excelService.exportAsExcelFile(matsForEx, 'Materials Explosion ' + this.number + " " + new Date())
   }
 
   formatNumber(number) {
@@ -1170,47 +1170,51 @@ export class OrderdetailsComponent implements OnInit {
 
   setCookingSchedule(item, cookingDate, cookingMarks) {
 
-    if(cookingDate.value == '') this.toastSrv.error('Please fill a valid date.', 'Invalid Date!') 
+    if (cookingDate.value == '') this.toastSrv.error('Please fill a valid date.', 'Invalid Date!')
     else {
 
       let obj = { item, cookingDate: cookingDate.value, cookingMarks: cookingMarks.value }
       console.log(obj)
-      
-    let scheduleLine = {
-      positionN: '',
-      orderN: item.orderNumber,
-      item: item.itemNumber,
-      costumer: this.costumer,
-      productName: item.discription,
-      batch: item.batch.trim(),
-      packageP: '',
-      qty: item.quantity,
-      qtyRdy: '',
-      date: cookingDate.value,
-      marks: cookingMarks.value, //marks needs to br issued - setSchedule() && setBatch() updating this value and destroy the last orderItems remarks
-      shift: '',
-      mkp: 'cream',
-      status: 'open',
-      productionLine: '',
-      pLinePositionN: 999,
-      itemImpRemark: '',
-      batchStatus: item.batchSpecStatus
+
+      let scheduleLine = {
+        positionN: '',
+        orderN: item.orderNumber,
+        item: item.itemNumber,
+        costumer: this.costumer,
+        productName: item.discription,
+        batch: item.batch.trim(),
+        packageP: '',
+        qty: item.quantity,
+        qtyRdy: '',
+        date: cookingDate.value,
+        marks: cookingMarks.value, //marks needs to br issued - setSchedule() && setBatch() updating this value and destroy the last orderItems remarks
+        shift: '',
+        mkp: 'cream',
+        status: 'open',
+        productionLine: '',
+        pLinePositionN: 999,
+        itemImpRemark: '',
+        batchStatus: item.batchSpecStatus
+      }
+
+      let bool = true
+      setTimeout(() => {
+        if (bool) this.toastSrv.error('Something went wrong.', '!')
+      }, 7000)
+      var date = moment(scheduleLine.date);
+      if (!date.isValid()) this.toastSrv.error('אנא הזיני תאריך תקין', 'תאריך לא תקין!')
+      else {
+        this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => {
+          bool = false
+          if (res.mkp == 'cream') this.toastSrv.success(`Schedule set to ${res.date.slice(0, 10)}`)
+          else this.toastSrv.error('Something went wrong.', '!')
+        })
+      }
     }
-    
-    let bool = true
-    setTimeout(()=> {
-      if(bool) this.toastSrv.error('Something went wrong.','!')
-    }, 7000)
-    this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => {
-      bool = false
-      if(res.mkp == 'cream') this.toastSrv.success(`Schedule set to ${res.date.slice(0,10)}`)
-      else this.toastSrv.error('Something went wrong.','!')
-    })
   }
-  }
-  
-  
-  
+
+
+
   async setSchedule(item, type) {
 
     // check date
@@ -1265,51 +1269,29 @@ export class OrderdetailsComponent implements OnInit {
                 if (scheduleLine.mkp == "stickers") scheduleLine.productionLine = "14";
                 if (scheduleLine.mkp == "mkp2") scheduleLine.productionLine = "15";
 
+                var date = moment(scheduleLine.date);
+                if (!date.isValid()) this.toastSrv.error('אנא הזיני תאריך תקין', 'תאריך לא תקין!')
+                else {
 
-                this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => {
-                  console.log(res)
-                  if (res.msg == 'Failed') this.toastSrv.error('Schedule not saved! Please check all fields.')
-                  else {
-                    this.toastSrv.success('Schedule Saved.')
+                  this.scheduleService.setNewProductionSchedule(scheduleLine).subscribe(res => {
+                    console.log(res)
+                    if (res.msg == 'Failed') this.toastSrv.error('Schedule not saved! Please check all fields.')
+                    else {
+                      this.toastSrv.success('Schedule Saved.')
 
-                    try {
+                      try {
 
-                      // Send message to Shlomo if item has no license
-                      if (this.tempItem[0].licsensNumber == '') {
-                        //Send message to Shlomo
-                        let message = `שלמה, נכנס ללו"ז מוצר ללא רשיון. מק"ט ${this.tempItem[0].itemNumber}`
-                        let titleObj = {
-                          title: "מוצר ללא רשיון בייצור",
-                          index: 60,
-                          users: "shlomo,sima",
-                          force: false
-                        }
-                        
-                        this.notificationService.sendGlobalMessage(message, titleObj).subscribe(data => console.log(data))
-                        //also save alert in Shlomo's user alerts
-                        this.notificationService.addUserAlert(message, titleObj, 'shlomo').subscribe(data => {
-                          console.log(data)
-                        })
-
-                      }
-                      else if (isValid(this.tempItem[0].licsensDate)) {
-                        // check license expiration date
-                        const today = new Date()
-                        const diffTime = (new Date(this.tempItem[0].licsensDate).getTime() - today.getTime())
-                        const diffSeconds = diffTime / 1000
-                        const diffMinutes = diffSeconds / 60
-                        const diffHours = diffMinutes / 60
-                        const diffDays = diffHours / 24
-                        if (diffDays < 30) {
-
+                        // Send message to Shlomo if item has no license
+                        if (this.tempItem[0].licsensNumber == '') {
                           //Send message to Shlomo
-                          let message = `שלמה, נכנס ללו"ז מוצר שהרשיון שלו עומד לפוג. מק"ט ${this.tempItem[0].itemNumber}. מועד פקיעת תוקף: ${this.tempItem.licsensDate}`
+                          let message = `שלמה, נכנס ללו"ז מוצר ללא רשיון. מק"ט ${this.tempItem[0].itemNumber}`
                           let titleObj = {
-                            title: "מוצר שתוקפו עומד לפוג נכנס לייצור",
+                            title: "מוצר ללא רשיון בייצור",
                             index: 60,
                             users: "shlomo,sima",
                             force: false
                           }
+
                           this.notificationService.sendGlobalMessage(message, titleObj).subscribe(data => console.log(data))
                           //also save alert in Shlomo's user alerts
                           this.notificationService.addUserAlert(message, titleObj, 'shlomo').subscribe(data => {
@@ -1317,12 +1299,38 @@ export class OrderdetailsComponent implements OnInit {
                           })
 
                         }
+                        else if (isValid(this.tempItem[0].licsensDate)) {
+                          // check license expiration date
+                          const today = new Date()
+                          const diffTime = (new Date(this.tempItem[0].licsensDate).getTime() - today.getTime())
+                          const diffSeconds = diffTime / 1000
+                          const diffMinutes = diffSeconds / 60
+                          const diffHours = diffMinutes / 60
+                          const diffDays = diffHours / 24
+                          if (diffDays < 30) {
+
+                            //Send message to Shlomo
+                            let message = `שלמה, נכנס ללו"ז מוצר שהרשיון שלו עומד לפוג. מק"ט ${this.tempItem[0].itemNumber}. מועד פקיעת תוקף: ${this.tempItem.licsensDate}`
+                            let titleObj = {
+                              title: "מוצר שתוקפו עומד לפוג נכנס לייצור",
+                              index: 60,
+                              users: "shlomo,sima",
+                              force: false
+                            }
+                            this.notificationService.sendGlobalMessage(message, titleObj).subscribe(data => console.log(data))
+                            //also save alert in Shlomo's user alerts
+                            this.notificationService.addUserAlert(message, titleObj, 'shlomo').subscribe(data => {
+                              console.log(data)
+                            })
+
+                          }
+                        }
+                      } catch (e) {
+                        alert(e)
                       }
-                    } catch (e) {
-                      alert(e)
                     }
-                  }
-                });
+                  });
+                }
                 let dateSced = this.date.nativeElement.value;
                 dateSced = moment(dateSced).format("DD/MM/YYYY");
                 let orderObj = { orderItemId: item._id, fillingStatus: "Scheduled to " + dateSced };
@@ -1663,12 +1671,12 @@ export class OrderdetailsComponent implements OnInit {
   exportProblems() {
     let problematicItems = this.ordersItems.filter(item => item.problematic)
     let unwinded = []
-    for ( let item of problematicItems) {
+    for (let item of problematicItems) {
       unwinded.push(item)
-      for(let c of item.problematicComponents){
+      for (let c of item.problematicComponents) {
         unwinded.push(c)
       }
-      for(let m of item.problematicMaterials){
+      for (let m of item.problematicMaterials) {
         unwinded.push(m)
       }
     }
@@ -1777,7 +1785,7 @@ export class OrderdetailsComponent implements OnInit {
         let temp = [...this.ordersItems]
         //res = all items(products) from order
         await res.forEach(async item => {
-    
+
           // orderItem = orderItem from current order
           let orderItem = temp.find(o => o.itemNumber == item.itemNumber)
           let orderItemIndex = temp.findIndex(o => o.itemNumber == item.itemNumber)

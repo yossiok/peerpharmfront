@@ -174,18 +174,18 @@
           <tr>
             <th><img (click)="makeFillingReport()" style="width:50px;" src="../../../../assets/images/stockUpdate.png">
             </th>
-            <th class="positionClass"><b>P</b></th>
-            <th><b>Order</b></th>
-            <th><b>Item</b></th>
-            <th><b>Item Important Remark</b></th>
-            <th><b>Costumer</b></th>
-            <th><b>Name of product</b></th>
-            <th><b>Batch number</b></th>
-            <th><b>Package</b></th>
-            <th><b>Qty</b></th>
-            <th><b>Remarks</b></th>
-            <th><b>Date</b></th>
-            <th class="mkpClass printlessTd"><b>shift</b></th>
+            <th class="positionClass"><b>P</b></th><!--1-->
+            <th><b>Order</b></th><!--2-->
+            <th><b>Item</b></th><!--3-->
+            <th><b>Item Important Remark</b></th><!--4-->
+            <th><b>Customer</b></th><!--5-->
+            <th><b>Name of product</b></th><!--6-->
+            <th><b>Batch number</b></th><!--7-->
+            <th><b>Package</b></th><!--8-->
+            <th><b>Qty</b></th><!--9-->
+            <th><b>Remarks</b></th><!--10-->
+            <th><b>Date</b></th><!--11-->
+            <th class="mkpClass printlessTd"><b>shift</b></th><!--12-->
             <th><input class="mkpClassInput form-control" value="MKP" /></th>
             <th></th>
             <th></th>
@@ -197,45 +197,45 @@
           </tr>
         </thead>
 
-        <tr  class="bg-white" id="inputTr" (click)="EditRowId = 0">
+        <tr class="bg-white" id="inputTr" (click)="EditRowId = 0">
           <td></td>
           <td class="positionClass">
-            <input type="text" id="input_position" [(ngModel)]="scheduleLine.positionN" class="form-control" />
+            <input type="text" id="input_position" placeholder="Position" [(ngModel)]="scheduleLine.positionN" class="form-control"/>
           </td>
           <td>
-            <input type="text" id="input_order" [(ngModel)]="scheduleLine.orderN" #orderN
+            <input type="number" id="input_order" placeholder="Order No." [(ngModel)]="scheduleLine.orderN" #orderN
               (focusout)="setOrderDetails(orderN.value)" class="form-control" />
           </td>
           <td>
-            <input type="text" id="input_item" [(ngModel)]="scheduleLine.item" #itemN
+            <input type="number" id="input_item" placeholder="Item No." [(ngModel)]="scheduleLine.item" #itemN
               (focusout)="setItemDetails(itemN.value)" class="form-control" />
           </td>
           <td>
-            <input type="text" id="input_itemImpRemark" class="form-control" [(ngModel)]="scheduleLine.itemImpRemark"
+            <input type="text" id="input_itemImpRemark" placeholder="remark" class="form-control" [(ngModel)]="scheduleLine.itemImpRemark"
               disabled />
           </td>
           <td>
-            <input type="text" id="input_costumer" [(ngModel)]="scheduleLine.costumer" class="form-control" />
+            <input type="text" id="input_costumer" placeholder="Customer" [(ngModel)]="scheduleLine.costumer" class="form-control" />
           </td>
           <td>
-            <input type="text" id="input_productName" class="form-control" [(ngModel)]="scheduleLine.productName" />
+            <input type="text" id="input_productName" placeholder="Name" class="form-control" [(ngModel)]="scheduleLine.productName" />
           </td>
           <td>
-            <input type="text" id="input_batchN" [(ngModel)]="scheduleLine.batch" class="form-control" />
+            <input type="text" id="input_batchN" placeholder="Batch No." [(ngModel)]="scheduleLine.batch" class="form-control" />
           </td>
           <td>
-            <textarea rows="1" cols="20" id="input_package" [(ngModel)]="scheduleLine.packageP"
+            <textarea rows="1" cols="20" id="input_package" placeholder="Package" [(ngModel)]="scheduleLine.packageP"
               class="form-control"></textarea>
           </td>
           <td>
-            <input type="text" id="input_Qty" [(ngModel)]="scheduleLine.qty" class="form-control" />
+            <input type="number" id="input_Qty" placeholder="Quantity" [(ngModel)]="scheduleLine.qty" class="form-control" />
           </td>
           <td>
-            <input type="date" id="input_Date" [(ngModel)]="scheduleLine.date" class="form-control" />
+            <textarea rows="1" cols="30" id="input_marks" placeholder="remarks" [(ngModel)]="scheduleLine.marks"
+            class="form-control"></textarea>
           </td>
           <td>
-            <textarea rows="1" cols="30" id="input_marks" [(ngModel)]="scheduleLine.marks"
-              class="form-control"></textarea>
+            <input type="date" id="input_Date" placeholder="date" [(ngModel)]="scheduleLine.date" class="form-control" />
           </td>
           <td class="printlessTd">
             <select class="form-control" class="selectShiftClass" id="select_shift" [(ngModel)]="scheduleLine.shift">

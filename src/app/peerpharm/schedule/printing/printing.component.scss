@@ -19,6 +19,21 @@ table tr td{
   //   height: 1000px;
   // }
 
+    // Hide arrows from input type number  :
+  /*********************************************** ********************/
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+
+  /*******************************************************************/
+
   .bigLoader {
     margin: auto;
     border: 5px solid #f3f3f3;
