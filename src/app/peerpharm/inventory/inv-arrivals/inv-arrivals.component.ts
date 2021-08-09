@@ -2,6 +2,8 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { InventoryService } from 'src/app/services/inventory.service';
+import { Procurementservice } from 'src/app/services/procurement.service';
+import { SuppliersService } from 'src/app/services/suppliers.service';
 
 @Component({
   selector: 'app-inv-arrivals',
@@ -18,6 +20,8 @@ export class InvArrivalsComponent implements OnInit {
 
   itemNames: any[];
   shellNums: any[];
+  allSuppliers: any[]
+  purchaseOrders: any[]
   certificateReception: number;
   allArrivals: any[] = []
   today = new Date()
@@ -32,13 +36,18 @@ export class InvArrivalsComponent implements OnInit {
     position: new FormControl(''),
     whareHouseID: new FormControl(null, Validators.required),
     whareHouse: new FormControl(''),
-    isNewItemShell: new FormControl(false, Validators.required)
+    isNewItemShell: new FormControl(false, Validators.required),
+    supplier: new FormControl('', Validators.required),
+    purchaseOrder: new FormControl(null, Validators.required),
+
   })
 
 
   constructor(
     private inventoryService: InventoryService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private supplierService: SuppliersService,
+    private purchaseService: Procurementservice
   ) { }
 
   ngOnInit(): void {
@@ -47,6 +56,19 @@ export class InvArrivalsComponent implements OnInit {
       this.disabled = true
       this.componentArrival.controls.item.setValue(this.itemNumber)
     } 
+    this.getSuppliers()
+  }
+
+  getSuppliers() {
+    this.supplierService.getAllSuppliers().subscribe(data => {
+      this.allSuppliers = data
+    })
+  }
+
+  getPurchaseOrders(e) {
+    this.purchaseService.getAllOrdersFromSupplier(e.target.value).subscribe(data => {
+      this.purchaseOrders = data.filter(PO => PO.status != 'closed' && PO.status != 'canceled')
+    })
   }
 
   getShelfs() {
