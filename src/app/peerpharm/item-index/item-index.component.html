@@ -1,11 +1,26 @@
+<div class="row mt-4">
+  <div class="col-3"></div>
+  <div class="col-2 text-center">
+    <h3 [ngClass]="setColors('title1')" (click)="setFormView('itemDetails')" class="text-center mx-auto p-2">
+      Item
+      Details</h3>
+  </div>
+
+  <div class="col-2 text-center">
+    <h3 [ngClass]="setColors('title2')" (click)="setFormView('movements')" class="text-center mx-auto p-2">
+      Item Movements</h3>
+  </div>
+
+  <div class="col-2 text-center">
+    <h3 [ngClass]="setColors('title3')" (click)="setFormView('sales')" class="text-center mx-auto p-2">
+      Outgoing
+    </h3>
+  </div>
+  <div class="col-3"></div>
+</div>
 
 
 <!-- Item Details Form-->
-
-<div class="row mt-4 text-center">
-  <h3 [ngClass]="setColors('title1')" (click)="showDetailsForm = !showDetailsForm" class="text-center mx-auto p-2">Item Details</h3>
-</div>
-
 <form *ngIf="showDetailsForm" [formGroup]="itemDetailsForm" (ngSubmit)="getItemData()">
   <div class="row border border-success rounded p-4 w-50 form-group mx-auto">
     <div class="col-2">
@@ -15,15 +30,15 @@
       <input type="text" #itemNumber formControlName="itemNumber" class="form-control">
     </div>
     <div class="col-2">
-    <label class="d-block">
-      or find by name.
-    </label>
-    <input class="d-inline form-control" type="text" #name>
-    <button class="d-inline" type="button" (click)="getNames(name)">Find</button>
-    <select class="form-control" #nameSelect (change)="setItemDetailsNumber($event)">
-      <option *ngFor="let itemName of itemNames" [value]="itemName.componentN">{{itemName.componentName}}</option>
-    </select>
-  </div>
+      <label class="d-block">
+        or find by name.
+      </label>
+      <input class="d-inline form-control" type="text" #name>
+      <button class="d-inline" type="button" (click)="getNames(name)">Find</button>
+      <select class="form-control" #nameSelect (change)="setItemDetailsNumber($event)">
+        <option *ngFor="let itemName of itemNames" [value]="itemName.componentN">{{itemName.componentName}}</option>
+      </select>
+    </div>
     <div class="col-1">
       <button type="submit" class="btn btn-success">Go.</button>
     </div>
@@ -37,9 +52,7 @@
 
 
 <!--Item Movements Form-->
-<div class="row mt-4 text-center">
-  <h3 [ngClass]="setColors('title2')" (click)="showMovementsForm = !showMovementsForm" class="text-center mx-auto p-2">Item Movements</h3>
-</div>
+
 <form *ngIf="showMovementsForm" [formGroup]="itemMovementForm" (ngSubmit)="fetchMovements()">
   <div class="row border border-secondary rounded p-4 w-75 form-group mx-auto">
     <div class="col-1">
@@ -137,13 +150,9 @@
 
 
 <!--Sold Products-->
-<div class="row mt-4 text-center">
-  <h3 [ngClass]="setColors('title3')" (click)="showSalesForm = !showSalesForm" class="text-center mx-auto p-2">Outgoing</h3>
-</div>
-
 <form *ngIf="showSalesForm" [formGroup]="productsSoldForm" (ngSubmit)="fetchProducts">
   <div class="row border border-warning rounded p-4 w-75 form-group mx-auto">
-  <!-- <h4 class="text-warning">Coming soon...</h4> -->
+    <!-- <h4 class="text-warning">Coming soon...</h4> -->
 
     <div class="col-2">
       <label>Product Number</label>
@@ -184,9 +193,10 @@
 
 
 <!--Item Details-->
-<div *ngIf="item" class="bg-success p-5">
+<div *ngIf="item" class="bg-light">
 
-  <div class="border border-white p-2">
+  <!--General Details-->
+  <div class="w-50 float-right modal-inner">
 
     <!--Name-->
     <div class=" row text-center">
@@ -200,16 +210,15 @@
       <div class="col-1"></div>
     </div>
 
-    <!---->
     <div dir="rtl" class="row text-center ">
       <div class="col-4 ">
-        <h5 class="text-white">פרטי פריט</h5>
+        <h5>פרטי פריט</h5>
       </div>
       <div class="col-4 ">
-        <h5 class="text-white">פרטי ספק</h5>
+        <h5>פרטי ספק</h5>
       </div>
       <div class="col-4">
-        <h5 class="text-white">פרטי מלאי</h5>
+        <h5>פרטי מלאי</h5>
       </div>
     </div>
 
@@ -257,13 +266,13 @@
 
     <div dir="rtl" class="row text-center">
       <div class="col-4">
-        <h5 class="text-white">פרטים נוספים</h5>
+        <h5>פרטים נוספים</h5>
       </div>
       <div class="col-4">
-        <h5 class="text-white">הערות</h5>
+        <h5>הערות</h5>
       </div>
       <div class="col-4">
-        <h5 class="text-white">תמונה</h5>
+        <h5>תמונה</h5>
       </div>
     </div>
 
@@ -351,9 +360,10 @@
       <div class="col-2">
         <label class="form-control">הערה</label>
         <label class="form-control mt-5">הערה קופצת</label>
-      
+
         <label class="form-control mt-4"> חומר בעייתי?</label>
-        <input type="checkbox" class="problematic" [disabled]="!allowedProblematicEdit" [(ngModel)]="item.isProblematic" [ngModelOptions]="{standalone: true}">
+        <input type="checkbox" class="problematic" [disabled]="!allowedProblematicEdit" [(ngModel)]="item.isProblematic"
+          [ngModelOptions]="{standalone: true}">
         <label class="form-control mt-4">בעייתיות:</label>
         <select class="form-control" [(ngModel)]="item.problem">
           <option value="פג תוקף קצר">פג תוקף קצר</option>
@@ -361,24 +371,24 @@
           <option value="כמויות מינימום">כמויות מינימום</option>
           <option value="אחר">אחר</option>
         </select>
-        
+
 
       </div>
       <div class="col-2">
         <textarea rows="2" cols="20" class="form-control" type='text' [(ngModel)]="item.remarks"></textarea>
         <textarea rows="2" cols="20" class="form-control mt-4" type='text' [(ngModel)]="item.jumpRemark"></textarea>
-      
+
       </div>
 
     </div>
 
-    <div class="row mt-2">
+    <!-- <div class="row mt-2">
       <div class="col-2">
         <button [disabled]="gettingProducts" [style.cursor]="gettingProducts ? 'not-allowed' : 'pointer'"
           (click)="getProductsWithItem()">הצג מוצרים שמכילים את הפריט</button>
       </div>
 
-      <div class="col-2 modal-inner border" *ngIf="item.connectedProducts">
+      <div class="col-2 border" *ngIf="item.connectedProducts">
         <div *ngFor="let product of item.connectedProducts">
           <h5>{{product.itemNumber}}</h5>
           <h5>{{product.name}}</h5>
@@ -386,65 +396,220 @@
           <h5>{{product.discriptionK}}</h5>
         </div>
       </div>
-    </div>
+    </div> -->
+  </div>
 
-    <div class="row text-center">
-      <div class="col-12">
-        <div *ngIf="allowUserEditItem">
-          <button class="btn btn-success form-control" id="updateDataBtn" (click)="editStockItemDetails()">עדכן
-            מידע</button>
-        </div>
+  <!--Purchase History-->
+  <div class="w-50 modal-inner float-right">
+
+    <div class="row mt-4">
+      <h2>Purchase History</h2>
+    </div>
+    <div class="row mt-4">
+    </div>
+    <div>
+      <div class="smallLoader" *ngIf="fetchingOrders"></div>
+      <div *ngIf="lastOrdersOfItem.length > 0" class="row text-center p-2">
+        <h3>Purchase History for Item {{item.number}}</h3>
+        <table class="table table-striped table-hover">
+          <thead class="bg-success text-white">
+            <tr>
+              <th>#</th>
+              <th>Order Number</th>
+              <th>Supplier</th>
+              <th>Status</th>
+              <th>Order Date</th>
+              <th>Arrival Date</th>
+              <th>Arrived Amount</th>
+              <th></th>
+              <th>Ordered Amount</th>
+              <th>Item Price (Foreign)</th>
+              <th>Item Price (NIS)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let lastorderitem of lastOrdersOfItem; let i = index">
+              <tr>
+                <td>{{i+1}}</td>
+                <td>{{lastorderitem.orderNumber}}</td>
+                <td>{{lastorderitem.supplierName}}</td>
+                <td>{{lastorderitem.status}}</td>
+                <td>{{lastorderitem.orderDate | date: 'dd/MM/yyyy'}}</td>
+                <td><span *ngIf="lastorderitem.arrivalDate">{{lastorderitem.arrivalDate | date:
+                    'dd/MM/yyyy'}}</span></td>
+                <td>{{lastorderitem.arrivedAmount}}</td>
+                <td>/</td>
+                <td>{{lastorderitem.quantity}}</td>
+                <td>{{lastorderitem.price | currency: lastorderitem.coin}}</td>
+                <td>{{lastorderitem.localPrice | currency: 'ILS'}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 
-  <div class="row mt-4">
-    <h2>Purchase History</h2>
-  </div>
-  <div class="row mt-4">
-  </div>
-  <div>
-    <div class="smallLoader" *ngIf="fetchingOrders"></div>
-    <div *ngIf="lastOrdersOfItem.length > 0" class="row text-center p-2">
-      <h3>Purchase History for Item {{item.number}}</h3>
-      <table class="table table-striped table-hover">
-        <thead class="bg-success text-white">
+  <!--Pricing-->
+  <div *ngIf="screenPermission < 4" class="float-right w-50 modal-inner-smaller">
+
+    <div class="" dir="rtl">
+      <div class=" row mt-4">
+        <div class=" col-4">
+          <h5>מחיר רכש אחרון</h5>
+          <p>{{item.price | currency: item.coin}}</p>
+        </div>
+        <div class="col-4">
+          <h5>מחיר ידני</h5>
+          <p>{{item.manualPrice | currency: item.manualCoin}}</p>
+        </div>
+        <div class="col-2">
+          <button (click)="open(updateManualPrice)">עדכן מחיר ידני</button>
+        </div>
+      </div>
+    </div>
+
+    <div dir="rtl" class=" row mt-4">
+      <h2>היסטוריית מחירים</h2>
+    </div>
+    <div dir="rtl" class="row  mt-2">
+
+      <div class="col-3">
+        <p>סוגי עדכונים: </p>
+      </div>
+      <div class="col-3">
+        <div class="yellow">עדכון ידני</div>
+      </div>
+      <div class="col-3">
+        <div class="cornflowerblue">עדכון מערכת</div>
+      </div>
+
+      <table dir="rtl" class="table table-hover">
+        <thead>
           <tr>
             <th>#</th>
-            <th>Order Number</th>
-            <th>Supplier</th>
-            <th>Status</th>
-            <th>Order Date</th>
-            <th>Arrival Date</th>
-            <th>Arrived Amount</th>
-            <th></th>
-            <th>Ordered Amount</th>
-            <th>Item Price (Foreign)</th>
-            <th>Item Price (NIS)</th>
+            <th>תאריך</th>
+            <th>מחיר</th>
+            <th>סיבת עדכון</th>
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngFor="let lastorderitem of lastOrdersOfItem; let i = index">
-            <tr>
-              <td>{{i+1}}</td>
-              <td>{{lastorderitem.orderNumber}}</td>
-              <td>{{lastorderitem.supplierName}}</td>
-              <td>{{lastorderitem.status}}</td>
-              <td>{{lastorderitem.orderDate | date: 'dd/MM/yyyy'}}</td>
-              <td><span *ngIf="lastorderitem.arrivalDate">{{lastorderitem.arrivalDate | date:
-                  'dd/MM/yyyy'}}</span></td>
-              <td>{{lastorderitem.arrivedAmount}}</td>
-              <td>/</td>
-              <td>{{lastorderitem.quantity}}</td>
-              <td>{{lastorderitem.price | currency: lastorderitem.coin}}</td>
-              <td>{{lastorderitem.localPrice | currency: 'ILS'}}</td>
-            </tr>
-          </ng-container>
+          <tr *ngFor="let update of item.priceUpdates.reverse(); let i=index"
+            [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">
+            <td>{{i+1}}</td>
+            <td>{{update.date | date:'dd/MM/yy'}}</td>
+            <td>{{update.price | currency: update.coin}}</td>
+            <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
+            <td *ngIf="update.type == 'auto'">סגירת הזמנת רכש מס' {{update.purchase}}</td>
+          </tr>
         </tbody>
       </table>
+
     </div>
   </div>
 
+  <!--Storage / Cooking (for materials)-->
+  <div *ngIf="item.itemType=='material'" class="float-right modal-inner-smaller w-50">
+    <div dir="rtl" style="padding: 0rem;" class="row text-center ">
+
+
+      <div class="col-4 ">
+        <h5 class="text-success">מחסן/מחלקת בישול</h5>
+      </div>
+      <div class="col-4 ">
+
+      </div>
+
+    </div>
+    <div dir="rtl" style="padding: 0rem;" class="row  text-center">
+
+      <div class="col-1"></div>
+      <div class="col-2 ">
+        <label class="form-control">קבוצת סיכון</label>
+        <label class="form-control">מספר או"מ</label>
+        <label class="form-control">קוד חירום</label>
+        <label class="form-control">טיפול בחירום</label>
+        <label style="font-size: 13px;" class="form-control">כמות מותרת באחסון</label>
+        <label class="form-control">היתר רעלים</label>
+      </div>
+      <div class="col-3 ">
+        <select class="form-control" [(ngModel)]="resMaterial.threatment">
+
+          <option value="flammableLiquid">3 - נוזל דליק</option>
+          <option value="flammableSolid">4 - מוצק דליק</option>
+          <option value="oxidizer">5.1 - מחמצן אי אורגני</option>
+          <option value="toxic">6 - רעיל</option>
+          <option value="acid">8 - חומצה</option>
+          <option value="base">8 - בסיס</option>
+          <option value="otherDangerMaterials">9 - חומרים מסוכנים שונים</option>
+          <option value="regular">אין מספר או"מ</option>
+          <option value="cooling">איחסון בקירור</option>
+          <option value="blockedByType">חסום לפי סוג חומר</option>
+        </select>
+
+        <input [(ngModel)]="item.umNumber" type="text" class="form-control" />
+        <input [(ngModel)]="item.imerCode" type="text" class="form-control" />
+        <input [(ngModel)]="item.imerTreatment" type="text" class="form-control" />
+        <input [(ngModel)]="item.allowQtyInStock" type="text" class="form-control" />
+        <input [(ngModel)]="item.permissionDangerMaterials" type="checkbox" style="width:12px" class="form-control" />
+      </div>
+      <div class="col-2 ">
+        <label class="form-control">מיקום במחסן</label>
+        <label class="form-control">כמות במלאי</label>
+        <label class="form-control">כמות פג תוקף</label>
+
+        <label class="form-control">טמפ' אחסון</label>
+        <label class="form-control">הוראות אחסון</label>
+
+      </div>
+      <div class="col-3 ">
+        <input class="form-control" list="locations" [(ngModel)]="item.location"
+          (change)="getAllMaterialLocations($event)" type="text">
+        <datalist id="locations">
+          <option *ngFor="let material of materialLocations" [value]="material.location">
+            {{material.location}}</option>
+        </datalist>
+
+        <input [(ngModel)]="item.quantityInStock" type="text" class="form-control" />
+        <input [(ngModel)]="item.expiredQty" type="text" class="form-control" />
+
+
+        <input [(ngModel)]="item.storageTemp" type="text" class="form-control" />
+        <input [(ngModel)]="item.storageDirections" type="text" class="form-control" />
+
+      </div>
+      <div class="col-1"></div>
+    </div>
+  </div>
+
+  <div class="row text-center p-5 container mx-auto">
+    <!-- <div class="col-4 ">
+      <label for="">Choose Item Type</label>
+      <select #itemTypeInput name="" id="">
+        <option value="">Choose Item Type</option>
+        <option value="component">component</option>
+        <option value="material">material</option>
+        <option value="product">product</option>
+      </select>
+      <button [disabled]="!itemTypeInput" class="btn btn-success form-control" id="newCbtn"
+        (click)="writeNewStockItem()">הקם
+        מוצר</button>
+    </div> -->
+    <div class="col-3"></div>
+    <div class="col-3">
+      <div *ngIf="allowUserEditItem">
+        <button class="btn btn-success form-control h3" id="updateDataBtn" (click)="editMaterialItemDetails()">
+          Save Item Details
+        </button>
+      </div>
+    </div>
+    <div class="col-3">
+      <button class="btn btn-secondary form-control h3" id="newCbtn" (click)="clearFields()">
+        Clear All Details
+      </button>
+    </div>
+    <div class="col-3"></div>
+  </div>
 
 </div>
 
@@ -470,7 +635,7 @@
         <th class="click text-center" (click)="sortBy('itemMovements', 'amount')">out</th>
         <th class="click text-center" (click)="sortBy('itemMovements', 'amount')">production</th>
         <th class="click text-center" (click)="sortBy('itemMovements', 'amount')">shelf change</th>
-        <th class="text-center" >user</th>
+        <th class="text-center">user</th>
       </tr>
     </thead>
     <tbody>
@@ -508,7 +673,55 @@
   </table>
 </div>
 
+<!--Products Sold-->
+<div>
+
+</div>
 
 
+<ng-template #updateManualPrice let-modal>
+  <div dir="rtl" class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">עדכן מחיר ידני לפריט</h4>
+    <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div dir="rtl" class=" modal-body">
+    <div class=" row mt-2">
+      <div class="col-3">
+        <label>מחיר נוכחי:</label>
+        <p class="form-control"> {{item.manualPrice | currency:
+          item.manualCoin}}</p>
+        <label>מחיר רכש אחרון:</label>
+        <p class="form-control">{{resMaterial.price | currency: resMaterial.coin}}
+        </p>
+        <p *ngIf="resCmpt.componentN != ''" class="form-control">{{resCmpt.price | currency: resCmpt.manualCoin}}</p>
+      </div>
+    </div>
 
-
+    <div class=" row mt-2">
+      <div class=" col-3">
+        <label>מחיר חדש:</label>
+        <input (keyup)="checkUpdatePriceValidity()" class="form-control" type="number" [(ngModel)]="item.manualPrice">
+      </div>
+      <div class=" col-3">
+        <label>מטבע:</label>
+        <select [(ngModel)]="item.manualCoin" class="form-control" (change)="checkUpdatePriceValidity()">
+          <option value="ILS">ILS</option>
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+          <option value="GBP">GBP</option>
+        </select>
+      </div>
+    </div>
+    <div class=" row mt-2">
+      <button (click)="editStockItemDetails()" (click)="addToPriceHistory()" (click)="modal.dismiss('Cross click')"
+        [disabled]="!allowPriceUpdate" ngbTooltip="יש לעדכן מטבע"
+        [style.cursor]="allowPriceUpdate ? 'pointer' : 'not-allowed'">
+        שמור
+      </button>
+    </div>
+  </div>
+  <div class="modal-footer">
+  </div>
+</ng-template>
