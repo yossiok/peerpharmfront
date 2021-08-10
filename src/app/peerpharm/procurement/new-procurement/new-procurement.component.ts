@@ -112,16 +112,16 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   constructor(
-    private fb: FormBuilder, 
+    private fb: FormBuilder,
     private modalService: NgbModal,
-     private route: ActivatedRoute, 
-     private toastr: ToastrService, 
-     private procurementService: Procurementservice, 
-     private authService: AuthService, 
-     private inventoryService: InventoryService, 
-     private supplierService: SuppliersService, 
-     public formBuilder: FormBuilder,
-     ) {
+    private route: ActivatedRoute,
+    private toastr: ToastrService,
+    private procurementService: Procurementservice,
+    private authService: AuthService,
+    private inventoryService: InventoryService,
+    private supplierService: SuppliersService,
+    public formBuilder: FormBuilder,
+  ) {
     this.newPurchase = fb.group({
       _id: [''],
       supplierName: ["", Validators.required],
@@ -130,7 +130,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       supplierEmail: [''],
       origin: [''],
       creationDate: [this.formatDate(new Date()), Validators.required],
-      arrivalDate: [{ value: this.formatDate(new Date()), disabled: this.disabled && this.isEdit }],
+      requestedDate: [{ value: null, disabled: this.disabled && this.isEdit }],
+      arrivalDate: [{ value: this.formatDate(new Date()), disabled: this.disabled && this.isEdit }], //approval(promised) date
       stockitems: [[], Validators.required],
       orderNumber: [''],
       userEmail: [''],
@@ -175,9 +176,10 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       remarks: [''],
       itemPrice: [''],
       itemArrival: [''],
+      itemRequested: [this.newPurchase.value.requestedDate],
       supplierItemNum: [''],
       historyAmounts: [['']],
-      componentType:[''],
+      componentType: [''],
       isStock: [true],
       customerOrders: [[]]
     })
@@ -185,7 +187,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.getUserInfo()
-    if(this.purchaseData) this.itemForm.controls.itemArrival.setValue(this.purchaseData.arrivalDate)
+    if (this.purchaseData) this.itemForm.controls.itemArrival.setValue(this.purchaseData.arrivalDate)
     if (this.requestToPurchase) {
       this.newPurchase.patchValue({
         _id: '',
@@ -222,6 +224,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       if (!this.purchaseData.origin) this.purchaseData.origin = ''
       if (!this.purchaseData.statusUpdates) this.purchaseData.statusUpdates = []
       if (!this.purchaseData.statusChange) this.purchaseData.statusChange = null
+      if (!this.purchaseData.requestedDate) this.purchaseData.requestedDate = null
       this.newPurchase.setValue(this.purchaseData as PurchaseData);
       this.newPurchase.controls.orderType.setValue(this.purchaseData.orderType);
     }
@@ -251,18 +254,19 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         if (!changes.purchaseData.currentValue.origin) changes.purchaseData.currentValue.origin = ''
         if (!changes.purchaseData.currentValue.statusUpdates) changes.purchaseData.currentValue.statusUpdates = []
         if (!changes.purchaseData.currentValue.statusChange) changes.purchaseData.currentValue.statusChange = null
+        if (!changes.purchaseData.currentValue.requestedDate) changes.purchaseData.currentValue.requestedDate = null
         this.newPurchase.setValue(changes.purchaseData.currentValue)
       }
     }
 
   }
 
-  getUserInfo(){
+  getUserInfo() {
     this.userName = this.authService.loggedInUser.userName
-    if(this.authService.loggedInUser.authorization.includes("newPurchase")) {
+    if (this.authService.loggedInUser.authorization.includes("newPurchase")) {
       this.newPurchaseAllowed = true;
     }
-    if(this.authService.loggedInUser.authorization.includes("editPurchase")) {
+    if (this.authService.loggedInUser.authorization.includes("editPurchase")) {
       this.editPurchaseAllowed = true
     }
   }
@@ -391,6 +395,14 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
 
   //Stock Items
+
+  editAllItemsArrival(e) {
+    this.newPurchase.value.stockitems.map(si => {
+      si.itemArrival = e.target.value;
+      return si;
+    })
+  }
+
   findStockItemByNumber() {
     this.getLastOrdersForItem(this.itemForm.get('number').value)
 
@@ -465,7 +477,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         let currentYear = 0
         let lastYear = 0
         for (let order of orders) {
-          if (this.lastSupplier == '') this.lastSupplier = order.supplierName 
+          if (this.lastSupplier == '') this.lastSupplier = order.supplierName
           if (order.orderDate.slice(0, 4) == '2021') currentYear += Number(order.quantity)
           else if (order.orderDate.slice(0, 4) == '2020') lastYear += Number(order.quantity)
         }
@@ -479,6 +491,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   addItemToPurchase() {
+    this.itemForm.controls.itemRequested.setValue(this.newPurchase.value.requestedDate)
     this.stockItems.push(this.itemForm.value)
     this.newPurchase.controls.stockitems.setValue(this.stockItems)
     this.resetStockItem();
@@ -486,8 +499,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   addCusomerOrderNumberToItem(e, i) {
-    
-    if(!this.itemForm.controls.customerOrders.value) this.itemForm.controls.customerOrders.setValue([])
+
+    if (!this.itemForm.controls.customerOrders.value) this.itemForm.controls.customerOrders.setValue([])
     this.itemForm.controls.customerOrders.value.push(e.value)
     e.value = ''
   }
@@ -534,13 +547,13 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     this.newPurchase.value.stockitems[i].customerOrders[j] = order
   }
 
-  deleteCusomerOrderNumber(i,j){
+  deleteCusomerOrderNumber(i, j) {
     this.newPurchase.value.stockitems[i].customerOrders.pop()
   }
 
   addOrderToPurchase(i, orderNumber) {
-    if(!this.newPurchase.value.stockitems) this.newPurchase.controls.stockitems.setValue([])
-    if(!this.newPurchase.value.stockitems[i].customerOrders) this.newPurchase.value.stockitems[i].customerOrders = []
+    if (!this.newPurchase.value.stockitems) this.newPurchase.controls.stockitems.setValue([])
+    if (!this.newPurchase.value.stockitems[i].customerOrders) this.newPurchase.value.stockitems[i].customerOrders = []
     this.newPurchase.value.stockitems[i].customerOrders.push(orderNumber.value)
   }
 
@@ -704,26 +717,26 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
 
   sendNewProc(action) {
-  
+
     this.sendingPurchase = true;
     if (action == 'add') {
       if (this.newPurchase.controls.stockitems.value) {
         if (confirm("האם להקים הזמנה זו ?")) {
 
           // Ensure that send button won't be blocked
-          setTimeout(()=>{
-            if(this.sendingPurchase) {
+          setTimeout(() => {
+            if (this.sendingPurchase) {
               this.sendingPurchase = false
               this.disabled = false
               this.toastr.error('Something went wrong. Try again.')
-            } 
-          }, 1000*10)
+            }
+          }, 1000 * 10)
 
           this.newPurchase.controls['user'].setValue(this.authService.loggedInUser.userName)
           this.newPurchase.controls.userEmail.setValue(this.authService.loggedInUser.userEmail);
 
           // set order arrival date as the latest item arrival date
-          let latestArrivalItem = this.newPurchase.value.stockitems.reduce((latestItem, item)=> {
+          let latestArrivalItem = this.newPurchase.value.stockitems.reduce((latestItem, item) => {
             return item.itemArrival > latestItem.itemArrival ? item : latestItem
           }, this.newPurchase.value.stockitems[0])
           this.newPurchase.controls.arrivalDate.setValue(latestArrivalItem.itemArrival)
@@ -731,7 +744,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           this.procurementService.addNewProcurement(this.newPurchase.value).subscribe(data => {
             this.sendingPurchase = false;
             if (data) {
-              if(data.message) this.toastr.warning(data.message+". Order Saved")
+              if (data.message) this.toastr.warning(data.message + ". Order Saved")
               this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
               this.newPurchase.reset();
               this.newProcurementSaved.emit(true)
@@ -750,19 +763,19 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       if (confirm('האם לעדכן הזמנה זו ?')) {
 
         // Ensure that send button won't be blocked
-        setTimeout(()=>{
-          if(this.sendingPurchase) {
+        setTimeout(() => {
+          if (this.sendingPurchase) {
             this.sendingPurchase = false
             this.toastr.error('Something went wrong. Try again.')
-          } 
-        }, 1000*10)
-        
+          }
+        }, 1000 * 10)
+
         // set order arrival date as the latest item arrival date
-        let latestArrivalItem = this.newPurchase.value.stockitems.reduce((latestItem, item)=> {
+        let latestArrivalItem = this.newPurchase.value.stockitems.reduce((latestItem, item) => {
           return item.itemArrival > latestItem.itemArrival ? item : latestItem
         }, this.newPurchase.value.stockitems[0])
-        if(latestArrivalItem.itemArrival != '') this.newPurchase.controls.arrivalDate.setValue(latestArrivalItem.itemArrival)
-        
+        if (latestArrivalItem.itemArrival != '') this.newPurchase.controls.arrivalDate.setValue(latestArrivalItem.itemArrival)
+
         this.procurementService.updatePurchaseOrder(this.newPurchase.value).subscribe(data => {
           this.sendingPurchase = false;
           if (data) {

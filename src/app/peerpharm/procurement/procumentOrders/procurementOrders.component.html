@@ -201,6 +201,7 @@
                   <th><b>Origin</b></th>
                   <th><b>Creation Date</b></th>
                   <th><b>Requested Date</b></th>
+                  <th><b>Approval Date</b></th>
                   <th><b>Customer Order</b></th>
                   <th><b>Remarks</b></th>
                   <th><b>Status</b></th>
@@ -218,6 +219,7 @@
                   <td>{{line.supplierNumber}} - {{line.supplierName}}</td>
                   <td>{{line.origin}}</td>
                   <td>{{ line.creationDate | date: 'dd/MM/yyyy' }}</td>
+                  <td>{{ line.requestedDate | date: 'dd/MM/yyyy' }}</td>
                   <td *ngIf="EditRowId != line.orderNumber">
                     {{ line.arrivalDate | date: 'dd/MM/yyyy' }}</td>
                   <td *ngIf="EditRowId == line.orderNumber">
@@ -331,7 +333,7 @@
             <th>Comax Number</th>
             <th>Reference Number</th>
             <th>Arrived Amount</th>
-            <th>Requested Date</th>
+            <th>Approval Date</th>
           </tr>
         </thead>
         <tbody>
@@ -387,7 +389,7 @@
             printSectionId="billing-section"
             [printStyle]="{th : {'border': '1px solid black'}, td : {'border': '1px solid black'},tr : {'border': '1px solid black'}}"><b>Order:{{currentOrder.orderNumber}}</b></button>
           <p style="margin-left:300px;">Order Date:{{orderDate | date: 'dd/MM/yyyy'}}</p>
-          <p style="margin-left:300px;">Requested Date:{{arrivalDate | date: 'dd/MM/yyyy'}}</p>
+          <p style="margin-left:300px;">Approval Date:{{arrivalDate | date: 'dd/MM/yyyy'}}</p>
         </div>
 
         <div class="col-4">
