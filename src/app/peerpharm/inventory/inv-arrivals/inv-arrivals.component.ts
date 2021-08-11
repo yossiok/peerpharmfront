@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { filter } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { Procurementservice } from 'src/app/services/procurement.service';
@@ -68,7 +69,12 @@ export class InvArrivalsComponent implements OnInit {
 
   getPurchaseOrders(e) {
     this.purchaseService.getAllOrdersFromSupplier(e.target.value).subscribe(data => {
-      this.purchaseOrders = data.filter(PO => PO.status != 'closed' && PO.status != 'canceled')
+      this.purchaseOrders = data.filter(PO => PO.status != 'closed' && PO.status != 'canceled').filter(PO => {
+        for (let si of PO.stockitems) {
+          if (si.number == this.componentArrival.value.item) return true
+          else return false
+        }
+      })
     })
   }
 
