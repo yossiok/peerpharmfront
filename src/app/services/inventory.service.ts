@@ -66,22 +66,22 @@ export class InventoryService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
-  getAllComponentMaterials(){
+  getAllComponentMaterials() {
     let url = this.baseUrl + "component/allCmptMaterials";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
-  getAllComponentMaterials2(){
+  getAllComponentMaterials2() {
     let url = this.baseUrl + "component/allCmptMaterials2";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
-  getAllallPackageTypes(){
+  getAllallPackageTypes() {
     let url = this.baseUrl + "component/allPackageTypes";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
-  getAllallCategories(){
+  getAllallCategories() {
     let url = this.baseUrl + "component/allCategories";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
@@ -106,7 +106,7 @@ export class InventoryService {
     let url = this.baseUrl + "component/getAllProducts";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
-  
+
   getAllExpiredArrivals(): Observable<any> {
     let url = this.baseUrl + "material/getAllExpiredArrivals";
     return this.http.get(url).pipe(map(reponse => reponse.json()));
@@ -269,7 +269,7 @@ export class InventoryService {
     return this.http.post(url, { itemShellID, newShellID, newPosition }, this.options).pipe(map(res => res.json()))
   }
 
-  updatePriceHistory(componentN, newPrice, coin, user) : Observable<any> {
+  updatePriceHistory(componentN, newPrice, coin, user): Observable<any> {
     let url = `${this.baseUrl}material/updateManualPrice`;
     return this.http.post(url, { componentN, newPrice, coin, user }, this.options).pipe(map(res => res.json()))
   }
@@ -295,9 +295,9 @@ export class InventoryService {
     let url = this.baseUrl + "material/updateSupplier";
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res => res.json()))
   }
-  setAsMainSupplier(index,id): Observable<any> {
+  setAsMainSupplier(index, id): Observable<any> {
     let url = this.baseUrl + "material/setAsMainSupplier";
-    return this.http.post(url, JSON.stringify({index,id}), this.options).pipe(map(res => res.json()))
+    return this.http.post(url, JSON.stringify({ index, id }), this.options).pipe(map(res => res.json()))
   }
   updateProductionDetails(production): Observable<any> {
     let url = this.baseUrl + "material/updateProductionDetails";
@@ -311,28 +311,28 @@ export class InventoryService {
 
   reduceMaterialAmountFromShelf(materialNum, shelf, amount): Observable<any> {
     let url = this.baseUrl + "material/reduceMaterialAmountFromShelf";
-    return this.http.post(url, JSON.stringify({materialNum, shelf, amount}), this.options).pipe(map(res => res.json()))
+    return this.http.post(url, JSON.stringify({ materialNum, shelf, amount }), this.options).pipe(map(res => res.json()))
   }
 
-  reduceMaterialAmounts(batchNumber,formuleNumber, weightKG, reduce): Observable<any> {
+  reduceMaterialAmounts(batchNumber, formuleNumber, weightKG, reduce): Observable<any> {
     let url = this.baseUrl + "material/reduceMaterialAmounts";
-    return this.http.post(url, JSON.stringify({batchNumber:batchNumber, formuleNumber: formuleNumber, weightKG: weightKG, reduce: reduce }), this.options).pipe(map(res => res.json()))
+    return this.http.post(url, JSON.stringify({ batchNumber: batchNumber, formuleNumber: formuleNumber, weightKG: weightKG, reduce: reduce }), this.options).pipe(map(res => res.json()))
   }
 
   recieveNewComponents(allArrivals): Observable<any> {
     let url = this.baseUrl + "itemShell/recieveNewComponents";
     return this.http.post(url, JSON.stringify(allArrivals), this.options).pipe(map(res => res.json()))
   }
-  
-  
-  
+
+
+
   addNewRecommendation(purchaseRecommend): Observable<any> {
     let url = this.baseUrl + "component/newPurchaseRecommend";
     return this.http.post(url, JSON.stringify(purchaseRecommend), this.options).pipe(map(res => {
       this.recommendation = res.json()
       this.newRecommendEmitter.emit(res.json());
       return res.json()
-    } ))
+    }))
     // return this.http.post(url, JSON.stringify(purchaseRecommend), this.options).pipe(tap(data => {
     //   data = JSON.parse(data._body);
     //   ;
@@ -342,13 +342,13 @@ export class InventoryService {
   }
 
   getComponentsAmounts(itemNumber?): Observable<any> {
-    let url = this.baseUrl + "itemShell?amounts=yes&itemNumber="+itemNumber;
+    let url = this.baseUrl + "itemShell?amounts=yes&itemNumber=" + itemNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
   getAmountsForMulti(allNumbers): Observable<any> {
     let url = this.baseUrl + "itemshell/amountsForMulti";
-    return this.http.post(url, JSON.stringify({numbers: allNumbers}), this.options).pipe(map(res => res.json()))
+    return this.http.post(url, JSON.stringify({ numbers: allNumbers }), this.options).pipe(map(res => res.json()))
   }
 
   getComponentAmount(componentN): Observable<any> {
@@ -369,7 +369,7 @@ export class InventoryService {
   //   return this.http.post(url, JSON.stringify(dataTosend), this.options).pipe(map(res => res.json()))
   // }
   updateInventoryChangesTest(qtyObj, itemType, dir?) {
-    if(dir && dir == 'production') {
+    if (dir && dir == 'production') {
       let url = this.baseUrl + "itemShell/letsJustGiveWierdNamesToFunctions?stockType=" + itemType;
       return this.http.post(url, JSON.stringify(qtyObj), this.options).pipe(map(res => res.json()))
 
@@ -423,7 +423,7 @@ export class InventoryService {
 
   addComponentsToStock(allArrivals) {
     let url = this.baseUrl + "itemShell/addComponentsToStock";
-    return this.http.post(url, JSON.stringify({allArrivals}), this.options).pipe(map(res => res.json()));
+    return this.http.post(url, JSON.stringify({ allArrivals }), this.options).pipe(map(res => res.json()));
   }
 
   changeItemPosition(shelfChange) {
@@ -433,7 +433,7 @@ export class InventoryService {
 
   checkoutComponents(allOutgoing) {
     let url = this.baseUrl + "itemShell/checkout";
-    return this.http.post(url, JSON.stringify({allOutgoing}), this.options).pipe(map(res => res.json()));
+    return this.http.post(url, JSON.stringify({ allOutgoing }), this.options).pipe(map(res => res.json()));
   }
 
 
@@ -491,8 +491,13 @@ export class InventoryService {
   //Reports:
 
   getInvRep(reportForm) {
-    let url = this.baseUrl+"component/inventoryreport"
+    let url = this.baseUrl + "component/inventoryreport"
     return this.http.post(url, JSON.stringify(reportForm), this.options).pipe(map(reponse => reponse.json()));
+  }
+
+  getpurchaseRec(query) {
+    let url = this.baseUrl + "component/purchaseRecommendReport"
+    return this.http.post(url, JSON.stringify(query), this.options).pipe(map(reponse => reponse.json()));
   }
 
 

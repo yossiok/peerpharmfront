@@ -123,6 +123,7 @@ export class StockComponent implements OnInit {
   showItemDetails: boolean = true;
   showLoader: boolean = false;
   smallLoader: boolean = false;
+  smallerLoader: boolean = false;
   openOrderRecommendModal: boolean = false;
   customersModal: boolean = false;
   showDeleteBtn: boolean = false;
@@ -300,7 +301,7 @@ export class StockComponent implements OnInit {
 
 
   //Update version For Component
-  editVersionForm: FormGroup 
+  editVersionForm: FormGroup
 
 
   // material array // 
@@ -414,7 +415,7 @@ export class StockComponent implements OnInit {
       description: new FormControl('', Validators.required),
       image: new FormControl(null, Validators.required),
       user: new FormControl(null, Validators.required),
-  })
+    })
 
     this.filterParams = fb.group({
       componentN: new FormControl('', Validators.pattern('^[a-zA-Z]+$')),
@@ -518,18 +519,18 @@ export class StockComponent implements OnInit {
   }
 
   deleteFromRecommendation(i) {
-    this.newPurchaseRecommendation.controls.stockitems.value.splice(i,1)
+    this.newPurchaseRecommendation.controls.stockitems.value.splice(i, 1)
   }
 
 
   addSupplierToMaterial() {
 
-    if(this.supplier.price == '' || this.supplier.price == '' || this.supplier.supplierName == ''){
+    if (this.supplier.price == '' || this.supplier.price == '' || this.supplier.supplierName == '') {
       this.toastSrv.error('אנא תמלא שם ספק , מחיר ומטבע ')
     } else {
 
       this.resMaterial.alternativeSuppliers.push(this.supplier)
-    
+
       this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
       this.supplier = {
         supplierName: '',
@@ -546,11 +547,11 @@ export class StockComponent implements OnInit {
         country: "",
       }
     }
- 
+
   }
   addSupplierToComponent() {
 
-    if(this.supplier.price == '' || this.supplier.price == '' || this.supplier.supplierName == ''){
+    if (this.supplier.price == '' || this.supplier.price == '' || this.supplier.supplierName == '') {
       this.toastSrv.error('אנא תמלא שם ספק , מחיר ומטבע ')
     } else {
 
@@ -596,14 +597,14 @@ export class StockComponent implements OnInit {
   }
 
   getItemPurchases() {
-    let numbers = this.components.map(c=> c.componentN)
+    let numbers = this.components.map(c => c.componentN)
     this.procuretServ.getPurchasesForMulti(numbers).subscribe(purchases => {
-      for(let component of this.components) {
-        for(let purchase of purchases) {
+      for (let component of this.components) {
+        for (let purchase of purchases) {
           for (let item of purchase.stockitems) {
-            if(item.number == component.componentN) {
+            if (item.number == component.componentN) {
               purchase.arrivedAmount = item.arrivedAmount ? item.arrivedAmount : null
-              component.purchaseOrders? component.purchaseOrders.push(purchase) : component.purchaseOrders = [purchase]
+              component.purchaseOrders ? component.purchaseOrders.push(purchase) : component.purchaseOrders = [purchase]
             }
           }
         }
@@ -613,8 +614,8 @@ export class StockComponent implements OnInit {
     })
   }
 
-  getLastCustomerOrders(){
-    this.orderService.getOpenOrdersLimit(100).subscribe(data=> {
+  getLastCustomerOrders() {
+    this.orderService.getOpenOrdersLimit(100).subscribe(data => {
       this.lastCustomerOrders = data
     })
   }
@@ -650,7 +651,7 @@ export class StockComponent implements OnInit {
     this.excelService.exportAsExcelFile(this.itemShell, 'itemShell');
   }
 
-  exportItemData(){
+  exportItemData() {
 
     const sortOrder = [
       'componentN', 'componentName', 'componentType', 'actualMlCapacity', 'componentCategory', 'suplierN',
@@ -662,23 +663,23 @@ export class StockComponent implements OnInit {
     let componentsForExcel = []
     let x = 0;
     let y;
-    for(let i = 0; i<this.components.length; i++) {
-      componentsForExcel[x] = {...this.components[i]}
-      for(let z=0; z<this.components[i].allocations.length; z++) {
-        if(this.components[i].allocations[z]) {
-          componentsForExcel[x+z] = {...this.components[i]}
-          componentsForExcel[x+z].OrderNumber = this.components[i].allocations[z].orderNumber
-          componentsForExcel[x+z].Customer = this.components[i].allocations[z].costumer
-          componentsForExcel[x+z].OrderDate = this.components[i].allocations[z].orderDate
-          componentsForExcel[x+z].DeliveryDate = this.components[i].allocations[z].deliveryDate
+    for (let i = 0; i < this.components.length; i++) {
+      componentsForExcel[x] = { ...this.components[i] }
+      for (let z = 0; z < this.components[i].allocations.length; z++) {
+        if (this.components[i].allocations[z]) {
+          componentsForExcel[x + z] = { ...this.components[i] }
+          componentsForExcel[x + z].OrderNumber = this.components[i].allocations[z].orderNumber
+          componentsForExcel[x + z].Customer = this.components[i].allocations[z].costumer
+          componentsForExcel[x + z].OrderDate = this.components[i].allocations[z].orderDate
+          componentsForExcel[x + z].DeliveryDate = this.components[i].allocations[z].deliveryDate
         }
-        y=z+1
+        y = z + 1
       }
-      x+=y
+      x += y
       // componentsForExcel[x+1] = {}
     }
-    
-    componentsForExcel.forEach(component=>{
+
+    componentsForExcel.forEach(component => {
       component.availableStock = Number(component.amount) - Number(component.alloAmount)
       delete component.alternativeSuppliers
       delete component.allocations
@@ -840,14 +841,14 @@ export class StockComponent implements OnInit {
     if (component) {
       if (this.resCmpt._id != undefined) {
         obj.country = this.country ? this.country.nativeElement.value : '';
-        obj.expectedArrival = this.expectedArrival ? this.expectedArrival.nativeElement.value: '';
+        obj.expectedArrival = this.expectedArrival ? this.expectedArrival.nativeElement.value : '';
       }
     }
 
     else {
       if (this.resMaterial._id != undefined) {
         obj.country = this.country ? this.country.nativeElement.value : '';
-        obj.expectedArrival = this.expectedArrival ? this.expectedArrival.nativeElement.value: '';
+        obj.expectedArrival = this.expectedArrival ? this.expectedArrival.nativeElement.value : '';
       }
     }
 
@@ -859,9 +860,9 @@ export class StockComponent implements OnInit {
       if (data) {
         var supplier;
         var updatedSupplier = data.alternativeSuppliers.find(s => s.supplierName == obj.supplierName);
-        if(component) supplier = this.resCmpt.alternativeSuppliers.find(s => s.supplierName == obj.supplierName); 
+        if (component) supplier = this.resCmpt.alternativeSuppliers.find(s => s.supplierName == obj.supplierName);
         else supplier = this.resMaterial.alternativeSuppliers.find(s => s.supplierName == obj.supplierName);
-        if(!supplier) this.toastSrv.error("Can't change supplier name. Please delete supplier and add new.")
+        if (!supplier) this.toastSrv.error("Can't change supplier name. Please delete supplier and add new.")
         else {
           supplier.supplierName = updatedSupplier.supplierName
           supplier.price = updatedSupplier.price
@@ -1034,17 +1035,17 @@ export class StockComponent implements OnInit {
 
   getAmountsFromShelfs() {
     let allNumbers = this.components.map(component => component.componentN)
-    this.inventoryService.getAmountsForMulti(allNumbers).subscribe(itemsAmounts=>{
-       for(let component of this.components) {
-         let itemWithTotal = itemsAmounts.find(item => item._id == component.componentN)
-         if(itemWithTotal) {
-           let amount = itemWithTotal.total
-           let roundedAmount = Math.round(amount)
-           component.amount = roundedAmount ? roundedAmount : 0
-          }
-          else component.amount = 0
-        } 
-        this.loadingText = "(3/4) מייבא הזמנות רכש..."
+    this.inventoryService.getAmountsForMulti(allNumbers).subscribe(itemsAmounts => {
+      for (let component of this.components) {
+        let itemWithTotal = itemsAmounts.find(item => item._id == component.componentN)
+        if (itemWithTotal) {
+          let amount = itemWithTotal.total
+          let roundedAmount = Math.round(amount)
+          component.amount = roundedAmount ? roundedAmount : 0
+        }
+        else component.amount = 0
+      }
+      this.loadingText = "(3/4) מייבא הזמנות רכש..."
     })
   }
 
@@ -1213,7 +1214,7 @@ export class StockComponent implements OnInit {
 
   async updateItemStock(direction) {
     //check enough amount for "out"
-  
+
     this.newItemShelfPosition = this.newItemShelfPosition.toUpperCase().trim();
     var shelfExsit = false;
     let itemShelfCurrAmounts = []
@@ -1228,7 +1229,7 @@ export class StockComponent implements OnInit {
       if (shelfRes.ShelfId) {
         if (shelfRes.stock.length > 0) {
           let temp = shelfRes.stock.find(shl => shl.item == this.resCmpt.componentN);
-          if(temp) this.originShelfQntBefore = temp.amount;
+          if (temp) this.originShelfQntBefore = temp.amount;
           else this.originShelfQntBefore = 0;
 
         }
@@ -1459,6 +1460,17 @@ export class StockComponent implements OnInit {
     })
   }
 
+  getRecommendationReport() {
+    let query = this.filterParams.value
+    query.itemType = this.stockType
+    this.smallerLoader = true
+    this.inventoryService.getpurchaseRec(query).subscribe(res => {
+      this.smallerLoader = false
+      let filt = res.filter(item => item.minimum != "" && Number(item.minimum) >= Number(item.amount))
+      this.excelService.exportAsExcelFile(filt, `דו"ח המלצה לרכש ${new Date().toString().slice(0, 10)}`)
+    })
+  }
+
   filterComponents() {
     console.log('filter parameters: ', this.filterParams.value)
     this.smallLoader = true;
@@ -1466,24 +1478,24 @@ export class StockComponent implements OnInit {
     query.itemType = this.stockType
     this.loadingText = "(1/4) מייבא פריטים..."
 
-    setTimeout(()=> {
-      if(this.smallLoader) {
+    setTimeout(() => {
+      if (this.smallLoader) {
         this.smallLoader = false
         this.toastSrv.error('משהו השתבש.')
       }
-    }, 1000*15) // stop the loader if no answer
+    }, 1000 * 15) // stop the loader if no answer
 
     this.inventoryService.getFilteredComponents(query).subscribe(filteredComponents => {
       this.components = filteredComponents.filter(s => s.itemType == this.stockType)
       this.componentsUnFiltered = filteredComponents.filter(s => s.itemType == this.stockType)
       if (this.components.length > 0) {
-        try{
+        try {
 
           this.loadingText = "(2/4) מחשב כמויות... "
           this.getAmountsFromShelfs();
           this.getItemPurchases()
           this.getAllocations()
-        } catch(e) {
+        } catch (e) {
           this.smallLoader = false
           alert(e)
         }
@@ -1506,7 +1518,7 @@ export class StockComponent implements OnInit {
   searchItemShelfs() {
     ;
     if (this.newItemShelfWH != '') {
-    
+
       this.inventoryService.getShelfListForItemInWhareHouse(this.resCmpt.componentN, this.newItemShelfWH).subscribe(async res => {
         if (res.length > 0) {
           this.currItemShelfs = res;
@@ -1545,9 +1557,9 @@ export class StockComponent implements OnInit {
     this.openModal = true;
     this.resMaterial = defaultMaterial
     this.resCmpt = this.components.find(cmpt => cmpt.componentN == cmptNumber);
-    this.editVersionForm.controls.versionNumber.setValue(this.resCmpt.versionNumber+1)
-    if(isNaN(this.editVersionForm.controls.versionNumber.value)) this.editVersionForm.controls.versionNumber.setValue(5)
-    let mainSupplier = this.resCmpt.alternativeSuppliers.find(s=>s.isMain == true);
+    this.editVersionForm.controls.versionNumber.setValue(this.resCmpt.versionNumber + 1)
+    if (isNaN(this.editVersionForm.controls.versionNumber.value)) this.editVersionForm.controls.versionNumber.setValue(5)
+    let mainSupplier = this.resCmpt.alternativeSuppliers.find(s => s.isMain == true);
     // if(mainSupplier){
     //   this.resCmpt.suplierN = mainSupplier.supplierName
     //   this.resCmpt.price = mainSupplier.price + mainSupplier.coin;
@@ -1652,7 +1664,7 @@ export class StockComponent implements OnInit {
     this.openModal = true;
     this.resCmpt = defaultCmpt
     this.resMaterial = this.components.find(mat => mat.componentN == materNum);
-    let mainSupplier = this.resMaterial.alternativeSuppliers.find(s=>s.isMain == true);
+    let mainSupplier = this.resMaterial.alternativeSuppliers.find(s => s.isMain == true);
     // if(mainSupplier){
     //   this.resMaterial.suplierN = mainSupplier.supplierName
     //   this.resMaterial.price = mainSupplier.price + mainSupplier.coin;
@@ -1668,30 +1680,30 @@ export class StockComponent implements OnInit {
 
 
 
-/**
- async openAllocatedOrders(componentN, index?, forEach?) {
- * 
- *   this.openModalHeader = "הקצאות מלאי"
-            this.openOrderAmountsModal = true;
-            this.allocatedOrders = data
- * 
- * 
- */
+  /**
+   async openAllocatedOrders(componentN, index?, forEach?) {
+   * 
+   *   this.openModalHeader = "הקצאות מלאי"
+              this.openOrderAmountsModal = true;
+              this.allocatedOrders = data
+   * 
+   * 
+   */
 
 
   openAllocatedOrders(component) {
     this.openModalHeader = "הקצאות מלאי"
     this.openOrderAmountsModal = true;
-    this.allocatedOrders =  component.openOrders
+    this.allocatedOrders = component.openOrders
   }
 
 
 
   getAllocations() {
-    let allNumbers = this.components.map(c=> c.componentN)
+    let allNumbers = this.components.map(c => c.componentN)
     this.orderService.getAllOrdersForComponents(allNumbers).subscribe(allComponentsOrders => {
       console.log(allComponentsOrders)
-      for(let component of this.components) {
+      for (let component of this.components) {
         let ordersObject = allComponentsOrders.find(co => co.componentN == component.componentN)
         component.openOrders = ordersObject.openOrders
       }
@@ -1700,7 +1712,7 @@ export class StockComponent implements OnInit {
   }
 
 
-  
+
   async openAllocatedProducts(componentN) {
 
 
@@ -2048,7 +2060,7 @@ export class StockComponent implements OnInit {
     let componentN
     let newPrice
     let coin
-    switch(type) {
+    switch (type) {
       case 'c':
         componentN = this.resCmpt.componentN
         newPrice = this.resCmpt.manualPrice
@@ -2061,18 +2073,18 @@ export class StockComponent implements OnInit {
         break
     }
     let user = this.authService.loggedInUser.userName
-    this.inventoryService.updatePriceHistory(componentN, newPrice, coin, user).subscribe(data=> {
+    this.inventoryService.updatePriceHistory(componentN, newPrice, coin, user).subscribe(data => {
       console.log(data)
-      if(type == 'c') {
+      if (type == 'c') {
 
         this.resCmpt.priceUpdates.push({
-          price: newPrice, 
+          price: newPrice,
           coin, user,
           date: new Date(),
           type: 'manual'
         })
       }
-      else if(type == 'm') {
+      else if (type == 'm') {
         this.resMaterial.priceUpdates.push({
           price: newPrice,
           coin, user,
@@ -2086,8 +2098,8 @@ export class StockComponent implements OnInit {
 
   checkUpdatePriceValidity(type) {
     this.allowPriceUpdate = false
-    if(type == 'c') this.allowPriceUpdate =  this.resCmpt.manualCoin != undefined && this.resCmpt.manualPrice != undefined
-    if(type == 'm') this.allowPriceUpdate =  this.resMaterial.manualCoin != undefined && this.resMaterial.manualPrice != undefined
+    if (type == 'c') this.allowPriceUpdate = this.resCmpt.manualCoin != undefined && this.resCmpt.manualPrice != undefined
+    if (type == 'm') this.allowPriceUpdate = this.resMaterial.manualCoin != undefined && this.resMaterial.manualPrice != undefined
   }
 
   getSupplierPriceHistory(i) {
@@ -2095,7 +2107,7 @@ export class StockComponent implements OnInit {
     this.procuretServ.getAllOrdersFromSupplier(this.resMaterial.alternativeSuppliers[i].suplierNumber).subscribe(data => {
       this.supPurchases = data.filter(purchase => purchase.status == 'open')
       for (let order of data) {
-  
+
       }
     })
   }
@@ -2118,7 +2130,7 @@ export class StockComponent implements OnInit {
   }
 
   async getUser() {
-   
+
     if (this.authService.loggedInUser.authorization.includes("updateStock")) {
       this.allowUserEditItem = true;
     }
@@ -2218,7 +2230,7 @@ export class StockComponent implements OnInit {
     })
   }
 
-  updateComponentVersion(){
+  updateComponentVersion() {
     this.editVersionForm.controls.user.setValue(this.authService.loggedInUser.userName)
     this.resCmpt.versionNumber = this.editVersionForm.get('versionNumber').value
     this.resCmpt.versionHistory.push(this.editVersionForm.value)
@@ -2376,7 +2388,7 @@ export class StockComponent implements OnInit {
       }
     }
   }
-  
+
   deleteStockItem(ItemToDelete) {
     this.inventoryService.deleteStockItemAndItemShelfs(ItemToDelete.componentN, ItemToDelete.itemType).subscribe(res => {
       if (res.componentN) {
@@ -2419,6 +2431,8 @@ export class StockComponent implements OnInit {
     }
   }
 
+
+
   procurementRecommendations(filterType) {
     if (filterType == "minimumStock") {
       if (this.stockType != "product") {
@@ -2434,7 +2448,7 @@ export class StockComponent implements OnInit {
   }
 
   filterMaterialsTable() {
- 
+
     let tempArr = [...this.componentsUnFiltered]
     let type = this.materialFilterType;
     let value = this.materialFilterValue;
@@ -2536,19 +2550,19 @@ export class StockComponent implements OnInit {
   showDialog() {
   }
 
-  makeAsMainSupplier(index){
+  makeAsMainSupplier(index) {
     let id;
-    if(this.stockType == 'component') id = this.resCmpt._id;
-    if(this.stockType == 'material') id = this.resMaterial._id;
+    if (this.stockType == 'component') id = this.resCmpt._id;
+    if (this.stockType == 'material') id = this.resMaterial._id;
 
 
-    this.inventoryService.setAsMainSupplier(index,id).subscribe(data => {
-      
-      if(data){
+    this.inventoryService.setAsMainSupplier(index, id).subscribe(data => {
 
-        if(this.stockType == 'component') this.resCmpt.alternativeSuppliers = data.alternativeSuppliers;
-        if(this.stockType == 'material') this.resMaterial.alternativeSuppliers = data.alternativeSuppliers;
-        
+      if (data) {
+
+        if (this.stockType == 'component') this.resCmpt.alternativeSuppliers = data.alternativeSuppliers;
+        if (this.stockType == 'material') this.resMaterial.alternativeSuppliers = data.alternativeSuppliers;
+
         this.toastSrv.success('ספק ראשי עודכן בהצלחה!')
 
       }
@@ -2559,9 +2573,9 @@ export class StockComponent implements OnInit {
 
   }
 
-  mainSupplier(isMain){
+  mainSupplier(isMain) {
 
-    if(isMain){
+    if (isMain) {
       return 'lightgreen'
     } else {
       return ''
@@ -2583,7 +2597,7 @@ export class StockComponent implements OnInit {
     }
     this.inventoryService.getItemMovements(componentN).subscribe(data => {
       if (data) {
-     
+
         //  for (let i = 0; i < data.length; i++) {
         //    if(data[i].movementType != 'in'){
         //     data[i].originShelfQntBefore = data[i].originShelfQntBefore + Math.abs(data[i].amount)

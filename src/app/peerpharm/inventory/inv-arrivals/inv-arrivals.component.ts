@@ -27,6 +27,7 @@ export class InvArrivalsComponent implements OnInit {
   today = new Date()
   sending: boolean = false
   disabled: boolean = false
+  noItem: boolean = true
 
   componentArrival: FormGroup = new FormGroup({
     itemType: new FormControl('component', Validators.required),
@@ -51,11 +52,11 @@ export class InvArrivalsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    setTimeout(()=>this.first.nativeElement.focus(),500) 
-    if(this.itemNumber) {
+    setTimeout(() => this.first.nativeElement.focus(), 500)
+    if (this.itemNumber) {
       this.disabled = true
       this.componentArrival.controls.item.setValue(this.itemNumber)
-    } 
+    }
     this.getSuppliers()
   }
 
@@ -71,25 +72,45 @@ export class InvArrivalsComponent implements OnInit {
     })
   }
 
-  getShelfs() {
-    if (!this.componentArrival.value.whareHouseID) this.toastr.error('אנא בחר מחסן.')
-    else if (!this.componentArrival.value.item) this.toastr.error('אנא הזן מספר פריט.')
-    else this.inventoryService.getShelfListForItemInWhareHouse2(this.componentArrival.value.item, this.componentArrival.value.whareHouseID)
-      .subscribe(res => {
-        if (res.msg) this.toastr.error('בעיה בהזנת הנתונים.')
-        else if (res.length == 0) {
-          let noShellsForItem = confirm('הפריט לא נמצא על אף אחד מהמדפים במחסן זה. להכניס למדף חדש?')
-          if (noShellsForItem) {
-            this.componentArrival.controls.isNewItemShell.setValue(true)
-            this.getAllShellsOfWhareHouse()
-          }
+  async checkComponentN() {
+    return new Promise((resolve, reject) => {
+      this.inventoryService.getCmptByNumber(this.componentArrival.value.item, 'component').subscribe(data => {
+        if (data.length > 0) {
+          this.noItem = false
+          resolve(true)
         }
         else {
-          this.shellNums = res
-          //stupid bug:
-          this.componentArrival.controls.shell_id_in_whareHouse.setValue(this.shellNums[0].shell_id_in_whareHouse)
+          this.noItem = true
+          reject(false)
         }
       })
+    })
+  }
+
+  getShelfs() {
+
+    this.checkComponentN().then(result => {
+      if (!this.componentArrival.value.whareHouseID) this.toastr.error('אנא בחר מחסן.')
+      else if (!this.componentArrival.value.item) this.toastr.error('אנא הזן מספר פריט.')
+      else this.inventoryService.getShelfListForItemInWhareHouse2(this.componentArrival.value.item, this.componentArrival.value.whareHouseID)
+        .subscribe(res => {
+          if (res.msg) this.toastr.error('בעיה בהזנת הנתונים.')
+          else if (res.length == 0) {
+            let noShellsForItem = confirm('הפריט לא נמצא על אף אחד מהמדפים במחסן זה. להכניס למדף חדש?')
+            if (noShellsForItem) {
+              this.componentArrival.controls.isNewItemShell.setValue(true)
+              this.getAllShellsOfWhareHouse()
+            }
+          }
+          else {
+            this.shellNums = res
+            //stupid bug:
+            this.componentArrival.controls.shell_id_in_whareHouse.setValue(this.shellNums[0].shell_id_in_whareHouse)
+          }
+        })
+    }).catch(e => {
+      this.toastr.error('', 'פריט לא קיים :(')
+    })
   }
 
   getAllShellsOfWhareHouse() {
@@ -135,7 +156,7 @@ export class InvArrivalsComponent implements OnInit {
 
   addToStock() {
     this.sending = true
-    setTimeout(()=> this.sending = false, 7000) //if something goes wrong
+    setTimeout(() => this.sending = false, 7000) //if something goes wrong
     this.inventoryService.addComponentsToStock(this.allArrivals).subscribe(
       data => {
         if (data.msg) this.toastr.error('אנא פנה לתמיכה.', 'היתה בעיה')
@@ -148,23 +169,23 @@ export class InvArrivalsComponent implements OnInit {
           }
           this.sending = false
           this.toastr.success('שינויים נשמרו בהצלחה', 'נשמר')
-          setTimeout(()=> {
+          setTimeout(() => {
             this.printBtn2.nativeElement.click()
-            setTimeout(()=> this.allArrivals = [], 1000)
+            setTimeout(() => this.allArrivals = [], 1000)
           }, 500)
         }
       }
-      )
-    }
+    )
+  }
 
-    removeFromArrivals(i) {
-      this.allArrivals.splice(i, 1)
-    }
-    
-    justPrint() {
-      setTimeout(()=> {
-        this.printBtn2.nativeElement.click()
-      }, 500)
+  removeFromArrivals(i) {
+    this.allArrivals.splice(i, 1)
+  }
+
+  justPrint() {
+    setTimeout(() => {
+      this.printBtn2.nativeElement.click()
+    }, 500)
   }
 
   clearArrivals() {

@@ -7,11 +7,12 @@
             <div class="col-2">
                 <label>ספק</label>
 
-                <input list="suppliers" (change)="getPurchaseOrders($event)" class="form-control" formControlName="supplier">
+                <input list="suppliers" (change)="getPurchaseOrders($event)" class="form-control"
+                    formControlName="supplier">
                 <datalist id="suppliers">
-                  <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">
-                    {{supplier.suplierNumber}} - {{supplier.suplierName}}
-                  </option>
+                    <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">
+                        {{supplier.suplierNumber}} - {{supplier.suplierName}}
+                    </option>
                 </datalist>
 
                 <!-- <select class="form-control" (change)="getPurchaseOrders($event)" formControlName="supplier">
@@ -24,7 +25,8 @@
                 <label>מס' הזמנת רכש</label>
                 <select class="form-control" formControlName="purchaseOrder">
                     <option selected value="">מס' הזמנה</option>
-                    <option *ngFor="let purchase of purchaseOrders" [value]="purchase.orderNumber">{{purchase.orderNumber}}
+                    <option *ngFor="let purchase of purchaseOrders" [value]="purchase.orderNumber">
+                        {{purchase.orderNumber}}
                     </option>
                 </select>
             </div>
@@ -32,7 +34,8 @@
         <div class="row mt-2">
             <div class="col-2">
                 <label>מחסן</label>
-                <select class="form-control" (change)="itemNumber ? getShelfs() : null" formControlName="whareHouseID" #first>
+                <select class="form-control" (change)="itemNumber ? getShelfs() : null" formControlName="whareHouseID"
+                    #first>
                     <option disabled value="">בחר מחסן</option>
                     <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
                     </option>
@@ -42,7 +45,8 @@
                 <label>
                     פריט (לפי מספר)
                 </label>
-                <input  type="number" [disabled]="disabled" formControlName="item" (change)="getShelfs()" class="form-control">
+                <input type="number" [disabled]="disabled" formControlName="item" (change)="getShelfs()"
+                    class="form-control">
             </div>
             <div *ngIf="!disabled" class="col-2">
                 <label class="d-block">
@@ -63,15 +67,19 @@
                         {{shellNum.position}} - {{shellNum.amount}} pcs
                     </option>
                 </select>
-                <button type="button" (click)="getAllShellsOfWhareHouse()" class="btn btn-warning">הכנס למדף חדש</button>
+                <span [ngbTooltip]="noItem ? 'יש להזין מספר פריט תקין' : ''">
+                    <button type="button" [disabled]="noItem" [style.cursor]="noItem ? 'not-allowed' : 'pointer'"
+                        (click)="getAllShellsOfWhareHouse()" class="btn btn-warning">הכנס למדף חדש</button>
+                </span>
             </div>
             <div class="col-2">
                 <label>כמות</label>
                 <input type="number" formControlName="amount" class="form-control">
             </div>
             <div class="col-2 d-flex flex-column justify-content-around">
-                <button type="submit" [disabled]="!componentArrival.valid" 
-                    [style.cursor]="componentArrival.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">הכנס</button>
+                <button type="submit" [disabled]="!componentArrival.valid"
+                    [style.cursor]="componentArrival.valid ? 'pointer' : 'not-allowed'"
+                    class="btn btn-info">הכנס</button>
                 <button type="button" class="btn btn-secondary" (click)="componentArrival.reset()">נקה נתונים</button>
             </div>
         </div>
@@ -103,8 +111,8 @@
     </div>
 
     <div class="row mt-2 d-flex flex-row justify-content-around w-50">
-        <button *ngIf="!sending" class="btn btn-info" (click)="addToStock()" 
-            [disabled]="allArrivals.length == 0" [style.cursor]="allArrivals.length == 0 ? 'not-allowed' : 'pointer'">
+        <button *ngIf="!sending" class="btn btn-info" (click)="addToStock()" [disabled]="allArrivals.length == 0"
+            [style.cursor]="allArrivals.length == 0 ? 'not-allowed' : 'pointer'">
             הוסף למלאי (שלח שינויים) <i class="fa fa-check"></i>
         </button>
         <div class="smallerLoader" *ngIf="sending"></div>

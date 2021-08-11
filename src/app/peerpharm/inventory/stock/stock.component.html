@@ -87,7 +87,14 @@
         <div class="col-2 fixNoaStupidStuff"></div>
       </div>
       <div dir="rtl" class="row mt-5 fixNoaStupidStuff">
-        <div class="col-4 fixNoaStupidStuff"></div>
+        <div class="col-3 fixNoaStupidStuff"></div>
+        <div class="col-2 fixNoaStupidStuff">
+          <div *ngIf="smallerLoader" class="smallerLoader ml-5"></div>
+          <button *ngIf="!smallerLoader" (click)="getRecommendationReport()" class="btn-info form-control rounded-pill"
+            type="button"><b>דו"ח
+              המלצה לרכש</b><img src="../../../../assets/images/excel.png" style="width: 25px; height: 25px"
+              alt=""></button>
+        </div>
         <div class="col-2 fixNoaStupidStuff">
           <button (click)="clearSearchFields()" class="btn-secondary form-control rounded-pill"
             type="button"><b>נקה</b></button>
@@ -95,7 +102,7 @@
         <div class="col-2 fixNoaStupidStuff">
           <button class="btn-primary form-control rounded-pill">חיפוש</button>
         </div>
-        <div class="col-4 fixNoaStupidStuff"></div>
+        <div class="col-3 fixNoaStupidStuff"></div>
       </div>
     </form>
   </div>
@@ -1311,8 +1318,8 @@
             class='btn form-control'>קבלת סחורה</button>
         </div>
         <div class="col-3">
-          <button [ngClass]="dir == 'shelfChange' ? 'btn-success' : 'btn-outline-success'" (click)="dirSet('shelfChange')"
-          class='btn form-control'>שינוי מדף</button>
+          <button [ngClass]="dir == 'shelfChange' ? 'btn-success' : 'btn-outline-success'"
+            (click)="dirSet('shelfChange')" class='btn form-control'>שינוי מדף</button>
         </div>
         <div class="col-3">
           <button [ngClass]="dir == 'out' ? 'btn-success' : 'btn-outline-success'" (click)="dirSet('out')"
@@ -1325,7 +1332,8 @@
         <app-inv-arrivals [itemNumber]="resCmpt.componentN" [allWhareHouses]="whareHouses"></app-inv-arrivals>
       </div>
 
-      <div [style.width]="'1094px'" class="m-2 p-4 border border-primary bg-secondary text-white" *ngIf="dir=='shelfChange'">
+      <div [style.width]="'1094px'" class="m-2 p-4 border border-primary bg-secondary text-white"
+        *ngIf="dir=='shelfChange'">
         <app-shelf-change [itemNumber]="resCmpt.componentN" [allWhareHouses]="whareHouses"></app-shelf-change>
       </div>
 
