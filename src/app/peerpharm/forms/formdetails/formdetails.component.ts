@@ -6,6 +6,9 @@ import { UserInfo } from '../../taskboard/models/UserInfo';
 import { TranslateService } from '@ngx-translate/core';
 import { ExcelService } from 'src/app/services/excel.service';
 import { ToastrService } from 'ngx-toastr';
+import { ScheduleService } from 'src/app/services/schedule.service';
+import { Costumer } from '../../classes/costumer.class';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-formdetails',
@@ -17,15 +20,19 @@ export class FormdetailsComponent implements OnInit {
   disabledValue = true;
   formQAPalletsData:any[]
   user:any;
+  currentScheduleId:any;
   averageNetoWeight = 0;
   loggedInUser: UserInfo;
+  newForm:boolean = false;
   netoWeightArr: number[] = new Array();
   tabView: String= "fillingForm";
   fillingTabBtn:String ="#fff";
   pPackingTabBtn:String ="transperent";
   compileTabBtn:String ="transperent";
+  itemTreeTabBtn:String ="transperent";
   allChecks: Array<any>=[];
   formid="";
+  formDetailsItemNum:any;
   showQAPalletsModal:boolean = false;
   allowUpdateForm:boolean = false;
 
@@ -61,25 +68,89 @@ export class FormdetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService,
     public translate: TranslateService,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private scheduleService: ScheduleService
   ) {
 
    }
 
-  ngOnInit() {
-    this.getFormData(true);
+   ngOnInit() {
+    
+    let tempId = this.route.snapshot.paramMap.get('id');
+    if(tempId.includes('scheduleId')){
+    
+      
+      this.currentScheduleId =  tempId.split('scheduleId').join('')
+
+
+      this.checkIfFormExist(this.currentScheduleId)
+     
+  
+     
+    } else{
+      this.getFormData(true);
+    }
+    debugger;
+    
     this.getUserInfo();
     // this.UserDisableAuth();
     // this.wrapAllChecks();
   }
 
+  async checkIfFormExist(scheduleId) {
+
+    this.formsService.getFormIdByScheduleId(scheduleId).subscribe(data=>{
+      debugger;
+      if(data.formId){
+        this.formid = data.formId
+        this.getFormData(true)
+      } else {
+        
+        this.getScheduleDetails(scheduleId)
+      }
+    })
+
+  }
+
+  async getScheduleDetails(scheduleId){
+
+      this.scheduleService.getScheduleById(scheduleId).subscribe(data=>{
+        debugger;
+        if(data){
+          let tempObj = {
+            batchN:data.batch,
+            itemN:data.item,
+            costumerName:data.costumer,
+            productName:data.productName,
+            orderNumber:data.orderN,
+            orderQuantity:data.qty,
+  
+          }
+          this.formDetailsItemNum = data.item
+          this.form = tempObj
+          this.form.scheduleId = scheduleId
+          this.newForm = true;
+        }
+        
+  
+      })
+
+  }
+
   async getFormData(allChecks) {
-    ;
+    debugger;
     const id = this.route.snapshot.paramMap.get('id');
-    this.formid=id;
-    if (id) {
-      await this.formsService.getFormData(id).subscribe(res => {
+    if(id.includes('scheduleId')){
+      // do nothing
+    } else {
+      this.formid = id
+    }
+    
+    if (this.formid) {
+      await this.formsService.getFormData(this.formid).subscribe(res => {
         this.form = res[0];
+        debugger;
+        this.formDetailsItemNum = this.form.itemN
         if(this.form.productionEndDate){
           let days = this.form.productionEndDate.slice(8,10)
           let monthes = this.form.productionEndDate.slice(5,7)
@@ -143,12 +214,14 @@ export class FormdetailsComponent implements OnInit {
     this.newQAPallet.formDetailsId = this.form._id;
     this.newQAPallet.batchNumber = this.form.batchN;
     this.newQAPallet.customerName = this.form.costumerName
+
+    
     if(this.newQAPallet.qaStatus == 'עובר לאריזה אישית') this.newQAPallet.isPersonalPackage = true
 
     this.formsService.createNewQaPallet(this.newQAPallet).subscribe(result=>{
 
       if(result){
-
+       
         result = this.calculateSumAmount(result)
         let tempObj = {...this.newQAPallet}
 
@@ -167,24 +240,45 @@ export class FormdetailsComponent implements OnInit {
 
   }
 
+
   updateFormDetails(){
     debugger;
-    this.formsService.updateFormDetails(this.form).subscribe(result=>{
 
-      if(result.ok == 1){
+    try {
 
-        this.getFormData(false)
-        this.toastService.success('טופס עודכן בהצלחה !');
-        this.showQAPalletsModal = false;
-        
-      } else {
+      this.formsService.updateFormDetails(this.form).subscribe(result=>{
 
-        this.toastService.error('טופס לא עודכן , אנא נסה שנית או פנה למנהל מערכת')
+        if(result.ok == 1){
+  
+          this.getFormData(false)
+          this.toastService.success('טופס עודכן בהצלחה !');
+          this.showQAPalletsModal = false;
+          
+        } else {
+  
+          this.toastService.error('טופס לא עודכן , אנא נסה שנית או פנה למנהל מערכת')
+  
+        }
+  
+      })
+      
+    } catch (error) {
+      
+      this.toastService.error('אירעה שגיאה בעדכון , אנא נסה שנית')
 
+    }
+  
+
+  }
+
+  createFormDetails(){
+    this.form.quantity_Produced = 0;
+    this.formsService.createFormDetails(this.form).subscribe(data=>{
+      if(data){
+        this.toastService.success('טופס נוצר בהצלחה') !
+        this.newForm = false;
       }
-
     })
-
   }
 
   
@@ -245,6 +339,7 @@ export class FormdetailsComponent implements OnInit {
       if (this.user.authorization) {
         if (this.authService.loggedInUser.authorization.includes("updateFormDetails")) {
           this.allowUpdateForm = true;
+            debugger;
           this.disabledValue = false
 
         }
@@ -258,6 +353,7 @@ export class FormdetailsComponent implements OnInit {
         this.user = user;
         if (this.user.authorization) {
           if (this.authService.loggedInUser.authorization.includes("updateFormDetails")) {
+            debugger;
             this.allowUpdateForm = true;
             this.disabledValue = false
           }
@@ -296,6 +392,7 @@ export class FormdetailsComponent implements OnInit {
         this.fillingTabBtn="#fff"
         this.pPackingTabBtn="#eef5f9";
         this.compileTabBtn="#eef5f9";
+        this.itemTreeTabBtn="#eef5f9"
         break;
       }
       case 'personalPackingForm': {
@@ -303,6 +400,7 @@ export class FormdetailsComponent implements OnInit {
         this.fillingTabBtn="#eef5f9"
         this.pPackingTabBtn="#fff";
         this.compileTabBtn="#eef5f9";
+        this.itemTreeTabBtn="#eef5f9"
 
         break;
       }
@@ -311,6 +409,16 @@ export class FormdetailsComponent implements OnInit {
         this.fillingTabBtn="#eef5f9"
         this.pPackingTabBtn="#eef5f9";
         this.compileTabBtn="#fff";
+        this.itemTreeTabBtn="#eef5f9"
+
+        break;
+      }
+      case 'itemTree': {
+        this.tabView = 'itemTree';
+        this.fillingTabBtn="#eef5f9"
+        this.pPackingTabBtn="#eef5f9";
+        this.compileTabBtn="#eef5f9";
+        this.itemTreeTabBtn="#fff"
 
         break;
       }

@@ -119,6 +119,10 @@ export class FormsService {
     let url = this.baseUrl + "formDetails/closeFormPallets?id="+id; 
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+  getFormIdByScheduleId(id) {
+    let url = this.baseUrl + "formDetails/getFormIdByScheduleId?scheduleId="+id; 
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 
   addPalletToExistPackList(packedList){
     ;
@@ -149,6 +153,11 @@ export class FormsService {
     
     let url = this.baseUrl + "formDetails/update";
     return this.http.post(url, JSON.stringify({formDetails}), this.options).pipe(map(res => res.json()));
+  }
+  createFormDetails(formDetails){
+    
+    let url = this.baseUrl + "formDetails/add2";
+    return this.http.post(url, JSON.stringify(formDetails), this.options).pipe(map(res => res.json()));
   }
   cancelPackListById(pLId){
     ;

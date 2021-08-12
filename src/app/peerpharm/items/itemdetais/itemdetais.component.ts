@@ -1,4 +1,4 @@
-import { Component, OnInit, Renderer2, ViewChild, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit, Renderer2, ViewChild, ElementRef, HostListener, Input } from '@angular/core';
 import { ActivatedRoute, ChildrenOutletContexts } from '@angular/router'
 import { ItemsService } from '../../../services/items.service'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -33,6 +33,7 @@ export class ItemdetaisComponent implements OnInit {
   @ViewChild('container')
   private container: ElementRef;
   @ViewChild('itemNum') itemNum: ElementRef
+  @Input() formDetailsItemNum:string;
 
   loadingItem: boolean = false
 
@@ -478,6 +479,9 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   ngOnInit() {
+    
+    if(this.formDetailsItemNum) this.searchForItem(this.formDetailsItemNum)
+    debugger;
     this.getAllCostumers()
     this.getUserInfo();
     this.getItemData();
@@ -1128,7 +1132,7 @@ export class ItemdetaisComponent implements OnInit {
 
 
   getItemData() {
-
+    debugger;
     this.route.params.subscribe(data => {
       let number = data.itemNumber;
       if (number) {
