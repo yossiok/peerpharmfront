@@ -190,8 +190,12 @@ export class ShelfListComponent implements OnInit {
 
   addNewItemShelf() {
     this.inventorySrv.newShelfYearCount(this.newShelfForm.value, this.whareHouse).subscribe(data => {
-      this.allShelfs = data
-      this.allShelfsCopy = data
+      if (data.length > 0) {
+        this.allShelfs = data
+        this.allShelfsCopy = data
+        this.toastSrv.success('מדף הוקם בהצלחה')
+      }
+      else this.toastSrv.error('משהו השתבש')
     })
   }
 
