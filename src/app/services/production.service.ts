@@ -13,7 +13,7 @@ export class ProductionService {
   private options = new RequestOptions({ headers: this.headers });
   private baseUrl = "/";
 
-  constructor(private http: Http) {}
+  constructor(private http: Http) { }
 
   addNewProductionLine(line): Observable<any> {
     let url = this.baseUrl + "productionLine/add";
@@ -53,7 +53,17 @@ export class ProductionService {
 
 
   addProdRequest(reqForm): Observable<any> {
-    let url = this.baseUrl + "productionSchedule/add"; 
+    let url = this.baseUrl + "productionSchedule/add";
     return this.http.post(url, JSON.stringify(reqForm), this.options).pipe(map(res => res.json()))
+  }
+
+  getLineYieldByDate(line, date) {
+    const url = this.baseUrl + `productionLine/yieldByDate?line=${line}&date=${date}`;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getTodayYields() {
+    const url = this.baseUrl + `productionLine/todayYields`;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 }

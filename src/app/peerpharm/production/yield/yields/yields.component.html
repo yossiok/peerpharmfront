@@ -1,0 +1,14 @@
+<div dir="rtl">
+
+    <h1>Lines</h1>
+    <mat-tab-group>
+
+        <mat-tab *ngFor="let line of lines; let i = index" (click)="changeLine(i)" [label]="line">
+            <app-yield-details [line]="line">
+
+            </app-yield-details>
+        </mat-tab>
+
+    </mat-tab-group>
+
+</div>
