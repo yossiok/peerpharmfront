@@ -1,4 +1,3 @@
-
 <div class="text-center shadow bg-white w-75 mx-auto rounded p-5">
   <div class="row mt-4">
     <div class="col-12">
@@ -8,28 +7,32 @@
 
   <div class="row mt-4">
     <div class="col-1">
-      <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}" style="background: none;border:none" printSectionId="print-section" ngxPrint><img src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>  
-      <img style="width: 50px; height: 50px" (click)="exportShelfListToXl()" src="../../../../assets/images/excel.png" alt="">
+      <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
+        style="background: none;border:none" printSectionId="print-section" ngxPrint><img
+          src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
+      <img style="width: 50px; height: 50px" (click)="exportShelfListToXl()" src="../../../../assets/images/excel.png"
+        alt="">
     </div>
-  
+
     <div class="col-2">
       <label class="form-control">Whare House</label>
     </div>
     <div class="col-2">
       <select (change)="getShelfsByWH($event)" class="form-control">
-        <option selected="true" disabled="disabled">WhareHouse</option> 
-        <option value="kasem">Kasem</option>
+        <option selected="true" disabled="disabled">WhareHouse</option>
+        <option value="Kasem">Kasem</option>
         <option value="material">Rosh HaAyin - Materials</option>
         <option value="component">Rosh HaAyin - Components</option>
         <option value="Rosh HaAyin products">Rosh HaAyin - Products</option>
         <option value="NEW KASEM">New Kasem</option>
+        <option value="Labels">Labels</option>
       </select>
     </div>
     <div class="col-2">
       <label class="form-control">Position</label>
     </div>
     <div class="col-1">
-      <input  class="form-control" (keyup)="filterByShelf($event)">
+      <input class="form-control" (keyup)="filterByShelf($event)">
     </div>
     <div class="col-2">
       <label class="form-control">Costumer</label>
@@ -42,6 +45,24 @@
     </div>
   </div>
 
+  <form [formGroup]="newShelfForm" (ngSubmit)="addNewItemShelf()">
+    <div class="row mt-2">
+      <div class="col-2"><input type="number" class="form-control" formControlName="item" placeholder="item number">
+      </div>
+      <div class="col-2">
+        <select class="form-control" formControlName="position">
+          <option value="">Choose Position</option>
+          <option *ngFor="let shelf of shellNums" [value]="shelf._id">{{shelf.position}}</option>
+        </select>
+      </div>
+      <div class="col-2">
+        <input type="number" class="form-control" formControlName="amount" placeholder="Amount">
+      </div>
+      <div class="col-2"><button [disabled]="!whareHouse" [style.cursor]="whareHouse ? 'pointer' : 'not-allowed'"
+          type="submit" class="btn btn-primary">New Shelf</button></div>
+    </div>
+  </form>
+
   <div id="print-section" class="row mt-4">
     <div class="col-12">
       <table class="table table-bordered table-hover">
@@ -51,47 +72,54 @@
             <th>Item Number</th>
             <th>Position</th>
             <th>Amount</th>
-            <th>Costumer</th>
-            <th>Arrival Date</th>
+            <!-- <th>Costumer</th> -->
+            <!-- <th>Arrival Date</th> -->
             <th>Count Date</th>
             <th>Counted Amount</th>
             <th>Signature</th>
-            <th></th>
           </tr>
         </thead>
         <ng-container *ngIf="fetchingShelfs">
-              <div class="bigLoader"></div>
+          <div class="bigLoader"></div>
         </ng-container>
         <tbody *ngIf="!fetchingShelfs">
+
           <tr *ngFor="let shelf of allShelfs;let i = index">
             <td>{{i+1}}</td>
-            <td>{{shelf.item}}</td>
+            <td>{{shelf._id}}</td>
             <td>{{shelf.position}}</td>
             <td>{{shelf.total}}</td>
-            <td (click)="editShelfAmount(shelf.item,shelf.position)" *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position">{{shelf.costumer}}</td>
-            <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
-              <input list="costumers" class="form-control" (change)="updateShelfCostumer(shelf)" [(ngModel)]="item.costumer">
+            <td (click)="editShelfAmount(shelf.item,shelf.position)"
+              *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position">{{shelf.costumer}}</td>
+            <!-- <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
+              <input list="costumers" class="form-control" (change)="updateShelfCostumer(shelf)"
+                [(ngModel)]="item.costumer">
               <datalist id="costumers">
-                <option *ngFor="let costumer of allCostumers" [value]="costumer.costumerName">{{costumer.costumerName}}</option>
+                <option *ngFor="let costumer of allCostumers" [value]="costumer.costumerName">{{costumer.costumerName}}
+                </option>
               </datalist>
-            </td>
-            <td>{{shelf.arrivalDate | date:'short'}}</td>
-            <td (click)="editShelfAmount(shelf.item,shelf.position)" *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
+            </td> -->
+            <!-- <td>{{shelf.arrivalDate | date:'short'}}</td> -->
+            <td (click)="editShelfAmount(shelf.item,shelf.position)"
+              *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
             <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
               <input type="date" class="form-control" [(ngModel)]="item.countDate">
             </td>
 
-            <td (click)="editShelfAmount(shelf.item,shelf.position)" *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
+            <td (click)="editShelfAmount(shelf.item,shelf.position)"
+              *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
             <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
-              <input type="number" class="form-control"  [(ngModel)]="shelf.countedAmount">
+              <input type="number" class="form-control" [(ngModel)]="shelf.countedAmount">
             </td>
 
-            <td (click)="editShelfAmount(shelf.item,shelf.position)" *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
+            <td (click)="editShelfAmount(shelf.item,shelf.position)"
+              *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
             <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
               <input type="text" class="form-control" [(ngModel)]="item.signature">
             </td>
-            <td><button [disabled]="updatingAmount" [style.cursor]="updatingAmount ? 'progress' : 'pointer'" (click)="updateShelfAmount(shelf)" class="btn btn-danger">Update Amounts</button></td>
-            
+            <td><button [disabled]="updatingAmount" [style.cursor]="updatingAmount ? 'progress' : 'pointer'"
+                (click)="updateShelfAmount(shelf)" class="btn btn-danger">Update Amounts</button></td>
+
           </tr>
         </tbody>
       </table>
@@ -133,7 +161,7 @@
             <td>{{shelf.materialName}}</td>
             <td (click)="edit(shelf._id)" *ngIf="EditRow != shelf._id">{{shelf.position}}</td>
             <td *ngIf="EditRow == shelf._id">
-            <input #shelfPosition class="form-control" [value]="shelf.position">
+              <input #shelfPosition class="form-control" [value]="shelf.position">
             </td>
 
             <td (click)="edit(shelf._id)" *ngIf="EditRow != shelf._id">{{shelf.amount}}</td>
@@ -147,7 +175,8 @@
             <td>{{shelf.batchNumber}}</td>
 
             <td>{{shelf.supplierBatchNumber}}</td>
-            <td><i *ngIf="EditRow == shelf._id" (click)="updateShelf(shelf._id)" class="fa fa-save text-success"></i></td>
+            <td><i *ngIf="EditRow == shelf._id" (click)="updateShelf(shelf._id)" class="fa fa-save text-success"></i>
+            </td>
 
           </tr>
         </tbody>
