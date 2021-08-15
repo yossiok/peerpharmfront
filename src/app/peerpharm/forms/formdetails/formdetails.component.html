@@ -10,17 +10,16 @@
     <li class="nav-item" (click)="tabChange('compileForm')" [ngStyle]="{'background-color': compileTabBtn}">
       <div class="nav-link">Compile Order</div>
     </li>
+    <li class="nav-item" (click)="tabChange('itemTree')" [ngStyle]="{'background-color': itemTreeTabBtn}">
+      <div class="nav-link">Item Tree</div>
+    </li>
   </ul>
 </nav>
 
 
 <div id="print-section">
   <h4 class="card-title">Quality Control</h4>
-  <button class="btn btn-info">
-    <a style="color:black;text-decoration: underline;" target="_blank" routerLink="/peerpharm/items/itemDetails/{{ form.itemN }}">
-      Tree
-    </a>
-  </button>
+
   <div *ngIf="tabView == 'fillingForm'">
 
     <table dir="rtl" style="display: inline-table;font-size: 17px;font-weight: bold;">
@@ -33,38 +32,38 @@
       <tr>
         <td>מספר הזמנה</td>
         <td>
-          <input id="div_orderNumber" [(ngModel)]="form.orderNumber" style="width:100px" [disabled]="disabledValue"
+          <input id="div_orderNumber" [(ngModel)]="form.orderNumber" style="width:100px" disabled
             class="form-control" />
         </td>
         <td>כמות מוזמנת</td>
         <td>
           <input id="div_orderQuantity" [(ngModel)]="form.orderQuantity" class="inputDiv form-control"
-            style="width:100px" [disabled]="disabledValue" />
+            style="width:100px" disabled/>
         </td>
       </tr>
       <tr>
         <td [translate]="'Product Name'">שם המוצר</td>
         <td colspan="3">
           <input type="text" [(ngModel)]="form.productName" id="div_productName" style="width:571px"
-            [disabled]="disabledValue" class="form-control" />
+            disabled class="form-control" />
         </td>
       </tr>
       <tr>
         <td>שם הלקוח</td>
         <td>
-          <input id="div_costumerName" [(ngModel)]="form.costumerName" style="width:100px" [disabled]="disabledValue"
+          <input id="div_costumerName" [(ngModel)]="form.costumerName" style="width:100px" disabled
             class="form-control" />
         </td>
         <td>מק"ט</td>
         <td>
           <input id="div_itemN" [(ngModel)]="form.itemN" class="inputDiv form-control" style="width:100px"
-            [disabled]="disabledValue" />
+            disabled />
         </td>
       </tr>
       <tr>
         <td>מס' אצווה</td>
         <td>
-          <input type="text" [(ngModel)]="form.batchN" id="div_batchN" style="width:100px" [disabled]="disabledValue"
+          <input type="text" [(ngModel)]="form.batchN" id="div_batchN" style="width:100px" disabled
             class="form-control" />
         </td>
         <td>כמות חביות</td>
@@ -500,7 +499,8 @@
       <tr *ngIf="allowUpdateForm">
         <td></td>
         <td colspan="2">
-          <button [disabled]="disabledValue" (click)="updateFormDetails()" class="btn btn-success form-control">Update Form</button>
+          <button *ngIf="!newForm" [disabled]="disabledValue" (click)="updateFormDetails()" class="btn btn-success form-control">Update Form</button>
+          <button *ngIf="newForm" [disabled]="disabledValue" (click)="createFormDetails()" class="btn btn-success form-control">Create Form</button>
         </td>
         <td></td>
       </tr>
@@ -660,12 +660,17 @@
       <tr *ngIf="allowUpdateForm">
         <td></td>
         <td colspan="2">
-          <button [disabled]="disabledValue" (click)="updateFormDetails()" class="btn btn-success form-control">Update Form</button>
+          <button *ngIf="!newForm" [disabled]="disabledValue" (click)="updateFormDetails()" class="btn btn-success form-control">Update Form</button>
+          <button *ngIf="newForm" [disabled]="disabledValue" (click)="createFormDetails()" class="btn btn-success form-control">Create Form</button>
         </td>
         <td></td>
       </tr>
 
     </table>
+  </div>
+
+  <div *ngIf="tabView == 'itemTree'">
+    <app-itemdetais [formDetailsItemNum]="formDetailsItemNum"></app-itemdetais>
   </div>
 
 

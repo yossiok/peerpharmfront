@@ -113,6 +113,7 @@ export class ScheduleComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    let x = window.innerWidth;
     this.startTime()
     this.getAllUnpackedSchedules();
     this.today = new Date();
@@ -316,6 +317,12 @@ export class ScheduleComponent implements OnInit {
       })
       setTimeout(() => this.scheduleDataCopy = this.scheduleDataCopy, 5000)
     });
+  }
+
+  openFormDetails(scheduleId){
+    debugger;
+    location.href="http://localhost:4200/#/peerpharm/forms/formDetails/"+scheduleId+'scheduleId';
+    
   }
 
   getAllSchedule(today) {

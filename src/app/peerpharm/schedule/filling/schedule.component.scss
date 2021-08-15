@@ -36,6 +36,17 @@ input[type=number] {
   -moz-appearance: textfield;
 }
 
+@media (max-width: 1367px) {
+  .hideInTablet {
+    display: none;
+  }
+}
+@media (min-width: 1367px) {
+  .showInTablet {
+    display: none;
+  }
+}
+
 /*******************************************************************/
 
 .read-only {
