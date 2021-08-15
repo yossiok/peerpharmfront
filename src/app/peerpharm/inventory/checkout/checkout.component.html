@@ -7,7 +7,8 @@
 
             <div class="col-2">
                 <label>מחסן</label>
-                <select class="form-control" (change)="itemNumber ? getShelfs() : null" formControlName="whareHouseID" #first>
+                <select class="form-control" (change)="itemNumber ? getShelfs() : null" formControlName="whareHouseID"
+                    #first>
                     <option disabled value="">בחר מחסן</option>
                     <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
                     </option>
@@ -18,7 +19,8 @@
                 <label>
                     פריט (לפי מספר)
                 </label>
-                <input type="number" [disabled]="disabled" formControlName="item" (change)="getShelfs()" class="form-control">
+                <input type="number" [disabled]="disabled" formControlName="item" (change)="getShelfs()"
+                    class="form-control">
             </div>
             <div *ngIf="!disabled" class="col-2">
                 <label class="d-block">
@@ -36,7 +38,7 @@
                 <select class="form-control" formControlName="shell_id_in_whareHouse">
                     <option disabled value="">בחר מדף</option>
                     <option *ngFor="let shellNum of shellNums" [value]="shellNum.shell_id_in_whareHouse">
-                        {{shellNum.position}}
+                        {{shellNum.position}} - {{shellNum.amount}} pcs
                     </option>
                 </select>
             </div>
@@ -45,8 +47,9 @@
                 <input type="number" formControlName="amount" class="form-control">
             </div>
             <div class="col-2 d-flex flex-column justify-content-around">
-                <button type="submit" [disabled]="!componentCheckout.valid" 
-                    [style.cursor]="componentCheckout.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">הוצא</button>
+                <button type="submit" [disabled]="!componentCheckout.valid"
+                    [style.cursor]="componentCheckout.valid ? 'pointer' : 'not-allowed'"
+                    class="btn btn-info">הוצא</button>
                 <button type="button" class="btn btn-secondary" (click)="componentCheckout.reset()">נקה נתונים</button>
             </div>
             <div class="col-1">
@@ -80,8 +83,8 @@
     </div>
 
     <div class="row mt-2 d-flex flex-row justify-content-around w-50">
-        <button *ngIf="!sending" class="btn btn-info" (click)="checkout()" 
-            [disabled]="outGoing.length == 0" [style.cursor]="outGoing.length == 0 ? 'not-allowed' : 'pointer'">
+        <button *ngIf="!sending" class="btn btn-info" (click)="checkout()" [disabled]="outGoing.length == 0"
+            [style.cursor]="outGoing.length == 0 ? 'not-allowed' : 'pointer'">
             הוצא מהמלאי (שלח שינויים) <i class="fa fa-check"></i>
         </button>
         <div class="smallerLoader" *ngIf="sending"></div>

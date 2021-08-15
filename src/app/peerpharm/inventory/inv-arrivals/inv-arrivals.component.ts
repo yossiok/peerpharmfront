@@ -1,6 +1,5 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { filter } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { Procurementservice } from 'src/app/services/procurement.service';
@@ -39,8 +38,8 @@ export class InvArrivalsComponent implements OnInit {
     whareHouseID: new FormControl(null, Validators.required),
     whareHouse: new FormControl(''),
     isNewItemShell: new FormControl(false, Validators.required),
-    supplier: new FormControl('', Validators.required),
-    purchaseOrder: new FormControl(null, Validators.required),
+    supplier: new FormControl(''),
+    purchaseOrder: new FormControl(null),
 
   })
 
@@ -165,7 +164,7 @@ export class InvArrivalsComponent implements OnInit {
     setTimeout(() => this.sending = false, 7000) //if something goes wrong
     this.inventoryService.addComponentsToStock(this.allArrivals).subscribe(
       data => {
-        if (data.msg) this.toastr.error('אנא פנה לתמיכה.', 'היתה בעיה')
+        if (data.msg) this.toastr.error(data.msg, 'שגיאה')
         else {
           //set certificate data 
           this.certificateReception = data.allResults[0].savedMovement.warehouseReception
