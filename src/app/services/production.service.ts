@@ -58,12 +58,17 @@ export class ProductionService {
   }
 
   getLineYieldByDate(line, date) {
-    const url = this.baseUrl + `productionLine/yieldByDate?line=${line}&date=${date}`;
+    const url = this.baseUrl + `productionLine/yield/${line}?date=${date}`;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
   getTodayYields() {
     const url = this.baseUrl + `productionLine/todayYields`;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  addUpdateYield(line, yieldData) {
+    let url = this.baseUrl + `productionLine/yield/${line}`;
+    return this.http.post(url, JSON.stringify(yieldData), this.options).pipe(map(res => res.json()))
   }
 }
