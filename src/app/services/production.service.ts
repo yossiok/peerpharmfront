@@ -32,6 +32,7 @@ export class ProductionService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+
   // editSchedule(schedule):Observable<any>{
   // let url = this.baseUrl + "schedule/update";
   // return this.http.post(url, JSON.stringify(schedule), this.options).pipe(map(res => res.json()));
@@ -57,8 +58,13 @@ export class ProductionService {
     return this.http.post(url, JSON.stringify(reqForm), this.options).pipe(map(res => res.json()))
   }
 
+  getAllYieldsByDate(date) {
+    let url = this.baseUrl + "productionLine/yield/all?productionDate=" + date;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   getLineYieldByDate(line, date) {
-    const url = this.baseUrl + `productionLine/yield/${line}?date=${date}`;
+    const url = this.baseUrl + `productionLine/yield?line=${line}&date=${date}`;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
@@ -68,7 +74,7 @@ export class ProductionService {
   }
 
   addUpdateYield(line, yieldData) {
-    let url = this.baseUrl + `productionLine/yield/${line}`;
+    let url = this.baseUrl + `productionLine/yield`;
     return this.http.post(url, JSON.stringify(yieldData), this.options).pipe(map(res => res.json()))
   }
 }

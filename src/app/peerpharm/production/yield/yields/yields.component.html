@@ -3,13 +3,28 @@
     <h1>קוים</h1>
     <div class="d-flex flex-row justify-content-around">
         <div *ngFor="let line of lines; let i = index">
-            <button (click)="switchLine(i)" class="btn"
-                [ngClass]="currentLine == line ? 'btn-primary' : 'btn-outline-primary'">{{line}}</button>
+            <button *ngIf="yields" (click)="switchLine(i)" class="btn wide"
+                [ngClass]="checkActiveLines(line)">{{line}}</button>
         </div>
 
     </div>
-    {{currentLine}}
-    <div class="m-4 border border-dark p-5">
+
+    <!--main window-->
+    <div *ngIf="currentLine == ''">
+        <div class="container">
+            <div class="mt-5">
+                <h1 class="mt-5 text-primary">יש לבחור קו</h1>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="currentLine != '' && !currentYield.value.productionDate">
+        <div class="container">
+            <div class="mt-5">
+                <h4>פותח קו...</h4>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="currentYield.value.productionDate" class="m-4 border border-dark p-5">
         <form [formGroup]="currentYield">
             <div class="row">
                 <div class="col-2">
@@ -20,6 +35,13 @@
                     <h3 for="">תאריך</h3>
                     <input type="date" disabled formControlName="productionDate" class="form-control">
                 </div>
+
+                <div class="col-2">
+                    <h3>נפתח ע"י:</h3>
+                    <input type="text" disabled formControlName="userName" class="form-control">
+                </div>
+            </div>
+            <div class="row mt-4">
                 <div class="col-2">
                     <h3>תחילת עבודה</h3>
                     <input type="time" formControlName="startTime" class="form-control">
@@ -34,8 +56,7 @@
                     <input type="time" formControlName="cleaningEnd" (change)="calculateCleaningTime()"
                         class="form-control">
                     <label for="">משך</label>
-                    <!-- {{currentYield.value.cleaningDuration | date: 'HH:mm'}} -->
-                    <input type="time" disabled formControlName="cleaningDuration" class="form-control">
+                    <p>{{currentYield.value.cleaningDuration.hours}}:{{currentYield.value.cleaningDuration.minutes}}</p>
                 </div>
                 <div class="col-2 p-5">
                     <h3 class="mt-4">Set Up</h3>
@@ -44,7 +65,7 @@
                     <label for="">סיום</label>
                     <input type="time" formControlName="setupEnd" (change)="calculateSetupTime()" class="form-control">
                     <label for="">משך</label>
-                    <input type="time" disabled formControlName="setupDuration" class="form-control">
+                    <p>{{currentYield.value.setupDuration.hours}}:{{currentYield.value.setupDuration.minutes}}</p>
                 </div>
                 <div class="col-2 p-5">
                     <h3 class="mt-4">זמן המתנה</h3>
@@ -54,16 +75,15 @@
                     <input type="time" formControlName="waitingEnd" (change)="calculateWaitingTime()"
                         class="form-control">
                     <label for="">משך</label>
-                    <!-- {{currentYield.}} -->
-                    <input type="time" disabled formControlName="waitingCause" class="form-control">
+                    <p>{{currentYield.value.waitingDuration.hours}}:{{currentYield.value.waitingDuration.minutes}}</p>
                     <label for="">סיבה</label>
-                    <input type="text" formControlName="waitingDuration" placeholder="סיבת המתנה" class="form-control">
+                    <input type="text" formControlName="waitingCause" placeholder="סיבת המתנה" class="form-control">
                 </div>
             </div>
             <div class="row">
                 <div class="col-2">
-                    <label for="">סיום עבודה</label>
-                    <input type="time" formControlName="endTime" class="form-control">
+                    <h3>סיום עבודה</h3>
+                    <input type="time" formControlName="endTime" (change)="checkTimes()" class="form-control">
                 </div>
             </div>
             <div class="row">
@@ -73,13 +93,31 @@
                 </div>
             </div>
             <div class="row mt-4">
-                <div class="col-2">
-                    <button class="btn btn-primary" type="button" (click)="saveYield()">
-                        דווח סיום עבודה</button>
+                <div class="col-2" [ngbTooltip]="!currentYield.valid ? 'יש למלא שעת התחלה, שעת סיום וכמות כוללת.' : ''">
+                    <button class="btn btn-primary" [disabled]="!currentYield.valid" type="button"
+                        (click)="calculateTotalDuration()">
+                        חשב נתונים</button>
                 </div>
-                <div class="col-8">
-                    <label for="">כמות לשעה</label>
-                    <input type="number" disabled formControlName="hourProdQty" class="form-control w-25">
+                <div class="col-3">
+                    <h4 class="text-primary">זמן עבודה ברוטו:</h4>
+                    <p class="m-2 p-2 border align-middle border-dark hour-qnt">
+                        <input type="text" class="form-control w-75" disabled formControlName="brutoDurationToPresent">
+                    </p>
+                    <!-- <input type="number" disabled formControlName="hourProdQty" class="form-control w-25"> -->
+                </div>
+                <div class="col-3">
+                    <h4 class="text-primary">זמן עבודה נטו:</h4>
+                    <p class="m-2 p-2 border align-middle border-dark hour-qnt">
+                        <input type="text" class="form-control w-75" disabled formControlName="totalDurationToPresent">
+                    </p>
+                    <!-- <input type="number" disabled formControlName="hourProdQty" class="form-control w-25"> -->
+                </div>
+                <div class="col-3">
+                    <h4 class="text-primary">כמות לשעה:</h4>
+                    <p class="m-2 p-2 border align-middle border-dark hour-qnt">
+                        <input type="text" class="form-control w-75" disabled formControlName="hourProdQty">
+                    </p>
+                    <!-- <input type="number" disabled formControlName="hourProdQty" class="form-control w-25"> -->
                 </div>
             </div>
         </form>
