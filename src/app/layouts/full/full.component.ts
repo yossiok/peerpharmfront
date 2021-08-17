@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 declare var $: any;
 
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { AlertModalComponent } from 'src/app/component/alert-modal/alert-modal.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { UsersService } from 'src/app/services/users.service';
@@ -20,13 +21,12 @@ export class FullComponent implements OnInit {
   testing: boolean = false
 
   constructor(
-    public router: Router, 
-    private utilsService: UtilsService, 
+    public router: Router,
+    private utilsService: UtilsService,
     private usersService: UsersService,
     private authService: AuthService,
     private notifications: NotificationService
-  ) {}
-
+  ) { }
   public isCollapsed = false;
 
   public innerWidth: any;
@@ -41,7 +41,7 @@ export class FullComponent implements OnInit {
     layout: 'vertical',
     sidebartype: 'overlay',
     sidebarpos: 'fixed',
-    headerpos: 'fixed', 
+    headerpos: 'fixed',
     boxed: 'full',
     navbarbg: 'skin5',
     sidebarbg: 'skin1',
@@ -50,15 +50,14 @@ export class FullComponent implements OnInit {
 
   Logo() {
     this.expandLogo = !this.expandLogo;
-    if(this.expandLogo)
-    {
-   //   $(".sidebar-link , .sidebar-item").css("width","250px");
+    if (this.expandLogo) {
+      //   $(".sidebar-link , .sidebar-item").css("width","250px");
 
     }
-    else{
-      $(".sidebar-link , .sidebar-item").css("width","250px");
+    else {
+      $(".sidebar-link , .sidebar-item").css("width", "250px");
     }
-  
+
   }
 
   ngOnInit() {
@@ -69,6 +68,17 @@ export class FullComponent implements OnInit {
     this.handleSidebar();
     this.getTheme()
     this.showUserAlerts()
+  }
+  //Dani Morag: 16/08/2021
+  // the time the user doesn't touch his workstation
+  public idleTime: any;
+  //if ihe doesn't touch the workstation for more then the timeout (currently 360000 miliseconds), he will be redirected to the login page
+  onMouseMove(e) {
+    clearTimeout(this.idleTime);
+    // console.log(this.idleTime);
+    this.idleTime = setTimeout(() => {
+      this.router.navigate(['/login'])
+    }, 3600000)
   }
 
   @HostListener('window:resize', ['$event'])
@@ -100,8 +110,8 @@ export class FullComponent implements OnInit {
     }
   }
 
- 
-  getTheme(){
+
+  getTheme() {
     this.utilsService.getTheme().subscribe(theme => {
       this.themeColor = theme.database == 'testing' ? 'rgb(30, 240, 81)' : 'rgb(19, 19, 95)'
       this.databaseName = theme.database == 'testing' ? 'DEV ENVIRONMENT!!!!' : ''
@@ -110,31 +120,31 @@ export class FullComponent implements OnInit {
   }
 
   showUserAlerts() {
-    setTimeout(()=>{
+    setTimeout(() => {
 
       let userAlerts = this.authService.loggedInUser.loginAlerts
-      for(let alert of userAlerts) {
+      for (let alert of userAlerts) {
         let titleObj = alert.titleObj
         let msg = alert.messsage
-        this.notifications.sendGlobalMessage(msg, titleObj).subscribe(ok=>{
+        this.notifications.sendGlobalMessage(msg, titleObj).subscribe(ok => {
           console.log(ok)
-          this.notifications.deleteUserAlerts(this.authService.loggedInUser.userName).subscribe(res=>{
+          this.notifications.deleteUserAlerts(this.authService.loggedInUser.userName).subscribe(res => {
             console.log(res)
           })
         })
       }
-    },5000)
+    }, 5000)
   }
 
 
   toggleSidebarType() {
- 
+
     switch (this.options.sidebartype) {
       case 'full':
       case 'iconbar':
-      
+
         this.options.sidebartype = 'mini-sidebar';
-        $(".sidebar-link , .sidebar-item").css("width","65px");
+        $(".sidebar-link , .sidebar-item").css("width", "65px");
         break;
 
       case 'overlay':
@@ -142,8 +152,8 @@ export class FullComponent implements OnInit {
         break;
 
       case 'mini-sidebar':
-      
-      $(".sidebar-link , .sidebar-item").css("width","250px");
+
+        $(".sidebar-link , .sidebar-item").css("width", "250px");
         if (this.defaultSidebar === 'mini-sidebar') {
           this.options.sidebartype = 'full';
         } else {
