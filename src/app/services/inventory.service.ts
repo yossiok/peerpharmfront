@@ -255,6 +255,12 @@ export class InventoryService {
     let url = this.baseUrl + "itemShell/updateShelf";
     return this.http.post(url, JSON.stringify(shelf), this.options).pipe(map(res => res.json()))
   }
+
+  newShelfYearCount(shelf, whareHouse): Observable<any> {
+    let url = this.baseUrl + "itemShell/newShelfYearCount";
+    return this.http.post(url, JSON.stringify({ ...shelf, whareHouse }), this.options).pipe(map(res => res.json()))
+  }
+
   updateShelfAmount(shelf): Observable<any> {
     let url = this.baseUrl + "itemShell/updateShelfAmount";
     return this.http.post(url, JSON.stringify(shelf), this.options).pipe(map(res => res.json()))

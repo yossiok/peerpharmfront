@@ -38,8 +38,8 @@ export class InvArrivalsComponent implements OnInit {
     whareHouseID: new FormControl(null, Validators.required),
     whareHouse: new FormControl(''),
     isNewItemShell: new FormControl(false, Validators.required),
-    supplier: new FormControl('', Validators.required),
-    purchaseOrder: new FormControl(null, Validators.required),
+    supplier: new FormControl(''),
+    purchaseOrder: new FormControl(null),
 
   })
 
@@ -68,7 +68,12 @@ export class InvArrivalsComponent implements OnInit {
 
   getPurchaseOrders(e) {
     this.purchaseService.getAllOrdersFromSupplier(e.target.value).subscribe(data => {
-      this.purchaseOrders = data.filter(PO => PO.status != 'closed' && PO.status != 'canceled')
+      this.purchaseOrders = data.filter(PO => PO.status != 'closed' && PO.status != 'canceled').filter(PO => {
+        for (let si of PO.stockitems) {
+          if (si.number == this.componentArrival.value.item) return true
+          else return false
+        }
+      })
     })
   }
 
@@ -159,7 +164,7 @@ export class InvArrivalsComponent implements OnInit {
     setTimeout(() => this.sending = false, 7000) //if something goes wrong
     this.inventoryService.addComponentsToStock(this.allArrivals).subscribe(
       data => {
-        if (data.msg) this.toastr.error('אנא פנה לתמיכה.', 'היתה בעיה')
+        if (data.msg) this.toastr.error(data.msg, 'שגיאה')
         else {
           //set certificate data 
           this.certificateReception = data.allResults[0].savedMovement.warehouseReception

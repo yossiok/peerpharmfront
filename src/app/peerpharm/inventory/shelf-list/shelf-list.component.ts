@@ -1,4 +1,5 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { CostumersService } from 'src/app/services/costumers.service';
 import { ExcelService } from 'src/app/services/excel.service';
@@ -13,21 +14,22 @@ import { ItemsService } from 'src/app/services/items.service';
 export class ShelfListComponent implements OnInit {
 
 
-  allShelfs:any;
-  allCostumers:any;
-  EditRow:any;
-  shelfPos:any;
-  shelfItemN:any;
-  materialShelfs:any;
-  allShelfsCopy:any;
-  itemType:any;
+  allShelfs: any;
+  allCostumers: any;
+  EditRow: any;
+  shelfPos: any;
+  shelfItemN: any;
+  materialShelfs: any;
+  allShelfsCopy: any;
+  itemType: any;
+  whareHouse: any;
 
 
   item = {
-    countDate:this.formatDate(new Date()),
-    countedAmount:'',
-    signature:'עמר',
-    costumer:''
+    countDate: this.formatDate(new Date()),
+    countedAmount: '',
+    signature: 'עמר',
+    costumer: ''
   }
 
   @ViewChild('shelfPosition') shelfPosition: ElementRef;
@@ -35,17 +37,24 @@ export class ShelfListComponent implements OnInit {
   updatingAmount: boolean;
   fetchingShelfs: boolean;
 
+  newShelfForm: FormGroup = new FormGroup({
+    item: new FormControl(null, Validators.required),
+    whareHouse: new FormControl(null, Validators.required),
+    position: new FormControl(null, Validators.required),
+    amount: new FormControl(null, Validators.required),
+  })
+  shellNums: any;
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     this.edit('');
-    this.editShelfAmount('','')
+    this.editShelfAmount('', '')
   }
 
   constructor(
-    private costumerSrv:CostumersService,
-    private toastSrv:ToastrService,
-    private itemService:ItemsService,
-    private inventorySrv:InventoryService,
+    private costumerSrv: CostumersService,
+    private toastSrv: ToastrService,
+    private itemService: ItemsService,
+    private inventorySrv: InventoryService,
     private xlSrv: ExcelService) { }
 
   ngOnInit() {
@@ -54,21 +63,36 @@ export class ShelfListComponent implements OnInit {
 
 
 
-  editShelfAmount(item , position){
+  editShelfAmount(item, position) {
     ;
-    if(item != '' && position != ''){
+    if (item != '' && position != '') {
       this.shelfPos = position
       this.shelfItemN = item
     } else {
       this.shelfPos = ''
       this.shelfItemN = ''
     }
-    }
-  
-  getShelfsByWH(ev){
+  }
+
+
+  getAllWhShelfs() {
+    this.inventorySrv.getWhareHousesList().subscribe(res => {
+      let whid = res.find(wh => wh.name == this.whareHouse)._id
+      this.inventorySrv.getWhareHouseShelfList(whid).subscribe(res => {
+        this.shellNums = res.map(shell => {
+          shell.shell_id_in_whareHouse = shell._id
+          return shell
+        })
+      })
+    })
+  }
+
+  getShelfsByWH(ev) {
     this.fetchingShelfs = true;
     let whareHouse = ev.target.value;
-    switch(whareHouse) {
+    this.whareHouse = ev.target.value;
+    this.getAllWhShelfs()
+    switch (whareHouse) {
       case 'material':
         this.itemType = whareHouse
         whareHouse = 'Rosh HaAyin'
@@ -85,146 +109,153 @@ export class ShelfListComponent implements OnInit {
         break
       case 'kasem':
         this.itemType = 'component'
+        break
+      case 'Labels':
+        this.itemType = 'component'
     }
-    if(whareHouse == 'material' || whareHouse == 'component'){
+    if (whareHouse == 'material' || whareHouse == 'component') {
       this.itemType = whareHouse
       whareHouse = 'Rosh HaAyin'
     }
-    this.inventorySrv.shelfListByWH(whareHouse, this.itemType).subscribe(data=>{
+    this.inventorySrv.shelfListByWH(whareHouse, this.itemType).subscribe(data => {
       this.fetchingShelfs = false
-    if(data){
-      data.sort((a,b) => (a.position > b.position) ? 1 : ((b.position > a.position) ? -1 : 0));
-      this.allShelfs = data;
-      this.allShelfsCopy = data;
-    }
-    else this.toastSrv.error('No Shelfs in Wharehouse')
+      if (data) {
+        data.sort((a, b) => (a.position > b.position) ? 1 : ((b.position > a.position) ? -1 : 0));
+        this.allShelfs = data;
+        this.allShelfsCopy = data;
+      }
+      else this.toastSrv.error('No Shelfs in Wharehouse')
     })
   }
 
-  filterByShelf(ev){
+  filterByShelf(ev) {
     this.allShelfs = this.allShelfsCopy
     let position = ev.target.value;
 
-    if(position != ''){
-      if(position == 'QC ROOM'){
-        this.allShelfs = this.allShelfs.filter(s=>s.position.includes(position))
+    if (position != '') {
+      if (position == 'QC ROOM') {
+        this.allShelfs = this.allShelfs.filter(s => s.position.includes(position))
       } else {
-        this.allShelfs = this.allShelfs.filter(s=>s.position == position)
+        this.allShelfs = this.allShelfs.filter(s => s.position == position)
       }
-    
+
     } else {
       this.allShelfs = this.allShelfsCopy
     }
-    
+
 
   }
 
-  searchForShelfs(ev){
+  searchForShelfs(ev) {
     ;
-    if(ev.target.value != ''){
-      this.inventorySrv.getShelfListForMaterial(ev.target.value).subscribe(data=>{
-      if(data.msg =='noShelf'){
-        this.toastSrv.error('חומר גלם לא נמצא על מדף מסוים')
-      } else {
-      this.materialShelfs = data;
-      }
+    if (ev.target.value != '') {
+      this.inventorySrv.getShelfListForMaterial(ev.target.value).subscribe(data => {
+        if (data.msg == 'noShelf') {
+          this.toastSrv.error('חומר גלם לא נמצא על מדף מסוים')
+        } else {
+          this.materialShelfs = data;
+        }
       })
     }
-  
+
   }
 
-  exportShelfListToXl(){
+  exportShelfListToXl() {
     let shelfs = [...this.allShelfs]
     this.xlSrv.exportAsExcelFile(shelfs, 'Shelf Report')
   }
 
-  updateShelfAmount(shelf){
+  updateShelfAmount(shelf) {
     this.updatingAmount = true;
-    this.item;
-    ;
-    let objToUpdate = {
-      item:shelf.item,
-      position:shelf.position,
-      amountBefore:shelf.total,
-      countDate:this.item.countDate,
-      arrivalDate: shelf.arrivalDate,
-      countedAmount:shelf.countedAmount,
-      signature:this.item.signature
-    }
-    if(confirm('האם לעדכן מדף ?')){
-      this.inventorySrv.updateShelfAmount(objToUpdate).subscribe(data=>{
+    shelf.countDate = this.item.countDate
+    shelf.signature = this.item.signature
+    if (confirm('האם לעדכן מדף ?')) {
+      this.inventorySrv.updateShelfAmount(shelf).subscribe(data => {
         this.updatingAmount = false;
-        if(data){
-          ;
-          let shelf = this.allShelfs.find(s=>s.item == data.item && s.position == data.position);
-          shelf.total = data.amount
-          this.toastSrv.success('פריט עודכן בהצלחה !')
-          this.editShelfAmount('','')
+        if (data) {
+          let UIShelf = this.allShelfs.find(s => s._id == data.item && s.position == data.position);
+          if (UIShelf) {
+            UIShelf.total = data.amount
+            this.toastSrv.success('פריט עודכן בהצלחה !')
+          }
+          else this.toastSrv.error('משהו השתבש')
+          this.editShelfAmount('', '')
           this.item.countedAmount = ''
           this.item.signature = 'עמר'
         }
-        })
+      })
     }
- 
+
   }
 
-  edit(id){
-  if(id != ''){
-    this.EditRow = id
-  } else {
-    this.EditRow = ''
-  }
+  addNewItemShelf() {
+    this.inventorySrv.newShelfYearCount(this.newShelfForm.value, this.whareHouse).subscribe(data => {
+      if (data.length > 0) {
+        this.allShelfs = data
+        this.allShelfsCopy = data
+        this.toastSrv.success('מדף הוקם בהצלחה')
+      }
+      else this.toastSrv.error('משהו השתבש')
+    })
   }
 
-  filterByCostumer(ev){
+  edit(id) {
+    if (id != '') {
+      this.EditRow = id
+    } else {
+      this.EditRow = ''
+    }
+  }
+
+  filterByCostumer(ev) {
     ;
     this.allShelfs = this.allShelfsCopy
     let costumer = ev.target.value;
 
-    if(costumer != ''){
-      this.allShelfs = this.allShelfs.filter(s=>s.costumer == costumer)
+    if (costumer != '') {
+      this.allShelfs = this.allShelfs.filter(s => s.costumer == costumer)
     } else {
       this.allShelfs = this.allShelfsCopy
     }
   }
 
-  updateShelfCostumer(shelf){
-  this.inventorySrv.updateShelfCostumer(shelf,this.item.costumer).subscribe(data=>{
-    ;
-    if(data){
-      let shelf = this.allShelfs.find(s=>s.item == data.item && s.position == data.position);
-      if(shelf){
-        shelf.costumer = data.tempCostumer
-        this.toastSrv.success('לקוח עודכן בהצלחה !')
-        this.editShelfAmount('','')
+  updateShelfCostumer(shelf) {
+    this.inventorySrv.updateShelfCostumer(shelf, this.item.costumer).subscribe(data => {
+      ;
+      if (data) {
+        let shelf = this.allShelfs.find(s => s.item == data.item && s.position == data.position);
+        if (shelf) {
+          shelf.costumer = data.tempCostumer
+          this.toastSrv.success('לקוח עודכן בהצלחה !')
+          this.editShelfAmount('', '')
+        }
+
       }
-      
-    }
-  })
+    })
   }
 
-  updateShelf(id){
-  ;
-  let amount = this.shelfAmount.nativeElement.value;
-  let position = this.shelfPosition.nativeElement.value;
-
-  let shelfToUpdate = this.materialShelfs.find(s=>s._id == id);
-  shelfToUpdate.amount = amount;
-  shelfToUpdate.position = position;
-
-  this.inventorySrv.updateShelf(shelfToUpdate).subscribe(data =>{
-    if(data){
-      this.toastSrv.success('מדף עודכן בהצלחה !')
-      this.edit('');
-    }
-  })
-  }
-
-  getAllCostumers(){
-  this.costumerSrv.getAllCostumers().subscribe(data=>{
+  updateShelf(id) {
     ;
-    this.allCostumers = data;
-  })
+    let amount = this.shelfAmount.nativeElement.value;
+    let position = this.shelfPosition.nativeElement.value;
+
+    let shelfToUpdate = this.materialShelfs.find(s => s._id == id);
+    shelfToUpdate.amount = amount;
+    shelfToUpdate.position = position;
+
+    this.inventorySrv.updateShelf(shelfToUpdate).subscribe(data => {
+      if (data) {
+        this.toastSrv.success('מדף עודכן בהצלחה !')
+        this.edit('');
+      }
+    })
+  }
+
+  getAllCostumers() {
+    this.costumerSrv.getAllCostumers().subscribe(data => {
+      ;
+      this.allCostumers = data;
+    })
   }
 
 
@@ -241,6 +272,6 @@ export class ShelfListComponent implements OnInit {
 
     return [year, month, day].join('-');
   }
-    
+
 
 }

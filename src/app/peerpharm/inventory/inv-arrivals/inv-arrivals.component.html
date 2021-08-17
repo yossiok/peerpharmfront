@@ -3,34 +3,7 @@
 
     <form [formGroup]="componentArrival" (ngSubmit)="addToArrivals()">
         <h3>קבלת סחורה</h3>
-        <div class="row mt-4">
-            <div class="col-2">
-                <label>ספק</label>
 
-                <input list="suppliers" (change)="getPurchaseOrders($event)" class="form-control"
-                    formControlName="supplier">
-                <datalist id="suppliers">
-                    <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">
-                        {{supplier.suplierNumber}} - {{supplier.suplierName}}
-                    </option>
-                </datalist>
-
-                <!-- <select class="form-control" (change)="getPurchaseOrders($event)" formControlName="supplier">
-                    <option disabled value="">בחר ספק</option>
-                    <option *ngFor="let supplier of allSuppliers" [value]="supplier.suplierNumber">{{supplier.suplierNumber}} - {{supplier.suplierName}}
-                    </option>
-                </select> -->
-            </div>
-            <div class="col-2">
-                <label>מס' הזמנת רכש</label>
-                <select class="form-control" formControlName="purchaseOrder">
-                    <option selected value="">מס' הזמנה</option>
-                    <option *ngFor="let purchase of purchaseOrders" [value]="purchase.orderNumber">
-                        {{purchase.orderNumber}}
-                    </option>
-                </select>
-            </div>
-        </div>
         <div class="row mt-2">
             <div class="col-2">
                 <label>מחסן</label>
@@ -81,6 +54,34 @@
                     [style.cursor]="componentArrival.valid ? 'pointer' : 'not-allowed'"
                     class="btn btn-info">הכנס</button>
                 <button type="button" class="btn btn-secondary" (click)="componentArrival.reset()">נקה נתונים</button>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-2">
+                <label>ספק</label>
+
+                <input list="suppliers" (change)="getPurchaseOrders($event)" class="form-control"
+                    formControlName="supplier">
+                <datalist id="suppliers">
+                    <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">
+                        {{supplier.suplierNumber}} - {{supplier.suplierName}}
+                    </option>
+                </datalist>
+
+                <!-- <select class="form-control" (change)="getPurchaseOrders($event)" formControlName="supplier">
+                    <option disabled value="">בחר ספק</option>
+                    <option *ngFor="let supplier of allSuppliers" [value]="supplier.suplierNumber">{{supplier.suplierNumber}} - {{supplier.suplierName}}
+                    </option>
+                </select> -->
+            </div>
+            <div class="col-2">
+                <label>מס' הזמנת רכש</label>
+                <select class="form-control" formControlName="purchaseOrder">
+                    <option selected value="">מס' הזמנה</option>
+                    <option *ngFor="let purchase of purchaseOrders" [value]="purchase.orderNumber">
+                        {{purchase.orderNumber}}
+                    </option>
+                </select>
             </div>
         </div>
     </form>
