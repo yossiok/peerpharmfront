@@ -59,9 +59,8 @@ export class YieldsComponent implements OnInit {
   }
 
   getOpenYields() {
-    this.productionService.getAllYieldsByDate(new Date()).subscribe(yields => {
-      console.log('yields today: ', yields)
-      this.yields = yields
+    this.productionService.getAllYieldsByDate(new Date()).subscribe(res => {
+      if (!res.msg) this.yields = res
     })
   }
 
@@ -71,6 +70,7 @@ export class YieldsComponent implements OnInit {
       if (activeLine) return 'btn-primary'
       else return 'btn-outline-primary'
     }
+    else return 'btn-outline-primary'
   }
 
   // startNewLine() {
@@ -80,7 +80,8 @@ export class YieldsComponent implements OnInit {
   // }
 
   switchLine(i) {
-    let lineIsActive = this.yields.find(y => y.productionLine == this.lines[i])
+    let lineIsActive
+    if (this.yields) lineIsActive = this.yields.find(y => y.productionLine == this.lines[i])
     let cont = true
     if (!lineIsActive) cont = confirm('את/ה עומד/ת לפתוח קו חדש על שמך. האם את/ה בטוח/ה?')
     if (cont) {
@@ -89,6 +90,7 @@ export class YieldsComponent implements OnInit {
         // delete yieldData._id
         this.currentYield.reset()
         this.currentYield.patchValue(yieldData)
+        this.getOpenYields()
       })
     }
   }

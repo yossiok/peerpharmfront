@@ -3,8 +3,7 @@
     <h1>קוים</h1>
     <div class="d-flex flex-row justify-content-around">
         <div *ngFor="let line of lines; let i = index">
-            <button *ngIf="yields" (click)="switchLine(i)" class="btn wide"
-                [ngClass]="checkActiveLines(line)">{{line}}</button>
+            <button (click)="switchLine(i)" class="btn wide" [ngClass]="checkActiveLines(line)">{{line}}</button>
         </div>
 
     </div>
