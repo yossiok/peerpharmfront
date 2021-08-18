@@ -1096,6 +1096,7 @@
                   <td>{{update.price | currency: update.coin}}</td>
                   <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
                   <td *ngIf="update.type == 'auto'">סגירת הזמנת רכש מס' {{update.purchase}}</td>
+                  <td *ngIf="update.type == 'datafix'">תיקון מחירים גורף {{update.purchase}}</td>
                 </tr>
               </tbody>
             </table>
@@ -2124,6 +2125,7 @@
                 <td>{{update.price | currency: update.coin}}</td>
                 <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
                 <td *ngIf="update.type == 'auto'">הזמנת רכש מס' {{update.purchase}}</td>
+                <td *ngIf="update.type == 'datafix'">תיקון מחירים גורף {{update.purchase}}</td>
               </tr>
             </tbody>
           </table>
