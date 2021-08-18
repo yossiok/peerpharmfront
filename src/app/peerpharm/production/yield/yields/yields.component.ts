@@ -171,7 +171,8 @@ export class YieldsComponent implements OnInit {
     let hour = number[0]
     let decimal = number[1].slice(0, 2)
     let minutes = Math.round(decimal / 100 * 60)
-    return `${hour}:${minutes}`
+    if (minutes < 10) return `${hour}:0${minutes}`
+    else return `${hour}:${minutes}`
   }
 
 
