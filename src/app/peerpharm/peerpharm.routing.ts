@@ -78,6 +78,7 @@ import { ItemIndexComponent } from './item-index/item-index.component';
 import { ItemSuppliersComponent } from './items/item-suppliers/item-suppliers.component';
 import { InvArrivalsComponent } from './inventory/inv-arrivals/inv-arrivals.component';
 import { InventoryReportsComponent } from './inventory/inventory-reports/inventory-reports.component';
+import { YieldsComponent } from './production/yield/yields/yields.component';
 
 
 
@@ -440,6 +441,14 @@ export const PeerPharmRputs: Routes = [
     component: MaterialsComponent,
   },
   {
+    path: 'production/yields',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Yields'
+    },
+    component: YieldsComponent,
+  },
+  {
     path: 'batches/batchesList',
     canActivate: [ScreenGuard],
     data: {
@@ -697,7 +706,7 @@ export const PeerPharmRputs: Routes = [
     },
     component: ItemIndexComponent
   },
-  
+
 
 
 ];
