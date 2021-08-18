@@ -95,6 +95,7 @@ export class ItemIndexComponent implements OnInit {
     amountDir: new FormControl('higherThan')
   })
   allowPriceUpdate: boolean = false
+  supPurchases: any[] = []
 
   constructor(
     private inventoryService: InventoryService,
@@ -379,13 +380,12 @@ export class ItemIndexComponent implements OnInit {
 
   checkUpdatePriceValidity(type) {
     this.allowPriceUpdate = false
-    if (type == 'c') this.allowPriceUpdate = this.resCmpt.manualCoin != undefined && this.resCmpt.manualPrice != undefined
-    if (type == 'm') this.allowPriceUpdate = this.resMaterial.manualCoin != undefined && this.resMaterial.manualPrice != undefined
+    this.allowPriceUpdate = this.item.manualCoin != undefined && this.item.manualPrice != undefined
   }
 
   getSupplierPriceHistory(i) {
     //TODO: get supplier NUmber!!!
-    this.procuretServ.getAllOrdersFromSupplier(this.resMaterial.alternativeSuppliers[i].suplierNumber).subscribe(data => {
+    this.procuretServ.getAllOrdersFromSupplier(this.item.alternativeSuppliers[i].suplierNumber).subscribe(data => {
       this.supPurchases = data.filter(purchase => purchase.status == 'open')
       for (let order of data) {
 
