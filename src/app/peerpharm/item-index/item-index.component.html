@@ -196,7 +196,7 @@
 <div *ngIf="item" class="bg-light">
 
   <!--General Details-->
-  <div class="w-50 float-right modal-inner">
+  <div *ngIf="item.itemType!='material'" class="w-50 float-right modal-inner">
 
     <!--Name-->
     <div class=" row text-center">
@@ -397,6 +397,174 @@
         </div>
       </div>
     </div> -->
+  </div>
+
+  <div *ngIf="item.itemType=='material'" class="container float-right p-2 modal-inner">
+    <div style="padding: 0rem;" class="row text-center">
+      <div style="padding: 0rem;" class="col-1 text-right">
+        <!-- <button class="btn btn-success form-control" (click)="switchModalView()">{{itemmoveBtnTitle}}</button> -->
+      </div>
+      <div style="padding: 0rem;" class="col-10">
+        <h2 style="padding: 0rem;" class="text-success" id='div_h3'>{{openModalHeader}}</h2><br>
+      </div>
+      <div style="padding: 0rem;" class="col-1">
+        <span class="close text-success" id="closeId2"
+          (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
+      </div>
+    </div>
+
+    <div dir="rtl" style="padding: 0rem;" class="row text-center">
+      <div style="padding: 0rem;" class="col-12">
+        <h5 style="padding: 0rem;" class="text-success">פרטים כלליים</h5>
+      </div>
+      <!-- <div class="col-8">
+      <h5 class="text-success">מחסן/מחלקת בישול</h5>
+    </div> -->
+
+    </div>
+    <div style="padding: 0rem;" class="row text-center">
+      <div class="col-2"><label class="form-control">Item Number</label></div>
+      <div class="col-2">
+        <input class="form-control" (change)="checkIfExist($event)" [(ngModel)]="item.componentN">
+      </div>
+      <div class="col-2"><label class="form-control">Item Name</label></div>
+      <div class="col-2">
+        <input class="form-control" (change)="checkIfExist($event)" [(ngModel)]="item.componentName">
+      </div>
+      <!-- <div class="col-2"><label class="form-control">Last Price (NIS)</label></div>
+      <div class="col-2">
+        <input class="form-control" [(ngModel)]="item.price">
+      </div>
+      <div class="col-2"><label class="form-control">Shipping (NIS)</label></div>
+      <div class="col-2">
+        <input type="number" class="form-control" [(ngModel)]="item.shippingPrice">
+      </div> -->
+      <div class="col-2"><label class="form-control">Last Price (NIS)</label></div>
+      <div class="col-2">
+        <input type="number" class="form-control" disabled [(ngModel)]="item.price">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        <label class="form-control">Supplier Item Number</label>
+      </div>
+      <div class="col-2">
+        <input class="form-control" [(ngModel)]="item.componentNs">
+      </div>
+    </div>
+
+    <div dir="rtl" style="padding: 0rem;" class="row text-center">
+      <div class="col-1"></div>
+      <div class="col-2">
+        <label class="form-control">INCI Name</label>
+        <label class="form-control">Month Till Exp</label>
+        <label class="form-control">CAS Number</label>
+        <label class="form-control">Function</label>
+        <label class="form-control">מצב צבירה</label>
+        <label style="font-size:13px" class="form-control">חומרים מסוכנים בפירוק</label>
+      </div>
+      <div class="col-3">
+        <input class="form-control" (change)="checkIfInciNameExist($event)" [(ngModel)]="item.inciName" type='text'>
+        <input class="form-control" [(ngModel)]="item.monthTillExp" type="number" />
+        <input class="form-control" [(ngModel)]="item.casNumber" type='text'>
+        <input class="form-control" [(ngModel)]="item.function" type='text'>
+        <input list="som" class="form-control" [(ngModel)]="item.stateOfMatter" type='text'>
+        <datalist id="som">
+          <option value="liquid">Liquid</option>
+          <option value="solid">Solid</option>
+          <option value="gell">Gell</option>
+        </datalist>
+        <input class="form-control" [(ngModel)]="item.dangerMaterials" type='text'>
+      </div>
+
+      <div class="2">
+        <!-- <label class="form-control">COA</label>
+      <label class="form-control">MSDS</label>
+      <label class="form-control">הערות</label> -->
+        <button class="btn btn-success form-control"><i (click)="addComposition()" class="fa fa-plus"></i></button>
+        <label class="form-control">הרכב</label>
+      </div>
+      <div style="height:210px;overflow-y: scroll;" class="col-3">
+        <input [(ngModel)]="compositionName" class='form-control'>
+        <table style="font-size: 9px;" class="table table-hover table-striped">
+          <tbody>
+            <tr *ngFor="let comp of item.composition">
+              <td>{{comp.compName}}</td>
+              <td>{{comp.compPercentage}}</td>
+              <td><i (click)="deleteFromComposition(item._id,comp.compName)" class="fa fa-times text-danger"></i>
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+        <!-- <button class="btn btn-success form-control" (click)="coaMasterInput.click()"><i class="fa fa-upload"
+            aria-hidden="true"></i></button>
+        <button class="btn btn-success form-control" (click)="msdsInput.click()"><i class="fa fa-upload"
+            aria-hidden="true"></i></button>
+
+        <textarea [(ngModel)]="item.remarks" class="form-control mt-2" rows="6" cols="20"></textarea> -->
+
+      </div>
+
+      <div class="col-1">
+        <input placeholder="%" [(ngModel)]="compositionPercentage" class="form-control">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-10">
+        <input class="form-control" [(ngModel)]="item.riskSentence" type='text'>
+
+      </div>
+      <div class="col-2">
+        <label class="form-control">משפטי סיכון</label>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+
+      <div class="col-2">
+        <label class="form-control">COA Master</label>
+        <label class="form-control">MSDS</label>
+      </div>
+      <div class="col-2">
+        <button class="btn btn-success form-control" (click)="coaMasterInput.click()"><i class="fa fa-upload"
+            aria-hidden="true"></i></button>
+        <button class="btn btn-success form-control" (click)="upload"><i class="fa fa-upload"
+            aria-hidden="true"></i></button>
+      </div>
+      <div class="col-3">
+
+        <img style="height: 30px; width:30px;" src="../../../../assets/images/pdf.png" alt="PDF" />
+        <input class="form-control" #coaMasterInput style="display:none" type="file" (change)="uploadCoaMaster($event)">
+
+
+        <img style="height: 30px; width:30px;" src="../../../../assets/images/pdf.png" alt="PDF" />
+        <input class="form-control" #msdsInput style="display:none" type="file" (change)="uploadMsds($event)">
+      </div>
+      <div class="col-2">
+        <label class="form-control">Formule Remark</label>
+      </div>
+      <div class="col-3">
+        <input type="text" [(ngModel)]="item.remarks" class="form-control">
+      </div>
+    </div>
+
+    <div class="row text-center">
+      <div class="col-4">
+        <button class="btn btn-success form-control" id="newCbtn" (click)="writeNewMaterial()">הקם
+          מוצר</button>
+      </div>
+      <div class="col-4">
+        <div *ngIf="allowUserEditItem">
+          <button class="btn btn-success form-control" id="updateDataBtn" (click)="editMaterialItemDetails()"
+            *ngIf="newItem!='new'">עדכן
+            מידע</button>
+        </div>
+      </div>
+      <div class="col-4">
+        <button class="btn btn-success form-control" id="newCbtn" (click)="clearFields()">Clear</button>
+      </div>
+    </div>
   </div>
 
   <!--Purchase History-->
