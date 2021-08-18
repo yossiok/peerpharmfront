@@ -1911,13 +1911,13 @@
                     <th>ספק</th>
                     <th>יצרן</th>
                     <th>שם פריט ספק</th>
-                    <th>מספר פריט ספק</th>
+                    <th>מק"ט ספק</th>
                     <th>מחיר</th>
-                    <th></th>
+                    <!-- <th></th> -->
                     <th>מטבע</th>
                     <th>משקל</th>
-                    <th>מדינה</th>
-                    <th>זמן הגעה משוער</th>
+                    <th>סוג אריזה</th>
+                    <!-- <th>זמן הגעה משוער</th> -->
                     <th>מחיר העמסה</th>
                     <!--  <th>מחיר לפני טעינה</th> -->
                     <th></th>
@@ -1975,8 +1975,8 @@
                         <input type="text" [(ngModel)]="supplier.price" class="form-control" #price>
                       </td>
 
-                      <td><button (click)="getSupplierPriceHistory(i)" (click)="open(supplierPriceHistory)">היסטוריית
-                          מחירים</button></td>
+                      <!-- <td><button (click)="getSupplierPriceHistory(i)" (click)="open(supplierPriceHistory)">היסטוריית
+                          מחירים</button></td> -->
 
                       <td *ngIf="rowNumber != i">
                         {{supplier.coin}}</td>
@@ -1998,16 +1998,16 @@
                       </td>
 
                       <td *ngIf="rowNumber != i">
-                        {{supplier.country}}</td>
+                        {{supplier.subGroup}}</td>
                       <td *ngIf="rowNumber == i">
-                        <input type="text" [(ngModel)]="supplier.country" class="form-control" #country>
+                        <input type="text" [(ngModel)]="supplier.subGroup" class="form-control" #subGroup>
                       </td>
-
+                      <!-- 
                       <td *ngIf="rowNumber != i">
                         {{supplier.expectedArrival}}</td>
                       <td *ngIf="rowNumber == i">
                         <input type="text" [(ngModel)]="supplier.expectedArrival" class="form-control" #expectedArrival>
-                      </td>
+                      </td> -->
 
                       <td *ngIf="rowNumber != i">
                         {{supplier.shippingPrice | currency: 'ILS'}}</td>
@@ -2020,8 +2020,8 @@
                       <td *ngIf="rowNumber == i">
                         <input type="text" [value]="supplier.coinLoading" class="form-control" #coinLoading>
                       </td> -->
-                      <td><i placement="bottom" ngbTooltip="שמירה" class="fa fa-save" (click)="rowNumber = -1"
-                          *ngIf="rowNumber == i"></i></td>
+                      <td *ngIf="rowNumber == i"><i placement="bottom" ngbTooltip="שמירה" class="fa fa-save"
+                          (click)="rowNumber = -1"></i></td>
                       <td><i placement="bottom" ngbTooltip="מחק מרשימת הספקים"
                           (click)="deleteSupplier(i,resMaterial.componentN)" class="fa fa-times text-danger"></i>
                       </td>
