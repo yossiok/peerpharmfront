@@ -68,6 +68,11 @@ export class ProductionService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  getAllYieldsByLine(line) {
+    const url = this.baseUrl + `productionLine/yield/line?productionLine=${line}`;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
   getTodayYields() {
     const url = this.baseUrl + `productionLine/todayYields`;
     return this.http.get(url).pipe(map(reponse => reponse.json()));

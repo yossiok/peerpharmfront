@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { ProductionService } from 'src/app/services/production.service';
@@ -11,10 +12,12 @@ import { ProductionService } from 'src/app/services/production.service';
 })
 export class YieldsComponent implements OnInit {
 
-  saveYiealdInterval: any = null;
-  lines: any = ["1", "2", "3", "4", "5", "6", "7M", "8", "9", "T", "S"]
-  yields: any;
+  yesterday: boolean;
+  lineIndex: number
   currentLine: string = ""
+  saveYiealdInterval: any = null;
+  yields: any;
+  lines: any = ["1", "2", "3", "4", "5", "6", "7M", "8", "9", "T", "S"]
   currentYield: FormGroup = new FormGroup({
     userName: new FormControl(null),
     productionLine: new FormControl(this.currentLine, Validators.required),
@@ -40,7 +43,8 @@ export class YieldsComponent implements OnInit {
 
   constructor(
     private productionService: ProductionService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit(): void {
@@ -64,6 +68,18 @@ export class YieldsComponent implements OnInit {
     })
   }
 
+  open(modal, i) {
+    this.lineIndex = i
+    let lineIsActive
+    if (this.yields) lineIsActive = this.yields.find(y => y.productionLine == this.lines[i])
+    if (lineIsActive) this.switchLine()
+    else {
+      this.lineIndex = i
+      this.currentLine = this.lines[i]
+      this.modalService.open(modal)
+    }
+  }
+
   checkActiveLines(line) {
     if (this.yields) {
       let activeLine = this.yields.find(y => y.productionLine == line)
@@ -79,20 +95,30 @@ export class YieldsComponent implements OnInit {
   //   })
   // }
 
-  switchLine(i) {
-    let lineIsActive
-    if (this.yields) lineIsActive = this.yields.find(y => y.productionLine == this.lines[i])
-    let cont = true
-    if (!lineIsActive) cont = confirm('את/ה עומד/ת לפתוח קו חדש על שמך. האם את/ה בטוח/ה?')
-    if (cont) {
-      this.currentLine = this.lines[i]
-      this.productionService.getLineYieldByDate(this.currentLine, new Date()).subscribe(yieldData => {
-        // delete yieldData._id
-        this.currentYield.reset()
-        this.currentYield.patchValue(yieldData)
-        this.getOpenYields()
-      })
-    }
+  switchLine(i?) {
+    // let cont = confirm('את/ה עומד/ת לפתוח קו חדש על שמך. האם את/ה בטוח/ה?')
+    // if (cont) {
+    this.yesterday = false
+    this.currentLine = this.lines[this.lineIndex]
+    this.productionService.getLineYieldByDate(this.currentLine, new Date()).subscribe(yieldData => {
+      // delete yieldData._id
+      this.currentYield.reset()
+      this.currentYield.patchValue(yieldData)
+      this.getOpenYields()
+    })
+    // }
+  }
+
+  openYesterday() {
+    this.yesterday = true
+    let today = new Date();
+    let yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+    this.productionService.getLineYieldByDate(this.currentLine, yesterday).subscribe(yieldData => {
+      // delete yieldData._id
+      this.currentYield.reset()
+      this.currentYield.patchValue(yieldData)
+    })
   }
 
   calculateCleaningTime() {
