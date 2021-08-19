@@ -55,6 +55,7 @@ export class ProcurementOrdersComponent implements OnInit {
   invoiceModal: boolean = false;
   bill: boolean = false;
   procurementData: any[];
+  procurementDataClosed: any[] = [];
   procurementDataNoFilter: any[];
   procurementDataCopy: any[];
   procurementArrivals: any[] = []
@@ -102,7 +103,7 @@ export class ProcurementOrdersComponent implements OnInit {
   destinationLine: any;
   chooseMultipleSuppliers: boolean = false;
   // users: import("c:/tommy/system/peerpharmfront/src/app/peerpharm/taskboard/models/UserInfo").UserInfo[];
-  users:any;
+  users: any;
   newItem = {
     itemNumber: '',
     itemName: '',
@@ -163,8 +164,7 @@ export class ProcurementOrdersComponent implements OnInit {
   constructor(
     private toastr: ToastrService, private procurementservice: Procurementservice, private excelService: ExcelService, private supplierService: SuppliersService,
     private inventoryService: InventoryService, private authService: AuthService, private arrayService: ArrayServiceService, private route: ActivatedRoute,
-    private modalService: NgbModal, private userService: UsersService
-  ) { }
+    private modalService: NgbModal, private userService: UsersService) { }
 
   ngOnInit() {
     this.getAllUsers()
@@ -179,23 +179,36 @@ export class ProcurementOrdersComponent implements OnInit {
       console.log(data)
       this.purchaseRecommendations.push(data)
     })
-    this.getAllProcurementOrders();
-  }
+    //isClosed is a boolean parameter, default value is false
+    let isClosed = false;
+    this.getAllProcurementOrders(isClosed);
 
-  
-  getAllProcurementOrders() {
+
+  }
+  //The isClosed argument is sent from filterPurchaseOrders()  
+  getAllProcurementOrders(isClosed) {
     this.orderDetailsModal = false;
     this.fetchingOrders = true;
-    this.procurementservice.getAllPurchasesObservable().subscribe((purchases) => {
+    this.procurementservice.getAllPurchasesObservable(isClosed).subscribe((purchases) => {
       if (purchases.length > 0) {
         this.showLoader = false;
-        if (this.procurementData) this.procurementData = this.procurementData.concat([...purchases]).filter(order => order.status != 'closed');
+        if (this.procurementData && isClosed) {
+          this.procurementDataClosed = this.procurementData = this.procurementData.filter(order => order.status == 'closed');
+          this.procurementDataClosed = this.procurementData = this.procurementData.concat([...purchases]);
+          console.log(`${this.procurementDataClosed.length} closed orders were retrieved`)
+        }
+        else if (this.procurementData) this.procurementData = this.procurementData.concat([...purchases]).filter(order => order.status != 'closed');
         else this.procurementData = purchases;
+
 
         if (!this.procurementDataCopy) {
           this.procurementDataCopy = [];
         }
-        this.procurementDataCopy = this.procurementDataCopy.concat([...purchases]).filter(purchase => purchase.status != 'canceled');
+        // this.procurementDataCopy = this.procurementDataCopy.concat([...purchases]).filter(purchase => purchase.status != 'canceled');
+        // query result with the canceled, to enable filtering by canceled at the GUI
+        this.procurementDataCopy = this.procurementDataCopy.concat([...purchases]);
+        //to show all the orders without the canceled in the GUI unless it is explicitly required by the user
+        this.procurementData = this.procurementData.filter(order => order.status != 'canceled')
       }
     }, () => { }, () => {
       this.fetchingOrders = false
@@ -350,7 +363,8 @@ export class ProcurementOrdersComponent implements OnInit {
   async newProcurementSaved(e) {
     this.showLoader = e;
     await this.checkRecommendedOrderedItems();
-    this.getAllProcurementOrders();
+    let isClosed = false;
+    this.getAllProcurementOrders(isClosed);
   }
 
   closeOrderModal(e) {
@@ -390,7 +404,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
   filterPurchaseOrders() {
 
-    this.procurementData = this.procurementDataCopy
+    this.procurementData = this.procurementDataCopy;
 
     let status = this.filterForm.value.status;
     let category = this.filterForm.value.category;
@@ -402,16 +416,23 @@ export class ProcurementOrdersComponent implements OnInit {
     let itemNumber = this.filterForm.value.itemNumber
     let supplier = this.filterForm.value.supplier
     let origin = this.filterForm.value.origin
-    
 
     if (status) {
-      // if status is open, get all open or delivered orders
-      if (status == 'open') this.procurementData = this.procurementData.filter(p => p.status == status || p.status == 'supplied')
-      //if status is something else, get all orders by status
-      else if (status != 'allOrders' || status == 'canceled' || status == 'closed') this.procurementData = this.procurementData.filter(p => p.status == status)
+      // Removed on 18/08/2021 by Dani Morag - no need to combine open and deliverd together
+      // if (status == 'open') this.procurementData = this.procurementData.filter(p => p.status == status || p.status == 'supplied')
+      //if status is isClosed get new query result from the DB with status == closed only one time
+      if (status == 'closed' && this.procurementDataClosed.length == 0) {
+        let isClosed = true;
+        this.getAllProcurementOrders(isClosed);
+      }
+      // If we aleady have the results of status == closed, use them from the procurementDataClosed array instead of query again the DB
+      else if (status == 'closed' && this.procurementDataClosed.length > 0) this.procurementData = this.procurementDataClosed;
+      //removed on 17/08/21 by Dani Morag else if (status != 'allOrders' || status == 'canceled' || status == 'closed') this.procurementData = this.procurementData.filter(p => p.status == status)
+      //if status is not open and not closed and not all, filter the procurmentData by the requested status
+      else if (status != 'allOrders') this.procurementData = this.procurementData.filter(p => p.status == status)
       // if status is 'allOrders', get all orders that are'nt closed or cancelled
       else this.procurementData = this.procurementData.filter(purchase => purchase.status != 'canceled' && purchase.status != 'closed');
-    }
+    };
 
     if (category && category != "") {
       this.procurementData = this.procurementData.filter(order => {
@@ -430,28 +451,28 @@ export class ProcurementOrdersComponent implements OnInit {
       else this.procurementData = this.procurementData.filter(p => p.user == userName)
     }
 
-    if(dateFrom) {
+    if (dateFrom) {
       this.procurementData = this.procurementData.filter(purchOrder => purchOrder.creationDate > dateFrom)
     }
 
-    if(dateTo) {
+    if (dateTo) {
       this.procurementData = this.procurementData.filter(purchOrder => purchOrder.creationDate < dateTo)
     }
-    
-    if(orderNumber) {
+
+    if (orderNumber) {
       this.procurementData = this.procurementData.filter(purchOrder => purchOrder.orderNumber.toString().includes(orderNumber))
     }
 
-    if(supplier) {
+    if (supplier) {
       this.procurementData = this.procurementData.filter(purchOrder => purchOrder.supplierName.toLowerCase().includes(supplier))
     }
 
-    if(origin) {
+    if (origin) {
       this.procurementData = this.procurementData.filter(purchOrder => purchOrder.origin ? purchOrder.origin == origin : false)
     }
 
 
-    if(itemNumber) {
+    if (itemNumber) {
       this.procurementData = this.procurementData.filter(purchase => {
         if (purchase.stockitems.length == 0 && itemNumber == "") return true
         for (let item of purchase.stockitems) {
@@ -468,14 +489,14 @@ export class ProcurementOrdersComponent implements OnInit {
 
     let supplier = this.filterForm.value.supplier
     let supplier2 = this.filterForm.value.supplier2
-    
-    if(supplier2 && supplier) {
+
+    if (supplier2 && supplier) {
       this.procurementData = this.procurementDataCopy
-      .filter(purchOrder => purchOrder.supplierName.toLowerCase().includes(supplier) || purchOrder.supplierName.toLowerCase().includes(supplier2))
+        .filter(purchOrder => purchOrder.supplierName.toLowerCase().includes(supplier) || purchOrder.supplierName.toLowerCase().includes(supplier2))
     }
   }
 
-  resetFilters(){
+  resetFilters() {
     this.procurementData = this.procurementDataCopy
     this.filterForm.reset()
   }
@@ -582,7 +603,8 @@ export class ProcurementOrdersComponent implements OnInit {
     var orderNumber = this.currOrderNumber
     this.procurementservice.changeStatus(status, orderNumber).subscribe(data => {
       if (data) {
-        this.getAllProcurementOrders();
+        let isClosed = false;
+        this.getAllProcurementOrders(isClosed);
         this.toastr.success("סטטוס עודכן בהצלחה !")
         this.showInfoModal = false;
       } else {
@@ -735,7 +757,6 @@ export class ProcurementOrdersComponent implements OnInit {
 
     this.procurementservice.getAllPurchaseRecommends().subscribe(data => {
       this.loadingRecommendations = false;
-
       console.log(data);
 
       this.purchaseRecommendations = data;
@@ -790,7 +811,7 @@ export class ProcurementOrdersComponent implements OnInit {
         this.procurementDataCopy = data;
       })
     } else {
-      this.getAllProcurementOrders()
+      this.getAllProcurementOrders(false)
     }
 
   }
@@ -880,7 +901,7 @@ export class ProcurementOrdersComponent implements OnInit {
         for (let purchaseOrder of this.procurementData) {
           if (purchaseOrder.stockitems) purchaseOrder.stockitems.map(item => {
             allItems.push({
-              Supplier: purchaseOrder.supplierNumber+" - "+purchaseOrder.supplierName,
+              Supplier: purchaseOrder.supplierNumber + " - " + purchaseOrder.supplierName,
               origin: purchaseOrder.origin,
               PONum: purchaseOrder.orderNumber,
               POstatus: purchaseOrder.status,
