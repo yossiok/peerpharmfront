@@ -295,7 +295,7 @@ export class StockComponent implements OnInit {
   @ViewChild('priceLoading') priceLoading: ElementRef;
   @ViewChild('coinLoading') coinLoading: ElementRef;
   @ViewChild('expectedArrival') expectedArrival: ElementRef;
-  @ViewChild('country') country: ElementRef;
+  @ViewChild('subGroup') subGroup: ElementRef;
 
   @ViewChild('materialToSearch') materialToSearch: ElementRef;
 
@@ -544,7 +544,6 @@ export class StockComponent implements OnInit {
         subGroup: "",
         packageWeight: "",
         expectedArrival: "",
-        country: "",
       }
     }
 
@@ -817,7 +816,7 @@ export class StockComponent implements OnInit {
         manufacturer: this.manufacturer.nativeElement.value,
         alterName: this.alterName.nativeElement.value,
         packageWeight: this.packageWeight.nativeElement.value,
-        country: '',
+        subGroup: '',
         expectedArrival: ''
       }
     }
@@ -833,21 +832,21 @@ export class StockComponent implements OnInit {
         alternativeMaterial: this.alternativeMaterial.nativeElement.value,
         alterName: this.alterName.nativeElement.value,
         packageWeight: this.packageWeight.nativeElement.value,
-        country: '',
+        subGroup: '',
         expectedArrival: ''
       }
     }
 
     if (component) {
       if (this.resCmpt._id != undefined) {
-        obj.country = this.country ? this.country.nativeElement.value : '';
+        obj.subGroup = this.subGroup ? this.subGroup.nativeElement.value : '';
         obj.expectedArrival = this.expectedArrival ? this.expectedArrival.nativeElement.value : '';
       }
     }
 
     else {
       if (this.resMaterial._id != undefined) {
-        obj.country = this.country ? this.country.nativeElement.value : '';
+        obj.subGroup = this.subGroup ? this.subGroup.nativeElement.value : '';
         obj.expectedArrival = this.expectedArrival ? this.expectedArrival.nativeElement.value : '';
       }
     }
@@ -868,7 +867,7 @@ export class StockComponent implements OnInit {
           supplier.price = updatedSupplier.price
           supplier.coin = updatedSupplier.coin
           supplier.priceLoading = updatedSupplier.priceLoading
-          supplier.country = updatedSupplier.country
+          supplier.subGroup = updatedSupplier.subGroup
           supplier.expectedArrival = updatedSupplier.expectedArrival
           supplier.manufacturer = updatedSupplier.manufacturer
           supplier.alternativeMaterial = updatedSupplier.alternativeMaterial
@@ -2365,6 +2364,7 @@ export class StockComponent implements OnInit {
   }
   edit(index) {
     this.rowNumber = index;
+    setTimeout(() => this.rowNumber = -1, 1000 * 60)
   }
 
 
@@ -2654,8 +2654,8 @@ export class StockComponent implements OnInit {
   //     components.forEach(comp => {
   //       if(comp.alternativeSuppliers) {
   //         comp.alternativeSuppliers.forEach(supplier => {
-  //           if(supplier.country == undefined){
-  //             supplier.country = ''
+  //           if(supplier.subGroup == undefined){
+  //             supplier.subGroup = ''
   //           }
   //           if(supplier.expectedArrival == undefined){
   //             supplier.expectedArrival = ''

@@ -79,7 +79,7 @@ export class InvArrivalsComponent implements OnInit {
 
   async checkComponentN() {
     return new Promise((resolve, reject) => {
-      this.inventoryService.getCmptByNumber(this.componentArrival.value.item, 'component').subscribe(data => {
+      this.inventoryService.getCmptByNumber(this.componentArrival.value.item, this.componentArrival.value.itemType).subscribe(data => {
         if (data.length > 0) {
           this.noItem = false
           resolve(true)
@@ -93,6 +93,9 @@ export class InvArrivalsComponent implements OnInit {
   }
 
   getShelfs() {
+    if (this.componentArrival.value.whareHouseID == '5c31bb6f91ca6b2510349ce9') {
+      this.componentArrival.controls.itemType.setValue('product')
+    }
 
     this.checkComponentN().then(result => {
       if (!this.componentArrival.value.whareHouseID) this.toastr.error('אנא בחר מחסן.')

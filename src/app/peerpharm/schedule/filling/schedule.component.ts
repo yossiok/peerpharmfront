@@ -11,6 +11,7 @@ import { ToastrService } from "ngx-toastr";
 import { BatchesService } from "src/app/services/batches.service";
 import { ExcelService } from "src/app/services/excel.service";
 import { AuthService } from "src/app/services/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-schedule",
@@ -109,7 +110,8 @@ export class ScheduleComponent implements OnInit {
     private batchService: BatchesService,
     private toastSrv: ToastrService,
     private excelService: ExcelService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -236,36 +238,36 @@ export class ScheduleComponent implements OnInit {
       console.log(this.scheduleLine);
 
       var date = moment(this.scheduleLine.date);
-      if(!date.isValid()) this.toastSrv.error('אנא הזיני תאריך תקין', 'תאריך לא תקין!')
+      if (!date.isValid()) this.toastSrv.error('אנא הזיני תאריך תקין', 'תאריך לא תקין!')
       else {
 
-      this.scheduleService
-        .setNewProductionSchedule(this.scheduleLine)
-        .subscribe(res => {
-          if (res.msg == 'Failed') this.toastSrv.error('Schedule not Saved! Please check all fields')
-          else {
-            this.scheduleData.push(res);
-            this.scheduleLine.scheduleId = '';
-            this.scheduleLine.scheduleId = '';
-            this.scheduleLine.positionN = '';
-            this.scheduleLine.orderN = '';
-            this.scheduleLine.item = '';
-            this.scheduleLine.costumer = '';
-            this.scheduleLine.productName = '';
-            this.scheduleLine.batch = '';
-            this.scheduleLine.packageP = '';
-            this.scheduleLine.qty = '';
-            this.scheduleLine.qtyRdy = '';
-            this.scheduleLine.date = '';
-            this.scheduleLine.marks = '';
-            this.scheduleLine.shift = '';
-            this.scheduleLine.mkp = '';
-            this.scheduleLine.status = 'open';
-            this.scheduleLine.productionLine = '';
-            this.scheduleLine.pLinePositionN = 999;
-            this.scheduleLine.itemImpRemark = '';
-          }
-        });
+        this.scheduleService
+          .setNewProductionSchedule(this.scheduleLine)
+          .subscribe(res => {
+            if (res.msg == 'Failed') this.toastSrv.error('Schedule not Saved! Please check all fields')
+            else {
+              this.scheduleData.push(res);
+              this.scheduleLine.scheduleId = '';
+              this.scheduleLine.scheduleId = '';
+              this.scheduleLine.positionN = '';
+              this.scheduleLine.orderN = '';
+              this.scheduleLine.item = '';
+              this.scheduleLine.costumer = '';
+              this.scheduleLine.productName = '';
+              this.scheduleLine.batch = '';
+              this.scheduleLine.packageP = '';
+              this.scheduleLine.qty = '';
+              this.scheduleLine.qtyRdy = '';
+              this.scheduleLine.date = '';
+              this.scheduleLine.marks = '';
+              this.scheduleLine.shift = '';
+              this.scheduleLine.mkp = '';
+              this.scheduleLine.status = 'open';
+              this.scheduleLine.productionLine = '';
+              this.scheduleLine.pLinePositionN = 999;
+              this.scheduleLine.itemImpRemark = '';
+            }
+          });
       }
     } else {
       alert('מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.');
@@ -319,10 +321,11 @@ export class ScheduleComponent implements OnInit {
     });
   }
 
-  openFormDetails(scheduleId){
+  openFormDetails(scheduleId) {
     debugger;
-    location.href="http://localhost:4200/#/peerpharm/forms/formDetails/"+scheduleId+'scheduleId';
-    
+    this.router.navigate(["/peerpharm/forms/formDetails/" + scheduleId + "scheduleId"])
+    // location.href="http://localhost:4200/#/peerpharm/forms/formDetails/"+scheduleId+'scheduleId';
+
   }
 
   getAllSchedule(today) {
