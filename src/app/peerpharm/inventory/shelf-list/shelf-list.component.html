@@ -47,7 +47,8 @@
 
   <form [formGroup]="newShelfForm" (ngSubmit)="addNewItemShelf()">
     <div class="row mt-2">
-      <div class="col-2"><input type="number" class="form-control" formControlName="item" placeholder="item number">
+      <div class="col-2"><input type="number" class="form-control" (change)="validateItem()" formControlName="item"
+          placeholder="item number">
       </div>
       <div class="col-2">
         <select class="form-control" formControlName="position">
