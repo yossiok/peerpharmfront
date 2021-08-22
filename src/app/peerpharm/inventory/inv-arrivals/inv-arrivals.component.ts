@@ -156,7 +156,15 @@ export class InvArrivalsComponent implements OnInit {
     this.componentArrival.controls.position.setValue(shellDoc.position)
     //push arrival to allArrivals
     this.allArrivals.push(this.componentArrival.value)
-    this.componentArrival.reset()
+    //22/08/2021 Dani Morag:
+    // reset the fields of the add component arrival except for the spplier and warehouse. Further to the request of Tomer
+    this.componentArrival.get('itemType').reset();
+    this.componentArrival.get('item').reset();
+    this.componentArrival.get('amount').reset();
+    this.componentArrival.get('shell_id_in_whareHouse').reset();
+    this.componentArrival.get('position').reset();
+    this.componentArrival.get('isNewItemShell').reset();
+
     this.componentArrival.controls.isNewItemShell.setValue(false)
     this.componentArrival.controls.itemType.setValue('component')
     this.first.nativeElement.focus()
@@ -177,6 +185,9 @@ export class InvArrivalsComponent implements OnInit {
           }
           this.sending = false
           this.toastr.success('שינויים נשמרו בהצלחה', 'נשמר')
+          this.componentArrival.reset();
+          this.componentArrival.controls.isNewItemShell.setValue(false)
+          this.componentArrival.controls.itemType.setValue('component')
           setTimeout(() => {
             this.printBtn2.nativeElement.click()
             setTimeout(() => this.allArrivals = [], 1000)
