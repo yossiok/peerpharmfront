@@ -1664,23 +1664,29 @@
           <div class="row fixNoaStupidStuff mt-3">
 
             <div class="col-2">
-              <label class="form-control">COA Master</label>
-              <label class="form-control">MSDS</label>
+              <label class="form-control m-2">COA Master</label>
+              <label class="form-control m-2">MSDS</label>
             </div>
             <div class="col-2">
-              <button class="btn btn-success form-control" (click)="coaMasterInput.click()"><i class="fa fa-upload"
-                  aria-hidden="true"></i></button>
-              <button class="btn btn-success form-control" (click)="upload"><i class="fa fa-upload"
-                  aria-hidden="true"></i></button>
+              <button class="btn btn-success form-control m-2" ngbTooltip="Upload COA Master"
+                (click)="coaMasterInput.click()"><i class="fa fa-upload" aria-hidden="true"></i></button>
+              <button class="btn btn-success form-control m-2" ngbTooltip="Upload MSDS" (click)="msdsInput.click()"><i
+                  class="fa fa-upload" aria-hidden="true"></i></button>
             </div>
-            <div class="col-3">
-
-              <img style="height: 30px; width:30px;" src="../../../../assets/images/pdf.png" alt="PDF" />
+            <div class="col-1">
+              <a [ngbTooltip]="resMaterial.coaMaster ? 'Download COA Master' : 'No COA Master. Upload one.'"
+                [href]="resMaterial.coaMaster">
+                <img style="height: 30px; width:30px; margin-top: 5px" src="../../../../assets/images/pdf.png"
+                  alt="PDF" />
+              </a>
               <input class="form-control" #coaMasterInput style="display:none" type="file"
                 (change)="uploadCoaMaster($event)">
-
-
-              <img style="height: 30px; width:30px;" src="../../../../assets/images/pdf.png" alt="PDF" />
+              <br>
+              <a [ngbTooltip]="resMaterial.msds ? 'Download MSDS' : 'No MSDS. Upload one.'" [href]="resMaterial.msds"
+                class="mt-2">
+                <img style="height: 30px; width:30px; margin-top: 25px" src="../../../../assets/images/pdf.png"
+                  alt="PDF" />
+              </a>
               <input class="form-control" #msdsInput style="display:none" type="file" (change)="uploadMsds($event)">
             </div>
             <div class="col-2 fixNoaStupidStuff">

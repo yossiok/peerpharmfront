@@ -2198,7 +2198,7 @@ export class StockComponent implements OnInit {
     this.uploadService.uploadFileToS3Storage(file).subscribe(data => {
       if (data.partialText) {
         // this.tempHiddenImgSrc=data.partialText;
-        this.resCmpt.msds = data.partialText;
+        this.resMaterial.msds = data.partialText;
         console.log(" this.resCmpt.img " + this.resCmpt.img);
       }
 
@@ -2213,7 +2213,7 @@ export class StockComponent implements OnInit {
     this.uploadService.uploadFileToS3Storage(file).subscribe(data => {
       if (data.partialText) {
         // this.tempHiddenImgSrc=data.partialText;
-        this.resCmpt.coaMaster = data.partialText;
+        this.resMaterial.coaMaster = data.partialText;
         console.log(" this.resCmpt.img " + this.resCmpt.img);
       }
 
