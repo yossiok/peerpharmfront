@@ -213,7 +213,6 @@ export class ProcurementOrdersComponent implements OnInit {
     }, () => { }, () => {
       this.fetchingOrders = false
       if (this.procurementData.length > 0) {
-
         this.procurementData.forEach(pd => {
           if (pd.status == 'open') {
             pd.stockitems.forEach(si => {
@@ -361,10 +360,19 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   async newProcurementSaved(e) {
-    this.showLoader = e;
+    this.showLoader = true;
     await this.checkRecommendedOrderedItems();
-    let isClosed = false;
-    this.getAllProcurementOrders(isClosed);
+
+    let index = this.procurementDataCopy.findIndex(order => order.orderNumber == e.orderNumber);
+    if (index < 0) {
+      this.procurementDataCopy.splice(0, 0, e);
+    } else {
+      this.procurementDataCopy.splice(index, 1, e);
+    }
+    this.filterPurchaseOrders();
+
+    // let isClosed = false;
+    // this.getAllProcurementOrders(isClosed);
   }
 
   closeOrderModal(e) {

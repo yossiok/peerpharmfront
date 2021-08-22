@@ -27,7 +27,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   @Input() requestToPurchase: any;
   @Input() isEdit: boolean;
   @Input() currencies: Currencies;
-  @Output() newProcurementSaved: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() newProcurementSaved: EventEmitter<PurchaseData> = new EventEmitter<PurchaseData>();
   @Output() closeOrderModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('itemNumber') itemNumber: ElementRef;
   @ViewChild('itemName') itemName: ElementRef;
@@ -615,6 +615,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       .subscribe(res => {
         if (res) {
           this.toastr.success(`תעודה מספר ${this.deliveryCertificate.certificateNumber} התווספה בהצלחה להזמנה מספר ${this.purchaseData.orderNumber} `)
+          this.newProcurementSaved.emit(res)
         }
         else this.toastr.error('משהו השתבש. אנא פנה לתמיכה')
         this.deliveryCertificate.userName = this.authService.loggedInUser.userName
@@ -747,7 +748,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
               if (data.message) this.toastr.warning(data.message + ". Order Saved")
               this.toastr.success("הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!")
               this.newPurchase.reset();
-              this.newProcurementSaved.emit(true)
+              this.newProcurementSaved.emit(data)
               this.closeOrderModal.emit(false)
               // location.reload();
 
@@ -781,7 +782,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           if (data) {
             this.toastr.success('הזמנה עודכנה בהצלחה !')
             this.closeOrderModal.emit(false)
-            this.newProcurementSaved.emit(true)
+            this.newProcurementSaved.emit(data)
             // location.reload()
           }
           else this.toastr.error('משהו השתבש...')
