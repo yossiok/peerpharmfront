@@ -1071,7 +1071,6 @@ export class StockComponent implements OnInit {
   }
 
   dangerColor(threatment) {
-    console.log("threatment:" + threatment);
     if (threatment == 'flammableLiquid' || threatment == 'flammableSolid' || threatment == 'flammable') {
       return "flame";
     }
