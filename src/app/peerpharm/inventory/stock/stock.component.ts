@@ -147,9 +147,11 @@ export class StockComponent implements OnInit {
   filterMaterialOption: String;
   materialLocations: any[];
   items: any[];
-  compositionName: any;
   currItem: any;
+  compositionName: any;
   compositionPercentage: any;
+  compostionFunction: any;
+  compositionCAS: any;
   recieveItemType: any;
   allComponentsPurchases: any[];
   allMaterialsPurchases: any[];
@@ -1618,9 +1620,15 @@ export class StockComponent implements OnInit {
     var obj = {
       compName: this.compositionName,
       compPercentage: this.compositionPercentage,
+      compFunction: this.compostionFunction,
+      compCAS: this.compositionCAS
     }
 
     this.resMaterial.composition.push(obj)
+    this.compositionName = ''
+    this.compositionPercentage = null
+    this.compostionFunction = ''
+    this.compositionCAS = ''
 
   }
 

@@ -1612,44 +1612,49 @@
               <input class="form-control" [(ngModel)]="resMaterial.dangerMaterials" type='text'>
             </div>
 
-            <div class="2">
-              <!-- <label class="form-control">COA</label>
-            <label class="form-control">MSDS</label>
-            <label class="form-control">הערות</label> -->
-              <button class="btn btn-success form-control"><i (click)="addComposition()"
-                  class="fa fa-plus"></i></button>
-              <label class="form-control">הרכב</label>
-            </div>
-            <div style="height:210px;overflow-y: scroll;" class="col-3">
-              <input [(ngModel)]="compositionName" class='form-control'>
-              <table style="font-size: 9px;" class="table table-hover table-striped">
+            <div style="height:210px;overflow-y: scroll;" class="col-5">
+              <h4>הרכב</h4>
+              <table style="font-size: 15px;">
                 <tbody>
+                  <tr>
+                    <td>
+                      <input placeholder="composition" [(ngModel)]="compositionName" class='form-control'>
+                    </td>
+                    <td>
+                      <input placeholder="%" [(ngModel)]="compositionPercentage" class="form-control">
+                    </td>
+                    <td>
+                      <input placeholder="function" [(ngModel)]="compostionFunction" class="form-control">
+                    </td>
+                    <td>
+                      <input placeholder="CAS" [(ngModel)]="compositionCAS" class="form-control">
+                    </td>
+                    <td>
+                      <button class="btn btn-success form-control"><i (click)="addComposition()"
+                          class="fa fa-plus"></i></button>
+                    </td>
+                  </tr>
                   <tr *ngFor="let comp of resMaterial.composition">
                     <td>{{comp.compName}}</td>
                     <td>{{comp.compPercentage}}</td>
+                    <td>{{comp.compFunction}}</td>
+                    <td>{{comp.compCAS}}</td>
                     <td><i (click)="deleteFromComposition(resMaterial._id,comp.compName)"
                         class="fa fa-times text-danger"></i></td>
-
                   </tr>
                 </tbody>
               </table>
-              <!-- <button class="btn btn-success form-control" (click)="coaMasterInput.click()"><i class="fa fa-upload"
-                  aria-hidden="true"></i></button>
-              <button class="btn btn-success form-control" (click)="msdsInput.click()"><i class="fa fa-upload"
-                  aria-hidden="true"></i></button>
-  
-              <textarea [(ngModel)]="resMaterial.remarks" class="form-control mt-2" rows="6" cols="20"></textarea> -->
-
+              <!-- <table style="font-size: 9px;" class="table table-hover table-striped">
+                <tbody>
+                  
+                </tbody>
+              </table> -->
             </div>
 
-            <div class="col-1">
-              <input placeholder="%" [(ngModel)]="compositionPercentage" class="form-control">
-            </div>
           </div>
           <div class="row fixNoaStupidStuff">
             <div class="col-10 fixNoaStupidStuff">
               <input class="form-control" [(ngModel)]="resMaterial.riskSentence" type='text'>
-
             </div>
             <div class="col-2 fixNoaStupidStuff">
               <label class="form-control">משפטי סיכון</label>
