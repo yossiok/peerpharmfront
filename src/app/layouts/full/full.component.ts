@@ -72,14 +72,16 @@ export class FullComponent implements OnInit {
   //Dani Morag: 16/08/2021
   // the time the user doesn't touch his workstation
   public idleTime: any;
-  //if ihe doesn't touch the workstation for more then the timeout (currently 360000 miliseconds), he will be redirected to the login page
+  //if he doesn't touch the workstation for more then the timeout (currently 3600000 miliseconds), he will be redirected to the login page
+  //Dani Morag 22/08/2021 change the timeout from 1 hour(3600000) to three hours (10,800,000)
   onMouseMove(e) {
     clearTimeout(this.idleTime);
     // console.log(this.idleTime);
     this.idleTime = setTimeout(() => {
       this.router.navigate(['/login'])
-    }, 3600000)
+    }, 1000 * 60 * 60 * 3)
   }
+
 
   @HostListener('window:resize', ['$event'])
   onResize(event) {
@@ -127,9 +129,9 @@ export class FullComponent implements OnInit {
         let titleObj = alert.titleObj
         let msg = alert.messsage
         this.notifications.sendGlobalMessage(msg, titleObj).subscribe(ok => {
-          console.log(ok)
+          // console.log(ok)
           this.notifications.deleteUserAlerts(this.authService.loggedInUser.userName).subscribe(res => {
-            console.log(res)
+            // console.log(res)
           })
         })
       }
