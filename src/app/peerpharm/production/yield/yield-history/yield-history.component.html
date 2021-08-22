@@ -1,1 +1,42 @@
-<p>yield-history works!</p>
+<div dir="rtl">
+    <div class="row">
+        <div class="float-right">
+            <button class="btn btn-warning"><a routerLink="../yields">היום</a></button>
+        </div>
+    </div>
+    <h1 class="text-center">נתוני ניצולת לפי קו</h1>
+    <h2 class="mt-5">בחר קו</h2>
+    <div class="d-flex flex-row justify-content-around">
+        <div *ngFor="let line of lines; let i = index">
+            <button [ngClass]="isChosen(i)" class="wide" (click)="getLineYields(i)">{{line}}</button>
+        </div>
+    </div>
+    <div class="mt-5">
+        <div *ngIf=line class="mt-5 d-flex flex-row justify-content-between">
+            <h1 class="text-decoration-underline">ניצולת קו {{line}}</h1>
+            <button (click)="exportToExcel()" class="btn btn-primary"><img class="smaller"
+                    src="../../../../../assets/images/excel.png" alt="">&nbsp;
+                ייצא לאקסל</button>
+        </div>
+        <table class="table table-bordered mt-5 w-25">
+            <thead>
+                <th>תאריך</th>
+                <th>זמן עבודה ברוטו</th>
+                <th>זמן עבודה נטו</th>
+                <th>תפוקה יומית</th>
+                <th class="text-primary bg-light">ניצולת (תפוקה שעתית)</th>
+                <th>קו נפתח על ידי:</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let yield of yields">
+                    <td>{{yield.productionDate | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{yield.brutoDurationToPresent}}</td>
+                    <td>{{yield.totalDurationToPresent}}</td>
+                    <td>{{yield.dayProdQty}}</td>
+                    <td class="bg-primary text-white">{{yield.hourProdQty}}</td>
+                    <td>{{yield.userName}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
