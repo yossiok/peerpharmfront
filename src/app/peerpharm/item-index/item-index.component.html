@@ -361,16 +361,7 @@
         <label class="form-control">הערה</label>
         <label class="form-control mt-5">הערה קופצת</label>
 
-        <label class="form-control mt-4"> חומר בעייתי?</label>
-        <input type="checkbox" class="problematic" [disabled]="!allowedProblematicEdit" [(ngModel)]="item.isProblematic"
-          [ngModelOptions]="{standalone: true}">
-        <label class="form-control mt-4">בעייתיות:</label>
-        <select class="form-control" [(ngModel)]="item.problem">
-          <option value="פג תוקף קצר">פג תוקף קצר</option>
-          <option value="פריט ייבוא / זמן אספקה">פריט ייבוא / זמן אספקה</option>
-          <option value="כמויות מינימום">כמויות מינימום</option>
-          <option value="אחר">אחר</option>
-        </select>
+
 
 
       </div>
@@ -382,27 +373,11 @@
 
     </div>
 
-    <!-- <div class="row mt-2">
-      <div class="col-2">
-        <button [disabled]="gettingProducts" [style.cursor]="gettingProducts ? 'not-allowed' : 'pointer'"
-          (click)="getProductsWithItem()">הצג מוצרים שמכילים את הפריט</button>
-      </div>
-
-      <div class="col-2 border" *ngIf="item.connectedProducts">
-        <div *ngFor="let product of item.connectedProducts">
-          <h5>{{product.itemNumber}}</h5>
-          <h5>{{product.name}}</h5>
-          <h5>{{product.subName}}</h5>
-          <h5>{{product.discriptionK}}</h5>
-        </div>
-      </div>
-    </div> -->
   </div>
 
   <div *ngIf="item.itemType=='material'" class="container float-right p-2 modal-inner">
     <div style="padding: 0rem;" class="row text-center">
       <div style="padding: 0rem;" class="col-1 text-right">
-        <!-- <button class="btn btn-success form-control" (click)="switchModalView()">{{itemmoveBtnTitle}}</button> -->
       </div>
       <div style="padding: 0rem;" class="col-10">
         <h2 style="padding: 0rem;" class="text-success" id='div_h3'>{{openModalHeader}}</h2><br>
@@ -417,9 +392,7 @@
       <div style="padding: 0rem;" class="col-12">
         <h5 style="padding: 0rem;" class="text-success">פרטים כלליים</h5>
       </div>
-      <!-- <div class="col-8">
-      <h5 class="text-success">מחסן/מחלקת בישול</h5>
-    </div> -->
+
 
     </div>
     <div style="padding: 0rem;" class="row text-center">
@@ -431,14 +404,7 @@
       <div class="col-2">
         <input class="form-control" (change)="checkIfExist($event)" [(ngModel)]="item.componentName">
       </div>
-      <!-- <div class="col-2"><label class="form-control">Last Price (NIS)</label></div>
-      <div class="col-2">
-        <input class="form-control" [(ngModel)]="item.price">
-      </div>
-      <div class="col-2"><label class="form-control">Shipping (NIS)</label></div>
-      <div class="col-2">
-        <input type="number" class="form-control" [(ngModel)]="item.shippingPrice">
-      </div> -->
+
       <div class="col-2"><label class="form-control">Last Price (NIS)</label></div>
       <div class="col-2">
         <input type="number" class="form-control" disabled [(ngModel)]="item.price">
@@ -478,9 +444,7 @@
       </div>
 
       <div class="2">
-        <!-- <label class="form-control">COA</label>
-      <label class="form-control">MSDS</label>
-      <label class="form-control">הערות</label> -->
+
         <button class="btn btn-success form-control"><i (click)="addComposition()" class="fa fa-plus"></i></button>
         <label class="form-control">הרכב</label>
       </div>
@@ -497,12 +461,7 @@
             </tr>
           </tbody>
         </table>
-        <!-- <button class="btn btn-success form-control" (click)="coaMasterInput.click()"><i class="fa fa-upload"
-            aria-hidden="true"></i></button>
-        <button class="btn btn-success form-control" (click)="msdsInput.click()"><i class="fa fa-upload"
-            aria-hidden="true"></i></button>
 
-        <textarea [(ngModel)]="item.remarks" class="form-control mt-2" rows="6" cols="20"></textarea> -->
 
       </div>
 
@@ -549,22 +508,21 @@
       </div>
     </div>
 
-    <div class="row text-center">
-      <div class="col-4">
-        <button class="btn btn-success form-control" id="newCbtn" (click)="writeNewMaterial()">הקם
-          מוצר</button>
-      </div>
-      <div class="col-4">
-        <div *ngIf="allowUserEditItem">
-          <button class="btn btn-success form-control" id="updateDataBtn" (click)="editMaterialItemDetails()"
-            *ngIf="newItem!='new'">עדכן
-            מידע</button>
-        </div>
-      </div>
-      <div class="col-4">
-        <button class="btn btn-success form-control" id="newCbtn" (click)="clearFields()">Clear</button>
+    <div dir="rtl" class="row mt-4">
+      <div class="col-3">
+        <h3 class="mt-4 text-success"> חומר בעייתי?</h3>
+        <input type="checkbox" class="problematic" [disabled]="!allowedProblematicEdit" [(ngModel)]="item.isProblematic"
+          [ngModelOptions]="{standalone: true}">
+        <h4 class="mt-4">בעייתיות:</h4>
+        <select class="form-control" [(ngModel)]="item.problem">
+          <option value="פג תוקף קצר">פג תוקף קצר</option>
+          <option value="פריט ייבוא / זמן אספקה">פריט ייבוא / זמן אספקה</option>
+          <option value="כמויות מינימום">כמויות מינימום</option>
+          <option value="אחר">אחר</option>
+        </select>
       </div>
     </div>
+
   </div>
 
   <!--Purchase History-->
@@ -662,9 +620,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let update of item.priceUpdates.reverse(); let i=index"
-            [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">
-            <td>{{i+1}}</td>
+          <tr *ngFor="let update of item.priceUpdates.reverse(); let i=index">
+            <td [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">{{i+1}}</td>
             <td>{{update.date | date:'dd/MM/yy'}}</td>
             <td>{{update.price | currency: update.coin}}</td>
             <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
@@ -677,19 +634,10 @@
   </div>
 
   <!--Storage / Cooking (for materials)-->
-  <div *ngIf="item.itemType=='material'" class="float-right modal-inner-smaller w-50">
-    <div dir="rtl" style="padding: 0rem;" class="row text-center ">
+  <div dir="rtl" *ngIf="item.itemType=='material'" class="float-right modal-inner-smaller w-50 mt-4">
+    <h3 class="text-success mt-4">מחסן/מחלקת בישול</h3>
 
-
-      <div class="col-4 ">
-        <h5 class="text-success">מחסן/מחלקת בישול</h5>
-      </div>
-      <div class="col-4 ">
-
-      </div>
-
-    </div>
-    <div dir="rtl" style="padding: 0rem;" class="row  text-center">
+    <div style="padding: 0rem;" class="row text-center">
 
       <div class="col-1"></div>
       <div class="col-2 ">
@@ -701,8 +649,7 @@
         <label class="form-control">היתר רעלים</label>
       </div>
       <div class="col-3 ">
-        <select class="form-control" [(ngModel)]="resMaterial.threatment">
-
+        <select class="form-control" [(ngModel)]="item.threatment">
           <option value="flammableLiquid">3 - נוזל דליק</option>
           <option value="flammableSolid">4 - מוצק דליק</option>
           <option value="oxidizer">5.1 - מחמצן אי אורגני</option>
@@ -714,7 +661,6 @@
           <option value="cooling">איחסון בקירור</option>
           <option value="blockedByType">חסום לפי סוג חומר</option>
         </select>
-
         <input [(ngModel)]="item.umNumber" type="text" class="form-control" />
         <input [(ngModel)]="item.imerCode" type="text" class="form-control" />
         <input [(ngModel)]="item.imerTreatment" type="text" class="form-control" />
@@ -725,10 +671,8 @@
         <label class="form-control">מיקום במחסן</label>
         <label class="form-control">כמות במלאי</label>
         <label class="form-control">כמות פג תוקף</label>
-
         <label class="form-control">טמפ' אחסון</label>
         <label class="form-control">הוראות אחסון</label>
-
       </div>
       <div class="col-3 ">
         <input class="form-control" list="locations" [(ngModel)]="item.location"
@@ -737,36 +681,20 @@
           <option *ngFor="let material of materialLocations" [value]="material.location">
             {{material.location}}</option>
         </datalist>
-
         <input [(ngModel)]="item.quantityInStock" type="text" class="form-control" />
         <input [(ngModel)]="item.expiredQty" type="text" class="form-control" />
-
-
         <input [(ngModel)]="item.storageTemp" type="text" class="form-control" />
         <input [(ngModel)]="item.storageDirections" type="text" class="form-control" />
-
       </div>
       <div class="col-1"></div>
     </div>
   </div>
 
   <div class="row text-center p-5 container mx-auto">
-    <!-- <div class="col-4 ">
-      <label for="">Choose Item Type</label>
-      <select #itemTypeInput name="" id="">
-        <option value="">Choose Item Type</option>
-        <option value="component">component</option>
-        <option value="material">material</option>
-        <option value="product">product</option>
-      </select>
-      <button [disabled]="!itemTypeInput" class="btn btn-success form-control" id="newCbtn"
-        (click)="writeNewStockItem()">הקם
-        מוצר</button>
-    </div> -->
     <div class="col-3"></div>
     <div class="col-3">
       <div *ngIf="allowUserEditItem">
-        <button class="btn btn-success form-control h3" id="updateDataBtn" (click)="editMaterialItemDetails()">
+        <button class="btn btn-success form-control h3" id="updateDataBtn" (click)="editItemDetails()">
           Save Item Details
         </button>
       </div>
@@ -790,7 +718,11 @@
 </div>
 
 <!--Item Movements-->
-<div *ngIf="itemMovements" class="row mt-4 w-75 mx-auto">
+<div *ngIf="fetchingMovements">
+  <div class="smallLoader"></div>
+  <h5 class="text-center">This might take a while</h5>
+</div>
+<div *ngIf="!fetchingMovements" class="row mt-4 w-75 mx-auto">
   <table class="table table-hover">
     <thead class="text-info text-center">
       <tr>
@@ -817,7 +749,7 @@
         <td class="click click-td text-center" (click)="filter('item', movement.item)">
           {{movement.item}}
         </td>
-        <td class="click click-td text-center">{{movement.inventory_doc[0].componentName}}</td>
+        <td class="click click-td text-center">{{movement.inventory_doc.componentName}}</td>
         <td class="click click-td text-center" (click)="filter('WH_originName', movement.WH_originName)">
           {{movement.WH_originName}}
         </td>
@@ -861,14 +793,13 @@
         <p class="form-control"> {{item.manualPrice | currency:
           item.manualCoin}}</p>
         <label>מחיר רכש אחרון:</label>
-        <p class="form-control">{{resMaterial.price | currency: resMaterial.coin}}
+        <p class="form-control">{{item.price | currency: item.coin}}
         </p>
-        <p *ngIf="resCmpt.componentN != ''" class="form-control">{{resCmpt.price | currency: resCmpt.manualCoin}}</p>
       </div>
     </div>
 
-    <div class=" row mt-2">
-      <div class=" col-3">
+    <div class="row mt-2">
+      <div class="col-3">
         <label>מחיר חדש:</label>
         <input (keyup)="checkUpdatePriceValidity()" class="form-control" type="number" [(ngModel)]="item.manualPrice">
       </div>
@@ -883,8 +814,7 @@
       </div>
     </div>
     <div class=" row mt-2">
-      <button (click)="editStockItemDetails()" (click)="addToPriceHistory()" (click)="modal.dismiss('Cross click')"
-        [disabled]="!allowPriceUpdate" ngbTooltip="יש לעדכן מטבע"
+      <button (click)="addToPriceHistory()" [disabled]="!allowPriceUpdate" ngbTooltip="יש לעדכן מטבע" type="button"
         [style.cursor]="allowPriceUpdate ? 'pointer' : 'not-allowed'">
         שמור
       </button>

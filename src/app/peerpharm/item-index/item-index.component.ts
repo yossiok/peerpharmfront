@@ -96,6 +96,7 @@ export class ItemIndexComponent implements OnInit {
   })
   allowPriceUpdate: boolean = false
   supPurchases: any[] = []
+  fetchingMovements: boolean;
 
   constructor(
     private inventoryService: InventoryService,
@@ -113,6 +114,7 @@ export class ItemIndexComponent implements OnInit {
     if (this.authService.loggedInUser.authorization.includes("updateStock")) {
       this.allowUserEditItem = true;
     }
+    this.allowPriceUpdate = Number(this.authService.loggedInUser.screenPermission) < 4
     setTimeout(() => this.itemNumber.nativeElement.focus(), 500)
   }
 
@@ -137,7 +139,6 @@ export class ItemIndexComponent implements OnInit {
   }
 
   open(modal) {
-    debugger
     this.modalService.open(modal)
   }
 
@@ -188,7 +189,9 @@ export class ItemIndexComponent implements OnInit {
   }
 
   fetchMovements() {
+    this.fetchingMovements = true
     this.inventoryService.getComplexItemMovements(this.itemMovementForm.value).subscribe(data => {
+      this.fetchingMovements = false
       console.log(data)
       this.item = undefined
       this.itemMovements = data
@@ -362,6 +365,10 @@ export class ItemIndexComponent implements OnInit {
 
   //pricing
 
+  test() {
+    debugger
+  }
+
   addToPriceHistory() {
     let componentN = this.item.componentN
     let newPrice = this.item.manualPrice
@@ -375,7 +382,9 @@ export class ItemIndexComponent implements OnInit {
         type: 'manual'
       })
     })
+    this.toastSrv.info('', 'יש לשמור פריט')
     this.allowPriceUpdate = false
+    this.modalService.dismissAll()
   }
 
   checkUpdatePriceValidity(type) {
