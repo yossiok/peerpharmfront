@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
+import { UploadFileService } from 'src/app/services/helpers/upload-file.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { Procurementservice } from 'src/app/services/procurement.service';
 import { SuppliersService } from 'src/app/services/suppliers.service';
@@ -104,7 +105,8 @@ export class ItemIndexComponent implements OnInit {
     private supplierService: SuppliersService,
     private procuretServ: Procurementservice,
     private authService: AuthService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private uploadService: UploadFileService
   ) { }
 
   ngOnInit(): void {
@@ -323,6 +325,25 @@ export class ItemIndexComponent implements OnInit {
     }
   }
 
+  uploadCoaMaster(fileInputEvent) {
+    let file = fileInputEvent.target.files[0];
+    this.uploadService.uploadFileToS3Storage(file).subscribe(data => {
+      if (data.partialText) {
+        this.item.coaMaster = data.partialText;
+      }
+    })
+  }
+
+  uploadMsds(fileInputEvent) {
+    let file = fileInputEvent.target.files[0];
+    this.uploadService.uploadFileToS3Storage(file).subscribe(data => {
+      if (data.partialText) {
+        // this.tempHiddenImgSrc=data.partialText;
+        this.item.msds = data.partialText;
+      }
+    })
+  }
+
 
   resetResCmptData() {
     this.item = {
@@ -452,6 +473,39 @@ export class ItemIndexComponent implements OnInit {
         this.toastSrv.success('ספק ראשי עודכן בהצלחה!')
       }
     })
+  }
+
+  addSupplierToMaterial() {
+
+    if (this.supplier.price == '' || this.supplier.price == '' || this.supplier.supplierName == '') {
+      this.toastSrv.error('אנא תמלא שם ספק , מחיר ומטבע ')
+    } else {
+
+      this.item.alternativeSuppliers.push(this.supplier)
+
+      this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
+      this.supplier = {
+        supplierName: '',
+        price: "",
+        coin: "",
+        coinLoading: "",
+        priceLoading: "",
+        manufacturer: "",
+        alternativeMaterial: "",
+        alterName: "",
+        subGroup: "",
+        packageWeight: "",
+        expectedArrival: "",
+      }
+    }
+
+  }
+
+  deleteSupplier(index) {
+    if (confirm('האם למחוק ספק ?')) {
+      this.item.alternativeSuppliers.splice(index, 1);
+      this.toastSrv.success('ספק הוסר בהצלחה , לא לשכוח לעדכן מידע !')
+    }
   }
 
   getLastOrdersItem(numOfOrders, type) {
