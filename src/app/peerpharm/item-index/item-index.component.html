@@ -215,6 +215,7 @@
 
   <!--General Details Component / product-->
   <div *ngIf="item.itemType!='material'" class="w-50 float-right modal-inner">
+    <h1 class="text-center text-success">פרטים כלליים</h1>
     <div class=" row text-center">
       <div class="col-1"></div>
       <div class="col-8">
@@ -478,10 +479,10 @@
     </div>
     <div dir="rtl" class="row mt-4">
       <div class="col-3">
-        <label class="mt-4"> חומר בעייתי?</label>
         <input type="checkbox" class="problematic" [disabled]="!allowedProblematicEdit" [(ngModel)]="item.isProblematic"
           [ngModelOptions]="{standalone: true}">
-        <h4 class="mt-4">בעייתיות:</h4>
+        <label class="mt-4"> חומר בעייתי?</label>
+        <h5 class="mt-2">בעייתיות:</h5>
         <select class="form-control" [(ngModel)]="item.problem">
           <option value="פג תוקף קצר">פג תוקף קצר</option>
           <option value="פריט ייבוא / זמן אספקה">פריט ייבוא / זמן אספקה</option>
@@ -494,7 +495,7 @@
 
   <!--Purchase History-->
   <div class="w-50 modal-inner float-right">
-    <div class="row mt-4">
+    <div dir="rtl" class="row mt-4">
       <h1 class="text-center text-success">הסטוריית רכש</h1>
     </div>
     <div class="row mt-4">
@@ -649,15 +650,15 @@
     </div>
   </div>
 
-  <!--Suppliers (Materials)-->
-  <div dir="rtl" *ngIf="item.itemType=='material'" class="float-right modal-inner-smaller pt-4 w-50 mt-4">
+  <!--Suppliers-->
+  <div dir="rtl" class="float-right modal-inner-smaller pt-4 w-50 mt-4">
     <div class="row mt-4 text-center">
       <h1 class="mt-4 text-success text-center">ספקים</h1>
     </div>
     <h3>רשימת ספקים</h3>
     <div dir='rtl' class="row text-center">
       <div class="col-12">
-        <table class="table table-hover">
+        <table *ngIf="item.itemType=='material'" class="table table-hover">
           <thead class="bg-success text-white">
             <tr>
               <th></th>
@@ -743,6 +744,86 @@
             </ng-container>
           </tbody>
         </table>
+        <table *ngIf="item.itemType=='component'" class="table table-hover">
+          <thead class="bg-success text-white">
+            <tr>
+              <th></th>
+              <th></th>
+              <th>ספק</th>
+              <th>יצרן</th>
+              <th>שם פריט</th>
+              <th>מספר פריט</th>
+              <th>מחיר</th>
+              <th>מטבע</th>
+              <th>משקל</th>
+              <th>מחיר העמסה (מטבע קניה)</th>
+              <th>מטבע לפני טעינה</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let supplier of item.alternativeSuppliers;let i = index">
+              <tr [ngClass]="mainSupplier(supplier.isMain)">
+
+                <td (click)="edit(i)"><i placement="bottom" ngbTooltip="ערוך פרטי ספק"
+                    class="click fa fa-pencil-alt"></i></td>
+                <td>
+                  <span *ngIf="supplier.isMain">ספק ראשי!</span>
+                  <button *ngIf="!supplier.isMain" placement="bottom" ngbTooltip="הגדר את הספק כספק הראשי של הפריט"
+                    (click)="makeAsMainSupplier(i)" class="btn btn-success">הגדר כספק ראשי</button>
+                </td>
+                <td>{{supplier.supplierName}}</td>
+                <td *ngIf="rowNumber != i">
+                  {{supplier.manufacturer}}</td>
+                <td *ngIf="rowNumber == i">
+                  <input type="text" [(ngModel)]="supplier.manufacturer" class="form-control" #manufacturer>
+                </td>
+                <td *ngIf="rowNumber != i">
+                  {{supplier.alterName}}</td>
+                <td *ngIf="rowNumber == i">
+                  <input type="text" [(ngModel)]="supplier.alterName" class="form-control" #alterName>
+                </td>
+                <td *ngIf="rowNumber != i">
+                  {{supplier.alternativeMaterial}}</td>
+                <td *ngIf="rowNumber == i">
+                  <input type="text" [(ngModel)]="supplier.alternativeMaterial" class="form-control"
+                    #alternativeMaterial>
+                </td>
+                <td *ngIf="rowNumber != i">
+                  {{supplier.price}}</td>
+                <td *ngIf="rowNumber == i">
+                  <input type="text" [(ngModel)]="supplier.price" class="form-control" #price>
+                </td>
+                <td *ngIf="rowNumber != i">
+                  {{supplier.coin}}</td>
+                <td *ngIf="rowNumber == i">
+                  <input type="text" [(ngModel)]="supplier.coin" class="form-control" #coin>
+                </td>
+                <td *ngIf="rowNumber != i">
+                  {{supplier.packageWeight}}</td>
+                <td *ngIf="rowNumber == i">
+                  <input type="text" [(ngModel)]="supplier.packageWeight" class="form-control" #packageWeight>
+                </td>
+                <td *ngIf="rowNumber != i">
+                  {{supplier.priceLoading}}</td>
+                <td *ngIf="rowNumber == i">
+                  <input type="text" [(ngModel)]="supplier.priceLoading" class="form-control" #priceLoading>
+                </td>
+                <td *ngIf="rowNumber != i">
+                  <span *ngIf="supplier.shippingPrice"> {{supplier.shippingPrice | currency: 'ILS'}}</span>
+                </td>
+                <td *ngIf="rowNumber == i">
+                  <input type="text" [(ngModel)]="supplier.coinLoading" class="form-control" #coinLoading>
+                </td>
+                <td><i placement="bottom" ngbTooltip="מחק מרשימת הספקים" (click)="deleteSupplier(i)"
+                    class="fa fa-times text-danger"></i></td>
+                <td><i *ngIf="rowNumber == i" placement="bottom" ngbTooltip="שמור" (click)="rowNumber = -1"
+                    class="fa fa-save"></i></td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
       </div>
     </div>
     <div dir='rtl' class="p-2 row mt-4 border border-success">
@@ -820,7 +901,6 @@
 
   <div dir="rtl" class="float-right modal-inner-smaller w-50 mt-4">
 
-    <h2>Whats Next?</h2>
   </div>
 
 
