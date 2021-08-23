@@ -193,7 +193,7 @@
 
 
 <!--Item Details Start-->
-<div *ngIf="item" class="bg-light item-details">
+<div *ngIf="item && !fetchingMovements" class="bg-light item-details">
 
   <!--Save / Edit Buttons-->
   <div class="row text-center p-5 container mx-auto">
