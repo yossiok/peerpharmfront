@@ -1467,6 +1467,19 @@ export class StockComponent implements OnInit {
     this.inventoryService.getpurchaseRec(query).subscribe(res => {
       this.smallerLoader = false
       let filt = res.filter(item => item.minimum != "" && Number(item.minimum) >= Number(item.amount))
+        .map(item => {
+          item.openOrders = ''
+          item.orderedAmount = 0
+          for (let order of item.purchases) {
+            if (order.status != 'closed' && order.status != 'canceled') {
+              item.openOrders += ',' + order.orderNumber // purchase order numbers
+              let i = order.stockitems.findIndex(i => i.name == item.name)
+              item.orderedAmount += Number(order.stockitems[i].quantity) // purchase amounts
+            }
+          }
+          delete item.purchases
+          return item
+        })
       this.excelService.exportAsExcelFile(filt, `דו"ח המלצה לרכש ${new Date().toString().slice(0, 10)}`)
     })
   }

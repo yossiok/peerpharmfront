@@ -62,15 +62,7 @@ export class InventoryReportsComponent implements OnInit {
           // get purchase details for components and materials
           if (this.reportForm.value.itemType != 'product') {
             item.name = item.stockitem[0].componentName
-            item.openOrders = ''
-            item.orderedAmount = 0
-            for (let order of item.purchases) {
-              if (order.status != 'closed' && order.status != 'canceled') {
-                item.openOrders += ',' + order.orderNumber // purchase order numbers
-                let i = order.stockitems.findIndex(i => i.name == item.name)
-                item.orderedAmount += Number(order.stockitems[i].quantity) // purchase amounts
-              }
-            }
+            delete item.stockitem
           }
           delete item.batchNumber
           delete item.supplierBatchNumber
@@ -82,10 +74,8 @@ export class InventoryReportsComponent implements OnInit {
           return item
         })
       }
-      // item.subName ? item.subName = item.subName[0] : null
-      // item.description ? item.description = item.description[0] : null
-      let sortOrder = ['item', 'name', 'position', 'whareHouse', 'amount', 'orderedAmount', 'openOrders']
-      this.excelService.exportAsExcelFile(data, 'Inventory Report', sortOrder)
+      // let sortOrder = ['item', 'name', 'position', 'whareHouse', 'amount']
+      this.excelService.exportAsExcelFile(data, 'Inventory Report')
     })
   }
 
