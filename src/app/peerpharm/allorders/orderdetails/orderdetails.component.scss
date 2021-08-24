@@ -30,6 +30,12 @@ button, input {
   font-size: 18px;
 }
 
+.modal-inner {
+  width: fit-content;
+  max-height: 800px;
+  overflow-y: auto;
+}
+
 .green {
   background-color: lightgreen;
 }

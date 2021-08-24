@@ -90,6 +90,7 @@ export class OrderdetailsComponent implements OnInit {
   closeResult: string;
   printingStatus: boolean = false;
   setScheduleAllowed: boolean = false;
+  printOrder: boolean = false
   plateImg = "";
 
 
