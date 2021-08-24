@@ -131,6 +131,7 @@ export class AllFormulesComponent implements OnInit {
   @ViewChild('itemRemarksUpdate') itemRemarksUpdate: ElementRef;
   loading: boolean;
   password: string = 'martha@2021'
+  dragging: boolean = false
 
 
 
@@ -1018,40 +1019,44 @@ export class AllFormulesComponent implements OnInit {
 
 
   /****************DRAG DROP FUNCS************/
+
+  draggingStatus() {
+    if (this.draggable) {
+      if (this.dragging) return 'grabbing'
+      else return 'grab'
+    }
+    else return 'pointer'
+  }
+
   startItemDrag(ev) {
 
+    this.dragging = true
     ev.dataTransfer.setData('Text/html', ev.target.dataset.phase + ";" + ev.target.dataset.itemnumber);
     console.log('dragging');
   }
 
   startShakeDragOver(ev) {
     ev.preventDefault();
-
-    ev.target.classList.add("shakeme");
   }
   stopItemDrag(ev) {
 
-    ev.target.classList.remove("shakeme");
-    ev.target.parentElement.classList.remove("shakeme");
-    this.stopAllShakes();
+    this.dragging = false
+    // this.stopAllShakes();
 
   }
   stopAllShakes() {
-    let allShakes = document.getElementsByClassName("shakeme");
-    let allShakeslength = allShakes.length
-    for (let i = 0; i < allShakeslength; i++) {
-      if (allShakes[i])
-        allShakes[i].classList.remove("shakeme");
-    }
+    // let allShakes = document.getElementsByClassName("shakeme");
+    // let allShakeslength = allShakes.length
+    // for (let i = 0; i < allShakeslength; i++) {
+    //   if (allShakes[i])
+    //     allShakes[i].classList.remove("shakeme");
+    // }
 
   }
 
   getDroppedElemnt(ev) {
-    ;
-    this.stopAllShakes();
-    this.stopAllShakes();
-
-    //ev.target.parentElement.data.id
+    // this.stopAllShakes();
+    this.dragging = false
     var data = ev.dataTransfer.getData("text/html");
     let dataArr = data.split(";");
     let droppedPhase = dataArr[0];
