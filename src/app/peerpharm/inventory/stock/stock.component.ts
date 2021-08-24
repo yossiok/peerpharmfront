@@ -147,9 +147,11 @@ export class StockComponent implements OnInit {
   filterMaterialOption: String;
   materialLocations: any[];
   items: any[];
-  compositionName: any;
   currItem: any;
+  compositionName: any;
   compositionPercentage: any;
+  compostionFunction: any;
+  compositionCAS: any;
   recieveItemType: any;
   allComponentsPurchases: any[];
   allMaterialsPurchases: any[];
@@ -1069,7 +1071,6 @@ export class StockComponent implements OnInit {
   }
 
   dangerColor(threatment) {
-    console.log("threatment:" + threatment);
     if (threatment == 'flammableLiquid' || threatment == 'flammableSolid' || threatment == 'flammable') {
       return "flame";
     }
@@ -1466,6 +1467,19 @@ export class StockComponent implements OnInit {
     this.inventoryService.getpurchaseRec(query).subscribe(res => {
       this.smallerLoader = false
       let filt = res.filter(item => item.minimum != "" && Number(item.minimum) >= Number(item.amount))
+        .map(item => {
+          item.openOrders = ''
+          item.orderedAmount = 0
+          for (let order of item.purchases) {
+            if (order.status != 'closed' && order.status != 'canceled') {
+              item.openOrders += ',' + order.orderNumber // purchase order numbers
+              let i = order.stockitems.findIndex(i => i.name == item.name)
+              item.orderedAmount += Number(order.stockitems[i].quantity) // purchase amounts
+            }
+          }
+          delete item.purchases
+          return item
+        })
       this.excelService.exportAsExcelFile(filt, `דו"ח המלצה לרכש ${new Date().toString().slice(0, 10)}`)
     })
   }
@@ -1618,9 +1632,15 @@ export class StockComponent implements OnInit {
     var obj = {
       compName: this.compositionName,
       compPercentage: this.compositionPercentage,
+      compFunction: this.compostionFunction,
+      compCAS: this.compositionCAS
     }
 
     this.resMaterial.composition.push(obj)
+    this.compositionName = ''
+    this.compositionPercentage = null
+    this.compostionFunction = ''
+    this.compositionCAS = ''
 
   }
 
@@ -2191,7 +2211,7 @@ export class StockComponent implements OnInit {
     this.uploadService.uploadFileToS3Storage(file).subscribe(data => {
       if (data.partialText) {
         // this.tempHiddenImgSrc=data.partialText;
-        this.resCmpt.msds = data.partialText;
+        this.resMaterial.msds = data.partialText;
         console.log(" this.resCmpt.img " + this.resCmpt.img);
       }
 
@@ -2206,7 +2226,7 @@ export class StockComponent implements OnInit {
     this.uploadService.uploadFileToS3Storage(file).subscribe(data => {
       if (data.partialText) {
         // this.tempHiddenImgSrc=data.partialText;
-        this.resCmpt.coaMaster = data.partialText;
+        this.resMaterial.coaMaster = data.partialText;
         console.log(" this.resCmpt.img " + this.resCmpt.img);
       }
 

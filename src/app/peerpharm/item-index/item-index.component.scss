@@ -28,8 +28,13 @@
   }
 
 .modal-inner {
-    max-height: 600px;
-    overflow-y: auto;
+  padding: 60px !important;
+  height: 910px !important;
+}
+
+.modal-inner-smaller {
+  padding: 60px !important;
+  height: 610px !important;
 }
 
 // Hide arrows from input type number  :
@@ -47,8 +52,23 @@ input[type=number] {
 
 /*******************************************************************/
 
+.item-details {
+  height: 3000px;
+}
+
 .problematic {
   margin-top: 13px;
-  width: 70px;
-  height: 73px;
+  width: 30px;
+  height: 30px;
+}
+
+.smallLoader {
+  margin: auto;
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #3498db;
+  width: 30px;
+  height: 30px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
 }

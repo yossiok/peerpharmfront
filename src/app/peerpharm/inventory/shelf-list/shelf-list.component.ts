@@ -188,6 +188,15 @@ export class ShelfListComponent implements OnInit {
 
   }
 
+  validateItem() {
+    if (!this.itemType) this.toastSrv.error('', 'יש להגדיר מחסן')
+    else {
+      this.inventorySrv.getCmptByNumber(this.newShelfForm.value.item, this.itemType).subscribe(data => {
+        if (data.length == 0) this.toastSrv.error('', '!פריט לא קיים')
+      })
+    }
+  }
+
   addNewItemShelf() {
     this.inventorySrv.newShelfYearCount(this.newShelfForm.value, this.whareHouse).subscribe(data => {
       if (data.length > 0) {

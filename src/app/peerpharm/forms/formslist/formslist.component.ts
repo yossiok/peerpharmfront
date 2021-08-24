@@ -166,6 +166,11 @@ export class FormslistComponent implements OnInit {
           this.forms = this.forms.filter(x => x.productionLine == enteredValue);
           break;
         }
+        case 'status': {
+          if (enteredValue == 'all') this.forms = this.formsCopy
+          else this.forms = this.formsCopy.filter(x => x.status == enteredValue);
+          break;
+        }
 
 
       }

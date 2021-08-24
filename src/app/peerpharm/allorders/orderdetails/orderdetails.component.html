@@ -80,10 +80,12 @@
       <th> # <button><img style="width:35px;height:35px;" (click)="exportAsXLSXOrders()"
             src="../../../assets/images/excel.png" /></button></th>
       <th>
-        <img src="../../../../assets/images/allOrder.png" class="reportImg"  alt="Problematics Report" ngbTooltip="Problems Report" (click)="exportProblems()">
+        <img src="../../../../assets/images/allOrder.png" class="reportImg click" alt="Problematics Report"
+          ngbTooltip="Problems Report" (click)="exportProblems()">
       </th>
       <th *ngIf="openFormule"></th>
-      <th></th>
+      <th><img src="../../../../assets/images/print.png" ngbTooltip="Print Order Details" class="reportImg click"
+          (click)="printOrder = true"></th>
       <th *ngIf="showingAllOrders || multi">Order Number</th>
       <th style="width:200px;" class="header">Item Number </th>
       <th class="header">Item Important Remark</th>
@@ -102,22 +104,17 @@
         <!-- <button style="color:black;" class="btn btn-success" (click)="open(contentTwo)">Amounts</button> -->
       </th>
       <th *ngIf="!loadData">
-        <img  *ngIf="userName == 'uri' || userName == 'sima' || userName == 'martha'" 
-              ngbTooltip="פיצוץ חומרים"
-              (click)="loadMaterialsForFormule()"
-              class="showCmptBtn" 
-              src="../../../../assets/images/what-happens-when-we-mix-liquids.jpg" 
-              alt="">
+        <img *ngIf="userName == 'uri' || userName == 'sima' || userName == 'martha'" ngbTooltip="פיצוץ חומרים"
+          (click)="loadMaterialsForFormule()" class="showCmptBtn"
+          src="../../../../assets/images/what-happens-when-we-mix-liquids.jpg" alt="">
       </th>
       <th *ngIf="loadData">
         <div class="smallerLoader"></div>
       </th>
 
       <th>
-        <img class="showCmptBtn" 
-              ngbTooltip="פיצוץ קומפוננטים"
-              src="../../../../assets/images/partsAssembly2.jpg" 
-              (click)="openCmptDemandsModal()">
+        <img class="showCmptBtn" ngbTooltip="פיצוץ קומפוננטים" src="../../../../assets/images/partsAssembly2.jpg"
+          (click)="openCmptDemandsModal()">
       </th>
 
     </tr>
@@ -999,10 +996,12 @@
       <div class="row">
         <div class="col-4">
           <button class="btn btn-success" printSectionId="materialsPrint"
-            [printStyle]="{td : {'border': 'solid 1px black'},tr : {'border': 'solid 1px black'}}" ngxPrint>Print</button>
+            [printStyle]="{td : {'border': 'solid 1px black'},tr : {'border': 'solid 1px black'}}"
+            ngxPrint>Print</button>
         </div>
         <div class="col-4">
-          <img style="width: 50px; height: 50px;" (click)="materialsToExcel()" src="../../../../assets/images/excel.png" alt="">
+          <img style="width: 50px; height: 50px;" (click)="materialsToExcel()" src="../../../../assets/images/excel.png"
+            alt="">
         </div>
         <div class="col-4">
           <span class="click close" id="closeId3" (click)="showMaterialsForFormules=false">&times;</span>
@@ -1104,21 +1103,74 @@
   </div>
 </ng-template>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<div id="print-order" *ngIf="printOrder" class="bg-light modal-inner rounded">
+  <br><br>
+  <div class="row">
+    <div class="col-4">
+    </div>
+    <div class="col-4">
+      <button style="border:none;background: none;margin-left:100px;font-size: 25px;" ngxPrint
+        printSectionId="print-order"
+        [printStyle]="{th : {'border': '1px solid black'}, td : {'border': '1px solid black'}, tr : {'border': '1px solid black'}}"><b>Order
+          {{number}}</b></button>
+    </div>
+    <div class="col-4">
+    </div>
+  </div>
+  <br><br>
+  <div class="row">
+    <span class="spanTitle">Total Items: {{totalOrderQty}}</span>
+    <span class='spanTitle'> Order Date:</span><span class="orderSpanDetails"> {{orderDate}} </span><span
+      class='spanTitle'> Delivery Date: </span><span class="orderSpanDetails">{{deliveryDate}}</span>
+  </div>
+  <br><br>
+  <div class="row">
+    <span class='spanTitle'> Costumer :</span><span class="orderSpanDetails"> {{costumer}} </span>
+    <span class='spanTitle'>Costumer Number:</span><span class="orderSpanDetails"> {{costumerInternalId}} </span>
+    <span class='spanTitle'> Costumer <strong>Order</strong> Number :</span>
+    <span class="orderSpanDetails">{{customerOrderNum}} </span>
+  </div>
+  <br><br>
+  <div class="row">
+    <span class='spanTitle'> Remarks:</span><span class="orderSpanDetails">{{remarks}}</span>
+  </div>
+  <br><br>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th colspan="2">Item</th>
+        <th>Barcode</th>
+        <th>Netto Weight</th>
+        <th>Required Quantity</th>
+        <th>Remained Quantity</th>
+        <th>Printed?</th>
+        <th>Filled?</th>
+        <th>Filling Status</th>
+        <th colspan="2">Remarks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let item of ordersItems; let i = index">
+        <tr>
+          <td>{{item.itemNumber}}</td>
+          <td>{{item.discription}}</td>
+          <td>{{item.barcodeK}}</td>
+          <td>{{item.netWeightGr}}</td>
+          <td>{{item.quantity}}</td>
+          <td>{{item.quantityRemained}}</td>
+          <td>
+            <img *ngIf="item.printStatus ==='printed'" style="width:15px"
+              src="../../../../assets/images/aprroved.png" />
+          </td>
+          <td>
+            <img *ngIf="item.fillingStatus ==='filled'" style="width:15px"
+              src="../../../../assets/images/aprroved.png" />
+          </td>
+          <td>{{item.fillingStatus}}</td>
+          <td>{{item.itemImpRemark}}</td>
+          <td>{{item.itemRemarks}}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

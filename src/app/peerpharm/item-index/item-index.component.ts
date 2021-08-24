@@ -1,7 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
+import { UploadFileService } from 'src/app/services/helpers/upload-file.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { Procurementservice } from 'src/app/services/procurement.service';
 import { SuppliersService } from 'src/app/services/suppliers.service';
@@ -20,15 +22,20 @@ export class ItemIndexComponent implements OnInit {
   item: any;
   itemNames: any[]
   items: any[]
-
   itemMovements: any[];
   itemMovementsCopy: any[];
-
-  allSuppliers: any;
   lastOrdersOfItem: any[]
+  materialLocations: any[]
+  allSuppliers: any[];
+  cmptTypes2: Array<any>
+  cmptTypes3: Array<any>
+  cmptMaterials: Array<any>
+  cmptMaterials2: Array<any>
+
   currencies: Currencies;
   rowNumber: number = -1
   counter: number = 0
+  screenPermission: number;
   gettingProducts: boolean;
   fetchingOrders: boolean;
   allowUserEditItem: boolean;
@@ -36,19 +43,6 @@ export class ItemIndexComponent implements OnInit {
   showMovementsForm: boolean = false
   showSalesForm: boolean = false
   allowedProblematicEdit: boolean = false
-
-  supplier: any = {
-    supplierName: '',
-    price: "",
-    coin: "",
-    coinLoading: "",
-    priceLoading: "",
-    manufacturer: "",
-    alternativeMaterial: "",
-    alterName: "",
-    subGroup: "",
-    packageWeight: "",
-  }
 
   cmptCategoryList: Array<any> = [
     'Sacara', 'Mineralium', 'Arganicare', 'Spa Pharma', 'Olive', 'Vitamin C', 'Quinoa', 'Andrea Milano', 'Dermalosophy',
@@ -62,11 +56,19 @@ export class ItemIndexComponent implements OnInit {
     'irosol_valve', 'irosol_bottle', 'irosol_hectotor', 'irosol_bottle', 'cellophane', 'sticker', 'sachet', 'godett',
     'plate', 'other'
   ]
-  cmptTypes2: Array<any>
-  cmptTypes3: Array<any>
-  cmptMaterials: Array<any>
-  cmptMaterials2: Array<any>
 
+  supplier: any = {
+    supplierName: '',
+    price: "",
+    coin: "",
+    coinLoading: "",
+    priceLoading: "",
+    manufacturer: "",
+    alternativeMaterial: "",
+    alterName: "",
+    subGroup: "",
+    packageWeight: "",
+  }
 
   itemMovementForm: FormGroup = new FormGroup({
     itemType: new FormControl('all', Validators.required),
@@ -93,27 +95,57 @@ export class ItemIndexComponent implements OnInit {
     amount: new FormControl(null),
     amountDir: new FormControl('higherThan')
   })
+  allowPriceUpdate: boolean = false
+  supPurchases: any[] = []
+  fetchingMovements: boolean;
 
   constructor(
     private inventoryService: InventoryService,
     private toastSrv: ToastrService,
     private supplierService: SuppliersService,
     private procuretServ: Procurementservice,
-    private authService: AuthService
+    private authService: AuthService,
+    private modalService: NgbModal,
+    private uploadService: UploadFileService
   ) { }
 
   ngOnInit(): void {
     this.allowedProblematicEdit = this.authService.loggedInUser.userName == 'haviv' || this.authService.loggedInUser.userName == 'martha' || this.authService.loggedInUser.userName == 'sima'
-    this.getAllSuppliers()
+    this.screenPermission = Number(this.authService.loggedInUser.screenPermission)
     this.getCurrencies()
     if (this.authService.loggedInUser.authorization.includes("updateStock")) {
       this.allowUserEditItem = true;
     }
-    setTimeout(()=>this.itemNumber.nativeElement.focus(),500)
+    this.allowPriceUpdate = Number(this.authService.loggedInUser.screenPermission) < 4
+    setTimeout(() => this.itemNumber.nativeElement.focus(), 500)
+  }
+
+  setFormView(form) {
+    switch (form) {
+      case 'itemDetails':
+        this.showDetailsForm = true
+        this.showMovementsForm = false
+        this.showSalesForm = false
+        break
+      case 'movements':
+        this.showDetailsForm = false
+        this.showMovementsForm = true
+        this.showSalesForm = false
+        break
+      case 'sales':
+        this.showDetailsForm = false
+        this.showMovementsForm = false
+        this.showSalesForm = true
+        break
+    }
+  }
+
+  open(modal) {
+    this.modalService.open(modal)
   }
 
   setColors(title) {
-    switch(title) {
+    switch (title) {
       case 'title1': return 'title1'
       case 'title2': return 'title2'
       case 'title3': return 'title3'
@@ -159,7 +191,9 @@ export class ItemIndexComponent implements OnInit {
   }
 
   fetchMovements() {
+    this.fetchingMovements = true
     this.inventoryService.getComplexItemMovements(this.itemMovementForm.value).subscribe(data => {
+      this.fetchingMovements = false
       console.log(data)
       this.item = undefined
       this.itemMovements = data
@@ -216,8 +250,8 @@ export class ItemIndexComponent implements OnInit {
     this.itemMovements = this.itemMovementsCopy.filter(movement => movement[key] == value)
   }
 
-  fetchProducts(){
-    
+  fetchProducts() {
+
   }
 
   checkIfItemExist(ev) {
@@ -251,6 +285,15 @@ export class ItemIndexComponent implements OnInit {
     })
   }
 
+  writeNewStockItem(itemType) {
+    switch (itemType) {
+      case 'material': this.writeNewMaterial()
+        break;
+      case 'component' || 'product': this.writeNewComponent()
+        break;
+    }
+  }
+
   writeNewComponent() {
     if (this.item.componentN != "") {
       // this.item.itemType = this.stockType;
@@ -267,6 +310,38 @@ export class ItemIndexComponent implements OnInit {
     } else {
       this.toastSrv.error("Can't create new stock item without number")
     }
+  }
+
+  writeNewMaterial() {
+    this.item.itemType = "material"
+    if (this.item.componentN != "") {
+      this.inventoryService.addNewMaterial(this.item).subscribe(res => {
+        if (res == "פריט קיים במערכת !") {
+          this.toastSrv.error("פריט קיים במערכת !")
+        } else {
+          this.toastSrv.success("New material item created");
+        }
+      });
+    }
+  }
+
+  uploadCoaMaster(fileInputEvent) {
+    let file = fileInputEvent.target.files[0];
+    this.uploadService.uploadFileToS3Storage(file).subscribe(data => {
+      if (data.partialText) {
+        this.item.coaMaster = data.partialText;
+      }
+    })
+  }
+
+  uploadMsds(fileInputEvent) {
+    let file = fileInputEvent.target.files[0];
+    this.uploadService.uploadFileToS3Storage(file).subscribe(data => {
+      if (data.partialText) {
+        // this.tempHiddenImgSrc=data.partialText;
+        this.item.msds = data.partialText;
+      }
+    })
   }
 
 
@@ -294,7 +369,7 @@ export class ItemIndexComponent implements OnInit {
     }
   }
 
-  editStockItemDetails() {
+  editItemDetails() {
     this.item;
     if (confirm("לעדכן פריט?")) {
       this.inventoryService.updateCompt(this.item).subscribe(res => {
@@ -308,6 +383,53 @@ export class ItemIndexComponent implements OnInit {
     }
 
   }
+
+  //pricing
+
+  test() {
+    debugger
+  }
+
+  addToPriceHistory() {
+    let componentN = this.item.componentN
+    let newPrice = this.item.manualPrice
+    let coin = this.item.manualCoin
+    let user = this.authService.loggedInUser.userName
+    this.inventoryService.updatePriceHistory(this.item.componentN, newPrice, coin, user).subscribe(data => {
+      this.item.priceUpdates.push({
+        price: newPrice,
+        coin, user,
+        date: new Date(),
+        type: 'manual'
+      })
+    })
+    this.toastSrv.info('', 'יש לשמור פריט')
+    this.allowPriceUpdate = false
+    this.modalService.dismissAll()
+  }
+
+  checkUpdatePriceValidity(type) {
+    this.allowPriceUpdate = false
+    this.allowPriceUpdate = this.item.manualCoin != undefined && this.item.manualPrice != undefined
+  }
+
+  getSupplierPriceHistory(i) {
+    //TODO: get supplier NUmber!!!
+    this.procuretServ.getAllOrdersFromSupplier(this.item.alternativeSuppliers[i].suplierNumber).subscribe(data => {
+      this.supPurchases = data.filter(purchase => purchase.status == 'open')
+      for (let order of data) {
+
+      }
+    })
+  }
+
+
+  getAllMaterialLocations() {
+    this.inventoryService.getAllMaterialLocations().subscribe(data => {
+      this.materialLocations = data;
+    })
+  }
+
 
   addSupplierToComponent() {
     if (this.supplier.price == '' || this.supplier.price == '' || this.supplier.supplierName == '') {
@@ -331,7 +453,7 @@ export class ItemIndexComponent implements OnInit {
   }
 
   mainSupplier(isMain) {
-    
+
     if (isMain) {
       return 'lightgreen'
     } else {
@@ -351,6 +473,39 @@ export class ItemIndexComponent implements OnInit {
         this.toastSrv.success('ספק ראשי עודכן בהצלחה!')
       }
     })
+  }
+
+  addSupplierToMaterial() {
+
+    if (this.supplier.price == '' || this.supplier.price == '' || this.supplier.supplierName == '') {
+      this.toastSrv.error('אנא תמלא שם ספק , מחיר ומטבע ')
+    } else {
+
+      this.item.alternativeSuppliers.push(this.supplier)
+
+      this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
+      this.supplier = {
+        supplierName: '',
+        price: "",
+        coin: "",
+        coinLoading: "",
+        priceLoading: "",
+        manufacturer: "",
+        alternativeMaterial: "",
+        alterName: "",
+        subGroup: "",
+        packageWeight: "",
+        expectedArrival: "",
+      }
+    }
+
+  }
+
+  deleteSupplier(index) {
+    if (confirm('האם למחוק ספק ?')) {
+      this.item.alternativeSuppliers.splice(index, 1);
+      this.toastSrv.success('ספק הוסר בהצלחה , לא לשכוח לעדכן מידע !')
+    }
   }
 
   getLastOrdersItem(numOfOrders, type) {
