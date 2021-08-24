@@ -370,6 +370,7 @@ export class ProcurementOrdersComponent implements OnInit {
       this.procurementDataCopy.splice(index, 1, e);
     }
     this.filterPurchaseOrders();
+    this.showLoader = false;
 
     // let isClosed = false;
     // this.getAllProcurementOrders(isClosed);

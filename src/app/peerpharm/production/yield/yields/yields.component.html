@@ -58,36 +58,98 @@
                 </div>
             </div>
             <div class="row mt-4">
-                <div class="col-2 p-5">
+                <div class="col-2 p-5" formGroupName="currentCleaning">
+
                     <h3 class="mt-4">ניקיון</h3>
                     <label for="">התחלה</label>
-                    <input type="time" formControlName="cleaningStart" class="form-control">
+                    <input type="time" formControlName="startTime" class="form-control">
                     <label for="">סיום</label>
-                    <input type="time" formControlName="cleaningEnd" (change)="calculateCleaningTime()"
-                        class="form-control">
-                    <!-- <label for="">משך</label> -->
-                    <!-- <p>{{currentYield.controls.cleaningDuration.hours}}{{currentYield.value.cleaningDuration.minutes}}</p> -->
+                    <input type="time" formControlName="endTime" class="form-control">
+                    <button type="button" class="btn btn-primary" (click)="addCleaning()">הוסף</button>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>התחלה</th>
+                                <th>סיום</th>
+                                <th>משך</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let clean of currentYield.value.allCleanings;index as id">
+                                <td>{{id+1}}</td>
+                                <td>{{clean.startTime}}</td>
+                                <td>{{clean.endTime}}</td>
+                                <td>{{clean.duration.hours}}:{{clean.duration.minutes}}</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
                 </div>
-                <div class="col-2 p-5">
+                <div class="col-2 p-5" formGroupName="currentSetup">
                     <h3 class="mt-4">Set Up</h3>
                     <label for="">התחלה</label>
-                    <input type="time" formControlName="setupStart" class="form-control">
+                    <input type="time" formControlName="startTime" class="form-control">
                     <label for="">סיום</label>
-                    <input type="time" formControlName="setupEnd" (change)="calculateSetupTime()" class="form-control">
+                    <input type="time" formControlName="endTime" (change)="calculateSetupTime()" class="form-control">
                     <!-- <label for="">משך</label>
                     <p>{{currentYield.value.setupDuration.hours}}:{{currentYield.value.setupDuration.minutes}}</p> -->
+                    <button type="button" class="btn btn-primary" (click)="addSetup()">הוסף</button>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>התחלה</th>
+                                <th>סיום</th>
+                                <th>משך</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let setup of currentYield.value.allSetups;index as id">
+                                <td>{{id+1}}</td>
+                                <td>{{setup.startTime}}</td>
+                                <td>{{setup.endTime}}</td>
+                                <td>{{setup.duration.hours}}:{{setup.duration.minutes}}</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
                 </div>
-                <div class="col-2 p-5">
+                <div class="col-2 p-5" formGroupName="currentWaiting">
                     <h3 class="mt-4">זמן המתנה</h3>
                     <label for="">התחלה</label>
-                    <input type="time" formControlName="waitingStart" class="form-control">
+                    <input type="time" formControlName="startTime" class="form-control">
                     <label for="">סיום</label>
-                    <input type="time" formControlName="waitingEnd" (change)="calculateWaitingTime()"
-                        class="form-control">
+                    <input type="time" formControlName="endTime" (change)="calculateWaitingTime()" class="form-control">
                     <!-- <label for="">משך</label>
                     <p>{{currentYield.value.waitingDuration.hours}}:{{currentYield.value.waitingDuration.minutes}}</p> -->
                     <label for="">סיבה</label>
-                    <input type="text" formControlName="waitingCause" placeholder="סיבת המתנה" class="form-control">
+                    <input type="text" formControlName="cause" placeholder="סיבת המתנה" class="form-control">
+                    <button type="button" class="btn btn-primary" (click)="addWaiting()">הוסף</button>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>התחלה</th>
+                                <th>סיום</th>
+                                <th>משך</th>
+                                <th>סיבה</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let waiting of currentYield.value.allWaitings;index as id">
+                                <td>{{id+1}}</td>
+                                <td>{{waiting.startTime}}</td>
+                                <td>{{waiting.endTime}}</td>
+                                <td>{{waiting.duration.hours}}:{{waiting.duration.minutes}}</td>
+                                <td>{{waiting.cause}}</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
                 </div>
             </div>
             <div class="row">

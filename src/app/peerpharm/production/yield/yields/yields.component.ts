@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
@@ -24,22 +24,33 @@ export class YieldsComponent implements OnInit {
     productionDate: new FormControl(null, Validators.required),
     startTime: new FormControl(null, Validators.required),
     endTime: new FormControl(null, Validators.required),
-    cleaningStart: new FormControl(null),
-    cleaningEnd: new FormControl(null),
-    cleaningDuration: new FormControl(null),
-    setupStart: new FormControl(null),
-    setupEnd: new FormControl(null),
-    setupDuration: new FormControl(null),
-    waitingStart: new FormControl(null),
-    waitingEnd: new FormControl(null),
-    waitingCause: new FormControl(''),
-    waitingDuration: new FormControl(null),
+    currentCleaning: new FormGroup({
+      startTime: new FormControl(null),
+      endTime: new FormControl(null),
+      duration: new FormControl(null)
+    }),
+    allCleanings: new FormControl([]),
+    allSetups: new FormControl([]),
+    currentSetup: new FormGroup({
+      startTime: new FormControl(null),
+      endTime: new FormControl(null),
+      duration: new FormControl(null)
+    }),
+    allWaitings: new FormControl([]),
+    currentWaiting: new FormGroup({
+      startTime: new FormControl(null),
+      endTime: new FormControl(null),
+      duration: new FormControl(null),
+      cause: new FormControl('')
+    }),
     totalDuration: new FormControl(null),
-    brutoDurationToPresent: new FormControl(null),
+    brutoDurationToPresent: new FormControl(''),
     totalDurationToPresent: new FormControl(''),
     dayProdQty: new FormControl(null, Validators.required),
     hourProdQty: new FormControl(null),
   })
+
+
 
   constructor(
     private productionService: ProductionService,
@@ -65,6 +76,7 @@ export class YieldsComponent implements OnInit {
   getOpenYields() {
     this.productionService.getAllYieldsByDate(new Date()).subscribe(res => {
       if (!res.msg) this.yields = res
+
     })
   }
 
@@ -102,6 +114,7 @@ export class YieldsComponent implements OnInit {
     this.currentLine = this.lines[this.lineIndex]
     this.productionService.getLineYieldByDate(this.currentLine, new Date()).subscribe(yieldData => {
       // delete yieldData._id
+
       this.currentYield.reset()
       this.currentYield.patchValue(yieldData)
       this.getOpenYields()
@@ -116,16 +129,107 @@ export class YieldsComponent implements OnInit {
     yesterday.setDate(today.getDate() - 1);
     this.productionService.getLineYieldByDate(this.currentLine, yesterday).subscribe(yieldData => {
       // delete yieldData._id
+
       this.currentYield.reset()
       this.currentYield.patchValue(yieldData)
     })
   }
 
-  calculateCleaningTime() {
-    let startTime = this.currentYield.value.cleaningStart
-    let endTime = this.currentYield.value.cleaningEnd
+  // calculateCleaningTime() {
+  //   let startTime = this.currentYield.value.allCleanings.startTime
+  //   console.log(startTime)
+  //   let endTime = this.currentYield.value.allCleanings.endTime
+  //   console.log(endTime)
+  //   if (startTime > endTime) this.toastr.error('יש להגדיר זמן סיום לאחר זמן התחלה')
+  //   else this.currentYield.controls.allCleanings.setValue({ duration: this.durationCalculate(startTime, endTime) })
+  //   console.log(this.currentYield.value.allCleanings.duration)
+  // }
+
+  addCleaning() {
+    console.log('Line 144 Add Cleaning')
+    let startTime = this.currentYield.value.currentCleaning.startTime
+    console.log(startTime)
+    let endTime = this.currentYield.value.currentCleaning.endTime
+    console.log(endTime)
+    let allCleaningsArr = this.currentYield.value.allCleanings;
+
     if (startTime > endTime) this.toastr.error('יש להגדיר זמן סיום לאחר זמן התחלה')
-    else this.currentYield.controls.cleaningDuration.setValue(this.durationCalculate(startTime, endTime))
+    // else if (allCleaningsArr && allCleaningsArr.length > 0 && startTime < allCleaningsArr[allCleaningsArr.length - 1].endTime) {
+    //   this.toastr.error('יש להגדיר זמן התחלה גדול או שווה לזמן הסיום של הניקיון הקודם')
+    // }
+    else {
+      let duration = this.durationCalculate(startTime, endTime)
+      console.log(duration);
+      let cleaning = {
+        "startTime": startTime,
+        "endTime": endTime,
+        "duration": duration
+      }
+      this.currentYield.value.allCleanings.push(cleaning)
+      this.saveYield()
+      this.currentYield.controls.currentCleaning.reset()
+    }
+  }
+  addSetup() {
+    console.log('Line 174 Add Cleaning')
+    let startTime = this.currentYield.value.currentSetup.startTime
+    console.log(startTime)
+    let endTime = this.currentYield.value.currentSetup.endTime
+    console.log(endTime)
+    let allSetupsArr = this.currentYield.value.allSetups;
+
+    if (startTime > endTime) this.toastr.error('יש להגדיר זמן סיום לאחר זמן התחלה')
+    // else if (allSetupsArr && allSetupsArr.length > 0 && startTime < allSetupsArr[allSetupsArr.length - 1].endTime) {
+    //   this.toastr.error('יש להגדיר זמן התחלה גדול או שווה לזמן הסיום של הניקיון הקודם')
+    // }
+    else {
+      let duration = this.durationCalculate(startTime, endTime)
+      console.log(duration);
+      let setup = {
+        "startTime": startTime,
+        "endTime": endTime,
+        "duration": duration
+      }
+      this.currentYield.value.allSetups.push(setup)
+      this.saveYield()
+      this.currentYield.controls.currentSetup.reset()
+    }
+  }
+  addWaiting() {
+    console.log('Line 202 Add Waiting')
+    let startTime = this.currentYield.value.currentWaiting.startTime
+    console.log(startTime)
+    let endTime = this.currentYield.value.currentWaiting.endTime
+    console.log(endTime)
+    let cause = this.currentYield.value.currentWaiting.cause as String;
+    console.log(cause)
+    let allWaitingsArr = this.currentYield.value.allWaitings;
+
+    if (startTime > endTime) this.toastr.error('יש להגדיר זמן סיום לאחר זמן התחלה')
+    // else if (
+    //   allWaitingsArr
+    //   && allWaitingsArr.length > 0
+    //   && startTime < allWaitingsArr[allWaitingsArr.length - 1].endTime
+    // ) {
+    //   this.toastr.error('יש להגדיר זמן התחלה גדול או שווה לזמן הסיום הקודם  של ההמתנה ')
+    // }
+    else {
+      let duration = this.durationCalculate(startTime, endTime)
+      console.log(duration);
+      let waiting = {
+        "startTime": startTime,
+        "endTime": endTime,
+        "duration": duration,
+        "cause": cause
+      }
+      console.log("Line 223, waiting is: ")
+      console.log(waiting)
+      if (!this.currentYield.value.allWaitings) this.currentYield.value.allWaitings = [];
+      this.currentYield.value.allWaitings.push(waiting)
+      console.log(this.currentYield.value.allWaitings)
+      this.saveYield()
+      this.currentYield.controls.currentWaiting.reset()
+    }
   }
 
   calculateSetupTime() {
@@ -143,27 +247,95 @@ export class YieldsComponent implements OnInit {
   }
 
   calculateTotalDuration() {
-    if (this.currentYield.value.waitingEnd > this.currentYield.value.endTime || this.currentYield.value.cleaningEnd > this.currentYield.value.endTime || this.currentYield.value.setupEnd > this.currentYield.value.endTime) {
+    let maxEndTime = "00:00";
+    let minStartTime = "24:00";
+    let allWaitingsArr = this.currentYield.value.allWaitings;
+    let allSetupsArr = this.currentYield.value.allSetups;
+    let allCleaningsArr = this.currentYield.value.allCleanings;
+    let accumulatedWaiting = 0;
+
+    //Check that the waiting periods start after the daily start time and end before the daily end time
+
+    for (let period of allWaitingsArr) {
+      // period.startTime = period.startTime ? period.startTime : "24:00"
+      minStartTime = minStartTime < period.startTime ? minStartTime : period.startTime;
+      // period.endTime = period.endTime ? period.endTime : "00:00"
+      maxEndTime = maxEndTime > period.endTime ? maxEndTime : period.endTime;
+    }
+    for (let period of allSetupsArr) {
+      minStartTime = minStartTime < period.startTime ? minStartTime : period.startTime;
+      maxEndTime = maxEndTime > period.endTime ? maxEndTime : period.endTime;
+    }
+    for (let period of allCleaningsArr) {
+      // period.startTime = period.startTime ? period.startTime : "24:00"
+      minStartTime = minStartTime < period.startTime ? minStartTime : period.startTime;
+      // period.endTime = period.endTime ? period.endTime : "00:00"
+      maxEndTime = maxEndTime > period.endTime ? maxEndTime : period.endTime;
+    }
+    if (maxEndTime > this.currentYield.value.endTime) {
+
       this.toastr.error('אחד מזמני ההמתנה מוגדר אחרי זמן סיום.', 'חישוב הופסק')
     }
+
+    else if (minStartTime < this.currentYield.value.startTime) {
+
+      this.toastr.error('אחד מזמני ההמתנה מוגדר לפני זמן ההתחלה.', 'חישוב הופסק')
+    }
     else {
+
+      // build one array with all the waiting periods arrays
+      let allPeriodsArray = allCleaningsArr.concat(allSetupsArr, allWaitingsArr);
+      // sort the objects in the array by the start time
+      allPeriodsArray = this.sortArray(allPeriodsArray)
+
+      console.log(allPeriodsArray);
+      // reset all the skip properties in the array to false before we start the calculation
+      for (let period of allPeriodsArray) {
+        period.skip = false;
+      }
+
+      let endTime = "00:00";
+      // calculation of the overall waiting period in minutes
+      for (let i = 0; i < allPeriodsArray.length - 1; i++) {
+        if (!allPeriodsArray[i].skip) {
+          endTime = allPeriodsArray[i].endTime;
+          console.log("Line 312, " + i + ": " + endTime)
+          allPeriodsArray[i].skip = true;
+          // check if there is overlaping between this period and the rest, if yes, change the end time to the latest one
+          for (let j = i + 1; j < allPeriodsArray.length; j++) {
+            if (allPeriodsArray[j].startTime < endTime && allPeriodsArray[j].endTime > endTime) {
+              endTime = allPeriodsArray[j].endTime
+              allPeriodsArray[j].skip = true;
+            } else if (allPeriodsArray[j].startTime < endTime) {
+              allPeriodsArray[j].skip = true;
+            }
+          }
+          console.log("end time: " + i + ": " + endTime);
+          console.log("start time: " + i + ": " + allPeriodsArray[i].startTime)
+          // add the waiting duration in minutes to the accumulatedWaiting duration
+          accumulatedWaiting += (this.durationCalculate(allPeriodsArray[i].startTime, endTime)).minutes + (this.durationCalculate(allPeriodsArray[i].startTime, endTime)).hours * 60;
+          console.log(this.durationCalculate(allPeriodsArray[i].startTime, endTime).minutes)
+          console.log(accumulatedWaiting)
+        }
+      }
+      // calculate the daily duration 
       let brutoDuration = this.durationCalculate(this.currentYield.value.startTime, this.currentYield.value.endTime)
+      console.log(brutoDuration);
       let brutoDurationMinutes = brutoDuration.hours * 60 + brutoDuration.minutes
 
-      let onHoldDurationMinutes
-      let cleaning = this.currentYield.value.cleaningDuration ? this.currentYield.value.cleaningDuration.hours * 60 + this.currentYield.value.cleaningDuration.minutes : 0
-      let setup = this.currentYield.value.setupDuration ? this.currentYield.value.setupDuration.hours * 60 + this.currentYield.value.setupDuration.minutes : 0
-      let waiting = this.currentYield.value.waitingDuration ? this.currentYield.value.waitingDuration.hours * 60 + this.currentYield.value.waitingDuration.minutes : 0
-      onHoldDurationMinutes = cleaning + setup + waiting
-
-      let totalDurationMinutes = brutoDurationMinutes - onHoldDurationMinutes
+      // calculate the neto daily duration
+      let totalDurationMinutes = brutoDurationMinutes - accumulatedWaiting;
       let totalDuration = totalDurationMinutes / 60
+      console.log(totalDuration)
       this.currentYield.controls.totalDuration.setValue(totalDuration)
       this.currentYield.controls.hourProdQty.setValue(Math.round(this.currentYield.value.dayProdQty / totalDuration))
 
       // Presentation of bruto and netto time
       this.currentYield.controls.totalDurationToPresent.setValue(this.durationToPresent(totalDuration))
-      this.currentYield.controls.brutoDurationToPresent.setValue(this.durationToPresent((brutoDuration.hours * 60 + brutoDuration.minutes) / 60))
+      console.log(brutoDurationMinutes)
+      brutoDuration = brutoDurationMinutes / 60;
+      console.log(brutoDuration)
+      this.currentYield.controls.brutoDurationToPresent.setValue(this.durationToPresent(brutoDuration))
       this.saveYield()
     }
   }
@@ -187,8 +359,10 @@ export class YieldsComponent implements OnInit {
   durationCalculate(startTime, endTime) {
     startTime = moment(startTime, "HH:mm")
     endTime = moment(endTime, "HH:mm")
-    console.log(moment.duration(endTime.diff(startTime)))
-    console.log(this.currentYield.value.cleaningDuration)
+    // console.log(moment.duration(endTime.diff(startTime)))
+    // console.log(this.currentYield.value.cleaningDuration)
+    console.log("Line 384")
+    console.log(moment.duration(endTime.diff(startTime))['_data'])
     return moment.duration(endTime.diff(startTime))['_data']
   }
 
@@ -196,9 +370,26 @@ export class YieldsComponent implements OnInit {
     let number = duration.toString().split('.')
     let hour = number[0]
     let decimal = number[1].slice(0, 2)
-    let minutes = Math.round(decimal / 100 * 60)
+    console.log("decimal: " + decimal)
+    decimal = "0." + decimal;
+    console.log("string decimal: ", decimal)
+    let minutes = Math.round(decimal * 60)
+    console.log("minutes: ", minutes)
     if (minutes < 10) return `${hour}:0${minutes}`
     else return `${hour}:${minutes}`
+  }
+  sortArray(objArray) {
+
+    function compare(a, b) {
+      if (a.startTime < b.startTime) {
+        return -1;
+      }
+      if (a.startTime > b.startTime) {
+        return 1;
+      }
+      return 0;
+    }
+    return objArray.sort(compare);
   }
 
 
