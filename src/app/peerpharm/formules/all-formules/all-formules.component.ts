@@ -132,6 +132,7 @@ export class AllFormulesComponent implements OnInit {
   loading: boolean;
   password: string = 'martha@2021'
   dragging: boolean = false
+  updatingFormule: boolean = false
 
 
 
@@ -193,16 +194,12 @@ export class AllFormulesComponent implements OnInit {
   }
 
   addNewItem() {
-
-
-
     this.updateFormule;
     this.addItem.currentPhase = JSON.stringify(this.updateFormule.currentPhase)
     this.addItem.formuleId = this.updateFormule._id
     var phase = this.updateFormule.phases.filter(phase => phase.phaseNumber == this.addItem.currentPhase)
     this.addItem.phaseId = phase[0]._id
     this.formuleService.addItem(this.addItem).subscribe(data => {
-
       if (data) {
         var allPhases = data.phases;
         var phase = allPhases.filter(phase => phase._id == this.updateItems.phaseId)
@@ -214,30 +211,24 @@ export class AllFormulesComponent implements OnInit {
 
   addNewPhase() {
     this.formuleService.addPhase(this.addPhase).subscribe(data => {
-
-      ;
       if (data) {
         this.updateFormule.phases = data.phases;
         this.toastSrv.success("Phase added successfully")
-
       }
     })
   }
 
   getAllFormules() {
     this.formuleService.getAllFormules().subscribe(data => {
-      ;
       if (data) {
         this.allFormules = data;
         this.allFormulesCopy = data;
         this.showLoader = false;
       }
-
     })
   }
 
   edit(id, phaseName) {
-
     if (id != '') {
       this.EditRowId = id;
       this.EditPhase = phaseName
@@ -245,12 +236,10 @@ export class AllFormulesComponent implements OnInit {
       this.EditRowId = '';
       this.EditPhase = '';
     }
-    // }
   }
 
 
   approveFormule(formule) {
-    ;
     this.user = this.authService.loggedInUser.userName;
     if (this.user == "martha" || this.user == "sima") {
       if (confirm("האם לאשר פורמולה מספר: " + formule.formuleNumber)) {
@@ -270,65 +259,31 @@ export class AllFormulesComponent implements OnInit {
   }
 
   editPhases(id) {
-
     this.EditRowId = id;
-
-
     this.updateFormule;
     this.EditRowId = id;
-
     var formule = this.allFormules.find(formule => formule._id == this.updateFormule._id)
-
-
     var results = formule.phases.filter(phase => phase._id == id)
-
     this.currentDoc = results;
-
     var phase = this.updateFormule.phases.find(phase => phase._id == id)
-
     this.phaseToUpdate.phaseName = phase.phaseName
     this.phaseToUpdate.phaseIns = phase.phaseInstructions
-
-
-
   }
 
   editItems(itemNumber, index, phaseId) {
-    ;
     this.updateItems
     this.EditRowId = itemNumber
-
-    // var formules = this.allFormules;
-    // var results = [];
-
-    // for (let i = 0; i < formules.length; i++) {
-    //   for (const j = 0; j < formules[i].phases.length; i++) {
-    //     if (formules[i].phases[j]._id === phaseId) {
-    //       results.push(formules[i].phases[j]);
-
-    //     }
-    //   }
-
-    // }
-
     var formule = this.allFormules.find(formule => formule._id == this.updateFormule._id)
     var results = formule.phases.filter(phase => phase._id == phaseId)
-
     this.currentDoc = results[0].items
     this.currentDoc[0].index = index
-
-
-
     var phase = this.updateFormule.phases.find(phase => phase._id == phaseId)
-
     this.itemToUpdate.itemNumber = phase.items[index].itemNumber
-
     this.itemToUpdate.quantity = phase.items[index].quantity
     this.itemToUpdate.quantityUnits = phase.items[index].quantityUnits
     this.itemToUpdate.percentage = phase.items[index].percentage
     this.itemToUpdate.itemPH = phase.items[index].itemPH
     this.itemToUpdate.temp = phase.items[index].temp
-
   }
 
   copyFormule(formule) {
@@ -337,33 +292,24 @@ export class AllFormulesComponent implements OnInit {
         this.allFormules.push(data);
         this.toastSrv.success('פורמולה הועתקה בהצלחה !')
       }
-
     })
   }
 
   isSelected(ev, item) {
-
     if (ev.target.checked == true) {
       var isSelected = this.selectedArr
       isSelected.push({ ...item });
       this.selectedArr = isSelected
     }
-
     if (ev.target.checked == false) {
       var isSelected = this.selectedArr
       var tempArr = isSelected.filter(x => x.itemNumber != item.itemNumber)
       this.selectedArr = tempArr
     }
-
-
   }
 
   saveEdit(currdoc) {
-
-    ;
-
     if (this.formuleName.nativeElement.value != "") {
-
       if (this.authService.loggedInUser.userName) {
         currdoc.lastUpdateUser = this.authService.loggedInUser.userName
       }
@@ -379,37 +325,24 @@ export class AllFormulesComponent implements OnInit {
       if (this.formulePhTo.nativeElement.value) {
         currdoc.phTo = this.formulePhTo.nativeElement.value.trim();
       }
-      // if(this.formuleClient.nativeElement.value != undefined){
-      //   currdoc.client = this.formuleClient.nativeElement.value.trim();
-      // }
       if (this.formuleLastUpdate.nativeElement.value) {
         currdoc.lastUpdate = this.formatDate(new Date())
       }
-      // if(this.formuleParent.nativeElement.value){
-      //   currdoc.parent = this.formuleParent.nativeElement.value.trim();
-      // }
       if (this.formuleCategory.nativeElement.value) {
         currdoc.formuleCategory = this.formuleCategory.nativeElement.value.trim();
       }
       if (this.formuleImpRemarks.nativeElement.value != null) {
         currdoc.impRemarks = this.formuleImpRemarks.nativeElement.value.trim();
       }
-
       if (confirm("האם אתה בטוח רוצה לשנות פריטים אלו ?") == true) {
         this.updateDocument(currdoc)
       }
-
     } else {
-
       this.toastSrv.error("Can't save changes with missing fields.")
-
     }
-
   }
 
   addItemToFormule() {
-    ;
-
     var newPhase = {
       phaseName: '',
       remarks: '',
@@ -591,37 +524,24 @@ export class AllFormulesComponent implements OnInit {
   }
 
   savePhaseEdit(currDoc) {
-    ;
-
-
     if (this.phaseToUpdate.phaseName != "") {
       this.currentDoc[0].phaseName = this.phaseToUpdate.phaseName;
       this.currentDoc[0].phaseInstructions = this.phaseToUpdate.phaseIns;
       if (confirm("האם אתה בטוח שאתה רוצה לשנות פריטים אלו ?") == true) {
         this.updatePhase()
-
       }
-
     } else {
-
       this.toastSrv.error("Can't save changes with missing fields.")
-
     }
-
-
-
   }
 
   openUpdateTempPriceModal(material) {
-
     this.updatePriceModal = true
     this.currMaterial = material
   }
 
   updateTempPrice() {
-    ;
     this.currMaterial
-
     let material = this.formuleMaterialPrices.find(m => m.itemNumber == this.currMaterial.itemNumber);
     material.price = Number(this.newTempPrice) * Number(material.percentage) / 100
     this.sumFormulePrice = this.sumFormulePrice + material.price
@@ -629,9 +549,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   saveItemEdit(currDoc, index) {
-    ;
     this.currentDoc;
-
     if (this.itemToUpdate.itemNumber != "") {
       this.currentDoc[index].index = index
       this.currentDoc[index].itemName = this.itemToUpdate.itemName
@@ -643,32 +561,22 @@ export class AllFormulesComponent implements OnInit {
       if (confirm("האם אתה בטוח שאתה רוצה לשנות פריטים אלו ?") == true) {
         this.updatePhaseItems(index)
       }
-
     } else {
-
       this.toastSrv.error("Can't save changes with missing fields.")
-
     }
   }
 
   updatePhase() {
-    ;
     this.formuleService.updateFormulePhaseId(this.currentDoc).subscribe(data => {
-
-      data;
       this.EditRowId = '';
       this.toastSrv.success("Details were successfully saved");
       this.phaseToUpdate.phaseName = ""
       this.phaseToUpdate.phaseIns = ""
-
-
     })
   }
 
   updatePhaseItems(index) {
     this.formuleService.updateFormulePhaseItems(this.currentDoc[index]).subscribe(data => {
-
-      data;
       this.EditRowId = '';
       this.toastSrv.success("Details were successfully saved");
       this.getAllFormules();
@@ -677,11 +585,7 @@ export class AllFormulesComponent implements OnInit {
 
 
   updateDocument(currdoc) {
-    ;
-
-
     this.formuleService.updateFormulesForm(currdoc).subscribe(data => {
-
       this.allFormules.map(doc => {
         if (doc._id == currdoc._id) {
           doc = data;
@@ -692,7 +596,6 @@ export class AllFormulesComponent implements OnInit {
           doc = data;
         }
       });
-
       this.EditRowId = ""
       this.toastSrv.success("Details were successfully saved");
     });
@@ -700,9 +603,7 @@ export class AllFormulesComponent implements OnInit {
 
 
   openPrint(printFormule, formuleNum) {
-    ;
     this.updateFormule = [];
-    ;
     this.modalService.open(printFormule, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
@@ -713,7 +614,6 @@ export class AllFormulesComponent implements OnInit {
 
 
   fillMaterialName(ev) {
-    ;
     var itemNumber = ev.target.value
     if (itemNumber != "buffer" || itemNumber != "") {
       this.chooseFromBuffer = false;
@@ -728,28 +628,20 @@ export class AllFormulesComponent implements OnInit {
 
   fillMaterialNumber(ev) {
     var materialName = ev.target.value;
-
     var material = this.materials.find(m => m.componentName.includes(materialName))
     this.newItem.itemNumber = material.componentN
-      ;
-
-
   }
 
   loadDataPrint(formuleNum) {
-    ;
     var formuleToUpdate = [];
     formuleToUpdate = this.allFormules.find(formule => formule.formuleNumber == formuleNum);
     this.updateFormule = formuleToUpdate
-
     for (let i = 0; i < this.updateFormule.phases.length; i++) {
       for (let j = 0; j < this.updateFormule.phases[i].items.length; j++) {
         if (this.updateFormule.phases[i].items[j].itemNumber == "12550") {
           this.showItemRemarks = true;
         }
-
       }
-
     }
   }
 
@@ -762,29 +654,34 @@ export class AllFormulesComponent implements OnInit {
   }
 
   open(formuleNum) {
-    ;
     this.updateFormule = [];
     this.openFormuleModal = true;
     this.currFormulePercentage = 0;
     this.loadData(formuleNum)
   }
 
+  phaseColor(phase) {
+    switch (phase) {
+      case 'A': return '#e2e889'
+      case 'B': return '#a4b9eb'
+      case 'C': return '#abedac'
+      case 'D': return '#f0b4d9'
+      case 'E': return '#d1c3eb'
+    }
+  }
+
   saveFormuleFormation() {
     this.draggable = false;
     this.updateFormule;
-    ;
     this.formuleService.updateFormuleFormation(this.updateFormule).subscribe(data => {
       if (data) {
         this.toastSrv.success('פורמולה עודכנה בהצלחה !')
       }
-
     })
   }
 
   saveFormuleUpdate(formuleId, itemNumber, phaseName, index) {
-    ;
-
-
+    this.updatingFormule = true
     var formuleData = {
       formuleId: formuleId,
       itemNumber: itemNumber,
@@ -806,7 +703,7 @@ export class AllFormulesComponent implements OnInit {
         } else if (data.msg == 'notExist') {
           this.formuleService.updateFormule(formuleData).subscribe(data => {
             if (data) {
-              ;
+              this.updatingFormule = false
               var formule = this.allFormules.find(f => f.formuleNumber == data.formuleNumber);
               var phase = formule.phases.find(p => p.phaseName == phaseName);
               var item = phase.items.find(i => i.itemNumber == itemNumber)
@@ -827,12 +724,9 @@ export class AllFormulesComponent implements OnInit {
   }
 
   updateAllFromBase() {
-    ;
     this.updateBaseToAll.updateChildren = this.allChosenChildsToUpdate
     this.updateBaseToAll.updateFather = this.allChosenFathersToUpdate
     this.formuleService.updateFormuleData(this.updateBaseToAll).subscribe(data => {
-      ;
-      data
       this.chooseFathersToUpdate = false;
       this.updateBaseToAll.updateChildren = ''
       this.updateBaseToAll.updateFather = ''
@@ -844,10 +738,7 @@ export class AllFormulesComponent implements OnInit {
         if (phase.items[i].itemNumber == this.updateBaseToAll.itemNumber) {
           phase.items[i].percentage = Number(this.updatePercentage)
           phase.items[i].remarks = this.updateItemRemarks
-
         }
-
-
       }
       this.toastSrv.success("פריט עודכן בהצלחה!")
       this.EditRowId = '';
@@ -861,7 +752,6 @@ export class AllFormulesComponent implements OnInit {
 
 
   loadData(formuleNum) {
-    ;
     this.currentFormuleNumber = formuleNum
     var formuleToUpdate;
     formuleToUpdate = this.allFormules.find(formule => formule.formuleNumber == formuleNum);
@@ -874,9 +764,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   deleteItemFromFormule(itemNumber, ii, jj) {
-    ;
     let formuleNumber = this.currentFormuleNumber;
-
     let formule = this.allFormules.find(f => f.formuleNumber == formuleNumber);
     let phases = formule.phases;
     for (let i = 0; i < phases.length; i++) {
@@ -885,8 +773,8 @@ export class AllFormulesComponent implements OnInit {
           phases[i].items.splice(j, 1)
         }
       }
-
     }
+    this.toastSrv.warning("In order to save all changes", "Press 'Save'!")
   }
 
   deleteFormule(id) {
@@ -1022,10 +910,10 @@ export class AllFormulesComponent implements OnInit {
 
   draggingStatus() {
     if (this.draggable) {
-      if (this.dragging) return 'grabbing'
-      else return 'grab'
+      if (this.dragging) return 'wait'
+      else return 'move'
     }
-    else return 'pointer'
+    else return ''
   }
 
   startItemDrag(ev) {
@@ -1073,8 +961,7 @@ export class AllFormulesComponent implements OnInit {
     let droppedIndex = this.updateFormule.phases.find(x => x.phaseName == droppedIntoPhase).items.findIndex(a => a.itemNumber == droppedIntoItemNum);
     this.updateFormule.phases.find(x => x.phaseName == droppedIntoPhase).items.splice(droppedIndex, 0, itemToaddToNewPhase);
 
-    ;
-
+    this.toastSrv.warning("In order to save all changes", "Press 'Save'!")
     setTimeout(() => {
       this.stopAllShakes();
     }, 500);

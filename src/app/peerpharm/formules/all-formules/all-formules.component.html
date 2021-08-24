@@ -204,15 +204,23 @@
             </td>
             <td>
               <button (click)="addItemToFormule()" [style.cursor]="newItem.itemNumber ? 'pointer' : 'not-allowed'"
-                [disabled]="!newItem.itemNumber" class="btn-success">
+                [disabled]="!newItem.itemNumber" class="btn btn-success m-2">
                 Add
               </button>
-              <button (click)="draggable = !draggable" [ngClass]="draggable ? 'btn-primary' : 'btn-outline-primary'">
-                Draggable
+
+            </td>
+          </tr>
+          <tr>
+            <td colspan="10">
+              <h3 class="text-primary text-center">Phases & Items</h3>
+            </td>
+            <td>
+              <button class="btn m-2" (click)="draggable = !draggable"
+                [ngClass]="draggable ? 'btn-primary' : 'btn-outline-primary'">
+                {{draggable ? 'Disable Dragging' : 'Enable Dragging'}}
               </button>
             </td>
           </tr>
-          <h3 class="text-primary text-center">Phases</h3>
           <tr>
             <th class="text-center">Phase Name</th>
             <th class="text-center">Phase Remarks</th>
@@ -224,14 +232,15 @@
             <th class="text-center">Percentage</th>
             <th class="text-center">Item Remarks</th>
             <th class="text-center"></th>
-            <th class="text-center">Save/Delete</th>
+            <th class="text-center"></th>
           </tr>
         </thead>
 
         <tbody style="height: 500px;">
           <ng-container *ngFor="let phase of updateFormule.phases; let j = index">
             <tr [draggable]="draggable" *ngFor="let item of phase.items; let i = index"
-              [style.cursor]="draggingStatus()" (dragstart)="startItemDrag($event)" [attr.data-phase]="phase.phaseName"
+              [style.background]="phaseColor(phase.phaseName)" [style.cursor]="draggingStatus()"
+              (dragstart)="startItemDrag($event)" [attr.data-phase]="phase.phaseName"
               [attr.data-itemnumber]="item.itemNumber" (dragover)="startShakeDragOver($event)"
               (drop)="getDroppedElemnt($event)">
 
@@ -270,22 +279,24 @@
               <td *ngIf="item.itemNumber && item.itemNumber === EditRowId && phase.phaseName == EditPhase">
                 <input #itemRemarksUpdate [(ngModel)]="item.remarks" type="text" />
               </td>
-              <td *ngIf="item.itemNumber && item.itemNumber === EditRowId">
-                <i class="ti-save" (click)="
-                          saveFormuleUpdate(
-                            updateFormule._id,
-                            item.itemNumber,
-                            phase.phaseName,
-                            i
-                          )
-                        "></i>
+              <!-- <td *ngIf="item.itemNumber && item.itemNumber === EditRowId">
+                <i class="ti-save"
+                  (click)="saveFormuleUpdate(updateFormule._id, item.itemNumber, phase.phaseName, i)"></i>
+              </td> -->
+              <td>
+                <i ngbTooltip="Edit" *ngIf="EditRowId != item.itemNumber"
+                  (click)="edit(item.itemNumber,phase.phaseName)" class="fas fa-pencil-alt click"></i>
               </td>
-              <td></td>
-              <td *ngIf="item.itemNumber && item.itemNumber != EditRowId"><img style="width:30px;"
-                  (click)="deleteItemFromFormule(item.itemNumber, j, i)" src="../../../../assets/images/deleteBtn.png">
+              <td>
+                <i ngbTooltip="Save" *ngIf="EditRowId == item.itemNumber && !updatingFormule"
+                  (click)="saveFormuleUpdate(updateFormule._id, item.itemNumber, phase.phaseName, i)"
+                  class="fas fa-save click" style="font-size: 28px;">
+                </i>
+                <div *ngIf="updatingFormule && EditRowId == item.itemNumber" class="smallLoader"></div>
+                <img ngbTooltip="Delete" class="click" *ngIf="item.itemNumber && item.itemNumber != EditRowId"
+                  style="width:30px;" (click)="deleteItemFromFormule(item.itemNumber, j, i)"
+                  src="../../../../assets/images/deleteBtn.png">
               </td>
-
-
             </tr>
           </ng-container>
         </tbody>
@@ -294,7 +305,7 @@
     <div class="row">
       <div class="col-4"></div>
       <div class="col-4">
-        <button (click)="saveFormuleFormation()" class="btn btn-info form-control">Save Edit</button>
+        <button (click)="saveFormuleFormation()" class="btn btn-info form-control">Save</button>
       </div>
       <div class="col-4"></div>
     </div>
