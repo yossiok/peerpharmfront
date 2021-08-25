@@ -296,10 +296,10 @@ export class YieldsComponent implements OnInit {
 
       let endTime = "00:00";
       // calculation of the overall waiting period in minutes
-      for (let i = 0; i < allPeriodsArray.length - 1; i++) {
+      for (let i = 0; i < allPeriodsArray.length; i++) {
         if (!allPeriodsArray[i].skip) {
           endTime = allPeriodsArray[i].endTime;
-          console.log("Line 312, " + i + ": " + endTime)
+          console.log("Line 302, " + i + ": " + endTime)
           allPeriodsArray[i].skip = true;
           // check if there is overlaping between this period and the rest, if yes, change the end time to the latest one
           for (let j = i + 1; j < allPeriodsArray.length; j++) {
@@ -317,23 +317,30 @@ export class YieldsComponent implements OnInit {
           console.log(this.durationCalculate(allPeriodsArray[i].startTime, endTime).minutes)
           console.log(accumulatedWaiting)
         }
+
       }
       // calculate the daily duration 
-      let brutoDuration = this.durationCalculate(this.currentYield.value.startTime, this.currentYield.value.endTime)
+      let brutoDuration = this.durationCalculate(this.currentYield.value.startTime, this.currentYield.value.endTime);
+      console.log("Line 325, brutoduration as object:")
       console.log(brutoDuration);
       let brutoDurationMinutes = brutoDuration.hours * 60 + brutoDuration.minutes
+      console.log("Line 327, brutoDuration in minutes:")
+      console.log(brutoDurationMinutes)
 
       // calculate the neto daily duration
       let totalDurationMinutes = brutoDurationMinutes - accumulatedWaiting;
       let totalDuration = totalDurationMinutes / 60
+      console.log("Line 334, total duration equal to neto duration in decimal")
       console.log(totalDuration)
       this.currentYield.controls.totalDuration.setValue(totalDuration)
       this.currentYield.controls.hourProdQty.setValue(Math.round(this.currentYield.value.dayProdQty / totalDuration))
 
       // Presentation of bruto and netto time
       this.currentYield.controls.totalDurationToPresent.setValue(this.durationToPresent(totalDuration))
+      console.log("Line 340, bruto duration in minutes:")
       console.log(brutoDurationMinutes)
       brutoDuration = brutoDurationMinutes / 60;
+      console.log("Line 343, bruto duration as decimal:")
       console.log(brutoDuration)
       this.currentYield.controls.brutoDurationToPresent.setValue(this.durationToPresent(brutoDuration))
       this.saveYield()
