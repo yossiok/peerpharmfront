@@ -1,9 +1,20 @@
 <div dir="rtl">
 
     <div class="row">
-        <div class="float-right">
-            <button class="btn btn-warning"><a routerLink="../yieldHistory">הסטוריה</a></button>
+        <div class="col-1">
+            <div class="float-right">
+                <button class="btn btn-warning "><a routerLink="../yieldHistory">הסטוריה</a></button>
+            </div>
         </div>
+        <div class="col-9"></div>
+        <div class="col-2">
+            <div class="float-right">
+                <p class="yield">מקרא:</p>
+                <button class="active_line" disabled>קו פעיל</button>
+                <button class="not_active" disabled>לא פעיל</button>
+            </div>
+        </div>
+
     </div>
 
     <h1 class="mt-5 text-center">עדכון נתוני ייצור</h1>
@@ -69,6 +80,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
+                                <th>הסר</th>
                                 <th>#</th>
                                 <th>התחלה</th>
                                 <th>סיום</th>
@@ -77,6 +89,9 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let clean of currentYield.value.allCleanings;index as id">
+                                <td><i *ngIf="!disabled" placement="top" ngbTooltip="Remove Item From List"
+                                        (click)="removeCleainingTimeFrame(id)"
+                                        class="click fa fa-times text-danger"></i></td>
                                 <td>{{id+1}}</td>
                                 <td>{{clean.startTime}}</td>
                                 <td>{{clean.endTime}}</td>
@@ -99,6 +114,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
+                                <th>הסר</th>
                                 <th>#</th>
                                 <th>התחלה</th>
                                 <th>סיום</th>
@@ -107,6 +123,9 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let setup of currentYield.value.allSetups;index as id">
+                                <td><i *ngIf="!disabled" placement="top" ngbTooltip="Remove Item From List"
+                                        (click)="removeSetupTimeFram(id)" class="click fa fa-times text-danger"></i>
+                                </td>
                                 <td>{{id+1}}</td>
                                 <td>{{setup.startTime}}</td>
                                 <td>{{setup.endTime}}</td>
@@ -131,6 +150,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
+                                <th>הסר</th>
                                 <th>#</th>
                                 <th>התחלה</th>
                                 <th>סיום</th>
@@ -140,6 +160,9 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let waiting of currentYield.value.allWaitings;index as id">
+                                <td><i *ngIf="!disabled" placement="top" ngbTooltip="Remove Item From List"
+                                        (click)="removeWaitingTimeFrame(id)" class="click fa fa-times text-danger"></i>
+                                </td>
                                 <td>{{id+1}}</td>
                                 <td>{{waiting.startTime}}</td>
                                 <td>{{waiting.endTime}}</td>
