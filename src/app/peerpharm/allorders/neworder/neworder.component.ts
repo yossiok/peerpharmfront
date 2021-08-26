@@ -16,7 +16,7 @@ import { map, startWith } from "rxjs/operators";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
-import { InventoryService } from "src/app/services/inventory.service";  
+import { InventoryService } from "src/app/services/inventory.service";
 import { ItemsService } from "src/app/services/items.service";
 
 @Component({
@@ -28,7 +28,7 @@ export class NeworderComponent implements OnInit {
   @Output() closed: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild("amounts") amounts;
   @ViewChild("problematics") problematics: ElementRef
-  
+
   orderItemForm: FormGroup;
   orderForm: FormGroup;
   orderNumber: string;
@@ -58,6 +58,7 @@ export class NeworderComponent implements OnInit {
   problematicComponents: any[]
   problematicMaterials: any[]
   formuleExist: boolean = false
+  isTooOld: boolean = false
 
   constructor(
     private modalService: NgbModal,
@@ -68,7 +69,7 @@ export class NeworderComponent implements OnInit {
     private authService: AuthService,
     private inventoryService: InventoryService,
     private itemsService: ItemsService
- 
+
   ) {
     this.orderForm = fb.group({
       //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
@@ -119,7 +120,7 @@ export class NeworderComponent implements OnInit {
   */
     this.getCostumers();
     if (this.authService.loggedInUser) {
-      if(this.authService.loggedInUser.authorization.includes("newOrder")){
+      if (this.authService.loggedInUser.authorization.includes("newOrder")) {
         this.newOrderAllowed = true
       }
       this.user = this.authService.loggedInUser.firstName;
@@ -266,7 +267,7 @@ export class NeworderComponent implements OnInit {
             // IMPORTANT WARNING FOR DANGEROUS MATERIALS!!!
             // if(post.itemN == '15341' || post.itemN == '13629' || post.itemN == '10627') {
             //   this.toastSrv.error(`PAY ATTENTION! material ${post.itemN} should be treated carefully!!`)
-              // TODO: add notification to shmuel / martha
+            // TODO: add notification to shmuel / martha
             // }
           } else {
             this.toastSrv.error("Adding item faild");
@@ -297,10 +298,10 @@ export class NeworderComponent implements OnInit {
           res[0].name + " " + res[0].subName + " " + res[0].discriptionK
         );
         this.orderItemForm.controls.netWeightK.setValue(res[0].netWeightK);
-       
+
         //check license
-        if(res[0].licsensNumber != "") {
-          if(new Date(res[0].licsensDate) > new Date())  this.orderItemForm.controls.hasLicense.setValue(true);
+        if (res[0].licsensNumber != "") {
+          if (new Date(res[0].licsensDate) > new Date()) this.orderItemForm.controls.hasLicense.setValue(true);
         }
 
         //check for problematic ingredients
@@ -309,21 +310,27 @@ export class NeworderComponent implements OnInit {
           this.problematicComponents = data.problematicComponents
           this.formuleExist = data.formuleFound
           this.modalService.open(this.problematics)
-          if(!data.formuleFound || data.problematicMaterials.length > 0 || data.problematicComponents.length > 0) {
+          if (!data.formuleFound || data.problematicMaterials.length > 0 || data.problematicComponents.length > 0) {
             this.orderItemForm.controls.problematic.setValue(true)
             this.orderItemForm.controls.formuleExist.setValue(data.formuleFound)
             this.orderItemForm.controls.problematicMaterials.setValue(data.problematicMaterials)
             this.orderItemForm.controls.problematicComponents.setValue(data.problematicComponents)
           }
         })
-        
+
+        //check if this product was produced in the last 18 months (Haviv & Uri request 25/8/2021)
+        this.orderSer.checkForLastProduction(itemNumber).subscribe(data => {
+          if (data.err) this.toastSrv.error('אנא וודא כי המוצר יוצר בשנה האחרונה', 'בעיה בבדיקת ייצור של המוצר. ')
+          else this.isTooOld = data.isTooOld
+        })
+
         this.orderSer.getAllOpenOrderItemsByItemNumber(itemNumber).subscribe((data) => {
-            if (data.length > 0) {
-              this.existOrderItem = data;
-            } else {
-              this.existOrderItem = undefined;
-            }
-          });
+          if (data.length > 0) {
+            this.existOrderItem = data;
+          } else {
+            this.existOrderItem = undefined;
+          }
+        });
       });
     }
   }
