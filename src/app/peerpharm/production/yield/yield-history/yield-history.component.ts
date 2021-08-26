@@ -28,6 +28,12 @@ export class YieldHistoryComponent implements OnInit {
   getAllYieldsByLine() {
     this.productionService.getAllYieldsByLine(this.line).subscribe(res => {
       if (res.length > 0) {
+        res.sort((a, b) => {
+          let aDate = new Date(a.productionDate).getTime()
+          let bDate = new Date(b.productionDate).getTime()
+          return bDate - aDate;
+
+        });
         this.yields = res
       }
     })
@@ -39,7 +45,25 @@ export class YieldHistoryComponent implements OnInit {
   }
 
   exportToExcel() {
-    this.excelService.exportAsExcelFile(this.yields, `ניצולת קו ${this.line}`)
+    let exports = []
+    for (let y of this.yields) {
+
+      let excelRow = {
+        "Production Line": y.productionLine,
+        "Production Date": y.productionDate.substr(0, 10),
+        "User Name": y.userName,
+        "Day start time": y.startTime,
+        "Day end time": y.endTime,
+        "Total day duration": y.brutoDurationToPresent,
+        "Net prod. duration(decimal)": parseFloat(y.totalDuration).toFixed(2),
+        "Net prod. duration(HH:mm)": y.totalDurationToPresent,
+        "Total QTY produced": y.dayProdQty,
+        "Products per hour": y.hourProdQty
+      }
+      exports.push(excelRow)
+    }
+
+    this.excelService.exportAsExcelFile(exports, `ניצולת קו ${this.line}`)
   }
 
 }
