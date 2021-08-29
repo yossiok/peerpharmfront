@@ -506,6 +506,11 @@ export class InventoryService {
     return this.http.post(url, JSON.stringify(query), this.options).pipe(map(reponse => reponse.json()));
   }
 
+  getPPCReport(query) {
+    let url = this.baseUrl + "component/PPCReport"
+    return this.http.post(url, JSON.stringify(query), this.options).pipe(map(reponse => reponse.json()));
+  }
+
 
 
 
