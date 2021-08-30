@@ -11,12 +11,12 @@
       <button class="btn btn-info form-control rounded-pill">F8 - הזמנות מלאי</button>
     </div>
     <div class="col-3 fixNoaStupidStuff"></div>
-    <div class="col-1 fixNoaStupidStuff">
+    <!-- <div class="col-1 fixNoaStupidStuff">
       <button class="btn btn-warning form-control rounded-pill" (click)="procurementRecommendations('minimumStock')">F7
         - בדוק המלצה
         לרכש</button>
-    </div>
-    <div class="col-1 fixNoaStupidStuff">
+    </div> -->
+    <div class="col-2 fixNoaStupidStuff">
       <button class="btn btn-warning form-control rounded-pill"
         (click)="newPurchaseRecommendModal = true; getLastCustomerOrders()">F10
         בקשה לרכש חדשה</button>
@@ -87,7 +87,12 @@
         <div class="col-2 fixNoaStupidStuff"></div>
       </div>
       <div dir="rtl" class="row mt-5 fixNoaStupidStuff">
-        <div class="col-3 fixNoaStupidStuff"></div>
+        <div class="col-2"></div>
+        <div class="col-2 fixNoaStupidStuff">
+          <button (click)="getPPCReport()" class="btn-warning form-control rounded-pill" type="button"><b>דו"ח
+              תפ"י</b>&nbsp;&nbsp;<img src="../../../../assets/images/excel.png" style="width: 25px; height: 25px;"
+              alt=""></button>
+        </div>
         <div class="col-2 fixNoaStupidStuff">
           <div *ngIf="smallerLoader" class="smallerLoader ml-5"></div>
           <button *ngIf="!smallerLoader" (click)="getRecommendationReport()" class="btn-info form-control rounded-pill"
@@ -102,7 +107,7 @@
         <div class="col-2 fixNoaStupidStuff">
           <button class="btn-primary form-control rounded-pill">חיפוש</button>
         </div>
-        <div class="col-3 fixNoaStupidStuff"></div>
+        <div class="col-1 fixNoaStupidStuff"></div>
       </div>
     </form>
   </div>
@@ -171,7 +176,7 @@
         style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Products</div>
       <div (click)='setType("material")' [ngStyle]="{'background-color': buttonColor2,'color':fontColor2}"
         class="navtab" style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Materials</div>
-      <div class="export" style="cursor:pointer;">
+      <!-- <div class="export" style="cursor:pointer;">
         <img *ngIf="loadingExcel" style="width:50px"
           src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
         <img src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;"
@@ -182,7 +187,7 @@
       <div [class.read-only]="checkPermission()" class="export" style="cursor:pointer;"
         (click)="open(printInventoryValue)">
         <button class="btn btn-primary">Value For Money</button>
-      </div>
+      </div> -->
 
       <!-- TABLE START -->
       <div *ngIf="stockType=='component' && !smallLoader" class="tableFixHead">

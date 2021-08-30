@@ -10,7 +10,7 @@ import { PeerPharmModule } from '../peerpharm/peerpharmmodule';
 @Injectable()
 export class OrdersService {
 
-  public test:string="a";
+  public test: string = "a";
   private headers = new Headers({ 'Content-Type': 'application/json' });
   private options = new RequestOptions({ headers: this.headers });
   private baseUrl = '/';
@@ -22,11 +22,11 @@ export class OrdersService {
   private openOrdersSrc = new BehaviorSubject<Boolean>(false);
   openOrdersValidate = this.openOrdersSrc.asObservable();
 
-  refreshOrders:EventEmitter<any> = new EventEmitter();
+  refreshOrders: EventEmitter<any> = new EventEmitter();
 
   constructor(private http: Http) {
-    
-   }
+
+  }
 
   getOrders(): Observable<any> {
     let url = this.baseUrl + 'order'
@@ -44,7 +44,7 @@ export class OrdersService {
       map(reponse => reponse.json())
     );
   }
- 
+
   getAllOpenOrderItems(): Observable<any> {
     let url = this.baseUrl + 'order/allOpenOrderItems'
     return this.http.get(url).pipe(
@@ -53,10 +53,10 @@ export class OrdersService {
   }
 
   getAllOpenOrderItemsByItemNumber(itemNumber): Observable<any> {
-    
+
     let url = this.baseUrl + 'order?allOpenOrderItemsByItemNumber=' + itemNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
-  } 
+  }
 
 
   // getOrderCompileData(orderNumber): Observable<any> {
@@ -67,14 +67,14 @@ export class OrdersService {
   //edit  order
   allocatedDone(id): Observable<any> {
     let url = this.baseUrl + "order/updateStatus";
-    return this.http.post(url, JSON.stringify({id}), this.options).pipe(map(res => res.json()))
+    return this.http.post(url, JSON.stringify({ id }), this.options).pipe(map(res => res.json()))
   }
   editOrder(order): Observable<any> {
     let url = this.baseUrl + "order/update";
     return this.http.post(url, JSON.stringify(order), this.options).pipe(map(res => res.json()))
   }
-  editOrderStage(orderItem,stage): Observable<any> {
-    let url = this.baseUrl + "order/update?updateStage="+stage;
+  editOrderStage(orderItem, stage): Observable<any> {
+    let url = this.baseUrl + "order/update?updateStage=" + stage;
     return this.http.post(url, JSON.stringify(orderItem), this.options).pipe(map(res => res.json()))
   }
 
@@ -91,9 +91,9 @@ export class OrdersService {
     let url = this.baseUrl + 'orderitem?orderId=' + id;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
- 
 
- 
+
+
 
   getOrderItemsByNumber(orderNumber): Observable<any> {
     let url = this.baseUrl + 'orderitem?orderNumber=' + orderNumber;
@@ -115,7 +115,7 @@ export class OrdersService {
     );
   }
 
-  getAllCustomerOrderedItems(customer){
+  getAllCustomerOrderedItems(customer) {
     let url = this.baseUrl + 'orderitem/productsForCustomer?customer=' + customer;
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
@@ -148,14 +148,14 @@ export class OrdersService {
 
 
   getOrderAmounts(): Observable<any> {
-    
-    let url = this.baseUrl + 'orderitem/getamounts' ;
+
+    let url = this.baseUrl + 'orderitem/getamounts';
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
     );
   }
 
-  getOpenOrdersItems():Observable<any>{
+  getOpenOrdersItems(): Observable<any> {
     let url = this.baseUrl + 'orderitem?openOrdersItems=open';
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
@@ -167,14 +167,14 @@ export class OrdersService {
       map(reponse => reponse.json())
     )
   }
-  getAmountsForProject(orderNumber,projectId): Observable<any> {
-    let url = this.baseUrl + 'order?amountsForProject=' + orderNumber +"&projectId="+projectId;
+  getAmountsForProject(orderNumber, projectId): Observable<any> {
+    let url = this.baseUrl + 'order?amountsForProject=' + orderNumber + "&projectId=" + projectId;
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
     )
   }
   getOrderByType(): Observable<any> {
-    
+
     let url = this.baseUrl + 'order/type';
     return this.http.get(url).pipe(
       map(reponse => reponse.json())
@@ -217,14 +217,14 @@ export class OrdersService {
     let url = this.baseUrl + "orderitem/updateStatus";
     return this.http.post(url, JSON.stringify(orderItem), this.options).pipe(map(res => res.json()))
   }
-  changeReqStatus(status,id,type): Observable<any> {
+  changeReqStatus(status, id, type): Observable<any> {
     let url = this.baseUrl + "orderitem/changeReqStatus";
-    return this.http.post(url, JSON.stringify({status:status,id:id,type:type}), this.options).pipe(map(res => res.json()))
+    return this.http.post(url, JSON.stringify({ status: status, id: id, type: type }), this.options).pipe(map(res => res.json()))
   }
-  editFormuleCheck(formuleStatus,id): Observable<any> {
-    
+  editFormuleCheck(formuleStatus, id): Observable<any> {
+
     let url = this.baseUrl + "orderitem/updateCheckFormule";
-    return this.http.post(url, JSON.stringify({formuleStatus:formuleStatus,id:id}), this.options).pipe(map(res => res.json()))
+    return this.http.post(url, JSON.stringify({ formuleStatus: formuleStatus, id: id }), this.options).pipe(map(res => res.json()))
   }
 
 
@@ -239,7 +239,7 @@ export class OrdersService {
   }
 
   addNewProductDoc(productDoc): Observable<any> {
-    
+
     let url = this.baseUrl + "order/productDocg";
     return this.http.post(url, JSON.stringify(productDoc), this.options).pipe(map(res => res.json()))
   }
@@ -257,7 +257,7 @@ export class OrdersService {
   //get list of sum of all components needed to the order
   getComponentsSum(orderNumber) {
     let url = this.baseUrl + "itemsDemand?orderNumber=" + orderNumber;
-    
+
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
@@ -267,7 +267,7 @@ export class OrdersService {
     return this.http.post(url, JSON.stringify(item), this.options).pipe(map(res => res.json()))
   }
   getOrderItemByNumberAndOrder(item, order) {
-    let url = this.baseUrl + "orderitem?item=" + item+"&order="+ order;
+    let url = this.baseUrl + "orderitem?item=" + item + "&order=" + order;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
@@ -277,13 +277,13 @@ export class OrdersService {
     this.orderSrc.next(tempArr);
   }
 
-  getAllOpenOrdersItems(status:boolean){
+  getAllOpenOrdersItems(status: boolean) {
     this.openOrdersSrc.next(status);
   }
 
 
-  getItemPackingList(itemNumber,orderNumber): Observable<any> {
-    let url = this.baseUrl + 'packingPallltItems?itemNPackingList=' + itemNumber+"&orderNumber="+orderNumber;
+  getItemPackingList(itemNumber, orderNumber): Observable<any> {
+    let url = this.baseUrl + 'packingPallltItems?itemNPackingList=' + itemNumber + "&orderNumber=" + orderNumber;
     return this.http.get(url).pipe(map(reponse => reponse.json())
     );
   }
@@ -305,7 +305,7 @@ export class OrdersService {
   }
 
   //get items required elements for item: components/stickers/boxes/cartons
-  
+
   getOrderComponents(orderItemsNumArr): Observable<any> {
     let url = this.baseUrl + 'orderitem/getComponents?orderItemsNumArr=' + orderItemsNumArr;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
@@ -313,7 +313,7 @@ export class OrdersService {
 
   getAllOrdersForComponents(componentNumbers): Observable<any> {
     let url = this.baseUrl + 'orderitem/ordersForComponent';
-    return this.http.post(url, JSON.stringify({componentNumbers}), this.options).pipe(map(res => res.json()))
+    return this.http.post(url, JSON.stringify({ componentNumbers }), this.options).pipe(map(res => res.json()))
   }
 
 
@@ -325,6 +325,11 @@ export class OrdersService {
   setProductionStatus(productionItemStatus): Observable<any> {
     let url = this.baseUrl + "orderitem/setOrderItemProdStatus";
     return this.http.post(url, JSON.stringify(productionItemStatus), this.options).pipe(map(res => res.json()))
+  }
+
+  checkForLastProduction(itemNumber): Observable<any> {
+    let url = this.baseUrl + 'formDetails/isLastFormOfItemTooOld?item=' + itemNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
 }

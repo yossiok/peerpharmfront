@@ -172,133 +172,127 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th style="width: 10%;">Phase Name</th>
-            <th style="width: 10%;">Phase Remarks</th>
-            <th style="width: 10%;">#</th>
-            <th style="width: 10%;">Batch Number</th>
-            <th style="width: 10%;">Execute</th>
-            <th style="width: 10%;">No.</th>
-            <th style="width: 10%;">Material Name</th>
-            <th style="width: 10%;">Percentage</th>
-            <th style="width: 10%;">Item Remarks</th>
-            <th style="width: 10%;">Save/Delete</th>
+            <td>
+              <h4>Add Item </h4>
+            </td>
+            <td>
+              <i style="font-size: 28px" class="fas fa-long-arrow-alt-right"></i>
+            <td>
+              <input [(ngModel)]="newItem.phaseName" type="text" placeholder="Phase Name" />
+            </td>
+            <td colspan="2">
+              <input [(ngModel)]="newItem.phaseRemarks" type="text" placeholder="Phase Remarks" />
+            </td>
+            <td>
+              <input [(ngModel)]="newItem.itemNumber" placeholder="Item Number" (change)="fillMaterialName($event)"
+                type="text" required />
+            </td>
+            <td>
+              <input [(ngModel)]="newItem.itemName" placeholder="Item Name" list="materials"
+                (change)="fillMaterialNumber($event)" type="text" />
+              <datalist id="materials">
+                <option *ngFor="let material of materials">{{
+                  material.componentName
+                  }}</option>
+              </datalist>
+            </td>
+            <td>
+              <input [(ngModel)]="newItem.percentage" placeholder="Percentage" type="number" />
+            </td>
+            <td colspan="2">
+              <input [(ngModel)]="newItem.remarks" placeholder="Remarks" type="text" />
+            </td>
+            <td>
+              <button (click)="addItemToFormule()" [style.cursor]="newItem.itemNumber ? 'pointer' : 'not-allowed'"
+                [disabled]="!newItem.itemNumber" class="btn btn-success m-2">
+                Add
+              </button>
+
+            </td>
+          </tr>
+          <tr>
+            <td colspan="10">
+              <h3 class="text-primary text-center">Phases & Items</h3>
+            </td>
+            <td>
+              <button class="btn m-2" (click)="draggable = !draggable"
+                [ngClass]="draggable ? 'btn-primary' : 'btn-outline-primary'">
+                {{draggable ? 'Disable Dragging' : 'Enable Dragging'}}
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <th class="text-center">Phase Name</th>
+            <th class="text-center">Phase Remarks</th>
+            <th class="text-center">#</th>
+            <th class="text-center">Batch Number</th>
+            <th class="text-center">Execute</th>
+            <th class="text-center">No.</th>
+            <th class="text-center">Material Name</th>
+            <th class="text-center">Percentage</th>
+            <th class="text-center">Item Remarks</th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
           </tr>
         </thead>
-        <tr>
-          <td style="width: 10%;">
-            <input [(ngModel)]="newItem.phaseName" type="text" placeholder="Phase Name" />
-          </td>
-          <td style="width: 20%;" colspan="2">
-            <input [(ngModel)]="newItem.phaseRemarks" type="text" placeholder="Phase Remarks" />
-          </td>
-          <td style="width: 10%;">
-            <input [(ngModel)]="newItem.itemNumber" placeholder="Item Number" (change)="fillMaterialName($event)"
-              type="text" required />
-          </td>
-          <td style="width: 10%;">
-            <input [(ngModel)]="newItem.itemName" placeholder="Item Name" list="materials"
-              (change)="fillMaterialNumber($event)" type="text" />
-          </td>
-          <td style="width: 10%;">
-            <datalist id="materials">
-              <option *ngFor="let material of materials">{{
-                material.componentName
-                }}</option>
-            </datalist>
 
-          </td>
-
-          <td style="width: 10%;">
-            <input [(ngModel)]="newItem.percentage" placeholder="Percentage" type="number" />
-          </td>
-          <td style="width: 20%;" colspan="2">
-            <input [(ngModel)]="newItem.remarks" placeholder="Remarks" type="text" />
-          </td>
-          <td style="width: 10%;">
-            <button (click)="addItemToFormule()" [style.cursor]="newItem.itemNumber ? 'pointer' : 'not-allowed'"
-              [disabled]="!newItem.itemNumber" class="btn-success">
-              Add
-            </button>
-            <button (click)="draggable = true" class="btn-primary">
-              Draggable
-            </button>
-          </td>
-        </tr>
         <tbody style="height: 500px;">
           <ng-container *ngFor="let phase of updateFormule.phases; let j = index">
-            <tr rcRandomColor [bgColor]="[
-                '#ffebee',
-                '#ede7f6',
-                '#e3f2fd',
-                '#e0f7fa',
-                '#e8f5e9',
-                '#fffde7',
-                '#f1f8e9',
-                '#eceff1',
-                '#fbe9e7'
-              ]">
-              <td colspan="10" style="width: 100%; padding-right: 0px; padding-left:0px"
-                (dragover)="startShakeDragOver($event)" (drop)="getDroppedElemnt($event)">
-                <table style="width: 100%;">
+            <tr [draggable]="draggable" *ngFor="let item of phase.items; let i = index"
+              [style.background]="phaseColor(phase.phaseName)" [style.cursor]="draggingStatus()"
+              (dragstart)="startItemDrag($event)" [attr.data-phase]="phase.phaseName"
+              [attr.data-itemnumber]="item.itemNumber" (dragover)="startShakeDragOver($event)"
+              (drop)="getDroppedElemnt($event)">
 
-                  <tr [draggable]=draggable *ngFor="let item of phase.items; let i = index"
-                    style="cursor: move; border:10px solid #f0f0f0" (dragstart)="startItemDrag($event)"
-                    (dragleave)="stopItemDrag($event)" [attr.data-phase]="phase.phaseName"
-                    [attr.data-itemnumber]="item.itemNumber">
-                    <td style="width: 10%;">{{ phase.phaseName }}</td>
-                    <td *ngIf="item.itemNumber && item.itemNumber !== EditRowId">
-                      {{ phase.remarks }}
-                    </td>
-                    <td style="width: 10%;"
-                      *ngIf="item.itemNumber && item.itemNumber === EditRowId && phase.phaseName == EditPhase"
-                      (click)="edit(item.itemNumber,phase.phaseName)">
-                      <textarea #phaseRemarksUpdate [(ngModel)]="phase.remarks"></textarea>
-                    </td>
 
-                    <td style="width: 10%;" (click)="edit(item.itemNumber,phase.phaseName)">{{ i + 1 }}</td>
+              <td>{{ phase.phaseName }}</td>
+              <td *ngIf="item.itemNumber && item.itemNumber !== EditRowId">
+                {{ phase.remarks }}
+              </td>
+              <td *ngIf="item.itemNumber && item.itemNumber === EditRowId && phase.phaseName == EditPhase">
+                <textarea #phaseRemarksUpdate [(ngModel)]="phase.remarks"></textarea>
+              </td>
 
-                    <td style="width: 10%;"></td>
-                    <td style="width: 10%;"></td>
-                    <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="width: 10%;">{{
-                      item.itemNumber }}</td>
-                    <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="width: 10%;">{{
-                      item.itemName }}</td>
-                    <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="width: 10%;"
-                      *ngIf="item.itemNumber && item.itemNumber !== EditRowId"
-                      (click)="edit(item.itemNumber,phase.phaseName)">
-                      {{ item.percentage }}
-                    </td>
-                    <td style="width: 10%;"
-                      *ngIf="item.itemNumber && item.itemNumber === EditRowId && phase.phaseName == EditPhase">
-                      <input #percentageUpdate style="width: 50px;" [(ngModel)]="item.percentage" />
-                    </td>
-                    <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}" style="width: 10%;"
-                      *ngIf="item.itemNumber && item.itemNumber !== EditRowId"
-                      (click)="edit(item.itemNumber,phase.phaseName)">
-                      {{ item.remarks }}
-                    </td>
+              <td>{{ i + 1 }}</td>
 
-                    <td style="width: 10%;"
-                      *ngIf="item.itemNumber && item.itemNumber === EditRowId && phase.phaseName == EditPhase">
-                      <input #itemRemarksUpdate [(ngModel)]="item.remarks" type="text" />
-                    </td>
-                    <td *ngIf="item.itemNumber && item.itemNumber === EditRowId">
-                      <i class="ti-save" (click)="
-                          saveFormuleUpdate(
-                            updateFormule._id,
-                            item.itemNumber,
-                            phase.phaseName,
-                            i
-                          )
-                        "></i>
-                    </td>
-                    <td *ngIf="item.itemNumber && item.itemNumber != EditRowId"><img style="width:30px;"
-                        (click)="deleteItemFromFormule(item.itemNumber, j, i)"
-                        src="../../../../assets/images/deleteBtn.png"></td>
-                  </tr>
+              <td></td>
+              <td></td>
+              <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}">{{
+                item.itemNumber }}</td>
+              <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}">{{
+                item.itemName }}</td>
+              <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}"
+                *ngIf="item.itemNumber && item.itemNumber !== EditRowId">
+                {{ item.percentage }}
+              </td>
+              <td *ngIf="item.itemNumber && item.itemNumber === EditRowId && phase.phaseName == EditPhase">
+                <input #percentageUpdate style="width: 50px;" [(ngModel)]="item.percentage" />
+              </td>
+              <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}"
+                *ngIf="item.itemNumber && item.itemNumber !== EditRowId">
+                {{ item.remarks }}
+              </td>
 
-                </table>
-
+              <td *ngIf="item.itemNumber && item.itemNumber === EditRowId && phase.phaseName == EditPhase">
+                <input #itemRemarksUpdate [(ngModel)]="item.remarks" type="text" />
+              </td>
+              <!-- <td *ngIf="item.itemNumber && item.itemNumber === EditRowId">
+                <i class="ti-save"
+                  (click)="saveFormuleUpdate(updateFormule._id, item.itemNumber, phase.phaseName, i)"></i>
+              </td> -->
+              <td>
+                <i ngbTooltip="Edit" *ngIf="EditRowId != item.itemNumber"
+                  (click)="edit(item.itemNumber,phase.phaseName)" class="fas fa-pencil-alt click"></i>
+              </td>
+              <td>
+                <i ngbTooltip="Save" *ngIf="EditRowId == item.itemNumber && !updatingFormule"
+                  (click)="saveFormuleUpdate(updateFormule._id, item.itemNumber, phase.phaseName, i)"
+                  class="fas fa-save click" style="font-size: 28px;">
+                </i>
+                <div *ngIf="updatingFormule && EditRowId == item.itemNumber" class="smallLoader"></div>
+                <img ngbTooltip="Delete" class="click" *ngIf="item.itemNumber && item.itemNumber != EditRowId"
+                  style="width:30px;" (click)="deleteItemFromFormule(item.itemNumber, j, i)"
+                  src="../../../../assets/images/deleteBtn.png">
               </td>
             </tr>
           </ng-container>
@@ -308,7 +302,7 @@
     <div class="row">
       <div class="col-4"></div>
       <div class="col-4">
-        <button (click)="saveFormuleFormation()" class="btn btn-info form-control">Save Edit</button>
+        <button (click)="saveFormuleFormation()" class="btn btn-info form-control">Save</button>
       </div>
       <div class="col-4"></div>
     </div>

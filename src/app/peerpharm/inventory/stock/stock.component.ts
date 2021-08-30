@@ -1484,6 +1484,14 @@ export class StockComponent implements OnInit {
     })
   }
 
+  getPPCReport() {
+    let query = this.filterParams.value
+    query.itemType = this.stockType
+    this.inventoryService.getPPCReport(query).subscribe(data => {
+      console.log(data)
+    })
+  }
+
   filterComponents() {
     console.log('filter parameters: ', this.filterParams.value)
     this.smallLoader = true;
