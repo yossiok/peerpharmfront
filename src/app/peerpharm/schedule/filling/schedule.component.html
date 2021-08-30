@@ -204,16 +204,15 @@
               {{ line.positionN }}
             </td>
             <td *ngIf="line._id === EditRowId">
-              <input #position type="text" [value]="line.positionN" class="form-control" /><input #id type="hidden"
-                [value]="line._id" />
+              <input type="text" [value]="line.positionN" class="form-control" />
             </td>
-            <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
+            <td *ngIf="line._id !== EditRowId">
               <a target="_blank" routerLink="/peerpharm/allorders/orderitems/{{ line.orderN }}">
                 {{ line.orderN }}
               </a>
             </td>
             <td *ngIf="line._id === EditRowId">
-              <input #orderNum type="text" [value]="line.orderN" class="form-control" />
+              <input type="text" [value]="line.orderN" class="form-control" />
             </td>
             <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
               <a target="_blank" routerLink="/peerpharm/items/itemDetails/{{ line.item }}">
@@ -221,7 +220,7 @@
               </a>
             </td>
             <td *ngIf="line._id === EditRowId">
-              <input #item type="text" [value]="line.item" class="form-control" />
+              <input type="text" [value]="line.item" class="form-control" />
             </td>
 
             <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)"
@@ -229,40 +228,39 @@
               {{ line.itemImpRemark }}
             </td>
             <td *ngIf="line._id === EditRowId">
-              <input #item type="text" [value]="line.itemImpRemark" class="form-control" style="color:red ; "
-                disabled />
+              <input type="text" [value]="line.itemImpRemark" class="form-control" style="color:red ; " disabled />
             </td>
 
             <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
               {{ line.costumer | slice: 0:30 }}
             </td>
             <td *ngIf="line._id === EditRowId">
-              <input #costumer type="text" [value]="line.costumer" class="form-control" />
+              <input type="text" [value]="line.costumer" class="form-control" />
             </td>
             <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
               {{ line.productName }}
             </td>
             <td *ngIf="line._id === EditRowId">
-              <input #productName type="text" [value]="line.productName" class="form-control" />
+              <input type="text" [value]="line.productName" class="form-control" />
             </td>
             <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
               <textarea disabled style="height: 113px; width: 84px; box-shadow: none !important;" rows="2"
                 cols="10"> {{ line.batch }} </textarea>
             </td>
             <td *ngIf="line._id === EditRowId">
-              <input #batch type="text" [value]="line.batch" class="form-control" />
+              <input type="text" [value]="line.batch" class="form-control" />
             </td>
             <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
               {{ line.packageP | slice: 0:20 }}
             </td>
             <td *ngIf="line._id === EditRowId">
-              <input style="width: 100px;" #packageP type="text" [value]="line.packageP" />
+              <input style="width: 100px;" type="text" [value]="line.packageP" />
             </td>
             <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
               {{ line.qtyProduced }} / {{ line.qty }}
             </td>
             <td *ngIf="line._id === EditRowId">
-              <input #qty type="text" [value]="line.qty" class="form-control" />
+              <input type="text" [value]="line.qty" class="form-control" />
             </td>
 
 
@@ -270,7 +268,7 @@
               {{ line.marks }}
             </td>
             <td *ngIf="line._id === EditRowId">
-              <textarea rows="1" cols="30" #marks type="text" [value]="line.marks" class="form-control"></textarea>
+              <textarea rows="1" cols="30" type="text" [value]="line.marks" class="form-control"></textarea>
             </td>
 
             <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
