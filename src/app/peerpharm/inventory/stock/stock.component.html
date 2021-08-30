@@ -89,7 +89,13 @@
       <div dir="rtl" class="row mt-5 fixNoaStupidStuff">
         <div class="col-2"></div>
         <div class="col-2 fixNoaStupidStuff">
-          <button (click)="getPPCReport()" class="btn-warning form-control rounded-pill" type="button"><b>דו"ח
+          <button (click)="clearSearchFields()" class="btn-secondary form-control rounded-pill"
+            type="button"><b>נקה</b></button>
+        </div>
+        <div class="col-2 fixNoaStupidStuff">
+          <div *ngIf="PPCLoading" class="smallerLoader ml-5"></div>
+          <button *ngIf="!PPCLoading" (click)="getPPCReport()" class="btn-warning form-control rounded-pill text-dark"
+            type="button"><b>דו"ח
               תפ"י</b>&nbsp;&nbsp;<img src="../../../../assets/images/excel.png" style="width: 25px; height: 25px;"
               alt=""></button>
         </div>
@@ -99,10 +105,6 @@
             type="button"><b>דו"ח
               המלצה לרכש</b>&nbsp;&nbsp;<img src="../../../../assets/images/excel.png"
               style="width: 25px; height: 25px;" alt=""></button>
-        </div>
-        <div class="col-2 fixNoaStupidStuff">
-          <button (click)="clearSearchFields()" class="btn-secondary form-control rounded-pill"
-            type="button"><b>נקה</b></button>
         </div>
         <div class="col-2 fixNoaStupidStuff">
           <button class="btn-primary form-control rounded-pill">חיפוש</button>

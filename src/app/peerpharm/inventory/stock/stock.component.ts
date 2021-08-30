@@ -357,6 +357,7 @@ export class StockComponent implements OnInit {
   supPurchases: any[] = []
   allowPriceUpdate: boolean = false
   dir: string
+  PPCLoading: boolean = false
 
   // currentFileUpload: File; //for img upload creating new component
 
@@ -1464,6 +1465,7 @@ export class StockComponent implements OnInit {
     let query = this.filterParams.value
     query.itemType = this.stockType
     this.smallerLoader = true
+    this.toastSrv.info('פעולה זו עשויה להימשך מספר דקות.', 'מכין דו"ח המלצה לרכש.')
     this.inventoryService.getpurchaseRec(query).subscribe(res => {
       this.smallerLoader = false
       let filt = res.filter(item => item.minimum != "" && Number(item.minimum) >= Number(item.amount))
@@ -1485,10 +1487,31 @@ export class StockComponent implements OnInit {
   }
 
   getPPCReport() {
+    this.PPCLoading = true
+    this.toastSrv.info('פעולה זו עשויה להימשך מספר דקות.', 'מכין דו"ח תפ"י.')
     let query = this.filterParams.value
     query.itemType = this.stockType
-    this.inventoryService.getPPCReport(query).subscribe(data => {
-      console.log(data)
+    this.inventoryService.getPPCReport(query).subscribe(components => {
+      this.PPCLoading = false
+      console.log(components)
+      let ppcReport = []
+      for (let cmpt of components) {
+        if (cmpt.openOrders) {
+          for (let order of cmpt.openOrders) {
+            ppcReport.push({
+              Component_Number: cmpt.componentN,
+              Component_Name: cmpt.componentName,
+              Component_Type: cmpt.componentType,
+              Supplier: cmpt.suplierN + " - " + cmpt.suplierName,
+              "Item(Product)": order.itemNumber,
+              Order: order.orderNumberInt,
+              Customer: order.orders.costumerInternalId + " - " + order.orders.costumer,
+              amount: order.orderItems.quantity
+            })
+          }
+        }
+      }
+      this.excelService.exportAsExcelFile(ppcReport, `דו"ח תפ"י ${new Date().toString().slice(0, 10)}`)
     })
   }
 
