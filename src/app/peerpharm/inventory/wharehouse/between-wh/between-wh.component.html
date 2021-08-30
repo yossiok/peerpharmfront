@@ -32,35 +32,32 @@
                     <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
                     </option>
                 </select>
-            </div>
-
-            <div class="col-2">
                 <label>ממדף</label>
-                <select class="form-control" formControlName="shell_position_in_whareHouse_Origin">
+                <select class="form-control" (change)="setOriginPosition($event)"
+                    formControlName="shell_id_in_whareHouse_Origin">
                     <option disabled value="">בחר מדף</option>
                     <option *ngFor="let shelf of originWHShelfs" [disabled]="shelf.position == 'MINUS'"
                         [value]="shelf.shell_id_in_whareHouse">
                         {{shelf.position}} - {{shelf.amount}} pcs
                     </option>
                 </select>
+            </div>
+
+            <div class="col-2">
                 <label>כמות</label>
                 <input type="number" formControlName="amount" class="form-control">
             </div>
 
             <div class="col-2">
                 <label>למחסן</label>
-                <select class="form-control" formControlName="WH_destId" (change)="itemNumber ? getChunks('d') : null"
+                <select class="form-control" formControlName="WH_destId" (change)="getChunks('d')"
                     (change)="getAllShelfsOfDest($event)">
                     <option disabled value="">בחר מחסן</option>
                     <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
                     </option>
                 </select>
-            </div>
-
-            <div class="col-2">
                 <label>למדף</label>
-                <select class="form-control" (change)="setShelfsPosition()"
-                    formControlName="shell_position_in_whareHouse_Dest">
+                <select class="form-control" (change)="setDestPosition()" formControlName="shell_id_in_whareHouse_Dest">
                     <option disabled value="">בחר מדף</option>
                     <option *ngFor="let shelf of destWHShelfs" [value]="shelf.shell_id_in_whareHouse">
                         {{shelf.position}} - {{shelf.amount}} pcs
@@ -68,18 +65,18 @@
                 </select>
             </div>
 
-        </div>
-        <div class="row mt-4">
-
-
-            <div class="col-2 d-flex flex-column justify-content-around">
-                <div *ngIf="sending" class="smallerLoader"></div>
-                <button type="submit" *ngIf="!sending" [disabled]="!movementForm.valid"
-                    [style.cursor]="movementForm.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">העבר</button>
-                <button type="button" class="btn btn-secondary" (click)="movementForm.reset()">נקה נתונים</button>
+            <div class="col-2 d-flex flex-column justify-content-between">
+                <div>
+                    <div *ngIf="sending" class="smallerLoader"></div>
+                    <button type="submit" *ngIf="!sending" [disabled]="!movementForm.valid"
+                        [style.cursor]="movementForm.valid ? 'pointer' : 'not-allowed'"
+                        class="btn btn-info">העבר</button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-secondary" (click)="movementForm.reset()">נקה נתונים</button>
+                </div>
             </div>
-            <div class="col-2">
-            </div>
+
         </div>
     </form>
 

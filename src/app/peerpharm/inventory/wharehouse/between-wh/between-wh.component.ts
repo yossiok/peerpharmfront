@@ -41,13 +41,7 @@ export class BetweenWHComponent implements OnInit {
     if (this.itemNumber) this.movementForm.controls.item.setValue(this.itemNumber)
   }
 
-  setShelfsPosition() {
-    console.log(this.movementForm.value)
-    let originShelf = this.originWHShelfs.find(shelf => shelf.shell_id_in_whareHouse == this.movementForm.value.shell_id_in_whareHouse_Origin)
-    this.movementForm.controls.shell_position_in_whareHouse_Origin.setValue(originShelf.position)
-    let destShelf = this.destWHShelfs.find(shelf => shelf.shell_id_in_whareHouse == this.movementForm.value.shell_id_in_whareHouse_Dest)
-    this.movementForm.controls.shell_position_in_whareHouse_Dest.setValue(destShelf.position)
-  }
+
 
   // check if component number exist
   async checkComponentN() {
@@ -92,6 +86,8 @@ export class BetweenWHComponent implements OnInit {
                 // approved - announce new itemShell (chunk) and get all shelfs of destination WH
                 this.movementForm.controls.isNewItemShell.setValue(true)
                 this.getAllShelfsOfDest(WHID)
+                let whName = this.allWhareHouses.find(wh => wh._id == this.movementForm.value.WH_destId).name
+                this.movementForm.controls.WH_destName.setValue(whName)
               }
             }
           }
@@ -136,6 +132,24 @@ export class BetweenWHComponent implements OnInit {
       //stupid bug:
       // this.movementForm.controls.shell_id_in_whareHouse_Origin.setValue(this.shellNums[0].shell_id_in_whareHouse)
     })
+  }
+
+  setOriginPosition(e) {
+    debugger
+    console.log(this.movementForm.value)
+    let originShelf = this.originWHShelfs.find(shelf => shelf.shell_id_in_whareHouse == this.movementForm.value.shell_id_in_whareHouse_Origin)
+    this.movementForm.controls.shell_position_in_whareHouse_Origin.setValue(originShelf.position)
+  }
+
+  setDestPosition() {
+    debugger
+    console.log(this.movementForm.value)
+    let destShelf = this.destWHShelfs.find(shelf => shelf.shell_id_in_whareHouse == this.movementForm.value.shell_id_in_whareHouse_Dest)
+    this.movementForm.controls.shell_position_in_whareHouse_Dest.setValue(destShelf.position)
+  }
+
+  move() {
+    console.log(this.movementForm.value)
   }
 
 }
