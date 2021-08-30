@@ -124,7 +124,8 @@ export class BetweenWHComponent implements OnInit {
   // }
 
   getAllShelfsOfDest(e) {
-    this.inventoryService.getWhareHouseShelfList(e.target.value).subscribe(res => {
+    e = e.target ? e.target.value : e
+    this.inventoryService.getWhareHouseShelfList(e).subscribe(res => {
       this.destWHShelfs = res.map(shell => {
         shell.shell_id_in_whareHouse = shell._id
         return shell
