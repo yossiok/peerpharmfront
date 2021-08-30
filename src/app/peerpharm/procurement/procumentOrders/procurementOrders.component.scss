@@ -1,6 +1,24 @@
 .requests {
-  font-size: 20px
+  font-size: 20px;
 }
+// @media print{
+//   #print_btn{display:none}
+// table{ border-collapse:collapse;
+//   th {
+//     border: solid 1px black;
+//   } 
+//   tr{border: solid 2px black;}
+//   td{border: solid 1px black;
+//     padding:10px;
+//     font-size: 1.5rem;
+//   }
+// }
+  
+//   button{
+//    display: none;
+//   }
+
+// }
 
 
 table {
@@ -9,6 +27,14 @@ table {
 
 th {
   padding: 10px;
+}
+
+.top_pilled{
+  padding: 9px 25px;
+}
+
+.print_pill{
+  padding:0 35px;
 }
 
 td {
@@ -294,4 +320,5 @@ h2.peerLoader {
 .peerLoader span:nth-child(9) {
   animation-delay:0.96s;
 }
+
 

@@ -4,25 +4,39 @@
     <ng-template ngbNavContent>
       <div class="container-fluid bg-white text-center">
         <div class="row">
-          <div class="col-4"></div>
+          <div class="col-4">
+
+          </div>
           <div class="col-4 rounded">
             <h3 class="p-2 text-primary">Purchase Orders</h3>
           </div>
           <div class="col-4"></div>
         </div>
         <div class="row mt-4">
+          <!-- <div class="col-2"><button class="btn btn-warning rounded-pill" styleSheetFile="assets/css/custom1.css"
+              style="padding:0px 35px" printSectionId="print-section" ngxPrint><img
+                src="../../../../assets/images/print.png" alt="Print" width="60px"
+                style="padding:0 20px 0 0">Print</button></div> -->
+          <div class="col-2"><button class="btn btn-warning rounded-pill" [printStyle]="{table:{'border-collapse':'collapse' },
+              td : {'border': '1px solid black'},
+              tr : {'border': 'solid 2px black'},
+              th : {'border': 'solid 2px black'},
+              button:{'display':'none'}}" style="padding:0px 35px" printSectionId="print-section" ngxPrint
+              printTitle="Purchase Orders"><img src="../../../../assets/images/print.png" alt="Print" width="60px"
+                style="padding:0 20px 0 0">Print</button></div>
           <div class="col-3">
             <button *ngIf="newPurchaseAllowed" (click)="orderDetailsModal = true"
-              class="btn btn-warning rounded-pill">New Purchase - F2</button>
+              class="btn btn-warning rounded-pill top_pilled">New Purchase -
+              F2</button>
           </div>
-          <div class="col-2"></div>
           <div class="col-2">
-            <button class="btn btn-warning rounded-pill" (click)="open(updateCurrencies)">Update Currencies -
+            <button class="btn btn-warning rounded-pill top_pilled" (click)="open(updateCurrencies)">Update Currencies -
               F8</button>
           </div>
           <div class="col-2"></div>
           <div class="col-3">
-            <button (click)="purchaseRecommendationsModal = true" class="btn btn-warning rounded-pill">Purchase Requests
+            <button (click)="purchaseRecommendationsModal = true"
+              class="btn btn-warning rounded-pill top_pilled">Purchase Requests
               -
               F4</button>
           </div>
@@ -157,9 +171,12 @@
                 <p class="text-primary h3">Orders</p>
                 <img src="../../../../assets/images/excel.png" class="click" alt="export to excel" style="width: 40px;"
                   (click)="exportAsXLSX('purchaseData')">
-                <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
+                <!-- <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
+                  style="padding:0px 35px" printSectionId="print-section" ngxPrint><img
+                    src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button> -->
+                <!-- <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
                   style="background: none;border:none" printSectionId="print-section" ngxPrint><img
-                    src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
+                    src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button> -->
               </div>
               <div class="col-1 border">
                 <p class="text-primary h3 ">Items</p>
@@ -247,7 +264,8 @@
                     <textarea [value]="line.remarks" #purchaseRemarks></textarea>
                   </td>
                   <td [style.background]="setStatusColor(line.status)" [style.color]="setStatusTextColor(line.status)">
-                    <label>{{hebStat(line.status)}} {{line.statusChange | date: 'dd/MM'}}</label></td>
+                    <label>{{hebStat(line.status)}} {{line.statusChange | date: 'dd/MM'}}</label>
+                  </td>
                   <td><button class="btn btn-primary" (click)="printOrder(line)">Print</button></td>
                   <td>{{line.user}}</td>
                 </tr>
@@ -311,9 +329,12 @@
   class="container bg-white fixed-top text-center rounded shadow mx-auto my-auto p-2">
   <div class="row mt-2">
     <div class="col-4">
-      <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
-        style="background: none;border:none;cursor: pointer;" printSectionId="bill-section" ngxPrint><img
-          src="../../../../assets/images/print.png" alt="Print" style="width: 30px;"></button>
+      <button [printStyle]="{table:{'border-collapse':'collapse' },
+      td : {'border': '1px solid black'},
+      tr : {'border': 'solid 2px black'},
+      th : {'border': 'solid 2px black'},
+      button:{'display':'none'}}" style="background: none;border:none;cursor: pointer;" printSectionId="bill-section"
+        ngxPrint><img src="../../../../assets/images/print.png" alt="Print" style="width: 30px;"></button>
     </div>
     <div class="col-4">
       <h3 class="text-primary">Bill</h3>
@@ -381,15 +402,21 @@
       <hr>
 
       <div class="row">
-        <div class="col-4">
+        <div class="col-2 text-center"><button class="btn btn-warning rounded-pill" [printStyle]="{table:{'border-collapse':'collapse' },
+          td : {'border': '1px solid black'},
+          tr : {'border': 'solid 2px black'},
+          th : {'border': 'solid 2px black'},
+          button:{'display':'none'}}" style="padding:0px 35px" printSectionId="billing-section" ngxPrint
+            printTitle="Purchase Orders"><img src="../../../../assets/images/print.png" alt="Print" width="60px"
+              style="padding:0 20px 0 0">Print</button></div>
+
+        <div class="col-2">
         </div>
 
         <div class="col-4">
-          <button style="border:none;background: none;margin-left:100px;font-size: 25px;" ngxPrint
-            printSectionId="billing-section"
-            [printStyle]="{th : {'border': '1px solid black'}, td : {'border': '1px solid black'},tr : {'border': '1px solid black'}}"><b>Order:{{currentOrder.orderNumber}}</b></button>
-          <p style="margin-left:300px;">Order Date:{{orderDate | date: 'dd/MM/yyyy'}}</p>
-          <p style="margin-left:300px;">Approval Date:{{arrivalDate | date: 'dd/MM/yyyy'}}</p>
+          <b>Order:{{currentOrder.orderNumber}}</b>
+          <p style="margin-left:0;">Order Date:{{orderDate | date: 'dd/MM/yyyy'}}</p>
+          <p style="margin-left:0px;">Approval Date:{{arrivalDate | date: 'dd/MM/yyyy'}}</p>
         </div>
 
         <div class="col-4">
@@ -734,8 +761,12 @@
 
     </div>
     <div class="col-4">
-      <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
-        style="border:none;background:transparent;font-size: 30px;" printSectionId="invoice-section" ngxPrint>אישור
+      <button [printStyle]="{table:{'border-collapse':'collapse' },
+      td : {'border': '1px solid black'},
+      tr : {'border': 'solid 2px black'},
+      th : {'border': 'solid 2px black'},
+      button:{'display':'none'}}" style="border:none;background:transparent;font-size: 30px;"
+        printSectionId="invoice-section" ngxPrint>אישור
         חשבונית</button>
     </div>
     <div class="col-4">

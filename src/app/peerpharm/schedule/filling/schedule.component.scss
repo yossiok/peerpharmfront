@@ -1,3 +1,7 @@
+
+#print-schedule-section{
+  display: none;
+}
 input[type="checkbox"] {
   /* Double-sized Checkboxes */
  
@@ -160,13 +164,12 @@ td {
   }
 }
 
-
 tr { 
   margin-top: 10px !important;
 }
 
-
-
  td { 
    text-align: center;
  }
+
+ 
