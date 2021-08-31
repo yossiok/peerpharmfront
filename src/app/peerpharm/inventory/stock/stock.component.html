@@ -1319,18 +1319,25 @@
             class='btn form-control'>קבלת סחורה</button>
         </div>
         <div class="col-3">
+          <button [ngClass]="dir == 'out' ? 'btn-success' : 'btn-outline-success'" (click)="dirSet('out')"
+            class='btn form-control'>הוצאת סחורה</button>
+        </div>
+        <div class="col-3">
           <button [ngClass]="dir == 'shelfChange' ? 'btn-success' : 'btn-outline-success'"
             (click)="dirSet('shelfChange')" class='btn form-control'>שינוי מדף</button>
         </div>
         <div class="col-3">
-          <button [ngClass]="dir == 'out' ? 'btn-success' : 'btn-outline-success'" (click)="dirSet('out')"
-            class='btn form-control'>הוצאת סחורה</button>
+          <button [ngClass]="dir == 'shelfChange' ? 'btn-success' : 'btn-outline-success'"
+            (click)="dirSet('shelfChange')" class='btn form-control'>שינוי מדף</button>
         </div>
-        <div class="col-3"></div>
       </div>
 
       <div [style.width]="'1094px'" class="m-2 p-4 border border-black" *ngIf="dir=='in'">
         <app-inv-arrivals [itemNumber]="resCmpt.componentN" [allWhareHouses]="whareHouses"></app-inv-arrivals>
+      </div>
+
+      <div [style.width]="'1094px'" class="m-2 p-4 border border-primary bg-warning" *ngIf="dir=='out'">
+        <app-checkout [itemNumber]="resCmpt.componentN" [allWhareHouses]="whareHouses"></app-checkout>
       </div>
 
       <div [style.width]="'1094px'" class="m-2 p-4 border border-primary bg-secondary text-white"
@@ -1338,9 +1345,11 @@
         <app-shelf-change [itemNumber]="resCmpt.componentN" [allWhareHouses]="whareHouses"></app-shelf-change>
       </div>
 
-      <div [style.width]="'1094px'" class="m-2 p-4 border border-primary bg-warning" *ngIf="dir=='out'">
-        <app-checkout [itemNumber]="resCmpt.componentN" [allWhareHouses]="whareHouses"></app-checkout>
+      <div [style.width]="'1094px'" class="m-2 p-4 border border-primary bg-secondary text-white"
+        *ngIf="dir=='shelfChange'">
+        <app-between-wh [itemNumber]="resCmpt.componentN" [allWhareHouses]="whareHouses"></app-between-wh>
       </div>
+
 
 
 

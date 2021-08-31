@@ -62,6 +62,7 @@ export class BetweenWHComponent implements OnInit {
   }
 
   // get chunks with item
+  // it was better to split it to 2 different functions - one for origin and one for destination...
   getChunks(whType) {
 
     // product movement
@@ -90,6 +91,8 @@ export class BetweenWHComponent implements OnInit {
                 this.getAllShelfsOfDest(WHID)
                 let whName = this.allWhareHouses.find(wh => wh._id == this.movementForm.value.WH_destId).name
                 this.movementForm.controls.WH_destName.setValue(whName)
+                this.movementForm.controls.shell_id_in_whareHouse_Dest.setValue(this.destWHShelfs[0].shell_id_in_whareHouse)//stupid bug
+                this.setDestPosition()
               }
             }
           }
@@ -115,18 +118,6 @@ export class BetweenWHComponent implements OnInit {
     })
   }
 
-  // getAllShelfsOfOrigin(e) {
-  //   // this.movementForm.controls.isNewItemShell.setValue(true)
-  //   this.inventoryService.getWhareHouseShelfList(e.target.value).subscribe(res => {
-  //     this.originWHShelfs = res.map(shell => {
-  //       shell.shell_id_in_whareHouse = shell._id
-  //       return shell
-  //     })
-  //     //stupid bug:
-  //     // this.movementForm.controls.shell_id_in_whareHouse_Origin.setValue(this.shellNums[0].shell_id_in_whareHouse)
-  //   })
-  // }
-
   getAllShelfsOfDest(e) {
     e = e.target ? e.target.value : e
     this.inventoryService.getWhareHouseShelfList(e).subscribe(res => {
@@ -134,13 +125,10 @@ export class BetweenWHComponent implements OnInit {
         shell.shell_id_in_whareHouse = shell._id
         return shell
       })
-      //stupid bug:
-      // this.movementForm.controls.shell_id_in_whareHouse_Origin.setValue(this.shellNums[0].shell_id_in_whareHouse)
     })
   }
 
   setOriginPosition() {
-    debugger
     console.log(this.movementForm.value)
     this.originShelf = this.originWHShelfs.find(shelf => shelf.shell_id_in_whareHouse == this.movementForm.value.shell_id_in_whareHouse_Origin)
     this.movementForm.controls.shell_position_in_whareHouse_Origin.setValue(this.originShelf.position)
@@ -152,13 +140,12 @@ export class BetweenWHComponent implements OnInit {
       this.movementForm.controls.amount.reset()
     }
     else if (this.originShelf.amount < this.movementForm.value.amount) {
-      let conf = confirm('כמות במדף קטנה מהכמות שרשמת. האם להמשיך בכל זאת?')
+      let conf = confirm('הכמות שהזנת גדולה מהכמות במדף. להמשיך בכל זאת?')
       if (!conf) this.movementForm.controls.amount.reset()
     }
   }
 
   setDestPosition() {
-    debugger
     console.log(this.movementForm.value)
     this.destShelf = this.destWHShelfs.find(shelf => shelf.shell_id_in_whareHouse == this.movementForm.value.shell_id_in_whareHouse_Dest)
     this.movementForm.controls.shell_position_in_whareHouse_Dest.setValue(this.destShelf.position)
