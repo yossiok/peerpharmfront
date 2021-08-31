@@ -42,14 +42,17 @@ export class CheckoutComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    setTimeout(()=>this.first.nativeElement.focus(),500) 
-    if(this.itemNumber) {
+    setTimeout(() => this.first.nativeElement.focus(), 500)
+    if (this.itemNumber) {
       this.disabled = true
       this.componentCheckout.controls.item.setValue(this.itemNumber)
-    } 
+    }
   }
 
   getShelfs() {
+    if (this.componentCheckout.value.whareHouseID == '5c31bb6f91ca6b2510349ce9') {
+      this.componentCheckout.controls.itemType.setValue('product')
+    }
     if (!this.componentCheckout.value.whareHouseID) this.toastr.error('אנא בחר מחסן.')
     else if (!this.componentCheckout.value.item) this.toastr.error('אנא הזן מספר פריט.')
     else this.inventoryService.getShelfListForItemInWhareHouse2(this.componentCheckout.value.item, this.componentCheckout.value.whareHouseID)
@@ -97,7 +100,7 @@ export class CheckoutComponent implements OnInit {
 
   checkout() {
     this.sending = true
-    setTimeout(()=> this.sending = false, 7000) //if something goes wrong
+    setTimeout(() => this.sending = false, 7000) //if something goes wrong
     this.inventoryService.checkoutComponents(this.outGoing).subscribe(
       data => {
         if (data.msg) this.toastr.error('אנא פנה לתמיכה.', 'היתה בעיה')
@@ -109,23 +112,23 @@ export class CheckoutComponent implements OnInit {
           }
           this.sending = false
           this.toastr.success('שינויים נשמרו בהצלחה', 'נשמר')
-          setTimeout(()=> {
+          setTimeout(() => {
             this.printBtn2.nativeElement.click()
-            setTimeout(()=> this.outGoing = [], 1000)
+            setTimeout(() => this.outGoing = [], 1000)
           }, 500)
         }
       }
-      )
-    }
+    )
+  }
 
-    removeFromArrivals(i) {
-      this.outGoing.splice(i, 1)
-    }
-    
-    justPrint() {
-      setTimeout(()=> {
-        this.printBtn2.nativeElement.click()
-      }, 500)
+  removeFromArrivals(i) {
+    this.outGoing.splice(i, 1)
+  }
+
+  justPrint() {
+    setTimeout(() => {
+      this.printBtn2.nativeElement.click()
+    }, 500)
   }
 
   clearArrivals() {

@@ -162,6 +162,7 @@ import { YieldDetailsComponent } from './production/yield/yield-details/yield-de
 import { YieldsComponent } from './production/yield/yields/yields.component';
 import { YieldHistoryComponent } from './production/yield/yield-history/yield-history.component';
 import { BetweenWHComponent } from './inventory/wharehouse/between-wh/between-wh.component';
+import { CurrencySymbolPipe } from '../pipes/currency-symbol.pipe';
 
 
 
@@ -313,7 +314,8 @@ import { BetweenWHComponent } from './inventory/wharehouse/between-wh/between-wh
     InventoryReportsComponent,
     ShelfChangeComponent,
     CheckoutComponent,
-    YieldDetailsComponent, YieldsComponent, YieldHistoryComponent
+    YieldDetailsComponent, YieldsComponent, YieldHistoryComponent,
+    CurrencySymbolPipe
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [HttpClientModule,

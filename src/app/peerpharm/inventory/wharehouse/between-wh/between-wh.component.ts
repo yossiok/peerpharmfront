@@ -16,6 +16,8 @@ export class BetweenWHComponent implements OnInit {
   originWHShelfs: any[];
   destWHShelfs: any[];
   noItem: boolean = false
+  originShelf: any;
+  destShelf: any;
 
   movementForm: FormGroup = new FormGroup({
     amount: new FormControl(null, Validators.required),
@@ -94,16 +96,18 @@ export class BetweenWHComponent implements OnInit {
           else {
             if (whType == 'o') {
               this.originWHShelfs = chunks
+              this.movementForm.controls.shell_id_in_whareHouse_Origin.setValue(this.originWHShelfs[0].shell_id_in_whareHouse)//stupid bug
+              this.setOriginPosition()
               let whName = this.allWhareHouses.find(wh => wh._id == this.movementForm.value.WH_originId).name
               this.movementForm.controls.WH_originName.setValue(whName)
             }
             if (whType == 'd') {
               this.destWHShelfs = chunks
+              this.movementForm.controls.shell_id_in_whareHouse_Dest.setValue(this.destWHShelfs[0].shell_id_in_whareHouse)//stupid bug
+              this.setDestPosition()
               let whName = this.allWhareHouses.find(wh => wh._id == this.movementForm.value.WH_destId).name
               this.movementForm.controls.WH_destName.setValue(whName)
             }
-            //stupid bug:
-            // this.movementForm.controls.shell_id_in_whareHouse.setValue(this.shellNums[0].shell_id_in_whareHouse)
           }
         })
     }).catch(e => {
@@ -135,22 +139,35 @@ export class BetweenWHComponent implements OnInit {
     })
   }
 
-  setOriginPosition(e) {
+  setOriginPosition() {
     debugger
     console.log(this.movementForm.value)
-    let originShelf = this.originWHShelfs.find(shelf => shelf.shell_id_in_whareHouse == this.movementForm.value.shell_id_in_whareHouse_Origin)
-    this.movementForm.controls.shell_position_in_whareHouse_Origin.setValue(originShelf.position)
+    this.originShelf = this.originWHShelfs.find(shelf => shelf.shell_id_in_whareHouse == this.movementForm.value.shell_id_in_whareHouse_Origin)
+    this.movementForm.controls.shell_position_in_whareHouse_Origin.setValue(this.originShelf.position)
+  }
+
+  checkAmount() {
+    if (!this.originShelf) {
+      this.toastr.error('אנא הכנס מדף ממנו מוציאים')
+      this.movementForm.controls.amount.reset()
+    }
+    else if (this.originShelf.amount < this.movementForm.value.amount) {
+      let conf = confirm('כמות במדף קטנה מהכמות שרשמת. האם להמשיך בכל זאת?')
+      if (!conf) this.movementForm.controls.amount.reset()
+    }
   }
 
   setDestPosition() {
     debugger
     console.log(this.movementForm.value)
-    let destShelf = this.destWHShelfs.find(shelf => shelf.shell_id_in_whareHouse == this.movementForm.value.shell_id_in_whareHouse_Dest)
-    this.movementForm.controls.shell_position_in_whareHouse_Dest.setValue(destShelf.position)
+    this.destShelf = this.destWHShelfs.find(shelf => shelf.shell_id_in_whareHouse == this.movementForm.value.shell_id_in_whareHouse_Dest)
+    this.movementForm.controls.shell_position_in_whareHouse_Dest.setValue(this.destShelf.position)
   }
 
   move() {
-    console.log(this.movementForm.value)
+    this.inventoryService.moveWareHouse(this.movementForm.value).subscribe(data => {
+      console.log(data)
+    })
   }
 
 }

@@ -36,7 +36,8 @@
                 <label>מדף</label>
                 <select class="form-control" formControlName="shell_id_in_whareHouse">
                     <option disabled value="">בחר מדף</option>
-                    <option *ngFor="let shellNum of shellNums" [value]="shellNum.shell_id_in_whareHouse">
+                    <option *ngFor="let shellNum of shellNums" [disabled]="shellNum.position == 'MINUS'"
+                        [value]="shellNum.shell_id_in_whareHouse">
                         {{shellNum.position}}: {{shellNum.amount}} pcs
                     </option>
                 </select>
