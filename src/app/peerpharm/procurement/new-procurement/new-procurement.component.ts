@@ -108,7 +108,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   wow: boolean = false;
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    console.log(event);
   }
 
   constructor(
@@ -360,6 +359,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   getAllSuppliers() {
     this.supplierService.getSuppliersDiffCollection().subscribe(data => {
       this.allSuppliers = data;
+
     })
   }
 
@@ -536,7 +536,6 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   updateItems(stockItem) {
-    console.log(this.newPurchase.value)
     this.itemIndex = -1
     this.toastr.warning("שמור את ההזמנה על מנת לשמור את שינויים")
     this.editItem = false;
