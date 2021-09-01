@@ -24,7 +24,7 @@
       </div>
       <div>
         <select class="form-control" (change)="filterSuppliers('country', $event)">
-          <option value="" >Country</option>
+          <option value="">Country</option>
           <option *ngFor="let country of countries" [value]="country">{{country}}</option>
         </select>
       </div>
@@ -88,11 +88,12 @@
       <h2 class="text-success">{{currentSupplier.suplierName}}</h2>
     </div>
     <div class="col-1">
-      <i (click)="supplierModal = false" style="font-size: 23px;padding: 8px;" class="click fa fa-times text-success"></i>
+      <i (click)="supplierModal = false" style="font-size: 23px;padding: 8px;"
+        class="click fa fa-times text-success"></i>
     </div>
   </div>
 
-  <div  class="row mt-5">
+  <div class="row mt-5">
     <div class="col-1">
     </div>
     <div class="col-10">
@@ -127,7 +128,8 @@
   </div>
   <div class="row mt-3">
     <div class="col-2">
-      <input type="text" class="form-control" [disabled]="addEditText == 'Update Supplier'" [(ngModel)]="currentSupplier.suplierNumber">
+      <input type="text" class="form-control" [disabled]="addEditText == 'Update Supplier'"
+        [(ngModel)]="currentSupplier.suplierNumber">
     </div>
     <div class="col-2">
       <input type="text" class="form-control" [(ngModel)]="currentSupplier.suplierName">
@@ -160,7 +162,8 @@
     </div>
     <div class="col-2">
       <label class="form-control text-success">Currency</label>
-    </div><div class="col-2">
+    </div>
+    <div class="col-2">
       <label class="form-control text-success">Origin</label>
     </div>
   </div>
@@ -169,7 +172,7 @@
       <input type="text" class="form-control" [(ngModel)]="currentSupplier.faxNum">
     </div>
     <div class="col-2">
-      <input type="text" class="form-control" [(ngModel)]="currentSupplier.country">
+      <input type="text" class="form-control" [(ngModel)]="currentSupplier.country" pattern="[A-Za-z]{3-35}">
     </div>
     <div class="col-2">
       <input type="text" class="form-control" [(ngModel)]="currentSupplier.email">
@@ -189,98 +192,110 @@
     </div>
   </div>
 
-<div class="row mt-2">
-  <div class="col-1"></div>
-  <div class="col-2">
-    <label class="form-control">Remarks</label>
+  <div class="row mt-2">
+    <div class="col-1"></div>
+    <div class="col-2">
+      <label class="form-control">Remarks</label>
+    </div>
+    <div class="col-8">
+      <input type="text" class="form-control" [(ngModel)]="currentSupplier.remarks">
+    </div>
+    <div class="col-1"></div>
   </div>
-  <div class="col-8">
-    <input type="text" class="form-control" [(ngModel)]="currentSupplier.remarks">
+  <div class="row mt-3">
+    <div class="col-12">
+      <button (click)="updateCurrSupplier()" [disabled]="updatingData"
+        [style.cursor]="updatingData ? 'not-allowed' : 'pointer'"
+        class="btn w-50 btn-success form-control">{{addEditText}}</button>
+    </div>
   </div>
-  <div class="col-1"></div>
-</div>
-<div class="row mt-3">
-  <div class="col-12">
-    <button (click)="updateCurrSupplier()" [disabled]="updatingData" [style.cursor]="updatingData ? 'not-allowed' : 'pointer'" class="btn w-50 btn-success form-control">{{addEditText}}</button>
-  </div>
-</div>
 
-<div *ngIf="addEditText != 'Add Supplier'" (click)="showItemsFromSup = !showItemsFromSup" class="click row p-2 mt-4 text-center">
+  <div *ngIf="addEditText != 'Add Supplier'" (click)="showItemsFromSup = !showItemsFromSup"
+    class="click row p-2 mt-4 text-center">
     <div class="col-1">
-      <img src="../../../assets/images/excel.png" alt="excel export"
-        (click)="exportAsXLSX(supItems, 'פריטים ספק')" style="width: 35px; float: left; cursor: pointer;">
+      <img src="../../../assets/images/excel.png" alt="excel export" (click)="exportAsXLSX(supItems, 'פריטים ספק')"
+        style="width: 35px; float: left; cursor: pointer;">
     </div>
     <div class="col-2"></div>
-  <div class="col-6">
-    <h2 style="text-shadow: 2px 2px 4px #000000;" class="text-success ">פריטים שנרכשו מהספק</h2>
+    <div class="col-6">
+      <h2 style="text-shadow: 2px 2px 4px #000000;" class="text-success ">פריטים שנרכשו מהספק</h2>
+    </div>
   </div>
-</div>
 
-<div *ngIf="showItemsFromSup" dir="rtl" class="row mt-4">
-  <div class="col-12">
-    <table class="table table-hover table-striped">
-      <thead class="bg-success text-white">
-        <tr>
-          <th class="click text-center" (click)="sortBy('supItems', 'price')"><i class="fas fa-arrow-up"></i><br>מספר פריט<br><i class="fas fa-arrow-down"></i></th>
-          <th>שם פריט</th>
-          <th class="click text-center" (click)="sortBy('supItems', 'price')"><i class="fas fa-arrow-up"></i><br>מחיר<br><i class="fas fa-arrow-down"></i></th>
-          <th class="click text-center" (click)="sortBy('supItems', 'coin')"><i class="fas fa-arrow-up"></i><br>מטבע<br><i class="fas fa-arrow-down"></i></th>
-          <th class="click text-center" (click)="sortBy('supItems', 'quantity')"><i class="fas fa-arrow-up"></i><br>כמות<br><i class="fas fa-arrow-down"></i></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of supItems">
-          <td (click)="showAllPurchases(item.number)" style="text-decoration: underline;cursor: pointer;">
-            {{item.number}} {{item.itemNumber}}
-          </td>
-          <td>{{item.name}} {{item.itemName}}</td>
-          <td>{{item.price}} {{item.supplierPrice}}</td>
-          <td>{{item.coin}}</td>
-          <td>{{item.quantity}} {{item.supplierAmount}}</td>
-          <td>{{item.measurement}}</td>
-        </tr>
-      </tbody>
-    </table>
+  <div *ngIf="showItemsFromSup" dir="rtl" class="row mt-4">
+    <div class="col-12">
+      <table class="table table-hover table-striped">
+        <thead class="bg-success text-white">
+          <tr>
+            <th class="click text-center" (click)="sortBy('supItems', 'price')"><i class="fas fa-arrow-up"></i><br>מספר
+              פריט<br><i class="fas fa-arrow-down"></i></th>
+            <th>שם פריט</th>
+            <th class="click text-center" (click)="sortBy('supItems', 'price')"><i
+                class="fas fa-arrow-up"></i><br>מחיר<br><i class="fas fa-arrow-down"></i></th>
+            <th class="click text-center" (click)="sortBy('supItems', 'coin')"><i
+                class="fas fa-arrow-up"></i><br>מטבע<br><i class="fas fa-arrow-down"></i></th>
+            <th class="click text-center" (click)="sortBy('supItems', 'quantity')"><i
+                class="fas fa-arrow-up"></i><br>כמות<br><i class="fas fa-arrow-down"></i></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of supItems">
+            <td (click)="showAllPurchases(item.number)" style="text-decoration: underline;cursor: pointer;">
+              {{item.number}} {{item.itemNumber}}
+            </td>
+            <td>{{item.name}} {{item.itemName}}</td>
+            <td>{{item.price}} {{item.supplierPrice}}</td>
+            <td>{{item.coin}}</td>
+            <td>{{item.quantity}} {{item.supplierAmount}}</td>
+            <td>{{item.measurement}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
 
-<div *ngIf="addEditText != 'Add Supplier'" (click)="showSupOpenOrders = !showSupOpenOrders" class="click row p-2 mt-4 text-center">
+  <div *ngIf="addEditText != 'Add Supplier'" (click)="showSupOpenOrders = !showSupOpenOrders"
+    class="click row p-2 mt-4 text-center">
     <div class="col-1">
       <img src="../../../assets/images/excel.png" alt="excel export"
         (click)="exportAsXLSX(supPurchases, 'הזמנות פתוחות')" style="width: 35px; float: left; cursor: pointer;">
     </div>
-  <div class="col-2">
+    <div class="col-2">
+    </div>
+    <div class="col-6">
+      <h2 style="text-shadow: 2px 2px 4px #000000;" class="text-success ">הזמנות פתוחות</h2>
+    </div>
   </div>
-  <div class="col-6">
-    <h2 style="text-shadow: 2px 2px 4px #000000;" class="text-success ">הזמנות פתוחות</h2>
-  </div>
-</div>
 
-<div *ngIf="showSupOpenOrders" dir="rtl" class="row mt-4">
-  <div class="col-12">
-    <table class="table table-hover table-striped">
-      <thead class="bg-success text-white">
-        <tr>
-          <th class="click" (click)="sortBy('supPurchases', 'orderNumber')"><i class="fas fa-arrow-up"></i><br>מספר הזמנה<br><i class="fas fa-arrow-down"></i></th>
-          <th class="click" (click)="sortBy('supPurchases', 'creationDate')"><i class="fas fa-arrow-up"></i><br>נפתחה ב<br>..<i class="fas fa-arrow-down"></i></th>
-          <th>על ידי</th>
-          <th class="click" (click)="sortBy('supPurchases', 'arrivalDate')"><i class="fas fa-arrow-up"></i><br>תאריך הגעה<br><i class="fas fa-arrow-down"></i></th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let order of supPurchases">
-          <td>{{order.orderNumber}}</td>
-          <td>{{order.creationDate | date: 'short'}}</td>
-          <td>{{order.user}}</td>
-          <td>{{order.arrivalDate | date: 'short'}}</td>
-          <td><button (click)="openItems(order.stockitems, order.orderNumber)" class="btn btn-secondary">פריטים</button> </td>
-        </tr>
-      </tbody>
-    </table>
+  <div *ngIf="showSupOpenOrders" dir="rtl" class="row mt-4">
+    <div class="col-12">
+      <table class="table table-hover table-striped">
+        <thead class="bg-success text-white">
+          <tr>
+            <th class="click" (click)="sortBy('supPurchases', 'orderNumber')"><i class="fas fa-arrow-up"></i><br>מספר
+              הזמנה<br><i class="fas fa-arrow-down"></i></th>
+            <th class="click" (click)="sortBy('supPurchases', 'creationDate')"><i class="fas fa-arrow-up"></i><br>נפתחה
+              ב<br>..<i class="fas fa-arrow-down"></i></th>
+            <th>על ידי</th>
+            <th class="click" (click)="sortBy('supPurchases', 'arrivalDate')"><i class="fas fa-arrow-up"></i><br>תאריך
+              הגעה<br><i class="fas fa-arrow-down"></i></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of supPurchases">
+            <td>{{order.orderNumber}}</td>
+            <td>{{order.creationDate | date: 'short'}}</td>
+            <td>{{order.user}}</td>
+            <td>{{order.arrivalDate | date: 'short'}}</td>
+            <td><button (click)="openItems(order.stockitems, order.orderNumber)"
+                class="btn btn-secondary">פריטים</button> </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
 
 </div>
 
@@ -289,7 +304,7 @@
   class="container rounded fixed-top shadow-lg bg-secondary text-white text-center p-3">
   <div class="row">
     <div class="col-1">
-      
+
     </div>
 
     <div class="col-10">
@@ -337,7 +352,7 @@
   class="container rounded fixed-top shadow-lg bg-secondary text-white text-center p-3">
   <div class="row">
     <div class="col-1">
-      
+
     </div>
 
     <div class="col-10">

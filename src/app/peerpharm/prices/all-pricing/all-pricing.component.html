@@ -47,13 +47,14 @@
 
 <div *ngIf="showBiddingDetails" class="bidding mx-auto my-auto text-center w-75 p-5 modal-inner">
     <i class="fa fa-times float-right click h2 p-2 block" (click)="closeBidding()"></i>
-    <button class="btn btn-info float-left" [ngbTooltip]="editBidding ? 'Exit editing' : 'Edit'" (click)="editBidding = !editBidding">
+    <button class="btn btn-info float-left" [ngbTooltip]="editBidding ? 'Exit editing' : 'Edit'"
+        (click)="editBidding = !editBidding">
         {{editBidding ? 'Back' : 'Edit'}} &nbsp;<i class="fa" [ngClass]="setClass()"></i>
     </button>
 
     <button class="btn btn-outline-success"
-        [printStyle]="{tr : {'border': 'solid 1px black'}, td : {'border': 'solid 1px black'}}" printSectionId="bidding"
-        ngxPrint>
+        [printStyle]="{table:{'border-collapse':'collapse'},tr : {'border': 'solid 1px black'}, td : {'border': 'solid 1px black'}}"
+        printSectionId="bidding" ngxPrint>
         Print
         <i class="fas fa-print"></i>
     </button>
@@ -89,7 +90,9 @@
                     <div class="col-12">
                         <table class="table table-hover w-50">
                             <thead class="text-center">
-                             <th colspan="3"><h4>Price Details:</h4></th>
+                                <th colspan="3">
+                                    <h4>Price Details:</h4>
+                                </th>
                             </thead>
                             <tbody>
                                 <tr>
@@ -100,7 +103,8 @@
                                 <tr *ngFor="let component of chosenBidding.itemComponents">
                                     <td>component {{component.componentN}} - {{component.componentName}}</td>
                                     <td></td>
-                                    <td>{{component.price | currency: 'ILS'}} <span *ngIf="component.shippingPrice"> + {{component.shippingPrice | currency: 'ILS'}} (Shipping)</span></td>
+                                    <td>{{component.price | currency: 'ILS'}} <span *ngIf="component.shippingPrice"> +
+                                            {{component.shippingPrice | currency: 'ILS'}} (Shipping)</span></td>
                                 </tr>
                                 <tr>
                                     <td>Processing Fee</td>

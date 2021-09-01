@@ -84,7 +84,7 @@ export class NewBatchComponent implements OnInit {
 
   checkItem(e) {
     let item = this.currentItems.find(i => i.itemNumber == e.target.value)
-    if(!item) this.toastSrv.error('Item does not exist in this order.','Unmatch Item!')
+    if (!item) this.toastSrv.error('Item does not exist in this order.', 'Unmatch Item!')
     else {
       this.itemName.nativeElement.value = item.discription
     }
@@ -121,7 +121,7 @@ export class NewBatchComponent implements OnInit {
   }
 
   checkPointerAllowed() {
-    if(this.newBatchForm.value.chosenFormule == '') return 'disable-pointer'
+    if (this.newBatchForm.value.chosenFormule == '') return 'disable-pointer'
     else return ''
   }
 
@@ -184,8 +184,8 @@ export class NewBatchComponent implements OnInit {
             if (confirm("בחרת רק להדפיס מדבקות. באטצ' לא יתווסף למערכת. האם להמשיך?")) {
               setTimeout(() => {
                 this.printBtn.nativeElement.click();
-                this.newBatchForm.reset()
-                this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
+                // this.newBatchForm.reset()
+                // this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
                 this.allStickers = [];
               }, 2000)
             }
@@ -220,15 +220,15 @@ export class NewBatchComponent implements OnInit {
                   if (data.msg = 'succsess') {
                     this.printBtn.nativeElement.click();
                     this.toastSrv.success('באטצ נוסף בהצלחה !')
-                    setTimeout(()=> {
-                      this.newBatchForm.reset()
-                      this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
-                      this.newBatchForm.controls.itemsToCook.setValue([])
+                    setTimeout(() => {
+                      // this.newBatchForm.reset()
+                      // this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
+                      // this.newBatchForm.controls.itemsToCook.setValue([])
                       this.allStickers = [];
                       this.getLastBatch();
                     }, 2000)
                   }
-                  else if (data.msg == 'Batch Allready Exist') this.toastSrv.error('Please fill a different batch number.','Batch number allready exist.')
+                  else if (data.msg == 'Batch Allready Exist') this.toastSrv.error('Please fill a different batch number.', 'Batch number allready exist.')
                   else this.toastSrv.error('Something went wrong.')
                 })
               }
@@ -239,6 +239,12 @@ export class NewBatchComponent implements OnInit {
     }
   }
 
+  resetBatchValues() {
+
+    this.newBatchForm.reset()
+    this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
+    this.newBatchForm.controls.itemsToCook.setValue([])
+  }
 
   //not needed anymore
   // reduceMaterialAmounts(batchNumber,formuleNumber, weightKG) {

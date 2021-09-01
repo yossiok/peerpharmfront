@@ -10,8 +10,9 @@
       [style.cursor]="finalFormule ? 'pointer' : 'not-allowed'" class="btn btn-success form-control rounded-pill">Print
       - F10</button>
     <button #printFormuleBtn
-      [printStyle]="{table: {'font-size': '23px'}, td : {'border-top': 'solid 1px'}, th : {'border': 'solid 1px'}}"
-      printSectionId="formuleSection" ngxPrint style="display: none;"></button>
+      [printStyle]="{table:{ 'border-collapse':'collapse'},th : {'border': 'solid 1px black','font-size':'22px'}, tr : {'border': 'solid 2px black'}, td : {'border': 'solid 1px black', 'padding':'5px','font-size': '22px'}}"
+      printTitle="Formules: Production Weighting" printSectionId="formuleSection" ngxPrint
+      style="display: none;"></button>
   </div>
   <div class="col-3"></div>
   <button class="btn btn-primary rounded-pill" (click)="edit = !edit">Edit Percentage</button>
@@ -131,90 +132,82 @@
 
 
   <div id="formuleSection" class="row mt-3 d-flex flex-row" *ngIf="finalFormule">
-    <div>
-
-      <table class="table table-bordered">
-        <thead class="text-info">
-          <tr>
-            <th scope="col">Item number</th>
-            <th scope="col">Item name</th>
-            <th scope="col">Order number</th>
-            <th scope="col">Weight</th>
-            <th scope="col">WPU</th>
-            <th scope="col">PH</th>
-            <th class="w-50" scope="col">Remarks</th>
-
-          </tr>
-          <!-- </thead> -->
-
-          <!-- <tbody> -->
 
 
-          <tr *ngFor="let formule of formules; let i = index">
-            <td>{{formule.data.formuleNumber}}</td>
-            <td>{{formule.data.formuleName}}</td>
-            <td>{{formule.formuleOrder}}</td>
-            <td class="text-center">{{formule.formuleWeight}}KG</td>
-            <td>{{formule.formuleUnitWeight}}gr.</td>
-            <td>{{formule.data.phFrom}}-{{formule.data.phTo}}</td>
+    <table class="table table-bordered">
+      <thead class="text-info">
+        <tr>
+          <th scope="col">Item number</th>
+          <th scope="col">Item name</th>
+          <th scope="col">Order number</th>
+          <th scope="col">Weight</th>
+          <th scope="col">WPU</th>
+          <th scope="col">PH</th>
+          <th class="w-50" scope="col">Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let formule of formules; let i = index">
+          <td>{{formule.data.formuleNumber}}</td>
+          <td>{{formule.data.formuleName}}</td>
+          <td>{{formule.formuleOrder}}</td>
+          <td class="text-center">{{formule.formuleWeight}}KG</td>
+          <td>{{formule.formuleUnitWeight}}gr.</td>
+          <td>{{formule.data.phFrom}}-{{formule.data.phTo}}</td>
+          <td></td>
+        </tr>
+        <tr class="bg-light">
+          <td style="font-weight: bold">Date:</td>
+          <td><input style="height: 60px;" type="text"></td>
+          <td style="font-weight: bold">Batch:</td>
+          <td><input style="height: 60px;" type="text" value="21pp"></td>
+          <td style="font-weight: bold">Final PH:</td>
+          <td colspan="2"><input style="height: 60px;" type="text"></td>
+        </tr>
+      </tbody>
+    </table>
+    <h2>Batch Weight: {{finalWeight}}KG</h2>
+
+    <table class="table table-hover">
+      <thead class="bg-info text-white">
+        <tr>
+          <th colspan="8" *ngFor="let formule of formules">{{formule.data.formuleNumber}}: {{formule.data.formuleName}},
+            Batch Weight: {{finalWeight}}KG
+          </th>
+        </tr>
+        <tr>
+          <th scope="col">Phase</th>
+          <th scope="col">Item</th>
+          <th scope="col">Raw Material Name</th>
+          <th scope="col">Percentage</th>
+          <th scope="col">KG</th>
+          <th scope="col">Remarks</th>
+          <th scope="col">Lot</th>
+          <th>Done?</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let phase of finalFormule.data.phases">
+
+          <tr *ngFor="let item of phase.items; let i = index">
+
+            <td style="padding:5px" *ngIf="i == 0" [attr.rowspan]="phase.items.length" class="phase">{{
+              phase.phaseName }}</td>
+            <td style="padding:5px">{{ item.itemNumber }}</td>
+            <td style="padding:5px">{{ item.itemName }}</td>
+            <td style="padding:5px">{{ item.percentage }}%</td>
+            <td style="padding:5px">{{ item.kgProd | number }}</td>
+            <td>{{item.remarks}}</td>
+            <td *ngIf="item.check != true" style="padding:5px"><input
+                (change)="weightProduction(item.itemNumber, item.itemName, $event, item.kgProd)"
+                class="form-control rounded-pill"></td>
+            <td *ngIf="item.check == true" style="padding:5px"><i class="fa fa-check text-info"></i></td>
             <td></td>
           </tr>
-          <tr class="bg-light">
-            <td style="font-weight: bold">Date:</td>
-            <td><input style="height: 60px;" type="text"></td>
-            <td style="font-weight: bold">Batch:</td>
-            <td><input style="height: 60px;" type="text" value="21pp"></td>
-            <td style="font-weight: bold">Final PH:</td>
-            <td><input style="height: 60px;" type="text"></td>
-          </tr>
+        </ng-container>
+      </tbody>
+    </table>
 
-
-          <!-- </tbody> -->
-          <!-- </table> -->
-          <h2>Batch Weight: {{finalWeight}}KG</h2>
-
-
-          <!-- <div class="row mt-4"></div> -->
-
-
-          <!-- <table class="table table-hover"> -->
-          <!-- <thead class="bg-info text-white"> -->
-          <tr>
-            <th scope="col">Phase</th>
-            <th scope="col">Item</th>
-            <th scope="col">Raw Material Name</th>
-            <th scope="col">Percentage</th>
-            <th scope="col">KG</th>
-            <th scope="col">Remarks</th>
-            <th scope="col">Lot</th>
-            <th>Done?</th>
-
-          </tr>
-        </thead>
-
-        <tbody>
-          <ng-container *ngFor="let phase of finalFormule.data.phases">
-
-            <tr *ngFor="let item of phase.items; let i = index">
-
-              <td style="padding:5px" *ngIf="i == 0" [attr.rowspan]="phase.items.length" class="phase">{{
-                phase.phaseName }}</td>
-              <td style="padding:5px">{{ item.itemNumber }}</td>
-              <td style="padding:5px">{{ item.itemName }}</td>
-              <td style="padding:5px">{{ item.percentage }}%</td>
-              <td style="padding:5px">{{ item.kgProd | number }}</td>
-              <td>{{item.remarks}}</td>
-              <td *ngIf="item.check != true" style="padding:5px"><input
-                  (change)="weightProduction(item.itemNumber, item.itemName, $event, item.kgProd)"
-                  class="form-control rounded-pill"></td>
-              <td *ngIf="item.check == true" style="padding:5px"><i class="fa fa-check text-info"></i></td>
-
-
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
-    </div>
   </div>
 
 

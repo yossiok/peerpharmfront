@@ -168,117 +168,7 @@
     </div>
   </div>
 
-  <div class="row " id="print-schedule-section">
-    <table>
-      <thead>
-        <tr>
-          <th><b>P</b></th>
-          <!--1-->
-          <th><b>Order</b></th>
-          <!--2-->
-          <th><b>Item</b></th>
-          <!--3-->
-          <th><b>Item Important Remark</b></th>
-          <!--4-->
-          <th><b>Customer</b></th>
-          <!--5-->
-          <th><b>Name of product</b></th>
-          <!--6-->
-          <th><b>Batch number</b></th>
-          <!--7-->
-          <th><b>Package</b></th>
-          <!--8-->
-          <th><b>Qty</b></th>
-          <!--9-->
-          <th><b>Remarks</b></th>
-          <!--10-->
-          <th><b>Date</b></th>
-          <!--11-->
-        </tr>
-      </thead>
 
-      <tbody>
-        <tr *ngFor="let line of scheduleData" [style.background-color]="line.color">
-          <ng-container *ngIf="line !== undefined && line.mkp === typeShown">
-            <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-              {{ line.positionN }}
-            </td>
-            <td *ngIf="line._id === EditRowId">
-              <input type="text" [value]="line.positionN" class="form-control" />
-            </td>
-            <td *ngIf="line._id !== EditRowId">
-              <a target="_blank" routerLink="/peerpharm/allorders/orderitems/{{ line.orderN }}">
-                {{ line.orderN }}
-              </a>
-            </td>
-            <td *ngIf="line._id === EditRowId">
-              <input type="text" [value]="line.orderN" class="form-control" />
-            </td>
-            <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-              <a target="_blank" routerLink="/peerpharm/items/itemDetails/{{ line.item }}">
-                {{ line.item }}
-              </a>
-            </td>
-            <td *ngIf="line._id === EditRowId">
-              <input type="text" [value]="line.item" class="form-control" />
-            </td>
-
-            <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)"
-              style="color:red ;  max-width: 12%; overflow-wrap: break-word;">
-              {{ line.itemImpRemark }}
-            </td>
-            <td *ngIf="line._id === EditRowId">
-              <input type="text" [value]="line.itemImpRemark" class="form-control" style="color:red ; " disabled />
-            </td>
-
-            <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-              {{ line.costumer | slice: 0:30 }}
-            </td>
-            <td *ngIf="line._id === EditRowId">
-              <input type="text" [value]="line.costumer" class="form-control" />
-            </td>
-            <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-              {{ line.productName }}
-            </td>
-            <td *ngIf="line._id === EditRowId">
-              <input type="text" [value]="line.productName" class="form-control" />
-            </td>
-            <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-              <textarea disabled style="height: 113px; width: 84px; box-shadow: none !important;" rows="2"
-                cols="10"> {{ line.batch }} </textarea>
-            </td>
-            <td *ngIf="line._id === EditRowId">
-              <input type="text" [value]="line.batch" class="form-control" />
-            </td>
-            <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-              {{ line.packageP | slice: 0:20 }}
-            </td>
-            <td *ngIf="line._id === EditRowId">
-              <input style="width: 100px;" type="text" [value]="line.packageP" />
-            </td>
-            <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-              {{ line.qtyProduced }} / {{ line.qty }}
-            </td>
-            <td *ngIf="line._id === EditRowId">
-              <input type="text" [value]="line.qty" class="form-control" />
-            </td>
-
-
-            <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-              {{ line.marks }}
-            </td>
-            <td *ngIf="line._id === EditRowId">
-              <textarea rows="1" cols="30" type="text" [value]="line.marks" class="form-control"></textarea>
-            </td>
-
-            <td *ngIf="line._id !== EditRowId" (click)="edit(line._id, line.mkp)">
-              {{ line.date | date: "dd/MM/yyyy" }}
-            </td>
-          </ng-container>
-        </tr>
-      </tbody>
-    </table>
-  </div>
 
   <div class="row fixNoaStupidStuff">
     <div class="col-12 fixNoaStupidStuff">
@@ -790,3 +680,76 @@
     <h5>-1 = Not Checked</h5>
   </div>
 </ng-template>
+
+<!-- Printing area not displayed -->
+
+<div class="row " id="print-schedule-section">
+  <table>
+    <thead>
+      <tr>
+        <th><b>P</b></th>
+        <!--1-->
+        <th><b>Order</b></th>
+        <!--2-->
+        <th><b>Item</b></th>
+        <!--3-->
+        <th><b>Item Important Remark</b></th>
+        <!--4-->
+        <th><b>Customer</b></th>
+        <!--5-->
+        <th><b>Name of product</b></th>
+        <!--6-->
+        <th><b>Batch number</b></th>
+        <!--7-->
+        <th><b>Package</b></th>
+        <!--8-->
+        <th><b>Qty</b></th>
+        <!--9-->
+        <th><b>Remarks</b></th>
+        <!--10-->
+        <th><b>Date</b></th>
+        <!--11-->
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let line of scheduleData" [style.background-color]="line.color">
+        <ng-container *ngIf="line !== undefined && line.mkp === typeShown">
+          <td>
+            {{ line.positionN }}
+          </td>
+          <td>
+            {{ line.orderN }}
+          </td>
+          <td>
+            {{ line.item }}
+          </td>
+          <td>
+            {{ line.itemImpRemark }}
+          </td>
+          <td>
+            {{ line.costumer | slice: 0:30 }}
+          </td>
+          <td>
+            {{ line.productName }}
+          </td>
+          <td>
+            {{ line.batch }}
+          </td>
+          <td>
+            {{ line.packageP | slice: 0:20 }}
+          </td>
+          <td>
+            {{ line.qtyProduced }} / {{ line.qty }}
+          </td>
+          <td>
+            {{ line.marks }}
+          </td>
+          <td>
+            {{ line.date | date: "dd/MM/yyyy" }}
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</div>
