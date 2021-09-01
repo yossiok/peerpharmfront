@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { InventoryService } from 'src/app/services/inventory.service';
@@ -12,6 +12,7 @@ export class BetweenWHComponent implements OnInit {
 
   @Input() allWhareHouses;
   @Input() itemNumber;
+  @ViewChild('first') first: ElementRef
 
   originWHShelfs: any[];
   destWHShelfs: any[];
@@ -33,6 +34,7 @@ export class BetweenWHComponent implements OnInit {
     WH_destName: new FormControl(null, Validators.required),
     isNewItemShell: new FormControl(false, Validators.required)
   })
+  sending: boolean;
 
   constructor(
     private inventoryService: InventoryService,
@@ -152,8 +154,17 @@ export class BetweenWHComponent implements OnInit {
   }
 
   move() {
+    this.sending = true
     this.inventoryService.moveWareHouse(this.movementForm.value).subscribe(data => {
-      console.log(data)
+      if (data.msg) this.toastr.error(data.msg, 'שגיאה')
+      else {
+        //set certificate data 
+        this.sending = false
+        this.toastr.success('שינויים נשמרו בהצלחה', 'נשמר')
+        this.movementForm.reset()
+        this.movementForm.controls.itemType.setValue('component')
+        this.first.nativeElement.focus()
+      }
     })
   }
 

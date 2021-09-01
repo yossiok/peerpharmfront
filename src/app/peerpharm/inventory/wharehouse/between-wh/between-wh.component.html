@@ -10,7 +10,7 @@
                 <label>
                     פריט (לפי מספר)
                 </label>
-                <input type="number" [disabled]="disabled" formControlName="item" class="form-control">
+                <input type="number" #first [disabled]="disabled" formControlName="item" class="form-control">
             </div>
             <div *ngIf="!disabled" class="col-2">
                 <label class="d-block">
