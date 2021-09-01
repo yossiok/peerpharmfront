@@ -36,6 +36,7 @@ export class ProcurementOrdersComponent implements OnInit {
   @ViewChild('purchaseArrivalDate') purchaseArrivalDate: ElementRef;
   @ViewChild('printBillBtn') printBillBtn: ElementRef;
   @ViewChild('updateCurrencies') updateCurrencies: ElementRef;
+  @ViewChild('printOrdersBtn') printOrdersBtn: ElementRef;
 
 
   linkDownload: String = '';
@@ -145,6 +146,14 @@ export class ProcurementOrdersComponent implements OnInit {
         this.orderDetailsModal = false;
       } else {
         this.orderDetailsModal = true;
+      }
+    }
+    if (event.key === 'F10') {
+      if (
+        this.orderDetailsModal === false &&
+        this.purchaseRecommendationsModal === false &&
+        this.fetchingOrders === false) {
+        this.printOrdersBtn.nativeElement.click()
       }
     }
 

@@ -17,13 +17,14 @@
               style="padding:0px 35px" printSectionId="print-section" ngxPrint><img
                 src="../../../../assets/images/print.png" alt="Print" width="60px"
                 style="padding:0 20px 0 0">Print</button></div> -->
-          <div class="col-2"><button class="btn btn-warning rounded-pill" [printStyle]="{table:{'border-collapse':'collapse' },
+          <div class="col-2"><button #printOrdersBtn [disabled]="this.fetchingOrders"
+              class="btn btn-warning rounded-pill" [printStyle]="{table:{'border-collapse':'collapse' },
               td : {'border': '1px solid black'},
               tr : {'border': 'solid 2px black'},
               th : {'border': 'solid 2px black'},
               button:{'display':'none'}}" style="padding:0px 35px" printSectionId="print-section" ngxPrint
               printTitle="Purchase Orders"><img src="../../../../assets/images/print.png" alt="Print" width="60px"
-                style="padding:0 20px 0 0">Print</button></div>
+                style="padding:0 20px 0 0">Print-F10</button></div>
           <div class="col-3">
             <button *ngIf="newPurchaseAllowed" (click)="orderDetailsModal = true"
               class="btn btn-warning rounded-pill top_pilled">New Purchase -
