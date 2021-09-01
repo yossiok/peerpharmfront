@@ -1,10 +1,10 @@
 <div dir="rtl">
 
 
-    <form [formGroup]="componentCheckout" (ngSubmit)="addToOutGoing()">
-        <h3>הוצאת סחורה</h3>
-        <div class="row mt-4">
+    <form [formGroup]="componentArrival" (ngSubmit)="addToArrivals()">
+        <h3>קבלת סחורה</h3>
 
+        <div class="row mt-2">
             <div class="col-2">
                 <label>מחסן</label>
                 <select class="form-control" (change)="itemNumber ? getShelfs() : null" formControlName="whareHouseID"
@@ -14,7 +14,6 @@
                     </option>
                 </select>
             </div>
-
             <div *ngIf="!disabled" class="col-2">
                 <label>
                     פריט (לפי מספר)
@@ -37,22 +36,53 @@
                 <label>מדף</label>
                 <select class="form-control" formControlName="shell_id_in_whareHouse">
                     <option disabled value="">בחר מדף</option>
-                    <option *ngFor="let shellNum of shellNums" [value]="shellNum.shell_id_in_whareHouse">
-                        {{shellNum.position}} - {{shellNum.amount}} pcs
+                    <option *ngFor="let shellNum of shellNums" [disabled]="shellNum.position == 'MINUS'"
+                        [value]="shellNum.shell_id_in_whareHouse">
+                        {{shellNum.position}}: {{shellNum.amount}} pcs
                     </option>
                 </select>
+                <span [ngbTooltip]="noItem ? 'יש להזין מספר פריט תקין' : ''">
+                    <button type="button" [disabled]="noItem" [style.cursor]="noItem ? 'not-allowed' : 'pointer'"
+                        (click)="getAllShellsOfWhareHouse()" class="btn btn-warning">הכנס למדף חדש</button>
+                </span>
             </div>
             <div class="col-2">
                 <label>כמות</label>
                 <input type="number" formControlName="amount" class="form-control">
             </div>
             <div class="col-2 d-flex flex-column justify-content-around">
-                <button type="submit" [disabled]="!componentCheckout.valid"
-                    [style.cursor]="componentCheckout.valid ? 'pointer' : 'not-allowed'"
-                    class="btn btn-info">הוצא</button>
-                <button type="button" class="btn btn-secondary" (click)="componentCheckout.reset()">נקה נתונים</button>
+                <button type="submit" [disabled]="!componentArrival.valid"
+                    [style.cursor]="componentArrival.valid ? 'pointer' : 'not-allowed'"
+                    class="btn btn-info">הכנס</button>
+                <button type="button" class="btn btn-secondary" (click)="componentArrival.reset()">נקה נתונים</button>
             </div>
-            <div class="col-1">
+        </div>
+        <div class="row mt-4">
+            <div class="col-2">
+                <label>ספק</label>
+
+                <input list="suppliers" (change)="getPurchaseOrders($event)" class="form-control"
+                    formControlName="supplier">
+                <datalist id="suppliers">
+                    <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">
+                        {{supplier.suplierNumber}} - {{supplier.suplierName}}
+                    </option>
+                </datalist>
+
+                <!-- <select class="form-control" (change)="getPurchaseOrders($event)" formControlName="supplier">
+                    <option disabled value="">בחר ספק</option>
+                    <option *ngFor="let supplier of allSuppliers" [value]="supplier.suplierNumber">{{supplier.suplierNumber}} - {{supplier.suplierName}}
+                    </option>
+                </select> -->
+            </div>
+            <div class="col-2">
+                <label>מס' הזמנת רכש</label>
+                <select class="form-control" formControlName="purchaseOrder">
+                    <option selected value="">מס' הזמנה</option>
+                    <option *ngFor="let purchase of purchaseOrders" [value]="purchase.orderNumber">
+                        {{purchase.orderNumber}}
+                    </option>
+                </select>
             </div>
         </div>
     </form>
@@ -64,13 +94,13 @@
                 <tr>
                     <th class="text-center">פריט</th>
                     <th class="text-center">כמות</th>
-                    <th class="text-center">יצא ממחסן..</th>
-                    <th class="text-center">ממדף..</th>
+                    <th class="text-center">נכנס למחסן..</th>
+                    <th class="text-center">למדף..</th>
                     <th class="text-center"></th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let arrival of outGoing; let i = index">
+                <tr *ngFor="let arrival of allArrivals; let i = index">
                     <td class="text-center">{{arrival.item}}</td>
                     <td class="text-center">{{arrival.amount}}</td>
                     <td class="text-center">{{arrival.whareHouse}}</td>
@@ -83,9 +113,9 @@
     </div>
 
     <div class="row mt-2 d-flex flex-row justify-content-around w-50">
-        <button *ngIf="!sending" class="btn btn-info" (click)="checkout()" [disabled]="outGoing.length == 0"
-            [style.cursor]="outGoing.length == 0 ? 'not-allowed' : 'pointer'">
-            הוצא מהמלאי (שלח שינויים) <i class="fa fa-check"></i>
+        <button *ngIf="!sending" class="btn btn-info" (click)="addToStock()" [disabled]="allArrivals.length == 0"
+            [style.cursor]="allArrivals.length == 0 ? 'not-allowed' : 'pointer'">
+            הוסף למלאי (שלח שינויים) <i class="fa fa-check"></i>
         </button>
         <div class="smallerLoader" *ngIf="sending"></div>
         <button class="btn btn-success" (click)="justPrint()">הדפס <i class="fa fa-print"></i></button>
@@ -106,7 +136,7 @@
                 </p>
             </header>
             <main>
-                <h2>תעודת יציאה מס' {{certificateReception}}</h2>
+                <h2>תעודת קליטה מס' {{certificateReception}}</h2>
                 <p class='originDestWh'>
                     <span><u>תאריך:</u></span>&nbsp;&nbsp;
                     <span>{{today | date :'dd-MM-yyyy' }}</span>&nbsp;&nbsp;
@@ -122,9 +152,10 @@
                             <th>מיקום</th>
                             <th>כמות</th>
                             <th class='itemNamePrint'>שם פריט</th>
+                            <th>פריט מק"ט ספק</th>
 
                         </tr>
-                        <ng-container *ngFor="let arrival of outGoing; let i =index">
+                        <ng-container *ngFor="let arrival of allArrivals; let i =index">
                             <tr>
                                 <td class="cellPadding">{{i+1}}</td>
                                 <td>{{arrival.item}}</td>
@@ -132,6 +163,7 @@
                                 <td>{{arrival.position}}</td>
                                 <td>{{arrival.amount}}</td>
                                 <td>{{arrival.itemName}}</td>
+                                <td>{{arrival.suplierN}}</td>
 
                             </tr>
                         </ng-container>

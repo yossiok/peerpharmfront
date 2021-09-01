@@ -38,8 +38,8 @@ export class InvArrivalsComponent implements OnInit {
     whareHouseID: new FormControl(null, Validators.required),
     whareHouse: new FormControl(''),
     isNewItemShell: new FormControl(false, Validators.required),
-    supplier: new FormControl(''),
-    purchaseOrder: new FormControl(null),
+    supplier: new FormControl('', Validators.required),
+    purchaseOrder: new FormControl(null, Validators.required),
 
   })
 

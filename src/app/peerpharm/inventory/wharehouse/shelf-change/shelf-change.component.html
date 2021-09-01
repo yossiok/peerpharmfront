@@ -38,7 +38,8 @@
                 <label>מדף ישן</label>
                 <select class="form-control" formControlName="old_shell_id_in_whareHouse">
                     <option disabled value="">בחר מדף</option>
-                    <option *ngFor="let shellNum of shelfsWithItem" [value]="shellNum.shell_id_in_whareHouse">
+                    <option *ngFor="let shellNum of shelfsWithItem" [disabled]="shellNum.position == 'MINUS'"
+                        [value]="shellNum.shell_id_in_whareHouse">
                         {{shellNum.position}} - {{shellNum.amount}} pcs
                     </option>
                 </select>
@@ -49,7 +50,8 @@
                 <label>מדף חדש</label>
                 <select class="form-control" formControlName="new_shell_id_in_whareHouse">
                     <option disabled value="">בחר מדף</option>
-                    <option *ngFor="let shellNum of shellNums" [value]="shellNum._id">
+                    <option *ngFor="let shellNum of shellNums" [disabled]="shellNum.position == 'MINUS'"
+                        [value]="shellNum._id">
                         {{shellNum.position}}
                     </option>
                 </select>

@@ -154,13 +154,15 @@ import { EditServiceComponent } from './out-services/edit-service/edit-out-servi
 import { NewPricingComponent } from './prices/new-pricing/new-pricing.component';
 import { ItemIndexComponent } from './item-index/item-index.component';
 import { ItemSuppliersComponent } from './items/item-suppliers/item-suppliers.component';
-import { InvArrivalsComponent } from './inventory/inv-arrivals/inv-arrivals.component';
+import { InvArrivalsComponent } from './inventory/wharehouse/inv-arrivals/inv-arrivals.component';
 import { InventoryReportsComponent } from './inventory/inventory-reports/inventory-reports.component';
-import { ShelfChangeComponent } from './inventory/shelf-change/shelf-change.component';
-import { CheckoutComponent } from './inventory/checkout/checkout.component';
+import { ShelfChangeComponent } from './inventory/wharehouse/shelf-change/shelf-change.component';
+import { CheckoutComponent } from './inventory/wharehouse/checkout/checkout.component';
 import { YieldDetailsComponent } from './production/yield/yield-details/yield-details.component';
 import { YieldsComponent } from './production/yield/yields/yields.component';
 import { YieldHistoryComponent } from './production/yield/yield-history/yield-history.component';
+import { BetweenWHComponent } from './inventory/wharehouse/between-wh/between-wh.component';
+import { CurrencySymbolPipe } from '../pipes/currency-symbol.pipe';
 
 
 
@@ -308,10 +310,12 @@ import { YieldHistoryComponent } from './production/yield/yield-history/yield-hi
     ItemIndexComponent,
     ItemSuppliersComponent,
     InvArrivalsComponent,
+    BetweenWHComponent,
     InventoryReportsComponent,
     ShelfChangeComponent,
     CheckoutComponent,
-    YieldDetailsComponent, YieldsComponent, YieldHistoryComponent
+    YieldDetailsComponent, YieldsComponent, YieldHistoryComponent,
+    CurrencySymbolPipe
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [HttpClientModule,
