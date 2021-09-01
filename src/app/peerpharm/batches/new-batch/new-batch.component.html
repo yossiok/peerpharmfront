@@ -44,7 +44,8 @@
       </div>
       <div class="col-1">
         <label for="">Add</label>
-        <button (click)="saveItem()" class="btn btn-outline-info form-control batchbtn"><i class="fa fa-plus"></i></button>
+        <button (click)="saveItem()" class="btn btn-outline-info form-control batchbtn"><i
+            class="fa fa-plus"></i></button>
       </div>
     </div>
   </div>
@@ -58,7 +59,8 @@
         <div
           [ngbTooltip]="item.itemNumber == newBatchForm.value.chosenFormule ? 'Main Formule' : 'Set as main formule'">
           <p class="font-italic">Order {{item.orderNumber}}</p>
-          <p class="text-info smaller"><span class="font-weight-bold">item {{item.itemNumber}}</span> - {{item.itemName}}</p>
+          <p class="text-info smaller"><span class="font-weight-bold">item {{item.itemNumber}}</span> -
+            {{item.itemName}}</p>
           <p class="text-warning">{{item.weightKg}}KG</p>
         </div>
       </div>
@@ -124,6 +126,15 @@
         <div class="col-4"></div>
         <div class="col-4">
           <button (click)="addNewBatch(true)" class="btn btn-success form-control">Print Sticker
+          </button>
+        </div>
+        <div class="col-4"></div>
+      </div>
+
+      <div class="row mt-4">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <button (click)="resetBatchValues(true)" class="btn btn-primary form-control">Reset Values
           </button>
         </div>
         <div class="col-4"></div>
