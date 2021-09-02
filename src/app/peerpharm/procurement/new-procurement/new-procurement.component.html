@@ -53,8 +53,8 @@
             <button class="btn btn-outline-primary rounded-pill w-50" (click)="open(sumShipping)">הזן נתוני
               העמסה</button>
           </div>
-          <div (click)="open(status)" [style.background]="setStatusColor(purchaseData.status)"
-            class="col-2 click p-3 rounded-pill">
+          <div (click)="open(status)" [style.color]="setStatusTextColor(purchaseData.status)"
+            [style.background]="setStatusColor(purchaseData.status)" class="col-2 click p-3 rounded-pill">
             Current status: <span ngbTooltip="click to watch" class="h4">{{hebStat(purchaseData.status)}} <br>
               {{purchaseData.statusChange | date: 'dd/MM/yy'}}</span>
           </div>
@@ -78,8 +78,10 @@
               <option value="approvedBySupplier">approved</option>
               <option value="ready">ready</option>
               <option value="sentBySupplier">sent by supplier</option>
-              <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="ETD">shipped(E.T.D)</option>
-              <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="ETA">arrived(E.T.A)</option>
+              <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="ETD">Estimated
+                Departure(E.T.D)</option>
+              <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="ETA">Estimated
+                Arrival(E.T.A)</option>
               <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="cstClear">custom cleared
               </option>
               <option value="supplied">delivered</option>
@@ -943,22 +945,34 @@
       <table style="overflow: auto;" class="table table-striped">
         <thead>
           <tr>
+            <th>Status</th>
             <th>Previous Status</th>
             <th>Date Changed</th>
-            <th>New Status</th>
             <th>user</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let status of purchaseData.statusUpdates; let i = index"
             [style.background]="setStatusColor(status.new)" [style.color]="setStatusTextColor(status.new)">
+            <td>{{hebStat(status.new)}}
+              <span *ngIf="status.new == 'ETD' || status.new == 'ETA'"> - {{status.ET | date: 'dd/MM/yyyy'}}</span>
+            </td>
             <td>{{hebStat(status.prev)}}</td>
             <td>{{status.date | date: 'dd/MM/yyyy'}}</td>
-            <td>{{hebStat(status.new)}}</td>
             <td>{{status.user}}</td>
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #setEstimatedDate>
+  <h3 class="m-2">Set {{statusTypeToSet}}</h3>
+  <div class="row m-2 p-5">
+    <div class="col-12 p-5 shadow rounded">
+      <input class="form-control m-4" type="date" [(ngModel)]="statusDate">
+      <button class="btn btn-success m-4" (click)="setStatusDate()">Set</button>
     </div>
   </div>
 </ng-template>

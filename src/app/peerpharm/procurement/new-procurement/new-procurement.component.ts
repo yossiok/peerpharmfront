@@ -43,6 +43,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   @ViewChild('editArrival') editArrival: ElementRef;
   @ViewChild('sumShipping') sumShipping: ElementRef;
   @ViewChild('cb') checkItem: ElementRef;
+  @ViewChild('setEstimatedDate') setEstimatedDate: ElementRef;
 
   openOrdersModal: boolean = false;
   shippingInvoiceDetails: boolean = false;
@@ -106,6 +107,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   sendingPurchase: boolean;
   lastSupplier: string;
   wow: boolean = false;
+  statusDate: any;
+  statusTypeToSet: any;
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
   }
@@ -299,8 +302,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       case 'supplied': return 'delivered'
       case 'canceled': return 'canceled'
       case 'sentBySupplier': return 'sent by supplier'
-      case 'ETD': return 'shipped'
-      case 'ETA': return 'arrived'
+      case 'ETD': return 'Estimated Departure'
+      case 'ETA': return 'Estimated Arrival'
       case 'ready': return 'ready'
       case 'cstClear': return 'custom cleared'
     }
@@ -802,6 +805,10 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           this.toastr.error('יש להזין נתוני העמסה')
         }
       }
+      else if (ev.target.value == 'ETA' || ev.target.value == 'ETD') {
+        this.newPurchase.controls.status.setValue(ev.target.value)
+        this.open(this.setEstimatedDate, ev.target.value)
+      }
       else this.setFinalStatus(ev)
     }
   }
@@ -816,7 +823,19 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     })
   }
 
-  open(modal) {
+  setStatusDate() {
+    this.newPurchase.controls.statusChange.setValue(this.statusDate)
+    this.procurementService.setPurchaseStatus(this.newPurchase.value).subscribe(data => {
+      if (data) {
+        this.modalService.dismissAll()
+        this.toastr.success('סטטוס עודכן בהצלחה !')
+      }
+      else this.toastr.error('משהו השתבש...')
+    })
+  }
+
+  open(modal, param?) {
+    if (param) this.statusTypeToSet = param
     if (modal._def.references.recieveDeliveryCertificate && this.selectedItems.length == 0) {
       this.toastr.error('Must choose at least one item.')
     }

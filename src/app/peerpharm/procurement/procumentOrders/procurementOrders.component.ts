@@ -143,7 +143,7 @@ export class ProcurementOrdersComponent implements OnInit {
     if (event.key === 'F2') {
       if (this.orderDetailsModal == true) {
         this.orderDetailsModal = false;
-      } else {
+      } else if (this.newPurchaseAllowed) {
         this.orderDetailsModal = true;
       }
     }
@@ -520,8 +520,8 @@ export class ProcurementOrdersComponent implements OnInit {
       case 'supplied': return 'delivered'
       case 'canceled': return 'canceled'
       case 'sentBySupplier': return 'sent by supplier'
-      case 'ETD': return 'shipped'
-      case 'ETA': return 'arrived'
+      case 'ETD': return 'Estimated Departure'
+      case 'ETA': return 'Estimated Arrival'
       case 'ready': return 'ready'
       case 'cstClear': return 'custom cleared'
     }

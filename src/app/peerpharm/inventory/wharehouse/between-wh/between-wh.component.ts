@@ -17,6 +17,7 @@ export class BetweenWHComponent implements OnInit {
   originWHShelfs: any[];
   destWHShelfs: any[];
   noItem: boolean = false
+  disabled: boolean = false
   originShelf: any;
   destShelf: any;
 
@@ -42,7 +43,12 @@ export class BetweenWHComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.itemNumber) this.movementForm.controls.item.setValue(this.itemNumber)
+    setTimeout(() => this.first.nativeElement.focus(), 500)
+    if (this.itemNumber) {
+      this.movementForm.controls.item.setValue(this.itemNumber)
+      this.disabled = true
+
+    }
   }
 
 

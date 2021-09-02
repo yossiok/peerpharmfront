@@ -1321,21 +1321,21 @@
       <hr class="mt-0 mb-0">
 
       <div dir="rtl" class="row mt-5 w-100">
-        <div class="col-3">
-          <button [ngClass]="dir == 'in' ? 'btn-success' : 'btn-outline-success'" (click)="dirSet('in')"
+        <div class="col-2">
+          <button [ngClass]="dir == 'in' ? 'btn-primary' : 'btn-outline-primary'" (click)="dirSet('in')"
             class='btn form-control'>קבלת סחורה</button>
         </div>
-        <div class="col-3">
-          <button [ngClass]="dir == 'out' ? 'btn-success' : 'btn-outline-success'" (click)="dirSet('out')"
+        <div class="col-2">
+          <button [ngClass]="dir == 'out' ? 'btn-warning' : 'btn-outline-warning'" (click)="dirSet('out')"
             class='btn form-control'>הוצאת סחורה</button>
         </div>
-        <div class="col-3">
-          <button [ngClass]="dir == 'shelfChange' ? 'btn-success' : 'btn-outline-success'"
+        <div class="col-2">
+          <button [ngClass]="dir == 'shelfChange' ? 'btn-secondary' : 'btn-outline-secondary'"
             (click)="dirSet('shelfChange')" class='btn form-control'>שינוי מדף</button>
         </div>
-        <div class="col-3">
-          <button [ngClass]="dir == 'shelfChange' ? 'btn-success' : 'btn-outline-success'"
-            (click)="dirSet('shelfChange')" class='btn form-control'>שינוי מדף</button>
+        <div class="col-2">
+          <button [ngClass]="dir == 'WHChange' ? 'btn-success' : 'btn-outline-success'" (click)="dirSet('WHChange')"
+            class='btn form-control'>בין מחסנים</button>
         </div>
       </div>
 
@@ -1352,8 +1352,7 @@
         <app-shelf-change [itemNumber]="resCmpt.componentN" [allWhareHouses]="whareHouses"></app-shelf-change>
       </div>
 
-      <div [style.width]="'1094px'" class="m-2 p-4 border border-primary bg-secondary text-white"
-        *ngIf="dir=='shelfChange'">
+      <div [style.width]="'1094px'" class="m-2 p-4 border border-primary bg-success text-white" *ngIf="dir=='WHChange'">
         <app-between-wh [itemNumber]="resCmpt.componentN" [allWhareHouses]="whareHouses"></app-between-wh>
       </div>
 
