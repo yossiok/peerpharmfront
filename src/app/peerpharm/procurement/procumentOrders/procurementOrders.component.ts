@@ -425,6 +425,8 @@ export class ProcurementOrdersComponent implements OnInit {
     let itemNumber = this.filterForm.value.itemNumber
     let supplier = this.filterForm.value.supplier
     let origin = this.filterForm.value.origin
+    // prevent status == null
+    status = status ? status : 'allOrders'
 
     if (status) {
       // Removed on 18/08/2021 by Dani Morag - no need to combine open and deliverd together
@@ -438,7 +440,9 @@ export class ProcurementOrdersComponent implements OnInit {
       else if (status == 'closed' && this.procurementDataClosed.length > 0) this.procurementData = this.procurementDataClosed;
       //removed on 17/08/21 by Dani Morag else if (status != 'allOrders' || status == 'canceled' || status == 'closed') this.procurementData = this.procurementData.filter(p => p.status == status)
       //if status is not open and not closed and not all, filter the procurmentData by the requested status
-      else if (status != 'allOrders') this.procurementData = this.procurementData.filter(p => p.status == status)
+      else if (status != 'allOrders') {
+        this.procurementData = this.procurementData.filter(p => p.status == status)
+      }
       // if status is 'allOrders', get all orders that are'nt closed or cancelled
       else this.procurementData = this.procurementData.filter(purchase => purchase.status != 'canceled' && purchase.status != 'closed');
     };
@@ -452,7 +456,8 @@ export class ProcurementOrdersComponent implements OnInit {
     }
 
     if (type) {
-      this.procurementData = this.procurementData.filter(order => order.orderType == type)
+      if (type == 'all') this.procurementData = this.procurementData
+      else this.procurementData = this.procurementData.filter(order => order.orderType == type)
     }
 
     if (userName) {
