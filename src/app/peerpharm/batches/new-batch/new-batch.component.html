@@ -142,8 +142,8 @@
       <div class="row">
         <div class="col-4"></div>
         <div class="col-4">
-          <button style="visibility: hidden;" #printBtn [useExistingCss]="true" class="btn btn-success"
-            [printStyle]="{'#container':{'width':'450px','height':'577px', 'padding':'20px 0px','font-size':'28px'},div:{'font-family':'Arial'}, '#product':{'text-align':'center', 'border-bottom':'solid 2px black', 'padding':'0px 0px 20px 0px'}}"
+          <button style="visibility: hidden;" #printBtn [useExistingCss]="false" class="btn btn-success"
+            [printStyle]="{'#container':{'width':'10cm','height':'10cm', 'box-sizing':'border-box','padding':'20px','font-size':'20px'},div:{'font-family':'Arial', 'padding-right': '5px' }, '#product':{'text-align':'center', 'border-bottom':'solid 2px black', 'padding':'0px 0px 20px 0px'}}"
             printSectionId="print-section" ngxPrint>Print</button>
         </div>
         <div class="col-4"></div>

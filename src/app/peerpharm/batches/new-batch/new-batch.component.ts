@@ -165,15 +165,22 @@ export class NewBatchComponent implements OnInit {
       }
       this.allStickers.push(batchSticker);
     }
+    // weightQtyLeft value doesn't exist in the form
     this.newBatchForm.controls.weightQtyLeft.setValue(this.newBatchForm.controls.weightKg.value)
+
+    // change the batch number to lower case
     this.newBatchForm.controls.batchNumber.setValue(this.newBatchForm.get('batchNumber').value.toLowerCase());
+    // set the date to today by default
     this.newBatchForm.controls.batchCreated.setValue(new Date().getTime());
 
     // set expiration date
 
     let expirationDate = new Date()
+    // get the number of years from the form
     let expirationYear = this.newBatchForm.get('expration').value
+    // add the number of years to today date
     expirationDate.setFullYear(Number(expirationDate.getFullYear()) + Number(expirationYear))
+    // set the value of the expiration in the form
     this.newBatchForm.controls.expration.setValue(expirationDate)
 
 
@@ -188,7 +195,7 @@ export class NewBatchComponent implements OnInit {
             if (confirm("בחרת רק להדפיס מדבקות. באטצ' לא יתווסף למערכת. האם להמשיך?")) {
               setTimeout(() => {
                 this.printBtn.nativeElement.click();
-                console.log("Line 187, no reset")
+
                 // this.newBatchForm.reset()
                 // this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
                 this.allStickers = [];
@@ -226,7 +233,7 @@ export class NewBatchComponent implements OnInit {
                     this.printBtn.nativeElement.click();
                     this.toastSrv.success('באטצ נוסף בהצלחה !')
                     setTimeout(() => {
-                      console.log("Line 224, no values reset")
+
                       // this.newBatchForm.reset()
                       // this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
                       //this.newBatchForm.controls.itemsToCook.setValue([])
@@ -259,6 +266,8 @@ export class NewBatchComponent implements OnInit {
   //       else if(data.materials && data.updatedShells) this.toastSrv.success('Amounts reduced. Shelfs updated.')
   //     })
   // }
+
+
 
 
 }

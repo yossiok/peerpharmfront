@@ -2,7 +2,7 @@
   <div class="row fixNoaStupidStuff">
     <div class="col-4 fixNoaStupidStuff">
       <button type="button" class="btn btn-success" printTitle="Filling Schedule"
-        [printStyle]="{table:{ 'border-collapse':'collapse'},th : {'border': 'solid 1px black'}, tr : {'border': 'solid 2px black'}, td : {'border': 'solid 1px black', 'padding':'10px','font-size': '1.5rem'}}"
+        [printStyle]="{table:{ 'border-collapse':'collapse'},th : {'border': 'solid 1px black', 'font-size': '1.3rem', 'font-weight': '700'}, tr : {'border': 'solid 2px black'}, td : {'border': 'solid 1px black', 'padding':'5px','font-size': '1.2rem','vertical-align':'top', 'height':'200px'},'#remarks':{'width':'200px'}}"
         printSectionId="print-schedule-section" ngxPrint>
         Print Schedule
       </button>
@@ -526,7 +526,6 @@
 <div style="visibility: hidden;" id="print-section">
   <table style="text-align: center;" class="barcodeTbl" dir="ltr" [style.margin.px]="3" [style.width.px]="400"
     [style.max-height.px]="400" [style.font-size.px]="24" [style.border.px]="0">
-
     <tr>
       <td>
         {{printScheduleFillingForm.value.productName}}
@@ -687,6 +686,9 @@
   <table>
     <thead>
       <tr>
+        <th colspan="10">Filling Schedule Date: {{ scheduleData[0].date | date: "dd/MM/yyyy" }}</th>
+      </tr>
+      <tr>
         <th><b>P</b></th>
         <!--1-->
         <th><b>Order</b></th>
@@ -705,10 +707,8 @@
         <!--8-->
         <th><b>Qty</b></th>
         <!--9-->
-        <th><b>Remarks</b></th>
+        <th id="remarks"><b>Remarks </b></th>
         <!--10-->
-        <th><b>Date</b></th>
-        <!--11-->
       </tr>
     </thead>
 
@@ -740,14 +740,12 @@
             {{ line.packageP | slice: 0:20 }}
           </td>
           <td>
-            {{ line.qtyProduced }} / {{ line.qty }}
+            {{ line.qty }}
           </td>
           <td>
             {{ line.marks }}
           </td>
-          <td>
-            {{ line.date | date: "dd/MM/yyyy" }}
-          </td>
+
         </ng-container>
       </tr>
     </tbody>
