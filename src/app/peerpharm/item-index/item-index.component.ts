@@ -33,6 +33,7 @@ export class ItemIndexComponent implements OnInit {
   cmptMaterials2: Array<any>
 
   currencies: Currencies;
+  today: Date = new Date()
   rowNumber: number = -1
   counter: number = 0
   screenPermission: number;
@@ -86,6 +87,14 @@ export class ItemIndexComponent implements OnInit {
   itemDetailsForm: FormGroup = new FormGroup({
     itemType: new FormControl('all', Validators.required),
     itemNumber: new FormControl('', Validators.required),
+  })
+
+  editVersionForm: FormGroup = new FormGroup({
+    date: new FormControl(new Date(this.today), Validators.required),
+    versionNumber: new FormControl(null, Validators.required),
+    description: new FormControl('', Validators.required),
+    image: new FormControl(null, Validators.required),
+    user: new FormControl(null, Validators.required),
   })
 
   productsSoldForm: FormGroup = new FormGroup({
@@ -499,6 +508,25 @@ export class ItemIndexComponent implements OnInit {
       }
     }
 
+  }
+
+
+  updateComponentVersion() {
+    this.editVersionForm.controls.user.setValue(this.authService.loggedInUser.userName)
+    this.item.versionNumber = this.editVersionForm.get('versionNumber').value
+    this.item.versionHistory.push(this.editVersionForm.value)
+    this.editItemDetails()
+    this.editVersionForm.reset()
+  }
+
+  uploadImg(fileInputEvent) {
+    let file = fileInputEvent.target.files[0];
+    this.uploadService.uploadFileToS3Storage(file).subscribe(data => {
+      if (data.partialText) {
+        this.item.img = data.partialText;
+        this.editVersionForm.controls.image.setValue(this.item.img)
+      }
+    })
   }
 
   deleteSupplier(index) {
