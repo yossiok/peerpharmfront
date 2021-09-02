@@ -532,7 +532,7 @@
                 <td>{{lastorderitem.arrivedAmount}}</td>
                 <td>/</td>
                 <td>{{lastorderitem.quantity}}</td>
-                <td>{{lastorderitem.price | currency: lastorderitem.coin}}</td>
+                <td>{{lastorderitem.price}} {{lastorderitem.coin | currencySymbol}}</td>
                 <td>{{lastorderitem.localPrice | currency: 'ILS'}}</td>
               </tr>
             </ng-container>
@@ -549,11 +549,11 @@
       <div class=" row mt-4">
         <div class=" col-4">
           <h5>מחיר רכש אחרון</h5>
-          <p>{{item.price | currency: item.coin}}</p>
+          <p>{{item.price}} {{item.coin | currencySymbol}}</p>
         </div>
         <div class="col-4">
           <h5>מחיר ידני</h5>
-          <p>{{item.manualPrice | currency: item.manualCoin}}</p>
+          <p>{{item.manualPrice}} {{item.manualCoin | currencySymbol}}</p>
         </div>
         <div class="col-2">
           <button (click)="open(updateManualPrice)">עדכן מחיר ידני</button>
@@ -564,14 +564,14 @@
       <h2>היסטוריית מחירים</h2>
     </div>
     <div dir="rtl" class="row  mt-2">
-      <div class="col-3">
+      <div class="col-8">
+      </div>
+      <div class="col-2">
         <p>סוגי עדכונים: </p>
       </div>
-      <div class="col-3">
-        <div class="yellow">עדכון ידני</div>
-      </div>
-      <div class="col-3">
-        <div class="cornflowerblue">עדכון מערכת</div>
+      <div class="col-1">
+        <div class="yellow p-2">עדכון ידני</div>
+        <div class="cornflowerblue p-2">עדכון מערכת</div>
       </div>
       <table dir="rtl" class="table table-hover">
         <thead>
@@ -586,7 +586,7 @@
           <tr *ngFor="let update of item.priceUpdates let i=index">
             <td [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">{{i+1}}</td>
             <td>{{update.date | date:'dd/MM/yy'}}</td>
-            <td>{{update.price | currency: update.coin}}</td>
+            <td>{{update.price}} {{update.coin | currencySymbol}}</td>
             <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
             <td *ngIf="update.type == 'auto'">סגירת הזמנת רכש מס' {{update.purchase}}</td>
           </tr>
@@ -988,10 +988,9 @@
     <div class=" row mt-2">
       <div class="col-3">
         <label>מחיר נוכחי:</label>
-        <p class="form-control"> {{item.manualPrice | currency:
-          item.manualCoin}}</p>
+        <p class="form-control"> {{item.manualPrice}} {{item.manualCoin | currencySymbol}}</p>
         <label>מחיר רכש אחרון:</label>
-        <p class="form-control">{{item.price | currency: item.coin}}
+        <p class="form-control">{{item.price}} {{item.coin | currencySymbol}}
         </p>
       </div>
     </div>

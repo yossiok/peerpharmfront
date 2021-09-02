@@ -1038,7 +1038,7 @@
                         <td>{{lastorderitem.arrivedAmount}}</td>
                         <td>/</td>
                         <td>{{lastorderitem.quantity}}</td>
-                        <td>{{lastorderitem.price | currency: lastorderitem.coin}}</td>
+                        <td>{{lastorderitem.price}} {{lastorderitem.coin | currencySymbol}}</td>
                         <td>{{lastorderitem.localPrice | currency: 'ILS'}}</td>
                       </tr>
                     </ng-container>
@@ -1059,11 +1059,11 @@
             <div class="fixNoaStupidStuff row mt-4">
               <div class="fixNoaStupidStuff col-4">
                 <h5>מחיר רכש אחרון</h5>
-                <p>{{resCmpt.price | currency: resCmpt.coin}}</p>
+                <p>{{resCmpt.price}} {{resCmpt.coin | currencySymbol}}</p>
               </div>
               <div class="col-4">
                 <h5>מחיר ידני</h5>
-                <p>{{resCmpt.manualPrice | currency: resCmpt.manualCoin}}</p>
+                <p>{{resCmpt.manualPrice}} {{resCmpt.manualCoin | currencySymbol}}</p>
               </div>
               <div class="col-2">
                 <button (click)="open(updateManualPrice)">עדכן מחיר ידני</button>
@@ -1100,7 +1100,7 @@
                   [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">
                   <td>{{i+1}}</td>
                   <td>{{update.date | date:'dd/MM/yy'}}</td>
-                  <td>{{update.price | currency: update.coin}}</td>
+                  <td>{{update.price}} {{update.coin | currencySymbol}}</td>
                   <td *ngIf="update.type == 'manual'">ידני - ע"י {{update.user}}</td>
                   <td *ngIf="update.type == 'auto'">סגירת הזמנת רכש מס' {{update.purchase}}</td>
                   <td *ngIf="update.type == 'datafix'">תיקון מחירים גורף {{update.purchase}}</td>
@@ -2110,11 +2110,11 @@
           <div class="fixNoaStupidStuff row mt-4">
             <div class="fixNoaStupidStuff col-4">
               <h5>מחיר רכש אחרון</h5>
-              <p>{{resMaterial.price | currency: resMaterial.coin}}</p>
+              <p>{{resMaterial.price}} {{resMaterial.coin | currencySymbol}}</p>
             </div>
             <div class="col-4">
               <h5>מחיר ידני</h5>
-              <p>{{resMaterial.manualPrice | currency: resMaterial.manualCoin}}</p>
+              <p>{{resMaterial.manualPrice}} {{resMaterial.manualCoin | currencySymbol}}</p>
             </div>
             <div class="col-2">
               <button (click)="open(updateManualPrice)">עדכן מחיר ידני</button>

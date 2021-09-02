@@ -180,13 +180,13 @@
                     </select>
                   </td>
 
-                  <td *ngIf="!editItem">{{stockitem.price}} {{stockitem.coin}}</td>
+                  <td *ngIf="!editItem">{{stockitem.price}} {{stockitem.coin | currencySymbol}}</td>
                   <td *ngIf="editItem && itemIndex == i">
                     <input type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price"
                       [style.width]="'77px'">
                   </td>
 
-                  <td *ngIf="!editItem">{{stockitem.shippingPrice | currency: stockitem.coin}}</td>
+                  <td *ngIf="!editItem">{{stockitem.shippingPrice}} {{stockitem.coin | currencySymbol}}</td>
                   <td *ngIf="editItem && itemIndex == i">
                     <select [(ngModel)]="stockitem.coin" [ngModelOptions]="{standalone: true}" [style.width]="'77px'"
                       required>
@@ -809,7 +809,7 @@
               <tr *ngFor="let invoice of purchaseData.billNumber">
                 <td>{{invoice.purchaseInvoiceNumber}}</td>
                 <td>{{invoice.fixedPrice}}</td>
-                <td>{{invoice.shippingPrice | currency: invoice.invoiceCoin}}</td>
+                <td>{{invoice.shippingPrice}} {{invoice.invoiceCoin | currencySymbol}}</td>
                 <td>{{invoice.remarks}}</td>
               </tr>
             </tbody>

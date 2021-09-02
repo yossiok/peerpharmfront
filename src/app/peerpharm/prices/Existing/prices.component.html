@@ -128,7 +128,6 @@
                         <th>Arrival Date</th>
                         <th>quantity Ordered</th>
                         <th>Price</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody class="table table-bordered">
@@ -140,8 +139,7 @@
                             <td>{{order.orderDate | date:'dd/MM/yy'}}</td>
                             <td>{{order.arrivalDate | date:'dd/MM/yy'}}</td>
                             <td>{{order.quantity}}</td>
-                            <td>{{order.price}}</td>
-                            <td>{{order.coin}}</td>
+                            <td>{{order.price}} {{order.coin | currencySymbol}}}}</td>
                         </tr>
                     </ng-container>
                 </tbody>
