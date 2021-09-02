@@ -168,26 +168,26 @@
 
 
         <div *ngIf="screen == 'stkManagment'" class="row mt-5">
-          <div class="col-3">
-
-          </div>
           <!-- <div class="col-3">
           <button (click)="dirSet('stkManagment','inCertif')" class='btn btn-info form-control'>קבלת סחורה
             מתעודה</button>
         </div> -->
           <div class="col-3">
-            <button [ngClass]="dir == 'out' ? 'btn-info' : 'btn-outline-info'" (click)="dirSet('stkManagment','out')"
-              class='btn form-control'>הוצאת סחורה</button>
+            <button [ngClass]="dir == 'WHChange' ? 'btn-success' : 'btn-outline-success'"
+              (click)="dirSet('stkManagment','WHChange')" class='btn form-control'>בין מחסנים</button>
           </div>
           <div class="col-3">
-            <button [ngClass]="dir == 'shelfChange' ? 'btn-info' : 'btn-outline-info'"
+            <button [ngClass]="dir == 'shelfChange' ? 'btn-secondary' : 'btn-outline-secondary'"
               (click)="dirSet('stkManagment','shelfChange')" class='btn form-control'>שינוי מדף</button>
+          </div>
+          <div class="col-3">
+            <button [ngClass]="dir == 'out' ? 'btn-warning' : 'btn-outline-warning'"
+              (click)="dirSet('stkManagment','out')" class='btn form-control'>הוצאת סחורה</button>
           </div>
           <div class="col-3">
             <button [ngClass]="dir == 'in' ? 'btn-info' : 'btn-outline-info'" (click)="dirSet('stkManagment','in')"
               class='btn form-control'>קבלת סחורה</button>
           </div>
-          <div class="col-3"></div>
         </div>
 
         <div class="m-2 p-4 border border-black" *ngIf="dir=='in'">
@@ -200,6 +200,10 @@
 
         <div class="m-2 p-4 border border-primary bg-warning" *ngIf="dir=='out'">
           <app-checkout [allWhareHouses]="whareHouses"></app-checkout>
+        </div>
+
+        <div class="m-2 p-4 border border-success text-white bg-success" *ngIf="dir=='WHChange'">
+          <app-between-wh [allWhareHouses]="whareHouses"></app-between-wh>
         </div>
 
         <div *ngIf="multiInputLines" class="row">

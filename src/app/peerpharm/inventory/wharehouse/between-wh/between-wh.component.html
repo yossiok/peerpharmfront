@@ -1,0 +1,88 @@
+<div dir="rtl">
+
+
+    <form [formGroup]="movementForm" (ngSubmit)="move()">
+        <h3>העברת סחורה בין מחסנים</h3>
+        <div class="row mt-4">
+
+
+            <div *ngIf="!disabled" class="col-2">
+                <label>
+                    פריט (לפי מספר)
+                </label>
+                <input type="number" #first [disabled]="disabled" formControlName="item" class="form-control">
+            </div>
+            <div *ngIf="!disabled" class="col-2">
+                <label class="d-block">
+                    (לפי שם) פריט
+                </label>
+                <input class="d-inline form-control" type="text" #name>
+                <button class="d-inline" type="button" (click)="getNames(name)">Find</button>
+                <select class="form-control" (change)="setItemDetailsNumber($event)">
+                    <option *ngFor="let itemName of itemNames" [value]="itemName.componentN">{{itemName.componentName}}
+                    </option>
+                </select>
+            </div>
+
+
+            <div class="col-2">
+                <label>ממחסן</label>
+                <select class="form-control" formControlName="WH_originId" (change)="getChunks('o')">
+                    <option disabled value="">בחר מחסן</option>
+                    <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
+                    </option>
+                </select>
+                <label>ממדף</label>
+                <select class="form-control" (change)="setOriginPosition($event)"
+                    formControlName="shell_id_in_whareHouse_Origin">
+                    <option disabled value="">בחר מדף</option>
+                    <option *ngFor="let shelf of originWHShelfs" [disabled]="shelf.position == 'MINUS'"
+                        [value]="shelf.shell_id_in_whareHouse">
+                        {{shelf.position}} - {{shelf.amount}} pcs
+                    </option>
+                </select>
+            </div>
+
+            <div class="col-2">
+                <label>כמות</label>
+                <input type="number" formControlName="amount" (change)="checkAmount()" class="form-control">
+            </div>
+
+            <div class="col-2">
+                <label>למחסן</label>
+                <select class="form-control" formControlName="WH_destId" #whid (change)="getChunks('d')"
+                    (change)="getAllShelfsOfDest($event)">
+                    <option disabled value="">בחר מחסן</option>
+                    <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
+                    </option>
+                </select>
+                <label>למדף</label>
+                <select class="form-control" (change)="setDestPosition()" formControlName="shell_id_in_whareHouse_Dest">
+                    <option disabled value="">בחר מדף</option>
+                    <option *ngFor="let shelf of destWHShelfs" [disabled]="shelf.position == 'MINUS'"
+                        [value]="shelf.shell_id_in_whareHouse">
+                        {{shelf.position}} - {{shelf.amount}} pcs
+                    </option>
+                </select>
+                <span [ngbTooltip]="noItem ? 'יש להזין מספר פריט תקין' : ''">
+                    <button type="button" [disabled]="noItem" [style.cursor]="noItem ? 'not-allowed' : 'pointer'"
+                        (click)="getAllShelfsOfDest(whid.value)" class="btn btn-warning">הכנס למדף חדש</button>
+                </span>
+            </div>
+
+            <div class="col-2 d-flex flex-column justify-content-between">
+                <div>
+                    <div *ngIf="sending" class="smallerLoader"></div>
+                    <button type="submit" *ngIf="!sending" [disabled]="!movementForm.valid"
+                        [style.cursor]="movementForm.valid ? 'pointer' : 'not-allowed'"
+                        class="btn btn-info">העבר</button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-secondary" (click)="movementForm.reset()">נקה נתונים</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+</div>

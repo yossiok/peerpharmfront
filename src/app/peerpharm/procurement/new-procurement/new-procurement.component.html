@@ -53,8 +53,8 @@
             <button class="btn btn-outline-primary rounded-pill w-50" (click)="open(sumShipping)">הזן נתוני
               העמסה</button>
           </div>
-          <div (click)="open(status)" [style.background]="setStatusColor(purchaseData.status)"
-            class="col-2 click p-3 rounded-pill">
+          <div (click)="open(status)" [style.color]="setStatusTextColor(purchaseData.status)"
+            [style.background]="setStatusColor(purchaseData.status)" class="col-2 click p-3 rounded-pill">
             Current status: <span ngbTooltip="click to watch" class="h4">{{hebStat(purchaseData.status)}} <br>
               {{purchaseData.statusChange | date: 'dd/MM/yy'}}</span>
           </div>
@@ -78,8 +78,10 @@
               <option value="approvedBySupplier">approved</option>
               <option value="ready">ready</option>
               <option value="sentBySupplier">sent by supplier</option>
-              <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="ETD">shipped(E.T.D)</option>
-              <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="ETA">arrived(E.T.A)</option>
+              <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="ETD">Estimated
+                Departure(E.T.D)</option>
+              <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="ETA">Estimated
+                Arrival(E.T.A)</option>
               <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="cstClear">custom cleared
               </option>
               <option value="supplied">delivered</option>
@@ -178,21 +180,22 @@
                     </select>
                   </td>
 
-                  <td *ngIf="!editItem">{{stockitem.price}} {{stockitem.coin}}</td>
+                  <td *ngIf="!editItem">{{stockitem.price}} {{stockitem.coin | currencySymbol}}</td>
                   <td *ngIf="editItem && itemIndex == i">
                     <input type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price"
                       [style.width]="'77px'">
                   </td>
 
-                  <td *ngIf="!editItem">{{stockitem.shippingPrice | currency: stockitem.coin}}</td>
+                  <td *ngIf="!editItem">{{stockitem.shippingPrice}} {{stockitem.coin | currencySymbol}}</td>
                   <td *ngIf="editItem && itemIndex == i">
                     <select [(ngModel)]="stockitem.coin" [ngModelOptions]="{standalone: true}" [style.width]="'77px'"
                       required>
                       <option value="" disabled>Coin</option>
                       <option value="ILS">ILS</option>
-                      <option value="usd">USD</option>
-                      <option value="eur">EUR</option>
-                      <option value="gbp">GBP</option>
+                      <option value="USD">USD</option>
+                      <option value="EUR">EUR</option>
+                      <option value="GBP">GBP</option>
+                      <option value="JPY">JPY</option>
                     </select>
                   </td>
 
@@ -546,7 +549,7 @@
 
               <div class="col-6 m-4 mx-auto">
                 <textarea formControlName="remarks" type="number" class="form-control"
-                placeholder="Item Remarks"></textarea>
+                  placeholder="Item Remarks"></textarea>
               </div>
             </div>
 
@@ -619,7 +622,7 @@
                     <input #editQuantity [value]="stockitem.quantity" type="number">
                   </td>
 
-                  <td *ngIf="EditRowId == ''">{{stockitem.price | currency: stockitem.coin}}</td>
+                  <td *ngIf="EditRowId == ''">{{stockitem.price}} {{stockitem.coin | currencySymbol}}</td>
                   <td *ngIf="EditRowId == stockitem.number">
                     <input #editPrice [value]="stockitem.price" type="number">
                   </td>
@@ -806,7 +809,7 @@
               <tr *ngFor="let invoice of purchaseData.billNumber">
                 <td>{{invoice.purchaseInvoiceNumber}}</td>
                 <td>{{invoice.fixedPrice}}</td>
-                <td>{{invoice.shippingPrice | currency: invoice.invoiceCoin}}</td>
+                <td>{{invoice.shippingPrice}} {{invoice.invoiceCoin | currencySymbol}}</td>
                 <td>{{invoice.remarks}}</td>
               </tr>
             </tbody>
@@ -942,22 +945,34 @@
       <table style="overflow: auto;" class="table table-striped">
         <thead>
           <tr>
+            <th>Status</th>
             <th>Previous Status</th>
             <th>Date Changed</th>
-            <th>New Status</th>
             <th>user</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let status of purchaseData.statusUpdates; let i = index"
             [style.background]="setStatusColor(status.new)" [style.color]="setStatusTextColor(status.new)">
+            <td>{{hebStat(status.new)}}
+              <span *ngIf="status.new == 'ETD' || status.new == 'ETA'"> - {{status.ET | date: 'dd/MM/yyyy'}}</span>
+            </td>
             <td>{{hebStat(status.prev)}}</td>
             <td>{{status.date | date: 'dd/MM/yyyy'}}</td>
-            <td>{{hebStat(status.new)}}</td>
             <td>{{status.user}}</td>
           </tr>
         </tbody>
       </table>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #setEstimatedDate>
+  <h3 class="m-2">Set {{statusTypeToSet}}</h3>
+  <div class="row m-2 p-5">
+    <div class="col-12 p-5 shadow rounded">
+      <input class="form-control m-4" type="date" [(ngModel)]="statusDate">
+      <button class="btn btn-success m-4" (click)="setStatusDate()">Set</button>
     </div>
   </div>
 </ng-template>

@@ -42,25 +42,28 @@ export class ShelfChangeComponent implements OnInit {
 
   ngOnInit(): void {
     setTimeout(() => this.first.nativeElement.focus(), 500)
-    if(this.itemNumber) {
+    if (this.itemNumber) {
       this.disabled = true
       this.shelfChange.controls.item.setValue(this.itemNumber)
-    } 
+    }
   }
 
   getShelfs() {
+    if (this.shelfChange.value.whareHouseID == '5c31bb6f91ca6b2510349ce9') {
+      this.shelfChange.controls.itemType.setValue('product')
+    }
     if (!this.shelfChange.value.whareHouseID) this.toastr.error('אנא בחר מחסן.')
     else if (!this.shelfChange.value.item) this.toastr.error('אנא הזן מספר פריט.')
-    else if(this.shelfChange.value.item) this.inventoryService.getShelfListForItemInWhareHouse2(this.shelfChange.value.item, this.shelfChange.value.whareHouseID)
+    else if (this.shelfChange.value.item) this.inventoryService.getShelfListForItemInWhareHouse2(this.shelfChange.value.item, this.shelfChange.value.whareHouseID)
       .subscribe(res => {
         if (res.msg) {
           this.toastr.error('בעיה בהזנת הנתונים.')
           this.shelfsWithItem = []
-        } 
+        }
         else if (res.length == 0) {
           this.toastr.error('הפריט לא נמצא על אף אחד מהמדפים במחסן זה.')
           this.shelfsWithItem = []
-        } 
+        }
         else {
           this.shelfsWithItem = res
           //stupid bug:

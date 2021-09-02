@@ -54,7 +54,7 @@
     "ng2-filter-pipe": "^0.1.10",
     "ngx-barcode": "^0.2.4",
     "ngx-perfect-scrollbar": "6.1.0",
-    "ngx-print": "^1.2.1",
+    "ngx-print": "^1.1.4",
     "ngx-toastr": "^9.2.0",
     "normalize.css": "^8.0.1",
     "pace-js": "^1.0.2",

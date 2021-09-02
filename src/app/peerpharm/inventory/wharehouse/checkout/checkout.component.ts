@@ -50,6 +50,9 @@ export class CheckoutComponent implements OnInit {
   }
 
   getShelfs() {
+    if (this.componentCheckout.value.whareHouseID == '5c31bb6f91ca6b2510349ce9') {
+      this.componentCheckout.controls.itemType.setValue('product')
+    }
     if (!this.componentCheckout.value.whareHouseID) this.toastr.error('אנא בחר מחסן.')
     else if (!this.componentCheckout.value.item) this.toastr.error('אנא הזן מספר פריט.')
     else this.inventoryService.getShelfListForItemInWhareHouse2(this.componentCheckout.value.item, this.componentCheckout.value.whareHouseID)

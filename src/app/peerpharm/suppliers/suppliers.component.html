@@ -246,7 +246,7 @@
             </td>
             <td>{{item.name}} {{item.itemName}}</td>
             <td>{{item.price}} {{item.supplierPrice}}</td>
-            <td>{{item.coin}}</td>
+            <td>{{item.coin | currencySymbol}}</td>
             <td>{{item.quantity}} {{item.supplierAmount}}</td>
             <td>{{item.measurement}}</td>
           </tr>
@@ -336,7 +336,7 @@
             <td>{{item.quantity}} {{item.supplierAmount}}</td>
             <td>{{item.measurement}}</td>
             <td>{{item.price}} {{item.supplierPrice}}</td>
-            <td>{{item.coin}}</td>
+            <td>{{item.coin | currencySymbol}}</td>
             <td>{{item.arrivedAmount}}</td>
           </tr>
         </tbody>
