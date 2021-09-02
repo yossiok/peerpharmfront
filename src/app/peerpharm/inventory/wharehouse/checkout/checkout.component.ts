@@ -19,6 +19,7 @@ export class CheckoutComponent implements OnInit {
   itemNames: any[];
   shellNums: any[];
   certificateReception: number;
+  shelf: any
   outGoing: any[] = []
   today = new Date()
   sending: boolean = false
@@ -83,6 +84,22 @@ export class CheckoutComponent implements OnInit {
     this.componentCheckout.controls.item.setValue(event.target.value)
   }
 
+  setShelf(e) {
+    let shelfId = e.target.value
+    this.shelf = this.shellNums.find(s => s.shell_id_in_whareHouse == shelfId)
+  }
+
+  checkAmount() {
+    if (!this.componentCheckout.value.shell_id_in_whareHouse) {
+      this.toastr.error('אנא הכנס מדף ממנו מוציאים')
+      this.componentCheckout.controls.amount.reset()
+    }
+    else if (this.componentCheckout.value.amount > this.shelf.amount) {
+      let conf = confirm('הכמות שהזנת גדולה מהכמות במדף. להמשיך בכל זאת?')
+      if (!conf) this.componentCheckout.controls.amount.reset()
+    }
+  }
+
   addToOutGoing() {
     // set whareHouse name and shelf position
     let whareHouse = this.allWhareHouses.find(wh => wh._id == this.componentCheckout.value.whareHouseID)
@@ -93,6 +110,7 @@ export class CheckoutComponent implements OnInit {
     //push arrival to outGoing
     this.outGoing.push(this.componentCheckout.value)
     this.componentCheckout.reset()
+    this.componentCheckout.controls.item.setValue(this.itemNumber)
     this.componentCheckout.controls.isNewItemShell.setValue(false)
     this.componentCheckout.controls.itemType.setValue('component')
     this.first.nativeElement.focus()
