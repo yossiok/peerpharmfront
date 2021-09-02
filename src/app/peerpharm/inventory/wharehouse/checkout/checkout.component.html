@@ -45,7 +45,7 @@
             </div>
             <div class="col-2">
                 <label>כמות</label>
-                <input type="number" formControlName="amount" (change)="checkAmount($event)" class="form-control">
+                <input type="number" formControlName="amount" (change)="checkAmount()" class="form-control">
             </div>
             <div class="col-2 d-flex flex-column justify-content-around">
                 <button type="submit" [disabled]="!componentCheckout.valid"
