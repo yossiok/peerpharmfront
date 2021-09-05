@@ -133,7 +133,7 @@ export class MaterialArrivalComponent implements OnInit {
     sumUnits: 0
   }
 
-  materialArrivalLine: MaterialArrivalLine = {...defaultLine}
+  materialArrivalLine: MaterialArrivalLine = { ...defaultLine }
 
 
 
@@ -220,7 +220,7 @@ export class MaterialArrivalComponent implements OnInit {
       this.newMaterialArrival.controls.user.setValue(this.user)
     });
 
-    if(this.authService.loggedInUser.authorization.includes("materialStock") || this.authService.loggedInUser.authorization.includes("stockAdmin")) this.materialStockAllowed = true
+    if (this.authService.loggedInUser.authorization.includes("materialStock") || this.authService.loggedInUser.authorization.includes("stockAdmin")) this.materialStockAllowed = true
     this.invtSer.getAllSuppliers().subscribe(data => {
       this.suppliers = data;
       this.suppliersList = data;
@@ -239,7 +239,6 @@ export class MaterialArrivalComponent implements OnInit {
 
   getLatestOrders() {
     this.procuretServ.getLastOrdersForItem(this.newMaterialArrival.value.internalNumber, 10).subscribe(orders => {
-      console.log('OOOOOOOOOrders: ',orders)
       this.lastOrders = orders
     })
   }
@@ -361,7 +360,7 @@ export class MaterialArrivalComponent implements OnInit {
   }
 
   deleteLineFromCert(i: number) {
-    if(confirm(`line ${i} will be erased.`)) this.materialArrivalCertif.materialArrivalLines.splice(i, 1)
+    if (confirm(`line ${i} will be erased.`)) this.materialArrivalCertif.materialArrivalLines.splice(i, 1)
   }
 
 
@@ -472,45 +471,26 @@ export class MaterialArrivalComponent implements OnInit {
   searchInternalNumber() {
     if (this.newMaterialArrival.value.internalNumber != "") {
       this.invtSer.getMaterialStockItemByNum(this.newMaterialArrival.value.internalNumber).subscribe(item => {
-
         console.log(item);
         if (item.length == 0) {
           this.toastSrv.error("Can't find item number")
         } else if (item.length == 1) {
-          if (confirm('שים לב , לחומר גלם זה מסומן היתר רעלים והכמות המותרת לאחסון הינה' + ' ' + item[0].allowQtyInStock)) {
-            this.newMaterialArrival.controls.materialName.setValue(item[0].componentName);
-            this.fillLastArrivalPosition(this.newMaterialArrival.value.internalNumber)
-            if (item[0].unit != "" && item[0].unit != undefined && item[0].unit != null) {
-              // console.log(this.newMaterialArrival.value.mesureType)
-              this.newMaterialArrival.controls.mesureType.setValue(item[0].unit);
-
-
-            }
-            this.suppliersList = [];
+          if (item[0].permissionDangerMaterials) this.toastSrv.info('לחומר גלם זה מסומן היתר רעלים והכמות המותרת לאחסון הינה' + ' ' + item[0].allowQtyInStock, 'הערה חשובה!')
+          this.newMaterialArrival.controls.materialName.setValue(item[0].componentName);
+          this.fillLastArrivalPosition(this.newMaterialArrival.value.internalNumber)
+          if (item[0].unit != "" && item[0].unit != undefined && item[0].unit != null) {
+            // console.log(this.newMaterialArrival.value.mesureType)
+            this.newMaterialArrival.controls.mesureType.setValue(item[0].unit);
           }
-
+          this.suppliersList = [];
         } else if (item.length > 1) {
-          this.toastSrv.error("umlti items with the same number")
+          this.toastSrv.error("multi items with the same number")
         }
-
       });
-
     }
   }
 
-
-
-
-  // searchSupplierName(){
-  //   // take name from input 
-  //   let name= this.newMaterialArrival.value.supplierName;
-  //   if(name!=""){
-
-  //   }
-  // }
-
   submitForm() {
-
     // shelf general position
     this.submittingForm = true;
 
@@ -573,7 +553,7 @@ export class MaterialArrivalComponent implements OnInit {
           // }
           ;
           this.addMaterialToStock();
-        }).catch(e=> {
+        }).catch(e => {
           this.toastSrv.error(e);
           this.submittingForm = false
         })
@@ -651,74 +631,74 @@ export class MaterialArrivalComponent implements OnInit {
     formToSend.lastUpdate = new Date();
     formToSend.lastUpdateUser = this.user;
     this.invtSer.newMatrialArrival(formToSend).subscribe(res => {
-        this.submittingForm = false
-        if(res == -1) {
-          this.toastSrv.error('Shelf Position Doesnt Match Wharehouse!!!')
-          this.toastSrv.error('Material Arrival NOt Saved!')
-        } 
-        else if (res.msg == 'no material with number') {
-          this.toastSrv.error("Item number wrong")
-        } 
-        else {
+      this.submittingForm = false
+      if (res == -1) {
+        this.toastSrv.error('Shelf Position Doesnt Match Wharehouse!!!')
+        this.toastSrv.error('Material Arrival NOt Saved!')
+      }
+      else if (res.msg == 'no material with number') {
+        this.toastSrv.error("Item number wrong")
+      }
+      else {
 
-          // certificate - general
-          if (this.materialArrivalCertif.materialArrivalLines.length == 0) { // new certif
-            this.materialArrivalCertif.supplierCertifNumber = res.saved.deliveryNoteNumber
-            this.materialArrivalCertif.supplierName = res.saved.supplierName
-            this.materialArrivalCertif.supplierOrderNumber = res.saved.supplierOrderNumber
-          }
-          
-          //certificate - line
-          this.materialArrivalLine.itemInternalNumber = res.saved.internalNumber
-          this.materialArrivalLine.itemSupplierNumber = res.saved.supplierNumber
-          this.materialArrivalLine.itemName = res.saved.materialName
-          this.materialArrivalLine.purchaseOrderNumber = res.saved.cmxOrderN
-          this.materialArrivalLine.wareHouse = res.saved.warehouse
-          this.materialArrivalLine.position = res.saved.position
-          this.materialArrivalLine.amount = Number(res.saved.totalQnt)
-          this.materialArrivalLine.unitsAmount = Number(res.saved.packageQnt)
-          this.materialArrivalLine.remarks = res.saved.remarks
-          
-          this.materialArrivalCertif.materialArrivalLines.push(this.materialArrivalLine)
-          this.materialArrivalCertif.sumAmount += this.materialArrivalLine.amount
-          this.materialArrivalCertif.sumUnits += this.materialArrivalLine.unitsAmount
-          
-          
-          
-          this.materialArrivalLine = {...defaultLine}
-          // setTimeout(()=>this.printBtn2.nativeElement.click(), 500)
-          
-          this.toastSrv.success("New material arrival saved!");
-          this.requiresFromFull = !this.requiresFromFull
-          
-          this.bcValue = [res.saved.reqNum];
-          this.materialNum = res.saved.internalNumber;
-          this.materialName = res.saved.materialName;
-          this.lotNumber = res.saved.lotNumber;
-          this.productionDate = res.saved.productionDate;
-          this.arrivalDate = res.saved.arrivalDate;
-          this.expiryDate = res.saved.expiryDate;
-          
-          this.smallText = (this.materialName.length > 80) ? true : false;
-          
-          this.printBarcode(res.saved._id, res.internalNumber);// we might need to change the value to numbers
-          this.toastSrv.success("New material arrival saved!");
-          this.resetForm();
-          this.analysisFlag.nativeElement.checked = false;
-          //print barcode;
+        // certificate - general
+        if (this.materialArrivalCertif.materialArrivalLines.length == 0) { // new certif
+          this.materialArrivalCertif.supplierCertifNumber = res.saved.deliveryNoteNumber
+          this.materialArrivalCertif.supplierName = res.saved.supplierName
+          this.materialArrivalCertif.supplierOrderNumber = res.saved.supplierOrderNumber
         }
-      });
-      
-    }
-    
-    saveCertif() {
-    this.invtSer.arrivalsCertificate(this.materialArrivalCertif).subscribe(response=>{
-      if(response.materialArrivalCertifToSave) {
+
+        //certificate - line
+        this.materialArrivalLine.itemInternalNumber = res.saved.internalNumber
+        this.materialArrivalLine.itemSupplierNumber = res.saved.supplierNumber
+        this.materialArrivalLine.itemName = res.saved.materialName
+        this.materialArrivalLine.purchaseOrderNumber = res.saved.cmxOrderN
+        this.materialArrivalLine.wareHouse = res.saved.warehouse
+        this.materialArrivalLine.position = res.saved.position
+        this.materialArrivalLine.amount = Number(res.saved.totalQnt)
+        this.materialArrivalLine.unitsAmount = Number(res.saved.packageQnt)
+        this.materialArrivalLine.remarks = res.saved.remarks
+
+        this.materialArrivalCertif.materialArrivalLines.push(this.materialArrivalLine)
+        this.materialArrivalCertif.sumAmount += this.materialArrivalLine.amount
+        this.materialArrivalCertif.sumUnits += this.materialArrivalLine.unitsAmount
+
+
+
+        this.materialArrivalLine = { ...defaultLine }
+        // setTimeout(()=>this.printBtn2.nativeElement.click(), 500)
+
+        this.toastSrv.success("New material arrival saved!");
+        this.requiresFromFull = !this.requiresFromFull
+
+        this.bcValue = [res.saved.reqNum];
+        this.materialNum = res.saved.internalNumber;
+        this.materialName = res.saved.materialName;
+        this.lotNumber = res.saved.lotNumber;
+        this.productionDate = res.saved.productionDate;
+        this.arrivalDate = res.saved.arrivalDate;
+        this.expiryDate = res.saved.expiryDate;
+
+        this.smallText = (this.materialName.length > 80) ? true : false;
+
+        this.printBarcode(res.saved._id, res.internalNumber);// we might need to change the value to numbers
+        this.toastSrv.success("New material arrival saved!");
+        this.resetForm();
+        this.analysisFlag.nativeElement.checked = false;
+        //print barcode;
+      }
+    });
+
+  }
+
+  saveCertif() {
+    this.invtSer.arrivalsCertificate(this.materialArrivalCertif).subscribe(response => {
+      if (response.materialArrivalCertifToSave) {
         this.materialArrivalCertif.certifNumber = response.materialArrivalCertifToSave.certNum
         this.toastSrv.success(response.msg)
-        setTimeout(()=>this.printBtn2.nativeElement.click(), 500)
-      } 
-      else if(response.msg) this.toastSrv.error(response.msg)
+        setTimeout(() => this.printBtn2.nativeElement.click(), 500)
+      }
+      else if (response.msg) this.toastSrv.error(response.msg)
     })
   }
 
