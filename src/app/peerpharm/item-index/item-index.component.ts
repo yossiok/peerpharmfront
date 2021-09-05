@@ -45,6 +45,13 @@ export class ItemIndexComponent implements OnInit {
   showSalesForm: boolean = false
   allowedProblematicEdit: boolean = false
 
+  //Material Stuff
+  compositionName: any;
+  compositionPercentage: any;
+  compostionFunction: any;
+  compositionCAS: any;
+  compEdit: number = -1
+
   cmptCategoryList: Array<any> = [
     'Sacara', 'Mineralium', 'Arganicare', 'Spa Pharma', 'Olive', 'Vitamin C', 'Quinoa', 'Andrea Milano', 'Dermalosophy',
     'Kreogen', 'Careline', 'Frulatte', 'Mediskin', '4Ever', 'Adah Lazorgan', 'Avalanche', 'Abyssian', 'Jahshan',
@@ -351,6 +358,34 @@ export class ItemIndexComponent implements OnInit {
         this.item.msds = data.partialText;
       }
     })
+  }
+
+
+  addComposition() {
+    var obj = {
+      compName: this.compositionName,
+      compPercentage: this.compositionPercentage,
+      compFunction: this.compostionFunction,
+      compCAS: this.compositionCAS
+    }
+    this.item.composition.push(obj)
+    this.compositionName = ''
+    this.compositionPercentage = null
+    this.compostionFunction = ''
+    this.compositionCAS = ''
+  }
+
+  editComp(i) {
+    this.compEdit = i
+  }
+
+  deleteFromComposition(materialId, compositionName) {
+    for (let i = 0; i < this.item.composition.length; i++) {
+      if (this.item.composition[i].compName == compositionName) {
+        this.item.composition.splice(i, 1)
+        this.toastSrv.success('Composition Deleted')
+      }
+    }
   }
 
 
