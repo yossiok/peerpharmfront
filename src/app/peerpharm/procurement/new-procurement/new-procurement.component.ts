@@ -417,6 +417,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       if (this.newPurchase.controls.orderType.value == 'material') {
         this.inventoryService.getMaterialStockItemByNum(this.itemForm.get('number').value).subscribe(data => {
           if (data[0]) {
+            if (data[0].permissionDangerMaterials) this.toastr.info('לחומר גלם זה מסומן היתר רעלים והכמות המותרת לאחסון הינה' + ' ' + data[0].allowQtyInStock, 'הערה חשובה!')
             this.itemForm.controls.name.setValue(data[0].componentName);
             this.itemForm.controls.coin.setValue(data[0].coin ? data[0].coin.toUpperCase() : 'ILS')
             this.itemForm.controls.measurement.setValue(data[0].unitOfMeasure ? data[0].unitOfMeasure : data[0].measurement)
