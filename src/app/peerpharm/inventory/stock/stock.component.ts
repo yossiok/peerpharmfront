@@ -152,6 +152,7 @@ export class StockComponent implements OnInit {
   compositionPercentage: any;
   compostionFunction: any;
   compositionCAS: any;
+  compEdit: number = -1;
   recieveItemType: any;
   allComponentsPurchases: any[];
   allMaterialsPurchases: any[];
@@ -1673,6 +1674,10 @@ export class StockComponent implements OnInit {
     this.compostionFunction = ''
     this.compositionCAS = ''
 
+  }
+
+  editComp(i) {
+    this.compEdit = i
   }
 
   moveToSuppliers(supplierName) {
