@@ -1624,7 +1624,8 @@
                 <option value="solid">Solid</option>
                 <option value="gell">Gell</option>
               </datalist>
-              <input class="form-control" [(ngModel)]="resMaterial.dangerMaterials" type='text'>
+              <textarea class="form-control" [(ngModel)]="resMaterial.dangerMaterials" name="" id="" cols="30"
+                rows="4"></textarea>
             </div>
 
             <div style="height:210px;overflow-y: scroll;" class="col-5">
@@ -1649,21 +1650,26 @@
                           class="fa fa-plus"></i></button>
                     </td>
                   </tr>
-                  <tr *ngFor="let comp of resMaterial.composition">
-                    <td>{{comp.compName}}</td>
-                    <td>{{comp.compPercentage}}</td>
-                    <td>{{comp.compFunction}}</td>
-                    <td>{{comp.compCAS}}</td>
+                  <tr *ngFor="let comp of resMaterial.composition; let i = index" ngbTooltip="Click to edit"
+                    (click)="editComp(i)">
+                    <td *ngIf="compEdit != i">{{comp.compName}}</td>
+                    <td *ngIf="i == compEdit"><input class="form-control" type="text" [(ngModel)]="comp.compName"></td>
+                    <td *ngIf="compEdit != i">{{comp.compPercentage}}</td>
+                    <td *ngIf="i == compEdit"><input class="form-control" type="text" [(ngModel)]="comp.compPercentage">
+                    </td>
+                    <td *ngIf="compEdit != i">{{comp.compFunction}}</td>
+                    <td *ngIf="i == compEdit"><input class="form-control" type="text" [(ngModel)]="comp.compFunction">
+                    </td>
+                    <td *ngIf="compEdit != i">{{comp.compCAS}}</td>
+                    <td *ngIf="i == compEdit"><input class="form-control" type="text" [(ngModel)]="comp.compCAS"></td>
                     <td><i (click)="deleteFromComposition(resMaterial._id,comp.compName)"
-                        class="fa fa-times text-danger"></i></td>
+                        class="fa fa-times text-danger click"></i>
+                    </td>
                   </tr>
                 </tbody>
               </table>
-              <!-- <table style="font-size: 9px;" class="table table-hover table-striped">
-                <tbody>
-                  
-                </tbody>
-              </table> -->
+              <button *ngIf="compEdit != -1" class="btn btn-info" (click)="toastSrv.info('יש לשמור שינויים לפריט')"
+                (click)="compEdit = -1">Save</button>
             </div>
 
           </div>
@@ -1754,7 +1760,7 @@
               <label class="form-control">מספר או"מ</label>
               <label class="form-control">קוד חירום</label>
               <label class="form-control">טיפול בחירום</label>
-              <label style="font-size: 13px;" class="form-control">כמות מותרת באחסון</label>
+              <label style="font-size: 13px;" class="form-control mt-5">כמות מותרת באחסון</label>
               <label class="form-control">היתר רעלים</label>
             </div>
             <div class="col-3 fixNoaStupidStuff">
@@ -1774,7 +1780,8 @@
 
               <input [(ngModel)]="resMaterial.umNumber" type="text" class="form-control" />
               <input [(ngModel)]="resMaterial.imerCode" type="text" class="form-control" />
-              <input [(ngModel)]="resMaterial.imerTreatment" type="text" class="form-control" />
+              <textarea [(ngModel)]="resMaterial.imerTreatment" class="form-control" name="" id="" cols="30"
+                rows="3"></textarea>
               <input [(ngModel)]="resMaterial.allowQtyInStock" type="text" class="form-control" />
               <input [(ngModel)]="resMaterial.permissionDangerMaterials" type="checkbox" style="width:12px"
                 class="form-control" />
@@ -1801,7 +1808,8 @@
 
 
               <input [(ngModel)]="resMaterial.storageTemp" type="text" class="form-control" />
-              <input [(ngModel)]="resMaterial.storageDirections" type="text" class="form-control" />
+              <textarea [(ngModel)]="resMaterial.storageDirections" class="form-control" name="" id="" cols="30"
+                rows="4"></textarea>
 
             </div>
             <div class="col-1"></div>
