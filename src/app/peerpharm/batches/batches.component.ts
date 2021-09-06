@@ -23,11 +23,11 @@ export class BatchesComponent implements OnInit {
   savingSpecValues: boolean;
 
   constructor(
-    private itemService: ItemsService, 
-    private modalService: NgbModal, 
-    private authService: AuthService, 
-    private batchService: BatchesService, 
-    private excelService: ExcelService, 
+    private itemService: ItemsService,
+    private modalService: NgbModal,
+    private authService: AuthService,
+    private batchService: BatchesService,
+    private excelService: ExcelService,
     private toastSrv: ToastrService
   ) { }
   // dateList:Array<any>=[{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5}];
@@ -43,7 +43,7 @@ export class BatchesComponent implements OnInit {
   currBatch: any;
   user: UserInfo;
   alowUserEditBatches: Boolean = false;
-  tableType:String = 'batch'
+  tableType: String = 'batch'
   ifConfirmed: Boolean = false;
   editValues: Boolean = false;
   showLoader: Boolean = true;
@@ -98,7 +98,7 @@ export class BatchesComponent implements OnInit {
   @ViewChild('batchItem') batchItem: ElementRef;
   @ViewChild('printValueBtn') printValueBtn: ElementRef;
 
-  
+
 
 
 
@@ -109,8 +109,8 @@ export class BatchesComponent implements OnInit {
   }
 
   ngOnInit() {
-   
-  
+
+
     this.getAllBatchesYear();
     this.startInterval();
     this.lastValueUpdate = this.formatDate(new Date());
@@ -121,7 +121,7 @@ export class BatchesComponent implements OnInit {
     return this.authService.loggedInUser.screenPermission == '5'
   }
 
-  printSpecValues(){
+  printSpecValues() {
     this.editValues = false;
     this.showRemarks = false;
     this.printValueBtn.nativeElement.click();
@@ -200,9 +200,9 @@ export class BatchesComponent implements OnInit {
   }
 
   startInterval() {
-    this.myRefresh = setInterval(() => { 
+    this.myRefresh = setInterval(() => {
 
-      this.getAllBatchesYear(); 
+      this.getAllBatchesYear();
     }, 1000 * 60 * 5);
   }
 
@@ -210,8 +210,8 @@ export class BatchesComponent implements OnInit {
   getAllBatchesYear() {
     this.batchService.getAllBatchesYear().subscribe((res) => {
       console.log(res);
-      this.batches = res.filter(b=>b.type !='makeup');
-      this.mkpBatches = res.filter(b=>b.type =='makeup');
+      this.batches = res.filter(b => b.type != 'makeup');
+      this.mkpBatches = res.filter(b => b.type == 'makeup');
       this.batchesCopy = res;
       this.batches.map(batch => {
         if (batch.weightKg != null && batch.weightQtyLeft != null) {
@@ -257,27 +257,27 @@ export class BatchesComponent implements OnInit {
   }
 
 
-  openTableValues(itemNumber,batchNumber) {
-    this.batchService.getBatchData(batchNumber).subscribe(data=>{
+  openTableValues(itemNumber, batchNumber) {
+    this.batchService.getBatchData(batchNumber).subscribe(data => {
       ;
       this.currBatch = data[0]
       this.currBatch.kgProduced = Number(this.currBatch.weightKg) - Number(this.currBatch.weightQtyLeft)
     })
-    
+
     this.specValuesModal = true;
-      this.loadSpecTable(itemNumber)
-    
- 
+    this.loadSpecTable(itemNumber)
+
+
   }
 
-  setBatchAsScheduled(id){
+  setBatchAsScheduled(id) {
     ;
-    if(confirm('האם לשנות סטטוס לאצווה זו ?')) {
-      this.batchService.setBatchToSchedule(id).subscribe(data=>{
-        if(data){
-          let batch = this.batches.find(b=>b._id == data._id)
+    if (confirm('האם לשנות סטטוס לאצווה זו ?')) {
+      this.batchService.setBatchToSchedule(id).subscribe(data => {
+        if (data) {
+          let batch = this.batches.find(b => b._id == data._id)
           batch.scheduled = data.scheduled
-          if(batch.scheduled == 'yes') batch.color = 'yellow'
+          if (batch.scheduled == 'yes') batch.color = 'yellow'
           this.toastSrv.success('סטטוס עודכן בהצלחה')
         }
       })
@@ -288,25 +288,25 @@ export class BatchesComponent implements OnInit {
   loadSpecTable(itemNumber) {
     ;
     this.itemService.getItemData(itemNumber).subscribe(data => {
-      if(data[0].valueStatus == undefined){
+      if (data[0].valueStatus == undefined) {
         data[0].valueStatus = ''
       }
-      if(data[0].scentValue == undefined){
+      if (data[0].scentValue == undefined) {
         data[0].scentValue = ''
       }
-      if(data[0].textureValue == undefined){
+      if (data[0].textureValue == undefined) {
         data[0].textureValue = ''
       }
-      if(data[0].colorValue == undefined){
+      if (data[0].colorValue == undefined) {
         data[0].colorValue = ''
       }
-      if(data[0].viscosityValue == undefined){
+      if (data[0].viscosityValue == undefined) {
         data[0].viscosityValue = ''
       }
-      if(data[0].densityValue == undefined){
+      if (data[0].densityValue == undefined) {
         data[0].densityValue = ''
       }
-      if(data[0].phValue == undefined){
+      if (data[0].phValue == undefined) {
         data[0].phValue = ''
       }
       this.item = data[0]
@@ -335,7 +335,7 @@ export class BatchesComponent implements OnInit {
 
   openPrint(printBatch, batchNumber) {
     ;
-    this.modalService.open(printBatch, { size: 'sm', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+    this.modalService.open(printBatch, { size: 'lg', ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -407,31 +407,31 @@ export class BatchesComponent implements OnInit {
 
   filterBatches(ev, filterBy) {
 
-    if(ev.target.value == '' || ev.target.value == undefined) {
+    if (ev.target.value == '' || ev.target.value == undefined) {
       this.batches = this.batchesCopy
     }
 
-    else if(ev.target.value.length > 2) {
-      
+    else if (ev.target.value.length > 2) {
+
       if (filterBy == 'itemName') {
         let name = ev.target.value
         this.batches = this.batchesCopy.filter(batch => batch.itemName.toLowerCase().includes(name.toLowerCase()))
       }
-      
+
       if (filterBy == 'itemNumber') {
         let number = ev.target.value
-        this.batches = this.batchesCopy.filter(batch => batch.item? batch.item.includes(number) : false)
+        this.batches = this.batchesCopy.filter(batch => batch.item ? batch.item.includes(number) : false)
       }
-      
+
       if (filterBy == 'batchNumber') {
         let number = ev.target.value
         this.batches = this.batchesCopy.filter(batch => batch.batchNumber.toLowerCase().includes(number.toLowerCase()))
       }
-      
+
     }
   }
 
-  resetFilters(){
+  resetFilters() {
     this.batches = this.batchesCopy
   }
 
@@ -472,37 +472,37 @@ export class BatchesComponent implements OnInit {
     this.savingSpecValues = true;
     switch (this.item.valueStatus) {
       case 'confirm':
-        this.currBatch.specStatus = {color: 'green', status: 1}
+        this.currBatch.specStatus = { color: 'green', status: 1 }
         break;
       case 'noConfirm':
-        this.currBatch.specStatus = {color: 'red', status: 0}
+        this.currBatch.specStatus = { color: 'red', status: 0 }
         break;
       case 'hold':
-        this.currBatch.specStatus = {color: 'orange', status: 2}
+        this.currBatch.specStatus = { color: 'orange', status: 2 }
         break;
-      default: this.currBatch.specStatus = {color: '#2962FF', status: -1 }
+      default: this.currBatch.specStatus = { color: '#2962FF', status: -1 }
     }
     this.batchService.updateSpecvalue(this.currBatch.batchNumber, this.currBatch.specStatus).subscribe(response => {
       response.msg == 'success' ? this.toastSrv.success('Spec status saved.') : this.toastSrv.error('Spec status not saved')
     })
-    ;
+      ;
     var obj = {
       date: this.lastValueUpdate,
       user: this.userValueUpdate
     }
 
     var batchObj = {
-      batchNumber:this.currBatch.batchNumber,
-      phValue:this.phValue.nativeElement.value,
-    viscosityValue:this.viscosityValue.nativeElement.value,
-    colorValue:this.colorValue.nativeElement.value,
-    textureValue:this.textureValue.nativeElement.value,
-    scentValue:this.scentValue.nativeElement.value,
-    densityValue:this.densityValue.nativeElement.value,
-    lastUpdatedValues:[]
+      batchNumber: this.currBatch.batchNumber,
+      phValue: this.phValue.nativeElement.value,
+      viscosityValue: this.viscosityValue.nativeElement.value,
+      colorValue: this.colorValue.nativeElement.value,
+      textureValue: this.textureValue.nativeElement.value,
+      scentValue: this.scentValue.nativeElement.value,
+      densityValue: this.densityValue.nativeElement.value,
+      lastUpdatedValues: []
 
     }
-    
+
     batchObj.lastUpdatedValues.push(obj)
 
     this.itemService.updateItemValues(batchObj).subscribe(data => {
@@ -515,7 +515,7 @@ export class BatchesComponent implements OnInit {
         this.specValuesModal = false;
         this.item = data;
         if (data.valueStatus == 'confirm') {
-        this.ifConfirmed = true
+          this.ifConfirmed = true
         } else {
           this.ifConfirmed = false;
         }
@@ -544,13 +544,13 @@ export class BatchesComponent implements OnInit {
   }
 
   async getUserInfo() {
-    
+
     if (this.authService.loggedInUser) {
       if (this.authService.loggedInUser.authorization.includes("editBatches")) {
         this.alowUserEditBatches = true;
       }
     }
-    
+
     await this.authService.userEventEmitter.subscribe(user => {
       this.user = user;
       this.userValueUpdate = user.userName

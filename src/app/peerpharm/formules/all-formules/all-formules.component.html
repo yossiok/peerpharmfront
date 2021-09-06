@@ -447,7 +447,7 @@
         <button class="btn btn-success" (click)="updateFormuleWhenPrint()" printSectionId="print-section"
           [useExistingCss]="true" [printStyle]="{
             th: { border: 'solid 1px' },
-            td: { border: 'solid 1px', 'font-size': '17px'}
+            td: { border: 'solid 1px', 'font-size': '17px'}, button:{'visibility':'hidden'}
           }" ngxPrint>
           Print
         </button>
@@ -609,7 +609,7 @@
           td : {'border': '1px solid black', 'font-size':'20px'},
           tr : {'border': 'solid 2px black'},
           th : {'border': 'solid 2px black'},
-          button:{'display':'none'}}" style="padding:0px 35px" printSectionId="formulePrice" ngxPrint
+          button:{'visibility':'hidden'}}" style="padding:0px 35px" printSectionId="formulePrice" ngxPrint
         printTitle="Purchase Orders"><img src="../../../../assets/images/print.png" alt="Print" width="60px"
           style="padding:0 20px 0 0">Print</button>
       <!-- <button style="
@@ -681,7 +681,7 @@
   <div class="row">
     <div class="col-1">
       <button class="btn-success"
-        [printStyle]="{tr : {'border': 'solid 1px black'}, td : {'border': 'solid 1px black'}}"
+        [printStyle]="{tr : {'border': 'solid 1px black'}, td : {'border': 'solid 1px black'}, button:{'visibility':'hidden'}}"
         printSectionId="formuleMaterials" ngxPrint>Print</button>
     </div>
     <div class="col-10">

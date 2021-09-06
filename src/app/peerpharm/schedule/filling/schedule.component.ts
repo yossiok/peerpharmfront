@@ -53,7 +53,8 @@ export class ScheduleComponent implements OnInit {
   printExpBarcode: boolean = true;
   newBatchChange: boolean = false;
   time: any;
-  batchesSpecifications: any[]
+  batchesSpecifications: any[];
+  fillingDate: any;
 
   closeResult: string;
   public printScheduleFillingForm: FormGroup;
@@ -120,6 +121,7 @@ export class ScheduleComponent implements OnInit {
     this.getAllUnpackedSchedules();
     this.today = new Date();
     this.today = moment(this.today).format('YYYY-MM-DD');
+    this.fillingDate = this.today;
     this.getAllSchedule(this.today);
 
     this.printScheduleFillingForm = new FormGroup({
@@ -188,7 +190,6 @@ export class ScheduleComponent implements OnInit {
     ;
     if (this.scheduleLine.orderN != '') {
 
-      console.log(this.scheduleLine);
       if (this.scheduleLine.mkp == 'sachet') {
         this.scheduleLine.productionLine = '10';
       } else if (this.scheduleLine.mkp == 'mkp') {
@@ -235,8 +236,6 @@ export class ScheduleComponent implements OnInit {
         }
       }
 
-      console.log(this.scheduleLine);
-
       var date = moment(this.scheduleLine.date);
       if (!date.isValid()) this.toastSrv.error('אנא הזיני תאריך תקין', 'תאריך לא תקין!')
       else {
@@ -275,6 +274,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   dateChanged(date) {
+    this.fillingDate = date;
     this.startTime()
     this.scheduleService.getScheduleByDate(date).subscribe(res => {
       res.map(sced => {
@@ -322,7 +322,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   openFormDetails(scheduleId) {
-    debugger;
+
     this.router.navigate(["/peerpharm/forms/formDetails/" + scheduleId + "scheduleId"])
     // location.href="http://localhost:4200/#/peerpharm/forms/formDetails/"+scheduleId+'scheduleId';
 
@@ -332,7 +332,6 @@ export class ScheduleComponent implements OnInit {
 
     this.scheduleService.getScheduleByDate(today).subscribe(res => {
       res.map(sced => {
-        console.log(sced);
         sced.color = 'white';
         if (sced.status === 'filled') {
           sced.color = '#CE90FF'; //purple
@@ -690,10 +689,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   setItemDetails(itemNumber) {
-    console.log(itemNumber);
     this.itemSer.getItemData(itemNumber).subscribe(res => {
-      console.log("getItemData: " + res[0]);
-      console.log(res[0]);
       let impremark = res[0].impRemarks;
       let itemName =
         res[0].name + ' ' + res[0].subName + ' ' + res[0].discriptionK;
@@ -716,7 +712,6 @@ export class ScheduleComponent implements OnInit {
   }
 
   setOrderDetails(orderNumber) {
-    console.log(orderNumber);
     this.orderSer.getOrderByNumber(orderNumber).subscribe(res => {
       let costumer = res[0].costumer;
       this.scheduleLine.costumer = costumer;
@@ -757,7 +752,6 @@ export class ScheduleComponent implements OnInit {
       })
     } else {
       this.scheduleService.setOpenToToday().subscribe(res => {
-        console.log(res);
       });
     }
 
@@ -894,7 +888,7 @@ export class ScheduleComponent implements OnInit {
 
 
 
-
+  // this function is not used
 
   addImpRemarkFromItemTree() {
     this.scheduleService.addImpRemarkFromItemTree().subscribe(data => {
@@ -902,11 +896,6 @@ export class ScheduleComponent implements OnInit {
 
     });
   }
-
-
-
-
-
 
 
 }

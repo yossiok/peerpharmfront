@@ -2,7 +2,7 @@
   <div class="row fixNoaStupidStuff">
     <div class="col-4 fixNoaStupidStuff">
       <button type="button" class="btn btn-success" printTitle="Filling Schedule"
-        [printStyle]="{table:{ 'border-collapse':'collapse'},th : {'border': 'solid 1px black'}, tr : {'border': 'solid 2px black'}, td : {'border': 'solid 1px black', 'padding':'10px','font-size': '1.5rem'}}"
+        [printStyle]="{table:{ 'border-collapse':'collapse'},th : {'border': 'solid 1px black', 'font-size': '1.3rem', 'font-weight': '700'}, tr : {'border': 'solid 2px black'}, td : {'border': 'solid 1px black', 'padding':'5px','font-size': '1.2rem','vertical-align':'top', 'height':'200px'},'.remarks':{'width':'200px'}}"
         printSectionId="print-schedule-section" ngxPrint>
         Print Schedule
       </button>
@@ -487,7 +487,7 @@
       </div>
 
       <div *ngIf="printCostumerBarcode == true" class="form-group row">
-        <label>Costumer</label>
+        <label>Customer</label>
         <input class="form-control" type="text" formControlName="costumer" />
         <button (click)="printCostumerBarcode = false" class="btn-success">Remove</button>
       </div>
@@ -526,7 +526,6 @@
 <div style="visibility: hidden;" id="print-section">
   <table style="text-align: center;" class="barcodeTbl" dir="ltr" [style.margin.px]="3" [style.width.px]="400"
     [style.max-height.px]="400" [style.font-size.px]="24" [style.border.px]="0">
-
     <tr>
       <td>
         {{printScheduleFillingForm.value.productName}}
@@ -589,10 +588,8 @@
       </div>
 
       <div class="container" id="material-body" class="modal-body">
-
         <div class="row">
           <div class="col-12">
-
             <ul style="list-style-type: none;font-size: 25px;border:1px solid black" *ngFor="let item of selectedArr">
               <li><input type="checkbox"> Line: {{item.positionN}}</li>
               <li><input type="checkbox"> Item: {{item.item}}</li>
@@ -638,10 +635,7 @@
             {{item.scheduleRemark}}
           </div>
         </div>
-
-
       </div>
-
     </div>
   </div>
 </div>
@@ -687,28 +681,22 @@
   <table>
     <thead>
       <tr>
+        <th colspan="11" *ngIf="fillingDate&&fillingDate!=''">
+          <b>Filling Schedule Date: {{ this.fillingDate | date: "dd/MM/yyyy" }}</b>
+        </th>
+      </tr>
+      <tr>
         <th><b>P</b></th>
-        <!--1-->
         <th><b>Order</b></th>
-        <!--2-->
         <th><b>Item</b></th>
-        <!--3-->
         <th><b>Item Important Remark</b></th>
-        <!--4-->
         <th><b>Customer</b></th>
-        <!--5-->
         <th><b>Name of product</b></th>
-        <!--6-->
         <th><b>Batch number</b></th>
-        <!--7-->
         <th><b>Package</b></th>
-        <!--8-->
         <th><b>Qty</b></th>
-        <!--9-->
-        <th><b>Remarks</b></th>
-        <!--10-->
-        <th><b>Date</b></th>
-        <!--11-->
+        <th class="remarks"><b>Order Remarks </b></th>
+        <th class="remarks">Schedule remark</th>
       </tr>
     </thead>
 
@@ -740,13 +728,13 @@
             {{ line.packageP | slice: 0:20 }}
           </td>
           <td>
-            {{ line.qtyProduced }} / {{ line.qty }}
+            <span *ngIf="line.qtyProduced">{{line.qtyProduced}}/</span>{{ line.qty }}
           </td>
           <td>
             {{ line.marks }}
           </td>
           <td>
-            {{ line.date | date: "dd/MM/yyyy" }}
+            {{line.shift}}
           </td>
         </ng-container>
       </tr>
