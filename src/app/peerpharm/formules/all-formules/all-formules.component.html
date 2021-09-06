@@ -444,11 +444,13 @@
   <ng-template #printFormule let-c="close" let-modal>
     <div id="print-section" class="modal-content">
       <div class="modal-header ">
-        <button class="btn btn-success" (click)="updateFormuleWhenPrint()" printSectionId="print-section"
-          [useExistingCss]="true" [printStyle]="{
-            th: { border: 'solid 1px' },
-            td: { border: 'solid 1px', 'font-size': '17px'}, button:{'visibility':'hidden'}
+        <button class="btn btn-info rounded-pill print-btn" (click)="updateFormuleWhenPrint()"
+          printSectionId="print-section" [useExistingCss]="true" [printStyle]="{
+            table: { 'border-collapse': 'collapse'},
+            th: { border: 'solid 1px black', color: 'black' },
+            td: { border: 'solid 1px black', 'font-size': '17px'}, button:{'visibility':'hidden'}
           }" ngxPrint>
+          <img src="../../../../assets/images/print.png" width="60px" alt="">
           Print
         </button>
         <h2>{{ updateFormule.formuleName }}</h2>
@@ -463,7 +465,7 @@
         <div class="row">
           <div class="col-12">
             <table class="table">
-              <thead class="bg-info">
+              <thead class="bg-info text-white h3">
                 <tr>
                   <th>Phase</th>
                   <th>Item</th>
@@ -471,7 +473,8 @@
                   <th>--Weight--</th>
                   <th>%</th>
                   <th>Temp</th>
-                  <th>Phase Instructions</th>
+                  <th>Item Remarks</th>
+                  <th>Phase Remarks</th>
                 </tr>
               </thead>
 
@@ -490,7 +493,7 @@
                     </td>
                     <td></td>
                     <td [ngClass]="{borderMix: item.remarks == 'MIX' || item.remarks == 'MiX'}">
-                      {{item.itemRemarks}}{{item.remarks}}</td>
+                      {{item.itemRemarks}} {{item.remarks}}</td>
                     <td *ngIf="i == 0" [attr.rowspan]="phase.items.length" class="phase">
                       {{ phase.remarks }}
                     </td>
