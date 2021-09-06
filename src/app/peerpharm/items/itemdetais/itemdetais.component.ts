@@ -33,7 +33,7 @@ export class ItemdetaisComponent implements OnInit {
   @ViewChild('container')
   private container: ElementRef;
   @ViewChild('itemNum') itemNum: ElementRef
-  @Input() formDetailsItemNum:string;
+  @Input() formDetailsItemNum: string;
 
   loadingItem: boolean = false
 
@@ -372,9 +372,9 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   constructor(
-    private plateService: PlateService, private translate: TranslateService, private excelService: ExcelService, 
-    private orderService: OrdersService, private batchService: BatchesService, private modalService: NgbModal, 
-    private costumersService: CostumersService, private route: ActivatedRoute, private itemsService: ItemsService, 
+    private plateService: PlateService, private translate: TranslateService, private excelService: ExcelService,
+    private orderService: OrdersService, private batchService: BatchesService, private modalService: NgbModal,
+    private costumersService: CostumersService, private route: ActivatedRoute, private itemsService: ItemsService,
     private fb: FormBuilder, private renderer: Renderer2, private invtSer: InventoryService,
     private uploadService: UploadFileService, private toastr: ToastrService, private authService: AuthService,
     private purchaseService: Procurementservice) {
@@ -479,9 +479,9 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   ngOnInit() {
-    
-    if(this.formDetailsItemNum) this.searchForItem(this.formDetailsItemNum)
-    debugger;
+
+    if (this.formDetailsItemNum) this.searchForItem(this.formDetailsItemNum)
+
     this.getAllCostumers()
     this.getUserInfo();
     this.getItemData();
@@ -571,11 +571,11 @@ export class ItemdetaisComponent implements OnInit {
         this.invtSer.getComponentAmount(bottleNumber).subscribe(bottleAmount => {
           this.itemShown.bottleAmount = bottleAmount[0] ? bottleAmount[0].amount : 0
         })
-        this.purchaseService.getPurchasesForComponent(bottleNumber).subscribe(data=>{
+        this.purchaseService.getPurchasesForComponent(bottleNumber).subscribe(data => {
           this.itemShown.bottlePurchases = data
           this.itemShown.bottleOrderedAmount = 0
-          data.forEach(purchOrder=> {
-            let addAmount = purchOrder.stockitems.find(item=>item.number == bottleNumber).quantity
+          data.forEach(purchOrder => {
+            let addAmount = purchOrder.stockitems.find(item => item.number == bottleNumber).quantity
             purchOrder.itemAmount = addAmount
             this.itemShown.bottleOrderedAmount += Number(addAmount)
           })
@@ -598,13 +598,13 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.componentTwoType = data[0].componentType
         this.itemShown.capAllocations = data[0].alloAmount
         this.invtSer.getComponentAmount(capNumber).subscribe(capAmount => {
-          this.itemShown.capAmount = capAmount[0]? capAmount[0].amount : 0
+          this.itemShown.capAmount = capAmount[0] ? capAmount[0].amount : 0
         })
-        this.purchaseService.getPurchasesForComponent(capNumber).subscribe(data=>{
+        this.purchaseService.getPurchasesForComponent(capNumber).subscribe(data => {
           this.itemShown.capPurchases = data
           this.itemShown.capOrderedAmount = 0
-          data.forEach(purchOrder=> {
-            let addAmount = purchOrder.stockitems.find(item=>item.number == capNumber).quantity
+          data.forEach(purchOrder => {
+            let addAmount = purchOrder.stockitems.find(item => item.number == capNumber).quantity
             purchOrder.itemAmount = addAmount
             this.itemShown.capOrderedAmount += Number(addAmount)
           })
@@ -629,11 +629,11 @@ export class ItemdetaisComponent implements OnInit {
         this.invtSer.getComponentAmount(pumpNumber).subscribe(pumpAmount => {
           this.itemShown.pumpAmount = pumpAmount[0] ? pumpAmount[0].amount : 0
         })
-        this.purchaseService.getPurchasesForComponent(pumpNumber).subscribe(data=>{
+        this.purchaseService.getPurchasesForComponent(pumpNumber).subscribe(data => {
           this.itemShown.pumpPurchases = data
           this.itemShown.pumpOrderedAmount = 0
-          data.forEach(purchOrder=> {
-            let addAmount = purchOrder.stockitems.find(item=>item.number == pumpNumber).quantity
+          data.forEach(purchOrder => {
+            let addAmount = purchOrder.stockitems.find(item => item.number == pumpNumber).quantity
             purchOrder.itemAmount = addAmount
             this.itemShown.pumpOrderedAmount += Number(addAmount)
           })
@@ -656,11 +656,11 @@ export class ItemdetaisComponent implements OnInit {
         this.invtSer.getComponentAmount(sealNumber).subscribe(sealAmount => {
           this.itemShown.sealAmount = sealAmount[0] ? sealAmount[0].amount : 0
         })
-        this.purchaseService.getPurchasesForComponent(sealNumber).subscribe(data=>{
+        this.purchaseService.getPurchasesForComponent(sealNumber).subscribe(data => {
           this.itemShown.sealPurchases = data
           this.itemShown.sealOrderedAmount = 0
-          data.forEach(purchOrder=> {
-            let addAmount = purchOrder.stockitems.find(item=>item.number == sealNumber).quantity
+          data.forEach(purchOrder => {
+            let addAmount = purchOrder.stockitems.find(item => item.number == sealNumber).quantity
             purchOrder.itemAmount = addAmount
             this.itemShown.sealOrderedAmount += Number(addAmount)
           })
@@ -896,14 +896,14 @@ export class ItemdetaisComponent implements OnInit {
       case 'productionInput':
         if (compNumber != "" && compNumber != '---') {
           this.invtSer.getCmptByitemNumber(compNumber).subscribe(data => {
-            if(data.length > 0){
+            if (data.length > 0) {
               this.itemShown.productionType = data[0].componentType
               this.itemShown.productionImage = data[0].img
             } else {
               this.itemShown.productionType = ''
               this.itemShown.productionImage = ''
             }
-            
+
           })
 
         } else {
@@ -1132,7 +1132,7 @@ export class ItemdetaisComponent implements OnInit {
 
 
   getItemData() {
-    debugger;
+
     this.route.params.subscribe(data => {
       let number = data.itemNumber;
       if (number) {
@@ -1187,18 +1187,18 @@ export class ItemdetaisComponent implements OnInit {
           this.itemShown.bottleTube = ''
           this.itemShown.componentType = ''
         }
-        
+
         if (this.itemShown.capNumber != '') {
           this.fillCap(this.itemShown.capNumber)
           this.searchCompNumberByComp(this.itemShown.capNumber, 'productionTwoInput')
-          if (this.itemShown.itemNumber == '6876') setTimeout(()=> this.addRemoveInputs('productionTwo'), 100) //ugly bug fix
-          if (this.itemShown.itemNumber == '5479') setTimeout(()=> {
+          if (this.itemShown.itemNumber == '6876') setTimeout(() => this.addRemoveInputs('productionTwo'), 100) //ugly bug fix
+          if (this.itemShown.itemNumber == '5479') setTimeout(() => {
             this.addRemoveInputs('production') //ugly bug fix
             this.addRemoveInputs('productionTwo') //ugly bug fix
 
           }, 100)
-          
-    
+
+
         } else {
           this.itemShown.capImage = ''
           this.itemShown.capNumber = ''
@@ -1376,7 +1376,7 @@ export class ItemdetaisComponent implements OnInit {
 
 
   checkIfItemExist(itemNumber) {
-    if(itemNumber != '') {
+    if (itemNumber != '') {
       this.itemsService.getItemData(itemNumber).subscribe(data => {
         if (data.length > 0) this.itemExist = true;
         else this.itemExist = false;
@@ -1385,7 +1385,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   async addNewItem() {
-    if(confirm(`You are going to create a new Item Tree num. ${this.itemShown.itemNumber} . Continue?`)) {
+    if (confirm(`You are going to create a new Item Tree num. ${this.itemShown.itemNumber} . Continue?`)) {
       this.editSpecTable = false;  // specification auth
       if (this.itemShown.itemNumber != "") {
         this.itemsService.addItem(this.itemShown).subscribe(data => {
@@ -1405,11 +1405,11 @@ export class ItemdetaisComponent implements OnInit {
         if (res.message == 'Success') {
           this.toastr.success(`Item ${this.itemShown.itemNumber} updated successfully!`)
           location.reload()
-        } 
+        }
         else if (res.message == 'Failed') {
           this.toastr.error('Something gone bad..')
-        } 
-         this.editSpecTable = false;
+        }
+        this.editSpecTable = false;
         this.lookingForItem = false;
         this.modalService.dismissAll()
       });

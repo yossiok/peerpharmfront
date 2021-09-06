@@ -171,7 +171,8 @@
     <table class="table table-hover">
       <thead class="bg-info text-white">
         <tr>
-          <th colspan="8" *ngFor="let formule of formules">{{formule.data.formuleNumber}}: {{formule.data.formuleName}},
+          <th colspan="8" *ngIf="finalFormule.data && finalFormule.data !=''">{{finalFormule.data.formuleNumber}}:
+            {{finalFormule.data.formuleName}},
             Batch Weight: {{finalWeight}}KG
           </th>
         </tr>

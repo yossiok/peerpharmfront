@@ -2,7 +2,7 @@
   <div class="row fixNoaStupidStuff">
     <div class="col-4 fixNoaStupidStuff">
       <button type="button" class="btn btn-success" printTitle="Filling Schedule"
-        [printStyle]="{table:{ 'border-collapse':'collapse'},th : {'border': 'solid 1px black', 'font-size': '1.3rem', 'font-weight': '700'}, tr : {'border': 'solid 2px black'}, td : {'border': 'solid 1px black', 'padding':'5px','font-size': '1.2rem','vertical-align':'top', 'height':'200px'},'#remarks':{'width':'200px'}}"
+        [printStyle]="{table:{ 'border-collapse':'collapse'},th : {'border': 'solid 1px black', 'font-size': '1.3rem', 'font-weight': '700'}, tr : {'border': 'solid 2px black'}, td : {'border': 'solid 1px black', 'padding':'5px','font-size': '1.2rem','vertical-align':'top', 'height':'200px'},'.remarks':{'width':'200px'}}"
         printSectionId="print-schedule-section" ngxPrint>
         Print Schedule
       </button>
@@ -681,7 +681,7 @@
   <table>
     <thead>
       <tr>
-        <th colspan="10" *ngIf="fillingDate&&fillingDate!=''">
+        <th colspan="11" *ngIf="fillingDate&&fillingDate!=''">
           <b>Filling Schedule Date: {{ this.fillingDate | date: "dd/MM/yyyy" }}</b>
         </th>
       </tr>
@@ -695,7 +695,8 @@
         <th><b>Batch number</b></th>
         <th><b>Package</b></th>
         <th><b>Qty</b></th>
-        <th id="remarks"><b>Remarks </b></th>
+        <th class="remarks"><b>Order Remarks </b></th>
+        <th class="remarks">Schedule remark</th>
       </tr>
     </thead>
 
@@ -731,6 +732,9 @@
           </td>
           <td>
             {{ line.marks }}
+          </td>
+          <td>
+            {{line.shift}}
           </td>
         </ng-container>
       </tr>
