@@ -206,11 +206,14 @@
       </div>
     </div>
     <div class="col-3">
-      <button class="btn btn-secondary form-control h3" id="newCbtn" (click)="clearFields()">
-        נקה את כל הפרטים
+      <button ngbTooltip="שחזור פרטים (אם לא שמרת)" class="btn btn-secondary form-control h3" id="newCbtn"
+        (click)="getItemData()">
+        שחזר פרטים
       </button>
     </div>
-    <div class="col-3"></div>
+    <div class="col-3">
+      <button class="btn btn-warning form-control" (click)="open(itemType)">הקם פריט חדש</button>
+    </div>
   </div>
 
   <!--General Details Component / product-->
@@ -246,8 +249,8 @@
         <label class="form-control">מחיר העמסה (שקלים)</label>
       </div>
       <div class="col-2">
-        <input disabled (change)="checkIfItemExist($event)" class="form-control" type='text'
-          [(ngModel)]="item.componentN">
+        <input [disabled]="!new" (change)="checkIfItemExist($event)" class="form-control" type='text'
+          [value]="item.componentN">
         <input class="form-control mt-2" type="text" [(ngModel)]="item.comaxName">
         <input class="form-control mt-2" type="text" [(ngModel)]="item.alternativeComponent">
         <input class="form-control mt-2" type="text" [(ngModel)]="item.price">
@@ -376,7 +379,7 @@
     <div class="row text-center">
       <div class="col-2"><label class="form-control">Item Number</label></div>
       <div class="col-2">
-        <input class="form-control" (change)="checkIfExist($event)" [(ngModel)]="item.componentN">
+        <input class="form-control" (change)="checkIfExist($event)" [disabled]="!new" [value]="item.componentN">
       </div>
       <div class="col-2"><label class="form-control">Item Name</label></div>
       <div class="col-2">
@@ -1123,4 +1126,28 @@
   <div class="modal-footer">
   </div>
 
+</ng-template>
+
+<ng-template #itemType let-modal>
+  <div dir="rtl" class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">איזה פריט להקים?</h4>
+    <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div dir="rtl" class=" modal-body">
+    <div class=" row mt-2">
+      <div class="col-3">
+        <button class="btn btn-warning"></button>
+      </div>
+      <div class="col-3">
+        <button class="btn btn-warning"></button>
+      </div>
+      <div class="col-3">
+        <button class="btn btn-warning"></button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+  </div>
 </ng-template>

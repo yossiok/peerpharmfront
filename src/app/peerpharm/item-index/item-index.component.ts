@@ -9,6 +9,85 @@ import { Procurementservice } from 'src/app/services/procurement.service';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { Currencies } from '../procurement/Currencies';
 
+
+const defaultCmpt = {
+  whoPays: '',
+  payingCustomersList: [],
+  componentN: '',
+  componentName: '',
+  componentNs: '',
+  suplierN: '',
+  suplierName: '',
+  componentType: '',
+  componentCategory: '',
+  img: '',
+  importFrom: '',
+  lastModified: '',
+  minimumStock: '',
+  needPrint: '',
+  packageType: '',
+  packageWeight: '',
+  remarks: '',
+  jumpRemark: '',
+  componentItems: [],
+  input_actualMlCapacity: 0,
+  alternativeComponent: '',
+  comaxName: '',
+  alternativeSuppliers: [],
+  price: '',
+  connectedProducts: []
+
+}
+
+const defaultMaterial = {
+
+  componentN: "",
+  componentName: "",
+  remarks: "",
+  img: "",
+  minimumStock: "",
+  packageWeight: "",
+  itemType: "",
+  barcode: "",
+  actualMlCapacity: "",
+  unitOfMeasure: "",
+  group: "",
+  subGroup2: "",
+  alternativeSuppliers: [],
+  status: "",
+  threatment: "",
+  monthTillExp: "",
+  monthAvgPcs: "",
+  msds: "",
+  coaMaster: "",
+  function: '',
+  measurement: "",
+  notInStock: false,
+  inciName: "",
+  casNumber: "",
+  composition: [],
+  umNumber: "",
+  imerCode: "",
+  imerTreatment: "",
+  allowQtyInStock: "",
+  expiredQty: "",
+  permissionDangerMaterials: "",
+  storageTemp: "",
+  storageDirections: "",
+  frameQuantity: "",
+  frameSupplier: "",
+  location: "",
+  quantityInStock: "",
+  mixedMaterial: [],
+  formuleRemarks: '',
+  manualPrice: 0,
+  manualCoin: 'ILS',
+  price: 0,
+  coin: 'ILS',
+  priceUpdates: []
+
+}
+
 @Component({
   selector: 'app-item-index',
   templateUrl: './item-index.component.html',
@@ -44,6 +123,7 @@ export class ItemIndexComponent implements OnInit {
   showMovementsForm: boolean = false
   showSalesForm: boolean = false
   allowedProblematicEdit: boolean = false
+  new: boolean = false
 
   //Material Stuff
   compositionName: any;
