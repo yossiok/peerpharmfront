@@ -229,8 +229,13 @@
       </div>
 
       <div class="d-flex flex-row justify-content-around">
-        <p>יח' מידה</p>
-        <select class="form-control" [(ngModel)]="item.measurement">
+        <p class="h5">סוג</p>
+        <input type="text" class="form-control w-50" [(ngModel)]="item.itemType">
+      </div>
+
+      <div class="d-flex flex-row justify-content-around">
+        <p class="h5">יח' מידה</p>
+        <select class="form-control w-50" [(ngModel)]="item.measurement">
           <option value="kilogram">kilogram</option>
           <option value="liter">liter</option>
           <option value="meter">meter</option>
@@ -242,50 +247,50 @@
         </select>
       </div>
 
-      <div class="d-flex flex-row justify-content-around">
-        <p>שקיל</p>
-        <input type="checkbox" class="form-control" [(ngModel)]="item.weighable">
+      <div class="ml-4 mr-4 d-flex flex-row justify-content-around">
+        <input type="checkbox" class="weighable" [(ngModel)]="item.weighable">
+        <p class="h5">שקיל</p>
       </div>
 
       <div class="d-flex flex-row justify-content-around">
-        <p>ברקוד</p>
-        <input type="text" class="form-control" [(ngModel)]="item.barcode">
+        <p class="h5">ברקוד</p>
+        <input type="text" class="form-control w-50" [(ngModel)]="item.barcode">
       </div>
 
     </div>
 
-    <div class="row"></div>
-    <div class="d-flex flex-row justify-content-around">
+
+    <div class="row mt-4 d-flex flex-row justify-content-around">
       <p class="h5">שם</p>
       <input class="form-control" type="text" [(ngModel)]="item.componentName">
     </div>
 
-    <div class="d-flex flex-row justify-content-around">
+    <div class="row mt-4 d-flex flex-row justify-content-around">
       <p class="h5">שם קומקס</p>
       <input class="form-control" type="text" [(ngModel)]="item.comaxName">
     </div>
 
-    <div class="d-flex flex-row justify-content-around">
+
+    <div class="row mt-4 d-flex flex-row justify-content-around">
       <p class="h5">פריט חלופי</p>
       <input class="form-control" type="text" [(ngModel)]="item.alternativeComponent">
     </div>
 
-    <div class="d-flex flex-row justify-content-around">
-      <p class="h5">מחיר אחרון (שקלים)</p>
-      <input class="form-control" type="text" [(ngModel)]="item.price">
+    <div class="row mt-4">
+
+      <div class="d-flex flex-row justify-content-around">
+        <p class="h5">מחיר אחרון (שקלים)</p>
+        <input class="form-control w-25" type="text" [(ngModel)]="item.price">
+      </div>
+
+      <div class="d-flex flex-row justify-content-around">
+        <p class="h5">מחיר העמסה (שקלים)</p>
+        <input class="form-control w-25" type="number" [(ngModel)]="item.shippingPrice">
+      </div>
     </div>
 
     <div class="d-flex flex-row justify-content-around">
-      <p class="h5">מחיר העמסה (שקלים)</p>
-      <input class="form-control" type="number" [(ngModel)]="item.shippingPrice">
-    </div>
-
-    <div class="col-2">
       <label class="form-control">מספר ספק</label>
-      <label class="form-control">מק"ט ספק</label>
-      <label class="form-control">מחיר ספק</label>
-    </div>
-    <div class="col-2">
       <input class="form-control" list="suppliers" type='text' (change)="fillSupplierDetails()"
         [(ngModel)]="item.suplierN">
       <datalist id="suppliers">
@@ -293,8 +298,30 @@
           {{supplier.suplierNumber}}
         </option>
       </datalist>
+    </div>
+
+    <div class="d-flex flex-row justify-content-around">
+      <label class="form-control">מק"ט ספק</label>
       <input class="form-control mt-2" type='text' [(ngModel)]="item.componentNs">
+    </div>
+
+    <div class="d-flex flex-row justify-content-around">
+      <label class="form-control">מחיר ספק</label>
       <input class="form-control mt-2" type='text' [(ngModel)]="item.price">
+    </div>
+
+    <div class="d-flex flex-row justify-content-around">
+
+    </div>
+
+    <div class="d-flex flex-row justify-content-around">
+
+    </div>
+
+
+    <div class="col-2">
+    </div>
+    <div class="col-2">
     </div>
     <div class="col-2">
       <label class="form-control">מלאי מינימום</label>

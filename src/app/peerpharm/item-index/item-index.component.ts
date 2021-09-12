@@ -206,6 +206,7 @@ export class ItemIndexComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.getAllSuppliers()
     this.allowedProblematicEdit = this.authService.loggedInUser.userName == 'haviv' || this.authService.loggedInUser.userName == 'martha' || this.authService.loggedInUser.userName == 'sima'
     this.screenPermission = Number(this.authService.loggedInUser.screenPermission)
     this.getCurrencies()
