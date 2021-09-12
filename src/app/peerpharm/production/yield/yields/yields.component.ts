@@ -60,7 +60,9 @@ export class YieldsComponent implements OnInit {
 
   ngOnInit(): void {
     this.startInterval();
-    this.getOpenYields()
+    this.getOpenYields();
+
+
   }
 
   stopInterval() {
@@ -89,6 +91,7 @@ export class YieldsComponent implements OnInit {
       this.lineIndex = i
       this.currentLine = this.lines[i]
       this.modalService.open(modal)
+
     }
   }
 
@@ -107,6 +110,7 @@ export class YieldsComponent implements OnInit {
     this.yesterday = false
     this.currentLine = this.lines[this.lineIndex]
     this.productionService.getLineYieldByDate(this.currentLine, new Date()).subscribe(yieldData => {
+      yieldData.startTime = yieldData.startTime ? yieldData.startTime : "08:00"
       this.currentYield.reset()
       this.currentYield.patchValue(yieldData)
       this.getOpenYields()
@@ -120,8 +124,7 @@ export class YieldsComponent implements OnInit {
     let yesterday = new Date();
     yesterday.setDate(today.getDate() - 1);
     this.productionService.getLineYieldByDate(this.currentLine, yesterday).subscribe(yieldData => {
-
-
+      yieldData.startTime = yieldData.startTime ? yieldData.startTime : "08:00"
       this.currentYield.reset()
       this.currentYield.patchValue(yieldData)
     })

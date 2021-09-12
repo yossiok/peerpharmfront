@@ -10,8 +10,10 @@
   <td><input type="text" placeholder="PH" [(ngModel)]="newMkpBatch.ph"></td>
   <td><input type="text" placeholder="Batch" [(ngModel)]="newMkpBatch.batchNumber"></td>
   <td><button class="btn btn-success" (click)="addNewMkpBatch()">New Batch</button></td>
-  <td><button style="visibility: hidden;" #printBtn [useExistingCss]="true" class="btn btn-success"
-      printSectionId="print-section" ngxPrint>Print</button></td>
+  <td><button style="visibility: hidden;" #printBtn [useExistingCss]="false" class="btn btn-success"
+      printSectionId="print-section"
+      [printStyle]="{'#container':{'width':'10cm','height':'10cm', 'box-sizing':'border-box','padding':'20px','font-size':'20px'},div:{'font-family':'Arial', 'padding-right': '5px' }, '#product':{'text-align':'center', 'border-bottom':'solid 2px black', 'padding':'0px 0px 20px 0px'}}"
+      ngxPrint>Print</button></td>
 
 </tr>
 <table dir="rtl" class="table table-striped">
@@ -49,11 +51,10 @@
 </table>
 
 <div [class.read-only]="checkPermission()" class="clearfix" id="print-section" style="visibility: hidden">
-  <div style="max-height: 600px;" *ngFor="let sticker of allStickers;let i=index">
-
-    <div dir="rtl" class="container-fluid" style="width:370px;font-family: Arial;font-size: 24px;margin-bottom: 20px;">
+  <div *ngFor="let sticker of allStickers;let i=index">
+    <div dir="rtl" class="container-fluid" id="container" style="margin-left:0px;">
       <div class="row">
-        <div style="text-align: center;border-bottom: 1px solid black;height:120px;" class="col-12">
+        <div id="product" class="col-12">
           <span>שם החומר:</span>{{sticker.item.currentItemName}}
         </div>
       </div>
@@ -64,19 +65,19 @@
       </div>
 
       <div class="row">
-        <div style="border-bottom: 1px solid black;" class="col-6">
+        <div style="border-bottom: 1px solid black;" class="col-12">
           <span>ת.ייצור: </span>{{sticker.item.currentProduced}}
         </div>
-        <div style="border-bottom: 1px solid black;" class="col-6">
+        <div style="border-bottom: 1px solid black;" class="col-12">
           <span>מק"ט: </span>{{sticker.item.currentItem}}
         </div>
       </div>
 
       <div class="row">
-        <div style="border-bottom: 1px solid black;" class="col-6">
+        <div style="border-bottom: 1px solid black;" class="col-12">
           <span>ת.תפוגה: </span>{{sticker.item.currentExpDate}}
         </div>
-        <div style="border-bottom: 1px solid black;" class="col-6">
+        <div style="border-bottom: 1px solid black;" class="col-12">
           <span>PH: </span>{{sticker.item.currentPH}}
         </div>
       </div>

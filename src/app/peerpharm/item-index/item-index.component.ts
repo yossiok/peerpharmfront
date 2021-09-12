@@ -174,7 +174,12 @@ export class ItemIndexComponent implements OnInit {
   itemDetailsForm: FormGroup = new FormGroup({
     itemType: new FormControl('all', Validators.required),
     itemNumber: new FormControl('', Validators.required),
+    itemName: new FormControl('', Validators.minLength(3)),
   })
+
+  get itemName() {
+    return this.itemDetailsForm.get('itemName');
+  }
 
   editVersionForm: FormGroup = new FormGroup({
     date: new FormControl(new Date(this.today), Validators.required),
@@ -204,6 +209,8 @@ export class ItemIndexComponent implements OnInit {
     private modalService: NgbModal,
     private uploadService: UploadFileService
   ) { }
+
+
 
   ngOnInit(): void {
     this.allowedProblematicEdit = this.authService.loggedInUser.userName == 'haviv' || this.authService.loggedInUser.userName == 'martha' || this.authService.loggedInUser.userName == 'sima'
@@ -317,9 +324,11 @@ export class ItemIndexComponent implements OnInit {
   // Get names of all items for search
   getNames(event) {
     if (event.value.length > 2) {
+
       this.inventoryService.getNamesByRegex(event.value).subscribe(names => {
-        this.itemNames = names
-        this.itemDetailsForm.controls.itemNumber.setValue(names[0].componentN)
+        this.itemNames = names;
+        this.itemDetailsForm.controls.itemNumber.setValue(names[0].componentN);
+
       })
     }
   }
@@ -667,6 +676,11 @@ export class ItemIndexComponent implements OnInit {
         { orderNumber: 'Sorry.', supplierName: 'No', status: 'orders', arrivedAmount: 'for this', quantity: 'item.' }
       ]
     })
+  }
+
+  resetItemDetailsForm() {
+    this.itemDetailsForm.reset()
+    this.itemNames = [];
   }
 
 }

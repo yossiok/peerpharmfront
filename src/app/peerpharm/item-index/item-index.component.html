@@ -33,17 +33,19 @@
       <label class="d-block">
         or find by name.
       </label>
-      <input class="d-inline form-control" type="text" #name>
+      <input class="d-inline form-control" type="text" #name formControlName="itemName">
+      <div *ngIf="itemName.touched && itemName.invalid" class="alert alert-danger">
+        Enter 3 or more characters</div>
       <button class="d-inline" type="button" (click)="getNames(name)">Find</button>
       <select class="form-control" #nameSelect (change)="setItemDetailsNumber($event)">
-        <option *ngFor="let itemName of itemNames" [value]="itemName.componentN">{{itemName.componentName}}</option>
+        <option *ngFor="let itemname of itemNames" [value]="itemname.componentN">{{itemname.componentName}}</option>
       </select>
     </div>
     <div class="col-1">
       <button type="submit" class="btn btn-success">Go.</button>
     </div>
     <div class="col-1">
-      <button type="button" class="btn btn-secondary" (click)="item = undefined">Clear</button>
+      <button type="button" class="btn btn-secondary" (click)="resetItemDetailsForm()">Clear</button>
     </div>
 
   </div>
