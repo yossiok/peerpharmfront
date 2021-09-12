@@ -217,69 +217,92 @@
   </div>
 
   <!--General Details Component / product-->
-  <div *ngIf="item.itemType!='material'" class="w-50 float-right modal-inner">
+  <div dir="rtl" *ngIf="item.itemType!='material'" class="w-50 float-right modal-inner">
     <h1 class="text-center text-primary">פרטים כלליים</h1>
-    <div class=" row text-center">
-      <div class="col-1"></div>
-      <div class="col-8">
-        <input class="form-control" type="text" [(ngModel)]="item.componentName">
-      </div>
-      <div class="col-2">
-        <label class="form-control">שם פריט</label>
-      </div>
-      <div class="col-1"></div>
-    </div>
-    <div dir="rtl" class="row text-center ">
-      <div class="col-4 ">
-        <h5>פרטי פריט</h5>
-      </div>
-      <div class="col-4 ">
-        <h5>פרטי ספק</h5>
-      </div>
-      <div class="col-4">
-        <h5>פרטי מלאי</h5>
-      </div>
-    </div>
-    <div dir="rtl" class="row text-center">
-      <div class="col-2">
-        <label class="form-control">מספר פריט</label>
-        <label class="form-control">שם קומקס</label>
-        <label class="form-control">פריט חלופי</label>
-        <label class="form-control">מחיר אחרון (שקלים)</label>
-        <label class="form-control">מחיר העמסה (שקלים)</label>
-      </div>
-      <div class="col-2">
-        <input [disabled]="!new" (change)="checkIfItemExist($event)" class="form-control" type='text'
+
+    <div class="row">
+
+      <div class="d-flex flex-row justify-content-around">
+        <p class="h5">פריט</p>
+        <input [disabled]="!new" (change)="checkIfItemExist($event)" class="form-control w-50" type='text'
           [value]="item.componentN">
-        <input class="form-control mt-2" type="text" [(ngModel)]="item.comaxName">
-        <input class="form-control mt-2" type="text" [(ngModel)]="item.alternativeComponent">
-        <input class="form-control mt-2" type="text" [(ngModel)]="item.price">
-        <input class="form-control mt-2" type="number" [(ngModel)]="item.shippingPrice">
       </div>
-      <div class="col-2">
-        <label class="form-control">מספר ספק</label>
-        <label class="form-control">מק"ט ספק</label>
-        <label class="form-control">מחיר ספק</label>
+
+      <div class="d-flex flex-row justify-content-around">
+        <p>יח' מידה</p>
+        <select class="form-control" [(ngModel)]="item.measurement">
+          <option value="kilogram">kilogram</option>
+          <option value="liter">liter</option>
+          <option value="meter">meter</option>
+          <option value="ml">ml</option>
+          <option value="unit">Unit</option>
+          <option value="ton">טון</option>
+          <option value="unit">יחידה</option>
+          <option value="box">קופסא</option>
+        </select>
       </div>
-      <div class="col-2">
-        <input class="form-control" list="suppliers" type='text' (change)="fillSupplierDetails()"
-          [(ngModel)]="item.suplierN">
-        <datalist id="suppliers">
-          <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
-            {{supplier.suplierNumber}}
-          </option>
-        </datalist>
-        <input class="form-control mt-2" type='text' [(ngModel)]="item.componentNs">
-        <input class="form-control mt-2" type='text' [(ngModel)]="item.price">
+
+      <div class="d-flex flex-row justify-content-around">
+        <p>שקיל</p>
+        <input type="checkbox" class="form-control" [(ngModel)]="item.weighable">
       </div>
-      <div class="col-2">
-        <label class="form-control">מלאי מינימום</label>
-        <label class="form-control">כמות מינימלית להזמנה</label>
+
+      <div class="d-flex flex-row justify-content-around">
+        <p>ברקוד</p>
+        <input type="text" class="form-control" [(ngModel)]="item.barcode">
       </div>
-      <div class="col-2">
-        <input class="form-control" type='number' [(ngModel)]="item.minimumStock">
-        <input class="form-control mt-2" type='number' [(ngModel)]="item.minimumPurchaseAmount">
-      </div>
+
+    </div>
+
+    <div class="row"></div>
+    <div class="d-flex flex-row justify-content-around">
+      <p class="h5">שם</p>
+      <input class="form-control" type="text" [(ngModel)]="item.componentName">
+    </div>
+
+    <div class="d-flex flex-row justify-content-around">
+      <p class="h5">שם קומקס</p>
+      <input class="form-control" type="text" [(ngModel)]="item.comaxName">
+    </div>
+
+    <div class="d-flex flex-row justify-content-around">
+      <p class="h5">פריט חלופי</p>
+      <input class="form-control" type="text" [(ngModel)]="item.alternativeComponent">
+    </div>
+
+    <div class="d-flex flex-row justify-content-around">
+      <p class="h5">מחיר אחרון (שקלים)</p>
+      <input class="form-control" type="text" [(ngModel)]="item.price">
+    </div>
+
+    <div class="d-flex flex-row justify-content-around">
+      <p class="h5">מחיר העמסה (שקלים)</p>
+      <input class="form-control" type="number" [(ngModel)]="item.shippingPrice">
+    </div>
+
+    <div class="col-2">
+      <label class="form-control">מספר ספק</label>
+      <label class="form-control">מק"ט ספק</label>
+      <label class="form-control">מחיר ספק</label>
+    </div>
+    <div class="col-2">
+      <input class="form-control" list="suppliers" type='text' (change)="fillSupplierDetails()"
+        [(ngModel)]="item.suplierN">
+      <datalist id="suppliers">
+        <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
+          {{supplier.suplierNumber}}
+        </option>
+      </datalist>
+      <input class="form-control mt-2" type='text' [(ngModel)]="item.componentNs">
+      <input class="form-control mt-2" type='text' [(ngModel)]="item.price">
+    </div>
+    <div class="col-2">
+      <label class="form-control">מלאי מינימום</label>
+      <label class="form-control">כמות מינימלית להזמנה</label>
+    </div>
+    <div class="col-2">
+      <input class="form-control" type='number' [(ngModel)]="item.minimumStock">
+      <input class="form-control mt-2" type='number' [(ngModel)]="item.minimumPurchaseAmount">
     </div>
     <div dir="rtl" class="row text-center">
       <div class="col-4">
@@ -301,7 +324,6 @@
         <label class="form-control">חומר 2</label>
         <label class="form-control">מותג</label>
         <label class="form-control">משקל/סוג</label>
-        <label class="form-control">יח' מידה</label>
         <label class="form-control">כמות מל'</label>
         <label class="form-control">על חשבון</label>
         <label class="form-control">רשימת לקוחות</label>
@@ -309,7 +331,7 @@
       <div class="col-2">
         <select class="form-control" [(ngModel)]="item.componentType">
           <option value=""></option>
-          <option *ngFor="let cmptType of cmptTypes2">{{cmptType}}</option>
+          <option *ngFor="let cmptType of cmptTypes">{{cmptType}}</option>
         </select>
         <select class="form-control mt-2" [(ngModel)]="item.componentType2">
           <option value=""></option>
@@ -346,16 +368,7 @@
           <option value='wood'>עץ</option>
           <option value='otherMaterial'>חומר אחר</option>
         </select>
-        <select class="form-control mt-2" [(ngModel)]="item.measurement">
-          <option value="kilogram">kilogram</option>
-          <option value="liter">liter</option>
-          <option value="meter">meter</option>
-          <option value="ml">ml</option>
-          <option value="unit">Unit</option>
-          <option value="ton">טון</option>
-          <option value="unit">יחידה</option>
-          <option value="box">קופסא</option>
-        </select>
+
         <input class="form-control mt-2" type="text" [(ngModel)]="item.actualMlCapacity">
         <select class="form-control mt-2" [(ngModel)]="item.whoPays">
           <option value="peerpharm">פארפארם</option>
