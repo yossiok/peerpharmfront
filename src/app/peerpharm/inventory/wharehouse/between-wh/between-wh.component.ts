@@ -137,7 +137,6 @@ export class BetweenWHComponent implements OnInit {
   }
 
   setOriginPosition() {
-    console.log(this.movementForm.value)
     this.originShelf = this.originWHShelfs.find(shelf => shelf.shell_id_in_whareHouse == this.movementForm.value.shell_id_in_whareHouse_Origin)
     this.movementForm.controls.shell_position_in_whareHouse_Origin.setValue(this.originShelf.position)
   }
@@ -154,7 +153,6 @@ export class BetweenWHComponent implements OnInit {
   }
 
   setDestPosition() {
-    console.log(this.movementForm.value)
     this.destShelf = this.destWHShelfs.find(shelf => shelf.shell_id_in_whareHouse == this.movementForm.value.shell_id_in_whareHouse_Dest)
     this.movementForm.controls.shell_position_in_whareHouse_Dest.setValue(this.destShelf.position)
   }

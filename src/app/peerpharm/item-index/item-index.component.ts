@@ -9,6 +9,85 @@ import { Procurementservice } from 'src/app/services/procurement.service';
 import { SuppliersService } from 'src/app/services/suppliers.service';
 import { Currencies } from '../procurement/Currencies';
 
+
+const defaultCmpt = {
+  whoPays: '',
+  payingCustomersList: [],
+  componentN: '',
+  componentName: '',
+  componentNs: '',
+  suplierN: '',
+  suplierName: '',
+  componentType: '',
+  componentCategory: '',
+  img: '',
+  importFrom: '',
+  lastModified: '',
+  minimumStock: '',
+  needPrint: '',
+  packageType: '',
+  packageWeight: '',
+  remarks: '',
+  jumpRemark: '',
+  componentItems: [],
+  input_actualMlCapacity: 0,
+  alternativeComponent: '',
+  comaxName: '',
+  alternativeSuppliers: [],
+  price: '',
+  connectedProducts: []
+
+}
+
+const defaultMaterial = {
+
+  componentN: "",
+  componentName: "",
+  remarks: "",
+  img: "",
+  minimumStock: "",
+  packageWeight: "",
+  itemType: "",
+  barcode: "",
+  actualMlCapacity: "",
+  unitOfMeasure: "",
+  group: "",
+  subGroup2: "",
+  alternativeSuppliers: [],
+  status: "",
+  threatment: "",
+  monthTillExp: "",
+  monthAvgPcs: "",
+  msds: "",
+  coaMaster: "",
+  function: '',
+  measurement: "",
+  notInStock: false,
+  inciName: "",
+  casNumber: "",
+  composition: [],
+  umNumber: "",
+  imerCode: "",
+  imerTreatment: "",
+  allowQtyInStock: "",
+  expiredQty: "",
+  permissionDangerMaterials: "",
+  storageTemp: "",
+  storageDirections: "",
+  frameQuantity: "",
+  frameSupplier: "",
+  location: "",
+  quantityInStock: "",
+  mixedMaterial: [],
+  formuleRemarks: '',
+  manualPrice: 0,
+  manualCoin: 'ILS',
+  price: 0,
+  coin: 'ILS',
+  priceUpdates: []
+
+}
+
 @Component({
   selector: 'app-item-index',
   templateUrl: './item-index.component.html',
@@ -44,6 +123,14 @@ export class ItemIndexComponent implements OnInit {
   showMovementsForm: boolean = false
   showSalesForm: boolean = false
   allowedProblematicEdit: boolean = false
+  new: boolean = false
+
+  //Material Stuff
+  compositionName: any;
+  compositionPercentage: any;
+  compostionFunction: any;
+  compositionCAS: any;
+  compEdit: number = -1
 
   cmptCategoryList: Array<any> = [
     'Sacara', 'Mineralium', 'Arganicare', 'Spa Pharma', 'Olive', 'Vitamin C', 'Quinoa', 'Andrea Milano', 'Dermalosophy',
@@ -360,6 +447,34 @@ export class ItemIndexComponent implements OnInit {
         this.item.msds = data.partialText;
       }
     })
+  }
+
+
+  addComposition() {
+    var obj = {
+      compName: this.compositionName,
+      compPercentage: this.compositionPercentage,
+      compFunction: this.compostionFunction,
+      compCAS: this.compositionCAS
+    }
+    this.item.composition.push(obj)
+    this.compositionName = ''
+    this.compositionPercentage = null
+    this.compostionFunction = ''
+    this.compositionCAS = ''
+  }
+
+  editComp(i) {
+    this.compEdit = i
+  }
+
+  deleteFromComposition(materialId, compositionName) {
+    for (let i = 0; i < this.item.composition.length; i++) {
+      if (this.item.composition[i].compName == compositionName) {
+        this.item.composition.splice(i, 1)
+        this.toastSrv.success('Composition Deleted')
+      }
+    }
   }
 
 

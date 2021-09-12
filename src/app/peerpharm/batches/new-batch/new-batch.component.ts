@@ -109,6 +109,7 @@ export class NewBatchComponent implements OnInit {
     this.itemName.nativeElement.value = null
     this.currentItems = []
     this.currentOrderNumber.nativeElement.focus()
+
   }
 
   setMainFormule(item) {
@@ -118,6 +119,7 @@ export class NewBatchComponent implements OnInit {
 
   removeItem(i) {
     this.newBatchForm.value.itemsToCook.splice(i, 1)
+
   }
 
   checkPointerAllowed() {
@@ -163,15 +165,24 @@ export class NewBatchComponent implements OnInit {
       }
       this.allStickers.push(batchSticker);
     }
+    // weightQtyLeft value doesn't exist in the form
     this.newBatchForm.controls.weightQtyLeft.setValue(this.newBatchForm.controls.weightKg.value)
+
+    // change the batch number to lower case
     this.newBatchForm.controls.batchNumber.setValue(this.newBatchForm.get('batchNumber').value.toLowerCase());
+    // set the date to today by default
     this.newBatchForm.controls.batchCreated.setValue(new Date().getTime());
 
     // set expiration date
+
     let expirationDate = new Date()
+    // get the number of years from the form
     let expirationYear = this.newBatchForm.get('expration').value
+    // add the number of years to today date
     expirationDate.setFullYear(Number(expirationDate.getFullYear()) + Number(expirationYear))
+    // set the value of the expiration in the form
     this.newBatchForm.controls.expration.setValue(expirationDate)
+
 
     if (this.newBatchForm.controls.batchNumber.value.length < 5) {
       this.toastSrv.error('Batch number must include at least 5 charchters', 'Invalid Batch Number')
@@ -221,9 +232,10 @@ export class NewBatchComponent implements OnInit {
                     this.printBtn.nativeElement.click();
                     this.toastSrv.success('באטצ נוסף בהצלחה !')
                     setTimeout(() => {
+
                       // this.newBatchForm.reset()
                       // this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
-                      // this.newBatchForm.controls.itemsToCook.setValue([])
+                      //this.newBatchForm.controls.itemsToCook.setValue([])
                       this.allStickers = [];
                       this.getLastBatch();
                     }, 2000)
@@ -253,6 +265,8 @@ export class NewBatchComponent implements OnInit {
   //       else if(data.materials && data.updatedShells) this.toastSrv.success('Amounts reduced. Shelfs updated.')
   //     })
   // }
+
+
 
 
 }

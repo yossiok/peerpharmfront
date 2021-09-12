@@ -33,7 +33,7 @@
                     </option>
                 </select>
                 <label>ממדף</label>
-                <select class="form-control" (change)="setOriginPosition($event)"
+                <select class="form-control" (change)="setOriginPosition()"
                     formControlName="shell_id_in_whareHouse_Origin">
                     <option disabled value="">בחר מדף</option>
                     <option *ngFor="let shelf of originWHShelfs" [disabled]="shelf.position == 'MINUS'"

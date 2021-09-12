@@ -208,11 +208,14 @@
       </div>
     </div>
     <div class="col-3">
-      <button class="btn btn-secondary form-control h3" id="newCbtn" (click)="clearFields()">
-        נקה את כל הפרטים
+      <button ngbTooltip="שחזור פרטים (אם לא שמרת)" class="btn btn-secondary form-control h3" id="newCbtn"
+        (click)="getItemData()">
+        שחזר פרטים
       </button>
     </div>
-    <div class="col-3"></div>
+    <div class="col-3">
+      <button class="btn btn-warning form-control" (click)="open(itemType)">הקם פריט חדש</button>
+    </div>
   </div>
 
   <!--General Details Component / product-->
@@ -248,8 +251,8 @@
         <label class="form-control">מחיר העמסה (שקלים)</label>
       </div>
       <div class="col-2">
-        <input disabled (change)="checkIfItemExist($event)" class="form-control" type='text'
-          [(ngModel)]="item.componentN">
+        <input [disabled]="!new" (change)="checkIfItemExist($event)" class="form-control" type='text'
+          [value]="item.componentN">
         <input class="form-control mt-2" type="text" [(ngModel)]="item.comaxName">
         <input class="form-control mt-2" type="text" [(ngModel)]="item.alternativeComponent">
         <input class="form-control mt-2" type="text" [(ngModel)]="item.price">
@@ -378,7 +381,7 @@
     <div class="row text-center">
       <div class="col-2"><label class="form-control">Item Number</label></div>
       <div class="col-2">
-        <input class="form-control" (change)="checkIfExist($event)" [(ngModel)]="item.componentN">
+        <input class="form-control" (change)="checkIfExist($event)" [disabled]="!new" [value]="item.componentN">
       </div>
       <div class="col-2"><label class="form-control">Item Name</label></div>
       <div class="col-2">
@@ -421,22 +424,43 @@
         </datalist>
         <input class="form-control" [(ngModel)]="item.dangerMaterials" type='text'>
       </div>
-      <div class="2">
-        <button class="btn btn-info form-control"><i (click)="addComposition()" class="fa fa-plus"></i></button>
-        <label class="form-control">הרכב</label>
-      </div>
-      <div style="height:210px;overflow-y: scroll;" class="col-3">
-        <input [(ngModel)]="compositionName" class='form-control'>
-        <table style="font-size: 9px;" class="table table-hover table-striped">
+      <div style="height:210px;overflow-y: scroll;" class="col-5">
+        <h4>הרכב</h4>
+        <table style="font-size: 15px;">
           <tbody>
-            <tr *ngFor="let comp of item.composition">
-              <td>{{comp.compName}}</td>
-              <td>{{comp.compPercentage}}</td>
-              <td><i (click)="deleteFromComposition(item._id,comp.compName)" class="fa fa-times text-danger"></i>
+            <tr>
+              <td>
+                <input placeholder="composition" [(ngModel)]="compositionName" class='form-control'>
+              </td>
+              <td>
+                <input placeholder="%" [(ngModel)]="compositionPercentage" class="form-control">
+              </td>
+              <td>
+                <input placeholder="function" [(ngModel)]="compostionFunction" class="form-control">
+              </td>
+              <td>
+                <input placeholder="CAS" [(ngModel)]="compositionCAS" class="form-control">
+              </td>
+              <td>
+                <button class="btn btn-info form-control"><i (click)="addComposition()" class="fa fa-plus"></i></button>
+              </td>
+            </tr>
+            <tr *ngFor="let comp of item.composition; let i = index" ngbTooltip="Click to edit" (click)="editComp(i)">
+              <td *ngIf="compEdit != i">{{comp.compName}}</td>
+              <td *ngIf="i == compEdit"><input class="form-control" type="text" [(ngModel)]="comp.compName"></td>
+              <td *ngIf="compEdit != i">{{comp.compPercentage}}</td>
+              <td *ngIf="i == compEdit"><input class="form-control" type="text" [(ngModel)]="comp.compPercentage"></td>
+              <td *ngIf="compEdit != i">{{comp.compFunction}}</td>
+              <td *ngIf="i == compEdit"><input class="form-control" type="text" [(ngModel)]="comp.compFunction"></td>
+              <td *ngIf="compEdit != i">{{comp.compCAS}}</td>
+              <td *ngIf="i == compEdit"><input class="form-control" type="text" [(ngModel)]="comp.compCAS"></td>
+              <td><i (click)="deleteFromComposition(item._id,comp.compName)" class="fa fa-times text-danger click"></i>
               </td>
             </tr>
           </tbody>
         </table>
+        <button *ngIf="compEdit != -1" class="btn btn-info" (click)="toastSrv.info('יש לשמור שינויים לפריט')"
+          (click)="compEdit = -1">Save</button>
       </div>
       <div class="col-1">
         <input placeholder="%" [(ngModel)]="compositionPercentage" class="form-control">
@@ -1104,4 +1128,28 @@
   <div class="modal-footer">
   </div>
 
+</ng-template>
+
+<ng-template #itemType let-modal>
+  <div dir="rtl" class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">איזה פריט להקים?</h4>
+    <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div dir="rtl" class=" modal-body">
+    <div class=" row mt-2">
+      <div class="col-3">
+        <button class="btn btn-warning"></button>
+      </div>
+      <div class="col-3">
+        <button class="btn btn-warning"></button>
+      </div>
+      <div class="col-3">
+        <button class="btn btn-warning"></button>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+  </div>
 </ng-template>
