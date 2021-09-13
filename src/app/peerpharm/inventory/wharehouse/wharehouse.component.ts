@@ -74,7 +74,8 @@ export class WharehouseComponent implements OnInit {
 
   private container: ElementRef;
   mainDivArr: any = [];
-  whareHouses: any = [];
+  whareHouses: any = []; // user allowed whs
+  allWhareHouses: any = [] // all whs
   whareHouseId: string = ""; //wharehouse id for shelf update
   curentWhareHouseId: string = ""  //wharehouse id for qty update
   curentWhareHouseName: string = ""  //wharehouse id to show
@@ -117,7 +118,12 @@ export class WharehouseComponent implements OnInit {
     // let todayStr=moment(this.today).format("YYYY-MM-DD");
     // this.itemLine.controls.arrivalDate.setValue(todayStr);
     this.getUserWhs()
+    this.getAllWhs()
 
+  }
+
+  getAllWhs() {
+    this.inventoryService.getWhareHousesList().subscribe(whs => this.allWhareHouses = whs)
   }
 
   getUserWhs() {
@@ -130,7 +136,7 @@ export class WharehouseComponent implements OnInit {
         }
       });
       this.whareHouses = displayAllowedWH;
-      
+
       this.curentWhareHouseId = displayAllowedWH[0]._id;
       this.curentWhareHouseName = displayAllowedWH[0].name;
 
@@ -524,11 +530,11 @@ export class WharehouseComponent implements OnInit {
     if (cleanConfirm) this.inventoryUpdateList = [];
   }
 
-  updateFivePercentToStickers(inventoryUpdateList){
+  updateFivePercentToStickers(inventoryUpdateList) {
 
     inventoryUpdateList.forEach(element => {
-      if(element.componentType == 'sticker' && this.dir == 'out'){
-        element.amount += 5/100* element.amount
+      if (element.componentType == 'sticker' && this.dir == 'out') {
+        element.amount += 5 / 100 * element.amount
       }
     });
 
@@ -594,7 +600,7 @@ export class WharehouseComponent implements OnInit {
     if (this.dir == 'in') {
       ;
       setTimeout(() => {
-        this.printBtn2.nativeElement.click() 
+        this.printBtn2.nativeElement.click()
         this.listToPrint = [];
       }, 500);
 
@@ -607,7 +613,7 @@ export class WharehouseComponent implements OnInit {
 
   async checkLineValidation(itemLine, index, ev: any, lineqnt) {
     let stockType;
-    
+
     if (
       this.curentWhareHouseName == "Rosh HaAyin" ||
       this.curentWhareHouseName == "Kasem" ||
@@ -737,15 +743,15 @@ export class WharehouseComponent implements OnInit {
           expirationDate: null, // for products stock
           productionDate: null, // for products stock
           barcode: "",
-          componentType:itemRes.componentType,
+          componentType: itemRes.componentType,
           itemType: itemRes.itemType,
           relatedOrderNum: itemLine.relatedOrder,
           deliveryNoteNum: itemLine.deliveryNote,
           actionType: this.dir,
           WH_originId: this.curentWhareHouseId,
           WH_originName: this.curentWhareHouseName,
-          shell_id_in_whareHouse_Dest: this.dir == 'production' ?  '5eeb38b616fd280900c4e922' : '',
-          shell_position_in_whareHouse_Dest: this.dir == 'production' ?  'FLOOR' : '',
+          shell_id_in_whareHouse_Dest: this.dir == 'production' ? '5eeb38b616fd280900c4e922' : '',
+          shell_position_in_whareHouse_Dest: this.dir == 'production' ? 'FLOOR' : '',
           WH_destId: this.dir == 'production' ? '5e9c132ce6f70d12984343d0' : this.curentWhareHouseId,
           WH_destName: this.dir == 'production' ? 'Filling' : this.curentWhareHouseName,
           originShelfQntBefore: originShelfQntBefore,

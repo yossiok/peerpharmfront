@@ -16,6 +16,7 @@ export class InvArrivalsComponent implements OnInit {
   @ViewChild('printBtn2') printBtn2: ElementRef
   @ViewChild('first') first: ElementRef
   @Input() allWhareHouses: any[];
+  @Input() reallyAllWhareHouses: any[];
   @Input() itemNumber: number;
 
   itemNames: any[];
