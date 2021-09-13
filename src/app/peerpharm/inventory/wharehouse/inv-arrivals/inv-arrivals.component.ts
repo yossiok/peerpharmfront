@@ -29,6 +29,7 @@ export class InvArrivalsComponent implements OnInit {
   sending: boolean = false
   disabled: boolean = false
   noItem: boolean = true
+  printSticker: boolean = false
 
   componentArrival: FormGroup = new FormGroup({
     itemType: new FormControl('component', Validators.required),
@@ -191,6 +192,7 @@ export class InvArrivalsComponent implements OnInit {
           this.componentArrival.controls.itemType.setValue('component')
           setTimeout(() => {
             this.printBtn2.nativeElement.click()
+            this.printSticker = true
             setTimeout(() => this.allArrivals = [], 1000)
           }, 500)
         }
