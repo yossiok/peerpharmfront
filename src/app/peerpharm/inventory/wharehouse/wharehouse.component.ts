@@ -635,7 +635,7 @@ export class WharehouseComponent implements OnInit {
 
     // multiLineQntInput
     if (this.multiInputLines) {
-      itemLineToAdd.amount = itemLineToAdd.qnt;
+      itemLineToAdd.amount = itemLineToAdd.requsetedQnt;
       currItemShelfs = itemLineToAdd.currItemShelfs;
 
     } else {
