@@ -22,7 +22,7 @@ import { AuthService } from 'src/app/services/auth.service';
                 <td>{{userName}} <strong>:מקבל</strong></td>
             </tr>
             <tr>
-                <td><h1>פאר פארם בע"מ</h1></td>
+                <td><h3>פאר פארם בע"מ</h3></td>
             </tr>
             <tr>
                 <td>{{date | date: 'medium'}} <strong>:תאריך</strong></td>
@@ -70,7 +70,6 @@ export class InventoryStickerComponent implements OnInit {
         console.log('items: ', this.items)
         this.userName = this.authService.loggedInUser.userName
         setTimeout(() => {
-            debugger
             this.printbtn.nativeElement.click()
         }, 500)
     }
