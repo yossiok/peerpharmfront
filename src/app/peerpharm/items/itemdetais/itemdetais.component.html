@@ -103,7 +103,8 @@
                 <!--version-->
                 <input type="number" class="small-input" placeholder="v." disabled [(ngModel)]=itemShown.stickerVersion>
                 <!--type-->
-                <input type="text" style='width: 150px' id="id_stickerType" placeholder="Sticker Type" [(ngModel)]=itemShown.stickerTypeK>
+                <input type="text" style='width: 150px' id="id_stickerType" placeholder="Sticker Type"
+                    [(ngModel)]=itemShown.stickerTypeK>
             </div>
             <div>
                 <!--Sticker 2-->
@@ -112,9 +113,11 @@
                     [(ngModel)]=itemShown.sticker2Number placeholder="Sticker 2 Number"
                     onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')">
                 <!--Version-->
-                <input type="number" class="small-input" placeholder="v." disabled [(ngModel)]=itemShown.sticker2Version>
+                <input type="number" class="small-input" placeholder="v." disabled
+                    [(ngModel)]=itemShown.sticker2Version>
                 <!--Sticker Type-->
-                <input type="text" placeholder="Sticker 2 Type" style='width: 150px' id="id_sticker2Type" [(ngModel)]=itemShown.sticker2TypeK>
+                <input type="text" placeholder="Sticker 2 Type" style='width: 150px' id="id_sticker2Type"
+                    [(ngModel)]=itemShown.sticker2TypeK>
             </div>
             <div>
                 <!--Box Number-->
@@ -768,7 +771,8 @@
                                             [(ngModel)]="itemShown.bottleNumber"
                                             (change)="searchCompNumber($event,'productionInput')" type="text"
                                             class="productionInput">
-                                        <input type="number" class="small-input" placeholder="v." disabled [(ngModel)]="itemShown.bottleVersion">
+                                        <input type="number" class="small-input" placeholder="v." disabled
+                                            [(ngModel)]="itemShown.bottleVersion">
                                     </div>
                                     <div *ngIf="production==false">
                                         <p style="opacity: 0">---</p>
@@ -1481,10 +1485,11 @@
                                         [(ngModel)]=itemShown.bottleNumber>
 
                                     <!--Version Number-->
-                                    <input class="small-input" type="number" placeholder="v." disabled [(ngModel)]=itemShown.bottleVersion>
+                                    <input class="small-input" type="number" placeholder="v." disabled
+                                        [(ngModel)]=itemShown.bottleVersion>
                                 </div>
                                 <div class="col-3">
-                                    <div>
+                                    <!-- <div>
                                         <button class="btn btn-success" style="margin-top:10px;position: absolute;"
                                             for="fileee">{{ 'Upload' | translate }}
                                             {{ 'File' | translate }}</button>
@@ -1492,7 +1497,7 @@
                                             id="id_itemImg1" (change)="selectFile($event, 'bottle')">
                                     </div><br>
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('bottle')"
-                                        *ngIf='bottleFile'>>></button>
+                                        *ngIf='bottleFile'>>></button> -->
                                     <img id="id_img1" [src]=itemShown.bottleImage>
                                 </div>
                                 <div class="col-4 stock-bg p-2">
@@ -1572,7 +1577,7 @@
                             <!-- Upload component pictures 2 + 3 -->
                             <div style='padding-left:30px' class="row">
                                 <div class="col-2">
-                                    <div>
+                                    <!-- <div>
                                         <button class="btn btn-success" style="margin-top:10px;position: absolute;"
                                             for="fileee">{{ 'Upload' | translate }}
                                             {{ 'File' | translate }}</button>
@@ -1580,7 +1585,7 @@
                                             id="id_itemImg2" (change)="selectFile($event, 'cap')">
                                     </div><br>
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('cap')"
-                                        *ngIf='capFile'>>></button>
+                                        *ngIf='capFile'>>></button> -->
                                     <img id="id_img2" [src]=itemShown.capImage>
                                 </div>
                                 <div class="col-4 stock-bg p-2">
@@ -1608,7 +1613,7 @@
                                     </table>
                                 </div>
                                 <div class="col-2">
-                                    <div>
+                                    <!-- <div>
                                         <button class="btn btn-success" style="margin-top:10px;position: absolute;"
                                             for="fileee">{{ 'Upload' | translate }}
                                             {{ 'File' | translate }}</button>
@@ -1616,7 +1621,7 @@
                                             id="id_itemImg1" (change)="selectFile($event, 'pump')">
                                     </div><br>
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('pump')"
-                                        *ngIf='pumpFile'>>></button>
+                                        *ngIf='pumpFile'>>></button> -->
                                     <img id="id_img3" [src]=itemShown.pumpImage>
                                 </div>
                                 <div class="col-4 stock-bg p-2">
@@ -1681,7 +1686,7 @@
                             <div style='padding-left:30px' class="row">
 
                                 <div class="col-2">
-                                    <div>
+                                    <!-- <div>
                                         <button class="btn btn-success" style="margin-top:10px;position: absolute;"
                                             for="fileee">{{ 'Upload' | translate }}
                                             {{ 'File' | translate }}</button>
@@ -1689,7 +1694,7 @@
                                             id="id_itemImg1" (change)="selectFile($event, 'extra1')">
                                     </div><br>
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('extra1')"
-                                        *ngIf='extra1File'>>></button>
+                                        *ngIf='extra1File'>>></button> -->
                                     <img id="id_img6" [src]=itemShown.extraImage1>
                                 </div>
                                 <div class="col-4 stock-bg p-2">
@@ -1718,7 +1723,7 @@
                                 </div>
 
                                 <div class="col-6">
-                                    <div>
+                                    <!-- <div>
                                         <button class="btn btn-success" style="margin-top:10px;position: absolute;"
                                             for="fileee">{{ 'Upload' | translate }}
                                             {{ 'File' | translate }}</button>
@@ -1726,7 +1731,7 @@
                                             id="id_itemImg1" (change)="selectFile($event, 'extra2')">
                                     </div><br>
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('extra2')"
-                                        *ngIf='extra2File'>>></button>
+                                        *ngIf='extra2File'>>></button> -->
                                     <img id="id_img7" [src]=itemShown.extraImage2>
                                 </div>
 
@@ -1788,7 +1793,8 @@
                                     </div>
                                     <div style="display: inline-table;">
                                         <input type="text" [(ngModel)]="itemShown.stickerNumber" class="form-control">
-                                        <input type="number" class="small-input" placeholder="v." disabled [(ngModel)]="itemShown.stickerVersion">
+                                        <input type="number" class="small-input" placeholder="v." disabled
+                                            [(ngModel)]="itemShown.stickerVersion">
                                         <br>
                                         <img class="w-50 imageClass" [src]="itemShown.stickerImage" alt="Sticker">
                                     </div>
@@ -1810,7 +1816,8 @@
                                 </div>
                                 <div class="col-2 d-flex">
                                     <input type="text" [(ngModel)]="itemShown.stickerNumber" class="form-control">
-                                    <input type="number" style="height: 35px" disabled placeholder="v." [(ngModel)]=itemShown.stickerVersion class="small-input">
+                                    <input type="number" style="height: 35px" disabled placeholder="v."
+                                        [(ngModel)]=itemShown.stickerVersion class="small-input">
                                 </div>
                                 <div class="col-2">
                                     <img class="w-50 imageClass" [src]="itemShown.stickerImage" alt="Sticker">
@@ -1824,7 +1831,8 @@
                                 </div>
                                 <div class="col-2 d-flex">
                                     <input [(ngModel)]="itemShown.boxNumber" type="text" class="form-control">
-                                    <input type="number" class="small-input" style="height: 35px" placeholder="v." disabled [(ngModel)]="itemShown.boxVersion">
+                                    <input type="number" class="small-input" style="height: 35px" placeholder="v."
+                                        disabled [(ngModel)]="itemShown.boxVersion">
                                 </div>
                                 <div class="col-2">
                                     <img class="w-50 imageClass" [src]="itemShown.boxImage" alt="Box">
