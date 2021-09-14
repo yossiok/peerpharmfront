@@ -26,6 +26,7 @@ export class InvArrivalsComponent implements OnInit {
   certificateReception: number;
   allArrivals: any[] = []
   today = new Date()
+  pallets: number
   sending: boolean = false
   disabled: boolean = false
   noItem: boolean = true
