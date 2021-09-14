@@ -94,6 +94,10 @@
                     <option value="5">5</option>
                 </select>
             </div>
+            <div class="col-2">
+                <label>כמות במשטח</label>
+                <input type="number" [(ngModel)]="amountPerPallet" class="form-control">
+            </div>
         </div>
     </form>
 
@@ -228,5 +232,5 @@
 </div>
 
 <app-inventory-sticker *ngIf="printSticker" [items]="allArrivals" [numPallets]="pallets"
-    [certificateNum]="certificateReception">
+    [certificateNum]="certificateReception" [amountPerPallet]="amountPerPallet">
 </app-inventory-sticker>

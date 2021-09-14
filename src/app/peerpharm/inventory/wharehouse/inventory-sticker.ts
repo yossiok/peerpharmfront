@@ -16,6 +16,9 @@ import { AuthService } from 'src/app/services/auth.service';
                 <td><strong>מספר משטחים:</strong> {{numPallets}}</td>
             </tr>
             <tr>
+                <td><strong>כמות במשטח:</strong> {{amountPerPallet}}</td>
+            </tr>
+            <tr>
                 <td>{{userName}} <strong>:מקבל</strong></td>
             </tr>
             <tr>
@@ -41,7 +44,7 @@ import { AuthService } from 'src/app/services/auth.service';
             </tr>
             <tr>
                 <td>
-                    <ngx-barcode [bc-value]="item.item" [bc-display-value]="true"></ngx-barcode>
+                    <ngx-barcode [bc-value]="140" [bc-display-value]="true"></ngx-barcode>
                 </td>
             </tr>
         </table>
@@ -55,6 +58,7 @@ export class InventoryStickerComponent implements OnInit {
     @ViewChild('printbtn') printbtn: ElementRef
     @Input() items: Array<any>
     @Input() numPallets: number
+    @Input() amountPerPallet: number
     @Input() certificateNum: number
 
     userName: string

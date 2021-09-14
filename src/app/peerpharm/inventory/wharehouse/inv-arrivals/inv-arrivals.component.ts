@@ -27,6 +27,7 @@ export class InvArrivalsComponent implements OnInit {
   allArrivals: any[] = []
   today = new Date()
   pallets: number
+  amountPerPallet: number
   sending: boolean = false
   disabled: boolean = false
   noItem: boolean = true
