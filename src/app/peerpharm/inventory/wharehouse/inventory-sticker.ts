@@ -10,34 +10,34 @@ import { AuthService } from 'src/app/services/auth.service';
         <table *ngFor="let item of items" style="text-align: center;" class="barcodeTbl" dir="ltr" [style.margin.px]="3" [style.width.px]="400"
         [style.max-height.px]="400" [style.font-size.px]="24" [style.border.px]="0">
             <tr>
-                <td>כמות סה"כ: {{item.amount}}</td>
+                <td><strong>כמות סה"כ:</strong> {{item.amount}}</td>
             </tr>
             <tr>
-                <td>מספר משטחים: {{numPallets}}</td>
+                <td><strong>מספר משטחים:</strong> {{numPallets}}</td>
             </tr>
             <tr>
-                <td>מקבל: {{userName}}</td>
+                <td>{{userName}} <strong>:מקבל</strong></td>
             </tr>
             <tr>
                 <td><h1>פאר פארם בע"מ</h1></td>
             </tr>
             <tr>
-                <td>תאריך: {{date}}</td>
+                <td>{{date | date: 'medium'}} <strong>:תאריך</strong></td>
             </tr>
             <tr>
-                <td>מס' הזמנת רכש: {{item.purchaseOrder}}</td>
+                <td>{{item.purchaseOrder}} <strong>:מס' הזמנת רכש</strong></td>
             </tr>
             <tr>
-                <td>ספק: {{item.supplier}}</td>
+                <td><strong>:ספק</strong><br>{{item.supplier}}</td>
             </tr>
             <tr>
-                <td>מס' תעודת קליטה: {{item.certificateNum}}</td>
+                <td><strong>מס' תעודת קליטה:</strong> {{certificateNum}}</td>
             </tr>
             <tr>
-                <td>מק"ט: {{item.item}}</td>
+                <td><strong>מק"ט:</strong> {{item.item}}</td>
             </tr>
             <tr>
-                <td>תיאור: {{item.itemName}}</td>
+                <td><strong>:תיאור</strong> <br> {{item.itemName}}</td>
             </tr>
             <tr>
                 <td>
@@ -66,7 +66,7 @@ export class InventoryStickerComponent implements OnInit {
         console.log('items: ', this.items)
         this.userName = this.authService.loggedInUser.userName
         setTimeout(() => {
-            // debugger
+            debugger
             this.printbtn.nativeElement.click()
         }, 500)
     }

@@ -191,9 +191,12 @@ export class InvArrivalsComponent implements OnInit {
           this.componentArrival.controls.isNewItemShell.setValue(false)
           this.componentArrival.controls.itemType.setValue('component')
           setTimeout(() => {
+            if (confirm('להדפיס מדבקות?')) this.printSticker = true
             this.printBtn2.nativeElement.click()
-            this.printSticker = true
-            setTimeout(() => this.allArrivals = [], 1000)
+            setTimeout(() => {
+              this.allArrivals = []
+              this.printSticker = false
+            }, 1000)
           }, 500)
         }
       }
