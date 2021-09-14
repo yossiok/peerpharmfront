@@ -29,6 +29,7 @@ export class InvArrivalsComponent implements OnInit {
   sending: boolean = false
   disabled: boolean = false
   noItem: boolean = true
+  printSticker: boolean = false
 
   componentArrival: FormGroup = new FormGroup({
     itemType: new FormControl('component', Validators.required),
@@ -190,8 +191,12 @@ export class InvArrivalsComponent implements OnInit {
           this.componentArrival.controls.isNewItemShell.setValue(false)
           this.componentArrival.controls.itemType.setValue('component')
           setTimeout(() => {
+            if (confirm('להדפיס מדבקות?')) this.printSticker = true
             this.printBtn2.nativeElement.click()
-            setTimeout(() => this.allArrivals = [], 1000)
+            setTimeout(() => {
+              this.allArrivals = []
+              this.printSticker = false
+            }, 1000)
           }, 500)
         }
       }
