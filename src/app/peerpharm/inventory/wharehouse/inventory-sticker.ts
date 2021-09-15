@@ -44,7 +44,7 @@ import { AuthService } from 'src/app/services/auth.service';
             </tr>
             <tr>
                 <td>
-                    <ngx-barcode [bc-value]="140" [bc-display-value]="true"></ngx-barcode>
+                    <ngx-barcode [bc-value]="barcodeK" [bc-display-value]="true"></ngx-barcode>
                 </td>
             </tr>
         </table>
@@ -62,6 +62,7 @@ export class InventoryStickerComponent implements OnInit {
     @Input() certificateNum: number
 
     userName: string
+    barcodeK: string = '178327'
     date: Date = new Date()
 
     constructor(private authService: AuthService) { }
