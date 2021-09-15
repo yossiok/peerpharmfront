@@ -393,55 +393,67 @@
   </div>
 
   <!--General Details Material-->
-  <div *ngIf="item.itemType=='material'" class="container float-right p-2 modal-inner">
+  <div dir="ltr" *ngIf="item.itemType=='material'" class="w-50 float-right modal-inner">
     <h1 class="mt-4 text-info text-center">פרטים כלליים</h1>
-    <div class="row text-center">
-      <div class="col-2"><label class="form-control">Item Number</label></div>
-      <div class="col-2">
+    <div class="row mt-4 d-flex flex-row justify-content-around">
+      <div>
+        <label>Item</label>
         <input class="form-control" (change)="checkIfExist($event)" [disabled]="!new" [value]="item.componentN">
       </div>
-      <div class="col-2"><label class="form-control">Item Name</label></div>
-      <div class="col-2">
+      <div>
+        <label>Type</label>
+        <select disabled class="form-control" [(ngModel)]="item.itemType">
+          <option value="component">component</option>
+          <option value="material">material</option>
+          <option value="product">product</option>
+        </select>
+      </div>
+      <div>
+        <label>Name</label>
         <input class="form-control" (change)="checkIfExist($event)" [(ngModel)]="item.componentName">
       </div>
-
-      <div class="col-2"><label class="form-control">Last Price (NIS)</label></div>
-      <div class="col-2">
+      <div>
+        <label>Last Price (NIS)</label>
         <input type="number" class="form-control" disabled [(ngModel)]="item.price">
       </div>
-    </div>
-    <div class="row">
-      <div class="col-3">
-        <label class="form-control">Supplier Item Number</label>
-      </div>
-      <div class="col-2">
+      <div>
+        <label>Supplier Item Number</label>
         <input class="form-control" [(ngModel)]="item.componentNs">
       </div>
     </div>
-    <div dir="rtl" class="row text-center">
-      <div class="col-1"></div>
-      <div class="col-2">
-        <label class="form-control">INCI Name</label>
-        <label class="form-control">Month Till Exp</label>
-        <label class="form-control">CAS Number</label>
-        <label class="form-control">Function</label>
-        <label class="form-control">מצב צבירה</label>
-        <label style="font-size:13px" class="form-control">חומרים מסוכנים בפירוק</label>
-      </div>
-      <div class="col-3">
+    <div class="row mt-4 d-flex flex-row justify-content-around">
+      <div>
+        <label>INCI Name</label>
         <input class="form-control" (change)="checkIfInciNameExist($event)" [(ngModel)]="item.inciName" type='text'>
+      </div>
+      <div>
+        <label>Month Till Exp</label>
         <input class="form-control" [(ngModel)]="item.monthTillExp" type="number" />
+      </div>
+      <div>
+        <label>CAS Number</label>
         <input class="form-control" [(ngModel)]="item.casNumber" type='text'>
+      </div>
+      <div>
+        <label>Function</label>
         <input class="form-control" [(ngModel)]="item.function" type='text'>
+      </div>
+      <div>
+        <label>מצב צבירה</label>
         <input list="som" class="form-control" [(ngModel)]="item.stateOfMatter" type='text'>
         <datalist id="som">
           <option value="liquid">Liquid</option>
           <option value="solid">Solid</option>
           <option value="gell">Gell</option>
         </datalist>
-        <input class="form-control" [(ngModel)]="item.dangerMaterials" type='text'>
       </div>
-      <div style="height:210px;overflow-y: scroll;" class="col-5">
+    </div>
+    <div dir="rtl" class="row mt-4 ">
+      <div class="col-3">
+        <h3 class="text-danger">חומרים מסוכנים בפירוק</h3>
+        <textarea [(ngModel)]="item.dangerMaterials" cols="30" rows="4"></textarea>
+      </div>
+      <div style="height:210px;overflow-y: scroll;" class="col-9">
         <h4>הרכב</h4>
         <table style="font-size: 15px;">
           <tbody>
@@ -479,54 +491,56 @@
         <button *ngIf="compEdit != -1" class="btn btn-info" (click)="toastSrv.info('יש לשמור שינויים לפריט')"
           (click)="compEdit = -1">Save</button>
       </div>
-      <div class="col-1">
-        <input placeholder="%" [(ngModel)]="compositionPercentage" class="form-control">
+    </div>
+    <div dir="rtl" class="row mt-4 d-flex flex-row justify-content-around">
+      <div>
+        <h4>משפטי סיכון</h4>
+        <textarea [(ngModel)]="item.riskSentence" cols="30" rows="4"></textarea>
+      </div>
+      <div class="text-center d-flex flex-column">
+        <label>COA Master</label>
+        <div>
+          <button class="btn btn-info" ngbTooltip="Upload COA Master" (click)="coaMasterInput.click()"><i
+              class="fa fa-upload" aria-hidden="true"></i></button>
+        </div>
+        <div>
+          <a [ngbTooltip]="item.coaMaster ? 'Download COA Master' : 'No COA Master. Upload one.'"
+            [href]="item.coaMaster">
+            <img style="height: 45px; width:45px;" src="../../../../assets/images/pdf.png" alt="PDF" />
+          </a>
+          <input class="form-control" #coaMasterInput style="display:none" type="file"
+            (change)="uploadCoaMaster($event)">
+        </div>
+      </div>
+      <div class="text-center d-flex flex-column">
+        <label>MSDS</label>
+        <div>
+          <button class="btn btn-info" ngbTooltip="Upload MSDS" (click)="msdsInput.click()"><i class="fa fa-upload"
+              aria-hidden="true"></i></button>
+        </div>
+        <div>
+          <a [ngbTooltip]="item.msds ? 'Download MSDS' : 'No MSDS. Upload one.'" [href]="item.msds" class="mt-2">
+            <img style="height: 45px; width:45px;" src="../../../../assets/images/pdf.png" alt="PDF" />
+          </a>
+          <input class="form-control" #msdsInput style="display:none" type="file" (change)="uploadMsds($event)">
+        </div>
+      </div>
+      <div dir="ltr">
+        <h4>Formule Remarks</h4>
+        <textarea [(ngModel)]="item.remarks" cols="30" rows="4"></textarea>
       </div>
     </div>
-    <div class="row">
-      <div class="col-10">
-        <input class="form-control" [(ngModel)]="item.riskSentence" type='text'>
+    <div dir="rtl" class="p-3 row mt-4 d-flex flex-row justify-content-around float-right w-50 border border-dark">
+      <div class="d-flex flex-row justify-content-around">
+        <div>
+          <input type="checkbox" class="problematic" [disabled]="!allowedProblematicEdit"
+            [(ngModel)]="item.isProblematic" [ngModelOptions]="{standalone: true}">
+        </div>
+        <label>חומר בעייתי?</label>
       </div>
-      <div class="col-2">
-        <label class="form-control">משפטי סיכון</label>
-      </div>
-    </div>
-    <div class="row mt-3">
-      <div class="col-2">
-        <label class="form-control m-2">COA Master</label>
-        <label class="form-control m-2">MSDS</label>
-      </div>
-      <div class="col-2">
-        <button class="btn btn-info form-control m-2" ngbTooltip="Upload COA Master" (click)="coaMasterInput.click()"><i
-            class="fa fa-upload" aria-hidden="true"></i></button>
-        <button class="btn btn-info form-control m-2" ngbTooltip="Upload MSDS" (click)="msdsInput.click()"><i
-            class="fa fa-upload" aria-hidden="true"></i></button>
-      </div>
-      <div class="col-1">
-        <a [ngbTooltip]="item.coaMaster ? 'Download COA Master' : 'No COA Master. Upload one.'" [href]="item.coaMaster">
-          <img style="height: 30px; width:30px; margin-top: 5px" src="../../../../assets/images/pdf.png" alt="PDF" />
-        </a>
-        <input class="form-control" #coaMasterInput style="display:none" type="file" (change)="uploadCoaMaster($event)">
-        <br>
-        <a [ngbTooltip]="item.msds ? 'Download MSDS' : 'No MSDS. Upload one.'" [href]="item.msds" class="mt-2">
-          <img style="height: 30px; width:30px; margin-top: 25px" src="../../../../assets/images/pdf.png" alt="PDF" />
-        </a>
-        <input class="form-control" #msdsInput style="display:none" type="file" (change)="uploadMsds($event)">
-      </div>
-      <div class="col-2">
-        <label class="form-control">Formule Remark</label>
-      </div>
-      <div class="col-3">
-        <input type="text" [(ngModel)]="item.remarks" class="form-control">
-      </div>
-    </div>
-    <div dir="rtl" class="row mt-4">
-      <div class="col-3">
-        <input type="checkbox" class="problematic" [disabled]="!allowedProblematicEdit" [(ngModel)]="item.isProblematic"
-          [ngModelOptions]="{standalone: true}">
-        <label class="mt-4"> חומר בעייתי?</label>
-        <h5 class="mt-2">בעייתיות:</h5>
-        <select class="form-control" [(ngModel)]="item.problem">
+      <div>
+        <label>בעייתיות:</label>
+        <select [disabled]="!item.isProblematic" class="form-control" [(ngModel)]="item.problem">
           <option value="פג תוקף קצר">פג תוקף קצר</option>
           <option value="פריט ייבוא / זמן אספקה">פריט ייבוא / זמן אספקה</option>
           <option value="כמויות מינימום">כמויות מינימום</option>
