@@ -99,6 +99,7 @@ export class ItemIndexComponent implements OnInit {
   @ViewChild('itemNumber') itemNumber: ElementRef
 
   item: any;
+  newItemNumber: number;
   itemNames: any[]
   items: any[]
   itemMovements: any[];

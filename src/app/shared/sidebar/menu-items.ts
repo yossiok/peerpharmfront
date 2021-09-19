@@ -97,7 +97,7 @@ export const ROUTES: RouteInfo[] = [
     submenu: [
       {
         path: '/peerpharm/items/itemslist',
-        title: 'Item List',
+        title: 'All Products',
         icon: 'fas fa-list-ol',
         class: '',
         extralink: false,
@@ -105,7 +105,7 @@ export const ROUTES: RouteInfo[] = [
       },
       {
         path: '/peerpharm/items/itemDetails',
-        title: 'Item Tree',
+        title: 'Product Tree',
         icon: 'fas fa-tree',
         class: '',
         extralink: false,

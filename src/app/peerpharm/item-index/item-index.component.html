@@ -1165,21 +1165,25 @@
 
 <ng-template #itemType let-modal>
   <div dir="rtl" class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">איזה פריט להקים?</h4>
+    <h4 class="modal-title" id="modal-basic-title">הזן מספר פריט</h4>
+    <input type="number" class="form-control" [(ngModel)]="newItemNumber">
     <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div dir="rtl" class=" modal-body">
-    <div class=" row mt-2">
+    <div class="row mt-4">
+      <h4>בחר את סוג הפריט.</h4>
+    </div>
+    <div class="row mt-2">
       <div class="col-3">
-        <button class="btn btn-warning"></button>
+        <button (click)="" class="btn btn-primary">קומפוננט</button>
       </div>
       <div class="col-3">
-        <button class="btn btn-warning"></button>
+        <button (click)="" class="btn btn-warning">חומר גלם</button>
       </div>
       <div class="col-3">
-        <button class="btn btn-warning"></button>
+        <button (click)="" class="btn btn-success">מוצר מוגמר</button>
       </div>
     </div>
   </div>
