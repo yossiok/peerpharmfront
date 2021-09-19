@@ -76,7 +76,8 @@ export class WharehouseComponent implements OnInit {
 
   private container: ElementRef;
   mainDivArr: any = [];
-  whareHouses: any = [];
+  whareHouses: any = []; // user allowed whs
+  allWhareHouses: any = []; // all whs
   whareHouseId: string = ""; //wharehouse id for shelf update
   curentWhareHouseId: string = ""; //wharehouse id for qty update
   curentWhareHouseName: string = ""; //wharehouse id to show
@@ -122,6 +123,13 @@ export class WharehouseComponent implements OnInit {
     // let todayStr=moment(this.today).format("YYYY-MM-DD");
     // this.itemLine.controls.arrivalDate.setValue(todayStr);
     this.getUserWhs();
+    this.getAllWhs();
+  }
+
+  getAllWhs() {
+    this.inventoryService
+      .getWhareHousesList()
+      .subscribe((whs) => (this.allWhareHouses = whs));
   }
 
   getUserWhs() {
@@ -638,7 +646,7 @@ export class WharehouseComponent implements OnInit {
 
     // multiLineQntInput
     if (this.multiInputLines) {
-      itemLineToAdd.amount = itemLineToAdd.qnt;
+      itemLineToAdd.amount = itemLineToAdd.requsetedQnt;
       currItemShelfs = itemLineToAdd.currItemShelfs;
     } else {
       currItemShelfs = this.currItemShelfs;

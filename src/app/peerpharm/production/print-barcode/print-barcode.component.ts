@@ -22,6 +22,10 @@ import { ItemsService } from 'src/app/services/items.service';
             <input [(ngModel)]="itemName" type="text">
         </div>
         <div class="form-group ml-1">
+            <label>Sub Name</label> <br>
+            <input [(ngModel)]="itemSubName" type="text">
+        </div>
+        <div class="form-group ml-1">
             <label>Description</label> <br>
             <input [(ngModel)]="itemDesc" type="text">
         </div>
@@ -79,13 +83,16 @@ import { ItemsService } from 'src/app/services/items.service';
                 <td>{{itemName}}</td>
             </tr>
             <tr>
+                <td>{{itemSubName}}</td>
+            </tr>
+            <tr>
                 <td>{{itemDesc}}</td>
             </tr>
             <tr>
                 <td>Item Number: {{itemNumber}}</td>
             </tr>
             <tr>
-                <td>{{volumeK}} {{pcsCarton}}</td>
+                <td><span *ngIf="volumeK">{{volumeK}}</span> {{pcsCarton}}</td>
             </tr>
             <tr>
                 <td>{{batch}} <label *ngIf="printExpiration">Exp: {{expireDate}}</label></td>
@@ -110,6 +117,7 @@ export class PrintBarcodeComponent {
     batch: string = "---"
     customerName: string
     itemName: string
+    itemSubName: string
     itemDesc: string
     pcsCarton: string
     barcodeK: string
@@ -139,27 +147,25 @@ export class PrintBarcodeComponent {
         this.itemService.getItemData(this.itemNumber).subscribe(data => {
             if (data.length > 0) {
                 this.itemName = data[0].name
+                this.itemSubName = data[0].subName
                 this.itemDesc = data[0].discriptionK
                 this.pcsCarton = data[0].PcsCarton.replace(/\D/g, "") + " Pcs"
                 this.barcodeK = data[0].barcodeK;
-                this.volumeK = data[0].volumeKey + ' ml';
+                this.volumeK = data[0].volumeKey ? data[0].volumeKey + ' ml' : null;
                 this.netoW = data[0].netWeightK;
                 this.grossW = data[0].grossUnitWeightK;
-            
             }
             else this.toastr.error('Item Not Found.')
         })
-
-
     }
 
     printBarCode() {
-        if(this.batch != '---') {
-            if(this.mkp) {
+        if (this.batch != '---') {
+            if (this.mkp) {
                 this.batchService.getMkpBatchData(this.batch).subscribe(data => {
-                    if(data.length > 0) {
+                    if (data.length > 0) {
                         this.expireDate = data[0].expration.slice(0, 11);
-                        setTimeout(()=>this.printbtn.nativeElement.click(),500)
+                        setTimeout(() => this.printbtn.nativeElement.click(), 500)
                     }
                     else this.toastr.error('Batch Not Found.')
                 })
@@ -167,15 +173,15 @@ export class PrintBarcodeComponent {
             else {
 
                 this.batchService.getBatchData(this.batch).subscribe(data => {
-                    if(data.length > 0) {
+                    if (data.length > 0) {
                         this.expireDate = data[0].expration.slice(0, 11);
-                        setTimeout(()=>this.printbtn.nativeElement.click(),500)
+                        setTimeout(() => this.printbtn.nativeElement.click(), 500)
                     }
                     else this.toastr.error('Batch Not Found.')
                 })
             }
         }
-        else setTimeout(()=>this.printbtn.nativeElement.click(),500)
+        else setTimeout(() => this.printbtn.nativeElement.click(), 500)
     }
 
 }

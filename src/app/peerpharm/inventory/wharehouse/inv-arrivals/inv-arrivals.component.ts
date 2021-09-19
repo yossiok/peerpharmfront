@@ -16,6 +16,7 @@ export class InvArrivalsComponent implements OnInit {
   @ViewChild('printBtn2') printBtn2: ElementRef
   @ViewChild('first') first: ElementRef
   @Input() allWhareHouses: any[];
+  @Input() reallyAllWhareHouses: any[];
   @Input() itemNumber: number;
 
   itemNames: any[];
@@ -25,9 +26,11 @@ export class InvArrivalsComponent implements OnInit {
   certificateReception: number;
   allArrivals: any[] = []
   today = new Date()
+  pallets: number
   sending: boolean = false
   disabled: boolean = false
   noItem: boolean = true
+  printSticker: boolean = false
 
   componentArrival: FormGroup = new FormGroup({
     itemType: new FormControl('component', Validators.required),
@@ -38,8 +41,8 @@ export class InvArrivalsComponent implements OnInit {
     whareHouseID: new FormControl(null, Validators.required),
     whareHouse: new FormControl(''),
     isNewItemShell: new FormControl(false, Validators.required),
-    supplier: new FormControl('', Validators.required),
-    purchaseOrder: new FormControl(null, Validators.required),
+    supplier: new FormControl(''),
+    purchaseOrder: new FormControl(null),
 
   })
 
@@ -189,8 +192,12 @@ export class InvArrivalsComponent implements OnInit {
           this.componentArrival.controls.isNewItemShell.setValue(false)
           this.componentArrival.controls.itemType.setValue('component')
           setTimeout(() => {
+            if (confirm('להדפיס מדבקות?')) this.printSticker = true
             this.printBtn2.nativeElement.click()
-            setTimeout(() => this.allArrivals = [], 1000)
+            setTimeout(() => {
+              this.allArrivals = []
+              this.printSticker = false
+            }, 1000)
           }, 500)
         }
       }

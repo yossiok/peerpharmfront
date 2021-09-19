@@ -64,7 +64,7 @@
                 <input list="suppliers" (change)="getPurchaseOrders($event)" class="form-control"
                     formControlName="supplier">
                 <datalist id="suppliers">
-                    <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">
+                    <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
                         {{supplier.suplierNumber}} - {{supplier.suplierName}}
                     </option>
                 </datalist>
@@ -82,6 +82,16 @@
                     <option *ngFor="let purchase of purchaseOrders" [value]="purchase.orderNumber">
                         {{purchase.orderNumber}}
                     </option>
+                </select>
+            </div>
+            <div class="col-2">
+                <label>מס' משטחים</label>
+                <select [(ngModel)]="pallets" class="form-control">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
                 </select>
             </div>
         </div>
@@ -216,3 +226,7 @@
     </div>
 
 </div>
+
+<app-inventory-sticker *ngIf="printSticker" [items]="allArrivals" [numPallets]="pallets"
+    [certificateNum]="certificateReception">
+</app-inventory-sticker>

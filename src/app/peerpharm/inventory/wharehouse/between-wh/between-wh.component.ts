@@ -11,6 +11,7 @@ import { InventoryService } from 'src/app/services/inventory.service';
 export class BetweenWHComponent implements OnInit {
 
   @Input() allWhareHouses;
+  @Input() reallyAllWhareHouses: any[];
   @Input() itemNumber;
   @ViewChild('first') first: ElementRef
 
@@ -97,7 +98,7 @@ export class BetweenWHComponent implements OnInit {
                 // approved - announce new itemShell (chunk) and get all shelfs of destination WH
                 this.movementForm.controls.isNewItemShell.setValue(true)
                 this.getAllShelfsOfDest(WHID)
-                let whName = this.allWhareHouses.find(wh => wh._id == this.movementForm.value.WH_destId).name
+                let whName = this.reallyAllWhareHouses.find(wh => wh._id == this.movementForm.value.WH_destId).name
                 this.movementForm.controls.WH_destName.setValue(whName)
                 this.movementForm.controls.shell_id_in_whareHouse_Dest.setValue(this.destWHShelfs[0].shell_id_in_whareHouse)//stupid bug
                 this.setDestPosition()
@@ -116,7 +117,7 @@ export class BetweenWHComponent implements OnInit {
               this.destWHShelfs = chunks
               this.movementForm.controls.shell_id_in_whareHouse_Dest.setValue(this.destWHShelfs[0].shell_id_in_whareHouse)//stupid bug
               this.setDestPosition()
-              let whName = this.allWhareHouses.find(wh => wh._id == this.movementForm.value.WH_destId).name
+              let whName = this.reallyAllWhareHouses.find(wh => wh._id == this.movementForm.value.WH_destId).name
               this.movementForm.controls.WH_destName.setValue(whName)
             }
           }
@@ -166,6 +167,7 @@ export class BetweenWHComponent implements OnInit {
         this.sending = false
         this.toastr.success('שינויים נשמרו בהצלחה', 'נשמר')
         this.movementForm.reset()
+        this.movementForm.controls.isNewItemShell.setValue(false)
         this.movementForm.controls.itemType.setValue('component')
         this.first.nativeElement.focus()
       }
