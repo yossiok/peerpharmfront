@@ -340,8 +340,7 @@
                         </div>
                       </div>
                       <div class="col-sm-1" style="position: relative;">
-                        <button [attr.data-lineid]="i" type="submit"
-                          (click)="checkLineValidation(itemFromInvReq,i, $event , qnt)"
+                        <button [attr.data-lineid]="i" type="submit" (click)="checkLineValidation(itemFromInvReq)"
                           style="cursor: pointer; position: absolute; bottom: 0px;">
                           <img src="assets/images/add.png" width="30px" style="cursor: pointer;" />
                         </button>
@@ -374,7 +373,10 @@
                 <button class="btn btn-warning" (click)="cleanList()">Reset / אפס</button>&nbsp;&nbsp;
                 <button class="btn btn-info" (click)="sendList()">Submit / שלח שינויים <i
                     class="ti-check m-l-10"></i></button>
-                <button (click)="printCertifAgain()" class="btn btn-success ml-3">Print</button>
+                <button (click)="printCertifAgain()" class="btn btn-success ml-3">Print Shipping Doc. </button>
+                <button (click)="printBeforeChange()" class="btn btn-success ml-3">Print Before Change</button>
+
+
               </div>
 
               <br>
@@ -402,8 +404,8 @@
                         <td>{{reqItem.item}}</td>
                         <td>{{reqItem.itemName}}</td>
                         <td>{{reqItem.position}}</td>
-                        <td>{{reqItem.amount}}</td>
-                        <td *ngIf="dir!='in'">{{reqItem.relatedOrder}}</td>
+                        <td>{{-reqItem.amount}}</td>
+                        <td *ngIf="dir!='in'">{{reqItem.relatedOrderNum}}</td>
                         <td *ngIf="dir=='in'">{{reqItem.arrivalDate}}</td>
                         <td *ngIf="dir=='in'">{{reqItem.deliveryNoteNum}}</td>
                         <td><img src="assets/images/delete.png" (click)="deleteRow(i)" width="30px"
@@ -751,3 +753,64 @@
       '.signatures' : { 'margin' : '50px'},
       '.cellPadding' : { 'padding' : '15px 0px'}
       }" printTitle="תעודת קבלה" printSectionId="print-section2" ngxPrint>print</button>
+
+<!-- print area of the print before shipment items -->
+
+
+<button style="display:none" #printBtn3 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl'}, 
+header : {'border-bottom': 'solid 1px'},
+table :{ 'text-align': 'right','border-collapse':'collapse'},
+h2 : {'text-align': 'center', 'margin-bottom': '20px'},
+th : {'border':'1px solid black','padding':'5px','overflow-wrap':'normal'},
+td : {'border':'1px solid black','padding':'5px' },
+'.itemNamePrint' : {'width': '30%'},'.remarks':{'width':'20%'},'.max_width':{'width':'10%'}}"
+  printTitle="מלאי להוצאה מהמחסן" printSectionId="print-before-shipment" ngxPrint
+  class="btn btn-secondary ml-3"></button>
+
+
+
+
+<div id="print-before-shipment" style="direction: rtl; text-align: right; display: none; ">
+  <header>
+    <h1>העברת סחורה לייצור</h1>
+    <h2>{{curentWhareHouseName}} warehouse</h2>
+  </header>
+  <table>
+    <thead>
+
+      <tr>
+        <th>#</th>
+        <th>מס' פריט</th>
+        <th>שם פריט</th>
+        <th>מדף</th>
+        <th>כמות</th>
+        <th class="max_width">מס' בקשת מלאי</th>
+        <th>מס' הזמנה</th>
+        <th>הערות</th>
+
+      </tr>
+
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let reqItem of multiLinesArr; let i =index">
+        <tr>
+          <td class="cellPadding">{{i+1}}</td>
+          <td>{{reqItem.itemNumber}}</td>
+          <td class='itemNamePrint'>{{reqItem.itemName}}</td>
+          <td>{{reqItem.position}}</td>
+          <td>{{reqItem.amount}}</td>
+          <td>{{reqItem.reqNum}}</td>
+          <td>{{reqItem.relatedOrder}}</td>
+          <td class="remarks">{{reqItem.remarks}}</td>
+        </tr>
+      </ng-container>
+
+    </tbody>
+  </table>
+
+
+
+
+
+
+</div>

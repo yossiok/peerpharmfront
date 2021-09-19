@@ -324,7 +324,7 @@
               <div class="col-sm-6">
                 <label for="materialName">שם הפריט</label>
                 <input type="text" class="form-control is-valid" placeholder="item name" formControlName="materialName"
-                  name='materialName' required disabled>
+                  name='materialName' required>
               </div>
 
             </div>
@@ -375,7 +375,8 @@
             <div class="form-row w-100 flex-row-reverse">
               <div class="col-sm-4">
                 <label>מספר הזמנת רכש</label>
-                <select placeholder="Purchase Order Number" class="form-control is-valid" formControlName="cmxOrderN" name='cmxOrderN'>
+                <select placeholder="Purchase Order Number" class="form-control is-valid" formControlName="cmxOrderN"
+                  name='cmxOrderN'>
                   <option value="999">אחר</option>
                   <option *ngFor="let order of lastOrders" [value]="order.orderNumber">{{order.orderNumber}}</option>
                 </select>
@@ -474,8 +475,10 @@
 
             <div class="form-row w-100 d-flex justify-content-around">
               <div class="col-sm-4">
-                <button [disabled]="submittingForm" [style.cursor]="submittingForm ? 'not-allowed' : 'pointer'" (click)="submitForm()" class="btn btn-success">אישור</button>
-                <button [disabled]="submittingForm" [style.cursor]="submittingForm ? 'not-allowed' : 'pointer'" (click)="resetForm()" class="btn btn-danger">איפוס</button>
+                <button [disabled]="submittingForm" [style.cursor]="submittingForm ? 'not-allowed' : 'pointer'"
+                  (click)="submitForm()" class="btn btn-success">אישור</button>
+                <button [disabled]="submittingForm" [style.cursor]="submittingForm ? 'not-allowed' : 'pointer'"
+                  (click)="resetForm()" class="btn btn-danger">איפוס</button>
               </div>
             </div>
 
@@ -605,12 +608,12 @@
       <tr>
         <td id='barcode'>
           <ngx-barcode [bc-element-type]="elementType" [bc-value]="bcValue" [bc-format]="format"
-          [bc-line-color]="lineColor" [bc-width]="width" [bc-height]="height" [bc-display-value]="displayValue"
-          [bc-font-options]="fontOptions" [bc-font]="font" [bc-text-align]="textAlign"
-          [bc-text-position]="textPosition" [bc-text-margin]="textMargin" [bc-font-size]="fontSize"
-          [bc-background]="background" [bc-margin]="margin" [bc-margin-top]="marginTop"
-          [bc-margin-bottom]="marginBottom" [bc-margin-left]="marginLeft" [bc-margin-right]="marginRight">
-        </ngx-barcode>
+            [bc-line-color]="lineColor" [bc-width]="width" [bc-height]="height" [bc-display-value]="displayValue"
+            [bc-font-options]="fontOptions" [bc-font]="font" [bc-text-align]="textAlign"
+            [bc-text-position]="textPosition" [bc-text-margin]="textMargin" [bc-font-size]="fontSize"
+            [bc-background]="background" [bc-margin]="margin" [bc-margin-top]="marginTop"
+            [bc-margin-bottom]="marginBottom" [bc-margin-left]="marginLeft" [bc-margin-right]="marginRight">
+          </ngx-barcode>
         </td>
       </tr>
       <tr>
@@ -765,7 +768,7 @@
       <button (click)="open(editCertificateModal)" class="btn btn-warning">עריכה</button>
     </div>
     <div>
-      <button (click)="saveCertif()"  class="btn btn-success">הדפסה</button>
+      <button (click)="saveCertif()" class="btn btn-success">הדפסה</button>
       <button [style.display]="'none'" #printBtn2 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl', 'padding-right': '20px'}, 
       header : {'border-bottom': 'solid 1px'},
       main : {'border-bottom': 'solid 1px' },
@@ -779,10 +782,10 @@
       '.signatures' : { 'margin' : '50px'},
       '.cellPadding' : { 'padding' : '15px 0px'}
     }" printTitle="תעודת קבלה" printSectionId="print-section2" ngxPrint>
-  </button>
-</div>
-  
-</div>
+      </button>
+    </div>
+
+  </div>
 </div>
 
 
