@@ -47,7 +47,7 @@ const defaultMaterial = {
   img: "",
   minimumStock: "",
   packageWeight: "",
-  itemType: "",
+  itemType: "material",
   barcode: "",
   actualMlCapacity: "",
   unitOfMeasure: "",
@@ -99,7 +99,7 @@ export class ItemIndexComponent implements OnInit {
   @ViewChild('itemNumber') itemNumber: ElementRef
 
   item: any;
-  newItemNumber: number;
+  newItem: any = { componentN: null }
   itemNames: any[]
   items: any[]
   itemMovements: any[];
@@ -241,6 +241,7 @@ export class ItemIndexComponent implements OnInit {
   open(modal) {
     this.modalService.open(modal)
   }
+
 
   setColors(title) {
     switch (title) {
@@ -393,16 +394,17 @@ export class ItemIndexComponent implements OnInit {
   }
 
   writeNewComponent() {
-    if (this.item.componentN != "") {
-      // this.item.itemType = this.stockType;
-      console.log(this.item);
-      this.inventoryService.addNewCmpt(this.item).subscribe(res => {
+    if (this.newItem.componentN != "") {
+      console.log(this.newItem);
+      this.newItem = { ...defaultCmpt }
+      this.inventoryService.addNewCmpt(this.newItem).subscribe(res => {
         console.log("res from front: " + res)
         if (res == "itemExist") {
           this.toastSrv.error('פריט קיים במלאי')
         } else if (res.componentN) {
           this.toastSrv.success("New stock item created");
-          this.resetResCmptData();
+          // this.resetResCmptData();
+          this.item = defaultCmpt
         }
       });
     } else {
@@ -411,16 +413,65 @@ export class ItemIndexComponent implements OnInit {
   }
 
   writeNewMaterial() {
-    this.item.itemType = "material"
-    if (this.item.componentN != "") {
+    this.item = { ...defaultMaterial }
+    console.log(this.item.itemType)
+    if (this.newItem.componentN != "") {
+      console.log(this.item.itemType)
+      this.item.componentN = this.newItem.componentN
+      console.log(this.item.itemType)
       this.inventoryService.addNewMaterial(this.item).subscribe(res => {
+        console.log(this.item.itemType)
         if (res == "פריט קיים במערכת !") {
           this.toastSrv.error("פריט קיים במערכת !")
         } else {
           this.toastSrv.success("New material item created");
+          console.log(this.item.itemType)
+          // this.item = res
+        }
+        this.modalService.dismissAll()
+      });
+    }
+    console.log(this.item.itemType)
+  }
+
+
+  resetResCmptData() {
+    this.item = {
+      whoPays: '',
+      payingCustomersList: [],
+      componentN: '',
+      componentName: '',
+      componentNs: '',
+      suplierN: '',
+      suplierName: '',
+      componentType: '',
+      componentCategory: '',
+      img: '',
+      importFrom: '',
+      lastModified: '',
+      minimumStock: '',
+      needPrint: '',
+      packageType: '',
+      packageWeight: '',
+      remarks: '',
+      componentItems: [],
+      input_actualMlCapacity: 0,
+    }
+  }
+
+  editItemDetails() {
+    this.item;
+    if (confirm("לעדכן פריט?")) {
+      this.inventoryService.updateCompt(this.item).subscribe(res => {
+        if (res._id) {
+          // this.getAllMaterialLocations()
+          this.toastSrv.success("פריט עודכן בהצלחה");
+        } else {
+          this.toastSrv.error("עדכון פריט נכשל");
         }
       });
     }
+
   }
 
   uploadCoaMaster(fileInputEvent) {
@@ -471,44 +522,6 @@ export class ItemIndexComponent implements OnInit {
   }
 
 
-  resetResCmptData() {
-    this.item = {
-      whoPays: '',
-      payingCustomersList: [],
-      componentN: '',
-      componentName: '',
-      componentNs: '',
-      suplierN: '',
-      suplierName: '',
-      componentType: '',
-      componentCategory: '',
-      img: '',
-      importFrom: '',
-      lastModified: '',
-      minimumStock: '',
-      needPrint: '',
-      packageType: '',
-      packageWeight: '',
-      remarks: '',
-      componentItems: [],
-      input_actualMlCapacity: 0,
-    }
-  }
-
-  editItemDetails() {
-    this.item;
-    if (confirm("לעדכן פריט?")) {
-      this.inventoryService.updateCompt(this.item).subscribe(res => {
-        if (res._id) {
-          // this.getAllMaterialLocations()
-          this.toastSrv.success("פריט עודכן בהצלחה");
-        } else {
-          this.toastSrv.error("עדכון פריט נכשל");
-        }
-      });
-    }
-
-  }
 
   //pricing
 

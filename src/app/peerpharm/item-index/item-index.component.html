@@ -45,6 +45,10 @@
     <div class="col-1">
       <button type="button" class="btn btn-secondary" (click)="item = undefined">Clear</button>
     </div>
+    <div class="col-4"></div>
+    <div class="col-2">
+      <button type="button" class="btn btn-warning form-control text-dark" (click)="open(itemType)">New Item</button>
+    </div>
 
   </div>
 </form>
@@ -212,7 +216,6 @@
       </button>
     </div>
     <div class="col-3">
-      <button class="btn btn-warning form-control" (click)="open(itemType)">הקם פריט חדש</button>
     </div>
   </div>
 
@@ -398,7 +401,7 @@
     <div class="row mt-4 d-flex flex-row justify-content-around">
       <div>
         <label>Item</label>
-        <input class="form-control" (change)="checkIfExist($event)" [disabled]="!new" [value]="item.componentN">
+        <input class="form-control" disabled [value]="item.componentN">
       </div>
       <div>
         <label>Type</label>
@@ -1166,24 +1169,24 @@
 <ng-template #itemType let-modal>
   <div dir="rtl" class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">הזן מספר פריט</h4>
-    <input type="number" class="form-control" [(ngModel)]="newItemNumber">
+    <input type="number" class="form-control" [(ngModel)]="newItem.componentN">
     <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div dir="rtl" class=" modal-body">
+  <div *ngIf="newItem.componentN && newItem.componentN > 0" dir="rtl" class=" modal-body">
     <div class="row mt-4">
       <h4>בחר את סוג הפריט.</h4>
     </div>
     <div class="row mt-2">
       <div class="col-3">
-        <button (click)="" class="btn btn-primary">קומפוננט</button>
+        <button (click)="writeNewStockItem('component')" class="btn btn-primary">קומפוננט</button>
       </div>
       <div class="col-3">
-        <button (click)="" class="btn btn-warning">חומר גלם</button>
+        <button (click)="writeNewStockItem('material')" class="btn btn-warning">חומר גלם</button>
       </div>
       <div class="col-3">
-        <button (click)="" class="btn btn-success">מוצר מוגמר</button>
+        <button (click)="writeNewStockItem('product')" class="btn btn-success">מוצר מוגמר</button>
       </div>
     </div>
   </div>
