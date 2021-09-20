@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     this.auth.login(loginfrm).subscribe((resp) => {
       if (resp) {
         if (this.redirectUrl && this.redirectUrl != "") {
-          
+
           this.router.navigate([this.redirectUrl]);
         }
         else {
@@ -38,6 +38,9 @@ export class LoginComponent implements OnInit {
       else {
         let snackBarRef = this.snackBar.open('Login failed please try again');
       }
+    }, error => {
+      alert("User details are not correct")
+      console.log(error)
     });
 
   }

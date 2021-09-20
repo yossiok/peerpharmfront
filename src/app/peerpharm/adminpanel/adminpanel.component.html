@@ -1,109 +1,232 @@
-<div class="container text-center bg-white shadow-lg">
+  <div *ngIf="!adminPanelView" class="alert alert-danger">
+    <h3>Sorry, but you don't have the authorization to view this screen. Check with the system administrator </h3>
+  </div>
 
+  <div *ngIf="adminPanelView" class="container text-center bg-white shadow-lg">
     <div class="row mt-4">
-        <div class="col-12">
-            <h1 class="text-info">Admin Panel</h1>
-        </div>
+      <div class="col-12">
+        <h1 class="text-info">Admin Panel</h1>
+      </div>
     </div>
 
-<mat-tab-group mat-align-tabs="center">
-    <mat-tab label="Screens">
+    <mat-tab-group mat-align-tabs="center">
+      <mat-tab label="Screens">
         <div class="row mt-4">
-            <div class="col-12">
-                <h4>Screens Permissions</h4>
-            </div>
+          <div class="col-12">
+            <h4>Screens Permissions</h4>
+          </div>
         </div>
 
         <div class="row mt-4">
-            <div class="col-12">
-                <table class="table table-hover table-striped">
-                    <thead class="text-white bg-info">
-                        <tr>
-                            <th>שם המסך</th>
-                            <th>רמת הרשאה</th>
-                            <th>שמירה</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let screen of routes">
-                            <td>{{screen.name}}</td>
-                            <td *ngIf="EditRowId != screen._id" (click)="edit(screen._id)">{{screen.permission}}</td>
-                            <td *ngIf="EditRowId == screen._id">
-                                <input class="form-control" #screenValue [value]="screen.permission">
-                            </td>
-                            <td><button class="btn btn-info form-control"  (click)="savePermission(screen.name)" ><i class="fa fa-save text-white"></i></button></td>
-                        </tr>
-        
-                    </tbody>
-                </table>
-            </div>
+          <div class="col-12">
+            <table class="table table-hover table-striped">
+              <thead class="text-white bg-info">
+                <tr>
+                  <th>שם המסך</th>
+                  <th>רמת הרשאה</th>
+                  <th>שמירה</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let screen of routes">
+                  <td>{{screen.name}}</td>
+                  <td *ngIf="EditRowId != screen._id" (click)="edit(screen._id)">
+                    {{screen.permission}}
+                  </td>
+                  <td *ngIf="EditRowId == screen._id">
+                    <input class="form-control" #screenValue [value]="screen.permission">
+                  </td>
+                  <td><button class="btn btn-info form-control" (click)="savePermission(screen.name)"><i
+                        class="fa fa-save text-white"></i></button></td>
+                </tr>
+
+              </tbody>
+            </table>
+          </div>
         </div>
-     
-    </mat-tab>
-    <mat-tab label="Users">
+
+      </mat-tab>
+      <mat-tab label="Users">
         <div class="row mt-4">
-            <div class="col-12">
-                <h4>Users Permissions</h4>
-            </div>
+          <div class="col-12">
+            <h4>Users Permissions</h4>
+          </div>
         </div>
 
         <div class="row mt-4">
-            <div class="col-12">
-                <table class="table table-hover table-striped">
-                    <thead class="text-white bg-info">
-                        <tr>
-                            <th>שם פרטי</th>
-                            <th>שם משפחה</th>
-                            <th>מסכים</th>
-                            <th>פעולות</th>
-                            <th>מחסנים</th>
-                            <!-- <th>קביעת הרשאה</th> -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let user of users">
-                            <td>{{user.firstName}}</td>
-                            <td>{{user.lastName}}</td>
-                            <td>{{user.screenPermission}}</td>
-                            <td>
-                                <div *ngIf="user.authorization.length > 0">
-                                     <ul class="list-group">
-                                         <li class="list-group-item" *ngFor="let auth of user.authorization">
-                                             {{auth}}
-                                         </li>
-                                     </ul>   
-                                </div> 
-                                
-                            </td>
-                            <td>
-                                <div *ngIf="user.allowedWH.length > 0">
-                                    <ul class="list-group">
-                                        <li class="list-group-item" *ngFor="let wh of user.allowedWH">
-                                            {{wh}}
-                                        </li>
-                                    </ul>   
-                               </div> 
-                               
-                            </td>
-                            <!-- <td><select (change)="setUserPermissionLvl($event,user._id)" class="form-control">
-                                    <option value="" disabled='disabled' selected='true'>Choose Permission</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select></td> -->
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+          <div class="col-12">
+            <table class="table table-hover table-striped">
+              <thead class="text-white bg-info">
+                <tr>
+                  <th>שם פרטי</th>
+                  <th>שם משפחה</th>
+                  <th>מסכים</th>
+                  <th>פעולות</th>
+                  <th>מחסנים</th>
+                  <th *ngIf="adminPanelAllowed">קביעת הרשאה</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of users">
+                  <td>{{user.firstName}}</td>
+                  <td>{{user.lastName}}</td>
+                  <td>{{user.screenPermission}}</td>
+                  <td>
+                    <div *ngIf="user.authorization.length > 0">
+                      <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let auth of user.authorization">
+                          {{auth}}
+                        </li>
+                      </ul>
+                    </div>
+
+                  </td>
+                  <td>
+                    <div *ngIf="user.allowedWH.length > 0">
+                      <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let wh of user.allowedWH">
+                          {{wh}}
+                        </li>
+                      </ul>
+                    </div>
+
+                  </td>
+                  <td *ngIf="adminPanelAllowed"><select (change)="setUserPermissionLvl($event,user._id)"
+                      class="form-control">
+                      <option value="" disabled='disabled' selected='true'>Choose Permission</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                    </select></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-    
-    </mat-tab>
-  </mat-tab-group>
+      </mat-tab>
+      <mat-tab *ngIf="adminPanelAllowed" label="Passwords">
+        <div class="row mt-4">
+          <div class="col-12">
+            <h4>Users Passwords</h4>
+          </div>
+        </div>
 
+        <div class="row mt-4">
+          <div class="col-12">
+            <form [formGroup]="passForm">
+              <table class="table table-hover table-striped">
+                <thead class="text-white bg-info">
+                  <tr>
+                    <th>No.</th>
+                    <th>שם משתמש</th>
+                    <th>שם פרטי</th>
+                    <th>שם משפחה</th>
+                    <th>תוקף סיסמא</th>
+                    <th>סיסמא חדשה</th>
+                    <th>עדכון</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let user of users; index as id">
+                    <td>{{id+1}}</td>
+                    <td>{{user.userName}}</td>
+                    <td>{{user.firstName}}</td>
+                    <td>{{user.lastName}}</td>
+                    <td>{{user.passExp|date:'dd/MM/YYYY' }}</td>
+                    <td><input class="form-control" formControlName="newpass" type="text" placeholder="סיסמא חדשה"
+                        id="newpass">
+                    </td>
+                    <td><button class="btn btn-primary" (click)="resetPassword(user.userName)"><i
+                          class="fa fa-save text-white"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </form>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab *ngIf="adminPanelAllowed" label="Add User">
+        <div class="row mt-4">
+          <div class="col-12">
+            <h4>הוסף משתמש חדש</h4>
+          </div>
+        </div>
+        <div class="row justify-content-center m-4 p-3">
+          <div class="col-6 border border-primary rounded bg-light">
+            <form [formGroup]="passForm" (ngSubmit)='addNewUser(passForm.value)'>
+              <div dir="rtl" class="form-group">
+                <h2>פרטי המשתמש החדש</h2>
+                <div class="p-2">
+                  <label for="username" class="form-label ml-3">שם משתמש: </label>
+                  <input class="form-control p-2" type="text" name="username" formControlName="username">
+                  <div class="alert alert-danger" *ngIf="username.touched && username.errors?.required">
+                    שדה חובה
+                  </div>
+                  <div *ngIf="username.touched && username.errors?.minlength" class="alert alert-danger">
+                    יש להכניס {{username.errors?.minlength.requiredLength}} תווים לפחות
+                  </div>
+                  <div *ngIf="username.touched && username.errors?.maxlength" class="alert alert-danger">
+                    יש
+                    להכניס עד {{username.errors?.maxlength.requiredLength}} תווים
+                  </div>
+                </div>
+                <div class="p-2">
+                  <label for="password" class="form-label ml-3">סיסמא: </label>
+                  <input class="form-control p-2" type="text" name="password" formControlName="newpass">
+                  <div class="alert alert-danger" *ngIf="newpass.touched && newpass.errors?.required">
+                    שדה חובה
+                  </div>
+                  <div *ngIf="newpass.touched && newpass.errors?.minlength" class="alert alert-danger">יש
+                    להכניס {{newpass.errors?.minlength.requiredLength}} תווים לפחות
+                  </div>
+                  <div *ngIf="newpass.touched && newpass.errors?.maxlength" class="alert alert-danger"> יש
+                    להכניס עד {{newpass.errors?.maxlength.requiredLength}} תווים
+                  </div>
+                </div>
+                <div class="p-2">
+                  <label for="firstname" class="ml-3">שם פרטי: </label>
+                  <input class="form-control p-2" type="text" name="firstname" formControlName="firstname">
+                  <div class="alert alert-danger" *ngIf="firstname.touched && firstname.errors?.required">שדה חובה</div>
+                  <div *ngIf="firstname.touched && firstname.errors?.minlength" class="alert alert-danger">יש
+                    להכניס {{firstname.errors?.minlength.requiredLength}} תווים לפחות
+                  </div>
+                </div>
+                <div class=" p-2">
+                  <label for="lastname" class="ml-3">שם משפחה: </label>
+                  <input class="form-control p-2" type="text" name="lastname" formControlName="lastname">
+                  <div class="alert alert-danger" *ngIf="lastname.touched && lastname.errors?.required">שדה חובה</div>
+                  <div *ngIf="lastname.touched && lastname.errors?.minlength" class="alert alert-danger"></div>
+                </div>
+                <div class="p-2">
+                  <label for="userdepartment" class="form-label ml-3">מחלקה: </label>
+                  <input class="form-control p-2" type="text" name="userdepartment" formControlName="dep">
+                  <div class="alert alert-danger" *ngIf="dep.touched && dep.errors?.required">
+                    שדה חובה
+                  </div>
+                  <div *ngIf="dep.touched && dep.errors?.minlength" class="alert alert-danger">יש
+                    להכניס {{dep.errors?.minlength.requiredLength}} תווים לפחות
+                  </div>
+                </div>
+                <div class=" p-2">
+                  <label for="useremail" class="form-label ml-3">אימייל: </label>
+                  <input class="form-control p-2" type="text" name="useremail" formControlName="email">
+                  <div class="alert alert-danger" *ngIf="email.touched && email.errors?.required">
+                    שדה חובה
+                  </div>
+                  <div *ngIf="email.touched && email.errors?.email" class="alert alert-danger">יש
+                    כתובת האימייל לא חוקית
+                  </div>
+                </div>
+                <button class="btn btn-success d-inline ml-5" type="submit" [disabled]="passForm.invalid">שמור</button>
+                <button class="btn btn-secondary d-inline mr-5" (click)="resetForm()">נקה טופס</button>
+              </div>
+            </form>
+          </div>
 
- 
-
-    
-</div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
