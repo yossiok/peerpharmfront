@@ -455,8 +455,8 @@
 
     <div style="top:20px;" class="container bg-light rounded fixed-top shadow mx-auto my-auto border border-success"
       *ngIf="openModal == true && stockType=='component'">
-      <mat-tab-group mat-align-tabs="center">
-        <mat-tab label="Component Details">
+      <mat-tab-group selectedIndex="2" mat-align-tabs="center">
+        <mat-tab disabled label="Component Details">
           <div class="container modal-inner">
             <div class="row text-center fixNoaStupidStuff">
               <div class="col-4 fixNoaStupidStuff text-right">
@@ -702,12 +702,11 @@
             </div>
           </div>
         </mat-tab>
-        <mat-tab label="Component Suppliers Details">
+        <mat-tab disabled label="Component Suppliers Details">
           <div class="container modal-inner">
 
             <div style="padding: 0rem;" class="row text-center fixNoaStupidStuff">
               <div class="col-1 fixNoaStupidStuff text-right">
-                <!-- <button class="btn btn-success form-control" (click)="switchModalView()">{{itemmoveBtnTitle}}</button> -->
               </div>
               <div class="col-10 fixNoaStupidStuff">
                 <h4 class="text-success">ספקים</h4>
@@ -928,7 +927,7 @@
 
           </div>
         </mat-tab>
-        <mat-tab label="Item Movements">
+        <mat-tab selected label="תנועות במלאי">
           <div class="container modal-inner">
 
             <div class="row fixNoaStupidStuff text-center p-2">
@@ -937,7 +936,7 @@
                   src="../../../../assets/images/refreshData.png">
               </div>
               <div class="col-10 fixNoaStupidStuff text-center">
-                <h3 class="text-success">Item Movements</h3>
+                <h3 class="text-success">תנועות במלאי {{resCmpt.componentN}}</h3>
               </div>
               <div class="col-1 fixNoaStupidStuff">
                 <span class="close text-success" id="closeId2"
@@ -945,20 +944,35 @@
               </div>
             </div>
 
-            <div class="row fixNoaStupidStuff text-center">
-              <div class="col-4"></div>
+            <div dir="rtl" class="row fixNoaStupidStuff text-center">
+              <div class="col-2"></div>
               <div class="col-2">
-                <label class="form-control"><b>{{lastYearOutAmount}}</b></label>
+                <label>מלאי מינימום:</label>
               </div>
               <div class="col-2">
-                <label class="form-control">הוצאות שנה אחרונה</label>
+                <input class="form-control" type='number' [(ngModel)]="resCmpt.minimumStock">
+              </div>
+              <div class="col-2">
+                <button class="btn btn-success form-control" id="updateDataBtn" (click)="editStockItemDetails()"
+                  *ngIf="newItem!='new'">עדכן מלאי מינימום
+                </button>
+              </div>
+              <div class="col-2"></div>
+            </div>
+            <div dir="rtl" class="row fixNoaStupidStuff text-center">
+              <div class="col-2"></div>
+              <div class="col-2">
+                <label>הוצאות שנה אחרונה:</label>
+              </div>
+              <div class="col-2">
+                <label class="form-control"><b>{{lastYearOutAmount}}</b></label>
               </div>
               <div class="col-4"></div>
             </div>
 
             <div class="row fixNoaStupidStuff text-center p-2">
               <div class="col-12 fixNoaStupidStuff">
-                <div style="overflow:scroll;height:500px;width:100%">
+                <div class="w-100">
                   <table class="table table-striped table-hover">
                     <thead class="bg-success text-white">
                       <tr>
@@ -995,20 +1009,39 @@
         </mat-tab>
 
         <!--component-->
-        <mat-tab *ngIf="isSuperAdmin" label="Item Purchase History">
-          <span class="close text-success" id="closeId2"
-            (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
-          <div class="row">
-            <label>Number of orders: </label> &nbsp;
-            <input type="text" #numOfOrders />
-            <div class="col-1"></div>
-            <button (click)="getLastOrdersItem(numOfOrders.value, 'component')">Watch History</button>
-          </div>
+        <mat-tab *ngIf="isSuperAdmin" label="הסטוריית רכש">
           <div class="container modal-inner">
+            <div class="row fixNoaStupidStuff text-center p-2">
+              <div class="col-1 fixNoaStupidStuff">
+                <img class="w-50 h-100" (click)="switchModalView(resCmpt.componentN)"
+                  src="../../../../assets/images/refreshData.png">
+              </div>
+              <div class="col-10 fixNoaStupidStuff text-center">
+                <h3 class="text-success">היסטוריית רכש {{resCmpt.componentN}}</h3>
+              </div>
+              <div class="col-1 fixNoaStupidStuff">
+                <span class="close text-success" id="closeId2"
+                  (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;</span>
+              </div>
+            </div>
+
+
+            <div dir="rtl" class="row mt-4 fixNoaStupidStuff">
+              <div class="col-2">
+                <label>מספר הזמנות:</label>
+              </div>
+              <div class="col-2">
+                <input class="form-control" type="text" #numOfOrders />
+              </div>
+              <div class="col-2">
+                <button class="btn btn-outline-success"
+                  (click)="getLastOrdersItem(numOfOrders.value, 'component')">חפש</button>
+              </div>
+              <div class="col-6"></div>
+            </div>
             <div class="smallLoader" *ngIf="fetchingOrders"></div>
             <div *ngIf="lastOrdersOfItem.length > 0" class="row fixNoaStupidStuff text-center p-2">
-              <div style="overflow:scroll;height:500px;width:100%">
-                <h3>Purchase History for Item {{resCmpt.number}}</h3>
+              <div>
                 <table class="table table-striped table-hover">
                   <thead class="bg-success text-white">
                     <tr>
@@ -1049,7 +1082,7 @@
           </div>
         </mat-tab>
 
-        <mat-tab *ngIf="isSuperAdmin" label="Pricing">
+        <mat-tab disabled *ngIf="isSuperAdmin" label="Pricing">
 
           <span class="close text-success" id="closeId2"
             (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;
@@ -1112,7 +1145,7 @@
 
         </mat-tab>
 
-        <mat-tab label="Version History">
+        <mat-tab disabled label="Version History">
 
           <span class="close text-success" id="closeId2"
             (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;
@@ -1546,8 +1579,8 @@
 
   <div class="container bg-light rounded shadow fixed-top mx-auto my-auto border border-success"
     *ngIf="openModal == true && stockType=='material'">
-    <mat-tab-group mat-align-tabs="center">
-      <mat-tab label="Material Details">
+    <mat-tab-group selectedIndex="4" mat-align-tabs="center">
+      <mat-tab disabled label="Material Details">
         <div class="container fixNoaStupidStuff p-2 modal-inner">
           <div style="padding: 0rem;" class="row text-center fixNoaStupidStuff">
             <div style="padding: 0rem;" class="col-1 fixNoaStupidStuff text-right">
@@ -1736,7 +1769,7 @@
           </div>
         </div>
       </mat-tab>
-      <mat-tab label="Storage/Cooking">
+      <mat-tab disabled label="Storage/Cooking">
         <div class="container-fluid modal-inner">
           <div dir="rtl" style="padding: 0rem;" class="row text-center fixNoaStupidStuff">
 
@@ -1834,7 +1867,7 @@
 
         </div>
       </mat-tab>
-      <mat-tab label="Material Suppliers Details">
+      <mat-tab disabled label="Material Suppliers Details">
         <div class="container modal-inner">
 
           <div style="padding: 0rem;" class="row text-center fixNoaStupidStuff">
@@ -2108,7 +2141,7 @@
 
 
 
-      <mat-tab *ngIf="isSuperAdmin" label="Pricing">
+      <mat-tab disabled *ngIf="isSuperAdmin" label="Pricing">
 
         <span class="close text-success" id="closeId2"
           (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;
@@ -2278,7 +2311,7 @@
       </mat-tab>
 
 
-      <mat-tab label="Purchase Details">
+      <mat-tab disabled label="Purchase Details">
         <div class="row fixNoaStupidStuff text-center modal-inner">
           <div class="col-1 fixNoaStupidStuff ">
 

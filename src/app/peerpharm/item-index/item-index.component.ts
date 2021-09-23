@@ -395,43 +395,37 @@ export class ItemIndexComponent implements OnInit {
 
   writeNewComponent() {
     if (this.newItem.componentN != "") {
-      console.log(this.newItem);
       this.newItem = { ...defaultCmpt }
       this.inventoryService.addNewCmpt(this.newItem).subscribe(res => {
-        console.log("res from front: " + res)
         if (res == "itemExist") {
-          this.toastSrv.error('פריט קיים במלאי')
+          this.toastSrv.error('פריט כבר קיים במערכת')
         } else if (res.componentN) {
+          this.item = res
           this.toastSrv.success("New stock item created");
           // this.resetResCmptData();
-          this.item = defaultCmpt
         }
+        this.modalService.dismissAll()
       });
     } else {
       this.toastSrv.error("Can't create new stock item without number")
+      this.modalService.dismissAll()
     }
   }
 
   writeNewMaterial() {
     this.item = { ...defaultMaterial }
-    console.log(this.item.itemType)
     if (this.newItem.componentN != "") {
-      console.log(this.item.itemType)
       this.item.componentN = this.newItem.componentN
-      console.log(this.item.itemType)
       this.inventoryService.addNewMaterial(this.item).subscribe(res => {
-        console.log(this.item.itemType)
         if (res == "פריט קיים במערכת !") {
-          this.toastSrv.error("פריט קיים במערכת !")
+          this.toastSrv.error("פריט כבר קיים במערכת !")
         } else {
+          this.item = res
           this.toastSrv.success("New material item created");
-          console.log(this.item.itemType)
-          // this.item = res
         }
         this.modalService.dismissAll()
       });
     }
-    console.log(this.item.itemType)
   }
 
 
@@ -460,16 +454,31 @@ export class ItemIndexComponent implements OnInit {
   }
 
   editItemDetails() {
-    this.item;
     if (confirm("לעדכן פריט?")) {
-      this.inventoryService.updateCompt(this.item).subscribe(res => {
-        if (res._id) {
-          // this.getAllMaterialLocations()
-          this.toastSrv.success("פריט עודכן בהצלחה");
-        } else {
-          this.toastSrv.error("עדכון פריט נכשל");
-        }
-      });
+      if (this.item.itemType == 'component') {
+
+        this.inventoryService.updateCompt(this.item).subscribe(res => {
+          if (res._id) {
+            // this.getAllMaterialLocations()
+            this.toastSrv.success("פריט עודכן בהצלחה");
+          } else {
+            this.toastSrv.error("עדכון פריט נכשל");
+          }
+        });
+      }
+      else if (this.item.itemType == 'material') {
+        this.inventoryService.updateMaterial(this.item).subscribe(res => {
+          if (res.msg == 'noUpdate') {
+            this.toastSrv.error('עדכון פריט נכשל')
+          } else {
+            if (res._id) {
+              this.toastSrv.success("פריט עודכן בהצלחה");
+            } else {
+              this.toastSrv.error("עדכון פריט נכשל");
+            }
+          }
+        });
+      }
     }
 
   }
