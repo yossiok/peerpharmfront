@@ -104,6 +104,10 @@ export class YieldsComponent implements OnInit {
     else return 'btn-outline-primary'
   }
 
+  getIntervalClass() {
+
+  }
+
 
 
   switchLine(i?) {
