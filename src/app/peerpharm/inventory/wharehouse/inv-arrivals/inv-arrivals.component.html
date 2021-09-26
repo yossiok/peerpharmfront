@@ -84,7 +84,7 @@
                     </option>
                 </select>
             </div>
-            <div class="col-2">
+            <!-- <div class="col-2">
                 <label>מס' משטחים</label>
                 <select [(ngModel)]="pallets" class="form-control">
                     <option value="1">1</option>
@@ -94,6 +94,10 @@
                     <option value="5">5</option>
                 </select>
             </div>
+            <div class="col-2">
+                <label>כמות במשטח</label>
+                <input type="number" [(ngModel)]="amountPerPallet" class="form-control">
+            </div> -->
         </div>
     </form>
 
@@ -227,6 +231,6 @@
 
 </div>
 
-<app-inventory-sticker *ngIf="printSticker" [items]="allArrivals" [numPallets]="pallets"
-    [certificateNum]="certificateReception">
-</app-inventory-sticker>
+<!-- <app-inventory-sticker *ngFor="let arrival of allArrivals" [numPallets]="pallets"
+    [certificateNum]="certificateReception" (barcodeGenerated)="allArrivals = []" [amountPerPallet]="amountPerPallet">
+</app-inventory-sticker> -->

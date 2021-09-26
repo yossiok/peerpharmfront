@@ -27,6 +27,7 @@ export class InvArrivalsComponent implements OnInit {
   allArrivals: any[] = [];
   today = new Date();
   pallets: number;
+  amountPerPallet: number;
   sending: boolean = false;
   disabled: boolean = false;
   noItem: boolean = true;
@@ -243,11 +244,11 @@ export class InvArrivalsComponent implements OnInit {
           this.componentArrival.controls.isNewItemShell.setValue(false);
           this.componentArrival.controls.itemType.setValue("component");
           setTimeout(() => {
-            if (confirm("להדפיס מדבקות?")) this.printSticker = true;
+            // if (confirm('להדפיס מדבקות?')) this.printSticker = true
             this.printBtn2.nativeElement.click();
             setTimeout(() => {
               this.allArrivals = [];
-              this.printSticker = false;
+              // this.printSticker = false
             }, 1000);
           }, 500);
         }

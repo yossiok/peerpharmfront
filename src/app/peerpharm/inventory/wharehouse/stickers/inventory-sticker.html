@@ -1,0 +1,45 @@
+<div dir="rtl" id="print-section">
+    <table style="text-align: center" [style.margin.px]="3" [style.width.px]="400" [style.max-height.px]="400"
+        [style.font-size.px]="24" [style.border.px]="0">
+        <tr>
+            <td><strong>כמות סה"כ:</strong> {{amount}}</td>
+        </tr>
+        <tr>
+            <td><strong>מספר משטחים:</strong> {{numPallets}}</td>
+        </tr>
+        <tr>
+            <td><strong>כמות במשטח:</strong> {{amountPerPallet}}</td>
+        </tr>
+        <tr>
+            <td>{{userName}} <strong>:מקבל</strong></td>
+        </tr>
+        <tr>
+            <td>
+                <h3>פאר פארם בע"מ</h3>
+            </td>
+        </tr>
+        <tr>
+            <td>{{date | date: 'medium'}} <strong>:תאריך</strong></td>
+        </tr>
+        <tr>
+            <td>{{purchaseOrder}} <strong>:מס' הזמנת רכש</strong></td>
+        </tr>
+        <tr>
+            <td><strong>:ספק</strong><br>{{supplier}}</td>
+        </tr>
+        <tr>
+            <td><strong>מס' תעודת קליטה:</strong> {{certificateNum}}</td>
+        </tr>
+        <tr>
+            <td><strong>מק"ט:</strong> {{item}}</td>
+        </tr>
+        <tr>
+            <td><strong>:תיאור</strong> <br> {{itemName}}</td>
+        </tr>
+        <tr>
+            <td>
+                <ngx-barcode [bc-value]="'123456'" [bc-display-value]="true"></ngx-barcode>
+            </td>
+        </tr>
+    </table>
+</div>
