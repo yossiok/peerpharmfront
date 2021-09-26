@@ -52,6 +52,7 @@ import { AllPricingComponent } from './prices/all-pricing/all-pricing.component'
 
 import { WharehouseComponent } from './inventory/wharehouse/wharehouse.component';
 import { InventoryRequestsComponent } from './inventory/inventory-requests/inventory-requests.component';
+import { HistMovementsComponent } from './inventory/wharehouse/hist-movements/hist-movements.component';
 import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
 import { NotificationComponent } from './notification/notification.component';
 import { ProcurementOrderItemBalanceComponent } from './procurement/procurementOrderItemBalance/procurementOrderItemBalance.component';
@@ -276,6 +277,7 @@ import { InventoryStickerComponent } from './inventory/wharehouse/inventory-stic
     ProcurementOrderItemComponent,
     NewProcurementComponent,
     WharehouseComponent,
+    HistMovementsComponent,
     ProjectsComponent,
     InventoryRequestsComponent,
     InventoryNewRequestComponent,

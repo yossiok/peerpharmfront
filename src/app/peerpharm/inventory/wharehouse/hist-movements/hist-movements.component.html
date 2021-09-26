@@ -1,0 +1,95 @@
+<div dir="rtl">
+  <form [formGroup]="historicalMovements" (ngSubmit)="getReceptions()">
+    <h3>הדפסת תעודות יציאה היסטוריות</h3>
+
+    <div class="row mt-2">
+      <div class="col-2">
+        <label for="">מספר תעודת יציאה</label>
+        <input type="text" class="form-control" formControlName="warehouseReception">
+      </div>
+      <div class="col-2">
+        <label for="">מחסן</label>
+        <select class="form-control" formControlName="WH_originId" #first>
+          <!-- <option disabled value="">בחר מחסן</option> -->
+          <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
+          </option>
+        </select>
+      </div>
+      <div class="col-2">
+        <label for="">תנועה</label>
+        <select class="form-control" formControlName="movementType">
+          <!-- <option disabled>בחר תנועה</option> -->
+          <option *ngFor="let action of movementTypes" [value]="action.value">{{action.name}}
+          </option>
+        </select>
+      </div>
+      <div class="col-2">
+        <label for="">מתאריך</label>
+        <input type="date" class="form-control" formControlName="fromDate">
+      </div>
+      <div class="col-2">
+        <label for="">עד תאריך</label>
+        <input type="date" class="form-control" formControlName="toDate">
+      </div>
+      <div class="col-2 d-flex flex-column justify-content-end">
+        <button type="submit" [disabled]="!historicalMovements.valid"
+          [style.cursor]="historicalMovements.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">חיפוש</button>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-2">
+        <label for="">מספר פריט</label>
+        <input type="text" class="form-control" formControlName="item">
+      </div>
+      <div class="col-2">
+        <label for="">מספר הזמנת רכש</label>
+        <input type="text" class="form-control" formControlName="relatedOrderNum">
+      </div>
+      <div class="col-2">
+
+      </div>
+      <div class="col-1"></div>
+      <div class="col-2">
+        <label for="">שם משתמש</label>
+        <select type="text" class="form-control" formControlName="userName">
+          <option dir="ltr" *ngFor="let user of allUsers" [value]="user.userName">{{user.firstName}} {{user.lastName}}
+          </option>
+        </select>
+      </div>
+      <div class="col-1"></div>
+      <div class="col-2 d-flex flex-column justify-content-end">
+        <button type="button" class="btn btn-secondary" (click)="historicalMovements.reset()">נקה נתונים</button>
+      </div>
+    </div>
+  </form>
+  <div class="row mt-2">
+    <table class="table border-collapse">
+      <thead>
+        <tr>
+          <th>תאריך</th>
+          <th>מס' תעודה</th>
+          <th>סוג העברה</th>
+          <th>מחסן</th>
+          <th>מס' פריט</th>
+          <th>כמות</th>
+          <th>הדפסה</th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let move of histMovements">
+        <tr *ngFor="let log of move.logs">
+          <td>{{move.dateAndTime | date: 'dd/MM/yyyy'}}</td>
+          <td>{{log.warehouseReception}}</td>
+          <td>{{move.movementName}}</td>
+          <td>{{log.WH_originName}}</td>
+          <td>{{log.item}}</td>
+          <td>{{log.amount}}</td>
+          <td><button (click)="printData(move)">Print</button></td>
+
+        </tr>
+
+
+      </tbody>
+    </table>
+  </div>
+
+</div>

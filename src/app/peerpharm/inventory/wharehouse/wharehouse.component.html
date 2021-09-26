@@ -205,6 +205,12 @@
         <div class="m-2 p-4 border border-success text-white bg-success" *ngIf="dir=='WHChange'">
           <app-between-wh [allWhareHouses]="whareHouses" [reallyAllWhareHouses]="allWhareHouses"></app-between-wh>
         </div>
+       
+
+          <div class="m-2 p-4 border border-warning text-info bg-light">
+            <app-hist-movements [allWhareHouses]="whareHouses" [reallyAllWhareHouses]="allWhareHouses"></app-hist-movements>
+          </div>
+    
 
         <div *ngIf="multiInputLines" class="row">
           <div class="col-12 mt-3">
