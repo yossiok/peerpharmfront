@@ -44,17 +44,17 @@
     </div>
     <div *ngIf="currentYield.value.productionDate" class="m-4 border border-dark p-5">
         <form [formGroup]="currentYield">
-            <div class="row">
-                <div class="col-2">
+            <div class="row responsive-heading">
+                <div [ngClass]="getHeadingWidth(2)">
                     <h3>קו</h3>
                     <input type="text" disabled formControlName="productionLine" class="form-control">
                 </div>
 
-                <div class="col-3">
+                <div [ngClass]="getHeadingWidth(3)">
                     <h3>נפתח ע"י:</h3>
                     <input type="text" disabled formControlName="userName" class="form-control">
                 </div>
-                <div class="col-7">
+                <div [ngClass]="getHeadingWidth(7)">
                     <div class="float-right d-flex flex-column">
                         <h3>{{currentYield.value.productionDate | date: 'dd/MM/yyyy'}}</h3>
                         <button *ngIf="!yesterday" class="btn btn-secondary" (click)="openYesterday()">עדכן נתונים של
@@ -70,7 +70,7 @@
                 </div>
             </div>
             <div class="row mt-4 responsive-intervals">
-                <div class="col-4 p-5" formGroupName="currentCleaning">
+                <div class="col-md-auto p-5" formGroupName="currentCleaning">
 
                     <h3 class="mt-4">ניקיון</h3>
                     <label for="">התחלה</label>
@@ -103,7 +103,7 @@
 
                     </table>
                 </div>
-                <div class="col-4 p-5" formGroupName="currentSetup">
+                <div class="col-md-auto p-5" formGroupName="currentSetup">
                     <h3 class="mt-4">Set Up</h3>
                     <label for="">התחלה</label>
                     <input type="time" formControlName="startTime" class="form-control">
@@ -137,7 +137,7 @@
 
                     </table>
                 </div>
-                <div class="col-4 p-5" formGroupName="currentWaiting">
+                <div class="col-md-auto p-5" formGroupName="currentWaiting">
                     <h3 class="mt-4">זמן המתנה</h3>
                     <label for="">התחלה</label>
                     <input type="time" formControlName="startTime" class="form-control">
@@ -177,7 +177,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-2">
+                <div class="col-4">
                     <h3>סיום עבודה</h3>
                     <input type="time" formControlName="endTime" (change)="checkTimes()" class="form-control">
                 </div>
@@ -194,19 +194,21 @@
                         (click)="calculateTotalDuration()">
                         חשב נתונים</button>
                 </div>
-                <div class="col-3">
+            </div>
+            <div class="row mt-4">
+                <div class="col-4">
                     <h4 class="text-primary">זמן עבודה ברוטו:</h4>
                     <p class="m-2 p-2 border align-middle border-dark hour-qnt">
                         <input type="text" class="form-control w-75" disabled formControlName="brutoDurationToPresent">
                     </p>
                 </div>
-                <div class="col-3">
+                <div class="col-4">
                     <h4 class="text-primary">זמן עבודה נטו:</h4>
                     <p class="m-2 p-2 border align-middle border-dark hour-qnt">
                         <input type="text" class="form-control w-75" disabled formControlName="totalDurationToPresent">
                     </p>
                 </div>
-                <div class="col-3">
+                <div class="col-4">
                     <h4 class="text-primary">כמות לשעה:</h4>
                     <p class="m-2 p-2 border align-middle border-dark hour-qnt">
                         <input type="text" class="form-control w-75" disabled formControlName="hourProdQty">

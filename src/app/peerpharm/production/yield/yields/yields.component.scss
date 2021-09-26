@@ -44,6 +44,28 @@
 
     .responsive-hist-btn {
         margin-right: 50px;
+        visibility: hidden;
+    }
+
+    .responsive-intervals {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .responsive-intervals > div {
+        width: 50%;
+    }
+  }
+
+@media screen and (max-width: 405px) {
+
+    .responsove-line {
+        width: 10px;
+    }
+
+    .responsive-heading {
+        display: flex;
+        flex-direction: column;
     }
 
     .responsive-intervals {
