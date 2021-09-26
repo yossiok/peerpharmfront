@@ -13,11 +13,13 @@
   }
 
   .title1:hover {
-    background-color: rgb(73, 158, 91);
+    cursor: pointer;
+    background-color: rgb(32, 51, 221);
     color: white;
   }
 
   .title2:hover {
+    cursor: pointer;
     background-color: rgb(21, 51, 223);
     color: white;
   }
@@ -30,12 +32,14 @@
 .modal-inner {
   padding: 60px !important;
   height: 910px !important;
+  overflow: auto;
 }
 
-.modal-inner-smaller {
-  padding: 60px !important;
-  height: 610px !important;
-}
+// .modal-inner-smaller {
+//   padding: 60px !important;
+//   height: 610px !important;
+//   overflow: auto;
+// }
 
 // Hide arrows from input type number  :
 /*********************************************** ********************/
@@ -49,7 +53,30 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+/*******************************************************************/
 
+// scroll bar styling:
+/*******************************************************************/
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgb(48, 155, 218);
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(51, 128, 216);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #d6e73a;
+}
 /*******************************************************************/
 
 .item-details {
