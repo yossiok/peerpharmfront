@@ -1,3 +1,8 @@
+
+.responsive-main {
+    visibility: hidden;
+}
+
 .hour-qnt {
     width: 114px;
     height: 66px;
@@ -13,19 +18,74 @@
     cursor: pointer;
   }
 
-  .active_line{
-      background-color: #6852f5;
-      color: #fff;
-     padding:15px 25px;
-  }
-  .yield{
-      color: #7460EE;
+.active_line{
+    background-color: #6852f5;
+    color: #fff;
+    padding:15px 25px;
+}
+
+.yield{
+    color: #7460EE;
+}
+
+.not_active{
+    border: 1px solid #7460EE;
+    background-color: #fff;
+    color: #7460EE;
+    padding:15px 25px;
+    margin-right: 15px;
+}
+
+@media screen and (max-width: 712px) {
+    .responsive-index {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .responsove-line {
+        width: 15px;
+    }
+
+    .responsive-hist-btn {
+        margin-right: 50px;
+        visibility: hidden;
+    }
+
+    .responsive-intervals {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .responsive-intervals > div {
+        width: 50%;
+    }
   }
 
-  .not_active{
-border: 1px solid #7460EE;
-background-color: #fff;
-color: #7460EE;
-padding:15px 25px;
-margin-right: 15px;
+@media screen and (max-width: 405px) {
+
+    .responsive-main {
+        visibility: visible;
+    }
+    .responsive-main-2 {
+        visibility: hidden;
+    }
+
+    .responsove-line {
+        width: 10px;
+    }
+
+    .responsive-heading {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .responsive-intervals {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .responsive-intervals > div {
+        width: 50%;
+    }
   }

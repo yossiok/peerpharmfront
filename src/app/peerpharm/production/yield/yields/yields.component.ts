@@ -12,6 +12,7 @@ import { ProductionService } from 'src/app/services/production.service';
 })
 export class YieldsComponent implements OnInit {
 
+  screenGood: boolean = true
   yesterday: boolean;
   lineIndex: number
   currentLine: string = ""
@@ -61,7 +62,7 @@ export class YieldsComponent implements OnInit {
   ngOnInit(): void {
     this.startInterval();
     this.getOpenYields();
-
+    if (window.screen.availWidth < 405) this.screenGood = false
 
   }
 
@@ -102,6 +103,16 @@ export class YieldsComponent implements OnInit {
       else return 'btn-outline-primary'
     }
     else return 'btn-outline-primary'
+  }
+
+  getIntervalTimeClass() {
+    if (window.screen.availWidth < 715) return 'col-12'
+    else return 'col-4'
+  }
+
+  getHeadingWidth(col) {
+    if (window.screen.availWidth < 405) return 'col-12'
+    else return `col-${col}`
   }
 
 
