@@ -118,6 +118,8 @@ export class AllFormulesComponent implements OnInit {
   @ViewChild('formuleCategory') formuleCategory: ElementRef;
   @ViewChild('formulePhFrom') formulePhFrom: ElementRef;
   @ViewChild('formulePhTo') formulePhTo: ElementRef;
+  @ViewChild('formuleViscoFrom') formuleViscoFrom: ElementRef;
+  @ViewChild('formuleViscoTo') formuleViscoTo: ElementRef;
   @ViewChild('formuleClient') formuleClient: ElementRef;
   @ViewChild('formuleLastUpdate') formuleLastUpdate: ElementRef;
   @ViewChild('formuleParent') formuleParent: ElementRef;
@@ -287,12 +289,14 @@ export class AllFormulesComponent implements OnInit {
   }
 
   copyFormule(formule) {
-    this.formuleService.copyFormule(formule).subscribe(data => {
-      if (data) {
-        this.allFormules.push(data);
-        this.toastSrv.success('פורמולה הועתקה בהצלחה !')
-      }
-    })
+    if (confirm('האם ברצונך ליצור העתק של הפורמולה?')) {
+      this.formuleService.copyFormule(formule).subscribe(data => {
+        if (data) {
+          this.allFormules.push(data);
+          this.toastSrv.success('העתק בתחתית הדף.', 'פורמולה הועתקה בהצלחה !')
+        }
+      })
+    }
   }
 
   isSelected(ev, item) {

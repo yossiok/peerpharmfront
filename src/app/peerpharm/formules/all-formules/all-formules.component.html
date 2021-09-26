@@ -56,109 +56,172 @@
 <table *ngIf="!loading" class="table table-fixed">
   <thead class="tableHeader">
     <tr>
-      <td>#</td>
-      <td>כתב כמויות</td>
-      <td>Formule Number</td>
-      <td>Name</td>
-      <td>Remarks</td>
-      <td>Category</td>
-      <td>Materials</td>
-      <td>PH</td>
-      <td>Viscosity</td>
-      <td>Date Created</td>
-      <td>Formule Type</td>
-      <td>Approval</td>
-      <td>
+      <th>#</th>
+      <!--1-->
+      <th>כתב כמויות</th>
+      <!--2-->
+      <th>Formule Number</th>
+      <!--3-->
+      <th>Name</th>
+      <!--4-->
+      <th>Remarks</th>
+      <!--5-->
+      <th>Category</th>
+      <!--6-->
+      <th>Materials</th>
+      <!--7-->
+      <th>PH</th>
+      <!--8-->
+      <th>Viscosity</th>
+      <!--9-->
+      <th>Date Created</th>
+      <!--10-->
+      <th>Formule Type</th>
+      <!--11-->
+      <th>Approval</th>
+      <!--12-->
+      <th>
         <img style="width: 30px;" src="../../../../assets/images/print.png" />
-      </td>
-      <td>&#8362;<br>Pricing</td>
-      <td></td>
-      <td></td>
+      </th>
+      <!--13-->
+      <th>&#8363;<br>Pricing</th>
+      <!--14-->
+      <th></th>
+      <!--15 Delete formule -->
+      <th></th>
+      <!--16 Edit -->
+      <th></th>
+      <!--17 Save -->
+      <th></th>
+      <!--18 Duplicate -->
     </tr>
   </thead>
   <ng-container>
     <tr [style.background]="formule.approval && formule.approval == 1 ? 'lightgreen' : ''"
       style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
       *ngFor="let formule of allFormules; let i = index">
+
+      <!--1-->
       <td>{{ i + 1 }}</td>
+
+      <!--2-->
       <td><input type="checkbox" (change)="isSelected($event,formule)"></td>
+
+      <!--3-->
       <td *ngIf="formule._id != EditRowId" class="openUpdateModal" (click)="open(formule.formuleNumber)">
         {{ formule.formuleNumber }}
       </td>
-      <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
-        <input #formuleNumber type="text" [value]="formule.formuleNumber" />
+      <td *ngIf="formule._id == EditRowId">
+        <input #formuleNumber disabled type="text" [value]="formule.formuleNumber" />
       </td>
-      <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
+
+      <!--4-->
+      <td *ngIf="formule._id != EditRowId">
         {{ formule.formuleName }}
       </td>
-      <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
+      <td *ngIf="formule._id == EditRowId">
         <input #formuleName type="text" [value]="formule.formuleName" />
       </td>
 
-      <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
+      <!--5-->
+      <td *ngIf="formule._id != EditRowId">
         {{ formule.impRemarks }}
       </td>
-      <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
+      <td *ngIf="formule._id == EditRowId">
         <textarea #formuleImpRemarks type="text" [value]="formule.impRemarks"></textarea>
       </td>
 
-      <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
+      <!--6-->
+      <td *ngIf="formule._id != EditRowId">
         {{ formule.formuleCategory }}
       </td>
-      <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
+      <td *ngIf="formule._id == EditRowId">
         <input #formuleCategory type="text" [value]="formule.formuleCategory" />
       </td>
-      <td>
+
+      <!--7-->
+      <td *ngIf="EditRowId == ''">
         <span *ngFor="let phase of formule.phases">
           <span *ngFor="let item of phase.items">
             {{item.itemNumber}},
           </span>
         </span>
       </td>
-      <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
-        {{ formule.phFrom }}<i class="fas fa-long-arrow-alt-right"></i>{{ formule.phTo }}
+      <td *ngIf="EditRowId != ''"></td>
+
+      <!--8-->
+      <td class="ph-td" *ngIf="formule._id != EditRowId">
+        {{ formule.phFrom }}<i *ngIf="formule.phFrom || formule.phTo" class="fas fa-long-arrow-alt-right m-2"></i>{{
+        formule.phTo }}
       </td>
-      <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
-        <!-- <input #formulePhFrom type="text" [value]="formule.phFrom" />
-        <input #formulePhTo type="text" [value]="formule.phTo" /> -->
-      </td>
-      <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
-        {{ formule.viscoFrom }}<i class="fas fa-long-arrow-alt-right"></i>{{ formule.viscoTo }}
-      </td>
-      <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
-        <input #formulePhFrom type="text" [value]="formule.phFrom" />
-        <input #formulePhTo type="text" [value]="formule.phTo" />
+      <td *ngIf="formule._id == EditRowId">
+        <input placeholder="PH - from" #formulePhFrom type="text" [value]="formule.phFrom" />
+        <input placeholder="PH - to" #formulePhTo type="text" [value]="formule.phTo" />
       </td>
 
-      <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
+      <!--9-->
+      <td class="ph-td" *ngIf="formule._id != EditRowId">
+        {{ formule.viscoFrom }}<i *ngIf="formule.viscoFrom || formule.viscoTo"
+          class="fas fa-long-arrow-alt-right m-2"></i>{{ formule.viscoTo }}
+      </td>
+      <td *ngIf="formule._id == EditRowId">
+        <input placeholder="Viscosity - from" type="text" [(ngModel)]="formule.viscoFrom" />
+        <input placeholder="Viscosity - to" type="text" [(ngModel)]="formule.viscoTo" />
+      </td>
+
+      <!--10-->
+      <td *ngIf="formule._id != EditRowId">
         {{ formule.date | date: "dd/MM/yyyy" }}
       </td>
-      <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
+      <td *ngIf="formule._id == EditRowId">
         <input #formuleLastUpdate type="date" [value]="formule.date" />
       </td>
-      <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
+
+      <!--11-->
+      <td *ngIf="formule._id != EditRowId">
         {{ formule.formuleType }}
       </td>
+      <td *ngIf="formule._id == EditRowId"></td>
+
+      <!--12-->
       <td>
         <i style="cursor: pointer;" (click)="approveFormule(formule)" class="fa fa-check" aria-hidden="true"></i>
       </td>
+
+      <!--13-->
       <td>
-        <button class="btn btn-info" (click)="openPrint(printFormule, formule.formuleNumber)">
+        <button *ngIf="formule._id != EditRowId" class="btn btn-info"
+          (click)="openPrint(printFormule, formule.formuleNumber)">
           Print Formule
         </button>
       </td>
+
+      <!--14-->
       <td>
-        <img style="width: 50px; cursor: pointer;" (click)="getFormulePrice(formule)"
-          src="../../../../assets/images/price.png" />
-      </td>
-      <td><img style="width:30px;" (click)="deleteFormule(formule._id)" src="../../../../assets/images/deleteBtn.png">
+        <img ngbTooltip="Show Formule Pricing" *ngIf="formule._id != EditRowId" style="width: 50px; cursor: pointer;"
+          (click)="getFormulePrice(formule)" src="../../../../assets/images/price.png" />
       </td>
 
-      <td *ngIf="formule._id == EditRowId">
-        <i class="ti-save text-success m-r-10" style="font-size: 18px; cursor: pointer;"
-          (click)="saveEdit(formule)"></i>
+      <!--15-->
+      <td><img class="click" ngbTooltip="Delete Formule" *ngIf="formule._id != EditRowId" style="width:30px;"
+          (click)="deleteFormule(formule._id)" src="../../../../assets/images/deleteBtn.png">
       </td>
-      <td><button (click)="copyFormule(formule)" class="btn btn-secondary">Copy</button></td>
+
+      <!--16-->
+      <td>
+        <i *ngIf="formule._id != EditRowId" class="fa fa-pencil-alt h3 click" ngbTooltip="Edit Formule Details"
+          (click)="edit(formule._id)"></i>
+      </td>
+
+      <!--17-->
+      <td>
+        <i *ngIf="formule._id == EditRowId" class="ti-save text-success m-r-10 click" ngbTooltip="Save Changes"
+          style="font-size: 18px; cursor: pointer;" (click)="saveEdit(formule)"></i>
+      </td>
+
+      <!--18-->
+      <td><button *ngIf="formule._id != EditRowId" (click)="copyFormule(formule)" ngbTooltip="Duplicate Formule"
+          class="btn btn-secondary">Duplicate</button></td>
     </tr>
   </ng-container>
 </table>
