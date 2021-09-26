@@ -77,7 +77,8 @@
           </tr>
         </thead>
         <tbody id="table_body">
-          <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let costumer of costumers; let i=index">
+          <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black;"
+            *ngFor="let costumer of costumers; let i=index">
             <td>{{i}}</td>
             <td (click)='openDetails(i)' style="cursor:pointer;"><span class="text-info">{{costumer.costumerId}}</span>
             </td>
@@ -105,7 +106,8 @@
         <h2 class="text-info">{{costumer.costumerName}}</h2>
       </div>
       <div class="col-1">
-        <i (click)="showCustomerModal = false" style="font-size: 23px;padding: 8px;" class="click fa fa-times text-info"></i>
+        <i (click)="showCustomerModal = false" style="font-size: 23px;padding: 8px;"
+          class="click fa fa-times text-info"></i>
       </div>
     </div>
 
@@ -286,11 +288,15 @@
         <table class="table table-hover">
           <thead class="text-info text-center">
             <tr>
-              <th class="click" (click)="sortBy('customerOrders', 'orderNumber')"><i class="fas fa-arrow-up"></i><br>מספר הזמנה<br><i class="fas fa-arrow-down"></i></th>
-              <th class="click" (click)="sortBy('customerOrders', 'orderDate')"><i class="fas fa-arrow-up"></i><br>תאריך<br><i class="fas fa-arrow-down"></i></th>
-              <th class="click" (click)="sortBy('customerOrders', 'itemNumber')"><i class="fas fa-arrow-up"></i><br>מספר פריט<br><i class="fas fa-arrow-down"></i></th>
+              <th class="click" (click)="sortBy('customerOrders', 'orderNumber')"><i
+                  class="fas fa-arrow-up"></i><br>מספר הזמנה<br><i class="fas fa-arrow-down"></i></th>
+              <th class="click" (click)="sortBy('customerOrders', 'orderDate')"><i
+                  class="fas fa-arrow-up"></i><br>תאריך<br><i class="fas fa-arrow-down"></i></th>
+              <th class="click" (click)="sortBy('customerOrders', 'itemNumber')"><i class="fas fa-arrow-up"></i><br>מספר
+                פריט<br><i class="fas fa-arrow-down"></i></th>
               <th class="click" (click)="sortBy('customerOrders', 'itemName')">שם פריט</th>
-              <th class="click" (click)="sortBy('customerOrders', 'amount')"><i class="fas fa-arrow-up"></i><br>כמות<br><i class="fas fa-arrow-down"></i></th>
+              <th class="click" (click)="sortBy('customerOrders', 'amount')"><i
+                  class="fas fa-arrow-up"></i><br>כמות<br><i class="fas fa-arrow-down"></i></th>
             </tr>
           </thead>
           <tbody>
@@ -327,10 +333,13 @@
       <table class="table table-hover">
         <thead class="text-info text-center">
           <tr>
-            <th class="click" (click)="sortBy('customerItems', 'itemNumber')"><i class="fas fa-arrow-up"></i><br>מספר פריט<br><i class="fas fa-arrow-down"></i></th>
+            <th class="click" (click)="sortBy('customerItems', 'itemNumber')"><i class="fas fa-arrow-up"></i><br>מספר
+              פריט<br><i class="fas fa-arrow-down"></i></th>
             <th class="click" (click)="sortBy('customerItems', 'itemName')">שם פריט</th>
-            <th class="click" (click)="sortBy('customerItems', 'orderDate')"><i class="fas fa-arrow-up"></i><br>תאריך<br><i class="fas fa-arrow-down"></i></th>
-            <th class="click" (click)="sortBy('customerItems', 'amount')"><i class="fas fa-arrow-up"></i><br>כמות<br><i class="fas fa-arrow-down"></i></th>
+            <th class="click" (click)="sortBy('customerItems', 'orderDate')"><i
+                class="fas fa-arrow-up"></i><br>תאריך<br><i class="fas fa-arrow-down"></i></th>
+            <th class="click" (click)="sortBy('customerItems', 'amount')"><i class="fas fa-arrow-up"></i><br>כמות<br><i
+                class="fas fa-arrow-down"></i></th>
           </tr>
         </thead>
         <tbody>
