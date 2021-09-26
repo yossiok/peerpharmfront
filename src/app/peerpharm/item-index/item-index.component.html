@@ -235,7 +235,7 @@
       </div>
       <div>
         <p class="h5">סוג</p>
-        <select class="form-control" [(ngModel)]="item.itemType">
+        <select disabled class="form-control" [(ngModel)]="item.itemType">
           <option value="component">component</option>
           <option value="material">material</option>
           <option value="product">product</option>
@@ -1227,9 +1227,9 @@
       <div class="col-3">
         <button (click)="writeNewStockItem('material')" class="btn btn-warning">חומר גלם</button>
       </div>
-      <div class="col-3">
+      <!-- <div class="col-3">
         <button (click)="writeNewStockItem('product')" class="btn btn-success">מוצר מוגמר</button>
-      </div>
+      </div> -->
     </div>
   </div>
   <div class="modal-footer">

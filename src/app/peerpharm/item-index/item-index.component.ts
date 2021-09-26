@@ -1,46 +1,44 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ToastrService } from 'ngx-toastr';
-import { AuthService } from 'src/app/services/auth.service';
-import { UploadFileService } from 'src/app/services/helpers/upload-file.service';
-import { InventoryService } from 'src/app/services/inventory.service';
-import { Procurementservice } from 'src/app/services/procurement.service';
-import { SuppliersService } from 'src/app/services/suppliers.service';
-import { Currencies } from '../procurement/Currencies';
-
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { ToastrService } from "ngx-toastr";
+import { AuthService } from "src/app/services/auth.service";
+import { UploadFileService } from "src/app/services/helpers/upload-file.service";
+import { InventoryService } from "src/app/services/inventory.service";
+import { Procurementservice } from "src/app/services/procurement.service";
+import { SuppliersService } from "src/app/services/suppliers.service";
+import { Currencies } from "../procurement/Currencies";
 
 const defaultCmpt = {
-  whoPays: '',
+  whoPays: "",
   payingCustomersList: [],
-  componentN: '',
-  componentName: '',
-  componentNs: '',
-  suplierN: '',
-  suplierName: '',
-  componentType: '',
-  componentCategory: '',
-  img: '',
-  importFrom: '',
-  lastModified: '',
-  minimumStock: '',
-  needPrint: '',
-  packageType: '',
-  packageWeight: '',
-  remarks: '',
-  jumpRemark: '',
+  componentN: "",
+  componentName: "",
+  componentNs: "",
+  itemType: "",
+  suplierN: "",
+  suplierName: "",
+  componentType: "",
+  componentCategory: "",
+  img: "",
+  importFrom: "",
+  lastModified: "",
+  minimumStock: "",
+  needPrint: "",
+  packageType: "",
+  packageWeight: "",
+  remarks: "",
+  jumpRemark: "",
   componentItems: [],
   input_actualMlCapacity: 0,
-  alternativeComponent: '',
-  comaxName: '',
+  alternativeComponent: "",
+  comaxName: "",
   alternativeSuppliers: [],
-  price: '',
-  connectedProducts: []
-
-}
+  price: "",
+  connectedProducts: [],
+};
 
 const defaultMaterial = {
-
   componentN: "",
   componentName: "",
   remarks: "",
@@ -60,7 +58,7 @@ const defaultMaterial = {
   monthAvgPcs: "",
   msds: "",
   coaMaster: "",
-  function: '',
+  function: "",
   measurement: "",
   notInStock: false,
   inciName: "",
@@ -79,75 +77,117 @@ const defaultMaterial = {
   location: "",
   quantityInStock: "",
   mixedMaterial: [],
-  formuleRemarks: '',
+  formuleRemarks: "",
   manualPrice: 0,
-  manualCoin: 'ILS',
+  manualCoin: "ILS",
   price: 0,
-  coin: 'ILS',
-  priceUpdates: []
-
-}
+  coin: "ILS",
+  priceUpdates: [],
+};
 
 @Component({
-  selector: 'app-item-index',
-  templateUrl: './item-index.component.html',
-  styleUrls: ['./item-index.component.scss']
+  selector: "app-item-index",
+  templateUrl: "./item-index.component.html",
+  styleUrls: ["./item-index.component.scss"],
 })
 export class ItemIndexComponent implements OnInit {
-
-  @ViewChild('nameSelect') nameSelect: ElementRef
-  @ViewChild('itemNumber') itemNumber: ElementRef
+  @ViewChild("nameSelect") nameSelect: ElementRef;
+  @ViewChild("itemNumber") itemNumber: ElementRef;
 
   item: any;
-  newItem: any = { componentN: null }
-  itemNames: any[]
-  items: any[]
+  newItem: any = { componentN: null };
+  itemNames: any[];
+  items: any[];
   itemMovements: any[];
   itemMovementsCopy: any[];
-  lastOrdersOfItem: any[]
-  materialLocations: any[]
+  lastOrdersOfItem: any[];
+  materialLocations: any[];
   allSuppliers: any[];
-  cmptTypes2: Array<any>
-  cmptTypes3: Array<any>
-  cmptMaterials: Array<any>
-  cmptMaterials2: Array<any>
+  cmptTypes2: Array<any>;
+  cmptTypes3: Array<any>;
+  cmptMaterials: Array<any>;
+  cmptMaterials2: Array<any>;
 
   currencies: Currencies;
-  today: Date = new Date()
-  rowNumber: number = -1
-  counter: number = 0
+  today: Date = new Date();
+  rowNumber: number = -1;
+  counter: number = 0;
   screenPermission: number;
   gettingProducts: boolean;
   fetchingOrders: boolean;
   allowUserEditItem: boolean;
-  showDetailsForm: boolean = true
-  showMovementsForm: boolean = false
-  showSalesForm: boolean = false
-  allowedProblematicEdit: boolean = false
-  new: boolean = false
+  showDetailsForm: boolean = true;
+  showMovementsForm: boolean = false;
+  showSalesForm: boolean = false;
+  allowedProblematicEdit: boolean = false;
+  new: boolean = false;
 
   //Material Stuff
   compositionName: any;
   compositionPercentage: any;
   compostionFunction: any;
   compositionCAS: any;
-  compEdit: number = -1
+  compEdit: number = -1;
 
   cmptCategoryList: Array<any> = [
-    'Sacara', 'Mineralium', 'Arganicare', 'Spa Pharma', 'Olive', 'Vitamin C', 'Quinoa', 'Andrea Milano', 'Dermalosophy',
-    'Kreogen', 'Careline', 'Frulatte', 'Mediskin', '4Ever', 'Adah Lazorgan', 'Avalanche', 'Abyssian', 'Jahshan',
-    'Mika', 'Hyalunol', 'Hemp', 'Kiss', 'Rose', 'Collagen', 'Gaya',
-  ]
+    "Sacara",
+    "Mineralium",
+    "Arganicare",
+    "Spa Pharma",
+    "Olive",
+    "Vitamin C",
+    "Quinoa",
+    "Andrea Milano",
+    "Dermalosophy",
+    "Kreogen",
+    "Careline",
+    "Frulatte",
+    "Mediskin",
+    "4Ever",
+    "Adah Lazorgan",
+    "Avalanche",
+    "Abyssian",
+    "Jahshan",
+    "Mika",
+    "Hyalunol",
+    "Hemp",
+    "Kiss",
+    "Rose",
+    "Collagen",
+    "Gaya",
+  ];
 
   cmptTypes: Array<any> = [
-    'bottle_Glass', 'bottle_Plastic', 'jar_Glass', 'jar_Plastic', 'cap', 'cover', 'pump', 'cosmetic_pump',
-    'over_cap', 'tube', 'colons', 'hair_life', 'compacts', 'personal_package', 'master_carton', 'newsletter',
-    'irosol_valve', 'irosol_bottle', 'irosol_hectotor', 'irosol_bottle', 'cellophane', 'sticker', 'sachet', 'godett',
-    'plate', 'other'
-  ]
+    "bottle_Glass",
+    "bottle_Plastic",
+    "jar_Glass",
+    "jar_Plastic",
+    "cap",
+    "cover",
+    "pump",
+    "cosmetic_pump",
+    "over_cap",
+    "tube",
+    "colons",
+    "hair_life",
+    "compacts",
+    "personal_package",
+    "master_carton",
+    "newsletter",
+    "irosol_valve",
+    "irosol_bottle",
+    "irosol_hectotor",
+    "irosol_bottle",
+    "cellophane",
+    "sticker",
+    "sachet",
+    "godett",
+    "plate",
+    "other",
+  ];
 
   supplier: any = {
-    supplierName: '',
+    supplierName: "",
     price: "",
     coin: "",
     coinLoading: "",
@@ -157,48 +197,48 @@ export class ItemIndexComponent implements OnInit {
     alterName: "",
     subGroup: "",
     packageWeight: "",
-  }
+  };
 
   itemMovementForm: FormGroup = new FormGroup({
-    itemType: new FormControl('all', Validators.required),
-    itemNumbers: new FormControl([''], Validators.required),
-    componentType: new FormControl('skip'),
+    itemType: new FormControl("all", Validators.required),
+    itemNumbers: new FormControl([""], Validators.required),
+    componentType: new FormControl("skip"),
     fromDate: new FormControl(new Date()),
     toDate: new FormControl(null),
-    movementType: new FormControl('in', Validators.required),
+    movementType: new FormControl("in", Validators.required),
     // price: new FormControl(null),
     // priceDir: new FormControl('higherThan'),
     amount: new FormControl(null),
-    amountDir: new FormControl('higherThan')
-  })
+    amountDir: new FormControl("higherThan"),
+  });
 
   itemDetailsForm: FormGroup = new FormGroup({
-    itemType: new FormControl('all', Validators.required),
-    itemNumber: new FormControl('', Validators.required),
-    itemName: new FormControl('', Validators.minLength(3)),
-  })
+    itemType: new FormControl("all", Validators.required),
+    itemNumber: new FormControl("", Validators.required),
+    itemName: new FormControl("", Validators.minLength(3)),
+  });
 
   get itemName() {
-    return this.itemDetailsForm.get('itemName');
+    return this.itemDetailsForm.get("itemName");
   }
 
   editVersionForm: FormGroup = new FormGroup({
     date: new FormControl(new Date(this.today), Validators.required),
     versionNumber: new FormControl(null, Validators.required),
-    description: new FormControl('', Validators.required),
+    description: new FormControl("", Validators.required),
     image: new FormControl(null, Validators.required),
     user: new FormControl(null, Validators.required),
-  })
+  });
 
   productsSoldForm: FormGroup = new FormGroup({
-    productNumber: new FormControl(''),
+    productNumber: new FormControl(""),
     fromDate: new FormControl(new Date()),
     toDate: new FormControl(null),
     amount: new FormControl(null),
-    amountDir: new FormControl('higherThan')
-  })
-  allowPriceUpdate: boolean = false
-  supPurchases: any[] = []
+    amountDir: new FormControl("higherThan"),
+  });
+  allowPriceUpdate: boolean = false;
+  supPurchases: any[] = [];
   fetchingMovements: boolean;
 
   constructor(
@@ -209,264 +249,294 @@ export class ItemIndexComponent implements OnInit {
     private authService: AuthService,
     private modalService: NgbModal,
     private uploadService: UploadFileService
-  ) { }
-
-
+  ) {}
 
   ngOnInit(): void {
-    this.getAllSuppliers()
-    this.allowedProblematicEdit = this.authService.loggedInUser.userName == 'haviv' || this.authService.loggedInUser.userName == 'martha' || this.authService.loggedInUser.userName == 'sima'
-    this.screenPermission = Number(this.authService.loggedInUser.screenPermission)
-    this.getCurrencies()
+    this.getAllSuppliers();
+    this.allowedProblematicEdit =
+      this.authService.loggedInUser.userName == "haviv" ||
+      this.authService.loggedInUser.userName == "martha" ||
+      this.authService.loggedInUser.userName == "sima" ||
+      this.authService.loggedInUser.userName == "dani";
+    this.screenPermission = Number(
+      this.authService.loggedInUser.screenPermission
+    );
+    this.getCurrencies();
     if (this.authService.loggedInUser.authorization.includes("updateStock")) {
       this.allowUserEditItem = true;
     }
-    this.allowPriceUpdate = Number(this.authService.loggedInUser.screenPermission) < 4
-    setTimeout(() => this.itemNumber.nativeElement.focus(), 500)
+    this.allowPriceUpdate =
+      Number(this.authService.loggedInUser.screenPermission) < 4;
+    setTimeout(() => this.itemNumber.nativeElement.focus(), 500);
   }
 
   setFormView(form) {
     switch (form) {
-      case 'itemDetails':
-        this.showDetailsForm = true
-        this.showMovementsForm = false
-        this.showSalesForm = false
-        break
-      case 'movements':
-        this.showDetailsForm = false
-        this.showMovementsForm = true
-        this.showSalesForm = false
-        break
-      case 'sales':
-        this.showDetailsForm = false
-        this.showMovementsForm = false
-        this.showSalesForm = true
-        break
+      case "itemDetails":
+        this.showDetailsForm = true;
+        this.showMovementsForm = false;
+        this.showSalesForm = false;
+        break;
+      case "movements":
+        this.showDetailsForm = false;
+        this.showMovementsForm = true;
+        this.showSalesForm = false;
+        break;
+      case "sales":
+        this.showDetailsForm = false;
+        this.showMovementsForm = false;
+        this.showSalesForm = true;
+        break;
     }
   }
 
   open(modal) {
-    this.modalService.open(modal)
+    this.modalService.open(modal);
   }
-
 
   setColors(title) {
     switch (title) {
-      case 'title1': return 'title1'
-      case 'title2': return 'title2'
-      case 'title3': return 'title3'
+      case "title1":
+        return "title1";
+      case "title2":
+        return "title2";
+      case "title3":
+        return "title3";
     }
   }
 
   getAllTypes() {
-    this.inventoryService.getAllComponentTypes().subscribe(allTypes => {
-      this.cmptTypes = allTypes
-    })
-    this.inventoryService.getAllComponentTypes2().subscribe(allTypes => {
-      this.cmptTypes2 = allTypes
-    })
-    this.inventoryService.getAllComponentTypes3().subscribe(allTypes => {
-      this.cmptTypes3 = allTypes
-    })
+    this.inventoryService.getAllComponentTypes().subscribe((allTypes) => {
+      this.cmptTypes = allTypes;
+    });
+    this.inventoryService.getAllComponentTypes2().subscribe((allTypes) => {
+      this.cmptTypes2 = allTypes;
+    });
+    this.inventoryService.getAllComponentTypes3().subscribe((allTypes) => {
+      this.cmptTypes3 = allTypes;
+    });
   }
 
   getAllCmptMaterials() {
-    this.inventoryService.getAllComponentMaterials().subscribe(allMaterials => {
-      this.cmptMaterials = allMaterials
-    })
-    this.inventoryService.getAllComponentMaterials2().subscribe(allMaterials => {
-      this.cmptMaterials2 = allMaterials
-    })
+    this.inventoryService
+      .getAllComponentMaterials()
+      .subscribe((allMaterials) => {
+        this.cmptMaterials = allMaterials;
+      });
+    this.inventoryService
+      .getAllComponentMaterials2()
+      .subscribe((allMaterials) => {
+        this.cmptMaterials2 = allMaterials;
+      });
   }
 
   getAllSuppliers() {
-    this.supplierService.getAllSuppliers().subscribe(data => {
+    this.supplierService.getAllSuppliers().subscribe((data) => {
       this.allSuppliers = data;
-    })
+    });
   }
 
   getCurrencies() {
-    this.procuretServ.getCurrencies().subscribe(currencies => {
-      delete currencies[0]._id
-      this.currencies = currencies[0]
-    })
+    this.procuretServ.getCurrencies().subscribe((currencies) => {
+      delete currencies[0]._id;
+      this.currencies = currencies[0];
+    });
   }
 
   setItemNumber(i, e) {
-    this.itemMovementForm.value.itemNumbers[i] = e.target.value
+    this.itemMovementForm.value.itemNumbers[i] = e.target.value;
   }
 
   fetchMovements() {
-    this.fetchingMovements = true
-    this.inventoryService.getComplexItemMovements(this.itemMovementForm.value).subscribe(data => {
-      this.fetchingMovements = false
-      console.log(data)
-      this.item = undefined
-      this.itemMovements = data
-      this.itemMovementsCopy = data
-    })
+    this.fetchingMovements = true;
+    this.inventoryService
+      .getComplexItemMovements(this.itemMovementForm.value)
+      .subscribe((data) => {
+        this.fetchingMovements = false;
+        console.log(data);
+        this.item = undefined;
+        this.itemMovements = data;
+        this.itemMovementsCopy = data;
+      });
   }
 
   resetMovements() {
     this.itemMovementForm.reset();
-    this.itemMovements = undefined
-    this.itemMovementForm.controls.itemNumbers.setValue([''])
+    this.itemMovements = undefined;
+    this.itemMovementForm.controls.itemNumbers.setValue([""]);
   }
 
   getItemData() {
-    this.itemMovements = []
-    this.inventoryService.getItemByNumber(this.itemDetailsForm.value.itemNumber).subscribe(item => {
-      if (item.msg) this.toastSrv.error(item.msg)
-      else {
-        this.item = item
-        this.getLastOrdersItem(20, this.item.itemType)
-      }
-    })
+    this.itemMovements = [];
+    this.inventoryService
+      .getItemByNumber(this.itemDetailsForm.value.itemNumber)
+      .subscribe((item) => {
+        if (item.msg) this.toastSrv.error(item.msg);
+        else {
+          this.item = item;
+          console.log(item);
+          this.getLastOrdersItem(20);
+        }
+      });
   }
 
   // Get names of all items for search
   getNames(event) {
     if (event.value.length > 2) {
-
-      this.inventoryService.getNamesByRegex(event.value).subscribe(names => {
+      this.inventoryService.getNamesByRegex(event.value).subscribe((names) => {
         this.itemNames = names;
         this.itemDetailsForm.controls.itemNumber.setValue(names[0].componentN);
-
-      })
+      });
     }
   }
 
   setItemDetailsNumber(event) {
-    this.itemDetailsForm.controls.itemNumber.setValue(event.target.value)
+    this.itemDetailsForm.controls.itemNumber.setValue(event.target.value);
   }
 
-
   sortBy(array, by) {
-    if (by.includes('Date')) {
-      this[array].map(element => {
-        element.formatedDate = new Date(element[by])
+    if (by.includes("Date")) {
+      this[array].map((element) => {
+        element.formatedDate = new Date(element[by]);
         return element;
-      })
-      by = 'formatedDate'
+      });
+      by = "formatedDate";
     }
-    if (this.counter % 2 == 0) this[array].sort((a, b) => (a[by]) - (b[by]))
-    else this[array].sort((a, b) => (b[by]) - (a[by]))
-    this.counter++
+    if (this.counter % 2 == 0) this[array].sort((a, b) => a[by] - b[by]);
+    else this[array].sort((a, b) => b[by] - a[by]);
+    this.counter++;
   }
 
   filter(key, value) {
-    this.itemMovements = this.itemMovementsCopy.filter(movement => movement[key] == value)
+    this.itemMovements = this.itemMovementsCopy.filter(
+      (movement) => movement[key] == value
+    );
   }
 
-  fetchProducts() {
-
-  }
+  fetchProducts() {}
 
   checkIfItemExist(ev) {
     var itemNumber = ev.target.value;
-    if (itemNumber != '') {
-      this.inventoryService.getCmptByitemNumber(itemNumber).subscribe(data => {
-        if (data.length > 0) {
-          this.toastSrv.error('שים לב ! מספר זה קיים במערכת')
-        } else {
-          console.log('ok')
-        }
-      })
+    if (itemNumber != "") {
+      this.inventoryService
+        .getCmptByitemNumber(itemNumber)
+        .subscribe((data) => {
+          if (data.length > 0) {
+            this.toastSrv.error("שים לב ! מספר זה קיים במערכת");
+          } else {
+            console.log("ok");
+          }
+        });
     }
   }
 
   fillSupplierDetails() {
-    if (this.item.suplierN != '') {
-      this.supplierService.getSuppliersByNumber(this.item.suplierN).subscribe(data => {
-        if (data) {
-          this.item.suplierName = data[0].suplierName;
-        }
-      })
+    if (this.item.suplierN != "") {
+      this.supplierService
+        .getSuppliersByNumber(this.item.suplierN)
+        .subscribe((data) => {
+          if (data) {
+            this.item.suplierName = data[0].suplierName;
+          }
+        });
     }
   }
 
   getProductsWithItem() {
     this.gettingProducts = true;
-    this.inventoryService.getAllProductsWithItem(this.item.componentN).subscribe(response => {
-      this.gettingProducts = false;
-      if (response.allProductsWithItem) this.item.connectedProducts = response.allProductsWithItem
-    })
+    this.inventoryService
+      .getAllProductsWithItem(this.item.componentN)
+      .subscribe((response) => {
+        this.gettingProducts = false;
+        if (response.allProductsWithItem)
+          this.item.connectedProducts = response.allProductsWithItem;
+      });
   }
 
   writeNewStockItem(itemType) {
     switch (itemType) {
-      case 'material': this.writeNewMaterial()
+      case "material":
+        this.writeNewMaterial();
         break;
-      case 'component' || 'product': this.writeNewComponent()
+      case "component":
+        defaultCmpt.itemType = "component";
+        this.writeNewComponent();
+        break;
+      case "product":
+        defaultCmpt.itemType = "product";
+        this.writeNewComponent();
         break;
     }
   }
 
   writeNewComponent() {
+    this.item = { ...defaultCmpt };
     if (this.newItem.componentN != "") {
-      this.newItem = { ...defaultCmpt }
-      this.inventoryService.addNewCmpt(this.newItem).subscribe(res => {
+      this.item.componentN = this.newItem.componentN;
+      this.inventoryService.addNewCmpt(this.item).subscribe((res) => {
         if (res == "itemExist") {
-          this.toastSrv.error('פריט כבר קיים במערכת')
+          this.toastSrv.error("פריט כבר קיים במערכת");
         } else if (res.componentN) {
-          this.item = res
+          this.item = res;
+          console.log(this.item);
           this.toastSrv.success("New stock item created");
           // this.resetResCmptData();
         }
-        this.modalService.dismissAll()
+        this.modalService.dismissAll();
       });
     } else {
-      this.toastSrv.error("Can't create new stock item without number")
-      this.modalService.dismissAll()
+      this.toastSrv.error("Can't create new stock item without number");
+      this.modalService.dismissAll();
     }
   }
 
   writeNewMaterial() {
-    this.item = { ...defaultMaterial }
+    this.item = { ...defaultMaterial };
     if (this.newItem.componentN != "") {
-      this.item.componentN = this.newItem.componentN
-      this.inventoryService.addNewMaterial(this.item).subscribe(res => {
+      this.item.componentN = this.newItem.componentN;
+      this.inventoryService.addNewMaterial(this.item).subscribe((res) => {
         if (res == "פריט קיים במערכת !") {
-          this.toastSrv.error("פריט כבר קיים במערכת !")
+          this.toastSrv.error("פריט כבר קיים במערכת !");
         } else {
-          this.item = res
+          this.item = res;
           this.toastSrv.success("New material item created");
         }
-        this.modalService.dismissAll()
+        this.modalService.dismissAll();
       });
     }
   }
 
-
   resetResCmptData() {
     this.item = {
-      whoPays: '',
+      whoPays: "",
       payingCustomersList: [],
-      componentN: '',
-      componentName: '',
-      componentNs: '',
-      suplierN: '',
-      suplierName: '',
-      componentType: '',
-      componentCategory: '',
-      img: '',
-      importFrom: '',
-      lastModified: '',
-      minimumStock: '',
-      needPrint: '',
-      packageType: '',
-      packageWeight: '',
-      remarks: '',
+      componentN: "",
+      componentName: "",
+      componentNs: "",
+      suplierN: "",
+      suplierName: "",
+      componentType: "",
+      componentCategory: "",
+      img: "",
+      importFrom: "",
+      lastModified: "",
+      minimumStock: "",
+      needPrint: "",
+      packageType: "",
+      packageWeight: "",
+      remarks: "",
       componentItems: [],
       input_actualMlCapacity: 0,
-    }
+    };
   }
 
   editItemDetails() {
     if (confirm("לעדכן פריט?")) {
-      if (this.item.itemType == 'component') {
-
-        this.inventoryService.updateCompt(this.item).subscribe(res => {
+      if (
+        this.item.itemType == "component" ||
+        this.item.itemType == "product"
+      ) {
+        this.inventoryService.updateCompt(this.item).subscribe((res) => {
           if (res._id) {
             // this.getAllMaterialLocations()
             this.toastSrv.success("פריט עודכן בהצלחה");
@@ -474,11 +544,10 @@ export class ItemIndexComponent implements OnInit {
             this.toastSrv.error("עדכון פריט נכשל");
           }
         });
-      }
-      else if (this.item.itemType == 'material') {
-        this.inventoryService.updateMaterial(this.item).subscribe(res => {
-          if (res.msg == 'noUpdate') {
-            this.toastSrv.error('עדכון פריט נכשל')
+      } else if (this.item.itemType == "material") {
+        this.inventoryService.updateMaterial(this.item).subscribe((res) => {
+          if (res.msg == "noUpdate") {
+            this.toastSrv.error("עדכון פריט נכשל");
           } else {
             if (res._id) {
               this.toastSrv.success("פריט עודכן בהצלחה");
@@ -489,113 +558,118 @@ export class ItemIndexComponent implements OnInit {
         });
       }
     }
-
   }
 
   uploadCoaMaster(fileInputEvent) {
     let file = fileInputEvent.target.files[0];
-    this.uploadService.uploadFileToS3Storage(file).subscribe(data => {
+    this.uploadService.uploadFileToS3Storage(file).subscribe((data) => {
       if (data.partialText) {
         this.item.coaMaster = data.partialText;
       }
-    })
+    });
   }
 
   uploadMsds(fileInputEvent) {
     let file = fileInputEvent.target.files[0];
-    this.uploadService.uploadFileToS3Storage(file).subscribe(data => {
+    this.uploadService.uploadFileToS3Storage(file).subscribe((data) => {
       if (data.partialText) {
         // this.tempHiddenImgSrc=data.partialText;
         this.item.msds = data.partialText;
       }
-    })
+    });
   }
-
 
   addComposition() {
     var obj = {
       compName: this.compositionName,
       compPercentage: this.compositionPercentage,
       compFunction: this.compostionFunction,
-      compCAS: this.compositionCAS
-    }
-    this.item.composition.push(obj)
-    this.compositionName = ''
-    this.compositionPercentage = null
-    this.compostionFunction = ''
-    this.compositionCAS = ''
+      compCAS: this.compositionCAS,
+    };
+    this.item.composition.push(obj);
+    this.compositionName = "";
+    this.compositionPercentage = null;
+    this.compostionFunction = "";
+    this.compositionCAS = "";
   }
 
   editComp(i) {
-    this.compEdit = i
+    this.compEdit = i;
   }
 
   deleteFromComposition(materialId, compositionName) {
     for (let i = 0; i < this.item.composition.length; i++) {
       if (this.item.composition[i].compName == compositionName) {
-        this.item.composition.splice(i, 1)
-        this.toastSrv.success('Composition Deleted')
+        this.item.composition.splice(i, 1);
+        this.toastSrv.success("Composition Deleted");
       }
     }
   }
 
-
-
   //pricing
 
   test() {
-    debugger
+    debugger;
   }
 
   addToPriceHistory() {
-    let componentN = this.item.componentN
-    let newPrice = this.item.manualPrice
-    let coin = this.item.manualCoin
-    let user = this.authService.loggedInUser.userName
-    this.inventoryService.updatePriceHistory(this.item.componentN, newPrice, coin, user).subscribe(data => {
-      this.item.priceUpdates.push({
-        price: newPrice,
-        coin, user,
-        date: new Date(),
-        type: 'manual'
-      })
-    })
-    this.toastSrv.info('', 'יש לשמור פריט')
-    this.allowPriceUpdate = false
-    this.modalService.dismissAll()
+    let componentN = this.item.componentN;
+    let newPrice = this.item.manualPrice;
+    let coin = this.item.manualCoin;
+    let user = this.authService.loggedInUser.userName;
+    this.inventoryService
+      .updatePriceHistory(this.item.componentN, newPrice, coin, user)
+      .subscribe((data) => {
+        this.item.priceUpdates.push({
+          price: newPrice,
+          coin,
+          user,
+          date: new Date(),
+          type: "manual",
+        });
+      });
+    this.toastSrv.info("", "יש לשמור פריט");
+    this.allowPriceUpdate = false;
+    this.modalService.dismissAll();
   }
 
   checkUpdatePriceValidity(type) {
-    this.allowPriceUpdate = false
-    this.allowPriceUpdate = this.item.manualCoin != undefined && this.item.manualPrice != undefined
+    this.allowPriceUpdate = false;
+    this.allowPriceUpdate =
+      this.item.manualCoin != undefined && this.item.manualPrice != undefined;
   }
 
   getSupplierPriceHistory(i) {
     //TODO: get supplier NUmber!!!
-    this.procuretServ.getAllOrdersFromSupplier(this.item.alternativeSuppliers[i].suplierNumber).subscribe(data => {
-      this.supPurchases = data.filter(purchase => purchase.status == 'open')
-      for (let order of data) {
-
-      }
-    })
+    this.procuretServ
+      .getAllOrdersFromSupplier(this.item.alternativeSuppliers[i].suplierNumber)
+      .subscribe((data) => {
+        this.supPurchases = data.filter(
+          (purchase) => purchase.status == "open"
+        );
+        for (let order of data) {
+        }
+      });
   }
-
 
   getAllMaterialLocations() {
-    this.inventoryService.getAllMaterialLocations().subscribe(data => {
+    this.inventoryService.getAllMaterialLocations().subscribe((data) => {
       this.materialLocations = data;
-    })
+    });
   }
 
-
   addSupplierToComponent() {
-    if (this.supplier.price == '' || this.supplier.price == '' || this.supplier.supplierName == '') {
-      this.toastSrv.error('אנא תמלא שם ספק , מחיר ומטבע ')
+    if (
+      this.supplier.price == "" ||
+      this.supplier.price == "" ||
+      this.supplier.supplierName == ""
+    ) {
+      this.toastSrv.error("אנא תמלא שם ספק , מחיר ומטבע ");
     } else {
-      this.item.alternativeSuppliers.push(this.supplier)
-      this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
+      this.item.alternativeSuppliers.push(this.supplier);
+      this.toastSrv.success("ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !");
       this.supplier = {
-        supplierName: '',
+        supplierName: "",
         price: "",
         coin: "",
         coinLoading: "",
@@ -605,16 +679,15 @@ export class ItemIndexComponent implements OnInit {
         alterName: "",
         subGroup: "",
         packageWeight: "",
-      }
+      };
     }
   }
 
   mainSupplier(isMain) {
-
     if (isMain) {
-      return 'lightgreen'
+      return "lightgreen";
     } else {
-      return ''
+      return "";
     }
   }
 
@@ -624,25 +697,27 @@ export class ItemIndexComponent implements OnInit {
 
   makeAsMainSupplier(index) {
     let id = this.item._id;
-    this.inventoryService.setAsMainSupplier(index, id).subscribe(data => {
+    this.inventoryService.setAsMainSupplier(index, id).subscribe((data) => {
       if (data) {
         this.item.alternativeSuppliers = data.alternativeSuppliers;
-        this.toastSrv.success('ספק ראשי עודכן בהצלחה!')
+        this.toastSrv.success("ספק ראשי עודכן בהצלחה!");
       }
-    })
+    });
   }
 
   addSupplierToMaterial() {
-
-    if (this.supplier.price == '' || this.supplier.price == '' || this.supplier.supplierName == '') {
-      this.toastSrv.error('אנא תמלא שם ספק , מחיר ומטבע ')
+    if (
+      this.supplier.price == "" ||
+      this.supplier.price == "" ||
+      this.supplier.supplierName == ""
+    ) {
+      this.toastSrv.error("אנא תמלא שם ספק , מחיר ומטבע ");
     } else {
+      this.item.alternativeSuppliers.push(this.supplier);
 
-      this.item.alternativeSuppliers.push(this.supplier)
-
-      this.toastSrv.success('ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !')
+      this.toastSrv.success("ספק נוסף בהצלחה , לא לשכוח לעדכן מידע !");
       this.supplier = {
-        supplierName: '',
+        supplierName: "",
         price: "",
         coin: "",
         coinLoading: "",
@@ -653,58 +728,66 @@ export class ItemIndexComponent implements OnInit {
         subGroup: "",
         packageWeight: "",
         expectedArrival: "",
-      }
+      };
     }
-
   }
 
-
   updateComponentVersion() {
-    this.editVersionForm.controls.user.setValue(this.authService.loggedInUser.userName)
-    this.item.versionNumber = this.editVersionForm.get('versionNumber').value
-    this.item.versionHistory.push(this.editVersionForm.value)
-    this.editItemDetails()
-    this.editVersionForm.reset()
+    this.editVersionForm.controls.user.setValue(
+      this.authService.loggedInUser.userName
+    );
+    this.item.versionNumber = this.editVersionForm.get("versionNumber").value;
+    this.item.versionHistory.push(this.editVersionForm.value);
+    this.editItemDetails();
+    this.editVersionForm.reset();
   }
 
   uploadImg(fileInputEvent) {
     let file = fileInputEvent.target.files[0];
-    this.uploadService.uploadFileToS3Storage(file).subscribe(data => {
+    this.uploadService.uploadFileToS3Storage(file).subscribe((data) => {
       if (data.partialText) {
         this.item.img = data.partialText;
-        this.editVersionForm.controls.image.setValue(this.item.img)
+        this.editVersionForm.controls.image.setValue(this.item.img);
       }
-    })
+    });
   }
 
   deleteSupplier(index) {
-    if (confirm('האם למחוק ספק ?')) {
+    if (confirm("האם למחוק ספק ?")) {
       this.item.alternativeSuppliers.splice(index, 1);
-      this.toastSrv.success('ספק הוסר בהצלחה , לא לשכוח לעדכן מידע !')
+      this.toastSrv.success("ספק הוסר בהצלחה , לא לשכוח לעדכן מידע !");
     }
   }
 
-  getLastOrdersItem(numOfOrders, type) {
+  getLastOrdersItem(numOfOrders) {
     this.fetchingOrders = true;
-    this.procuretServ.getLastOrdersForItem(this.item.componentN, numOfOrders).subscribe(orders => {
-      this.fetchingOrders = false;
-      if (orders && orders.length > 0) {
-        orders.map(order => {
-          if (order.coin) order.coin = order.coin.toUpperCase()
-          if (order.price) order.localPrice = order.price * this.currencies[order.coin]
-          return order
-        })
-        this.lastOrdersOfItem = orders;
-      }
-      else this.lastOrdersOfItem = [
-        { orderNumber: 'Sorry.', supplierName: 'No', status: 'orders', arrivedAmount: 'for this', quantity: 'item.' }
-      ]
-    })
+    this.procuretServ
+      .getLastOrdersForItem(this.item.componentN, numOfOrders)
+      .subscribe((orders) => {
+        this.fetchingOrders = false;
+        if (orders && orders.length > 0) {
+          orders.map((order) => {
+            if (order.coin) order.coin = order.coin.toUpperCase();
+            if (order.price)
+              order.localPrice = order.price * this.currencies[order.coin];
+            return order;
+          });
+          this.lastOrdersOfItem = orders;
+        } else
+          this.lastOrdersOfItem = [
+            {
+              orderNumber: "Sorry.",
+              supplierName: "No",
+              status: "orders",
+              arrivedAmount: "for this",
+              quantity: "item.",
+            },
+          ];
+      });
   }
 
   resetItemDetailsForm() {
-    this.itemDetailsForm.reset()
+    this.itemDetailsForm.reset();
     this.itemNames = [];
   }
-
 }

@@ -102,10 +102,7 @@ export class InvArrivalsComponent implements OnInit {
   async checkComponentN() {
     return new Promise((resolve, reject) => {
       this.inventoryService
-        .getCmptByNumber(
-          this.componentArrival.value.item,
-          this.componentArrival.value.itemType
-        )
+        .getCmptByitemNumber(this.componentArrival.value.item)
         .subscribe((data) => {
           if (data.length > 0) {
             this.noItem = false;
