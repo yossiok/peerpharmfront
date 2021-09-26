@@ -64,6 +64,7 @@
       <td>Category</td>
       <td>Materials</td>
       <td>PH</td>
+      <td>Viscosity</td>
       <td>Date Created</td>
       <td>Formule Type</td>
       <td>Approval</td>
@@ -115,7 +116,14 @@
         </span>
       </td>
       <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
-        {{ formule.phFrom }} {{ formule.phTo }}
+        {{ formule.phFrom }}<i class="fas fa-long-arrow-alt-right"></i>{{ formule.phTo }}
+      </td>
+      <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
+        <!-- <input #formulePhFrom type="text" [value]="formule.phFrom" />
+        <input #formulePhTo type="text" [value]="formule.phTo" /> -->
+      </td>
+      <td *ngIf="formule._id != EditRowId" (click)="edit(formule._id)">
+        {{ formule.viscoFrom }}<i class="fas fa-long-arrow-alt-right"></i>{{ formule.viscoTo }}
       </td>
       <td *ngIf="formule._id == EditRowId" (click)="edit(formule._id)">
         <input #formulePhFrom type="text" [value]="formule.phFrom" />
