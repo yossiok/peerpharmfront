@@ -1,3 +1,8 @@
+
+.responsive-main {
+    visibility: hidden;
+}
+
 .hour-qnt {
     width: 114px;
     height: 66px;
@@ -58,6 +63,13 @@
   }
 
 @media screen and (max-width: 405px) {
+
+    .responsive-main {
+        visibility: visible;
+    }
+    .responsive-main-2 {
+        visibility: hidden;
+    }
 
     .responsove-line {
         width: 10px;
