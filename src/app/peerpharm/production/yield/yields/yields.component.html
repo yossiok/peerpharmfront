@@ -1,15 +1,16 @@
 <div dir="rtl">
 
     <div class="row">
+        <div class="col-1"></div>
         <div class="col-1">
-            <div class="float-right">
-                <button class="btn btn-warning "><a routerLink="../yieldHistory">הסטוריה</a></button>
+            <div class="float-right responsive-hist-btn mt-5">
+                <button class="btn btn-warning"><a routerLink="../yieldHistory">הסטוריה</a></button>
             </div>
         </div>
-        <div class="col-9"></div>
+        <div class="col-8"></div>
         <div class="col-2">
-            <div class="float-right">
-                <p class="yield">מקרא:</p>
+            <p class="yield">מקרא:</p>
+            <div class="float-right responsive-index">
                 <button class="active_line" disabled>קו פעיל</button>
                 <button class="not_active" disabled>לא פעיל</button>
             </div>
@@ -19,7 +20,7 @@
 
     <h1 class="mt-5 text-center">עדכון נתוני ייצור</h1>
     <div class="d-flex flex-row justify-content-around mt-5">
-        <div *ngFor="let line of lines; let i = index">
+        <div class="responsove-line" *ngFor="let line of lines; let i = index">
             <button (click)="open(chooseAction, i)" class="btn wide"
                 [ngClass]="checkActiveLines(line)">{{line}}</button>
         </div>
@@ -49,11 +50,11 @@
                     <input type="text" disabled formControlName="productionLine" class="form-control">
                 </div>
 
-                <div class="col-2">
+                <div class="col-3">
                     <h3>נפתח ע"י:</h3>
                     <input type="text" disabled formControlName="userName" class="form-control">
                 </div>
-                <div class="col-8">
+                <div class="col-7">
                     <div class="float-right d-flex flex-column">
                         <h3>{{currentYield.value.productionDate | date: 'dd/MM/yyyy'}}</h3>
                         <button *ngIf="!yesterday" class="btn btn-secondary" (click)="openYesterday()">עדכן נתונים של
@@ -63,13 +64,13 @@
                 </div>
             </div>
             <div class="row mt-4">
-                <div class="col-2">
+                <div class="col-4">
                     <h3>תחילת עבודה</h3>
                     <input type="time" formControlName="startTime" class="form-control">
                 </div>
             </div>
-            <div class="row mt-4">
-                <div class="col-2 p-5" formGroupName="currentCleaning">
+            <div class="row mt-4 responsive-intervals">
+                <div class="col-4 p-5" formGroupName="currentCleaning">
 
                     <h3 class="mt-4">ניקיון</h3>
                     <label for="">התחלה</label>
@@ -102,7 +103,7 @@
 
                     </table>
                 </div>
-                <div class="col-2 p-5" formGroupName="currentSetup">
+                <div class="col-4 p-5" formGroupName="currentSetup">
                     <h3 class="mt-4">Set Up</h3>
                     <label for="">התחלה</label>
                     <input type="time" formControlName="startTime" class="form-control">
@@ -136,7 +137,7 @@
 
                     </table>
                 </div>
-                <div class="col-2 p-5" formGroupName="currentWaiting">
+                <div class="col-4 p-5" formGroupName="currentWaiting">
                     <h3 class="mt-4">זמן המתנה</h3>
                     <label for="">התחלה</label>
                     <input type="time" formControlName="startTime" class="form-control">
