@@ -290,8 +290,12 @@ export class AllFormulesComponent implements OnInit {
 
   copyFormule(formule) {
     if (confirm('האם ברצונך ליצור העתק של הפורמולה?')) {
-      this.formuleService.copyFormule(formule).subscribe(data => {
-        if (data) {
+      let formuleNumber = prompt('אנא הזן מספר פורמולה להעתק:')
+      let formuleCopy = { ...formule }
+      formuleCopy.formuleNumber = formuleNumber
+      this.formuleService.copyFormule(formuleCopy).subscribe(data => {
+        if (data.msg == 'Formule Number Allready Exist') this.toastSrv.error('מספר פורמולה קיים במערכת.', 'העתקה נכשלה')
+        else {
           this.allFormules.push(data);
           this.toastSrv.success('העתק בתחתית הדף.', 'פורמולה הועתקה בהצלחה !')
         }
