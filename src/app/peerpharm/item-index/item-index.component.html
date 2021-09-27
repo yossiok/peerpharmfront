@@ -294,29 +294,39 @@
     </div>
 
     <div class="row mt-4 d-flex flex-row justify-content-around">
-      <div>
-        <p class="h5">מספר ספק</p>
+      <div class=" fixNoaStupidStuff">
+        <p class="h5"> מהדורה <i class="fas fa-plus mr-2 text-success" ngbTooltip="שדרג מהדורה"
+            (click)="open(editVersionDetails)"> </i></p>
+
+        <input type="number" disabled class="small-input form-control d-inline " [(ngModel)]="item.versionNumber">
+      </div>
+      <!-- <div class=" fixNoaStupidStuff">
+        <p class="h5">שם ספק</p>
         <input class="form-control" list="suppliers" type='text' (change)="fillSupplierDetails()"
-          [(ngModel)]="item.suplierN">
+          [(ngModel)]="item.suplierName">
         <datalist id="suppliers">
-          <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
-            {{supplier.suplierNumber}}
+          <option *ngFor="let supplier of item.alternativeSuppliers" value="{{item.supplierNumber}}">
+            {{supplier.supplierName}}
           </option>
         </datalist>
+      </div> -->
+      <div class=" fixNoaStupidStuff">
+        <p class="h5">שם ספק (ראשי)</p>
+        <input class="form-control" type='text' [(ngModel)]="item.suplierName">
       </div>
-      <div>
-        <p class="h5">מק"ט ספק</p>
+      <div class=" fixNoaStupidStuff">
+        <p class="h5">מק"ט ספק (ראשי)</p>
         <input class="form-control" type='text' [(ngModel)]="item.componentNs">
       </div>
-      <div>
-        <p class="h5">מחיר ספק</p>
+      <div class=" fixNoaStupidStuff">
+        <p class="h5">מחיר ספק (ראשי)</p>
         <input class="form-control" type='text' [(ngModel)]="item.price">
       </div>
-      <div>
+      <div class=" fixNoaStupidStuff">
         <p class="h5">מלאי מינימום</p>
         <input class="form-control" type='number' [(ngModel)]="item.minimumStock">
       </div>
-      <div>
+      <div class=" fixNoaStupidStuff">
         <p class="h5">כמות מינימלית להזמנה</p>
         <input class="form-control" type='number' [(ngModel)]="item.minimumPurchaseAmount">
       </div>
@@ -1150,7 +1160,7 @@
   </div>
 </ng-template>
 
-<ng-template #editVersionDetails let-modal>
+<!--<ng-template #editVersionDetails let-modal>
 
   <div dir="rtl" class="modal-header">
     <h4 class="modal-title" id="modal-basic-title">שדרוג מהדורה לפריט {{item.componentN}}</h4>
@@ -1179,13 +1189,13 @@
         </div>
         <div class="form-group">
           <label>העלה תמונה עדכנית</label>
-          <img *ngIf="item.img!=''" [src]="item.img" style="max-height: 250px;"
+          <img *ngIf="item.image!=''" [src]="item.image" style="max-height: 250px;"
             class="hoverImg w-25 h-100 border border-success" alt="Item main image please wait ...">
-          <p *ngIf="item.img==''"><b> -No Image- </b></p>
+          <p *ngIf="item.image==''"><b> -No Image- </b></p>
           <input class="form-control" type='file' id="input_itemImgID" (change)='uploadImg($event)'
             style='display:block'>
           <!-- <input class="form-control" type="file"> -->
-        </div>
+<!--  </div>
       </div>
 
       <div class="row mt-2">
@@ -1201,7 +1211,7 @@
   <div class="modal-footer">
   </div>
 
-</ng-template>
+</ng-template> -->
 
 <ng-template #itemType let-modal>
   <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
@@ -1234,4 +1244,61 @@
   </div>
   <div class="modal-footer">
   </div>
+</ng-template>
+
+<ng-template #editVersionDetails let-modal>
+
+  <div dir="rtl" class="fixNoaStupidStuff modal-header">
+    <h4 class="modal-title" id="modal-basic-title">שדרוג מהדורה לפריט {{item.componentN}}</h4>
+    <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div dir="rtl" class="fixNoaStupidStuff modal-body">
+
+    <form [formGroup]="editVersionForm" (ngSubmit)="updateComponentVersion()">
+      <div class="fixNoaStupidStuff row mt-2">
+        <div class="form-group">
+          <label>תאריך</label>
+          <input class="form-control" type="date" value="{{ today | date:'yyyy-MM-dd' }}" disabled
+            formControlName="date">
+        </div>
+        <div class="form-group">
+          <label>מספר מהדורה</label>
+          <input class="form-control" type="number" formControlName="versionNumber">
+        </div>
+        <br>
+        <div class="fixNoaStupidStuff row mt-2">
+          <div class="form-group">
+            <label>תאור השינוי </label>
+            <p>(מדוע משדרגים את המהדורה?)</p>
+            <textarea class="form-control" formControlName="description" cols="30" rows="10"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>העלה תמונה עדכנית</label>
+          <img *ngIf="item.image!=''" [src]="item.image" style="max-height: 250px;"
+            class="hoverImg w-25 h-100 border border-success" alt="Item main image please wait ...">
+          <p *ngIf="item.image ==''"><b> -No Image- </b></p>
+          <input class="form-control" type='file' id="input_itemImgID" (change)='uploadImg($event)'
+            style='display:block'>
+          <!--
+           <input class="form-control" type="file">
+         -->
+        </div>
+      </div>
+
+      <div class="fixNoaStupidStuff row mt-2">
+        <button type="submit" class="btn btn-primary" (click)="modal.dismiss('Cross click')">
+          שדרג מהדורה
+        </button>
+      </div>
+    </form>
+
+
+  </div>
+
+  <div class="modal-footer">
+  </div>
+
 </ng-template>

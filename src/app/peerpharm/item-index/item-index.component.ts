@@ -353,7 +353,6 @@ export class ItemIndexComponent implements OnInit {
       .getComplexItemMovements(this.itemMovementForm.value)
       .subscribe((data) => {
         this.fetchingMovements = false;
-        console.log(data);
         this.item = undefined;
         this.itemMovements = data;
         this.itemMovementsCopy = data;
@@ -374,7 +373,6 @@ export class ItemIndexComponent implements OnInit {
         if (item.msg) this.toastSrv.error(item.msg);
         else {
           this.item = item;
-          console.log(item);
           this.getLastOrdersItem(20);
         }
       });
@@ -478,7 +476,6 @@ export class ItemIndexComponent implements OnInit {
           this.toastSrv.error("פריט כבר קיים במערכת");
         } else if (res.componentN) {
           this.item = res;
-          console.log(this.item);
           this.toastSrv.success("New stock item created");
           // this.resetResCmptData();
         }
@@ -539,6 +536,7 @@ export class ItemIndexComponent implements OnInit {
         this.inventoryService.updateCompt(this.item).subscribe((res) => {
           if (res._id) {
             // this.getAllMaterialLocations()
+            this.getItemData();
             this.toastSrv.success("פריט עודכן בהצלחה");
           } else {
             this.toastSrv.error("עדכון פריט נכשל");
@@ -550,6 +548,7 @@ export class ItemIndexComponent implements OnInit {
             this.toastSrv.error("עדכון פריט נכשל");
           } else {
             if (res._id) {
+              this.getItemData();
               this.toastSrv.success("פריט עודכן בהצלחה");
             } else {
               this.toastSrv.error("עדכון פריט נכשל");
@@ -700,6 +699,10 @@ export class ItemIndexComponent implements OnInit {
     this.inventoryService.setAsMainSupplier(index, id).subscribe((data) => {
       if (data) {
         this.item.alternativeSuppliers = data.alternativeSuppliers;
+        this.item.suplierName = data.suplierName;
+        this.item.componentNs = data.componentNs;
+        this.item.price = data.price;
+
         this.toastSrv.success("ספק ראשי עודכן בהצלחה!");
       }
     });
