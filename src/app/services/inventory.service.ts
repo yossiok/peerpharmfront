@@ -568,6 +568,11 @@ export class InventoryService {
       .pipe(map((res) => res.json()));
   }
 
+  getLastWHReception() {
+    let url = this.baseUrl + "itemmovement/lastReception";
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
   updateMaterial(objToUpdate) {
     let url = this.baseUrl + "material/update";
     return this.http
