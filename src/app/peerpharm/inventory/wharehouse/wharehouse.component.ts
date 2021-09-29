@@ -971,4 +971,8 @@ export class WharehouseComponent implements OnInit {
       }
     }
   }
+
+  initTabByName(name) {
+    this.dirSet("stkManagment", name);
+  }
 }

@@ -61,14 +61,15 @@ export class InvArrivalsComponent implements OnInit {
       this.componentArrival.controls.item.setValue(this.itemNumber);
     }
     this.getSuppliers();
+    this.getHistoricalReceptions();
+  }
+
+  getHistoricalReceptions() {
     this.warehouseService.inPrintCalled$.subscribe((data) => {
-      console.log(data);
       this.certificateReception = data.logs[0].warehouseReception;
-      console.log(this.certificateReception);
       this.today = data.dateAndTime;
       data.logs.forEach((element) => {
         element.position = element.shell_position_in_whareHouse_Origin;
-        console.log(element);
       });
       this.allArrivals = data.logs;
 
@@ -227,13 +228,20 @@ export class InvArrivalsComponent implements OnInit {
           //set certificate data
           this.certificateReception =
             data.allResults[0].savedMovement.warehouseReception;
-          for (let arrival of this.allArrivals) {
-            arrival.suplierN = data.allResults.find(
-              (a) => a.item == arrival.item
-            ).suplierN;
-            arrival.itemName = data.allResults.find(
-              (a) => a.item == arrival.item
-            ).componentName;
+          // for (let arrival of this.allArrivals) {
+          //   arrival.suplierN = data.allResults.find(
+          //     (a) => a.item == arrival.item
+          //   ).suplierN;
+          //   arrival.itemName = data.allResults.find(
+          //     (a) => a.item == arrival.item
+          //   ).componentName;
+          // }
+          for (let i = 0; i < this.allArrivals.length; i++) {
+            this.allArrivals[i].item = data.allResults[i].savedMovement.item;
+            this.allArrivals[i].itemName =
+              data.allResults[i].savedMovement.itemName;
+            this.allArrivals[i].componentNs =
+              data.allResults[i].savedMovement.componentNs;
           }
           this.sending = false;
           this.toastr.success("שינויים נשמרו בהצלחה", "נשמר");

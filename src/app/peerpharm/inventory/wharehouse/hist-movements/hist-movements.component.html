@@ -1,10 +1,10 @@
 <div dir="rtl">
   <form [formGroup]="historicalMovements" (ngSubmit)="getReceptions()">
-    <h3>הדפסת תעודות יציאה היסטוריות</h3>
+    <h3>שחזור תעודות היסטוריות</h3>
 
     <div class="row mt-2">
       <div class="col-2">
-        <label for="">מספר תעודת יציאה</label>
+        <label for="">מספר תעודה</label>
         <input type="text" class="form-control" formControlName="warehouseReception">
       </div>
       <div class="col-2">
@@ -24,7 +24,7 @@
         </select>
       </div>
       <div class="col-2">
-        <label for="">מתאריך</label>
+        <label for="">מתאריך (שדה חובה)</label>
         <input type="date" class="form-control" formControlName="fromDate">
       </div>
       <div class="col-2">
@@ -58,7 +58,7 @@
       </div>
       <div class="col-1"></div>
       <div class="col-2 d-flex flex-column justify-content-end">
-        <button type="button" class="btn btn-secondary" (click)="historicalMovements.reset()">נקה נתונים</button>
+        <button type="button" class="btn btn-secondary" (click)="resetTable()">נקה נתונים</button>
       </div>
     </div>
   </form>
