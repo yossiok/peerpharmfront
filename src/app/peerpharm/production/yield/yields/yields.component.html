@@ -61,12 +61,13 @@
                 <div [ngClass]="getHeadingWidth(7)">
                     <div class="float-right d-flex flex-column">
                         <h3>{{currentYield.value.productionDate | date: 'dd/MM/yyyy'}}</h3>
-                        <input type="date" #desiredDate>
+                        <input type="date" #desiredDate class="form-control m-2">
                         <!-- <button *ngIf="!yesterday" class="btn btn-secondary" (click)="openYesterday()">עדכן נתונים של
                             אתמול</button> -->
-                        <button *ngIf="!yesterday" class="btn btn-secondary" (click)="openDesiredDate(desiredDate)">עדכן
-                            נתונים בדיעבד</button>
-                        <button *ngIf="yesterday" class="btn btn-primary" (click)="switchLine()">עבור להיום</button>
+                        <button [style.cursor]="desiredDate.value ? 'pointer' : 'not-allowed'"
+                            [disabled]="!desiredDate.value" class="btn btn-secondary m-2"
+                            (click)="openDesiredDate(desiredDate)">עבור לתאריך</button>
+                        <button *ngIf="yesterday" class="btn btn-primary m-2" (click)="switchLine()">עבור להיום</button>
                     </div>
                 </div>
             </div>
@@ -241,7 +242,8 @@
         </div>
         <div class="m-5">
             <input type="date" class="form-control" #desiredDate2>
-            <button class="btn btn-secondary h-25 w-75" (click)="openDesiredDate(desiredDate2)"
+            <button class="btn btn-secondary h-25 w-75" [disabled]="!desiredDate2.value"
+                [style.cursor]="desiredDate2.value ? 'pointer' : 'not-allowed'" (click)="openDesiredDate(desiredDate2)"
                 (click)="d('Cross click')">עדכון
                 נתונים בדיעבד</button>
         </div>
