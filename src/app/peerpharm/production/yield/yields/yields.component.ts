@@ -129,12 +129,21 @@ export class YieldsComponent implements OnInit {
 
   }
 
-  openYesterday() {
+  // openYesterday() {
+  //   this.yesterday = true
+  //   let today = new Date();
+  //   let yesterday = new Date();
+  //   yesterday.setDate(today.getDate() - 1);
+  //   this.productionService.getLineYieldByDate(this.currentLine, yesterday).subscribe(yieldData => {
+  //     yieldData.startTime = yieldData.startTime ? yieldData.startTime : "08:00"
+  //     this.currentYield.reset()
+  //     this.currentYield.patchValue(yieldData)
+  //   })
+  // }
+
+  openDesiredDate(date) {
     this.yesterday = true
-    let today = new Date();
-    let yesterday = new Date();
-    yesterday.setDate(today.getDate() - 1);
-    this.productionService.getLineYieldByDate(this.currentLine, yesterday).subscribe(yieldData => {
+    this.productionService.getLineYieldByDate(this.currentLine, date.value).subscribe(yieldData => {
       yieldData.startTime = yieldData.startTime ? yieldData.startTime : "08:00"
       this.currentYield.reset()
       this.currentYield.patchValue(yieldData)

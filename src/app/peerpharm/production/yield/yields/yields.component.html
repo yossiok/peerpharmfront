@@ -61,8 +61,11 @@
                 <div [ngClass]="getHeadingWidth(7)">
                     <div class="float-right d-flex flex-column">
                         <h3>{{currentYield.value.productionDate | date: 'dd/MM/yyyy'}}</h3>
-                        <button *ngIf="!yesterday" class="btn btn-secondary" (click)="openYesterday()">עדכן נתונים של
-                            אתמול</button>
+                        <input type="date" #desiredDate>
+                        <!-- <button *ngIf="!yesterday" class="btn btn-secondary" (click)="openYesterday()">עדכן נתונים של
+                            אתמול</button> -->
+                        <button *ngIf="!yesterday" class="btn btn-secondary" (click)="openDesiredDate(desiredDate)">עדכן
+                            נתונים בדיעבד</button>
                         <button *ngIf="yesterday" class="btn btn-primary" (click)="switchLine()">עבור להיום</button>
                     </div>
                 </div>
@@ -237,8 +240,10 @@
                 חדש</button>
         </div>
         <div class="m-5">
-            <button class="btn btn-secondary h-25 w-75" (click)="openYesterday()" (click)="d('Cross click')">עדכון
-                נתונים של אתמול</button>
+            <input type="date" class="form-control" #desiredDate2>
+            <button class="btn btn-secondary h-25 w-75" (click)="openDesiredDate(desiredDate2)"
+                (click)="d('Cross click')">עדכון
+                נתונים בדיעבד</button>
         </div>
     </div>
 </ng-template>
