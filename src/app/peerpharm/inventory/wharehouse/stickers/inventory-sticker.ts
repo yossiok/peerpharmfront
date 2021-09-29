@@ -47,7 +47,7 @@ export class InventoryStickerComponent implements OnInit {
             this.itemName = data[0].componentName
         })
         this.inventoryService.getLastWHReception().subscribe(data => {
-            this.certifNumber = data.warehouseReception
+            this.certifNumber = Number(data.warehouseReception) + 1
         })
         this.userName = this.authService.loggedInUser.userName
     }
