@@ -38,7 +38,8 @@
         Enter 3 or more characters</div>
       <button class="d-inline" type="button" (click)="getNames(name)">Find</button>
       <select class="form-control" #nameSelect (change)="setItemDetailsNumber($event)">
-        <option *ngFor="let itemname of itemNames" [value]="itemname.componentN">{{itemname.componentName}}</option>
+        <option *ngFor="let itemname of itemNames" [value]="itemname.componentN">{{itemname.componentN}} -
+          {{itemname.componentName}}</option>
       </select>
     </div>
     <div class="col-1">

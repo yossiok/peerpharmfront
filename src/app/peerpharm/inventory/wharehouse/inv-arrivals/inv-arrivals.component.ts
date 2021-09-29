@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { InventoryService } from "src/app/services/inventory.service";
 import { Procurementservice } from "src/app/services/procurement.service";
@@ -15,6 +16,7 @@ export class InvArrivalsComponent implements OnInit {
   @ViewChild("nameSelect") nameSelect: ElementRef;
   @ViewChild("printBtn2") printBtn2: ElementRef;
   @ViewChild("first") first: ElementRef;
+  @ViewChild("invstck") invstck: ElementRef;
   @Input() allWhareHouses: any[];
   @Input() reallyAllWhareHouses: any[];
   @Input() itemNumber: number;
@@ -31,7 +33,7 @@ export class InvArrivalsComponent implements OnInit {
   sending: boolean = false;
   disabled: boolean = false;
   noItem: boolean = true;
-  printSticker: boolean = false;
+  showStickerForm: boolean = false
 
   componentArrival: FormGroup = new FormGroup({
     itemType: new FormControl("component", Validators.required),
@@ -45,14 +47,16 @@ export class InvArrivalsComponent implements OnInit {
     supplier: new FormControl(""),
     purchaseOrder: new FormControl(null),
   });
+  stickerItem: any;
 
   constructor(
     private inventoryService: InventoryService,
     private toastr: ToastrService,
     private supplierService: SuppliersService,
     private purchaseService: Procurementservice,
-    private warehouseService: WarehouseService
-  ) {}
+    private warehouseService: WarehouseService,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit(): void {
     setTimeout(() => this.first.nativeElement.focus(), 500);
@@ -77,6 +81,18 @@ export class InvArrivalsComponent implements OnInit {
         this.printBtn2.nativeElement.click();
       }, 500);
     });
+  }
+
+  open(modal) {
+    this.modalService.open(modal)
+  }
+
+  setStickerDetails(item) {
+    this.stickerItem = { ...item }
+  }
+
+  loadStickerComponent() {
+    this.invstck.nativeElement.ngOnInit()
   }
 
   getSuppliers() {
