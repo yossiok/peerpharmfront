@@ -27,7 +27,8 @@ export class YieldHistoryComponent implements OnInit {
 
   getAllYieldsByLine() {
     this.productionService.getAllYieldsByLine(this.line).subscribe(res => {
-      if (res.length > 0) {
+      if (res.msg == "No results are found") this.yields = []
+      else if (res.length > 0) {
         res.sort((a, b) => {
           let aDate = new Date(a.productionDate).getTime()
           let bDate = new Date(b.productionDate).getTime()

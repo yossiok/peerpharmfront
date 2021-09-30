@@ -46,29 +46,39 @@
             </div>
         </div>
     </div>
-    <div *ngIf="currentYield.value.productionDate" class="m-4 border border-dark p-5">
+    <div class="row mt-5" *ngIf="loading">
+        <div class="smallLoader"></div>
+    </div>
+    <div *ngIf="currentYield.value.productionDate && !loading" class="m-4 border border-dark p-5">
         <form [formGroup]="currentYield">
             <div class="row responsive-heading">
                 <div [ngClass]="getHeadingWidth(2)">
-                    <h3>קו</h3>
-                    <input type="text" disabled formControlName="productionLine" class="form-control">
+                    <h2 class="text-info m-5">קו {{currentYield.value.productionLine}}</h2>
+                    <!-- <input type="text" disabled formControlName="productionLine" class="form-control"> -->
                 </div>
 
-                <div [ngClass]="getHeadingWidth(3)">
-                    <h3>נפתח ע"י:</h3>
-                    <input type="text" disabled formControlName="userName" class="form-control">
-                </div>
-                <div [ngClass]="getHeadingWidth(7)">
+                <div [ngClass]="getHeadingWidth(2)">
                     <div class="float-right d-flex flex-column">
-                        <h3>{{currentYield.value.productionDate | date: 'dd/MM/yyyy'}}</h3>
-                        <input type="date" #desiredDate class="form-control m-2">
-                        <!-- <button *ngIf="!yesterday" class="btn btn-secondary" (click)="openYesterday()">עדכן נתונים של
-                            אתמול</button> -->
-                        <button [style.cursor]="desiredDate.value ? 'pointer' : 'not-allowed'"
-                            [disabled]="!desiredDate.value" class="btn btn-secondary m-2"
-                            (click)="openDesiredDate(desiredDate)">עבור לתאריך</button>
-                        <button *ngIf="yesterday" class="btn btn-primary m-2" (click)="switchLine()">עבור להיום</button>
+                        <h3 class="text-info m-5">{{currentYield.value.productionDate | date: 'dd/MM/yyyy'}}</h3>
                     </div>
+                </div>
+                <div [ngClass]="getHeadingWidth(2)">
+                </div>
+                <div [ngClass]="getHeadingWidth(2)">
+                    <input type="date" #desiredDate class="form-control m-2">
+                    <!-- <button *ngIf="!yesterday" class="btn btn-secondary" (click)="openYesterday()">עדכן נתונים של
+                        אתמול</button> -->
+                    <button [style.cursor]="desiredDate.value ? 'pointer' : 'not-allowed'"
+                        [disabled]="!desiredDate.value" class="btn btn-secondary m-2"
+                        (click)="openDesiredDate(desiredDate)">עבור לתאריך</button>
+                    <button *ngIf="yesterday" class="btn btn-primary m-2" (click)="switchLine()">עבור להיום</button>
+                </div>
+                <div [ngClass]="getHeadingWidth(3)">
+                </div>
+                <div [ngClass]="getHeadingWidth(1)">
+                    <h3>נפתח ע"י:</h3>
+                    <h3 class="text-primary">{{currentYield.value.userName}}</h3>
+                    <!-- <input type="text" disabled formControlName="userName" class="form-control"> -->
                 </div>
             </div>
             <div class="row mt-4">

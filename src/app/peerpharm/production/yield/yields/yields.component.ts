@@ -13,10 +13,13 @@ import { ProductionService } from 'src/app/services/production.service';
 export class YieldsComponent implements OnInit {
 
   screenGood: boolean = true
+  loading: boolean = false
   yesterday: boolean;
+
   lineIndex: number
   currentLine: string = ""
   saveYiealdInterval: any = null;
+
   yields: any;
   lines: any = ["1", "2", "3", "4", "5", "6", "7M", "8", "9", "T", "S"]
   currentYield: FormGroup = new FormGroup({
@@ -118,9 +121,11 @@ export class YieldsComponent implements OnInit {
 
 
   switchLine(i?) {
+    this.loading = true
     this.yesterday = false
     this.currentLine = this.lines[this.lineIndex]
     this.productionService.getLineYieldByDate(this.currentLine, new Date()).subscribe(yieldData => {
+      this.loading = false
       yieldData.startTime = yieldData.startTime ? yieldData.startTime : "08:00"
       this.currentYield.reset()
       this.currentYield.patchValue(yieldData)
@@ -142,8 +147,10 @@ export class YieldsComponent implements OnInit {
   // }
 
   openDesiredDate(date) {
+    this.loading = true
     this.yesterday = true
     this.productionService.getLineYieldByDate(this.currentLine, date.value).subscribe(yieldData => {
+      this.loading = false
       yieldData.startTime = yieldData.startTime ? yieldData.startTime : "08:00"
       this.currentYield.reset()
       this.currentYield.patchValue(yieldData)
