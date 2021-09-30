@@ -364,7 +364,7 @@ export class YieldsComponent implements OnInit {
   durationToPresent(duration) {
     let number = duration.toString().split('.')
     let hour = number[0]
-    let decimal = number[1].slice(0, 2)
+    let decimal = number[1] ? number[1].slice(0, 2) : 0
     decimal = "0." + decimal;
     let minutes = Math.round(decimal * 60)
     if (minutes < 10) return `${hour}:0${minutes}`
