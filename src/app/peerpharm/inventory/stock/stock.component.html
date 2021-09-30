@@ -1340,7 +1340,9 @@
                 <tbody id='amountsInWhTbody'>
                   <tr *ngFor="let shelfAmount of itemAmountsData">
                     <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.ps}}</td>
-                    <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.sumShelfAmounts | number}}</td>
+                    <td *ngIf="shelfAmount.whName==whName"
+                      [ngStyle]="{'color': shelfAmount.sumShelfAmounts >=0 ? 'blue' : 'red' }">
+                      {{shelfAmount.sumShelfAmounts | number}}</td>
                     <!-- <td *ngIf="shelfAmount.whName==whName">{{shelfAmount.batchNumArr}}</td> -->
                   </tr>
                 </tbody>

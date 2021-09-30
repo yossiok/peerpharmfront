@@ -35,7 +35,7 @@
         <select class="form-control" formControlName="shell_id_in_whareHouse">
           <option disabled value="">בחר מדף</option>
           <option *ngFor="let shellNum of shellNums" [disabled]="shellNum.position == 'MINUS'"
-            [value]="shellNum.shell_id_in_whareHouse">
+            [value]="shellNum.shell_id_in_whareHouse" [ngStyle]="{'color': shellNum.amount >=0 ? 'black' : 'red' }">
             {{shellNum.position}}: {{shellNum.amount}} pcs
           </option>
         </select>

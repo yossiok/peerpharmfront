@@ -1,71 +1,69 @@
 <div dir="rtl">
 
 
-    <form [formGroup]="shelfChange" (ngSubmit)="changeShelf()">
-        <h3>שינוי מדף</h3>
-        <div class="row mt-4">
+  <form [formGroup]="shelfChange" (ngSubmit)="changeShelf()">
+    <h3>שינוי מדף</h3>
+    <div class="row mt-4">
 
-            <div class="col-2">
-                <label>מחסן</label>
-                <select class="form-control" formControlName="whareHouseID" (change)="itemNumber ? getShelfs() : null"
-                    #first (change)="getAllShellsOfWhareHouse()">
-                    <option disabled value="">בחר מחסן</option>
-                    <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
-                    </option>
-                </select>
-            </div>
+      <div class="col-2">
+        <label>מחסן</label>
+        <select class="form-control" formControlName="whareHouseID" (change)="itemNumber ? getShelfs() : null" #first
+          (change)="getAllShellsOfWhareHouse()">
+          <option disabled value="">בחר מחסן</option>
+          <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
+          </option>
+        </select>
+      </div>
 
-            <div *ngIf="!disabled" class="col-2">
-                <label>
-                    פריט (לפי מספר)
-                </label>
-                <input type="number" [disabled]="disabled" formControlName="item" (change)="getShelfs()"
-                    class="form-control">
-            </div>
-            <div *ngIf="!disabled" class="col-2">
-                <label class="d-block">
-                    (לפי שם) פריט
-                </label>
-                <input class="d-inline form-control" type="text" #name>
-                <button class="d-inline" type="button" (click)="getNames(name)">Find</button>
-                <select class="form-control" (change)="setItemDetailsNumber($event)">
-                    <option *ngFor="let itemName of itemNames" [value]="itemName.componentN">{{itemName.componentName}}
-                    </option>
-                </select>
-            </div>
-            <div class="col-2">
+      <div *ngIf="!disabled" class="col-2">
+        <label>
+          פריט (לפי מספר)
+        </label>
+        <input type="number" [disabled]="disabled" formControlName="item" (change)="getShelfs()" class="form-control">
+      </div>
+      <div *ngIf="!disabled" class="col-2">
+        <label class="d-block">
+          (לפי שם) פריט
+        </label>
+        <input class="d-inline form-control" type="text" #name>
+        <button class="d-inline" type="button" (click)="getNames(name)">Find</button>
+        <select class="form-control" (change)="setItemDetailsNumber($event)">
+          <option *ngFor="let itemName of itemNames" [value]="itemName.componentN">{{itemName.componentName}}
+          </option>
+        </select>
+      </div>
+      <div class="col-2">
 
-                <label>מדף ישן</label>
-                <select class="form-control" formControlName="old_shell_id_in_whareHouse">
-                    <option disabled value="">בחר מדף</option>
-                    <option *ngFor="let shellNum of shelfsWithItem" [disabled]="shellNum.position == 'MINUS'"
-                        [value]="shellNum.shell_id_in_whareHouse">
-                        {{shellNum.position}} - {{shellNum.amount}} pcs
-                    </option>
-                </select>
+        <label>מדף ישן</label>
+        <select class="form-control" formControlName="old_shell_id_in_whareHouse">
+          <option disabled value="">בחר מדף</option>
+          <option *ngFor="let shellNum of shelfsWithItem" [disabled]="shellNum.position == 'MINUS'"
+            [value]="shellNum.shell_id_in_whareHouse" [ngStyle]="{'color': shellNum.amount >=0 ? 'black' : 'red' }">
+            {{shellNum.position}} - {{shellNum.amount}} pcs
+          </option>
+        </select>
 
-                <label>כמות</label>
-                <input type="number" formControlName="amount" class="form-control">
+        <label>כמות</label>
+        <input type="number" formControlName="amount" class="form-control">
 
-                <label>מדף חדש</label>
-                <select class="form-control" formControlName="new_shell_id_in_whareHouse">
-                    <option disabled value="">בחר מדף</option>
-                    <option *ngFor="let shellNum of shellNums" [disabled]="shellNum.position == 'MINUS'"
-                        [value]="shellNum._id">
-                        {{shellNum.position}}
-                    </option>
-                </select>
+        <label>מדף חדש</label>
+        <select class="form-control" formControlName="new_shell_id_in_whareHouse">
+          <option disabled value="">בחר מדף</option>
+          <option *ngFor="let shellNum of shellNums" [disabled]="shellNum.position == 'MINUS'" [value]="shellNum._id">
+            {{shellNum.position}}
+          </option>
+        </select>
 
-            </div>
-            <div class="col-2 d-flex flex-column justify-content-around">
-                <div *ngIf="sending" class="smallerLoader"></div>
-                <button type="submit" *ngIf="!sending" [disabled]="!shelfChange.valid"
-                    [style.cursor]="shelfChange.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">העבר</button>
-                <button type="button" class="btn btn-secondary" (click)="shelfChange.reset()">נקה נתונים</button>
-            </div>
-            <div class="col-2">
-            </div>
-        </div>
-    </form>
+      </div>
+      <div class="col-2 d-flex flex-column justify-content-around">
+        <div *ngIf="sending" class="smallerLoader"></div>
+        <button type="submit" *ngIf="!sending" [disabled]="!shelfChange.valid"
+          [style.cursor]="shelfChange.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">העבר</button>
+        <button type="button" class="btn btn-secondary" (click)="shelfChange.reset()">נקה נתונים</button>
+      </div>
+      <div class="col-2">
+      </div>
+    </div>
+  </form>
 
 </div>
