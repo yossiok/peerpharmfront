@@ -7,7 +7,7 @@
         </div>
         <div class="col-4">
           <ul class="nav nav-tabs justify-content-end">
-            <li class="nav-item">
+            <li *ngIf="isJew" class="nav-item">
               <a class="nav-link" style="cursor:pointer;" (click)="dirSet('whManagment','')"
                 [ngStyle]="{'background-color': WhMngNavBtnColor}">ניהול מחסן</a>
             </li>
@@ -172,10 +172,11 @@
           <button (click)="dirSet('stkManagment','inCertif')" class='btn btn-info form-control'>קבלת סחורה
             מתעודה</button>
         </div> -->
-          <div class="col-3">
+          <div *ngIf="isJew" class="col-3">
             <button [ngClass]="dir == 'WHChange' ? 'btn-success' : 'btn-outline-success'"
               (click)="dirSet('stkManagment','WHChange')" class='btn form-control'>בין מחסנים</button>
           </div>
+          <div *ngIf="!isJew" class="col-3"></div>
           <div class="col-3">
             <button [ngClass]="dir == 'shelfChange' ? 'btn-secondary' : 'btn-outline-secondary'"
               (click)="dirSet('stkManagment','shelfChange')" class='btn form-control'>שינוי מדף</button>
@@ -207,7 +208,7 @@
         </div>
 
 
-        <div class="m-2 p-4 border border-warning text-info bg-light">
+        <div *ngIf="isJew" class="m-2 p-4 border border-warning text-info bg-light">
           <app-hist-movements [allWhareHouses]="whareHouses" [reallyAllWhareHouses]="allWhareHouses"
             (initTabByName)="initTabByName($event)"></app-hist-movements>
         </div>
