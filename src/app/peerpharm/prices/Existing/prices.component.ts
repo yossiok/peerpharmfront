@@ -181,8 +181,8 @@ export class PricesComponent implements OnInit {
             }
           }
         }
-        if(!coin) reject(`Item ${component.componentN}`)
-        if(!isNaN(componentPricing.price)) {
+        // if(!coin) reject(`Item ${component.componentN}`) // crashing table, removed
+        if (!isNaN(componentPricing.price)) {
           componentPricing.price = componentPricing.price * this.currencies[0][coin.toUpperCase()]
           if (component.componentType == "master_carton") componentPricing.price = componentPricing.price / Number(this.item.PcsCarton)
         }
