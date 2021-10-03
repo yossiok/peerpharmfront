@@ -271,6 +271,10 @@ export class FormdetailsComponent implements OnInit {
 
   }
 
+  goBack(){
+    window.history.back();
+  }
+
   createFormDetails(){
     this.form.quantity_Produced = 0;
     this.formsService.createFormDetails(this.form).subscribe(data=>{
