@@ -700,6 +700,7 @@ export class ItemIndexComponent implements OnInit {
       if (data) {
         this.item.alternativeSuppliers = data.alternativeSuppliers;
         this.item.suplierName = data.suplierName;
+        this.item.suplierN = data.suplierN;
         this.item.componentNs = data.componentNs;
         this.item.price = data.price;
 

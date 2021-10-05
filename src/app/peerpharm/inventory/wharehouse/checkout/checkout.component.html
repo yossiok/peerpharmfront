@@ -53,6 +53,12 @@
       <div class="col-1">
       </div>
     </div>
+    <div class="row mt-4">
+      <div class="col-8"></div>
+      <div class="col-2" *ngIf="itemNames">
+        <img [src]=itemNames[0].img alt=" חסרה תמונה ראשית" class="pictureTabImg">
+      </div>
+    </div>
   </form>
 
   <!-- All Arrivals -->

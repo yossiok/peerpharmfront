@@ -7,3 +7,13 @@
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
   }
+
+  .pictureTabImg {
+    transition: 0.3s;
+    max-height:150px;
+    max-width:100px;
+  }
+  .pictureTabImg:hover{
+    transform: scale(3);
+      
+  }

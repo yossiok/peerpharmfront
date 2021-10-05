@@ -39,10 +39,12 @@
             {{shellNum.position}}: {{shellNum.amount}} pcs
           </option>
         </select>
-        <span [ngbTooltip]="noItem ? 'יש להזין מספר פריט תקין' : ''">
-          <button type="button" [disabled]="noItem" [style.cursor]="noItem ? 'not-allowed' : 'pointer'"
-            (click)="getAllShellsOfWhareHouse()" class="btn btn-warning">הכנס למדף חדש</button>
-        </span>
+        <div class="mt-1">
+          <span [ngbTooltip]="noItem ? 'יש להזין מספר פריט תקין' : ''">
+            <button type="button" [disabled]="noItem" [style.cursor]="noItem ? 'not-allowed' : 'pointer'"
+              (click)="getAllShellsOfWhareHouse()" class="btn btn-warning">הכנס למדף חדש</button>
+          </span>
+        </div>
       </div>
       <div class="col-2">
         <label>כמות</label>
@@ -79,6 +81,10 @@
             {{purchase.orderNumber}}
           </option>
         </select>
+      </div>
+      <div class="col-4"></div>
+      <div class="col-2" *ngIf="itemNames">
+        <img [src]=itemNames[0].img alt="תמונה ראשית" class="pictureTabImg">
       </div>
     </div>
     <!-- <div class="row">

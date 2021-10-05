@@ -862,7 +862,7 @@
                   <button *ngIf="!supplier.isMain" placement="bottom" ngbTooltip="הגדר את הספק כספק הראשי של הפריט"
                     (click)="makeAsMainSupplier(i)" class="btn btn-info">הגדר כספק ראשי</button>
                 </td>
-                <td>{{supplier.supplierName}}</td>
+                <td>{{supplier.supplierName}} - {{supplier.supplierNumber}}</td>
                 <td *ngIf="rowNumber != i">
                   {{supplier.manufacturer}}</td>
                 <td *ngIf="rowNumber == i">
@@ -920,7 +920,7 @@
       <div class="row mt-4 d-flex flex-row justify-content-around">
         <div>
           <label>ספק</label>
-          <input list="suppliers" class="form-control" [(ngModel)]="supplier.supplierName">
+          <input list="suppliers" class="form-control" [(ngModel)]="supplier.supplierNumber">
           <datalist id="suppliers">
             <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
               {{supplier.suplierNumber}}</option>

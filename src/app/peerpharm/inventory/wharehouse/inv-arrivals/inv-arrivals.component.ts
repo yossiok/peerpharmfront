@@ -33,7 +33,7 @@ export class InvArrivalsComponent implements OnInit {
   sending: boolean = false;
   disabled: boolean = false;
   noItem: boolean = true;
-  showStickerForm: boolean = false
+  showStickerForm: boolean = false;
 
   componentArrival: FormGroup = new FormGroup({
     itemType: new FormControl("component", Validators.required),
@@ -56,7 +56,7 @@ export class InvArrivalsComponent implements OnInit {
     private purchaseService: Procurementservice,
     private warehouseService: WarehouseService,
     private modalService: NgbModal
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     setTimeout(() => this.first.nativeElement.focus(), 500);
@@ -84,15 +84,15 @@ export class InvArrivalsComponent implements OnInit {
   }
 
   open(modal) {
-    this.modalService.open(modal)
+    this.modalService.open(modal);
   }
 
   setStickerDetails(item) {
-    this.stickerItem = { ...item }
+    this.stickerItem = { ...item };
   }
 
   loadStickerComponent() {
-    this.invstck.nativeElement.ngOnInit()
+    this.invstck.nativeElement.ngOnInit();
   }
 
   getSuppliers() {
@@ -123,6 +123,7 @@ export class InvArrivalsComponent implements OnInit {
         .subscribe((data) => {
           if (data.length > 0) {
             this.noItem = false;
+            this.itemNames = data;
             resolve(true);
           } else {
             this.noItem = true;

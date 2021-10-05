@@ -68,6 +68,14 @@ export class CheckoutComponent implements OnInit {
   }
 
   getShelfs() {
+    this.inventoryService
+      .getCmptByitemNumber(this.componentCheckout.value.item)
+      .subscribe((data) => {
+        if (data.length > 0) {
+          this.itemNames = data;
+        }
+      });
+
     if (
       this.componentCheckout.value.whareHouseID == "5c31bb6f91ca6b2510349ce9"
     ) {
