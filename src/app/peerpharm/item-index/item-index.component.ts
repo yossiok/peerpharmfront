@@ -113,7 +113,7 @@ export class ItemIndexComponent implements OnInit {
   rowNumber: number = -1;
   counter: number = 0;
   screenPermission: number;
-  gettingProducts: boolean;
+  gettingProducts: boolean = false
   fetchingOrders: boolean;
   allowUserEditItem: boolean;
   showDetailsForm: boolean = true;
@@ -249,7 +249,7 @@ export class ItemIndexComponent implements OnInit {
     private authService: AuthService,
     private modalService: NgbModal,
     private uploadService: UploadFileService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getAllSuppliers();
@@ -374,6 +374,7 @@ export class ItemIndexComponent implements OnInit {
         else {
           this.item = item;
           this.getLastOrdersItem(20);
+          this.getProductsWithItem()
         }
       });
   }
@@ -411,7 +412,7 @@ export class ItemIndexComponent implements OnInit {
     );
   }
 
-  fetchProducts() {}
+  fetchProducts() { }
 
   checkIfItemExist(ev) {
     var itemNumber = ev.target.value;
@@ -438,17 +439,6 @@ export class ItemIndexComponent implements OnInit {
           }
         });
     }
-  }
-
-  getProductsWithItem() {
-    this.gettingProducts = true;
-    this.inventoryService
-      .getAllProductsWithItem(this.item.componentN)
-      .subscribe((response) => {
-        this.gettingProducts = false;
-        if (response.allProductsWithItem)
-          this.item.connectedProducts = response.allProductsWithItem;
-      });
   }
 
   writeNewStockItem(itemType) {
@@ -655,6 +645,14 @@ export class ItemIndexComponent implements OnInit {
     this.inventoryService.getAllMaterialLocations().subscribe((data) => {
       this.materialLocations = data;
     });
+  }
+
+  getProductsWithItem() {
+    this.gettingProducts = true;
+    this.inventoryService.getAllProductsWithItem(this.item.componentN).subscribe(response => {
+      this.gettingProducts = false;
+      if (response.allProductsWithItem) this.item.connectedProducts = response.allProductsWithItem
+    })
   }
 
   addSupplierToComponent() {

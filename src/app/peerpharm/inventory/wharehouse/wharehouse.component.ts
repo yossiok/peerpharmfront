@@ -93,6 +93,7 @@ export class WharehouseComponent implements OnInit {
   loadingToTable: boolean = false;
   editWharehouses: Boolean = false;
   loadShelfs: boolean = false;
+  isJew: boolean = true
 
   constructor(
     private procurementSrv: Procurementservice,
@@ -124,6 +125,7 @@ export class WharehouseComponent implements OnInit {
     // this.itemLine.controls.arrivalDate.setValue(todayStr);
     this.getUserWhs();
     this.getAllWhs();
+    if (this.authService.loggedInUser.screenPermission == '6') this.isJew = false
   }
 
   getAllWhs() {
@@ -722,7 +724,7 @@ export class WharehouseComponent implements OnInit {
                               } else {
                                 this.toastSrv.error(
                                   "אין מדף כזה במחסן: " +
-                                    this.curentWhareHouseName
+                                  this.curentWhareHouseName
                                 );
                                 this.loadingToTable = false;
                               }
@@ -739,16 +741,16 @@ export class WharehouseComponent implements OnInit {
                       } else {
                         this.toastSrv.error(
                           "אין מספיק כמות על המדף!\n  כמות נוכחית על המדף: " +
-                            shelfRes.stock[0].amount
+                          shelfRes.stock[0].amount
                         );
                         this.loadingToTable = false;
                       }
                     } else {
                       this.toastSrv.error(
                         "פריט: " +
-                          itemLineToAdd.itemNumber +
-                          "\n לא נמצא על מדף: " +
-                          position
+                        itemLineToAdd.itemNumber +
+                        "\n לא נמצא על מדף: " +
+                        position
                       );
                       this.loadingToTable = false;
                     }
@@ -875,10 +877,10 @@ export class WharehouseComponent implements OnInit {
       } else {
         alert(
           " מספר פריט " +
-            itemLine.itemNumber +
-            " במדף " +
-            itemLine.position +
-            "\nכבר קיים ברשימה"
+          itemLine.itemNumber +
+          " במדף " +
+          itemLine.position +
+          "\nכבר קיים ברשימה"
         );
       }
     } else {

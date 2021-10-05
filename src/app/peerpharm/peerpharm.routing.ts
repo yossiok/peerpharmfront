@@ -427,7 +427,7 @@ export const PeerPharmRputs: Routes = [
   },
   {
     path: 'production/printBarcode',
-    // canActivate:[ScreenGuard],
+    canActivate: [ScreenGuard],
     data: {
       title: 'Print Barcode'
     },
@@ -590,6 +590,7 @@ export const PeerPharmRputs: Routes = [
 
   {
     path: 'builder',
+    canActivate: [ScreenGuard],
     data: {
       title: 'Report Builder'
     },
@@ -601,6 +602,7 @@ export const PeerPharmRputs: Routes = [
 
   {
     path: 'historylogs',
+    canActivate: [ScreenGuard],
     data: {
       title: 'History Logs'
     },
@@ -608,6 +610,7 @@ export const PeerPharmRputs: Routes = [
   },
   {
     path: 'item-movement-reports',
+    canActivate: [ScreenGuard],
     data: {
       title: 'Movements Reports'
     },

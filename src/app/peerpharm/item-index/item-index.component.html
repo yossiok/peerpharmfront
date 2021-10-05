@@ -740,6 +740,33 @@
     </div>
   </div>
 
+  <!--Products with component-->
+  <div dir="rtl" *ngIf="item.itemType == 'component'" class="float-right modal-inner w-50 mt-4">
+    <div dir="rtl" class="row mt-4">
+      <h1 class="mt-4 text-info text-center">מוצרים המכילים את הפריט {{item.componentN}}</h1>
+    </div>
+    <div class="row mt-4">
+      <table class="table table-striped">
+        <thead>
+          <th>#</th>
+          <th>מק"ט</th>
+          <th>מותג</th>
+          <th>סוג מוצר</th>
+          <th>תיאור</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of item.connectedProducts; let i = index">
+            <td>{{i}}</td>
+            <td>{{product.itemNumber}}</td>
+            <td>{{product.name}}</td>
+            <td>{{product.subName}}</td>
+            <td>{{product.discriptionK}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <!--Suppliers-->
   <div dir="rtl" class="float-right modal-inner pt-4 w-50 mt-4">
     <h1 class="mt-4 text-info text-center">ספקים</h1>
@@ -1009,11 +1036,13 @@
     </div>
   </div>
 
+
+
   <!--Versions-->
   <div dir="rtl" *ngIf="item.itemType == 'component'" class="float-right modal-inner w-50 mt-4">
 
     <div dir="rtl" class="row mt-4">
-      <h2>היסטוריית מהדורות לפריט {{item.componentN}}</h2>
+      <h1 class="mt-4 text-info text-center">היסטוריית מהדורות לפריט {{item.componentN}}</h1>
     </div>
     <div dir="rtl" class="row mt-2">
 
