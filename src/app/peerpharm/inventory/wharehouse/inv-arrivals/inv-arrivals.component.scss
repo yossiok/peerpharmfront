@@ -29,3 +29,13 @@ input[type=number] {
   width: 10px;
   height: 10px;
 }
+
+.pictureTabImg {
+  transition: 0.3s;
+  max-height:150px;
+  max-width:100px;
+}
+.pictureTabImg:hover{
+  transform: scale(3);
+    
+}

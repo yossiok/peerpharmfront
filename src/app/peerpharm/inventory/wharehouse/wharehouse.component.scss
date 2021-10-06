@@ -71,3 +71,11 @@ a{
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
   }
+
+  .pictureTabImg {
+    transition: 0.3s;
+  }
+  .pictureTabImg:hover{
+    transform: scale(3);
+      
+  }

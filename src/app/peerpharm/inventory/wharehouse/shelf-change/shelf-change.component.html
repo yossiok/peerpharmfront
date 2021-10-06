@@ -43,18 +43,20 @@
           </option>
         </select>
 
-        <label>כמות</label>
-        <input type="number" formControlName="amount" class="form-control">
-
-        <label>מדף חדש</label>
+        <!-- <label>מדף חדש</label>
         <select class="form-control" formControlName="new_shell_id_in_whareHouse">
           <option disabled value="">בחר מדף</option>
           <option *ngFor="let shellNum of shellNums" [disabled]="shellNum.position == 'MINUS'" [value]="shellNum._id">
             {{shellNum.position}}
           </option>
-        </select>
+        </select> -->
 
       </div>
+      <div class="col-2">
+        <label>כמות</label>
+        <input type="number" formControlName="amount" class="form-control">
+      </div>
+
       <div class="col-2 d-flex flex-column justify-content-around">
         <div *ngIf="sending" class="smallerLoader"></div>
         <button type="submit" *ngIf="!sending" [disabled]="!shelfChange.valid"
@@ -62,6 +64,23 @@
         <button type="button" class="btn btn-secondary" (click)="shelfChange.reset()">נקה נתונים</button>
       </div>
       <div class="col-2">
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-6"></div>
+      <div class="col-2">
+        <label>מדף חדש</label>
+        <select class="form-control" formControlName="new_shell_id_in_whareHouse">
+          <option disabled value="">בחר מדף</option>
+          <option *ngFor="let shellNum of shellNums" [disabled]="shellNum.position == 'MINUS'" [value]="shellNum._id">
+            {{shellNum.position}}
+          </option>
+        </select>
+      </div>
+      <div *ngIf="itemNames" class="col-2">
+
+        <img [src]=itemNames[0].img alt=" חסרה תמונה ראשית" class="pictureTabImg">
       </div>
     </div>
   </form>

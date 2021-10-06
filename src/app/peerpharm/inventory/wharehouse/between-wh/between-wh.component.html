@@ -32,6 +32,9 @@
           <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
           </option>
         </select>
+
+      </div>
+      <div class="col-2">
         <label>ממדף</label>
         <select class="form-control" (change)="setOriginPosition()" formControlName="shell_id_in_whareHouse_Origin">
           <option disabled value="">בחר מדף</option>
@@ -40,13 +43,44 @@
             {{shelf.position}} - {{shelf.amount}} pcs
           </option>
         </select>
-      </div>
 
+      </div>
       <div class="col-2">
         <label>כמות</label>
         <input type="number" formControlName="amount" (change)="checkAmount()" class="form-control">
       </div>
 
+      <div class="col-2 d-flex flex-column justify-content-around">
+
+
+        <!-- <span [ngbTooltip]="noItem ? 'יש להזין מספר פריט תקין' : ''">
+          <button type="button" [disabled]="noItem" [style.cursor]="noItem ? 'not-allowed' : 'pointer'"
+            (click)="getAllShelfsOfDest(whid.value)" class="btn btn-warning">הכנס למדף חדש</button>
+        </span> -->
+
+        <div *ngIf="sending" class="smallerLoader"></div>
+        <button type="submit" *ngIf="!sending" [disabled]="!movementForm.valid"
+          [style.cursor]="movementForm.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">העבר</button>
+
+
+        <button type="button" class="btn btn-secondary" (click)="movementForm.reset()">נקה נתונים</button>
+
+      </div>
+
+      <div class="col-2 d-flex flex-column justify-content-between">
+        <!-- <div>
+          <div *ngIf="sending" class="smallerLoader"></div>
+          <button type="submit" *ngIf="!sending" [disabled]="!movementForm.valid"
+            [style.cursor]="movementForm.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">העבר</button>
+        </div> -->
+        <!-- <div>
+          <button type="button" class="btn btn-secondary" (click)="movementForm.reset()">נקה נתונים</button>
+        </div> -->
+      </div>
+
+    </div>
+    <div class="row mt-4">
+      <div class="col-4"></div>
       <div class="col-2">
         <label>למחסן</label>
         <select class="form-control" formControlName="WH_destId" #whid (change)="getChunks('d')"
@@ -55,6 +89,9 @@
           <option *ngFor="let whareHouse of reallyAllWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
           </option>
         </select>
+      </div>
+      <div class="col-2">
+
         <label>למדף</label>
         <select class="form-control" (change)="setDestPosition()" formControlName="shell_id_in_whareHouse_Dest">
           <option disabled value="">בחר מדף</option>
@@ -63,23 +100,14 @@
             {{shelf.position}} - {{shelf.amount}} pcs
           </option>
         </select>
-        <span [ngbTooltip]="noItem ? 'יש להזין מספר פריט תקין' : ''">
+        <span class="mt-1" [ngbTooltip]="noItem ? 'יש להזין מספר פריט תקין' : ''">
           <button type="button" [disabled]="noItem" [style.cursor]="noItem ? 'not-allowed' : 'pointer'"
             (click)="getAllShelfsOfDest(whid.value)" class="btn btn-warning">הכנס למדף חדש</button>
         </span>
       </div>
-
-      <div class="col-2 d-flex flex-column justify-content-between">
-        <div>
-          <div *ngIf="sending" class="smallerLoader"></div>
-          <button type="submit" *ngIf="!sending" [disabled]="!movementForm.valid"
-            [style.cursor]="movementForm.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">העבר</button>
-        </div>
-        <div>
-          <button type="button" class="btn btn-secondary" (click)="movementForm.reset()">נקה נתונים</button>
-        </div>
+      <div *ngIf="itemNames" class="col-2">
+        <img [src]=itemNames[0].img alt=" חסרה תמונה ראשית" class="pictureTabImg">
       </div>
-
     </div>
   </form>
 

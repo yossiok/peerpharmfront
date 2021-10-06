@@ -486,6 +486,12 @@ export class InventoryService {
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
+  //temporary for minus elimination
+  // getCleanMinus() {
+  //   let url = this.baseUrl + "itemShell/cleanminus";
+  //   return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  // }
+
   getWhareHouseShelfList(whareHouseId) {
     let url = this.baseUrl + "shell?whareHouseId=" + whareHouseId;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
