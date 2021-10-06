@@ -82,7 +82,7 @@ export class WeightProductionComponent implements OnInit {
     private toastSrv: ToastrService,
     private modalService: NgbModal,
     private itemService: ItemsService
-  ) {}
+  ) { }
 
   ngOnInit() {
     setTimeout(() => {
@@ -204,20 +204,9 @@ export class WeightProductionComponent implements OnInit {
   }
 
   chooseFormule(formule) {
-    this.showPill = false;
-    this.finalFormule = { ...formule };
-    let formuleBatch = this.formules.filter((f) => {
-      return f.formuleNumber == formule.formuleNumber;
-    });
-
-    this.finalWeight = 0;
-    for (let f of formuleBatch) {
-      this.finalWeight += +f.formuleWeight;
-    }
-    this.finalFormule.data = this.formuleCalculate(
-      this.finalFormule.data,
-      this.finalWeight
-    );
+    this.showPill = false
+    this.finalFormule = { ...formule }
+    this.finalFormule.data = this.formuleCalculate(this.finalFormule.data, this.finalWeight)
   }
 
   printFormule() {
