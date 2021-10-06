@@ -297,10 +297,10 @@
                   [ngModelOptions]="{standalone: true}" required disabled>
 
               </div>
-              <div class="col-sm-1">
+              <!-- <div class="col-sm-1">
                 <img src="../../../../assets/images/refreshData.png" style="width: 30px;cursor: pointer;"
                   alt="get user name" (click)="getUserName()">
-              </div>
+              </div> -->
               <div class="col-sm-3">
                 <label for="user">שם משתמש</label>
                 <input type="text" class="form-control is-valid" placeholder="user name" formControlName="user" required
@@ -366,11 +366,11 @@
                   </option>
                 </select>
               </div>
-              <div class="col-sm-2">
+              <!-- <div class="col-sm-2">
                 <label>מספר הזמנה - ספק</label>
                 <input type="text" class="form-control is-valid" placeholder="supplier order number"
                   formControlName="supplierOrderNumber" name='supplierOrderNumber'>
-              </div>
+              </div> -->
             </div>
             <div class="form-row w-100 flex-row-reverse">
               <div class="col-sm-4">
@@ -390,11 +390,11 @@
               <div class="col-sm-2">
                 <label>יח' מדידה</label>
                 <select class="form-control is-valid" formControlName="mesureType" name='mesureType'>
-                  <option value="kg">קילוגרם</option>
+                  <option value="kg" selected="true">קילוגרם</option>
                   <option value="liter">ליטר</option>
                 </select>
               </div>
-              <div *ngIf="lastOrders.length > 0 && bd" class="col-sm-8">
+              <!-- <div *ngIf="lastOrders.length > 0 && bd" class="col-sm-8">
                 <div class="float-right">
                   <button (click)="bd = !bd">סגור</button>
                 </div>
@@ -421,7 +421,7 @@
                     </tr>
                   </tbody>
                 </table>
-              </div>
+              </div> -->
             </div>
             <div class="form-row w-100 flex-row-reverse">
 
@@ -440,6 +440,7 @@
                   <option value="bucket">דלי</option>
                   <option value="carton">קרטון</option>
                   <option value="bottel">בקבוק</option>
+                  <option value="else">שונות</option>
                 </select>
               </div>
               <div class="col-sm-2">
@@ -456,7 +457,7 @@
               <div class="col-sm-2">
                 <label>מחסן</label>
                 <select type="text" class="form-control is-valid" formControlName="warehouse" name='warehouse'>
-                  <option value="Rosh HaAyin">Rosh HaAyin</option>
+                  <option value="Rosh HaAyin" selected="true">Rosh HaAyin</option>
                   <option value="Karantine">Karantine</option>
                 </select>
               </div>
