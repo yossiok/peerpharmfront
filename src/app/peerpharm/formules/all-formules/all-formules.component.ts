@@ -303,6 +303,10 @@ export class AllFormulesComponent implements OnInit {
     }
   }
 
+  checkIfFormuleInTest(formuleNumber) {
+    return formuleNumber.includes('LPP')
+  }
+
   isSelected(ev, item) {
     if (ev.target.checked == true) {
       var isSelected = this.selectedArr

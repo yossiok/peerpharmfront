@@ -112,7 +112,8 @@
         {{ formule.formuleNumber }}
       </td>
       <td *ngIf="formule._id == EditRowId">
-        <input #formuleNumber disabled type="text" [value]="formule.formuleNumber" />
+        <input #formuleNumber [disabled]="!checkIfFormuleInTest(formule.formuleNumber)" type="text"
+          [value]="formule.formuleNumber" />
       </td>
 
       <!--4-->
