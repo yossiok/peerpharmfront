@@ -239,7 +239,7 @@ export class MaterialArrivalComponent implements OnInit {
 
   getLatestOrders() {
     this.procuretServ.getLastOrdersForItem(this.newMaterialArrival.value.internalNumber, 10).subscribe(orders => {
-      this.lastOrders = orders
+      this.lastOrders = orders.filter(o => o.status != 'closed' && o.status != 'canceled')
     })
   }
 
@@ -283,6 +283,7 @@ export class MaterialArrivalComponent implements OnInit {
         if (doc._id) {
           this.toastSrv.success('Material Requirements Form saved')
           this.requiresFromFull = true;
+          this.getUserName()
         }
       })
     } else {
@@ -492,79 +493,83 @@ export class MaterialArrivalComponent implements OnInit {
 
   submitForm() {
     // shelf general position
-    this.submittingForm = true;
+    if (this.newMaterialArrival.value.position.includes(',')) this.toastSrv.error('יש להזין מספר מדף תקין ללא רווחים וללא פסיקים')
+    else {
 
-    this.materialNum = this.newMaterialArrival.value.internalNumber;
-    this.materialName = this.newMaterialArrival.value.materialName;
-    this.lotNumber = this.newMaterialArrival.value.lotNumber;
-    this.productionDate = this.newMaterialArrival.value.productionDate;
-    this.arrivalDate = this.newMaterialArrival.value.arrivalDate;
-    this.expiryDate = this.newMaterialArrival.value.expiryDate;
-    this.position = this.newMaterialArrival.value.position;
-    this.newMaterialArrival.value.deliveryNoteNumber.trim();
+      this.submittingForm = true;
+
+      this.materialNum = this.newMaterialArrival.value.internalNumber;
+      this.materialName = this.newMaterialArrival.value.materialName;
+      this.lotNumber = this.newMaterialArrival.value.lotNumber;
+      this.productionDate = this.newMaterialArrival.value.productionDate;
+      this.arrivalDate = this.newMaterialArrival.value.arrivalDate;
+      this.expiryDate = this.newMaterialArrival.value.expiryDate;
+      this.position = this.newMaterialArrival.value.position;
+      this.newMaterialArrival.value.deliveryNoteNumber.trim();
 
 
-    if (this.newMaterialArrival.value.user == "") {
-      this.authService.userEventEmitter.subscribe(data => {
-        this.user = this.authService.loggedInUser.firstName + " " + this.authService.loggedInUser.lastName;
-        this.newMaterialArrival.controls.user.setValue(this.user);
-      });
-    }
-    let continueSend = false;
-    this.newMaterialArrival.controls.analysisApproval.setValue(this.analysisFlag.nativeElement.checked);
-    // this.newMaterialArrival.value.analysisApproval= (this.analysisFlag ) ? true : false ;
-    if (this.newMaterialArrival.value.productionDate != "") { this.adjustDate(this.newMaterialArrival.controls.productionDate) }
-    if (this.newMaterialArrival.value.expiryDate != "") { this.adjustDate(this.newMaterialArrival.controls.expiryDate) }
-    if (this.newMaterialArrival.valid) {
-      if (!this.analysisFlag.nativeElement.checked) {
-        if (confirm('אנליזה לא תקינה , האם להמשיך?')) {
-          continueSend = true;
+      if (this.newMaterialArrival.value.user == "") {
+        this.authService.userEventEmitter.subscribe(data => {
+          this.user = this.authService.loggedInUser.firstName + " " + this.authService.loggedInUser.lastName;
+          this.newMaterialArrival.controls.user.setValue(this.user);
+        });
+      }
+      let continueSend = false;
+      this.newMaterialArrival.controls.analysisApproval.setValue(this.analysisFlag.nativeElement.checked);
+      // this.newMaterialArrival.value.analysisApproval= (this.analysisFlag ) ? true : false ;
+      if (this.newMaterialArrival.value.productionDate != "") { this.adjustDate(this.newMaterialArrival.controls.productionDate) }
+      if (this.newMaterialArrival.value.expiryDate != "") { this.adjustDate(this.newMaterialArrival.controls.expiryDate) }
+      if (this.newMaterialArrival.valid) {
+        if (!this.analysisFlag.nativeElement.checked) {
+          if (confirm('אנליזה לא תקינה , האם להמשיך?')) {
+            continueSend = true;
+          } else {
+            continueSend = false;
+          }
         } else {
-          continueSend = false;
-        }
-      } else {
-        continueSend = true;
-      }
-
-      if (this.newMaterialArrival.value.expiryDate = "") {
-        if (confirm('תאריך תפוגה חסר , האם להמשיך?')) {
           continueSend = true;
-        } else {
-          continueSend = false;
         }
-      } else if (continueSend) {
-        continueSend = true;
+
+        if (this.newMaterialArrival.value.expiryDate = "") {
+          if (confirm('תאריך תפוגה חסר , האם להמשיך?')) {
+            continueSend = true;
+          } else {
+            continueSend = false;
+          }
+        } else if (continueSend) {
+          continueSend = true;
+        }
+
+        if (continueSend) {
+
+
+          this.newMaterialArrival.value.productionDate = new Date(this.newMaterialArrival.value.productionDate)
+          this.newMaterialArrival.controls.barcode.setValue("WAITING FOR BARCODE STRING"); // shpuld be this.barcodeData
+          this.checkLotNumber().then(ok => {
+            //CREATE BARCODE
+            // we can also save all the form value obj = this.newMaterialArrival.value
+            // this.barcodeData={
+            //   internalNumber: this.newMaterialArrival.value.internalNumber,
+            //   materialName: this.newMaterialArrival.value.materialName,
+            //   barcode: this.newMaterialArrival.value.barcode,
+            //   expiryDate: this.newMaterialArrival.value.expiryDate,
+            //   lotNumber: this.newMaterialArrival.value.lotNumber,
+            // }
+            ;
+            this.addMaterialToStock();
+          }).catch(e => {
+            this.toastSrv.error(e);
+            this.submittingForm = false
+          })
+
+        }
       }
 
-      if (continueSend) {
-
-
-        this.newMaterialArrival.value.productionDate = new Date(this.newMaterialArrival.value.productionDate)
-        this.newMaterialArrival.controls.barcode.setValue("WAITING FOR BARCODE STRING"); // shpuld be this.barcodeData
-        this.checkLotNumber().then(ok => {
-          //CREATE BARCODE
-          // we can also save all the form value obj = this.newMaterialArrival.value
-          // this.barcodeData={
-          //   internalNumber: this.newMaterialArrival.value.internalNumber,
-          //   materialName: this.newMaterialArrival.value.materialName,
-          //   barcode: this.newMaterialArrival.value.barcode,
-          //   expiryDate: this.newMaterialArrival.value.expiryDate,
-          //   lotNumber: this.newMaterialArrival.value.lotNumber,
-          // }
-          ;
-          this.addMaterialToStock();
-        }).catch(e => {
-          this.toastSrv.error(e);
-          this.submittingForm = false
-        })
-
+      if (!continueSend || !this.newMaterialArrival.valid) {
+        this.toastSrv.error("Fill all required fields")
+        this.fieldsColor();
+        this.submittingForm = false
       }
-    }
-
-    if (!continueSend || !this.newMaterialArrival.valid) {
-      this.toastSrv.error("Fill all required fields")
-      this.fieldsColor();
-      this.submittingForm = false
     }
 
   }
