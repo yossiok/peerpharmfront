@@ -74,7 +74,7 @@
       <!--8-->
       <th class="text-center">Viscosity</th>
       <!--9-->
-      <th class="text-center">Date Created</th>
+      <th class="text-center">Date Created / Updated</th>
       <!--10-->
       <th class="text-center">Formule Type</th>
       <!--11-->
@@ -171,11 +171,8 @@
       </td>
 
       <!--10-->
-      <td *ngIf="formule._id != EditRowId">
+      <td>
         {{ formule.date | date: "dd/MM/yyyy" }}
-      </td>
-      <td *ngIf="formule._id == EditRowId">
-        <input type="date" [(ngModel)]="formule.date" />
       </td>
 
       <!--11-->
