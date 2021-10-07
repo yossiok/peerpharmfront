@@ -261,7 +261,7 @@ export class OrderdetailsComponent implements OnInit {
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
     event: KeyboardEvent
   ) {
-    console.log(event);
+    // console.log(event);
     this.edit("");
   }
   constructor(
@@ -382,12 +382,10 @@ export class OrderdetailsComponent implements OnInit {
           //this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
           //this.getComponents(this.ordersItems[0].orderNumber);
           this.multi = true;
-          console.log(orders.orderItems);
         });
       } else {
         this.showingAllOrders = false;
         this.orderService.ordersArr.subscribe(async (res) => {
-          console.log(res);
           var numArr = this.number.split(",").filter((x) => x != "");
 
           //multi orders:  came through load button
@@ -423,7 +421,6 @@ export class OrderdetailsComponent implements OnInit {
                       this.ordersItemsCopy = orderItems;
 
                       this.multi = true;
-                      console.log(orderItems);
                     });
                 } else {
                   //one order: but came through load button
@@ -660,7 +657,6 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   addItemOrder() {
-    console.log(this.itemData);
     this.itemData.formuleCheck = this.formuleCheck;
     this.itemData.orderId = this.orderId;
     var userName = this.authService.loggedInUser.firstName;
@@ -746,9 +742,6 @@ export class OrderdetailsComponent implements OnInit {
           this.multiCostumerImpRemark.length > 1
         )
           this.costumerImpRemark = this.multiCostumerImpRemark[0];
-        console.log("this.costumersNumbers", this.costumersNumbers);
-        console.log("this.multiCostumerImpRemark", this.multiCostumerImpRemark);
-        console.log("this.costumerImpRemark", this.costumerImpRemark);
       }
     });
   }
@@ -816,7 +809,6 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   loadMaterialsForFormule() {
-    console.log(this.selectedArr);
     if (this.selectedArr.length == 0)
       this.toastSrv.error("Please select Order Items");
     else {
@@ -826,6 +818,7 @@ export class OrderdetailsComponent implements OnInit {
         .getMaterialsForFormules(this.selectedArr)
         .subscribe((materials) => {
           this.calculateMaterials(materials);
+          this.loadData = false;
         });
     }
   }
@@ -1061,7 +1054,6 @@ export class OrderdetailsComponent implements OnInit {
   getComponents(orderNumber): void {
     this.orderService.getComponentsSum(orderNumber).subscribe((components) => {
       this.components = components;
-      console.log("a" + components);
     });
   }
 
@@ -1078,9 +1070,7 @@ export class OrderdetailsComponent implements OnInit {
     // }
     this.editBatchN = false;
     this.EditRowId2nd = itemId;
-    console.log(itemNumber + " , " + itemId);
     this.orderService.getItemByNumber(itemNumber).subscribe((itemDetais) => {
-      console.log(itemDetais);
       this.detailsArr = [];
       itemDetais.forEach((element) => {
         if (element.bottleNumber != null && element.bottleNumber != "")
@@ -1095,7 +1085,6 @@ export class OrderdetailsComponent implements OnInit {
             number: element.capNumber,
             discription: element.capTube,
           });
-        console.log(this.detailsArr);
       });
       if (this.expand === true) {
         this.expand = false;
@@ -1180,11 +1169,9 @@ export class OrderdetailsComponent implements OnInit {
         { user: this.authService.loggedInUser.firstName, time: new Date() },
       ],
     };
-    console.log(itemToUpdate);
     // console.log("edit " + itemToUpdate.orderItemId );
 
     this.orderService.editItemOrder(itemToUpdate).subscribe((res) => {
-      console.log(res);
       if (res != "error") {
         this.toastSrv.success(itemToUpdate.itemNumber, "Changes Saved");
         this.EditRowId = "";
@@ -1205,13 +1192,11 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   deleteItem(item) {
-    console.log(item._id);
     this.orderService.deleteOrderItem(item._id).subscribe((res) => {
       this.toastSrv.error("Item Has Been Deleted", item.itemNumber);
       this.ordersItems = this.ordersItems.filter(
         (elem) => elem._id != item._id
       );
-      console.log(res);
     });
   }
 
@@ -1279,7 +1264,6 @@ export class OrderdetailsComponent implements OnInit {
         cookingDate: cookingDate.value,
         cookingMarks: cookingMarks.value,
       };
-      console.log(obj);
 
       let scheduleLine = {
         positionN: "",
@@ -1406,7 +1390,6 @@ export class OrderdetailsComponent implements OnInit {
                       this.scheduleService
                         .setNewProductionSchedule(scheduleLine)
                         .subscribe((res) => {
-                          console.log(res);
                           if (res.msg == "Failed")
                             this.toastSrv.error(
                               "Schedule not saved! Please check all fields."
@@ -1486,7 +1469,6 @@ export class OrderdetailsComponent implements OnInit {
                         console.log(res);
                         this.toastSrv.success(dateSced, "Order Item Updated.");
                       });
-                    console.log(scheduleLine);
                   });
               });
           }
@@ -1601,9 +1583,7 @@ export class OrderdetailsComponent implements OnInit {
         orderItemId: item._id,
         fillingStatus: "mkp batch exist",
       };
-      console.log(batchObj);
       this.orderService.editItemOrder(batchObj).subscribe((res) => {
-        console.log(res);
         // this.toastSrv.success(updatedBatch , "Changes Saved");
       });
     }
@@ -1660,9 +1640,7 @@ export class OrderdetailsComponent implements OnInit {
     if (confirm("Close Order?")) {
       let orderToUpdate = {};
       orderToUpdate = { status: "close", orderId: this.orderId };
-      console.log(orderToUpdate);
       this.orderService.editOrder(orderToUpdate).subscribe((res) => {
-        console.log(res);
         this.router.navigate(["/"]);
       });
     }
@@ -1687,7 +1665,6 @@ export class OrderdetailsComponent implements OnInit {
             }
           });
         }
-        console.log(res);
       });
     }
   }
@@ -1695,7 +1672,6 @@ export class OrderdetailsComponent implements OnInit {
     // this.printSchedule.date.setHours(2,0,0,0);
     let dateToUpdate = new Date(this.printSchedule.date);
     dateToUpdate.setHours(2, 0, 0, 0);
-    console.log(this.printSchedule);
     this.printSchedule.orderN = this.number;
     this.printSchedule.costumer = this.costumer;
     this.printSchedule.date = dateToUpdate;
@@ -1707,7 +1683,6 @@ export class OrderdetailsComponent implements OnInit {
       .subscribe((res) => {
         if (res.itemN) {
           this.toastSrv.success("Saved", this.printSchedule.cmptN);
-          console.log(res);
           // let dateSced= res.date.slice(0,10); // could also used for date string
           let dateSced = res.date.split("T")[0];
           let orderObj = {
@@ -1716,7 +1691,6 @@ export class OrderdetailsComponent implements OnInit {
           };
 
           this.orderService.editItemOrder(orderObj).subscribe((res) => {
-            console.log(res);
             if (res.n > 0) {
               this.ordersItems.map((i) => {
                 if (i._id == orderItemId)
@@ -1740,16 +1714,13 @@ export class OrderdetailsComponent implements OnInit {
       this.printSchedule.block = data.palletNumber;
       this.printSchedule.blockImg = data.palletImg;
     });
-    console.log(
-      item.itemNumber + " , " + item.discription + " , " + cmpt.number
-    );
+
     this.printSchedule.cmptN = cmpt.number;
     this.printSchedule.itemN = item.itemNumber;
     this.printSchedule.itemName =
       item.name + " " + item.subName + " " + item.discriptionK;
     this.printSchedule.cmptName = cmpt.discription;
     this.modalService.open(content).result.then((result) => {
-      console.log(result);
       if (result == "Saved") {
         if (confirm('שליחת פק"ע ללו"ז הדפסה תשנה את סטטוס הפריט בהזמנה.')) {
           this.setPrintSced(item._id);
@@ -1869,7 +1840,6 @@ export class OrderdetailsComponent implements OnInit {
         ";" +
         ev.target.dataset.index
     );
-    console.log("dragging");
   }
 
   startShakeDragOver(ev) {
@@ -1929,23 +1899,29 @@ export class OrderdetailsComponent implements OnInit {
 
   //order explosion
   async openCmptDemandsModal() {
-    this.orderExplodeLoader = true;
-    this.bottleList = [];
-    this.capList = [];
-    this.pumpList = [];
-    this.sealList = [];
-    this.stickerList = [];
-    this.boxList = [];
-    this.cartonList = [];
-    this.itemTreeRemarks = [];
-    if (this.ordersItems.length > 0) {
+    if (this.selectedArr.length > 0) {
+      this.orderExplodeLoader = true;
+      this.bottleList = [];
+      this.capList = [];
+      this.pumpList = [];
+      this.sealList = [];
+      this.stickerList = [];
+      this.boxList = [];
+      this.cartonList = [];
+      this.itemTreeRemarks = [];
+      this.toastSrv.info("This might take a few seconds...", "Please Wait");
+      this.loadData = true;
+
       this.internalNumArr = []; //just numbers
-      this.ordersItems.map((i) =>
+      this.selectedArr.map((i) =>
         this.internalNumArr.push(i.itemNumber.trim())
       );
+      // this.ordersItems.map((i) =>
+      //   this.internalNumArr.push(i.itemNumber.trim())
+      // );
 
       //get all orderItem-demands
-      console.log(this.internalNumArr);
+
       await this.orderService
         .getOrderComponents(this.internalNumArr)
         .subscribe(async (res) => {
@@ -2262,6 +2238,12 @@ export class OrderdetailsComponent implements OnInit {
           this.cmptModal = true;
           this.orderItemsComponents = res;
         });
+      this.loadData = false;
+    } else {
+      this.toastSrv.error(
+        "Please select Order Items by checking the left box of the row"
+      );
+      return;
     }
   }
 
