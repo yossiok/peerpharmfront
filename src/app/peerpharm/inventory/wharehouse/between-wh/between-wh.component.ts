@@ -17,6 +17,7 @@ export class BetweenWHComponent implements OnInit {
 
   originWHShelfs: any[];
   destWHShelfs: any[];
+  today = new Date();
   noItem: boolean = false;
   disabled: boolean = false;
   originShelf: any;
