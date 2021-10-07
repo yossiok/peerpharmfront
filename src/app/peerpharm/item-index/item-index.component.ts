@@ -121,6 +121,7 @@ export class ItemIndexComponent implements OnInit {
   showSalesForm: boolean = false;
   allowedProblematicEdit: boolean = false;
   new: boolean = false;
+  tempHiddenImgSrc: any;
 
   //Material Stuff
   compositionName: any;

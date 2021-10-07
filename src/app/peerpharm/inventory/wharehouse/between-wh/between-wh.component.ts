@@ -13,6 +13,7 @@ export class BetweenWHComponent implements OnInit {
   @Input() reallyAllWhareHouses: any[];
   @Input() itemNumber;
   @ViewChild("first") first: ElementRef;
+  @ViewChild("printBtn2") printBtn2: ElementRef;
 
   originWHShelfs: any[];
   destWHShelfs: any[];
@@ -43,11 +44,12 @@ export class BetweenWHComponent implements OnInit {
     isNewItemShell: new FormControl(false, Validators.required),
   });
   sending: boolean;
+  certificateReception: any;
 
   constructor(
     private inventoryService: InventoryService,
     private toastr: ToastrService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     setTimeout(() => this.first.nativeElement.focus(), 500);
@@ -208,13 +210,17 @@ export class BetweenWHComponent implements OnInit {
       .subscribe((data) => {
         if (data.msg) this.toastr.error(data.msg, "שגיאה");
         else {
+          this.certificateReception = data.savedMovement.warehouseReception;
           //set certificate data
           this.sending = false;
           this.toastr.success("שינויים נשמרו בהצלחה", "נשמר");
-          this.movementForm.reset();
-          this.movementForm.controls.isNewItemShell.setValue(false);
-          this.movementForm.controls.itemType.setValue("component");
-          this.first.nativeElement.focus();
+          setTimeout(() => this.printBtn2.nativeElement.click(), 500)
+          setTimeout(() => {
+            this.movementForm.reset();
+            this.movementForm.controls.isNewItemShell.setValue(false);
+            this.movementForm.controls.itemType.setValue("component");
+            this.first.nativeElement.focus();
+          }, 1500)
         }
       });
   }

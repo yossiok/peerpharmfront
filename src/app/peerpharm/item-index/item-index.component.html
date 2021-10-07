@@ -407,6 +407,17 @@
 
     </div>
 
+    <div class="row mt-4 d-flex flex-row justify-content-around">
+      <div class="col-4 fixNoaStupidStuff">
+        <img *ngIf="item.img!=''" [src]="item.img" style="max-height: 250px;"
+          class="hoverImg w-25 h-100 border border-success" alt="Item main image please wait ...">
+        <p *ngIf="item.img==''"><b> -No Image- </b></p>
+        <input class="form-control" type='file' id="input_itemImgID" (change)='uploadImg($event)' style='display:block'>
+        <input class="form-control" type='text' [(ngModel)]="tempHiddenImgSrc" id='tempHiddenImgSrc'
+          style='display:none'>
+      </div>
+    </div>
+
   </div>
 
   <!--General Details Material-->

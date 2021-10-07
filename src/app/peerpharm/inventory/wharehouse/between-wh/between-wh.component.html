@@ -111,4 +111,96 @@
     </div>
   </form>
 
+  <!-- תעודת קליטה -->
+  <div class="row mt-4">
+    <div id="print-section2" style="direction: rtl; text-align: right; display: none; ">
+      <header>
+        <h1>פאר פארם בע"מ</h1>
+        <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256 </p>
+        <p>
+          <span>טלפון 03-9024055</span>&nbsp;&nbsp;
+          <span>פקס 03-9024015</span>&nbsp;&nbsp;
+          <span>דואר אלקטרוני peerpharm@barak.net.il</span>&nbsp;&nbsp;
+          <span>ח.פ: 511899023</span>
+        </p>
+      </header>
+      <main>
+        <h2>תעודת קליטה מס' {{certificateReception}}</h2>
+        <p class='originDestWh'>
+          <span><u>תאריך:</u></span>&nbsp;&nbsp;
+          <span>{{today | date :'dd-MM-yyyy' }}</span>&nbsp;&nbsp;
+
+        </p>
+        <br>
+        <table>
+          <tbody>
+            <tr>
+              <th>מספר פריט</th>
+              <th>ממחסן</th>
+              <th>ממדף</th>
+              <th>למחסן</th>
+              <th>למדף</th>
+              <th>כמות</th>
+              <th class='itemNamePrint'>שם פריט</th>
+              <th></th>
+
+            </tr>
+            <tr>
+              <td>{{movementForm.value.item}}</td>
+              <td>{{movementForm.value.WH_originName}}</td>
+              <td>{{movementForm.value.shell_position_in_whareHouse_Origin}}</td>
+              <td>{{movementForm.value.WH_destName}}</td>
+              <td>{{movementForm.value.shell_position_in_whareHouse_Dest}}</td>
+              <td>{{movementForm.value.amount}}</td>
+              <td>{{movementForm.itemName}}</td>
+
+            </tr>
+          </tbody>
+        </table>
+      </main>
+      <div class="signatures">
+        <p>
+          <span>שם המקבל:</span>&nbsp;&nbsp;
+          <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u>
+          </span>&nbsp;&nbsp;
+          <span>חתימה:</span>&nbsp;&nbsp;
+          <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u>
+          </span>&nbsp;&nbsp;
+          <span>תאריך:</span>&nbsp;&nbsp;
+          <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u>
+          </span>&nbsp;&nbsp;
+        </p>
+      </div>
+      <footer>
+      </footer>
+    </div>
+    <button type="button" style='display: none;' #printBtn2 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl'}, 
+        header : {'border-bottom': 'solid 1px'},
+        main : {'border-bottom': 'solid 1px' },
+        table :{ 'text-align': 'right' },
+        footer : { 'position': 'absolute' , 'width': '100%' },
+        h2 : {'text-align': 'center'},
+        '.originDestWh':{'text-align':'right'},
+        th : {'width': '16%' },
+        td : {'width': '16%' },
+        '.itemNamePrint' : {'width': '35%'},
+        '.signatures' : { 'margin' : '50px'},
+        '.cellPadding' : { 'padding' : '15px 0px'}
+        }" printTitle="תעודת קבלה" printSectionId="print-section2" ngxPrint>print</button>
+    <!-- <button (click)="printStockTransferCertificate()">click</button> -->
+
+  </div>
+
 </div>
