@@ -174,7 +174,7 @@ export class AdminpanelComponent implements OnInit {
     confirm("אתה עומד לשנות סיסמא, האם להמשיך?");
     console.log(user);
     let pass = this.passForm.controls.newpass.value;
-    if (pass.length >= 6 && pass.length <= 8) {
+    if (pass.length >= 6 && pass.length <= 30) {
       console.log(pass, "password is valid");
       this.userService.getPassword(user).subscribe((data) => {
         if (data) {
@@ -189,7 +189,9 @@ export class AdminpanelComponent implements OnInit {
         }
       });
     } else {
-      this.toastService.error("הסיסמא צריכה להיות 6 תווים לפחות");
+      this.toastService.error(
+        "  הסיסמא צריכה להיות 6 תווים לפחות ולא יותר מ 30 תווים."
+      );
     }
   }
 
