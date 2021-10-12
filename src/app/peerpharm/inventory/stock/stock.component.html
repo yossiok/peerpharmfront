@@ -109,7 +109,6 @@
         <div class="col-2 fixNoaStupidStuff">
           <button class="btn-primary form-control rounded-pill">חיפוש</button>
         </div>
-        <div class="col-1 fixNoaStupidStuff"></div>
       </div>
     </form>
   </div>
@@ -178,6 +177,9 @@
         style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Products</div>
       <div (click)='setType("material")' [ngStyle]="{'background-color': buttonColor2,'color':fontColor2}"
         class="navtab" style="cursor:pointer;box-shadow:black 0px -1px 3px inset;">Materials</div>
+      <div (click)="getSearchReport()" ngbTooltip="Export Results" class="navtab"
+        style="cursor:pointer;box-shadow:rgb(207, 27, 27) 0px -1px 3px inset;"><img
+          src="../../../../assets/images/excel.png" style="width: 25px; height: 25px;" alt=""></div>
       <!-- <div class="export" style="cursor:pointer;">
         <img *ngIf="loadingExcel" style="width:50px"
           src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />

@@ -1462,6 +1462,24 @@ export class StockComponent implements OnInit {
     })
   }
 
+  getSearchReport() {
+    let invReport = []
+    for (let c of this.components) {
+      invReport.push({
+        "פריט": c.componentN,
+        "שם פריט": c.componentName,
+        "סוג": c.componentType,
+        "ספק": c.suplierN,
+        "שם ספק": c.suplierName,
+        'מק"ט ספק': c.componentNs,
+        "כמות במלאי": c.amount,
+        "מחיר": c.price,
+        "מטבע": c.coin
+      })
+    }
+    this.excelService.exportAsExcelFile(invReport, `דו"ח מלאי ${new Date().toString().slice(0, 10)}`)
+  }
+
   getRecommendationReport() {
     let query = this.filterParams.value
     query.itemType = this.stockType
