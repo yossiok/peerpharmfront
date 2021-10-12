@@ -224,23 +224,28 @@ export class NewFormuleComponent implements OnInit {
       fatherFormule: this.fatherFormule.nativeElement.value,
       childNumber: this.childrenToAdd,
     };
-    console.log(obj);
     this.formuleService
       .getFormuleByNumber(this.childrenToAdd)
       .subscribe((data) => {
         if (data) {
           this.Toastr.error("פורמולת בן קיימת אצל אב אחר");
         } else {
-          this.formuleService.addChildToFather(obj).subscribe((data) => {
-            console.log(data);
-            if (data) {
-              this.formuleService.newFormuleAdded.emit(data);
-              this.Toastr.success(
-                "פורמולה מספר" + data.formuleNumber + "נוצרה בהצלחה"
-              );
-              this.childrenToAdd = "";
-            }
-          });
+          try {
+            this.formuleService.addChildToFather(obj).subscribe((data) => {
+              if (data.msg) {
+                this.Toastr.warning(data.msg);
+                this.childrenToAdd = "";
+              } else {
+                this.formuleService.newFormuleAdded.emit(data);
+                this.Toastr.success(
+                  "פורמולה מספר" + data.formuleNumber + "נוצרה בהצלחה"
+                );
+                this.childrenToAdd = "";
+              }
+            });
+          } catch (error) {
+            console.log(error);
+          }
         }
       });
   }
@@ -303,7 +308,7 @@ export class NewFormuleComponent implements OnInit {
       this.newFormule.formuleCategory == "" ||
       this.newFormule.formuleNumber == ""
     ) {
-      this.Toastr.error("אנא תמלא את כל הפרטים");
+      this.Toastr.error("אנא מלא את כל הפרטים");
     } else {
       this.formuleService.newFormule(this.newFormule).subscribe((data) => {
         if (data == "formule number exist") {

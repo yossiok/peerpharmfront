@@ -180,7 +180,7 @@
 
       <!--11-->
       <td *ngIf="formule._id != EditRowId">
-        {{ formule.formuleType }}
+        {{ formule.formuleType | formulesTypes }}
       </td>
       <td *ngIf="formule._id == EditRowId"></td>
 
@@ -235,6 +235,7 @@
     <div>
       <h4 id="modal-basic-title">Formule Information</h4>
       <h4>Formule Number: {{ currentFormuleNumber }}</h4>
+      <h4>Parent Number: {{ currentFormuleNumber }}</h4>
       <i style="float:right;padding:5px" (click)="openFormuleModal = false"
         class="fa fa-times h1 click click-black"></i>
       <h4 [ngClass]="percentageCheck(currFormulePercentage)">Percentage: {{currFormulePercentage}}</h4>
