@@ -337,7 +337,7 @@ export class AllFormulesComponent implements OnInit {
       if (this.formulePhTo.nativeElement.value) {
         currdoc.phTo = this.formulePhTo.nativeElement.value.trim();
       }
-      currdoc.lastUpdate = this.formatDate(new Date())
+      currdoc.date = this.formatDate(new Date())
       if (this.formuleCategory.nativeElement.value) {
         currdoc.formuleCategory = this.formuleCategory.nativeElement.value.trim();
       }
