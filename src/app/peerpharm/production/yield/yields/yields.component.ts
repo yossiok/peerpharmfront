@@ -21,7 +21,7 @@ export class YieldsComponent implements OnInit {
   saveYiealdInterval: any = null;
 
   yields: any;
-  lines: any = ["1", "2", "3", "4", "5", "6", "7M", "8", "9", "T", "S"]
+  lines: any = ["1", "2", "3", "4", "5", "6", "7M", "7M2", "8", "9", "T", "S"]
   currentYield: FormGroup = new FormGroup({
     userName: new FormControl(null),
     productionLine: new FormControl(this.currentLine, Validators.required),
