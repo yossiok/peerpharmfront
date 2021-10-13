@@ -12,7 +12,7 @@
         <div class="container mt-5">
             <div class="row mt-5">
                 <input type="number" placeholder="Product Number" #productNumber> &nbsp;&nbsp;
-                <button class="btn btn-warning" (click)="getItemData(productNumber)">Calculate Product Price</button>
+                <button class="btn btn-warning" (click)="getItemData(productNumber)">Calculate Product Cost</button>
             </div>
             <div *ngIf="calculating" class="row mt-2">
                 <h3>{{waitingText}}</h3>

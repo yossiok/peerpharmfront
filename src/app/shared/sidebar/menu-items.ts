@@ -550,7 +550,7 @@ export const ROUTES: RouteInfo[] = [
         },
         {
           path: '/peerpharm/pricing/existing',
-          title: 'Product Price',
+          title: 'Product Cost',
           icon: 'fas fa-list-ol',
           class: '',
           extralink: false,
