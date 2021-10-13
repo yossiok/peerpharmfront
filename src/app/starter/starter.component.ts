@@ -4,6 +4,7 @@ import {
   OnInit,
   AfterViewChecked,
 } from "@angular/core";
+import { Router } from "@angular/router";
 import { AuthService } from "src/app/services/auth.service";
 @Component({
   templateUrl: "./starter.component.html",
@@ -15,7 +16,7 @@ export class StarterComponent implements OnInit {
   userAuthorizations: any[];
   userPermission: string;
   check: boolean = false;
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private router: Router) {
     this.subtitle = "Welcome";
   }
 
@@ -42,6 +43,16 @@ export class StarterComponent implements OnInit {
         this.userAuthorizations = this.authService.loggedInUser.authorization;
         console.log(this.adminPanelAllowed);
         console.log(this.userPermission);
+
+
+
+
+        if (localStorage.getItem('url')) {
+          
+          let urlToForward = localStorage.getItem('url');
+          localStorage.removeItem('url');
+          this.router.navigate([urlToForward]);
+        }
       }
     }, 1000);
   }

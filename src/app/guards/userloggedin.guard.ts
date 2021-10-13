@@ -14,6 +14,9 @@ export class UserloggedinGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean { 
+
+
+
      /* if(location.href.includes('/items/itemDetails'))
       {
         return false;
@@ -23,19 +26,30 @@ export class UserloggedinGuard implements CanActivate {
 
 if(this.auth.isLoggedIn)
 {
+ 
   return true;
 }
+else{
+
+  if(!state.url.includes('starter') && !state.url.includes('login'))
+  {
+    //save the state url
+    localStorage.setItem('url', state.url);
+  }
+  return this.auth.isUserLoggedIn().pipe(
+    map((response) => { 
+
+    
+     if(!response)
+     {
+       this.router.navigate([ '/login' ]); 
+     }
+    return response;
+   })) ; 
+
+}
       
-    return this.auth.isUserLoggedIn().pipe(
-         map((response) => { 
- 
-         
-          if(!response)
-          {
-            this.router.navigate([ '/login' ]); 
-          }
-         return response;
-        })) ; 
+  
        
   }
 // }
