@@ -284,6 +284,7 @@ export class OrderdetailsComponent implements OnInit {
   ) {}
 
   exportAsXLSXOrders() {
+    this.ordersItems.map(oi => oi.quantity = Number(oi.quantity)) // לשימוש תפ"י
     this.excelService.exportAsExcelFile(this.ordersItems, "data");
   }
 

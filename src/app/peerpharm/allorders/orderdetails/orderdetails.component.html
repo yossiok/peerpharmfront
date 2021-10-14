@@ -141,7 +141,7 @@
       <td></td>
       <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="neto Weight(Gr)"
           [(ngModel)]="itemData.netWeightGr"></td>
-      <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="Quantity"
+      <td><input style="box-shadow:1px 1px 2px black" type="number" class="form-control form-control-sm" placeholder="Quantity"
           [(ngModel)]="itemData.quantity"></td>
 
 
@@ -230,12 +230,12 @@
 
 
 
-        <td *ngIf="item._id===EditRowId"><input #netWeightGr type='text' [value]="item.netWeightGr" style='width:70px'>
+        <td *ngIf="item._id===EditRowId"><input #netWeightGr type='number' [value]="item.netWeightGr" style='width:70px'>
         </td>
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.netWeightGr}}</td>
 
         <!--Quantity-->
-        <td *ngIf="item._id===EditRowId"><input #quantity type='text' [value]=item.quantity style='width:70px'></td>
+        <td *ngIf="item._id===EditRowId"><input #quantity type='number' [value]=item.quantity style='width:70px'></td>
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.quantity}}</td>
 
 
