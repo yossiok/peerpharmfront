@@ -128,6 +128,7 @@
               <th>מיקום</th>
               <th>כמות</th>
               <th class='itemNamePrint'>שם פריט</th>
+              <th>לאן יוצא?</th>
 
             </tr>
             <ng-container *ngFor="let arrival of outGoing; let i =index">
@@ -138,7 +139,7 @@
                 <td>{{arrival.position}}</td>
                 <td>{{arrival.amount}}</td>
                 <td>{{arrival.itemName}}</td>
-
+                <td>{{arrival.destination}}</td>
               </tr>
             </ng-container>
           </tbody>
