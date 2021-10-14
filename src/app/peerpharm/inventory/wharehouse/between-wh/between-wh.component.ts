@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { InventoryService } from "src/app/services/inventory.service";
+import { WarehouseService } from "src/app/services/warehouse.service";
 
 @Component({
   selector: "app-between-wh",
@@ -49,7 +50,8 @@ export class BetweenWHComponent implements OnInit {
 
   constructor(
     private inventoryService: InventoryService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private wareHouseService: WarehouseService
   ) { }
 
   ngOnInit(): void {
@@ -58,6 +60,23 @@ export class BetweenWHComponent implements OnInit {
       this.movementForm.controls.item.setValue(this.itemNumber);
       this.disabled = true;
     }
+    this.getHistoricalReceptions()
+  }
+
+  getHistoricalReceptions() {
+    this.wareHouseService.moveWHPrintCalled$.subscribe((data) => {
+      this.certificateReception = data.logs[0].warehouseReception;
+      this.today = data.dateAndTime;
+      data.logs.forEach((element) => {
+        element.position = element.shell_position_in_whareHouse_Origin;
+      });
+      console.log(data.logs[0])
+      this.movementForm.patchValue(data.logs[0]);
+
+      setTimeout(() => {
+        this.printBtn2.nativeElement.click();
+      }, 500);
+    });
   }
 
   // check if component number exist

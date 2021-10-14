@@ -35,6 +35,7 @@ export class CheckoutComponent implements OnInit {
     whareHouseID: new FormControl(null, Validators.required),
     whareHouse: new FormControl(""),
     isNewItemShell: new FormControl(false, Validators.required),
+    destination: new FormControl('', Validators.required)
   });
 
   constructor(

@@ -176,32 +176,7 @@ export class WharehouseComponent implements OnInit {
       this.StkMngNavBtnColor = "";
 
       this.dir = "managment";
-      // const childElements = this.container.nativeElement.children;
-      // for (let child of childElements) {
-      //   const elemnts = child.children;
-      //   for (let elm of elemnts) {
-      //     const mnts = elm.children;
-      //     for (let e of mnts) {
-      //       console.log(e.getAttribute("name"))
-      //       if (e.getAttribute("name")) {
-      //         if (direction == "shellChange" && e.getAttribute("name") == "newShelfName") {
-      //           e.style.display = 'inline';
-      //           e.className = "dataInput";
-      //         }
-      //         else if (direction == "production" && e.getAttribute("name") == "newDemandId") {
-      //           e.style.display = 'inline';
-      //           e.className = "dataInput";
-      //           // e.style.visibility = "hidden";
-      //         }
-      //         else {
-      //           e.style.display = 'none';
-      //           e.className = "no";
-      //           e.value = "";
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
+      
     } else if (action == "stkManagment") {
       //change active navbar colors
       this.WhMngNavBtnColor = "";

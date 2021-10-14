@@ -119,6 +119,8 @@ export class HistMovementsComponent implements OnInit, OnChanges {
         this.warehouseService.outCalledMethod(move);
       } else if (move.movementType == "in") {
         this.warehouseService.inCalledMethod(move);
+      } else if(move.movementType == "whareHouseChange") {
+        this.warehouseService.moveWHCalledMethod(move);
       }
     }, 500);
   }

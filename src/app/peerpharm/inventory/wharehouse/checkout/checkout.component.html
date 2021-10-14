@@ -12,6 +12,8 @@
           <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
           </option>
         </select>
+        <label>לאן יוצא?</label>
+        <input type="text" class="form-control" formControlName="destination">
       </div>
 
       <div *ngIf="!disabled" class="col-2">

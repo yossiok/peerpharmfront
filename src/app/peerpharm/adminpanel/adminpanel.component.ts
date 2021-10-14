@@ -175,13 +175,10 @@ export class AdminpanelComponent implements OnInit {
     console.log(user);
     let pass = this.passForm.controls.newpass.value;
     if (pass.length >= 6 && pass.length <= 30) {
-      console.log(pass, "password is valid");
       this.userService.getPassword(user).subscribe((data) => {
         if (data) {
           this.userService.resetPassword(user, pass).subscribe((data) => {
             this.passForm.reset();
-            console.log("line 122");
-            console.log(data);
             this.toastService.success("הסיסמא עודכנה בהצלחה !");
           });
         } else {
