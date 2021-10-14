@@ -153,7 +153,6 @@ export class AllFormulesComponent implements OnInit {
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
     event: KeyboardEvent
   ) {
-    console.log(event);
     this.edit("", "");
     this.editPhases("");
   }
@@ -365,39 +364,85 @@ export class AllFormulesComponent implements OnInit {
       percentage: "",
       remarks: "",
     };
+    let formule;
     this.newItem.formuleNumber = this.currentFormuleNumber;
-    this.formuleService.addItemToFormule(this.newItem).subscribe((data) => {
-      data;
-      if (data) {
-        var formule = this.allFormules.find((f) => f._id == data._id);
-        var phase = formule.phases.find(
-          (p) => p.phaseName == this.newItem.phaseName
-        );
-        if (phase) {
-          var objToPush = { ...this.newItem };
-          phase.items.push(objToPush);
-          this.toastSrv.success("פריט נוסף בהצלחה!");
-        } else {
-          newPhase.formuleId = formule._id;
-          newPhase.phaseName = this.newItem.phaseName;
-          newPhase.remarks = this.newItem.phaseRemarks;
-          newItem.itemName = this.newItem.itemName;
-          newItem.itemNumber = this.newItem.itemNumber;
-          newItem.percentage = this.newItem.percentage;
-          newItem.remarks = this.newItem.remarks;
-          newPhase.items.push(newItem);
-          formule.phases.push(newPhase);
-        }
+    this.formuleService
+      .getFormuleByNumber(this.currentFormuleNumber)
+      .subscribe((data) => {
+        formule = data;
 
-        this.newItem.formuleNumber = "";
-        this.newItem.phaseName = "";
-        this.newItem.phaseRemarks = "";
-        this.newItem.itemName = "";
-        this.newItem.itemNumber = "";
-        this.newItem.percentage = "";
-        this.newItem.remarks = "";
-      }
-    });
+        if (formule.formuleType == "father") {
+          formule.newItem = true;
+          const newItem = {
+            itemName: this.newItem.itemName,
+            itemNumber: this.newItem.itemNumber,
+            percentage: this.newItem.percentage,
+            remarks: this.newItem.remarks,
+          };
+
+          let phase = formule.phases.find(
+            (p) => p.phaseName == this.newItem.phaseName
+          );
+          if (phase) {
+            phase.items.push(newItem);
+          } else {
+            formule.phases.push({
+              phaseName: this.newItem.phaseName,
+              remarks: this.newItem.phaseRemarks,
+              formuleId: formule._id,
+              items: [newItem],
+            });
+          }
+
+          this.chooseFathersToUpdate = true;
+          this.updatingFormule = false;
+          this.allFathersFromBase = [];
+          this.allFathersFromBase[0] = formule;
+          this.allChosenChildsToUpdate = formule.children;
+          this.updateBaseToAll = {
+            formulNumber: formule.formuleNumber,
+            newItem: formule.newItem,
+            formuleType: formule.formuleType,
+            phases: formule.phases,
+            _id: formule._id,
+          };
+        } else {
+          this.formuleService
+            .addItemToFormule(this.newItem)
+            .subscribe((data) => {
+              data;
+              if (data) {
+                var formule = this.allFormules.find((f) => f._id == data._id);
+                var phase = formule.phases.find(
+                  (p) => p.phaseName == this.newItem.phaseName
+                );
+                if (phase) {
+                  var objToPush = { ...this.newItem };
+                  phase.items.push(objToPush);
+                  this.toastSrv.success("פריט נוסף בהצלחה!");
+                } else {
+                  newPhase.formuleId = formule._id;
+                  newPhase.phaseName = this.newItem.phaseName;
+                  newPhase.remarks = this.newItem.phaseRemarks;
+                  newItem.itemName = this.newItem.itemName;
+                  newItem.itemNumber = this.newItem.itemNumber;
+                  newItem.percentage = this.newItem.percentage;
+                  newItem.remarks = this.newItem.remarks;
+                  newPhase.items.push(newItem);
+                  formule.phases.push(newPhase);
+                }
+
+                this.newItem.formuleNumber = "";
+                this.newItem.phaseName = "";
+                this.newItem.phaseRemarks = "";
+                this.newItem.itemName = "";
+                this.newItem.itemNumber = "";
+                this.newItem.percentage = "";
+                this.newItem.remarks = "";
+              }
+            });
+        }
+      });
   }
 
   getMaterialsForFormules() {
@@ -720,12 +765,27 @@ export class AllFormulesComponent implements OnInit {
 
   saveFormuleFormation() {
     this.draggable = false;
-    this.updateFormule;
     this.formuleService
-      .updateFormuleFormation(this.updateFormule)
+      .getFormuleByNumber(this.currentFormuleNumber)
       .subscribe((data) => {
-        if (data) {
-          this.toastSrv.success("פורמולה עודכנה בהצלחה !");
+        if (data.formuleType == "father") {
+          this.chooseFathersToUpdate = true;
+          this.allChosenChildsToUpdate = data.children;
+          this.updatingFormule = false;
+          this.allFathersFromBase = [];
+          this.allFathersFromBase[0] = data;
+          this.updateBaseToAll = this.updateFormule;
+          this.updateBaseToAll.newPhases = true;
+        } else {
+          this.formuleService
+            .updateFormuleFormation(this.updateFormule)
+            .subscribe((data) => {
+              if (data) {
+                this.toastSrv.success("פורמולה עודכנה בהצלחה !");
+              } else {
+                this.toastSrv.error("משהו השתבש, בדוק את הפורמולות.");
+              }
+            });
         }
       });
   }
@@ -734,6 +794,7 @@ export class AllFormulesComponent implements OnInit {
     this.updatingFormule = true;
     var formuleData = {
       formuleId: formuleId,
+      formuleNumber: this.currentFormuleNumber,
       itemNumber: itemNumber,
       phaseName: phaseName,
       index: index,
@@ -743,16 +804,21 @@ export class AllFormulesComponent implements OnInit {
       updateFather: "",
       updateChildren: "",
     };
-
     this.updateBaseToAll = formuleData;
     if (this.currentFormuleNumber)
+      // this.formuleService
+      //   .getAllMadeFromBase(this.currentFormuleNumber)
+      //   .subscribe((data) => {
       this.formuleService
-        .getAllMadeFromBase(this.currentFormuleNumber)
+        .getFormuleByNumber(this.currentFormuleNumber)
         .subscribe((data) => {
-          if (data.msg != "notExist") {
+          if (data.formuleType == "father") {
             this.chooseFathersToUpdate = true;
-            this.allFathersFromBase = data;
-          } else if (data.msg == "notExist") {
+            this.updatingFormule = false;
+            this.allFathersFromBase = [];
+            this.allFathersFromBase[0] = data;
+            this.allChosenChildsToUpdate = data.children;
+          } else {
             this.formuleService.updateFormule(formuleData).subscribe((data) => {
               if (data) {
                 this.updatingFormule = false;
@@ -781,34 +847,94 @@ export class AllFormulesComponent implements OnInit {
   updateAllFromBase() {
     this.updateBaseToAll.updateChildren = this.allChosenChildsToUpdate;
     this.updateBaseToAll.updateFather = this.allChosenFathersToUpdate;
-    this.formuleService
-      .updateFormuleData(this.updateBaseToAll)
-      .subscribe((data) => {
-        this.chooseFathersToUpdate = false;
-        this.updateBaseToAll.updateChildren = "";
-        this.updateBaseToAll.updateFather = "";
-        var updatedFormule = this.allFormules.find(
-          (f) => f._id == this.updateBaseToAll.formuleId
-        );
-        updatedFormule.approval = "";
-        var phase = updatedFormule.phases.find(
-          (p) => p.phaseName == this.updateBaseToAll.phaseName
-        );
-        phase.remarks = this.updatePhaseRemarks;
-        for (let i = 0; i < phase.items.length; i++) {
-          if (phase.items[i].itemNumber == this.updateBaseToAll.itemNumber) {
-            phase.items[i].percentage = Number(this.updatePercentage);
-            phase.items[i].remarks = this.updateItemRemarks;
+    if (this.updateBaseToAll.newPhases) {
+      this.formuleService
+        .addItemToFormule(this.updateBaseToAll)
+        .subscribe((data) => {
+          if (data.ok == 1) {
+            this.toastSrv.success("הפורמולות עודכנו בהצלחה !");
+            this.chooseFathersToUpdate = false;
+          } else {
+            this.toastSrv.error("משהו השתבש, בדוק שינויים");
+            this.chooseFathersToUpdate = false;
           }
-        }
-        this.toastSrv.success("פריט עודכן בהצלחה!");
-        this.EditRowId = "";
-        this.updatePercentage = "";
-        this.updateItemRemarks = "";
-        this.updatePhaseRemarks = "";
-        this.updateBaseToAll.updateChildren = "";
-        this.updateBaseToAll.updateFather = "";
-      });
+        });
+    } else if (this.updateBaseToAll.newItem) {
+      let newPhase = {
+        phaseName: "",
+        remarks: "",
+        formuleId: "",
+        items: [],
+      };
+
+      let newItem = {
+        itemName: "",
+        itemNumber: "",
+        percentage: "",
+        remarks: "",
+      };
+      this.formuleService
+        .addItemToFormule(this.updateBaseToAll)
+        .subscribe((data) => {
+          if (data.ok == 1) {
+            this.chooseFathersToUpdate = false;
+            var formule = this.allFormules.find(
+              (f) => f._id == this.updateBaseToAll._id
+            );
+            var phase = formule.phases.find(
+              (p) => p.phaseName == this.newItem.phaseName
+            );
+            if (phase) {
+              var objToPush = { ...this.newItem };
+              phase.items.push(objToPush);
+              this.toastSrv.success("פריט נוסף בהצלחה!");
+            } else {
+              newPhase.formuleId = formule._id;
+              newPhase.phaseName = this.newItem.phaseName;
+              newPhase.remarks = this.newItem.phaseRemarks;
+              newItem.itemName = this.newItem.itemName;
+              newItem.itemNumber = this.newItem.itemNumber;
+              newItem.percentage = this.newItem.percentage;
+              newItem.remarks = this.newItem.remarks;
+              newPhase.items.push(newItem);
+              formule.phases.push(newPhase);
+            }
+
+            this.newItem.formuleNumber = "";
+            this.newItem.phaseName = "";
+            this.newItem.phaseRemarks = "";
+            this.newItem.itemName = "";
+            this.newItem.itemNumber = "";
+            this.newItem.percentage = "";
+            this.newItem.remarks = "";
+          } else {
+            console.log("Something went Wrong");
+          }
+        });
+    } else {
+      this.formuleService
+        .updateFormuleData(this.updateBaseToAll)
+        .subscribe((data) => {
+          var formule = this.allFormules.find(
+            (f) => f.formuleNumber == data.formuleNumber
+          );
+          var phase = formule.phases.find((p) => p.phaseName == data.phaseName);
+          var item = phase.items.find((i) => i.itemNumber == data.itemNumber);
+          item.itemRemarks = this.itemRemarksUpdate.nativeElement.value;
+          item.phaseRemarks = this.phaseRemarksUpdate.nativeElement.value;
+          item.remarks = this.itemRemarksUpdate.nativeElement.value;
+          item.percentage = Number(this.percentageUpdate.nativeElement.value);
+
+          this.chooseFathersToUpdate = false;
+          this.updateBaseToAll.updateChildren = "";
+          this.updateBaseToAll.updateFather = "";
+          this.toastSrv.success("פריט עודכן בהצלחה!");
+          this.EditRowId = "";
+          this.updatePercentage = "";
+          this.updateItemRemarks = "";
+          this.updatePhaseRemarks = "";
+        });
+    }
   }
 
   loadData(formuleNum) {
@@ -817,12 +943,12 @@ export class AllFormulesComponent implements OnInit {
     formuleToUpdate = this.allFormules.find(
       (formule) => formule.formuleNumber == formuleNum
     );
+    // calculate the total percentage of the formule
     formuleToUpdate.phases.forEach((phase) => {
       phase.items.forEach((item) => {
         this.currFormulePercentage += Number(item.percentage);
       });
     });
-    console.log(formuleToUpdate);
     this.updateFormule = formuleToUpdate;
   }
 
@@ -926,7 +1052,6 @@ export class AllFormulesComponent implements OnInit {
   }
 
   updateFormuleWhenPrint() {
-    console.log(this.updateFormule);
     let user = this.authService.loggedInUser.userName;
     let updatedFormule = {
       _id: this.updateFormule._id,
@@ -995,7 +1120,6 @@ export class AllFormulesComponent implements OnInit {
       "Text/html",
       ev.target.dataset.phase + ";" + ev.target.dataset.itemnumber
     );
-    console.log("dragging");
   }
 
   startShakeDragOver(ev) {
@@ -1016,6 +1140,7 @@ export class AllFormulesComponent implements OnInit {
 
   getDroppedElemnt(ev) {
     // this.stopAllShakes();
+
     this.dragging = false;
     var data = ev.dataTransfer.getData("text/html");
     let dataArr = data.split(";");

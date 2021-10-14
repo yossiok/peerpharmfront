@@ -230,9 +230,11 @@
   *ngIf="openFormuleModal == true">
   <div style="overflow: auto; height: 880px !important;">
     <div>
-      <h4 id="modal-basic-title">Formule Information</h4>
+      <h4 id="modal-basic-title">Formule Information:</h4>
       <h4>Formule Number: {{ currentFormuleNumber }}</h4>
-      <h4>Parent Number: {{ currentFormuleNumber }}</h4>
+      <h4 *ngIf="updateFormule.parentNumber">Parent Number: {{ updateFormule.parentNumber }}</h4>
+      <h4 *ngIf="updateFormule.children && updateFormule.children.length >0">Children Number:</h4>
+      <h4> <span *ngFor="let child of updateFormule.children">{{ child.childNumber }},</span></h4>
       <i style="float:right;padding:5px" (click)="openFormuleModal = false"
         class="fa fa-times h1 click click-black"></i>
       <h4 [ngClass]="percentageCheck(currFormulePercentage)">Percentage: {{currFormulePercentage}}</h4>
@@ -614,20 +616,20 @@
     </div>
   </ng-template>
 </div>
-
+<!--  -->
 <div style="
     border: 2px solid black;
     background-color: rgb(214, 219, 214);
-    z-index: 9999;
+    z-index: 9999;width: 600px; height: 700px; overflow-y: scroll;
   " *ngIf="chooseFathersToUpdate == true" class="container mx-auto my-auto fixed-top rounded shadow">
   <div class="row">
     <div style="text-align: center;" class="col-12">
-      <h2>בחר פורמולת אב לעדכן</h2>
+      <h2>בחר פורמולה לעדכון</h2>
     </div>
   </div>
   <div class="row">
     <div class="col-12">
-      <table class="table table-striped">
+      <table class="table table-striped" style="text-align:right">
         <thead>
           <tr>
             <th></th>
@@ -637,10 +639,11 @@
             <th></th>
           </tr>
         </thead>
-        <tbody style="overflow: auto; height: 400px; display: block;">
+        <tbody>
+          <!-- <tbody style="overflow: auto; height: 400px; display: block;"> -->
           <tr *ngFor="let father of allFathersFromBase">
             <td>
-              <input (change)="choseToUpdate($event, father)" type="checkbox" />
+              <input (change)="choseToUpdate($event, father)" type="checkbox" checked disabled />
             </td>
             <td>{{ father.formuleNumber }}</td>
             <td>{{ father.formuleName }}</td>
@@ -650,7 +653,7 @@
                   <tr *ngFor="let child of father.children">
                     <td>{{ child.childNumber }}</td>
                     <td>
-                      <input (change)="choseChildToUpdate($event, child)" type="checkbox" />
+                      <input (change)="choseChildToUpdate($event, child)" type="checkbox" checked />
                     </td>
                   </tr>
                 </tbody>
