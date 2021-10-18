@@ -40,6 +40,7 @@ export class InventoryReportsComponent implements OnInit {
   }
 
   getInvRep() {
+    let sortOrder
     this.loader = true
     this.inventorySer.getInvRep(this.reportForm.value).subscribe(data => {
       this.loader = false
@@ -49,6 +50,7 @@ export class InventoryReportsComponent implements OnInit {
           delete item.subName
           delete item.description
         })
+        sortOrder = ['_id', 'name', 'position', 'total']
       }
       else {
         data.map(item => {
@@ -75,9 +77,10 @@ export class InventoryReportsComponent implements OnInit {
           delete item.shell_id_in_whareHouse
           return item
         })
+        sortOrder = ['item', 'name', 'position', 'amount']
       }
-      // let sortOrder = ['item', 'name', 'position', 'whareHouse', 'amount']
-      this.excelService.exportAsExcelFile(data, 'Inventory Report')
+      
+      this.excelService.exportAsExcelFile(data, 'Inventory Report', sortOrder)
     })
   }
 
