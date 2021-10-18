@@ -28,7 +28,8 @@
         <div *ngIf="chooseChildren != true" class="col-2">
           <select class="form-control" (change)="createFormuleFromBase($event)">
             <option></option>
-            <option *ngFor="let formule of baseFormules" [value]="formule.formuleName">{{formule.formuleName}}
+            <option *ngFor="let formule of baseFormules" [value]="formule.formuleName">{{formule.formuleNumber}}:
+              {{formule.formuleName}}
             </option>
           </select>
         </div>
@@ -620,7 +621,7 @@
       </div>
 
     </mat-tab>
-    <mat-tab label="Add Child">
+    <mat-tab label="Add Child to Parent">
       <div class="row mt-5">
         <div class="col-12 text-center">
           <h3 class="text-info">Add Child To Father</h3>
@@ -655,6 +656,51 @@
         <div class="col-5"></div>
         <div class="col-2">
           <button (click)="addChildToExistFather()" class="btn btn-info form-control">Add Child</button>
+        </div>
+        <div class="col-5"></div>
+      </div>
+
+    </mat-tab>
+    <mat-tab label="Remove Child from Parent">
+      <div class="row mt-5">
+        <div class="col-12 text-center">
+          <h3 class="text-info">Remove Child from Parent</h3>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-3"></div>
+        <div class="col-1">
+          <label class="form-control">Father</label>
+        </div>
+        <div class="col-2">
+          <input list="fathersToRemove" class="form-control" (change)="chosenFather()" #fatherToRemove>
+          <datalist id="fathersToRemove">
+            <option *ngFor="let chosen of fatherFormules" [value]="chosen.formuleNumber">{{chosen.formuleNumber}} :
+              {{chosen.formuleName}}
+            </option>
+          </datalist>
+        </div>
+        <div class="col-1">
+          <label class="form-control">Child</label>
+        </div>
+        <div class="col-2">
+          <!-- <input class="form-control" type="text" [(ngModel)]="childrenToAdd" placeholder="Child Number"> -->
+
+          <input list="children" class="form-control" #childToRemove>
+          <datalist id="children">
+            <option *ngFor="let child of childrenToRemove" [value]="child.childNumber">
+              {{child.childNumber}}
+            </option>
+          </datalist>
+        </div>
+        <div class="col-3"></div>
+      </div>
+
+      <div class="row mt-5">
+        <div class="col-5"></div>
+        <div class="col-2">
+          <button (click)="removeChildFromExistFather()" class="btn btn-info form-control">Remove Child</button>
         </div>
         <div class="col-5"></div>
       </div>

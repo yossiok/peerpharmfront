@@ -65,6 +65,7 @@ export class AllFormulesComponent implements OnInit {
   allChosenFathersToUpdate: any[] = [];
   allChosenChildsToUpdate: any[] = [];
   selectedArr: any[] = [];
+  separatedArr: any[] = [];
   user: any;
 
   addItem = {
@@ -312,6 +313,7 @@ export class AllFormulesComponent implements OnInit {
     }
     if (ev.target.checked == false) {
       var isSelected = this.selectedArr;
+
       var tempArr = isSelected.filter((x) => x.itemNumber != item.itemNumber);
       this.selectedArr = tempArr;
     }
@@ -334,7 +336,7 @@ export class AllFormulesComponent implements OnInit {
       if (this.formulePhTo.nativeElement.value) {
         currdoc.phTo = this.formulePhTo.nativeElement.value.trim();
       }
-      currdoc.date = this.formatDate(new Date())
+      currdoc.date = this.formatDate(new Date());
       if (this.formuleCategory.nativeElement.value) {
         currdoc.formuleCategory =
           this.formuleCategory.nativeElement.value.trim();
@@ -845,6 +847,41 @@ export class AllFormulesComponent implements OnInit {
   }
 
   updateAllFromBase() {
+    if (this.separatedArr.length > 0) {
+      console.log(this.separatedArr);
+      let objReq = {
+        parentNumber: this.currentFormuleNumber,
+        children: this.separatedArr,
+      };
+      let isConfirmed = confirm(
+        "You are aboute to separte a child formule from its parent. As a result the child will turn to regular formule and will not have any connection to this parent. Do you want to proceed?"
+      );
+      if (isConfirmed) {
+        this.formuleService
+          .separateChildFromParent(objReq)
+          .subscribe((data) => {
+            console.log(data);
+            if (data.msg) {
+              this.toastSrv.warning("msg");
+            } else {
+              let index = this.allFormules.find((f) => {
+                f.formuleNumber == data.formuleNumber;
+              });
+              if (index) {
+                this.allFormules[index].children = data.children;
+                this.toastSrv.success(
+                  "The children separation from parent succeeded!"
+                );
+              } else {
+                this.toastSrv.warning("Parent formule wasn't found");
+              }
+
+              this.allFormulesCopy = this.allFormulesCopy;
+            }
+          });
+      }
+    }
+
     this.updateBaseToAll.updateChildren = this.allChosenChildsToUpdate;
     this.updateBaseToAll.updateFather = this.allChosenFathersToUpdate;
     if (this.updateBaseToAll.newPhases) {
@@ -1090,10 +1127,19 @@ export class AllFormulesComponent implements OnInit {
   }
 
   choseChildToUpdate(ev, child) {
+    console.log("entering chose function");
+    console.log(ev);
+    console.log(child);
+    console.log(this.allChosenChildsToUpdate);
+    console.log(this.separatedArr);
     if (ev.target.checked == true) {
       var isSelected = this.allChosenChildsToUpdate;
       isSelected.push(child);
       this.allChosenChildsToUpdate = isSelected;
+      let index = this.separatedArr.findIndex(
+        (i) => i.childNumber == child.childNumber
+      );
+      this.separatedArr.splice(index, 1);
     }
 
     if (ev.target.checked == false) {
@@ -1102,7 +1148,10 @@ export class AllFormulesComponent implements OnInit {
         (x) => x.childNumber != child.childNumber
       );
       this.allChosenChildsToUpdate = tempArr;
+      this.separatedArr.push({ child });
     }
+    console.log(this.separatedArr);
+    console.log(this.allChosenChildsToUpdate);
   }
 
   /****************DRAG DROP FUNCS************/

@@ -23,6 +23,7 @@ export class NewFormuleComponent implements OnInit {
   mixedMaterials: any[];
   baseFormules: any[];
   fatherFormules: any[];
+  childrenToRemove: any[];
   allChildren: any[] = [];
   currentBaseFormule: any;
   phaseItems: any[] = [];
@@ -35,6 +36,7 @@ export class NewFormuleComponent implements OnInit {
   hasMixedMaterial: boolean = false;
   currentFormule: any;
   childrenToAdd: any;
+
   user: any;
   EditRowId: any = "";
   allPercentage: number;
@@ -45,6 +47,8 @@ export class NewFormuleComponent implements OnInit {
   @ViewChild("remarks") remarks: ElementRef;
   @ViewChild("addChildren") addChildren: ElementRef;
   @ViewChild("fatherFormule") fatherFormule: ElementRef;
+  @ViewChild("fatherToRemove") fatherToRemove: ElementRef;
+  @ViewChild("childToRemove") childToRemove: ElementRef;
 
   @ViewChild("updatePhaseName") updatePhaseName: ElementRef;
   @ViewChild("updateItemsIndex") updateItemsIndex: ElementRef;
@@ -224,12 +228,16 @@ export class NewFormuleComponent implements OnInit {
       fatherFormule: this.fatherFormule.nativeElement.value,
       childNumber: this.childrenToAdd,
     };
+    console.log(obj.fatherFormule);
+    console.log(obj.childNumber);
     this.formuleService
       .getFormuleByNumber(this.childrenToAdd)
       .subscribe((data) => {
-        if (data) {
+        console.log(data.parentNumber);
+        if (data.parentNumber != "" && data.parentNumber != null) {
           this.Toastr.error("פורמולת בן קיימת אצל אב אחר");
         } else {
+          console.log("Entered else");
           try {
             this.formuleService.addChildToFather(obj).subscribe((data) => {
               if (data.msg) {
@@ -246,6 +254,35 @@ export class NewFormuleComponent implements OnInit {
           } catch (error) {
             console.log(error);
           }
+        }
+      });
+  }
+
+  removeChildFromExistFather() {
+    console.log(this.fatherToRemove.nativeElement.value);
+    console.log(this.childToRemove.nativeElement.value);
+    let objectToSend = {
+      children: [
+        { child: { childNumber: this.childToRemove.nativeElement.value } },
+      ],
+      parentNumber: this.fatherToRemove.nativeElement.value,
+    };
+    this.formuleService
+      .separateChildFromParent(objectToSend)
+      .subscribe((data) => {
+        console.log(data);
+        if (data.msg) {
+          this.Toastr.warning(data.msg);
+        } else {
+          this.Toastr.success(
+            "The child has been separated from his parent successfully"
+          );
+          let index = this.fatherFormules.findIndex(
+            (f) => f.formuleNumber == data.formuleNumber
+          );
+          this.fatherFormules.splice(index, 1, data);
+          this.childToRemove.nativeElement.value = "";
+          this.fatherToRemove.nativeElement.value = "";
         }
       });
   }
@@ -271,7 +308,8 @@ export class NewFormuleComponent implements OnInit {
       this.formuleService
         .getFormuleByNumber(childrenNumber)
         .subscribe((data) => {
-          if (data) {
+          console.log(data._doc);
+          if (data.parentNumber != "" && data.parentNumber != null) {
             this.Toastr.error("פורמולת בן קיימת אצל אב אחר");
           } else {
             var tempArr = [];
@@ -491,6 +529,16 @@ export class NewFormuleComponent implements OnInit {
       this.allChildren = [];
       this.newPhase.phaseName = "";
     }
+  }
+  chosenFather() {
+    let fatherNum = this.fatherToRemove.nativeElement.value;
+    console.log(fatherNum);
+    let father = this.fatherFormules.filter(
+      (f) => f.formuleNumber == fatherNum
+    );
+    console.log(father);
+    console.log(father[0].children);
+    this.childrenToRemove = [...father[0].children];
   }
 
   saveEdit(itemNumber, phaseName, index) {
