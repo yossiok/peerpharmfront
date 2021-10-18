@@ -517,6 +517,12 @@ export class OrderdetailsComponent implements OnInit {
     });
   }
 
+  makePlan() {
+    this.orderService.makePlan(this.selectedArr).subscribe(data => {
+      console.log('selected arr back from server: ',data)
+    })
+  }
+
   // check with Akiva if still necessery , in html it's Production Requirements
   getProdReq() {
     var tempArr = []; // just product numbers
@@ -645,6 +651,7 @@ export class OrderdetailsComponent implements OnInit {
       var tempArr = isSelected.filter((x) => x.itemNumber != item.itemNumber);
       this.selectedArr = tempArr;
     }
+
   }
 
   private getDismissReason(reason: any): string {
