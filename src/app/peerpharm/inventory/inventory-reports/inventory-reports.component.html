@@ -1,9 +1,8 @@
-
 <div *ngIf="!loader">
     <form [formGroup]="reportForm" (ngSubmit)="getInvRep()">
         <div class="row">
             <div class="col-1">
-                <label>item type:</label> 
+                <label>item type:</label>
                 <select class="form-control" formControlName="itemType">
                     <option value="all">all</option>
                     <option value="material">materials</option>
@@ -16,6 +15,14 @@
                 <select class="form-control" formControlName="cmptType">
                     <option *ngFor="let type of cmptTypes" [value]="type">{{type}}</option>
                 </select>
+            </div>
+            <div class="col-1">
+                <label for="">Component Number:</label>
+                <input type="text" disabled class="form-control" formControlName="componentN">
+            </div>
+            <div class="col-1">
+                <label for="">Component Name:</label>
+                <input type="text" disabled class="form-control" formControlName="componentName">
             </div>
             <div class="col-1">
                 <label for="">&nbsp;</label>
