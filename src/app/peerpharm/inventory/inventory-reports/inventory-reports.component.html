@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-1">
                 <label>item type:</label>
-                <select class="form-control" formControlName="itemType">
+                <select class="form-control" #itemType formControlName="itemType">
                     <option value="all">all</option>
                     <option value="material">materials</option>
                     <option value="component">components</option>
@@ -18,11 +18,11 @@
             </div>
             <div class="col-1">
                 <label for="">Component Number:</label>
-                <input type="text" disabled class="form-control" formControlName="componentN">
+                <input type="text" class="form-control" formControlName="componentN">
             </div>
             <div class="col-1">
                 <label for="">Component Name:</label>
-                <input type="text" disabled class="form-control" formControlName="componentName">
+                <input type="text" class="form-control" formControlName="componentName">
             </div>
             <div class="col-1">
                 <label for="">&nbsp;</label>
