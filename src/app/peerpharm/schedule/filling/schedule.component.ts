@@ -274,51 +274,55 @@ export class ScheduleComponent implements OnInit {
   }
 
   dateChanged(date) {
-    this.fillingDate = date;
-    this.startTime()
-    this.scheduleService.getScheduleByDate(date).subscribe(res => {
-      res.map(sced => {
-        if (sced.status == 'filled') sced.color = '#CE90FF';
-        if (sced.status == 'done') sced.color = 'Aquamarine';
-        if (sced.status == 'beingFilled') sced.color = 'yellow';
-        if (sced.status == 'packed') sced.color = 'orange';
-        if (sced.status == 'partialDone') sced.color = '#ff7272';
-        if (sced.status == 'problem') sced.color = 'red';
-        if (sced.status == 'open') sced.color = 'white';
-        if (sced.cmptsStatus == null) sced.cmptsStatus = 'true';
-        if (sced.whatIsMissing == 'noStickers' || sced.whatIsMissing == 'noMaterial' || sced.whatIsMissing == 'noComponent') {
-          sced.color = 'grey'
-        }
-        sced.date3 = moment(sced.date).format('YYYY-MM-DD');
+    if (date == "") this.toastSrv.error('יש לבחור תאריך מתוך הלוח')
+    else {
 
-        //let pipe = new DatePipe('en-US'); // Use your own locale
-        //  sced.date3 = pipe.transform(sced.date, 'short');
+      this.fillingDate = date;
+      this.startTime()
+      this.scheduleService.getScheduleByDate(date).subscribe(res => {
+        res.map(sced => {
+          if (sced.status == 'filled') sced.color = '#CE90FF';
+          if (sced.status == 'done') sced.color = 'Aquamarine';
+          if (sced.status == 'beingFilled') sced.color = 'yellow';
+          if (sced.status == 'packed') sced.color = 'orange';
+          if (sced.status == 'partialDone') sced.color = '#ff7272';
+          if (sced.status == 'problem') sced.color = 'red';
+          if (sced.status == 'open') sced.color = 'white';
+          if (sced.cmptsStatus == null) sced.cmptsStatus = 'true';
+          if (sced.whatIsMissing == 'noStickers' || sced.whatIsMissing == 'noMaterial' || sced.whatIsMissing == 'noComponent') {
+            sced.color = 'grey'
+          }
+          sced.date3 = moment(sced.date).format('YYYY-MM-DD');
+
+          //let pipe = new DatePipe('en-US'); // Use your own locale
+          //  sced.date3 = pipe.transform(sced.date, 'short');
+        });
+
+
+
+        this.scheduleData = res;
+        this.scheduleDataCopy = res;
+        this.selectedArr = []
+
+        //get batch specifications status
+        this.scheduleData.map(sced => {
+          if (sced.batch && sced.batch != "") {
+            let batches = sced.batch.split('+')
+            if (batches.length > 1) {
+
+              sced.batchSpecStatus = 999
+            }
+            else {
+              this.batchService.getSpecvalue(batches[0]).subscribe(res => {
+                if (res.status) sced.batchSpecStatus = res.status
+                else sced.batchSpecStatus = -1
+              })
+            }
+          }
+        })
+        setTimeout(() => this.scheduleDataCopy = this.scheduleDataCopy, 5000)
       });
-
-
-
-      this.scheduleData = res;
-      this.scheduleDataCopy = res;
-      this.selectedArr = []
-
-      //get batch specifications status
-      this.scheduleData.map(sced => {
-        if (sced.batch && sced.batch != "") {
-          let batches = sced.batch.split('+')
-          if (batches.length > 1) {
-
-            sced.batchSpecStatus = 999
-          }
-          else {
-            this.batchService.getSpecvalue(batches[0]).subscribe(res => {
-              if (res.status) sced.batchSpecStatus = res.status
-              else sced.batchSpecStatus = -1
-            })
-          }
-        }
-      })
-      setTimeout(() => this.scheduleDataCopy = this.scheduleDataCopy, 5000)
-    });
+    }
   }
 
   openFormDetails(scheduleId) {

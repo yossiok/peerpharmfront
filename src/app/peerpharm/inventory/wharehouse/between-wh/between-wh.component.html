@@ -111,7 +111,7 @@
     </div>
   </form>
 
-  <!-- תעודת קליטה -->
+  <!-- תעודת העברה -->
   <div class="row mt-4">
     <div id="print-section2" style="direction: rtl; text-align: right; display: none; ">
       <header>
@@ -122,6 +122,10 @@
           <span>פקס 03-9024015</span>&nbsp;&nbsp;
           <span>דואר אלקטרוני peerpharm@barak.net.il</span>&nbsp;&nbsp;
           <span>ח.פ: 511899023</span>
+        </p>
+        <p *ngIf="movementForm.value.WH_originName == 'ARIEL 1' || movementForm.value.WH_originName == 'ARIEL 2' || movementForm.value.WH_originName == 'ARIEL 3' || movementForm.value.WH_originName == 'ARIEL 4'">
+
+          מספר עוסק מורשה 853143675 <br> מוחמד עלי מוסטפה אבי סלימה
         </p>
       </header>
       <main>

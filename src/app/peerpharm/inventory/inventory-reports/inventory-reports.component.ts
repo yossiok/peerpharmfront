@@ -17,7 +17,9 @@ export class InventoryReportsComponent implements OnInit {
 
   reportForm = new FormGroup({
     cmptType: new FormControl(''),
-    itemType: new FormControl('all', Validators.required)
+    itemType: new FormControl('all', Validators.required),
+    componentN: new FormControl(null),
+    componentName: new FormControl(null)
   })
 
   constructor(
