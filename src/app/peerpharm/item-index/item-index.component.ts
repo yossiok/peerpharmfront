@@ -8,6 +8,7 @@ import { InventoryService } from "src/app/services/inventory.service";
 import { Procurementservice } from "src/app/services/procurement.service";
 import { SuppliersService } from "src/app/services/suppliers.service";
 import { Currencies } from "../procurement/Currencies";
+import { ExcelService } from "src/app/services/excel.service";
 
 const defaultCmpt = {
   whoPays: "",
@@ -113,7 +114,7 @@ export class ItemIndexComponent implements OnInit {
   rowNumber: number = -1;
   counter: number = 0;
   screenPermission: number;
-  gettingProducts: boolean = false
+  gettingProducts: boolean = false;
   fetchingOrders: boolean;
   allowUserEditItem: boolean;
   showDetailsForm: boolean = true;
@@ -249,8 +250,9 @@ export class ItemIndexComponent implements OnInit {
     private procuretServ: Procurementservice,
     private authService: AuthService,
     private modalService: NgbModal,
-    private uploadService: UploadFileService
-  ) { }
+    private uploadService: UploadFileService,
+    private excelService: ExcelService
+  ) {}
 
   ngOnInit(): void {
     this.getAllSuppliers();
@@ -375,7 +377,7 @@ export class ItemIndexComponent implements OnInit {
         else {
           this.item = item;
           this.getLastOrdersItem(20);
-          this.getProductsWithItem()
+          this.getProductsWithItem();
         }
       });
   }
@@ -413,7 +415,7 @@ export class ItemIndexComponent implements OnInit {
     );
   }
 
-  fetchProducts() { }
+  fetchProducts() {}
 
   checkIfItemExist(ev) {
     var itemNumber = ev.target.value;
@@ -650,10 +652,13 @@ export class ItemIndexComponent implements OnInit {
 
   getProductsWithItem() {
     this.gettingProducts = true;
-    this.inventoryService.getAllProductsWithItem(this.item.componentN).subscribe(response => {
-      this.gettingProducts = false;
-      if (response.allProductsWithItem) this.item.connectedProducts = response.allProductsWithItem
-    })
+    this.inventoryService
+      .getAllProductsWithItem(this.item.componentN)
+      .subscribe((response) => {
+        this.gettingProducts = false;
+        if (response.allProductsWithItem)
+          this.item.connectedProducts = response.allProductsWithItem;
+      });
   }
 
   addSupplierToComponent() {
@@ -793,4 +798,24 @@ export class ItemIndexComponent implements OnInit {
     this.itemDetailsForm.reset();
     this.itemNames = [];
   }
+  // EXCEL EXPORT ---------------------------------------------------------------
+  getCurrListToExcel() {
+    let productsList = [];
+    let list = this.item.connectedProducts;
+    for (let index = 0; index < list.length; index++) {
+      productsList.push({
+        ID: index + 1,
+        "Product Number": list[index].itemNumber,
+        "Brand Name": list[index].name,
+        "Material Name": list[index].subName,
+        Description: list[index].discriptionK,
+      });
+    }
+
+    this.exportAsXLSX(productsList);
+  }
+  exportAsXLSX(data) {
+    this.excelService.exportAsExcelFile(data, "connectedProducts");
+  }
+  // ----------------------------------------------------------------------------
 }
