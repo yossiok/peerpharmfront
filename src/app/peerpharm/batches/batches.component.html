@@ -1,4 +1,4 @@
-<div class="container-fluid bg-white p-2 text-center">
+<div class="container-fluid bg-white p-2 text-center" style="max-width:100%;">
   <div class="row">
     <div class="col-12">
       <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info">Batches List</h1>
@@ -116,108 +116,148 @@
 
 
   <div *ngIf="tableType == 'batch'" class="row mt-2">
-    <div class="col-12">
-      <table class='table table-fixed table-hover table-striped'>
-        <thead id="myHeader" style="box-shadow: inset 0px 0px 4px 1px black" class='bg-info text-white'>
-          <tr>
-            <th>#</th>
-            <th>Batch Number</th>
-            <th>Production Date</th>
-            <th class="text-right">Item</th>
-            <th></th>
-            <th>p.H</th>
-            <th>Left/Produced</th>
-            <th>Barrels</th>
-            <th>Order</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tr [class.read-only]="checkPermission()" style="margin-top: 30px;margin-left:20px;">
-          <input [(ngModel)]="batch.batchNumber" class="addBatchInput" placeholder="Batch Number" type="text">
-          <input [(ngModel)]="batch.produced" class="addBatchInput" placeholder="Production Date" type="text">
-          <input [(ngModel)]="batch.item" class="addBatchInput" placeholder="item" type="text">
-          <input [(ngModel)]="batch.itemName" style="width:230px;" placeholder="Item Name" class="addBatchInput"
-            type="text">
-          <input [(ngModel)]="batch.ph" class="addBatchInput" placeholder="P.H" type="text">
-          <input [(ngModel)]="batch.weightKg" class="addBatchInput" placeholder="weight KG" type="number">
-          <input [(ngModel)]="batch.weightQtyLeft" class="addBatchInput" placeholder="weight KG Left" type="number">
-          <input [(ngModel)]="batch.barrels" class="addBatchInput" placeholder="barrels" type="number">
-          <input [(ngModel)]="batch.order" class="addBatchInput" placeholder="order" type="text">
-          <button *ngIf="alowUserEditBatches" style="cursor: pointer;" style="box-shadow: 1px 1px 3px black;"
-            class="addBtn btn btn-info" (click)="addBatch()">Add</button><br />
+    <table class='table table-fixed table-hover table-striped'>
+      <thead id="myHeader" style="box-shadow: inset 0px 0px 4px 1px black; text-align: left;"
+        class='bg-info text-white'>
+        <tr>
+          <td style="width:3%;">#</td>
+          <td style="width:6%;">sticker</td>
+          <td style="width:8%">Batch Number</td>
+          <td style="width:8%;">Production Date</td>
+          <td style="width:8%">Item</td>
+          <td style="width:17%">Item Name</td>
+          <td style="width:5%">P.h</td>
+          <td style="width:14%">Left/Produced</td>
+          <td style="width:6%">Barrels</td>
+          <td style="width:6%">Order</td>
+          <td style="width:12%">Print/spec</td>
+          <td style="width:5%">Delete</td>
+        </tr>
+      </thead>
+      <tbody>
+
+
+        <tr [class.read-only]="checkPermission()" style="margin-top: 30px;text-align: left; font-size:1rem;">
+          <td style="width:3%;"></td>
+          <td style="width:6%;"></td>
+          <td style="width:6%;">
+            <input [(ngModel)]="batch.batchNumber" class="addBatchInput" placeholder="Batch Number" type="text"
+              size="10"></td>
+          <td style="width:6%;">
+            <input [(ngModel)]="batch.produced" class="addBatchInput" placeholder="Prod. Date" type="text" size="10">
+          </td>
+          <td style="width:5%;">
+            <input [(ngModel)]="batch.item" class="addBatchInput" placeholder="item" type="text" size="6">
+          </td>
+          <td style="width:23%;">
+            <input [(ngModel)]="batch.itemName" placeholder="Item Name" class="addBatchInput" type="text" size="55">
+          </td>
+          <td style="width:6%;"> <input [(ngModel)]="batch.ph" class="addBatchInput" placeholder="P.H" type="text"
+              size="4">
+          </td>
+          <td style="width:14%;">
+            <input [(ngModel)]="batch.weightKg" class="addBatchInput" placeholder="weight KG" type="number" min="0"
+              max="10000">
+            /<input [(ngModel)]="batch.weightQtyLeft" class="addBatchInput" placeholder="weight KG Left" type="number"
+              min="0" max="10000">
+          </td>
+          <td style="width:6%;">
+            <input [(ngModel)]="batch.barrels" class="addBatchInput" placeholder="barrels" type="number" min="0"
+              max="99">
+          </td>
+          <td style="width:6%;">
+            <input [(ngModel)]="batch.order" class="addBatchInput" placeholder="order" type="text" size="8">
+          </td>
+          <td style="width:12%;">
+            <button *ngIf="alowUserEditBatches" style="cursor: pointer;" style="box-shadow: 1px 1px 3px black;"
+              class="addBtn btn btn-info" (click)="addBatch()">Add</button>
+          </td>
+
+
+
+
+
         </tr>
         <ng-container>
-          <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black; margin-top: 1px;"
+          <tr [class.read-only]="checkPermission()"
+            style="box-shadow: inset 0px 0px 4px 1px black; margin-top: 1px; text-align: left;font-size:1rem;"
             *ngFor="let batch of batches; let i = index" [style.background-color]="batch.color">
-            <td>{{i+1}}</td>
-
-
-            <td *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)">{{batch.batchNumber}}</td>
-            <td *ngIf="batch._id===EditRowId" (click)="edit(batch._id)">
-              <input class="editInput" #batchNumber type='text' [value]="batch.batchNumber" style='width:100px'>
+            <td style="width:3%;">{{i+1}}</td>
+            <td style="width:6%" *ngIf="batch._id==EditRowId"></td>
+            <td style="width:6%;" *ngIf="batch._id!==EditRowId"><button (click)="printSticker(i)"
+                class="btn btn-info">Stickers</button>
             </td>
 
-            <td *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)">{{batch.produced}}</td>
-            <td *ngIf="batch._id===EditRowId" (click)="edit(batch._id)">
-              <input class="editInput" #batchProduced type='text' [value]="batch.produced" style='width:100px'>
+            <td style="width:8%;" *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)">{{batch.batchNumber}}</td>
+            <td style="width:8%;" *ngIf="batch._id===EditRowId" (click)="edit(batch._id)">
+              <input class="editInput" #batchNumber type='text' [value]="batch.batchNumber" size="10">
             </td>
 
-            <td *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)" style="word-break: break-word;">
+            <td style="width:8%;" *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)">
+              {{batch.produced |  date :'dd/MM/yyyy'}}</td>
+            <td style="width:8%;" *ngIf="batch._id===EditRowId" (click)="edit(batch._id)">
+              <input class="editInput" #batchProduced type='text' [value]="batch.produced" size="10">
+            </td>
+
+            <td style="width:8%;" *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)"
+              style="word-break: break-word;">
               {{batch.item}}</td>
-            <td *ngIf="batch._id===EditRowId" (click)="edit(batch._id)">
-              <input class="editInput" #batchItem type='text' [value]="batch.item" style='width:100px'>
+            <td style="width:5%;" *ngIf="batch._id===EditRowId" (click)="edit(batch._id)">
+              <input class="editInput" #batchItem type='text' [value]="batch.item" size="6">
             </td>
 
-            <td *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)">{{batch.itemName}}</td>
-            <td *ngIf="batch._id===EditRowId" (click)="edit(batch._id)">
-              <input class="editInput" #batchItemName dis type='text' [value]="batch.itemName" style='width:240px'>
+            <td style="width:25%;" *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)">{{batch.itemName}}</td>
+            <td style="width:25%;" *ngIf="batch._id===EditRowId" (click)="edit(batch._id)">
+              <input class="editInput" #batchItemName size="60" dis type='text' [value]="batch.itemName">
             </td>
 
-            <td *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)">{{batch.ph}}</td>
-            <td *ngIf="batch._id===EditRowId" (click)="edit(batch._id)">
-              <input class="editInput" #batchPh type='text' [value]="batch.ph" style='width:30px'>
+            <td style="width:5%;" *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)">{{batch.ph}}</td>
+            <td style="width:5%;" *ngIf="batch._id===EditRowId" (click)="edit(batch._id)">
+              <input class="editInput" #batchPh type='text' size="4" [value]="batch.ph">
             </td>
-            <td *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)"> {{batch.weightQtyLeft}} /
+            <td style="width:14%" *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)"> {{batch.weightQtyLeft}} /
               {{batch.weightKg}}</td>
-            <td *ngIf="batch._id===EditRowId" (click)="edit(batch._id)">
-              <input class="editInput" #batchWeightQtyLeft type='number' [value]="batch.weightQtyLeft"
-                style='width:40px'>
-              <input class="editInput" #batchWeightQty type='text' [value]="batch.weightKg" style='width:40px'>
+            <td style="width:10%" *ngIf="batch._id===EditRowId" (click)="edit(batch._id)">
+              <input class="editInput" #batchWeightQtyLeft type='number' [value]="batch.weightQtyLeft" min="0"
+                max="10000">/
+              <input class="editInput" #batchWeightQty type='text' [value]="batch.weightKg" size="3">
 
             </td>
 
-            <td *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)">{{batch.barrels}}</td>
-            <td *ngIf="batch._id===EditRowId" (click)="edit(batch._id)">
-              <input class="editInput" #batchBarrels type='text' [value]="batch.barrels" style='width:50px'>
+            <td style="width:6%" *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)">{{batch.barrels}}</td>
+            <td style="width:6%" *ngIf="batch._id===EditRowId" (click)="edit(batch._id)">
+              <input class="editInput" #batchBarrels type='text' [value]="batch.barrels" size="3">
             </td>
 
-            <td *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)" style="word-break: break-word;">
+            <td style="width:6%" *ngIf="batch._id!==EditRowId" (click)="edit(batch._id)"
+              style="word-break: break-word;">
               {{batch.order}}</td>
-            <td *ngIf="batch._id===EditRowId" (click)="edit(batch._id)">
-              <input class="editInput" #batchOrder type='text' [value]="batch.order" style='width:100px'>
+            <td style="width:6%" *ngIf="batch._id===EditRowId" (click)="edit(batch._id)">
+              <input class="editInput" #batchOrder type='text' [value]="batch.order" size="8">
             </td>
 
 
-            <td *ngIf="batch._id!==EditRowId"><button (click)="openPrint(printBatch,batch.batchNumber)"
-                class="btn btn-info">Print</button>
+            <td style="width:12%" *ngIf="batch._id!==EditRowId"><button
+                (click)="openPrint(printBatch,batch.batchNumber)" class="btn btn-info">Print</button>
               <button [style.background-color]="batch.specStatus ? batch.specStatus.color : '#2962FF'"
                 (click)="openTableValues(batch.item,batch.batchNumber)" class="btn btn-info">Spec Values</button>
             </td>
-            <td *ngIf="batch._id!==EditRowId && alowUserEditBatches == true"><i
+            <td style="width:12%" *ngIf="batch._id==EditRowId"></td>
+
+            <td style="width:5%" *ngIf="batch._id!==EditRowId && alowUserEditBatches == true"><i
                 class="ti-trash text-danger m-r-10; cursor: pointer" (click)="deleteBatch(batch)"></i>
               <i class="fa fa-check text-success" (click)="setBatchAsScheduled(batch._id)"></i>
             </td>
 
-            <td *ngIf="batch._id==EditRowId" style="width:3%; padding:5px;margin-left: 70px;margin-top: 11px;">
+            <td *ngIf="batch._id==EditRowId" style="width:5%; padding:5px;margin-left: 70px;margin-top: 11px;">
               <i class="ti-save text-info m-r-10" style="font-size: 18px; cursor: pointer;"
                 (click)="saveEdit(currDoc)"></i>
             </td>
 
           </tr>
         </ng-container>
-      </table>
-    </div>
+      </tbody>
+    </table>
   </div>
 
 
@@ -597,5 +637,73 @@
     <div class="col-3"></div>
     <div class="col-3"></div>
     <div class="col-3"></div>
+  </div>
+</div>
+
+
+<!-- Print stickers area, not visible. -->
+<div class="row">
+  <div class="col-4"></div>
+  <div class="col-4">
+    <button style="visibility: hidden;" #printBtn [useExistingCss]="false" class="btn btn-success"
+      [printStyle]="{'#container':{'width':'10cm','height':'10cm', 'box-sizing':'border-box','padding':'20px','font-size':'20px'},div:{'font-family':'Arial', 'padding-right': '5px' }, '#product':{'text-align':'center', 'border-bottom':'solid 2px black', 'padding':'0px 0px 20px 0px'}}"
+      printSectionId="print-section" ngxPrint>Print</button>
+  </div>
+  <div class="col-4"></div>
+</div>
+
+
+
+<div class="clearfix" id="print-section" style="visibility: hidden">
+  <div *ngFor="let sticker of allStickers;let i=index">
+    <div dir="rtl" class="container-fluid" id="container" style="margin-left:0px;">
+      <div class="row">
+        <div id="product" class="col-12">
+          <span>שם החומר:</span>{{sticker.itemName}}
+        </div>
+      </div>
+      <div class="row">
+        <div style="border-bottom: 1px solid black;" class="col-12">
+          <span>אצווה:</span> {{sticker.batchNumber}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div style="border-bottom: 1px solid black;" class="col-12">
+          <span>ת.ייצור: </span>{{sticker.produced| date: 'yyyy-MM-dd' }}
+        </div>
+        <!-- <div style="border-bottom: 1px solid black;" class="col-6">
+          <span>מק"טים: </span>
+          <span *ngFor="let item of newBatchForm.value.itemsToCook">{{item.itemNumber}}</span>
+        </div> -->
+      </div>
+
+      <div class="row">
+        <div style="border-bottom: 1px solid black;" class="col-12">
+          <span>ת.תפוגה: </span>{{sticker.expiration | date: 'yyyy-MM-dd'}}
+        </div>
+        <div style="border-bottom: 1px solid black;" class="col-12">
+          <span>PH: </span>{{sticker.ph}}
+        </div>
+      </div>
+
+      <div class="row">
+        <div style="border-bottom: 1px solid black;" class="col-12">
+          <span>הזמנות / פריטים: </span><br>
+          <span *ngFor="let order of sticker.orders ">הזמנה {{order.order}}, מק"ט
+            {{order.itemNumber}}, משקל {{order.weight}} <br></span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div style="border-bottom: 1px solid black;" class="col-6">
+          <span>משקל סה"כ: </span>{{sticker.weightKg}}
+        </div>
+        <div style="border-bottom: 1px solid black;" class="col-6">
+          <span>חביות: </span>{{sticker.printNum}}
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
