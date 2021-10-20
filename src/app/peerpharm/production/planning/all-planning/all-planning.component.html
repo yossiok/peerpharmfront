@@ -1,0 +1,17 @@
+<div>
+    <h1>Work Plans</h1>
+    <div class="wrapper">
+        <div class="box click" *ngFor="let workPlan of workPlans" (click)="openWorkPlan(workPlan.serialNumber)">
+            <div class="service-line">
+                <h3>Work Plan no. {{workPlan.serialNumber}}</h3>
+            </div>
+            <div class="service-line">
+                <h4>status: {{workPlan.status | workPlanStatus}}</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="position-fixed work-plan" *ngIf="showWorkPlan">
+    <app-planning-details (closeWorkPlanEmitter)="closeWorkPlan()" [workPlan]="currentWorkPlan"></app-planning-details>
+</div>

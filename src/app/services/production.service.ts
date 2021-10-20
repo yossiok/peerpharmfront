@@ -82,4 +82,14 @@ export class ProductionService {
     let url = this.baseUrl + `productionLine/yield`;
     return this.http.post(url, JSON.stringify(yieldData), this.options).pipe(map(res => res.json()))
   }
+
+  getAllWorkPlans() {
+    const url = this.baseUrl + `productionSchedule/workplans`;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  editWorkPlan(workPlan) {
+    let url = this.baseUrl + `productionSchedule/workplan`;
+    return this.http.post(url, JSON.stringify(workPlan), this.options).pipe(map(res => res.json()))
+  }
 }

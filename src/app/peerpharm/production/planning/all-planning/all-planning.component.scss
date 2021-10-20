@@ -1,0 +1,35 @@
+* {
+    font-size: large;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: 100px 100px 100px 100px 100px;
+    grid-gap: 285px;
+    color: rgb(236, 117, 117);
+  }
+  
+  .box {
+    background-color: rgb(115, 181, 235);
+    color: rgb(22, 6, 6);
+    border-radius: 5px;
+    padding: 20px;
+    font-size: 150%;
+    width: 291%;
+  }
+
+  .click {
+    cursor: pointer
+  }
+
+  .work-plan {
+    top: 135px;
+    left: 400px;
+    background-color: #d4e3e4;
+    width: 70%;
+    // border-radius: 27px;
+    overflow-y: auto;
+    height: 1056px;
+  }
+
+  
