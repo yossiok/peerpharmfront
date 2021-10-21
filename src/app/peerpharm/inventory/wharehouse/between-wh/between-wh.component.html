@@ -1,7 +1,7 @@
 <div dir="rtl">
 
 
-  <form [formGroup]="movementForm" (ngSubmit)="move()">
+  <form [formGroup]="movementForm" (ngSubmit)="addItem()">
     <h3>העברת סחורה בין מחסנים</h3>
     <div class="row mt-4">
 
@@ -10,13 +10,14 @@
         <label>
           פריט (לפי מספר)
         </label>
-        <input type="number" #first [disabled]="disabled" formControlName="item" class="form-control">
+        <input type="number" #first [disabled]="disabled" formControlName="item" class="form-control"
+          (change)="checkComponentNumber()">
       </div>
       <div *ngIf="!disabled" class="col-2">
         <label class="d-block">
           (לפי שם) פריט
         </label>
-        <input class="d-inline form-control" type="text" #name>
+        <input class="d-inline form-control" type="text" #name formControlName="itemName">
         <button class="d-inline" type="button" (click)="getNames(name)">Find</button>
         <select class="form-control" (change)="setItemDetailsNumber($event)">
           <option *ngFor="let itemName of itemNames" [value]="itemName.componentN">{{itemName.componentName}}
@@ -59,8 +60,8 @@
         </span> -->
 
         <div *ngIf="sending" class="smallerLoader"></div>
-        <button type="submit" *ngIf="!sending" [disabled]="!movementForm.valid"
-          [style.cursor]="movementForm.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">העבר</button>
+        <button type="submit" [disabled]="!movementForm.valid"
+          [style.cursor]="movementForm.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">הוסף למשלוח</button>
 
 
         <button type="button" class="btn btn-secondary" (click)="movementForm.reset()">נקה נתונים</button>
@@ -110,98 +111,174 @@
       </div>
     </div>
   </form>
+  <div class="row mt-4 w-100">
+    <table class="table table-hover">
+      <thead class="bg-info text-white">
+        <tr>
+          <th>#</th>
+          <th class="text-center">מספר פריט</th>
+          <th class="text-center">שם פריט</th>
+          <th class="text-center">כמות</th>
+          <th class="text-center">ממחסן/מדף</th>
+          <th class="text-center">למחסן/מדף</th>
+          <th></th>
+        </tr>
+      </thead>
+      <ng-container *ngIf="allMovements.length>0">
+        <tbody style="background-color: rgb(228, 225, 225);">
+          <tr *ngFor="let move of allMovements; let i = index">
+            <td class="text-center">{{i+1}}</td>
+            <td class="text-center">{{move.item}}</td>
+            <td class="text-center">{{move.itemName}}</td>
+            <td class="text-center">{{move.amount}}</td>
+            <td class="text-center">{{move.WH_originName}}/{{move.shell_position_in_whareHouse_Origin}}</td>
+            <td class="text-center">{{move.WH_destName}}/{{move.shell_position_in_whareHouse_Dest}}</td>
+            <td class="text-center"><i (click)="removeFromAllMovements(i)" class="fa fa-times text-danger"></i></td>
+          </tr>
+        </tbody>
+      </ng-container>
+
+    </table>
+  </div>
+
+  <div class="row mt-2 d-flex flex-row justify-content-around w-50">
+    <button *ngIf="!sending" class="btn btn-info" (click)="move()" [disabled]="allMovements.length == 0"
+      [style.cursor]="allMovements.length == 0 ? 'not-allowed' : 'pointer'">
+      נפק תעודה (עדכן מלאים)<i class="fa fa-check"></i>
+    </button>
+    <div class="smallerLoader" *ngIf="sending"></div>
+    <button class="btn btn-success" (click)="justPrint()">הדפס <i class="fa fa-print"></i></button>
+    <button class="btn btn-warning" (click)="clearArrivals()">נקה טבלה <i class="fas fa-trash-alt"></i></button>
+  </div>
+
 
   <!-- תעודת העברה -->
-  <div class="row mt-4">
-    <div id="print-section2" style="direction: rtl; text-align: right; display: none; ">
-      <header>
-        <h1>פאר פארם בע"מ</h1>
-        <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256 </p>
-        <p>
-          <span>טלפון 03-9024055</span>&nbsp;&nbsp;
-          <span>פקס 03-9024015</span>&nbsp;&nbsp;
-          <span>דואר אלקטרוני peerpharm@barak.net.il</span>&nbsp;&nbsp;
-          <span>ח.פ: 511899023</span>
-        </p>
-        <p *ngIf="movementForm.value.WH_originName == 'ARIEL 1' || movementForm.value.WH_originName == 'ARIEL 2' || movementForm.value.WH_originName == 'ARIEL 3' || movementForm.value.WH_originName == 'ARIEL 4'">
 
-          מספר עוסק מורשה 853143675 <br> מוחמד עלי מוסטפה אבי סלימה
-        </p>
-      </header>
-      <main>
-        <h2>תעודת העברה מס' {{certificateReception}}</h2>
-        <p class='originDestWh'>
-          <span><u>תאריך:</u></span>&nbsp;&nbsp;
-          <span>{{today | date :'dd-MM-yyyy' }}</span>&nbsp;&nbsp;
+  <ng-container *ngIf="allMovements && allMovements.length>0">
+    <div class="row mt-4">
+      <div id="print-section2" style="direction: rtl; text-align: right; visibility:hidden; ">
+        <header>
+          <h1>פאר פארם בע"מ</h1>
+          <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256 </p>
+          <p>
+            <span>טלפון 03-9024055</span>&nbsp;&nbsp;
+            <span>פקס 03-9024015</span>&nbsp;&nbsp;
+            <span>דואר אלקטרוני peerpharm@barak.net.il</span>&nbsp;&nbsp;
+            <span>ח.פ: 511899023</span>
+          </p>
+          <p *ngIf="allMovements[0].WH_originName == 'ARIEL 1' || allMovements[0].WH_originName == 'ARIEL 2' || allMovements[0].WH_originName == 'ARIEL 3' || allMovements[0].WH_originName == 'ARIEL 4' ||
+          allMovements[0].WH_destName == 'ARIEL 1' || allMovements[0].WH_destName == 'ARIEL 2' || allMovements[0].WH_destName == 'ARIEL 3' || allMovements[0].WH_destName == 'ARIEL 4'       
+          
+          ">
 
-        </p>
-        <br>
-        <table>
-          <tbody>
-            <tr>
-              <th>מספר פריט</th>
-              <th>ממחסן</th>
-              <th>ממדף</th>
-              <th>למחסן</th>
-              <th>למדף</th>
-              <th>כמות</th>
+          </p>
+        </header>
+        <main>
+          <h2>תעודת העברה מס' {{reception}}</h2>
+          <p class='originDestWh'>
+            <span><u>תאריך:</u></span>&nbsp;&nbsp;
+            <span>{{today | date :'dd-MM-yyyy' }}</span>&nbsp;&nbsp;
 
-            </tr>
-            <tr>
-              <td>{{movementForm.value.item}}</td>
-              <td>{{movementForm.value.WH_originName}}</td>
-              <td>{{movementForm.value.shell_position_in_whareHouse_Origin}}</td>
-              <td>{{movementForm.value.WH_destName}}</td>
-              <td>{{movementForm.value.shell_position_in_whareHouse_Dest}}</td>
-              <td>{{movementForm.value.amount}}</td>
+          </p>
+          <br>
+          <table>
+            <thead>
+              <tr>
+                <th>למחסן:</th>
+                <th>ממחסן:</th>
+              </tr>
+            </thead>
+            <tbody>
+              <td style="border:1px solid black; margin-left:30px;" *ngIf="allMovements.length>0">
+                {{allMovements[0].WH_destName | warehousesNames}}<br><span
+                  *ngIf="allMovements.length>0 &&
+              
+              allMovements[0].WH_destName == 'ARIEL 1' || allMovements[0].WH_destName == 'ARIEL 2' || allMovements[0].WH_destName == 'ARIEL 3' || allMovements[0].WH_destName == 'ARIEL 4' ">
+                  מוחמד עלי מוסטפה אבי סלימה <br>עוסק מורשה מספר: 853143675 <br>
+                </span>
+              </td>
+              <td style="border:1px solid black">{{allMovements[0].WH_originName | warehousesNames}}
+                <br><span
+                  *ngIf=" allMovements.length>0 &&
+            allMovements[0].WH_originName == 'ARIEL 1' || allMovements[0].WH_originName == 'ARIEL 2' || allMovements[0].WH_originName == 'ARIEL 3' || allMovements[0].WH_originName == 'ARIEL 4' ">
 
-            </tr>
-          </tbody>
-        </table>
-      </main>
-      <div class="signatures">
-        <p>
-          <span>שם המקבל:</span>&nbsp;&nbsp;
-          <span>
-            <u>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </u>
-          </span>&nbsp;&nbsp;
-          <span>חתימה:</span>&nbsp;&nbsp;
-          <span>
-            <u>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </u>
-          </span>&nbsp;&nbsp;
-          <span>תאריך:</span>&nbsp;&nbsp;
-          <span>
-            <u>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </u>
-          </span>&nbsp;&nbsp;
-        </p>
+                  מוחמד עלי מוסטפה אבי סלימה <br>עוסק מורשה מספר: 853143675 <br></span>
+
+
+              </td>
+            </tbody>
+          </table>
+          <br><br><br>
+          <table>
+            <tbody>
+              <tr>
+                <td>#</td>
+                <th>מספר פריט</th>
+                <th>שם פריט</th>
+                <th>כמות</th>
+                <th>ממחסן/מדף</th>
+                <th>למחסן/מדף</th>
+
+              </tr>
+              <ng-container *ngIf="allMovements.length>0">
+
+                <tr *ngFor="let move of allMovements; let i=index">
+                  <td>{{i+1}}</td>
+                  <td>{{move.item}}</td>
+                  <td>{{move.itemName}}</td>
+                  <td>{{move.amount}}</td>
+                  <td>{{move.WH_originName}}/{{move.shell_position_in_whareHouse_Origin}}</td>
+                  <td>{{move.WH_destName}}/{{move.shell_position_in_whareHouse_Dest}}</td>
+
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </main>
+        <div class="signatures">
+          <p>
+            <span>שם המקבל:</span>&nbsp;&nbsp;
+            <span>
+              <u>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </u>
+            </span>&nbsp;&nbsp;
+            <span>חתימה:</span>&nbsp;&nbsp;
+            <span>
+              <u>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </u>
+            </span>&nbsp;&nbsp;
+            <span>תאריך:</span>&nbsp;&nbsp;
+            <span>
+              <u>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              </u>
+            </span>&nbsp;&nbsp;
+          </p>
+        </div>
+        <footer>
+        </footer>
       </div>
-      <footer>
-      </footer>
-    </div>
-    <button type="button" style='display: none;' #printBtn2 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl'}, 
-        header : {'border-bottom': 'solid 1px'},
-        main : {'border-bottom': 'solid 1px' },
-        table :{ 'text-align': 'right' },
-        footer : { 'position': 'absolute' , 'width': '100%' },
-        h2 : {'text-align': 'center'},
-        '.originDestWh':{'text-align':'right'},
-        th : {'width': '16%' },
-        td : {'width': '16%' },
-        '.itemNamePrint' : {'width': '35%'},
-        '.signatures' : { 'margin' : '50px'},
-        '.cellPadding' : { 'padding' : '15px 0px'}
-        }" printTitle="תעודת קבלה" printSectionId="print-section2" ngxPrint>print</button>
-    <!-- <button (click)="printStockTransferCertificate()">click</button> -->
+      <button type="button" style='display: none;' #printBtn2 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl'}, 
+      header : {'border-bottom': 'solid 1px'},
+      main : {'border-bottom': 'solid 1px' },
+      table :{ 'text-align': 'right' },
+      footer : { 'position': 'absolute' , 'width': '100%' },
+      h2 : {'text-align': 'center'},
+      '.originDestWh':{'text-align':'right'},
+      th : {'width': '16%' },
+      td : {'width': '16%' },
+      '.itemNamePrint' : {'width': '35%'},
+      '.signatures' : { 'margin' : '50px'},
+      '.cellPadding' : { 'padding' : '15px 0px'}
+    }" printTitle="תעודת קבלה" printSectionId="print-section2" ngxPrint>print</button>
+      <!-- <button (click)="printStockTransferCertificate()">click</button> -->
 
-  </div>
+    </div>
+  </ng-container>
 
 </div>

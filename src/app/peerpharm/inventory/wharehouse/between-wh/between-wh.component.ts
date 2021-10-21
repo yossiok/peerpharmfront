@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { InventoryService } from "src/app/services/inventory.service";
 import { WarehouseService } from "src/app/services/warehouse.service";
+import { WarehousesNamesPipe } from "src/app/pipes/warehouses-names.pipe";
 
 @Component({
   selector: "app-between-wh",
@@ -24,11 +25,12 @@ export class BetweenWHComponent implements OnInit {
   originShelf: any;
   destShelf: any;
   itemNames: any[];
-
+  allMovements: any[] = [];
   movementForm: FormGroup = new FormGroup({
     amount: new FormControl(null, Validators.required),
-    item: new FormControl(null, Validators.required),
-    itemType: new FormControl("component", Validators.required),
+    item: new FormControl(null, [Validators.required, Validators.minLength(1)]),
+    itemName: new FormControl(""),
+    itemType: new FormControl("component"),
     shell_id_in_whareHouse_Origin: new FormControl(null, Validators.required),
     shell_position_in_whareHouse_Origin: new FormControl(
       null,
@@ -45,14 +47,15 @@ export class BetweenWHComponent implements OnInit {
     WH_destName: new FormControl(null, Validators.required),
     isNewItemShell: new FormControl(false, Validators.required),
   });
-  sending: boolean;
+  sending: boolean = false;
   certificateReception: any;
+  reception: any;
 
   constructor(
     private inventoryService: InventoryService,
     private toastr: ToastrService,
     private wareHouseService: WarehouseService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     setTimeout(() => this.first.nativeElement.focus(), 500);
@@ -60,7 +63,15 @@ export class BetweenWHComponent implements OnInit {
       this.movementForm.controls.item.setValue(this.itemNumber);
       this.disabled = true;
     }
-    this.getHistoricalReceptions()
+    this.getHistoricalReceptions();
+    this.getLastReception();
+  }
+
+  getLastReception() {
+    this.inventoryService.getLastReception().subscribe((data) => {
+      this.reception = data[0].warehouseReception + 1;
+      console.log(this.reception);
+    });
   }
 
   getHistoricalReceptions() {
@@ -70,7 +81,7 @@ export class BetweenWHComponent implements OnInit {
       data.logs.forEach((element) => {
         element.position = element.shell_position_in_whareHouse_Origin;
       });
-      console.log(data.logs[0])
+      console.log(data.logs[0]);
       this.movementForm.patchValue(data.logs[0]);
 
       setTimeout(() => {
@@ -100,6 +111,46 @@ export class BetweenWHComponent implements OnInit {
     });
   }
 
+  // Get names of all items for search
+  getNames(event) {
+    if (event.value.length > 2) {
+      this.inventoryService.getNamesByRegex(event.value).subscribe((names) => {
+        this.itemNames = names;
+        this.movementForm.controls.item.setValue(names[0].componentN);
+        this.movementForm.controls.itemName.setValue(names[0].componentName);
+      });
+    }
+  }
+
+  setItemDetailsNumber(event) {
+    this.movementForm.controls.item.setValue(event.target.value);
+  }
+
+  checkComponentNumber() {
+    console.log(this.movementForm.value.item);
+    console.log("Sending value: " + this.sending);
+    if (!this.sending) {
+      this.inventoryService
+        .getCmptByitemNumber(this.movementForm.value.item)
+        .subscribe((data) => {
+          if (data.length > 0) {
+            this.noItem = false;
+            this.itemNames = data;
+            this.movementForm.controls.itemName.setValue(
+              this.itemNames[0].componentName
+            );
+          } else {
+            console.log("No item found");
+            this.noItem = true;
+            this.toastr.error("מספר פריט לא תקין");
+            this.movementForm.controls.item.reset();
+          }
+        });
+    } else {
+      return;
+    }
+  }
+
   // get chunks with item
   // it was better to split it to 2 different functions - one for origin and one for destination...
   getChunks(whType) {
@@ -116,6 +167,11 @@ export class BetweenWHComponent implements OnInit {
 
     this.checkComponentN()
       .then((result) => {
+        if (!result) {
+          this.toastr.error("מספר פריט לא תקין");
+          return;
+        }
+
         if (!WHID) this.toastr.error("אנא בחר מחסן.");
         else if (!this.movementForm.value.item)
           this.toastr.error("אנא הזן מספר פריט.");
@@ -186,6 +242,9 @@ export class BetweenWHComponent implements OnInit {
     this.inventoryService.getWhareHouseShelfList(e).subscribe((res) => {
       this.destWHShelfs = res.map((shell) => {
         shell.shell_id_in_whareHouse = shell._id;
+        this.movementForm.controls.shell_id_in_whareHouse_Dest.setValue(
+          shell._id
+        );
         return shell;
       });
     });
@@ -223,25 +282,47 @@ export class BetweenWHComponent implements OnInit {
     );
   }
 
+  addItem() {
+    console.log(this.movementForm.value);
+    //push arrival to allArrivals
+    this.allMovements.push(this.movementForm.value);
+    console.log(this.allMovements);
+
+    setTimeout(() => {
+      this.movementForm.reset();
+      this.movementForm.controls.isNewItemShell.setValue(false);
+      this.movementForm.controls.itemType.setValue("component");
+      this.itemNames = [];
+      this.first.nativeElement.focus();
+    }, 500);
+  }
+
+  removeFromAllMovements(i) {
+    this.allMovements.splice(i, 1);
+  }
+
   move() {
     this.sending = true;
-    this.inventoryService
-      .moveWareHouse(this.movementForm.value)
-      .subscribe((data) => {
-        if (data.msg) this.toastr.error(data.msg, "שגיאה");
-        else {
-          this.certificateReception = data.savedMovement.warehouseReception;
-          //set certificate data
-          this.sending = false;
-          this.toastr.success("שינויים נשמרו בהצלחה", "נשמר");
-          setTimeout(() => this.printBtn2.nativeElement.click(), 500)
-          setTimeout(() => {
-            this.movementForm.reset();
-            this.movementForm.controls.isNewItemShell.setValue(false);
-            this.movementForm.controls.itemType.setValue("component");
-            this.first.nativeElement.focus();
-          }, 1500)
-        }
-      });
+    this.inventoryService.moveWareHouse(this.allMovements).subscribe((data) => {
+      console.log(data);
+      if (data.msg) {
+        this.toastr.error(data.msg, "שגיאה");
+      } else {
+        setTimeout(() => {
+          this.printBtn2.nativeElement.click();
+        }, 500);
+        setTimeout(() => {
+          this.movementForm.reset();
+          this.allMovements = [];
+          this.reception = null;
+          this.movementForm.controls.isNewItemShell.setValue(false);
+          this.movementForm.controls.itemType.setValue("component");
+          this.first.nativeElement.focus();
+        }, 1500);
+        this.toastr.success("שינויים נשמרו בהצלחה", "נשמר");
+        this.sending = false;
+        this.movementForm.controls.valid.setValue(false);
+      }
+    });
   }
 }

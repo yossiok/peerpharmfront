@@ -755,26 +755,49 @@
   <div dir="rtl" *ngIf="item.itemType == 'component'" class="float-right modal-inner w-50 mt-4">
     <div dir="rtl" class="row mt-4">
       <h1 class="mt-4 text-info text-center">מוצרים המכילים את הפריט {{item.componentN}}</h1>
+
     </div>
     <div class="row mt-4">
-      <table class="table table-striped">
-        <thead>
-          <th>#</th>
-          <th>מק"ט</th>
-          <th>מותג</th>
-          <th>סוג מוצר</th>
-          <th>תיאור</th>
-        </thead>
-        <tbody>
-          <tr *ngFor="let product of item.connectedProducts; let i = index">
-            <td>{{i}}</td>
-            <td>{{product.itemNumber}}</td>
-            <td>{{product.name}}</td>
-            <td>{{product.subName}}</td>
-            <td>{{product.discriptionK}}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="col-8"></div>
+      <div class="col-2">
+        <button class="btn btn-info" printSectionId="connectedProductsPrint" [printStyle]="{table:{'border-collapse':'collapse' },
+          td : {'border': '1px solid black'},
+          tr : {'border': 'solid 2px black'},
+          th : {'border': 'solid 2px black'}}" ngxPrint> <img src="../../../../assets/images/print.png"
+            class="reportImg click" alt="Print connected products" ngbTooltip="Print connected products list"
+            width="35px">&nbsp;Print&nbsp;</button>
+
+      </div>
+      <div class="col-2">
+        <button class="btn btn-info" (click)="getCurrListToExcel()" data-toggle="tooltip"
+          title="Get an Excel sheet of connected products">
+          <!-- <label style="float: right; line-height: 30px; margin-left: 5px"><b>ייצוא לאקסל</b></label> -->
+          <img class="reportImg click" src="../../../assets/images/excel.png" alt="excel export"
+            width="35px" />&nbsp;Export&nbsp;
+        </button>
+      </div>
+    </div>
+    <div class="container w-50" style="overflow: auto;" id="connectedProductsPrint" class="modal-body">
+      <div class="row mt-4">
+        <table class="table table-striped">
+          <thead>
+            <th>#</th>
+            <th>מק"ט</th>
+            <th>מותג</th>
+            <th>סוג מוצר</th>
+            <th>תיאור</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let product of item.connectedProducts; let i = index">
+              <td>{{i}}</td>
+              <td>{{product.itemNumber}}</td>
+              <td>{{product.name}}</td>
+              <td>{{product.subName}}</td>
+              <td>{{product.discriptionK}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 

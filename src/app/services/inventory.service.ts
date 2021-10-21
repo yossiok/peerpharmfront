@@ -866,6 +866,10 @@ export class InventoryService {
       .post(url, JSON.stringify(objToUpdate), this.options)
       .pipe(map((res) => res.json()));
   }
+  getLastReception() {
+    let url = this.baseUrl + "itemShell/getLastReception";
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
 }
 
 // startNewItemObservable() {
