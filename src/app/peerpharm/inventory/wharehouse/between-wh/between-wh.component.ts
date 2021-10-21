@@ -50,7 +50,10 @@ export class BetweenWHComponent implements OnInit {
   sending: boolean = false;
   certificateReception: any;
   reception: any;
-
+  originWHName: any;
+  originWHId: any;
+  destinationWHName: any;
+  destinationWHId: any;
   constructor(
     private inventoryService: InventoryService,
     private toastr: ToastrService,
@@ -154,13 +157,12 @@ export class BetweenWHComponent implements OnInit {
   // get chunks with item
   // it was better to split it to 2 different functions - one for origin and one for destination...
   getChunks(whType) {
-    if(whType == 'o') this.originWHShelfs = []
-    if(whType == 'd') this.destWHShelfs = []
+    if (whType == "o") this.originWHShelfs = [];
+    if (whType == "d") this.destWHShelfs = [];
     // product movement
     if (this.movementForm.value.WH_originId == "5c31bb6f91ca6b2510349ce9") {
       this.movementForm.controls.itemType.setValue("product");
-    }
-    else this.movementForm.controls.itemType.setValue('component')
+    } else this.movementForm.controls.itemType.setValue("component");
 
     // origin or destination WH?
     let WHID =
@@ -236,7 +238,7 @@ export class BetweenWHComponent implements OnInit {
             });
       })
       .catch((e) => {
-        console.log('error: ',e)
+        console.log("error: ", e);
         this.toastr.error("", "פריט לא קיים :(");
       });
   }
@@ -288,12 +290,26 @@ export class BetweenWHComponent implements OnInit {
 
   addItem() {
     console.log(this.movementForm.value);
+    if (this.allMovements.length == 0) {
+      this.originWHName = this.movementForm.value.WH_originName;
+      this.originWHId = this.movementForm.value.WH_originId;
+      this.destinationWHName = this.movementForm.value.WH_destName;
+      this.destinationWHId = this.movementForm.value.WH_destId;
+      this.allMovements.push(this.movementForm.value);
+    } else {
+      this.allMovements.push(this.movementForm.value);
+    }
+
     //push arrival to allArrivals
-    this.allMovements.push(this.movementForm.value);
+
     console.log(this.allMovements);
 
     setTimeout(() => {
       this.movementForm.reset();
+      this.movementForm.controls.WH_originName.setValue(this.originWHName);
+      this.movementForm.controls.WH_originId.setValue(this.originWHId);
+      this.movementForm.controls.WH_destName.setValue(this.destinationWHName);
+      this.movementForm.controls.WH_destId.setValue(this.destinationWHId);
       this.movementForm.controls.isNewItemShell.setValue(false);
       this.movementForm.controls.itemType.setValue("component");
       this.itemNames = [];
@@ -307,6 +323,7 @@ export class BetweenWHComponent implements OnInit {
 
   move() {
     this.sending = true;
+    console.log(this.allMovements);
     this.inventoryService.moveWareHouse(this.allMovements).subscribe((data) => {
       console.log(data);
       if (data.msg) {
