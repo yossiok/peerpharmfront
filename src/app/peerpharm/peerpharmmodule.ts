@@ -171,6 +171,7 @@ import { BetweenWHComponent } from "./inventory/wharehouse/between-wh/between-wh
 import { CurrencySymbolPipe } from "../pipes/currency-symbol.pipe";
 import { InventoryStickerComponent } from "./inventory/wharehouse/stickers/inventory-sticker";
 import { FormulesTypesPipe } from "../pipes/formules-types.pipe";
+import { WarehousesNamesPipe } from "../pipes/warehouses-names.pipe";
 
 @NgModule({
   exports: [
@@ -318,6 +319,7 @@ import { FormulesTypesPipe } from "../pipes/formules-types.pipe";
     CurrencySymbolPipe,
     InventoryStickerComponent,
     FormulesTypesPipe,
+    WarehousesNamesPipe,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [
