@@ -10,9 +10,9 @@ export class WorkPlanStatusPipe implements PipeTransform {
     switch(value) {
       case 1: status = 'Draft'
       break
-      case 2: status = 'Manager Approval'
+      case 2: status = 'Approved by Manager'
       break
-      case 3: status = 'Production Approval'
+      case 3: status = 'Approved for Production'
       break
     }
     return status

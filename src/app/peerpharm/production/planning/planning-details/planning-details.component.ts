@@ -13,6 +13,7 @@ export class PlanningDetailsComponent implements OnInit {
 
   @Input() workPlan: WorkPlan;
   @Output() closeWorkPlanEmitter: EventEmitter<any> = new EventEmitter<any>()
+  @Output() updateWorkPlans: EventEmitter<any> = new EventEmitter<any>()
 
   statuses: number[] = [1, 2, 3]
   authorized: boolean = false
@@ -40,9 +41,18 @@ export class PlanningDetailsComponent implements OnInit {
 
   saveChanges() {
     this.productionService.editWorkPlan(this.workPlan).subscribe(data => {
-      console.log(data)
+      if(data.status) this.toastr.success('הפרטים נשמרו בהצלחה')
       this.edit = false
+      this.updateWorkPlans.emit()
     })
+  }
+
+  setColor(status){
+    switch(status) {
+      case 1: return '#3964e6'
+      case 2: return '#39e0e6'
+      case 3: return '#38e849'
+    }
   }
 
   toast(title, msg) {

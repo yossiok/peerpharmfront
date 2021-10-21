@@ -13,5 +13,5 @@
 </div>
 
 <div class="position-fixed work-plan" *ngIf="showWorkPlan">
-    <app-planning-details (closeWorkPlanEmitter)="closeWorkPlan()" [workPlan]="currentWorkPlan"></app-planning-details>
+    <app-planning-details (updateWorkPlans)="getWorkPlans()" (closeWorkPlanEmitter)="closeWorkPlan()" [workPlan]="currentWorkPlan"></app-planning-details>
 </div>
