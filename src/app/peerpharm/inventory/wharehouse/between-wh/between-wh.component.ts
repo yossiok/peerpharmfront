@@ -142,6 +142,10 @@ export class BetweenWHComponent implements OnInit {
             this.movementForm.controls.itemName.setValue(
               this.itemNames[0].componentName
             );
+            if (this.allMovements.length > 0) {
+              this.getChunks("o");
+              this.getChunks("d");
+            }
           } else {
             console.log("No item found");
             this.noItem = true;
@@ -321,8 +325,8 @@ export class BetweenWHComponent implements OnInit {
     this.allMovements.splice(i, 1);
   }
 
-  clearArrivals(){
-    this.allMovements = []
+  clearArrivals() {
+    this.allMovements = [];
   }
 
   move() {
@@ -331,6 +335,7 @@ export class BetweenWHComponent implements OnInit {
     this.inventoryService.moveWareHouse(this.allMovements).subscribe((data) => {
       console.log(data);
       if (data.msg) {
+        this.sending = false;
         this.toastr.error(data.msg, "שגיאה");
       } else {
         setTimeout(() => {
