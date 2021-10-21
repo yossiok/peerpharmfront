@@ -87,7 +87,7 @@
         <select class="form-control" formControlName="WH_destId" #whid (change)="getChunks('d')"
           (change)="getAllShelfsOfDest($event)">
           <option disabled value="">בחר מחסן</option>
-          <option *ngFor="let whareHouse of reallyAllWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
+          <option [disabled]="allMovements.length > 0" *ngFor="let whareHouse of reallyAllWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
           </option>
         </select>
       </div>
