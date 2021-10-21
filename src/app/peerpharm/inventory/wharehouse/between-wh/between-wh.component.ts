@@ -325,4 +325,8 @@ export class BetweenWHComponent implements OnInit {
       }
     });
   }
+
+  justPrint() {
+    this.printBtn2.nativeElement.click();
+  }
 }
