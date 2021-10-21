@@ -1525,7 +1525,7 @@ export class StockComponent implements OnInit {
               "Item(Product)": order.itemNumber,
               Order: order.orderNumberInt,
               Customer: order.orders.costumerInternalId + " - " + order.orders.costumer,
-              amount: order.orderItems.quantity
+              amount: Number(order.orderItems.quantity)
             })
           }
         }

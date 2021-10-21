@@ -45,7 +45,7 @@
     </div>
   </div>
 
-  <form [formGroup]="newShelfForm" (ngSubmit)="addNewItemShelf()">
+  <form *ngIf="false" [formGroup]="newShelfForm" (ngSubmit)="addNewItemShelf()">
     <div class="row mt-2">
       <div class="col-2"><input type="number" class="form-control" (change)="validateItem()" formControlName="item"
           placeholder="item number">
@@ -118,7 +118,7 @@
             <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
               <input type="text" class="form-control" [(ngModel)]="item.signature">
             </td>
-            <td><button [disabled]="updatingAmount" [style.cursor]="updatingAmount ? 'progress' : 'pointer'"
+            <td><button *ngIf="false" [disabled]="updatingAmount" [style.cursor]="updatingAmount ? 'progress' : 'pointer'"
                 (click)="updateShelfAmount(shelf)" class="btn btn-danger">Update Amounts</button></td>
 
           </tr>

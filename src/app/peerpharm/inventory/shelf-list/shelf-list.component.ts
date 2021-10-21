@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/services/auth.service';
 import { CostumersService } from 'src/app/services/costumers.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { InventoryService } from 'src/app/services/inventory.service';
@@ -23,6 +24,7 @@ export class ShelfListComponent implements OnInit {
   allShelfsCopy: any;
   itemType: any;
   whareHouse: any;
+  allowedWHS: string[]
 
 
   item = {
@@ -55,10 +57,12 @@ export class ShelfListComponent implements OnInit {
     private toastSrv: ToastrService,
     private itemService: ItemsService,
     private inventorySrv: InventoryService,
-    private xlSrv: ExcelService) { }
+    private xlSrv: ExcelService,
+    private authService: AuthService) { }
 
   ngOnInit() {
     this.getAllCostumers();
+    this.allowedWHS = this.authService.loggedInUser.allowedWH
   }
 
 
@@ -78,12 +82,15 @@ export class ShelfListComponent implements OnInit {
   getAllWhShelfs() {
     this.inventorySrv.getWhareHousesList().subscribe(res => {
       let whid = res.find(wh => wh.name == this.whareHouse)._id
+      if(this.allowedWHS.includes(whid)) {
       this.inventorySrv.getWhareHouseShelfList(whid).subscribe(res => {
         this.shellNums = res.map(shell => {
           shell.shell_id_in_whareHouse = shell._id
           return shell
         })
       })
+    }
+    else this.toastSrv.error('אינך מורשה למחסן זה!')
     })
   }
 
