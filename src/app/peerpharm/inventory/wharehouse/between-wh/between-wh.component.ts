@@ -305,6 +305,10 @@ export class BetweenWHComponent implements OnInit {
     this.allMovements.splice(i, 1);
   }
 
+  clearArrivals(){
+    this.allMovements = []
+  }
+
   move() {
     this.sending = true;
     this.inventoryService.moveWareHouse(this.allMovements).subscribe((data) => {
