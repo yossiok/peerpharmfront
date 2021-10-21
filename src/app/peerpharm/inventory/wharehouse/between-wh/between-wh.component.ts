@@ -154,10 +154,13 @@ export class BetweenWHComponent implements OnInit {
   // get chunks with item
   // it was better to split it to 2 different functions - one for origin and one for destination...
   getChunks(whType) {
+    if(whType == 'o') this.originWHShelfs = []
+    if(whType == 'd') this.destWHShelfs = []
     // product movement
     if (this.movementForm.value.WH_originId == "5c31bb6f91ca6b2510349ce9") {
       this.movementForm.controls.itemType.setValue("product");
     }
+    else this.movementForm.controls.itemType.setValue('component')
 
     // origin or destination WH?
     let WHID =
@@ -233,6 +236,7 @@ export class BetweenWHComponent implements OnInit {
             });
       })
       .catch((e) => {
+        console.log('error: ',e)
         this.toastr.error("", "פריט לא קיים :(");
       });
   }
