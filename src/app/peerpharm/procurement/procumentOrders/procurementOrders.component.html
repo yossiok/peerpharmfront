@@ -657,6 +657,7 @@
             <th>Items</th>
             <th>Remarks</th>
             <th></th>
+            <th></th>
           </tr>
         </thead>
         <tbody *ngFor="let purchaseRecommendation of purchaseRecommendations">
@@ -707,6 +708,12 @@
               <td>
                 <button (click)="deletePurchaseRequest(purchaseRecommendation.recommendNumber)"
                   class="btn btn-danger form-control rounded-pill">Delete Request
+                </button>
+              </td>
+              <td>
+                <button (click)="printPurchaseRequest(purchaseRecommendation.recommendNumber)"
+                  class="btn btn-secondary rounded-pill"><img style="width: 30px;" src="../../../../assets/images/print.png"
+                    alt="">Print Request
                 </button>
               </td>
             </tr>
@@ -849,6 +856,54 @@
         </tbody>
       </table>
     </div>
+  </div>
+</div>
+
+<!--Print Purchase Request-->
+<div style="visibility: hidden;" id="purchase-request" class="row">
+  <button #printRequest [printStyle]="{table:{'border-collapse':'collapse', 'font-size': '30px' },
+  td : {'border': '1px solid black'},
+  tr : {'border': 'solid 2px black'},
+  th : {'border': 'solid 2px black'},
+  button:{'display':'none'}}" style="visibility: hidden;"
+    printSectionId="purchase-request" ngxPrint></button>
+  <div class="col-12">
+    <h1 dir="rtl">בקשת רכש מספר {{purchaseRecommendationToPrint.recommendNumber}}</h1>
+    <h2 dir="rtl">נפתחה ע"י {{purchaseRecommendationToPrint.user}}</h2>
+    <h3 dir="rtl">בתאריך {{purchaseRecommendationToPrint.date | date: 'short'}}</h3>
+
+    <h4 dir="rtl">פריטים:</h4>
+
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Name</th>
+          <th>Amount</th>
+          <th>Customer Order</th>
+          <th>Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let stockitem of purchaseRecommendationToPrint.stockitems">
+          <td>
+            {{stockitem.number}}
+          </td>
+          <td>
+            {{stockitem.name}}
+          </td>
+          <td>
+            {{stockitem.quantity}}
+          </td>
+          <td>
+            {{stockitem.customerOrder}}
+          </td>
+          <td>
+            {{stockitem.remarks}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 

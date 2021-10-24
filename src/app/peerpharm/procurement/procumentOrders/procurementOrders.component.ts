@@ -41,6 +41,7 @@ export class ProcurementOrdersComponent implements OnInit {
   @ViewChild("printBillBtn") printBillBtn: ElementRef;
   @ViewChild("updateCurrencies") updateCurrencies: ElementRef;
   @ViewChild("printOrdersBtn") printOrdersBtn: ElementRef;
+  @ViewChild("printRequest") printRequest: ElementRef;
 
   linkDownload: String = "";
   expandNumber: String;
@@ -135,6 +136,7 @@ export class ProcurementOrdersComponent implements OnInit {
     itemNumber: new FormControl(null),
     origin: new FormControl(null),
   });
+  purchaseRecommendationToPrint: any = {}
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
     event: KeyboardEvent
@@ -401,6 +403,11 @@ export class ProcurementOrdersComponent implements OnInit {
           this.getAllPurchaseRecommends();
         });
     }
+  }
+
+  printPurchaseRequest(recommendationNumber) {
+      this.purchaseRecommendationToPrint = this.purchaseRecommendations.find(pr=> pr.recommendNumber == recommendationNumber)
+      setTimeout(()=> this.printRequest.nativeElement.click(), 500)
   }
 
   //open in excel
