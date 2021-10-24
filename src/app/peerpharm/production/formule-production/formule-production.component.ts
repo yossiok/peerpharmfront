@@ -127,7 +127,7 @@ export class FormuleProductionComponent implements OnInit {
       if (data.msg == "לא קיימת פורמולה") {
         this.toastSrv.error("לא קיימת פורמולה לאחד מהפריטים")
       } else {
-        this.materialsForFormules = data;
+        this.materialsForFormules = data.newArray;
         this.showMaterialsForFormules = true;
         
       }

@@ -172,6 +172,9 @@ import { CurrencySymbolPipe } from "../pipes/currency-symbol.pipe";
 import { InventoryStickerComponent } from "./inventory/wharehouse/stickers/inventory-sticker";
 import { FormulesTypesPipe } from "../pipes/formules-types.pipe";
 import { WarehousesNamesPipe } from "../pipes/warehouses-names.pipe";
+import { WorkPlanStatusPipe } from "../pipes/work-plan-status.pipe";
+import { AllPlanningComponent } from "./production/planning/all-planning/all-planning.component";
+import { PlanningDetailsComponent } from "./production/planning/planning-details/planning-details.component";
 
 @NgModule({
   exports: [
@@ -320,6 +323,8 @@ import { WarehousesNamesPipe } from "../pipes/warehouses-names.pipe";
     InventoryStickerComponent,
     FormulesTypesPipe,
     WarehousesNamesPipe,
+    WorkPlanStatusPipe,
+    AllPlanningComponent, PlanningDetailsComponent
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [

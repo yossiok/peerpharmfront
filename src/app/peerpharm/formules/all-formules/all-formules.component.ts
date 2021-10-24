@@ -455,7 +455,7 @@ export class AllFormulesComponent implements OnInit {
     this.invtSer
       .getMaterialsForFormules(this.selectedArr)
       .subscribe((materials) => {
-        this.materialsForFormules = materials;
+        this.materialsForFormules = materials.newArray;
         this.showMaterialsForFormules = true;
       });
   }
