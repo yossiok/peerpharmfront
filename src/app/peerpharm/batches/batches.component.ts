@@ -110,7 +110,7 @@ export class BatchesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAllBatchesYear();
+    this.getAllBatchesYear("thisYear");
     this.startInterval();
     this.lastValueUpdate = this.formatDate(new Date());
     this.getUserInfo();
@@ -192,12 +192,19 @@ export class BatchesComponent implements OnInit {
 
   startInterval() {
     this.myRefresh = setInterval(() => {
-      this.getAllBatchesYear();
+      this.getAllBatchesYear("thisYear");
     }, 1000 * 60 * 5);
   }
 
-  getAllBatchesYear() {
-    this.batchService.getAllBatchesYear().subscribe((res) => {
+  getAllBatchesYear(year) {
+    let d = 0;
+    if (year == "thisYear") {
+      d = new Date().getFullYear();
+    } else if (year == "lastYear") {
+      d = new Date().getFullYear() - 1;
+    }
+    console.log(d);
+    this.batchService.getAllBatchesYear(d).subscribe((res) => {
       console.log(res);
       this.batches = res.filter((b) => b.type != "makeup");
       this.mkpBatches = res.filter((b) => b.type == "makeup");
