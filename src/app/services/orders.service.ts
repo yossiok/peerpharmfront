@@ -193,6 +193,13 @@ export class OrdersService {
       map(reponse => reponse.json())
     )
   }
+
+  //Uri report
+  getUriReport(): Observable<any> {
+    let url = this.baseUrl + "order/urireport";
+    return this.http.get(url).pipe(map(reponse => reponse.json()))
+  }
+
   //get item details (can move it to item service)
   getItemByNumber(itemNumber): Observable<any> {
     let url = this.baseUrl + "item?getLicsens=yes&itemNumber=" + itemNumber;

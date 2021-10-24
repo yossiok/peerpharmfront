@@ -466,5 +466,18 @@ export class OrdersComponent implements OnInit {
 
   }
 
+  getUriReport() {
+    this.ordersService.getUriReport().subscribe(data => {
+      console.log(data)
+    })
+
+
+    // remained:
+  //   let quantitySupplied = item.billing
+  //   .map((b) => b.billQty)
+  //   .reduce((a, b) => a + b, 0);
+  // item.quantityRemained = Number(item.quantity) - quantitySupplied;
+  }
+
 
 }
