@@ -35,6 +35,7 @@ export class OrdersComponent implements OnInit {
   today: any;
   selectAllOrders: boolean = false;
   newOrderModal: boolean = false;
+  loadingUri: boolean = false
   onHoldStrDate: String;
   stageSortDir: string = "done";
   numberSortDir: string = "oldFirst";
@@ -73,12 +74,12 @@ export class OrdersComponent implements OnInit {
     private router: Router,
     private toastSrv: ToastrService,
     private authService: AuthService,
-    private excelService:ExcelService
+    private excelService: ExcelService
   ) { }
 
   ngOnInit() {
-    
-    if(this.authService.loggedInUser.screenPermission == '5') {
+
+    if (this.authService.loggedInUser.screenPermission == '5') {
       // document.getElementById
       var allDivs = document.getElementsByClassName("container-fluid text-center bg-white")
       // for(let i = 0; i < allDivs.length; i++) {
@@ -113,7 +114,7 @@ export class OrdersComponent implements OnInit {
   }
 
   checkPermission() {
-    if(this.authService.loggedInUser.screenPermission == '5') return true
+    if (this.authService.loggedInUser.screenPermission == '5') return true
   }
 
   checkfunc() {
@@ -467,16 +468,47 @@ export class OrdersComponent implements OnInit {
   }
 
   getUriReport() {
+    this.toastSrv.info('זה ייקח מספר רגעים..', 'מכין דו"ח הזמנות.')
+    this.loadingUri = true
     this.ordersService.getUriReport().subscribe(data => {
-      console.log(data)
+      this.loadingUri = false
+      let excel = []
+      for (let item of data) {
+        // let quantitySupplied = item.billing
+        //   .map((b) => b.billQty)
+        //   .reduce((a, b) => a + b, 0);
+        // item.quantityRemained = Number(item.orderItem.quantity) - quantitySupplied;
+        excel.push({
+          "מס' הזמנה": item.orderNumberString,
+          "סוג הזמנה": item.type,
+          "לקוח": item.costumer,
+          'מק"ט': item.orderItem.itemNumber,
+          "תאור": item.orderItem.discription,
+          "משקל": item.orderItem.netWeightGr,
+          "כמות": Number(item.orderItem.quantity),
+          "יתרה לאספקה": item.quantityRemained,
+          "מלאי": "",
+          "יתרה": Number(item.orderItem.quantity) - item.quantityRemained,
+          "תאריך הזמנה": item.orderDate,
+          "צפי שניתן": item.deliveryDate,
+          "קו מילוי": "",
+          "תאריך מילוי": "",
+          "אצווה": "",
+          "כמות שמילאו": "",
+          "סטטוס": "",
+          "קומפוננטים": "",
+          "מדבקות": ""
+        })
+      }
+      this.excelService.exportAsExcelFile(excel, 'דו"ח הזמנות ' + new Date())
     })
 
 
     // remained:
-  //   let quantitySupplied = item.billing
-  //   .map((b) => b.billQty)
-  //   .reduce((a, b) => a + b, 0);
-  // item.quantityRemained = Number(item.quantity) - quantitySupplied;
+    //   let quantitySupplied = item.billing
+    //   .map((b) => b.billQty)
+    //   .reduce((a, b) => a + b, 0);
+    // item.quantityRemained = Number(item.quantity) - quantitySupplied;
   }
 
 
