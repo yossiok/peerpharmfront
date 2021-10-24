@@ -47,6 +47,7 @@ export class NewFormuleComponent implements OnInit {
   @ViewChild("remarks") remarks: ElementRef;
   @ViewChild("addChildren") addChildren: ElementRef;
   @ViewChild("fatherFormule") fatherFormule: ElementRef;
+  @ViewChild("childToAdd") childToAdd: ElementRef;
   @ViewChild("fatherToRemove") fatherToRemove: ElementRef;
   @ViewChild("childToRemove") childToRemove: ElementRef;
 
@@ -228,14 +229,26 @@ export class NewFormuleComponent implements OnInit {
       fatherFormule: this.fatherFormule.nativeElement.value,
       childNumber: this.childrenToAdd,
     };
+
+    let father = this.fatherFormules.findIndex(
+      (f) => f.formuleNumber == obj.fatherFormule
+    );
+    console.log(father);
     console.log(obj.fatherFormule);
     console.log(obj.childNumber);
+    if (father < 0) {
+      this.Toastr.error("פורמולת אב לא תקינה, בדוק שוב");
+      this.fatherFormule.nativeElement.focus();
+      return;
+    }
     this.formuleService
       .getFormuleByNumber(this.childrenToAdd)
       .subscribe((data) => {
-        console.log(data.parentNumber);
-        if (data.parentNumber != "" && data.parentNumber != null) {
+        console.log(data);
+        if (data && data.parentNumber != "" && data.parentNumber != null) {
           this.Toastr.error("פורמולת בן קיימת אצל אב אחר");
+          this.childToAdd.nativeElement.focus();
+          return;
         } else {
           console.log("Entered else");
           try {
