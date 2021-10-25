@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
+import { ExcelService } from 'src/app/services/excel.service';
 import { ProductionService } from 'src/app/services/production.service';
 import { WorkPlan } from '../WorkPlan';
 
@@ -22,7 +23,8 @@ export class PlanningDetailsComponent implements OnInit {
   constructor(
     private authService:AuthService,
     private toastr:ToastrService,
-    private productionService: ProductionService
+    private productionService: ProductionService,
+    private excelService: ExcelService
   ) { }
 
   ngOnInit(): void {
@@ -52,6 +54,10 @@ export class PlanningDetailsComponent implements OnInit {
       case 2: return '#39e0e6'
       case 3: return '#38e849'
     }
+  }
+
+  export(data, title) {
+    this.excelService.exportAsExcelFile(data, title)
   }
 
   toast(title, msg) {

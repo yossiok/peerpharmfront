@@ -1,6 +1,11 @@
 <div>
     <h1>Work Plans</h1>
     <div class="wrapper">
+        <div class="d-flex flex-column bg-light m-2 p-2">
+            <img class="click" ngbTooltip="רענן תכניות" (click)="getWorkPlans()" style="width: 50px" src="../../../../../assets/images/update2.png" alt="">
+            <div class="row mt-4"></div>
+            <img (click)="exportAll()" ngbTooltip="Export to Excel" src="../../../../../assets/images/excel.png" style="width: 50px;" alt="">
+        </div>
         <div class="box click" *ngFor="let workPlan of workPlans" (click)="openWorkPlan(workPlan.serialNumber)">
             <div class="service-line">
                 <h3>Work Plan no. {{workPlan.serialNumber}}</h3>
