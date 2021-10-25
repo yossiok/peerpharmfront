@@ -30,8 +30,8 @@ export class HistMovementsComponent implements OnInit, OnChanges {
     { value: "in", name: "כניסה" },
     { value: "out", name: "יציאה" },
     { value: "whareHouseChange", name: "העברה בין מחסנים" },
-    { value: "shelfChange", name: "העברה בין מדפים" },
-    { value: "production", name: "העברה לייצור" },
+    // { value: "shelfChange", name: "העברה בין מדפים" },
+    // { value: "production", name: "העברה לייצור" },
   ];
   allUsers: any = [];
   queryObj: object = {};
@@ -54,28 +54,27 @@ export class HistMovementsComponent implements OnInit, OnChanges {
     private purchaseService: Procurementservice,
     private userService: UsersService,
     private warehouseService: WarehouseService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getAllUsers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.allWhareHouses = changes.allWhareHouses.currentValue
+    this.allWhareHouses = changes.allWhareHouses.currentValue;
   }
 
   getAllUsers() {
     this.userService.getAllUsers().subscribe(
       (users) =>
-      (this.allUsers = users.sort((a, b) => {
-        if (a.userName.toLowerCase() > b.userName.toLowerCase()) return 1;
-        else return -1;
-      }))
+        (this.allUsers = users.sort((a, b) => {
+          if (a.userName.toLowerCase() > b.userName.toLowerCase()) return 1;
+          else return -1;
+        }))
     );
   }
 
   getReceptions() {
-
     // build the query
     let formValues = this.historicalMovements.controls;
     this.histMovements = [];
@@ -91,23 +90,23 @@ export class HistMovementsComponent implements OnInit, OnChanges {
     this.inventoryService.getHistMovements(queryString).subscribe((data) => {
       data.forEach((element) => {
         if (!element.itemType) {
-
           let type;
           let wh;
 
           type = this.movementTypes.find((obj) => {
             return obj.value == element.movementType;
           });
-          element.movementName = type ? type.name : 'NA';
+          element.movementName = type ? type.name : "NA";
           element.logs.forEach((log) => {
             wh = this.allWhareHouses.find((obj) => {
-              return obj._id == log.WH_originId
+              return obj._id == log.WH_originId;
             });
             log.whareHouse = wh.name;
           });
         }
       });
-      this.histMovements = data.filter(e => !e.itemType);
+      this.histMovements = data.filter((e) => !e.itemType);
+      console.log(this.histMovements);
     });
   }
 
@@ -119,9 +118,10 @@ export class HistMovementsComponent implements OnInit, OnChanges {
         this.warehouseService.outCalledMethod(move);
       } else if (move.movementType == "in") {
         this.warehouseService.inCalledMethod(move);
-      } else if(move.movementType == "whareHouseChange") {
+      } else if (move.movementType == "whareHouseChange") {
         this.warehouseService.moveWHCalledMethod(move);
       }
+      this.historicalMovements.reset();
     }, 500);
   }
 

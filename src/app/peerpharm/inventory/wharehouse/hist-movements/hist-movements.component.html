@@ -70,19 +70,20 @@
           <th>מס' תעודה</th>
           <th>סוג העברה</th>
           <th>מחסן</th>
-          <th>מס' פריט</th>
-          <th>כמות</th>
+          <!-- <th>מס' פריט</th>
+          <th>כמות</th> -->
           <th>הדפסה</th>
         </tr>
       </thead>
       <tbody *ngFor="let move of histMovements">
-        <tr *ngFor="let log of move.logs">
+        <!-- <tr *ngFor="let log of move.logs"> -->
+        <tr>
           <td>{{move.dateAndTime | date: 'dd/MM/yyyy'}}</td>
-          <td>{{log.warehouseReception}}</td>
+          <td>{{move.logs[0].warehouseReception}}</td>
           <td>{{move.movementName}}</td>
-          <td>{{log.WH_originName}}</td>
-          <td>{{log.item}}</td>
-          <td>{{log.amount}}</td>
+          <td>{{move.logs[0].WH_originName}}</td>
+          <!-- <td>{{log.item}}</td>
+          <td>{{log.amount}}</td> -->
           <td><button (click)="printData(move)">Print</button></td>
 
         </tr>

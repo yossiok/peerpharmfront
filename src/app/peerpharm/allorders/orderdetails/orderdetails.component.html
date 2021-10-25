@@ -144,8 +144,8 @@
       <td></td>
       <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="neto Weight(Gr)"
           [(ngModel)]="itemData.netWeightGr"></td>
-      <td><input style="box-shadow:1px 1px 2px black" type="number" class="form-control form-control-sm" placeholder="Quantity"
-          [(ngModel)]="itemData.quantity"></td>
+      <td><input style="box-shadow:1px 1px 2px black" type="number" class="form-control form-control-sm"
+          placeholder="Quantity" [(ngModel)]="itemData.quantity"></td>
 
 
       <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="Weight"
@@ -233,7 +233,8 @@
 
 
 
-        <td *ngIf="item._id===EditRowId"><input #netWeightGr type='number' [value]="item.netWeightGr" style='width:70px'>
+        <td *ngIf="item._id===EditRowId"><input #netWeightGr type='number' [value]="item.netWeightGr"
+            style='width:70px'>
         </td>
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.netWeightGr}}</td>
 
@@ -345,7 +346,7 @@
                 <input type="radio" name="type" #type value='laser' [(ngModel)]="chosenType">Laser<br>
                 <input type="radio" name="type" #type value='stickers' [(ngModel)]="chosenType">Stickers<br>
                 <input type="radio" name="type" #type value='mkp2' [(ngModel)]="chosenType">Mkp2<br>
-                <input type="radio" name="type" #type value='packaging' [(ngModel)]="chosenType">Packaging<br>
+                <!-- <input type="radio" name="type" #type value='packaging' [(ngModel)]="chosenType">Packaging<br> -->
               </td>
               <td placement="top" [ngbTooltip]="item.productionApproved ? '' : 'Item Not Approved by PP&C'"><button
                   *ngIf="setScheduleAllowed" [disabled]="!item.productionApproved"
@@ -1054,9 +1055,9 @@
             <td>{{material.itemNumber}}</td>
             <td>{{material.itemName}}</td>
             <td>{{material.kgProduction}}</td>
-            <td 
-            [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
-            {{material.materialArrivals[0].amount}}</td>
+            <td
+              [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
+              {{material.materialArrivals[0].amount}}</td>
 
           </tr>
         </tbody>

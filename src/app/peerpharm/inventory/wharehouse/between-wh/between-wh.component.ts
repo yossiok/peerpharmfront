@@ -54,6 +54,7 @@ export class BetweenWHComponent implements OnInit {
   originWHId: any;
   destinationWHName: any;
   destinationWHId: any;
+  historic: boolean;
   constructor(
     private inventoryService: InventoryService,
     private toastr: ToastrService,
@@ -79,18 +80,24 @@ export class BetweenWHComponent implements OnInit {
 
   getHistoricalReceptions() {
     this.wareHouseService.moveWHPrintCalled$.subscribe((data) => {
-      this.certificateReception = data.logs[0].warehouseReception;
+      this.allMovements = [];
+      this.reception = data.logs[0].warehouseReception;
+      this.historic = true;
       this.today = data.dateAndTime;
       data.logs.forEach((element) => {
-        element.position = element.shell_position_in_whareHouse_Origin;
+        this.allMovements.push(element);
       });
       console.log(data.logs[0]);
       this.movementForm.patchValue(data.logs[0]);
 
       setTimeout(() => {
+        this.movementForm.reset();
         this.printBtn2.nativeElement.click();
+        this.allMovements = [];
       }, 500);
     });
+    this.reception = "";
+    this.historic = false;
   }
 
   // check if component number exist
@@ -331,6 +338,7 @@ export class BetweenWHComponent implements OnInit {
 
   move() {
     this.sending = true;
+    this.historic = false;
     console.log(this.allMovements);
     this.inventoryService.moveWareHouse(this.allMovements).subscribe((data) => {
       console.log(data);
@@ -354,6 +362,7 @@ export class BetweenWHComponent implements OnInit {
         this.movementForm.controls.valid.setValue(false);
       }
     });
+    this.historic = true;
   }
 
   justPrint() {
