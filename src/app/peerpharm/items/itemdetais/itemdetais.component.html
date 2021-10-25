@@ -1085,6 +1085,20 @@
                                         *ngIf="itemShown.laserImage2">
                                 </div>
                             </div>
+                            <div class="row mt-4">
+                                <div class="col-3">
+                                    <label>קו מילוי ראשי</label>
+                                    <select class="form-control" [(ngModel)]="itemShown.primaryLine">
+                                        <option *ngFor="let line of productionLines" [value]="line">{{line}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-3">
+                                    <label>קו מילוי משני</label>
+                                    <select class="form-control" [(ngModel)]="itemShown.secondaryLine">
+                                        <option *ngFor="let line of productionLines" [value]="line">{{line}}</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
                     </ng-template>

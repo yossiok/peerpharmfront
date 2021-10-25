@@ -468,37 +468,51 @@ export class OrdersComponent implements OnInit {
   }
 
   getUriReport() {
-    this.toastSrv.info('זה ייקח מספר רגעים..', 'מכין דו"ח הזמנות.')
+    this.toastSrv.info('זה ייקח מספר דקות..', 'מכין דו"ח הזמנות.')
     this.loadingUri = true
     this.ordersService.getUriReport().subscribe(data => {
       this.loadingUri = false
       let excel = []
       for (let item of data) {
-        // let quantitySupplied = item.billing
-        //   .map((b) => b.billQty)
-        //   .reduce((a, b) => a + b, 0);
-        // item.quantityRemained = Number(item.orderItem.quantity) - quantitySupplied;
-        excel.push({
-          "מס' הזמנה": item.orderNumberString,
-          "סוג הזמנה": item.type,
-          "לקוח": item.costumer,
-          'מק"ט': item.orderItem.itemNumber,
-          "תאור": item.orderItem.discription,
-          "משקל": item.orderItem.netWeightGr,
-          "כמות": Number(item.orderItem.quantity),
-          "יתרה לאספקה": item.quantityRemained,
-          "מלאי": "",
-          "יתרה": Number(item.orderItem.quantity) - item.quantityRemained,
-          "תאריך הזמנה": item.orderDate,
-          "צפי שניתן": item.deliveryDate,
-          "קו מילוי": "",
-          "תאריך מילוי": "",
-          "אצווה": "",
-          "כמות שמילאו": "",
-          "סטטוס": "",
-          "קומפוננטים": "",
-          "מדבקות": ""
-        })
+        try{ 
+          let quantitySupplied = 0
+          if(item.orderItem.billing && item.orderItem.billing > 0) {
+            quantitySupplied = item.orderItem.billing
+            .map((b) => b.billQty)
+            .reduce((a, b) => a + b, 0);
+          }
+          item.quantityRemained = Number(item.orderItem.quantity) - quantitySupplied;
+          let missingComponents = []
+          for (let component of item.componentsExplosion) {
+            if(component.amount < 0)
+            missingComponents.push(component._id)
+          }
+          let stringifiedMissingComponents = JSON.stringify(missingComponents)
+          excel.push({
+            "מס' הזמנה": item.orderNumberString,
+            "סוג הזמנה": item.type,
+            "לקוח": item.costumer,
+            "תאריך הזמנה": item.orderDate,
+            "צפי שניתן": item.deliveryDate,
+            'מק"ט': item.orderItem.itemNumber,
+            "תאור": item.orderItem.discription,
+            "משקל": item.orderItem.netWeightGr,
+            "כמות במלאי": item.amountEffi,
+            "כמות בהזמנה": Number(item.orderItem.quantity),
+            "סופק": Number(item.orderItem.quantity) - item.quantityRemained,
+            "יתרה לאספקה": item.quantityRemained,
+            "אצווה": item.batch,
+            "קו מילוי ראשי": item.itemTree.primaryLine,
+            "קו מילוי משני": item.itemTree.secondaryLine,
+            "תאריך מילוי": "",
+            "כמות שמילאו": isNaN(Number(item.quantity_Produced)) ? "" : Number(item.quantity_Produced) ,
+            "סטטוס מילוי": item.fillingStatus,
+            "קומפוננטים חסרים": stringifiedMissingComponents,
+            // "מדבקות": ""
+          })
+        } catch(e) {
+          console.log('error: ')
+        }
       }
       this.excelService.exportAsExcelFile(excel, 'דו"ח הזמנות ' + new Date())
     })

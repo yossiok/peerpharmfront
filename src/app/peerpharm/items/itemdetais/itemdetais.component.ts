@@ -43,6 +43,7 @@ export class ItemdetaisComponent implements OnInit {
   ordersItem: any[];
   allCostumers: any[];
   allCostumersCopy: any[];
+  productionLines: any = ["1", "2", "3", "4", "5", "6", "7M", "7M2", "8", "9", "T", "S"]
   totalItemPrice: number = 0;
   totalPriceLoading: number = 0;
 

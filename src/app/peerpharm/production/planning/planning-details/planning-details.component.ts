@@ -26,8 +26,7 @@ export class PlanningDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.authorized = this.authService.loggedInUser.userName == 'haviv' || this.authService.loggedInUser.userName == 'andrey' 
-    || this.authService.loggedInUser.userName == 'sima' || this.authService.loggedInUser.userName == 'dani'
+    this.authorized = this.authService.loggedInUser.authorization.includes('creamProductionManager')
   }
 
   closeWorkPlan() {
