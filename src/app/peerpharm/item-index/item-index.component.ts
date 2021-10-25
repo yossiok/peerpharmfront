@@ -796,6 +796,7 @@ export class ItemIndexComponent implements OnInit {
 
   resetItemDetailsForm() {
     this.itemDetailsForm.reset();
+    this.item = undefined;
     this.itemNames = [];
   }
   // EXCEL EXPORT ---------------------------------------------------------------
