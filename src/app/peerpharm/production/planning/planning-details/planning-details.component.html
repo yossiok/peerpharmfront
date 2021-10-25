@@ -37,7 +37,7 @@
                     <th>סה"כ ק"ג</th>
                     <th>סטטוס חומרים</th>
                     <th>סטטוס קומפוננטים</th>
-                    <th>Batch</th>
+                    <th>Batch?</th>
                     <th>הערות</th>
                 </tr>
             </thead>
@@ -54,7 +54,8 @@
                     <td *ngIf="!orderItem.enoughMaterials"><img ngbTooltip="חסרים חומרי גלם במלאי" class="img" src="../../../../../assets/images/denied.png" alt=""></td>
                     <td *ngIf="orderItem.enoughComponents"><img ngbTooltip="כמות מלאי תקינה" class="img2" src="../../../../../assets/images/stockUpdate.png" alt=""></td>
                     <td *ngIf="!orderItem.enoughComponents"><img ngbTooltip="חסרים קומפוננטים במלאי" class="img" src="../../../../../assets/images/denied.png" alt=""></td>
-                    <td>{{orderItem.batchNumber}}</td>
+                    <td class="h3 text-success text-left" *ngIf="orderItem.batchNumber">{{orderItem.batchNumber}}</td>
+                    <td *ngIf="!orderItem.batchNumber"><img class="img" src="../../../../../assets/images/delete.png" alt=""></td>
                     <td>
                         <span *ngIf="!edit">{{orderItem.remarks}}</span>
                         <input *ngIf="edit" type="text" [(ngModel)]="orderItem.remarks">
