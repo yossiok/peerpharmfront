@@ -30,8 +30,8 @@ export class HistMovementsComponent implements OnInit, OnChanges {
     { value: "in", name: "כניסה" },
     { value: "out", name: "יציאה" },
     { value: "whareHouseChange", name: "העברה בין מחסנים" },
-    { value: "shelfChange", name: "העברה בין מדפים" },
-    { value: "production", name: "העברה לייצור" },
+    // { value: "shelfChange", name: "העברה בין מדפים" },
+    // { value: "production", name: "העברה לייצור" },
   ];
   allUsers: any = [];
   queryObj: object = {};

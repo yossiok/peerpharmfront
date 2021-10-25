@@ -176,7 +176,8 @@
           </p>
         </header>
         <main>
-          <h2>תעודת העברה מס' {{reception}}</h2>
+          <h2 *ngIf="!historic">תעודת העברה מס' {{reception}}</h2>
+          <h2 *ngIf="historic">תעודת העברה מס' {{allMovements[0].warehouseReception}}</h2>
           <p class='originDestWh'>
             <span><u>תאריך:</u></span>&nbsp;&nbsp;
             <span>{{today | date :'dd-MM-yyyy' }}</span>&nbsp;&nbsp;

@@ -79,6 +79,8 @@ export class InvArrivalsComponent implements OnInit {
 
       setTimeout(() => {
         this.printBtn2.nativeElement.click();
+        this.componentArrival.reset();
+        this.allArrivals = [];
       }, 500);
     });
   }
