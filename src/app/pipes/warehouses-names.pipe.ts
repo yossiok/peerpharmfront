@@ -22,9 +22,9 @@ export class WarehousesNamesPipe implements PipeTransform {
       case "makeup":
         warehouseName = "מחסן מייקאפ";
         break;
-      case "Packaging":
-        warehouseName = "אריזות";
-        break;
+      // case "Packaging":
+      //   warehouseName = "אריזות";
+      //   break;
       case "Filling":
         warehouseName = "מילוי";
         break;
