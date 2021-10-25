@@ -7,7 +7,11 @@
     <div class="col-4 bg-white">
       <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info">Open Orders</h1>
     </div>
-    <div class="col-4"></div>
+    <div class="col-2"></div>
+    <div class="col-2">
+      <div *ngIf="loadingUri" class="smallerLoader"></div>
+      <button *ngIf="!loadingUri" (click)="getUriReport()" class="btn btn-info">F4 - דו"ח אורי</button>
+    </div>
   </div>
   <hr>
   <div class="row mt-4">

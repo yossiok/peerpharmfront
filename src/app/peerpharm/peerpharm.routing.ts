@@ -80,6 +80,7 @@ import { InvArrivalsComponent } from './inventory/wharehouse/inv-arrivals/inv-ar
 import { InventoryReportsComponent } from './inventory/inventory-reports/inventory-reports.component';
 import { YieldsComponent } from './production/yield/yields/yields.component';
 import { YieldHistoryComponent } from './production/yield/yield-history/yield-history.component';
+import { AllPlanningComponent } from './production/planning/all-planning/all-planning.component';
 
 
 
@@ -351,7 +352,15 @@ export const PeerPharmRputs: Routes = [
       title: 'Formule Table'
     },
     component: AllFormulesComponent,
-    canActivate: [TwoFactor]
+    // canActivate: [TwoFactor]
+  },
+  {
+    path: 'production/planning',
+    canActivate: [ScreenGuard],
+    data: {
+      title: 'Planning'
+    },
+    component: AllPlanningComponent
   },
   {
     path: 'production/lines',

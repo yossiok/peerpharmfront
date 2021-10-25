@@ -1,0 +1,91 @@
+<div class="m-5 p-5">
+    <i (click)="closeWorkPlan()" class="fa fa-times float-right h3 close"></i>
+    <h1 class="text-center">Work Plan {{workPlan.serialNumber}}</h1>
+    <div *ngIf="authorized" class="row mt-4 d-flex flex-row justify-content-around">
+        <div class="h2">
+            Status: <span class="p-2 rounded" [style.backgroundColor]="'white'" [style.color]="setColor(workPlan.status)">{{workPlan.status | workPlanStatus}}</span>
+        </div>
+        <div class="h2">
+            <select (change)="setStatus($event)" class="form-control">
+                <option disabled value="0">Change Status</option>
+                <option *ngFor="let status of statuses" 
+                    [style.backgroundColor]="workPlan.status == status ? 'rgb(133, 133, 209)' : ''" 
+                    [value]="status">{{status | workPlanStatus}}
+                </option>
+            </select>
+        </div>
+        <div class="h2">
+            <button class="btn btn-info">
+                <i (click)="edit = true" ngbTooltip="ערוך פרטים" class="fas fa-pencil-alt"></i>
+            </button>
+        </div>
+        <div class="h2">
+            <button class="btn btn-success" (click)="saveChanges()"><i class="fas fa-save" ngbTooltip="שמור שינויים"></i></button>
+        </div>
+    </div>
+    <h2 class="mt-4">Order Items</h2>
+    <div class="row mt-4">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Item</th>
+                    <th>Customer</th>
+                    <th>Order</th>
+                    <th>Description</th>
+                    <th>משקל</th>
+                    <th>כמות</th>
+                    <th>סה"כ ק"ג</th>
+                    <th>סטטוס חומרים</th>
+                    <th>סטטוס קומפוננטים</th>
+                    <th>הערות</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let orderItem of workPlan.orderItems">
+                    <td>{{orderItem.itemNumber}}</td>
+                    <td>{{orderItem.customerName}}</td>
+                    <td>{{orderItem.orderNumber}}</td>
+                    <td>{{orderItem.description}}</td>
+                    <td>{{orderItem.netWeightGr}}</td>
+                    <td>{{orderItem.quantity}}</td>
+                    <td>{{orderItem.totalKG}}</td>
+                    <td *ngIf="orderItem.enoughMaterials"><img ngbTooltip="כמות מלאי תקינה" class="img" src="../../../../../assets/images/aprroved.png" alt=""></td>
+                    <td *ngIf="!orderItem.enoughMaterials"><img ngbTooltip="חסרים חומרי גלם במלאי" class="img" src="../../../../../assets/images/warning.jpg" alt=""></td>
+                    <td *ngIf="orderItem.enoughComponents"><img ngbTooltip="כמות מלאי תקינה" class="img" src="../../../../../assets/images/aprroved.png" alt=""></td>
+                    <td *ngIf="!orderItem.enoughComponents"><img ngbTooltip="חסרים קומפוננטים במלאי" class="img" src="../../../../../assets/images/warning.jpg" alt=""></td>
+                    <td>
+                        <span *ngIf="!edit">{{orderItem.remarks}}</span>
+                        <input *ngIf="edit" type="text" [(ngModel)]="orderItem.remarks">
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+    <h2>Production Formules</h2>
+    <div class="row mt-4">
+        <table class="table formules-table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Formule</th>
+                    <th>סה"כ ק"ג</th>
+                    <th>סטטוס חומרים</th>
+                    <!-- <th>הערות</th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let formule of workPlan.productionFormules">
+                    <td>{{formule.formule}}</td>
+                    <td>
+                        <span *ngIf="!edit">{{formule.totalKG}}</span>
+                        <input class="kg-input" *ngIf="edit" type="number" (change)="toast('יש לשמור שינויים!', 'אחרת הפריט לא יישמר...')" [(ngModel)]="formule.totalKG">
+                    </td>
+                    <td *ngIf="formule.enoughMaterials"><img ngbTooltip="כמות מלאי תקינה" class="img" src="../../../../../assets/images/aprroved.png" alt=""></td>
+                    <td *ngIf="!formule.enoughMaterials"><img ngbTooltip="חסרים חומרי גלם במלאי" class="img" src="../../../../../assets/images/warning.jpg" alt=""></td>
+                    <!-- <td>{{orderItem.remarks}}</td> -->
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>

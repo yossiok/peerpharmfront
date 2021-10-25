@@ -71,6 +71,9 @@
   <option value="open">Open</option>
   <option value="done">Closed</option>
 </select>
+<div class="text-center">
+  <button class="btn btn-primary" (click)="makePlan()">Add Cream Production Work Plan</button>
+</div>
 
 <div *ngIf="orderExplodeLoader" class="loading">Loading&#8230;</div>
 
@@ -1051,7 +1054,9 @@
             <td>{{material.itemNumber}}</td>
             <td>{{material.itemName}}</td>
             <td>{{material.kgProduction}}</td>
-            <td>{{material.totalQnt}}</td>
+            <td 
+            [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
+            {{material.materialArrivals[0].amount}}</td>
 
           </tr>
         </tbody>

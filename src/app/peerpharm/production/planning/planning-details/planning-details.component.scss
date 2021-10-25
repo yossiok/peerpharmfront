@@ -1,0 +1,43 @@
+.img {
+    width: 48px;
+}
+
+.click {
+    cursor: pointer
+}
+
+.close {
+    cursor: pointer;
+    padding: 5px
+}
+
+.close:hover {
+    background-color: rgb(42, 117, 119);
+    color: white
+}
+
+.formules-table {
+    width: 50%;
+    // background-color: rgb(133, 133, 209);
+}
+
+.kg-input{
+    width: 39%
+}
+
+
+
+// Hide arrows from input type number  :
+/*********************************************** ********************/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/*******************************************************************/

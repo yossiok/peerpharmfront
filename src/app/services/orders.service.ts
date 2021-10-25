@@ -193,6 +193,13 @@ export class OrdersService {
       map(reponse => reponse.json())
     )
   }
+
+  //Uri report
+  getUriReport(): Observable<any> {
+    let url = this.baseUrl + "order/urireport";
+    return this.http.get(url).pipe(map(reponse => reponse.json()))
+  }
+
   //get item details (can move it to item service)
   getItemByNumber(itemNumber): Observable<any> {
     let url = this.baseUrl + "item?getLicsens=yes&itemNumber=" + itemNumber;
@@ -302,6 +309,11 @@ export class OrdersService {
   addItemToPackingList(newObj) {
     let url = this.baseUrl + 'packingPallltItems/add';
     return this.http.post(url, JSON.stringify(newObj), this.options).pipe(map(res => res.json()));
+  }
+
+  makePlan(orderItems) {
+    let url = this.baseUrl + 'orderitem/makePlan';
+    return this.http.post(url, JSON.stringify({ orderItems }), this.options).pipe(map(reponse => reponse.json()));
   }
 
   //get items required elements for item: components/stickers/boxes/cartons
