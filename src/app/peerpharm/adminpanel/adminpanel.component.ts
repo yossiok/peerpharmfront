@@ -176,19 +176,34 @@ export class AdminpanelComponent implements OnInit {
     let pass = this.passForm.controls.newpass.value;
     if (pass.length >= 6 && pass.length <= 30) {
       this.userService.getPassword(user).subscribe((data) => {
-        if (data) {
+        console.log(data);
+        if (data && !data.msg) {
           this.userService.resetPassword(user, pass).subscribe((data) => {
-            this.passForm.reset();
-            this.toastService.success("הסיסמא עודכנה בהצלחה !");
+            console.log(data);
+            if (data && !data.msg) {
+              this.passForm.reset();
+              this.toastService.success("הסיסמא עודכנה בהצלחה !");
+              return;
+            } else {
+              this.toastService.error(
+                "הפעולה לא הצליחה, במידה והתקלה חוזרת,יש להודיע למנהל המערכת."
+              );
+              return;
+            }
           });
         } else {
+          this.toastService.error(
+            "הסיסמא לא עודכנה, אם התקלה חוזרת יש לפנות למנהל המערכת"
+          );
           console.log("Failed to reset");
+          console.log(data.msg);
         }
       });
     } else {
       this.toastService.error(
         "  הסיסמא צריכה להיות 6 תווים לפחות ולא יותר מ 30 תווים."
       );
+      return;
     }
   }
 
