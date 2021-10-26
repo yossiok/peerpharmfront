@@ -15,15 +15,15 @@
             </select>
         </div>
         <div class="h2">
-            <button class="btn btn-info">
+            <button class="btn btn-info rounded" style="font-size: 28px">
                 <i (click)="edit = true" ngbTooltip="ערוך פרטים" class="fas fa-pencil-alt"></i>
             </button>
         </div>
         <div class="h2">
-            <button class="btn btn-success" (click)="saveChanges()"><i class="fas fa-save" ngbTooltip="שמור שינויים"></i></button>
+            <img ngbTooltip="שמור שינויים" (click)="saveChanges()" class="img2 click" src="../../../../../assets/images/aprroved.png" alt="">
         </div>
     </div>
-    <h2 class="mt-4">Order Items</h2>
+    <h2 class="mt-4"><img class="click" (click)="export(workPlan.orderItems, 'items for work plan'+workPlan.serialNumber)" src="../../../../../assets/images/excel.png" class="img" alt=""> Order Items</h2>
     <div class="row mt-4">
         <table class="table">
             <thead class="thead-dark">
@@ -37,6 +37,7 @@
                     <th>סה"כ ק"ג</th>
                     <th>סטטוס חומרים</th>
                     <th>סטטוס קומפוננטים</th>
+                    <th>Batch?</th>
                     <th>הערות</th>
                 </tr>
             </thead>
@@ -49,10 +50,12 @@
                     <td>{{orderItem.netWeightGr}}</td>
                     <td>{{orderItem.quantity}}</td>
                     <td>{{orderItem.totalKG}}</td>
-                    <td *ngIf="orderItem.enoughMaterials"><img ngbTooltip="כמות מלאי תקינה" class="img" src="../../../../../assets/images/aprroved.png" alt=""></td>
-                    <td *ngIf="!orderItem.enoughMaterials"><img ngbTooltip="חסרים חומרי גלם במלאי" class="img" src="../../../../../assets/images/warning.jpg" alt=""></td>
-                    <td *ngIf="orderItem.enoughComponents"><img ngbTooltip="כמות מלאי תקינה" class="img" src="../../../../../assets/images/aprroved.png" alt=""></td>
-                    <td *ngIf="!orderItem.enoughComponents"><img ngbTooltip="חסרים קומפוננטים במלאי" class="img" src="../../../../../assets/images/warning.jpg" alt=""></td>
+                    <td *ngIf="orderItem.enoughMaterials"><img ngbTooltip="כמות מלאי תקינה" class="img2" src="../../../../../assets/images/stockUpdate.png" alt=""></td>
+                    <td *ngIf="!orderItem.enoughMaterials"><img ngbTooltip="חסרים חומרי גלם במלאי" class="img" src="../../../../../assets/images/denied.png" alt=""></td>
+                    <td *ngIf="orderItem.enoughComponents"><img ngbTooltip="כמות מלאי תקינה" class="img2" src="../../../../../assets/images/stockUpdate.png" alt=""></td>
+                    <td *ngIf="!orderItem.enoughComponents"><img ngbTooltip="חסרים קומפוננטים במלאי" class="img" src="../../../../../assets/images/denied.png" alt=""></td>
+                    <td class="h3 text-success text-left" *ngIf="orderItem.batchNumber">{{orderItem.batchNumber}}</td>
+                    <td *ngIf="!orderItem.batchNumber"><img class="img" src="../../../../../assets/images/delete.png" alt=""></td>
                     <td>
                         <span *ngIf="!edit">{{orderItem.remarks}}</span>
                         <input *ngIf="edit" type="text" [(ngModel)]="orderItem.remarks">
@@ -62,7 +65,7 @@
 
         </table>
     </div>
-    <h2>Production Formules</h2>
+    <h2><img class="click" (click)="export(workPlan.productionFormules, 'formules for work plan'+workPlan.serialNumber)" src="../../../../../assets/images/excel.png" class="img" alt=""> Production Formules</h2>
     <div class="row mt-4">
         <table class="table formules-table">
             <thead class="thead-dark">
@@ -80,8 +83,8 @@
                         <span *ngIf="!edit">{{formule.totalKG}}</span>
                         <input class="kg-input" *ngIf="edit" type="number" (change)="toast('יש לשמור שינויים!', 'אחרת הפריט לא יישמר...')" [(ngModel)]="formule.totalKG">
                     </td>
-                    <td *ngIf="formule.enoughMaterials"><img ngbTooltip="כמות מלאי תקינה" class="img" src="../../../../../assets/images/aprroved.png" alt=""></td>
-                    <td *ngIf="!formule.enoughMaterials"><img ngbTooltip="חסרים חומרי גלם במלאי" class="img" src="../../../../../assets/images/warning.jpg" alt=""></td>
+                    <td *ngIf="formule.enoughMaterials"><img ngbTooltip="כמות מלאי תקינה" class="img2" src="../../../../../assets/images/stockUpdate.png" alt=""></td>
+                    <td *ngIf="!formule.enoughMaterials"><img ngbTooltip="חסרים חומרי גלם במלאי" class="img" src="../../../../../assets/images/denied.png" alt=""></td>
                     <!-- <td>{{orderItem.remarks}}</td> -->
                 </tr>
             </tbody>

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { WorkPlanStatusPipe } from 'src/app/pipes/work-plan-status.pipe';
+import { ExcelService } from 'src/app/services/excel.service';
 import { ProductionService } from 'src/app/services/production.service';
 import { WorkPlan } from '../WorkPlan';
 
@@ -14,7 +16,9 @@ export class AllPlanningComponent implements OnInit {
   showWorkPlan: boolean = false
 
   constructor(
-    private productionService: ProductionService
+    private productionService: ProductionService,
+    private excelService: ExcelService,
+    private workPlanStatusPipe: WorkPlanStatusPipe
   ) { }
 
   ngOnInit(): void {
@@ -35,6 +39,20 @@ export class AllPlanningComponent implements OnInit {
   closeWorkPlan() {
     this.currentWorkPlan = null
     this.showWorkPlan = false
+  }
+
+  exportAll() {
+    let excel = []
+    for(let workPlan of this.workPlans) {
+      for(let orderItem of workPlan.orderItems) {
+        excel.push({
+          "Work Plan": workPlan.serialNumber,
+          status: this.workPlanStatusPipe.transform(workPlan.status),
+          ...orderItem
+        })
+      }
+    }
+    this.excelService.exportAsExcelFile(excel, `תכניות עבודה ${new Date()}`)
   }
 
 }

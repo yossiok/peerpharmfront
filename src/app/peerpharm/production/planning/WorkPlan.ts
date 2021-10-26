@@ -11,7 +11,8 @@ interface OrderItem{
     quantity: string,
     totalKG: number,
     remarks: string,
-    enoughComponents: boolean
+    enoughComponents: boolean,
+    batchNumber: string
 }
 
 interface ProductionFormule {

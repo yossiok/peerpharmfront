@@ -329,6 +329,7 @@ import { PlanningDetailsComponent } from "./production/planning/planning-details
   entryComponents: [AddProcurementItemDialog],
   providers: [
     HttpClientModule,
+    WorkPlanStatusPipe,
     //MatAutocompleteModule,
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
   ],
