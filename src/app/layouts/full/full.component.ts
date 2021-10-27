@@ -1,24 +1,24 @@
-import { Component, OnInit, HostListener } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, HostListener } from "@angular/core";
+import { Router } from "@angular/router";
 declare var $: any;
 
-import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-import { AlertModalComponent } from 'src/app/component/alert-modal/alert-modal.component';
-import { AuthService } from 'src/app/services/auth.service';
-import { NotificationService } from 'src/app/services/notification.service';
-import { UsersService } from 'src/app/services/users.service';
-import { UtilsService } from 'src/app/services/utils.service';
+import { PerfectScrollbarConfigInterface } from "ngx-perfect-scrollbar";
+import { AlertModalComponent } from "src/app/component/alert-modal/alert-modal.component";
+import { AuthService } from "src/app/services/auth.service";
+import { NotificationService } from "src/app/services/notification.service";
+import { UsersService } from "src/app/services/users.service";
+import { UtilsService } from "src/app/services/utils.service";
 
 @Component({
-  selector: 'app-full-layout',
-  templateUrl: './full.component.html',
-  styleUrls: ['./full.component.scss']
+  selector: "app-full-layout",
+  templateUrl: "./full.component.html",
+  styleUrls: ["./full.component.scss"],
 })
 export class FullComponent implements OnInit {
   public config: PerfectScrollbarConfigInterface = {};
-  themeColor: string = "r"
+  themeColor: string = "r";
   databaseName: any;
-  testing: boolean = false
+  testing: boolean = false;
 
   constructor(
     public router: Router,
@@ -26,7 +26,7 @@ export class FullComponent implements OnInit {
     private usersService: UsersService,
     private authService: AuthService,
     private notifications: NotificationService
-  ) { }
+  ) {}
   public isCollapsed = false;
 
   public innerWidth: any;
@@ -36,38 +36,35 @@ export class FullComponent implements OnInit {
   public expandLogo = false;
 
   options = {
-    theme: 'light',
-    dir: 'ltr',
-    layout: 'vertical',
-    sidebartype: 'overlay',
-    sidebarpos: 'fixed',
-    headerpos: 'fixed',
-    boxed: 'full',
-    navbarbg: 'skin5',
-    sidebarbg: 'skin1',
-    logobg: 'skin1'
+    theme: "light",
+    dir: "ltr",
+    layout: "vertical",
+    sidebartype: "overlay",
+    sidebarpos: "fixed",
+    headerpos: "fixed",
+    boxed: "full",
+    navbarbg: "skin5",
+    sidebarbg: "skin1",
+    logobg: "skin1",
   };
 
   Logo() {
     this.expandLogo = !this.expandLogo;
     if (this.expandLogo) {
       //   $(".sidebar-link , .sidebar-item").css("width","250px");
-
-    }
-    else {
+    } else {
       $(".sidebar-link , .sidebar-item").css("width", "250px");
     }
-
   }
 
   ngOnInit() {
-    if (this.router.url === '/') {
-      this.router.navigate(['/starter']);
+    if (this.router.url === "/") {
+      this.router.navigate(["/starter"]);
     }
     this.defaultSidebar = this.options.sidebartype;
     this.handleSidebar();
-    this.getTheme()
-    this.showUserAlerts()
+    this.getTheme();
+    this.showUserAlerts();
   }
   //Dani Morag: 16/08/2021
   // the time the user doesn't touch his workstation
@@ -78,12 +75,11 @@ export class FullComponent implements OnInit {
     clearTimeout(this.idleTime);
     // console.log(this.idleTime);
     this.idleTime = setTimeout(() => {
-      this.router.navigate(['/login'])
-    }, 1000 * 60 * 60 * 3)
+      this.router.navigate(["/login"]);
+    }, 1000 * 60 * 60 * 3);
   }
 
-
-  @HostListener('window:resize', ['$event'])
+  @HostListener("window:resize", ["$event"])
   onResize(event) {
     this.handleSidebar();
   }
@@ -91,18 +87,18 @@ export class FullComponent implements OnInit {
   handleSidebar() {
     this.innerWidth = window.innerWidth;
     switch (this.defaultSidebar) {
-      case 'full':
-      case 'iconbar':
+      case "full":
+      case "iconbar":
         if (this.innerWidth < 1170) {
-          this.options.sidebartype = 'mini-sidebar';
+          this.options.sidebartype = "mini-sidebar";
         } else {
           this.options.sidebartype = this.defaultSidebar;
         }
         break;
 
-      case 'overlay':
+      case "overlay":
         if (this.innerWidth < 767) {
-          this.options.sidebartype = 'mini-sidebar';
+          this.options.sidebartype = "mini-sidebar";
         } else {
           this.options.sidebartype = this.defaultSidebar;
         }
@@ -112,52 +108,53 @@ export class FullComponent implements OnInit {
     }
   }
 
-
   getTheme() {
-    this.utilsService.getTheme().subscribe(theme => {
-      this.themeColor = theme.database == 'testing' ? 'rgb(30, 240, 81)' : 'rgb(19, 19, 95)'
-      this.databaseName = theme.database == 'testing' ? 'DEV ENVIRONMENT!!!!' : ''
-      this.testing = theme.database == 'testing' ? true : false
-    })
+    this.utilsService.getTheme().subscribe((theme) => {
+      this.themeColor =
+        theme.database == "testing" ? "rgb(30, 240, 81)" : "rgb(19, 19, 95)";
+      this.databaseName =
+        theme.database == "testing" ? "DEV ENVIRONMENT!!!!" : "";
+      this.testing = theme.database == "testing" ? true : false;
+    });
   }
 
   showUserAlerts() {
     setTimeout(() => {
-
-      let userAlerts = this.authService.loggedInUser.loginAlerts
+      let userAlerts = this.authService.loggedInUser.loginAlerts;
+      // console.log(userAlerts);
       for (let alert of userAlerts) {
-        let titleObj = alert.titleObj
-        let msg = alert.messsage
-        this.notifications.sendGlobalMessage(msg, titleObj).subscribe(ok => {
-          // console.log(ok)
-          this.notifications.deleteUserAlerts(this.authService.loggedInUser.userName).subscribe(res => {
-            // console.log(res)
-          })
-        })
+        let titleObj = alert.titleObj;
+        // console.log(titleObj);
+        let msg = alert.msg;
+        // console.log(msg);
+        this.notifications.sendGlobalMessage(msg, titleObj).subscribe((ok) => {
+          // console.log(ok);
+          this.notifications
+            .deleteUserAlerts(this.authService.loggedInUser.userName)
+            .subscribe((res) => {
+              // console.log(res);
+            });
+        });
       }
-    }, 5000)
+    }, 5000);
   }
 
-
   toggleSidebarType() {
-
     switch (this.options.sidebartype) {
-      case 'full':
-      case 'iconbar':
-
-        this.options.sidebartype = 'mini-sidebar';
+      case "full":
+      case "iconbar":
+        this.options.sidebartype = "mini-sidebar";
         $(".sidebar-link , .sidebar-item").css("width", "65px");
         break;
 
-      case 'overlay':
+      case "overlay":
         this.showMobileMenu = !this.showMobileMenu;
         break;
 
-      case 'mini-sidebar':
-
+      case "mini-sidebar":
         $(".sidebar-link , .sidebar-item").css("width", "250px");
-        if (this.defaultSidebar === 'mini-sidebar') {
-          this.options.sidebartype = 'full';
+        if (this.defaultSidebar === "mini-sidebar") {
+          this.options.sidebartype = "full";
         } else {
           this.options.sidebartype = this.defaultSidebar;
         }

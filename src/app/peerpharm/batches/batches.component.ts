@@ -72,6 +72,7 @@ export class BatchesComponent implements OnInit {
     weightQtyLeft: 0,
     weightKg: "",
     color: "",
+    user: "",
   };
 
   itemTree = {
@@ -127,6 +128,8 @@ export class BatchesComponent implements OnInit {
   }
 
   addBatch() {
+    this.batch.user = this.authService.loggedInUser.userName;
+    console.log(this.batch);
     this.batchService.addBatch(this.batch).subscribe((data) => {
       this.batches.push(data);
       this.batchesCopy.push(data);
@@ -146,6 +149,7 @@ export class BatchesComponent implements OnInit {
         weightQtyLeft: 0,
         weightKg: "",
         color: "",
+        user: "",
       };
     });
   }
