@@ -1,5 +1,5 @@
-<div class="m-5 p-5">
-    <i (click)="closeWorkPlan()" class="fa fa-times float-right h3 close"></i>
+<div *ngIf="!showMaterialsForFormules" class="m-5 p-5">
+    <i (click)="closeWorkPlan(-1)" class="fa fa-times float-right h3 close"></i>
     <h1 class="text-center">Work Plan {{workPlan.serialNumber}}</h1>
     <div class="d-flex flex-row justify-content-between w-75">
         <div class="h2">
@@ -30,9 +30,14 @@
             <!-- <img ngbTooltip="שמור שינויים" (click)="saveChanges()" class="img2 click" src="../../../../../assets/images/aprroved.png" alt=""> -->
         </div>
     </div>
-    <h2 class="mt-4"><img class="click"
-            (click)="export(workPlan.orderItems, 'items for work plan'+workPlan.serialNumber)"
-            src="../../../../../assets/images/excel.png" class="img" alt=""> Order Items</h2>
+    <h2 class="mt-4">
+        <img class="click" (click)="export(workPlan.orderItems, 'items for work plan'+workPlan.serialNumber)"
+            src="../../../../../assets/images/excel.png" class="img" alt="">
+        Order Items
+        <img *ngIf="!loadData && authorized" class="click ml-2" (click)="loadMaterialsForFormule()"
+            ngbTooltip="כתב כמויות" style="width: 50px" src="../../../../../assets/images/allOrder.png" alt="">
+        <div *ngIf="loadData" class="smallerLoader"></div>
+    </h2>
     <div class="row mt-4">
         <table class="table">
             <thead class="thead-dark">
@@ -49,6 +54,7 @@
                     <th>Batch?</th>
                     <th>הערות</th>
                     <th></th>
+                    <th *ngIf="authorized"></th>
                 </tr>
             </thead>
             <tbody>
@@ -60,7 +66,7 @@
                     <td>{{orderItem.netWeightGr}}</td>
                     <td>{{orderItem.quantity}}</td>
                     <td #editWeight>
-                        <span (click)="edit = i" *ngIf="edit != i">{{orderItem.totalKG}}</span>
+                        <span *ngIf="edit != i">{{orderItem.totalKG}}</span>
                         <input class="kg-input" *ngIf="edit == i" type="number" [(ngModel)]="orderItem.totalKG">
                     </td>
                     <td class="text-center" *ngIf="orderItem.enoughMaterials"><i ngbTooltip="כמות מלאי תקינה"
@@ -76,12 +82,22 @@
                     <td *ngIf="!orderItem.batchNumber"><i ngbTooltip="לא יוצר באטץ'" class="far fa-times-circle"></i>
                     </td>
                     <td>
-                        <span *ngIf="!edit == i">{{orderItem.remarks}}</span>
+                        <span *ngIf="edit != i">{{orderItem.remarks}}</span>
                         <input *ngIf="edit == i" type="text" [(ngModel)]="orderItem.remarks">
                     </td>
                     <td>
-                        <img *ngIf="authorized" ngbTooltip="שמור שינויים" (click)="saveChanges(i)" class="img click"
-                            src="../../../../../assets/images/aprroved.png" alt="">
+                        <img *ngIf="edit == i && authorized" ngbTooltip="שמור שינויים" (click)="saveChanges(i)"
+                            class="img click" src="../../../../../assets/images/aprroved.png" alt="">
+                        <button *ngIf="edit != i && authorized" (click)="edit = i" class="btn btn-secondary rounded">
+                            עריכה
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
+                    </td>
+                    <td *ngIf="authorized">
+                        <button (click)="deleteLine(i)" class="btn btn-danger">
+                            מחיקת שורה
+                            <i class="far fa-trash-alt"></i>
+                        </button>
                     </td>
                 </tr>
             </tbody>
@@ -97,7 +113,7 @@
                     <th>Formule</th>
                     <th>סה"כ ק"ג</th>
                     <th>סטטוס חומרים</th>
-                    <th></th>
+                    <th *ngIf="authorized"></th>
                     <!-- <th>הערות</th> -->
                 </tr>
             </thead>
@@ -109,8 +125,8 @@
                     </td>
                     <td *ngIf="!formule.enoughMaterials"><i ngbTooltip="חסרים קומפוננטים במלאי"
                             class="fas fa-exclamation-circle"></i></td>
-                    <td><img class="img" (click)="printFormule(formule)" src="../../../../../assets/images/filter.png"
-                            alt=""></td>
+                    <td *ngIf="authorized"><img class="img" ngbTooltip="הדפס פורמולה" (click)="printFormule(formule)"
+                            src="../../../../../assets/images/filter.png" alt=""></td>
                     <!-- <td>{{orderItem.remarks}}</td> -->
                 </tr>
             </tbody>
@@ -197,4 +213,47 @@
             </tbody>
         </table>
     </div>
+</div>
+
+
+<!--כתב כמויות-->
+<div *ngIf="showMaterialsForFormules" class="m-5 p-5">
+    <button style="visibility: hidden" #printAmounts ngxPrint printSectionId="print-amounts"></button>
+    <i (click)="showMaterialsForFormules = false" class="fa fa-times float-right h3 close"></i>
+    <h1 class="text-center">כתב כמויות</h1>
+    <h2 dir="rtl">
+        <img (click)="exportExplosion(materialsForFormules, 'כתב כמויות')" src="../../../../../assets/images/excel.png"
+            class="img" alt="">
+        <img (click)="printAmounts.click()" src="../../../../../assets/images/print.png" class="img2" alt="">
+    </h2>
+    <div id="print-amounts">
+
+        <h2 dir="rtl">כתב כמויות לתכנית עבודה {{workPlan.serialNumber}}</h2>
+        <br>
+        <table class="table table-striped mt-4">
+            <thead class="bg-success text-white">
+                <tr>
+
+                    <th>Material Number</th>
+                    <th>Material Name</th>
+                    <th>Required</th>
+                    <th>In Stock</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let material of materialsForFormules">
+
+                    <td>{{material.itemNumber}}</td>
+                    <td>{{material.itemName}}</td>
+                    <td>{{material.kgProduction}}</td>
+                    <td
+                        [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
+                        {{material.materialArrivals[0].amount | number}}</td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
