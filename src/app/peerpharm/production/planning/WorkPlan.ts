@@ -15,7 +15,7 @@ interface OrderItem{
     batchNumber: string
 }
 
-interface ProductionFormule {
+export interface ProductionFormule {
     enoughMaterials: boolean,
     formule: string,
     totalKG: number
