@@ -1,10 +1,13 @@
 <div *ngIf="!showMaterialsForFormules" class="m-5 p-5">
     <i (click)="closeWorkPlan(-1)" class="fa fa-times float-right h3 close"></i>
     <h1 class="text-center">Work Plan {{workPlan.serialNumber}}</h1>
-    <div class="d-flex flex-row justify-content-between w-75">
+    <div class="d-flex flex-row justify-content-between w-75 mt-4">
         <div class="h2">
             <span class="p-2 rounded" [style.color]="setColor(workPlan.status)">{{workPlan.status |
                 workPlanStatus}}</span>
+        </div>
+        <div class="h3">
+            <span class="p-2 rounded">{{workPlan.remark}}</span>
         </div>
         <div class="h3">
             <span class="p-2 rounded">{{workPlan.date | date: 'short'}}</span>
@@ -31,12 +34,14 @@
         </div>
     </div>
     <h2 class="mt-4">
-        <img class="click" (click)="export(workPlan.orderItems, 'items for work plan'+workPlan.serialNumber)"
-            src="../../../../../assets/images/excel.png" class="img" alt="">
         Order Items
-        <img *ngIf="!loadData && authorized" class="click ml-2" (click)="loadMaterialsForFormule()"
-            ngbTooltip="כתב כמויות" style="width: 50px" src="../../../../../assets/images/allOrder.png" alt="">
-        <div *ngIf="loadData" class="smallerLoader"></div>
+        <span class="float-right">
+            <img *ngIf="!loadData" ngbTooltip="ייצוא פריטים" class="click" (click)="export(workPlan.orderItems, 'items for work plan'+workPlan.serialNumber)"
+                src="../../../../../assets/images/excel.png" class="img" alt="">
+            <img *ngIf="!loadData && authorized" class="click ml-2" (click)="loadMaterialsForFormule()"
+                ngbTooltip="כתב כמויות" style="width: 50px" src="../../../../../assets/images/allOrder.png" alt="">
+            <div *ngIf="loadData" class="smallerLoader"></div>
+        </span>
     </h2>
     <div class="row mt-4">
         <table class="table">
@@ -104,8 +109,11 @@
 
         </table>
     </div>
-    <h2><img class="click" (click)="export(workPlan.productionFormules, 'formules for work plan'+workPlan.serialNumber)"
-            src="../../../../../assets/images/excel.png" class="img" alt=""> Production Formules</h2>
+    <h2>
+        <!-- <img class="click" (click)="export(workPlan.productionFormules, 'formules for work plan'+workPlan.serialNumber)"
+            src="../../../../../assets/images/excel.png" class="img" alt="">  -->
+            Production Formules
+        </h2>
     <div class="row mt-4">
         <table class="table formules-table">
             <thead class="thead-dark">
@@ -222,9 +230,9 @@
     <i (click)="showMaterialsForFormules = false" class="fa fa-times float-right h3 close"></i>
     <h1 class="text-center">כתב כמויות</h1>
     <h2 dir="rtl">
-        <img (click)="exportExplosion(materialsForFormules, 'כתב כמויות')" src="../../../../../assets/images/excel.png"
+        <img ngbTooltip="ייצוא" (click)="exportExplosion(materialsForFormules, 'כתב כמויות')" src="../../../../../assets/images/excel.png"
             class="img" alt="">
-        <img (click)="printAmounts.click()" src="../../../../../assets/images/print.png" class="img2" alt="">
+        <img ngbTooltip="הדפסה" (click)="printAmounts.click()" src="../../../../../assets/images/print.png" class="img2" alt="">
     </h2>
     <div id="print-amounts">
 

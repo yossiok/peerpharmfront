@@ -244,11 +244,12 @@ export class Procurementservice {
     let url = this.baseUrl + 'procurementOrderController/addItemToProcurement';
     return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res => res.json()));
   }
-  setItemToDone(obj): Observable<any> {
 
-    let url = this.baseUrl + 'procurementOrderController/setItemToDone';
-    return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res => res.json()));
-  }
+  //not used
+  // setItemToDone(obj): Observable<any> {
+  //   let url = this.baseUrl + 'procurementOrderController/setItemToDone';
+  //   return this.http.post(url, JSON.stringify(obj), this.options).pipe(map(res => res.json()));
+  // }
 
   closeRecommendationById(id): Observable<any> {
     let url = this.baseUrl + 'procurementOrderController/closeRecommendationById';
@@ -291,10 +292,13 @@ export class Procurementservice {
     let url = this.baseUrl + 'procurementOrderController/updatePdfFile';
     return this.http.post(url, JSON.stringify({ order }), this.options).pipe(map(res => res.json()));
   }
-  updateComponentPurchase(purchase): Observable<any> {
-    let url = this.baseUrl + 'procurementOrderController/updateComponentPurchase';
-    return this.http.post(url, JSON.stringify({ purchase }), this.options).pipe(map(res => res.json()));
-  }
+
+  //not used
+  // updateComponentPurchase(purchase): Observable<any> {
+  //   let url = this.baseUrl + 'procurementOrderController/updateComponentPurchase';
+  //   return this.http.post(url, JSON.stringify({ purchase }), this.options).pipe(map(res => res.json()));
+  // }
+
   updateRecommendRemarks(purchase): Observable<any> {
     let url = this.baseUrl + 'procurementOrderController/updateRecommendRemarks';
     return this.http.post(url, JSON.stringify({ purchase }), this.options).pipe(map(res => res.json()));
@@ -315,10 +319,13 @@ export class Procurementservice {
     let url = this.baseUrl + 'procurementOrderController/clientGotTheOrder';
     return this.http.post(url, JSON.stringify({ orderNumber }), this.options).pipe(map(res => res.json()));
   }
-  closeOrder(orderNumber, reason): Observable<any> {
-    let url = this.baseUrl + 'procurementOrderController/closeOrder';
-    return this.http.post(url, JSON.stringify({ orderNumber, reason }), this.options).pipe(map(res => res.json()));
-  }
+
+  // not used
+  // closeOrder(orderNumber, reason): Observable<any> {
+  //   let url = this.baseUrl + 'procurementOrderController/closeOrder';
+  //   return this.http.post(url, JSON.stringify({ orderNumber, reason }), this.options).pipe(map(res => res.json()));
+  // }
+
   deleteItemFromOrder(itemNumber, orderNumber): Observable<any> {
     let url = this.baseUrl + 'procurementOrderController/deleteItemFromOrder';
     return this.http.post(url, JSON.stringify({ itemNumber, orderNumber }), this.options).pipe(map(res => res.json()));

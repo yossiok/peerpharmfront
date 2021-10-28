@@ -311,8 +311,8 @@ export class OrdersService {
     return this.http.post(url, JSON.stringify(newObj), this.options).pipe(map(res => res.json()));
   }
 
-  makePlan(orderItems) {
-    let url = this.baseUrl + 'orderitem/makePlan';
+  makePlan(orderItems, remark) {
+    let url = this.baseUrl + 'orderitem/makePlan?remark='+remark;
     return this.http.post(url, JSON.stringify({ orderItems }), this.options).pipe(map(reponse => reponse.json()));
   }
 
