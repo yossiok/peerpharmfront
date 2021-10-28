@@ -528,7 +528,8 @@ export class OrderdetailsComponent implements OnInit {
       let remark;
       while(remark == undefined) remark = prompt('אנא רשום שם / הערה לתכנית עבודה:')
       this.orderService.makePlan(this.selectedArr, remark).subscribe(data => {
-        if(data.orderItems.length > 0 && data.productionFormules.length > 0) this.toastSrv.success('נשמרה בהצלחה.',`תכנית עבודה ${data.serialNumber}`)
+        if(data == 'No formules for all products') this.toastSrv.error('יש לעדכן פורמולות עבור כל המוצרים', 'פורמולות חסרות')
+        else if(data.orderItems.length > 0 && data.productionFormules.length > 0) this.toastSrv.success('נשמרה בהצלחה.',`תכנית עבודה ${data.serialNumber}`)
         else this.toastSrv.warning('היתה בעיה. אנא בדוק את תכנית העבודה במסך "Planning"') 
       })
     }

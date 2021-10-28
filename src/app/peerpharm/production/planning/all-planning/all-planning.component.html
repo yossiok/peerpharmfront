@@ -17,7 +17,7 @@
                 ngbTooltip="כתב כמויות" style="width: 50px" src="../../../../../assets/images/allOrder.png" alt="">
             <div *ngIf="loadData" class="smallerLoader"></div>
         </div>
-        <div class="wrapper">
+        <div *ngIf="!showWorkPlan" class="wrapper ml-5">
             <div class="box click" *ngFor="let workPlan of workPlans; let i = index">
                 <input *ngIf="showCheckbox" class="checkbox" type="checkbox" (change)="addOrRemove($event, i)">
                 <div (click)="openWorkPlan(workPlan.serialNumber)">
