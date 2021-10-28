@@ -588,6 +588,8 @@ export class ProcurementOrdersComponent implements OnInit {
         return "closed";
       case "supplied":
         return "delivered";
+      case "partlyDelivered":
+        return "partly delivered";
       case "canceled":
         return "canceled";
       case "sentBySupplier":
@@ -615,6 +617,8 @@ export class ProcurementOrdersComponent implements OnInit {
         return "lightgreen";
       case "supplied":
         return "#09d5e8"; //delivered
+      case "partlyDelivered":
+        return "#0742e6"; //delivered
       case "canceled":
         return "#9198a3";
       case "sentBySupplier":
@@ -641,6 +645,8 @@ export class ProcurementOrdersComponent implements OnInit {
       case "approvedBySupplier":
         return "black";
       case "supplied":
+        return "black"; //delivered
+      case "partlyDelivered":
         return "black"; //delivered
       case "canceled":
         return "white";

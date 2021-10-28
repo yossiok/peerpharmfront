@@ -377,6 +377,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         return "lightgreen";
       case "supplied":
         return "#09d5e8"; //delivered
+      case "partlyDelivered":
+        return "#0742e6"; //delivered
       case "canceled":
         return "#9198a3";
       case "sentBySupplier":
@@ -403,6 +405,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       case "approvedBySupplier":
         return "black";
       case "supplied":
+        return "black"; //delivered
+      case "partlyDelivered":
         return "black"; //delivered
       case "canceled":
         return "white";

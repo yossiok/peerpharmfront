@@ -523,15 +523,12 @@ export class OrderdetailsComponent implements OnInit {
     for(let item of this.selectedArr) {
       if(item.enoughStock === undefined) notExploded = true
     }
-    // for(let item of this.selectedArr) {
-    //   if(item.productionApproved === undefined || item.productionApproved == false) readyForProduction = false
-    // }
     if(notExploded) this.toastSrv.error('יש לבצע פיצוץ לפני שליחת תכנית עבודה!')
-    // else if(!readyForProduction) this.toastSrv.error('יש לאשר פריט לייצור לפני שליחת תכנית עבודה!')
     else {
-      this.orderService.makePlan(this.selectedArr).subscribe(data => {
-        // console.log('selected arr back from server: ', data)
-        if(data.orderItems.length > 0 && data.productionFormules.length > 0) this.toastSrv.success('תכנית עבודה נשמרה בהצלחה')
+      let remark;
+      while(remark == undefined) remark = prompt('אנא רשום שם / הערה לתכנית עבודה:')
+      this.orderService.makePlan(this.selectedArr, remark).subscribe(data => {
+        if(data.orderItems.length > 0 && data.productionFormules.length > 0) this.toastSrv.success('נשמרה בהצלחה.',`תכנית עבודה ${data.serialNumber}`)
         else this.toastSrv.warning('היתה בעיה. אנא בדוק את תכנית העבודה במסך "Planning"') 
       })
     }

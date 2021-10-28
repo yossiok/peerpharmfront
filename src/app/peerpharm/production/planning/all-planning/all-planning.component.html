@@ -1,22 +1,87 @@
 <div>
     <h1>Work Plans</h1>
-    <div class="wrapper">
+    <div class="row mt-4 d-flex flex-row">
         <div class="d-flex flex-column bg-light m-2 p-2">
-            <img class="click" ngbTooltip="רענן תכניות" (click)="getWorkPlans()" style="width: 50px" src="../../../../../assets/images/update2.png" alt="">
+            <img class="click" ngbTooltip="רענן תכניות" (click)="getWorkPlans()" style="width: 50px"
+                src="../../../../../assets/images/update2.png" alt="">
             <div class="row mt-4"></div>
-            <img (click)="exportAll()" ngbTooltip="Export to Excel" src="../../../../../assets/images/excel.png" style="width: 50px;" alt="">
+            <img class="click" (click)="exportAll()" ngbTooltip="ייצוא לאקסל"
+                src="../../../../../assets/images/excel.png" style="width: 50px;" alt="">
+            <div class="row mt-4"></div>
+            <button ngbTooltip="בחירת תכניות" (click)="showCheckbox = !showCheckbox" class="btn btn-secondary"
+                style="width: 52px;">
+                <i class="fas fa-check-circle"></i>
+            </button>
+            <div class="row mt-4"></div>
+            <img *ngIf="!loadData && authorized" class="click" (click)="loadMaterialsForFormule()"
+                ngbTooltip="כתב כמויות" style="width: 50px" src="../../../../../assets/images/allOrder.png" alt="">
+            <div *ngIf="loadData" class="smallerLoader"></div>
         </div>
-        <div class="box click" *ngFor="let workPlan of workPlans" (click)="openWorkPlan(workPlan.serialNumber)">
-            <div class="service-line">
-                <h3>Work Plan no. {{workPlan.serialNumber}}</h3>
-            </div>
-            <div class="service-line">
-                <h4>status: {{workPlan.status | workPlanStatus}}</h4>
+        <div class="wrapper">
+            <div class="box click" *ngFor="let workPlan of workPlans; let i = index">
+                <input *ngIf="showCheckbox" class="checkbox" type="checkbox" (change)="addOrRemove($event, i)">
+                <div (click)="openWorkPlan(workPlan.serialNumber)">
+                    <div class="service-line mt-4">
+                        <h3>Work Plan no. {{workPlan.serialNumber}}</h3>
+                    </div>
+                    <div class="service-line">
+                        <h4>{{workPlan.date | date: 'short'}}</h4>
+                    </div>
+                    <div class="service-line">
+                        <h4>{{workPlan.status | workPlanStatus}}</h4>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
 </div>
 
 <div class="position-fixed work-plan" *ngIf="showWorkPlan">
-    <app-planning-details (updateWorkPlans)="getWorkPlans()" (closeWorkPlanEmitter)="closeWorkPlan()" [workPlan]="currentWorkPlan"></app-planning-details>
+    <app-planning-details (updateWorkPlans)="getWorkPlans()" (closeWorkPlanEmitter)="closeWorkPlan($event)"
+        [workPlan]="currentWorkPlan">
+    </app-planning-details>
+</div>
+
+<!--כתב כמויות-->
+<div *ngIf="showMaterialsForFormules" class="position-fixed work-plan w-75 p-5 rounded">
+    <button style="visibility: hidden" #printAmounts ngxPrint printSectionId="print-amounts"></button>
+    <i (click)="showMaterialsForFormules = false" class="fa fa-times float-right h3 close"></i>
+    <h1 class="text-center">כתב כמויות</h1>
+    <h2 dir="rtl">
+        <img (click)="exportExplosion(materialsForFormules, 'כתב כמויות')" src="../../../../../assets/images/excel.png"
+            class="img" alt="">
+        <img (click)="printAmounts.click()" src="../../../../../assets/images/print.png" class="img2" alt="">
+    </h2>
+    <div id="print-amounts">
+
+        <h2 dir="rtl"> כתב כמויות לתכניות עבודה: <span
+                *ngFor="let workPlan of checkedWorkPlans">{{workPlan.serialNumber}}, </span></h2>
+        <br>
+        <table class="table table-striped mt-4">
+            <thead class="bg-success text-white">
+                <tr>
+
+                    <th>Material Number</th>
+                    <th>Material Name</th>
+                    <th>Required</th>
+                    <th>In Stock</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let material of materialsForFormules">
+
+                    <td>{{material.itemNumber}}</td>
+                    <td>{{material.itemName}}</td>
+                    <td>{{material.kgProduction}}</td>
+                    <td
+                        [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
+                        {{material.materialArrivals[0].amount | number}}</td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>
