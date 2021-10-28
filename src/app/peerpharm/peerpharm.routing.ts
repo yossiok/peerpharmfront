@@ -1,340 +1,336 @@
-import { OrdersComponent } from './allorders/orders/orders.component';
-import { AllordersComponent } from './allorders/allorders/allorders.component';
-import { OrderdetailsComponent } from './allorders/orderdetails/orderdetails.component'
+import { OrdersComponent } from "./allorders/orders/orders.component";
+import { AllordersComponent } from "./allorders/allorders/allorders.component";
+import { OrderdetailsComponent } from "./allorders/orderdetails/orderdetails.component";
 
 //import { PeerPharmModule } from './peerpharmmodule';
-import { Routes } from '@angular/router';
-import { ScheduleComponent } from './schedule/filling/schedule.component'
-import { PrintingComponent } from './schedule/printing/printing.component'
-import { ItemslistComponent } from './items/itemslist/itemslist.component'
-import { ItemdetaisComponent } from './items/itemdetais/itemdetais.component'
-import { PlateComponent } from './plate/plate.component'
-import { StockComponent } from './inventory/stock/stock.component'
-import { NeworderComponent } from './allorders/neworder/neworder.component'
-import { FormuleComponent } from './formules/formule.component'
-import { LinesComponent } from './production/lines/lines.component'
-import { ProductionComponent } from './production/production/production.component';
-import { ProductionRequestComponent } from './production/production-request/production-request.component';
-import { ProductionScheduleComponent } from './production/production-schedule/production-schedule.component';
-import { ContentComponent } from './taskboard/core/content/content.component'
-import { BatchesComponent } from './batches/batches.component';
-import { CostumersListComponent } from './costumers/costumers-list/costumers-list.component'
-import { FormslistComponent } from './forms/formslist/formslist.component';
-import { CheckingformsComponent } from './forms/checkingforms/checkingforms.component';
-import { FormdetailsComponent } from './forms/formdetails/formdetails.component';
-import { ItemDetailsTabComponent } from './items/item-details-tab/item-details-tab.component';
-import { MakeupComponent } from './schedule/makeup/makeup.component';
-import { WharehouseComponent } from './inventory/wharehouse/wharehouse.component';
-import { ItemDocumentsComponent } from './items/item-documents/item-documents.component';
-import { InventoryNewRequestComponent } from './inventory/inventory-new-request/inventory-new-request.component';
-import { PackingComponent } from './schedule/packing/packing.component';
-import { BarcodePrintComponent } from './schedule/barcode-print/barcode-print.component';
-import { NotificationComponent } from './notification/notification.component';
-import { ProcurementOrderItemBalanceComponent } from './procurement/procurementOrderItemBalance/procurementOrderItemBalance.component';
-import { TwoFactor } from '../guards/twofactor.guard';
+import { Routes } from "@angular/router";
+import { ScheduleComponent } from "./schedule/filling/schedule.component";
+import { PrintingComponent } from "./schedule/printing/printing.component";
+import { ItemslistComponent } from "./items/itemslist/itemslist.component";
+import { ItemdetaisComponent } from "./items/itemdetais/itemdetais.component";
+import { PlateComponent } from "./plate/plate.component";
+import { StockComponent } from "./inventory/stock/stock.component";
+import { NeworderComponent } from "./allorders/neworder/neworder.component";
+import { FormuleComponent } from "./formules/formule.component";
+import { LinesComponent } from "./production/lines/lines.component";
+import { ProductionComponent } from "./production/production/production.component";
+import { ProductionRequestComponent } from "./production/production-request/production-request.component";
+import { ProductionScheduleComponent } from "./production/production-schedule/production-schedule.component";
+import { ContentComponent } from "./taskboard/core/content/content.component";
+import { BatchesComponent } from "./batches/batches.component";
+import { CostumersListComponent } from "./costumers/costumers-list/costumers-list.component";
+import { FormslistComponent } from "./forms/formslist/formslist.component";
+import { CheckingformsComponent } from "./forms/checkingforms/checkingforms.component";
+import { FormdetailsComponent } from "./forms/formdetails/formdetails.component";
+import { ItemDetailsTabComponent } from "./items/item-details-tab/item-details-tab.component";
+import { MakeupComponent } from "./schedule/makeup/makeup.component";
+import { WharehouseComponent } from "./inventory/wharehouse/wharehouse.component";
+import { ItemDocumentsComponent } from "./items/item-documents/item-documents.component";
+import { InventoryNewRequestComponent } from "./inventory/inventory-new-request/inventory-new-request.component";
+import { PackingComponent } from "./schedule/packing/packing.component";
+import { BarcodePrintComponent } from "./schedule/barcode-print/barcode-print.component";
+import { NotificationComponent } from "./notification/notification.component";
+import { ProcurementOrderItemBalanceComponent } from "./procurement/procurementOrderItemBalance/procurementOrderItemBalance.component";
+import { TwoFactor } from "../guards/twofactor.guard";
 
-import { ProcurementOrdersComponent } from './procurement/procumentOrders/procurementOrders.component';
-import { ProcurementOrderItemComponent } from './procurement/procumentOrderItem/procurementOrderItem.component';
-import { BatchesMkpComponent } from './batches/batches-mkp/batches-mkp.component';
-import { MaterialArrivalComponent } from './inventory/material-arrival/material-arrival.component';
-import { MaterialScanViewComponent } from './inventory/material-scan-view/material-scan-view.component';
-import { WizardComponent } from './production/wizard/wizard.component';
-import { ScanProductComponent } from './production/scan-product/scan-product.component';
-import { SuppliersComponent } from './suppliers/suppliers.component';
-import { ItemreportsComponent } from './items/itemreports/itemreports.component';
-import { NewProcurementComponent } from './procurement/new-procurement/new-procurement.component';
-import { HistorylogsComponent } from './reports/historylogs/historylogs.component';
-import { AllFormulesComponent } from './formules/all-formules/all-formules.component';
-import { ItemScanViewComponent } from './inventory/item-scan-view/item-scan-view.component';
-import { AllocatedOrdersComponent } from './inventory/allocated-orders/allocated-orders.component';
-import { CleaningFormsComponent } from './forms/cleaning-forms/cleaning-forms.component';
-import { FirstAidComponent } from './forms/first-aid/first-aid.component';
-import { PackingListComponent } from './qa/packing-list/packing-list.component';
-import { QaPalletsComponent } from './forms/qa-pallets/qa-pallets.component';
-import { NewFormuleComponent } from './new-formule/new-formule.component';
-import { FormuleProductionComponent } from './production/formule-production/formule-production.component';
-import { WeightProductionComponent } from './production/weight-production/weight-production.component';
-import { StoragesComponent } from './inventory/storages/storages.component';
-import { ShelfListComponent } from './inventory/shelf-list/shelf-list.component';
-import { AdminpanelComponent } from './adminpanel/adminpanel.component';
-import { ScreenGuard } from '../guards/screen.guard';
-import { MaterialsComponent } from './production/materials/materials.component';
-import { NewBatchComponent } from './batches/new-batch/new-batch.component';
-import { ProjectsComponent } from './schedule/projects/projects.component';
-import { ActiveusersComponent } from './reports/activeusers/activeusers.component';
-import { UnfinishedProductsComponent } from './reports/unfinished-products/unfinished-products.component';
-import { ReportBuilderComponent } from './reports/report-builder/report-builder.component';
-import { UserSettingsComponent } from './user/user-settings/user-settings.component';
-import { CalendarComponent } from './calendar/calendar.component';
-import { ItemMovementReportsComponent } from './reports/item-movement-reports/item-movement-reports.component';
-import { PrintBarcodeComponent } from './production/print-barcode/print-barcode.component';
-import { OutServicesComponent } from './out-services/out-services.component';
-import { NewOutServiceComponent } from './out-services/new-out-service/new-out-service.component';
-import { TicketFormComponent } from './ticket-form/ticket-form.component';
-import { PricesComponent } from './prices/Existing/prices.component';
-import { NewPricingComponent } from './prices/new-pricing/new-pricing.component';
-import { AllPricingComponent } from './prices/all-pricing/all-pricing.component';
-import { ItemIndexComponent } from './item-index/item-index.component';
-import { ItemSuppliersComponent } from './items/item-suppliers/item-suppliers.component';
-import { InvArrivalsComponent } from './inventory/wharehouse/inv-arrivals/inv-arrivals.component';
-import { InventoryReportsComponent } from './inventory/inventory-reports/inventory-reports.component';
-import { YieldsComponent } from './production/yield/yields/yields.component';
-import { YieldHistoryComponent } from './production/yield/yield-history/yield-history.component';
-import { AllPlanningComponent } from './production/planning/all-planning/all-planning.component';
-
-
-
-
+import { ProcurementOrdersComponent } from "./procurement/procumentOrders/procurementOrders.component";
+import { ProcurementOrderItemComponent } from "./procurement/procumentOrderItem/procurementOrderItem.component";
+import { BatchesMkpComponent } from "./batches/batches-mkp/batches-mkp.component";
+import { MaterialArrivalComponent } from "./inventory/material-arrival/material-arrival.component";
+import { MaterialScanViewComponent } from "./inventory/material-scan-view/material-scan-view.component";
+import { WizardComponent } from "./production/wizard/wizard.component";
+import { ScanProductComponent } from "./production/scan-product/scan-product.component";
+import { SuppliersComponent } from "./suppliers/suppliers.component";
+import { ItemreportsComponent } from "./items/itemreports/itemreports.component";
+import { NewProcurementComponent } from "./procurement/new-procurement/new-procurement.component";
+import { HistorylogsComponent } from "./reports/historylogs/historylogs.component";
+import { AllFormulesComponent } from "./formules/all-formules/all-formules.component";
+import { ItemScanViewComponent } from "./inventory/item-scan-view/item-scan-view.component";
+import { AllocatedOrdersComponent } from "./inventory/allocated-orders/allocated-orders.component";
+import { CleaningFormsComponent } from "./forms/cleaning-forms/cleaning-forms.component";
+import { FirstAidComponent } from "./forms/first-aid/first-aid.component";
+import { PackingListComponent } from "./qa/packing-list/packing-list.component";
+import { QaPalletsComponent } from "./forms/qa-pallets/qa-pallets.component";
+import { NewFormuleComponent } from "./new-formule/new-formule.component";
+import { FormuleProductionComponent } from "./production/formule-production/formule-production.component";
+import { WeightProductionComponent } from "./production/weight-production/weight-production.component";
+import { StoragesComponent } from "./inventory/storages/storages.component";
+import { ShelfListComponent } from "./inventory/shelf-list/shelf-list.component";
+import { AdminpanelComponent } from "./adminpanel/adminpanel.component";
+import { ScreenGuard } from "../guards/screen.guard";
+import { MaterialsComponent } from "./production/materials/materials.component";
+import { NewBatchComponent } from "./batches/new-batch/new-batch.component";
+import { ProjectsComponent } from "./schedule/projects/projects.component";
+import { ActiveusersComponent } from "./reports/activeusers/activeusers.component";
+import { UnfinishedProductsComponent } from "./reports/unfinished-products/unfinished-products.component";
+import { ReportBuilderComponent } from "./reports/report-builder/report-builder.component";
+import { UserSettingsComponent } from "./user/user-settings/user-settings.component";
+import { CalendarComponent } from "./calendar/calendar.component";
+import { ItemMovementReportsComponent } from "./reports/item-movement-reports/item-movement-reports.component";
+import { PrintBarcodeComponent } from "./production/print-barcode/print-barcode.component";
+import { OutServicesComponent } from "./out-services/out-services.component";
+import { NewOutServiceComponent } from "./out-services/new-out-service/new-out-service.component";
+import { TicketFormComponent } from "./ticket-form/ticket-form.component";
+import { PricesComponent } from "./prices/Existing/prices.component";
+import { NewPricingComponent } from "./prices/new-pricing/new-pricing.component";
+import { AllPricingComponent } from "./prices/all-pricing/all-pricing.component";
+import { ItemIndexComponent } from "./item-index/item-index.component";
+import { ItemSuppliersComponent } from "./items/item-suppliers/item-suppliers.component";
+import { InvArrivalsComponent } from "./inventory/wharehouse/inv-arrivals/inv-arrivals.component";
+import { InventoryReportsComponent } from "./inventory/inventory-reports/inventory-reports.component";
+import { YieldsComponent } from "./production/yield/yields/yields.component";
+import { YieldHistoryComponent } from "./production/yield/yield-history/yield-history.component";
+import { AllPlanningComponent } from "./production/planning/all-planning/all-planning.component";
+import { FinanceReportComponent } from "./finance-reports/financereport.component";
 
 export const PeerPharmRputs: Routes = [
-
   {
-    path: 'user/user-settings',
+    path: "user/user-settings",
     data: {
-      title: 'User Settings'
+      title: "User Settings",
     },
-    component: UserSettingsComponent
+    component: UserSettingsComponent,
   },
   {
-    path: 'calendar/calendar',
+    path: "calendar/calendar",
     data: {
-      title: 'Calendar'
+      title: "Calendar",
     },
-    component: CalendarComponent
-  },
-
-  {
-    path: 'allorders/orders',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'Open Orders'
-    },
-    component: OrdersComponent
-  },
-  {
-    path: 'allorders/orders/allorders',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'All Orders'
-    },
-    component: AllordersComponent
-  },
-  {
-    path: 'allorders/orderitems/:id',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'Order Items'
-    },
-    component: OrderdetailsComponent
+    component: CalendarComponent,
   },
 
   {
-    path: 'allorders/neworder',
+    path: "allorders/orders",
     canActivate: [ScreenGuard],
     data: {
-      title: 'New Order'
+      title: "Open Orders",
     },
-    component: NeworderComponent
+    component: OrdersComponent,
   },
   {
-    path: 'schedule/fillschedule',
+    path: "allorders/orders/allorders",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Filling Schedule'
+      title: "All Orders",
     },
-    component: ScheduleComponent
+    component: AllordersComponent,
   },
   {
-    path: 'schedule/projects',
+    path: "allorders/orderitems/:id",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Order Items",
+    },
+    component: OrderdetailsComponent,
+  },
+
+  {
+    path: "allorders/neworder",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "New Order",
+    },
+    component: NeworderComponent,
+  },
+  {
+    path: "schedule/fillschedule",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Filling Schedule",
+    },
+    component: ScheduleComponent,
+  },
+  {
+    path: "schedule/projects",
     // canActivate:[ScreenGuard],
     data: {
-      title: 'Projects'
+      title: "Projects",
     },
-    component: ProjectsComponent
+    component: ProjectsComponent,
   },
   {
-    path: 'schedule/printschedule',
+    path: "schedule/printschedule",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Print Schedule'
+      title: "Print Schedule",
     },
-    component: PrintingComponent
+    component: PrintingComponent,
   },
   {
-    path: 'schedule/makeupschedule',
+    path: "schedule/makeupschedule",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Make Up Schedule'
+      title: "Make Up Schedule",
     },
-    component: MakeupComponent
+    component: MakeupComponent,
   },
   {
-    path: 'schedule/packingschedule',
+    path: "schedule/packingschedule",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Packing Schedule'
+      title: "Packing Schedule",
     },
-    component: PackingComponent
+    component: PackingComponent,
   },
   {
-    path: 'schedule/barcode-print',
+    path: "schedule/barcode-print",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Print Barcode'
+      title: "Print Barcode",
     },
-    component: BarcodePrintComponent
+    component: BarcodePrintComponent,
   },
 
   {
-    path: 'items/itemslist',
+    path: "items/itemslist",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Items List'
+      title: "Items List",
     },
-    component: ItemslistComponent
+    component: ItemslistComponent,
   },
   {
-    path: 'items/itemDetails',
+    path: "items/itemDetails",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Item Tree'
+      title: "Item Tree",
     },
-    component: ItemDetailsTabComponent
+    component: ItemDetailsTabComponent,
   },
   {
-    path: 'items/itemreports',
+    path: "items/itemreports",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Item Reports'
+      title: "Item Reports",
     },
-    component: ItemreportsComponent
+    component: ItemreportsComponent,
   },
   {
-    path: 'items/itemsuppliers',
+    path: "items/itemsuppliers",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Potential Suppliers'
+      title: "Potential Suppliers",
     },
-    component: ItemSuppliersComponent
+    component: ItemSuppliersComponent,
   },
   {
-    path: 'items/itemDetails/:itemNumber',
+    path: "items/itemDetails/:itemNumber",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Item Tree'
+      title: "Item Tree",
     },
     // component: ItemdetaisComponent
-    component: ItemDetailsTabComponent
+    component: ItemDetailsTabComponent,
   },
   {
-    path: 'plates/plates',
+    path: "plates/plates",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Plates'
+      title: "Plates",
     },
-    component: PlateComponent
+    component: PlateComponent,
   },
   {
-    path: 'inventory/stock',
+    path: "inventory/stock",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Inventory'
+      title: "Inventory",
     },
-    component: StockComponent
+    component: StockComponent,
   },
   {
-    path: 'inventory/wharehouse',
+    path: "inventory/wharehouse",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Warehouse'
+      title: "Warehouse",
     },
-    component: WharehouseComponent
+    component: WharehouseComponent,
   },
   {
-    path: 'inventory/inventoryRequest',
+    path: "inventory/inventoryRequest",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Inventory Request'
+      title: "Inventory Request",
     },
-    component: InventoryNewRequestComponent
+    component: InventoryNewRequestComponent,
   },
   {
-    path: 'inventory/materialArrival',
+    path: "inventory/materialArrival",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Material Arrival'
+      title: "Material Arrival",
     },
-    component: MaterialArrivalComponent
+    component: MaterialArrivalComponent,
   },
   {
-    path: 'inventory/arrivals',
+    path: "inventory/arrivals",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Component Arrivals'
+      title: "Component Arrivals",
     },
-    component: InvArrivalsComponent
+    component: InvArrivalsComponent,
   },
   {
-    path: 'inventory/reports',
+    path: "inventory/reports",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Inventory Reports'
+      title: "Inventory Reports",
     },
-    component: InventoryReportsComponent
+    component: InventoryReportsComponent,
   },
   {
-    path: 'inventory/storages',
+    path: "inventory/storages",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Storages'
+      title: "Storages",
     },
-    component: StoragesComponent
+    component: StoragesComponent,
   },
   {
-    path: 'inventory/shelf-list',
+    path: "inventory/shelf-list",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Shelf List'
+      title: "Shelf List",
     },
-    component: ShelfListComponent
+    component: ShelfListComponent,
   },
   {
-    path: 'suppliers/suppliers',
+    path: "suppliers/suppliers",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Suppliers'
+      title: "Suppliers",
     },
-    component: SuppliersComponent
+    component: SuppliersComponent,
   },
 
   {
-    path: 'inventory/scanMaterialView',
+    path: "inventory/scanMaterialView",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Material Scan'
+      title: "Material Scan",
     },
     component: MaterialScanViewComponent,
   },
   {
-    path: 'inventory/allocatedOrders',
+    path: "inventory/allocatedOrders",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Allocated Orders'
+      title: "Allocated Orders",
     },
     component: AllocatedOrdersComponent,
   },
   {
-    path: 'taskboard/main',
+    path: "taskboard/main",
     data: {
-      title: 'task-board'
+      title: "task-board",
     },
-    component: ContentComponent
+    component: ContentComponent,
   },
   {
-    path: 'new-formule/new-formule',
+    path: "new-formule/new-formule",
     canActivate: [ScreenGuard],
     data: {
-      title: 'add-formule'
+      title: "add-formule",
     },
     component: NewFormuleComponent,
     // canActivate:[TwoFactor]
@@ -347,388 +343,378 @@ export const PeerPharmRputs: Routes = [
   //   component: FormuleComponent,
   // },
   {
-    path: 'formule/all-formules',
+    path: "formule/all-formules",
     data: {
-      title: 'Formule Table'
+      title: "Formule Table",
     },
     component: AllFormulesComponent,
-    canActivate: [TwoFactor]
+    canActivate: [TwoFactor],
   },
   {
-    path: 'production/planning',
+    path: "production/planning",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Planning'
+      title: "Planning",
     },
-    component: AllPlanningComponent
+    component: AllPlanningComponent,
   },
   {
-    path: 'production/lines',
+    path: "production/lines",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Production Lines'
+      title: "Production Lines",
     },
-    component: LinesComponent
+    component: LinesComponent,
   },
   {
-    path: 'production/productionHall',
+    path: "production/productionHall",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Production Hall'
+      title: "Production Hall",
     },
-    component: ProductionComponent
+    component: ProductionComponent,
   },
   {
-    path: 'production/productionRequest',
+    path: "production/productionRequest",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Production Request'
+      title: "Production Request",
     },
-    component: ProductionRequestComponent
+    component: ProductionRequestComponent,
   },
   {
-    path: 'production/productionSchedule',
+    path: "production/productionSchedule",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Production Schedule'
+      title: "Production Schedule",
     },
-    component: ProductionScheduleComponent
+    component: ProductionScheduleComponent,
   },
   {
-    path: 'production/wizard',
+    path: "production/wizard",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Wizard'
+      title: "Wizard",
     },
-    component: WizardComponent
+    component: WizardComponent,
   },
   {
-    path: 'production/formule-production/formule-production',
+    path: "production/formule-production/formule-production",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Formule Production'
+      title: "Formule Production",
     },
-    component: FormuleProductionComponent
+    component: FormuleProductionComponent,
   },
   {
-    path: 'formules/weight-production',
+    path: "formules/weight-production",
     data: {
-      title: 'Weight Production'
+      title: "Weight Production",
     },
     component: WeightProductionComponent,
     canActivate: [TwoFactor],
   },
   {
-    path: 'production/scanMaterial',
+    path: "production/scanMaterial",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Material Barcode'
+      title: "Material Barcode",
     },
     component: ScanProductComponent,
   },
   {
-    path: 'production/scanItem',
+    path: "production/scanItem",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Item Barcode'
+      title: "Item Barcode",
     },
     component: ItemScanViewComponent,
   },
   {
-    path: 'production/printBarcode',
+    path: "production/printBarcode",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Print Barcode'
+      title: "Print Barcode",
     },
     component: PrintBarcodeComponent,
   },
   {
-    path: 'production/materials',
+    path: "production/materials",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Ready Materials'
+      title: "Ready Materials",
     },
     component: MaterialsComponent,
   },
   {
-    path: 'production/yields',
+    path: "production/yields",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Yields'
+      title: "Yields",
     },
     component: YieldsComponent,
   },
   {
-    path: 'production/yieldHistory',
+    path: "production/yieldHistory",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Yield History'
+      title: "Yield History",
     },
     component: YieldHistoryComponent,
   },
   {
-    path: 'batches/batchesList',
+    path: "batches/batchesList",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Batches List'
+      title: "Batches List",
     },
-    component: BatchesComponent
+    component: BatchesComponent,
   },
   {
-    path: 'batches/mkpBatchesList',
+    path: "batches/mkpBatchesList",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Make-Up Batches List'
+      title: "Make-Up Batches List",
     },
-    component: BatchesMkpComponent
+    component: BatchesMkpComponent,
   },
   {
-    path: 'batches/newBatch',
+    path: "batches/newBatch",
     canActivate: [ScreenGuard],
     data: {
-      title: 'New Batch'
+      title: "New Batch",
     },
-    component: NewBatchComponent
+    component: NewBatchComponent,
   },
   {
-    path: 'costumers/costumers_list',
+    path: "costumers/costumers_list",
     canActivate: [ScreenGuard],
     data: {
-      title: 'All Costumers'
+      title: "All Costumers",
     },
-    component: CostumersListComponent
-  }
+    component: CostumersListComponent,
+  },
 
-  ,
   {
-    path: 'forms/forms_list',
+    path: "forms/forms_list",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Forms'
+      title: "Forms",
     },
-    component: FormslistComponent
-  }
+    component: FormslistComponent,
+  },
 
-  ,
   {
-    path: 'forms/formDetails/:id',
+    path: "forms/formDetails/:id",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Forms'
+      title: "Forms",
     },
-    component: FormdetailsComponent
-  }
-  ,
-  {
-    path: 'forms/checkingforms',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'Check Forms'
-    },
-    component: CheckingformsComponent
+    component: FormdetailsComponent,
   },
   {
-    path: 'forms/cleaning-forms',
+    path: "forms/checkingforms",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Cleaning Forms'
+      title: "Check Forms",
     },
-    component: CleaningFormsComponent
+    component: CheckingformsComponent,
   },
   {
-    path: 'qa/packing-list',
+    path: "forms/cleaning-forms",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Packing Lists'
+      title: "Cleaning Forms",
     },
-    component: PackingListComponent
+    component: CleaningFormsComponent,
   },
   {
-    path: 'forms/first-aid',
+    path: "qa/packing-list",
     canActivate: [ScreenGuard],
     data: {
-      title: 'First Aid'
+      title: "Packing Lists",
     },
-    component: FirstAidComponent
+    component: PackingListComponent,
   },
   {
-    path: 'forms/qa-pallets',
+    path: "forms/first-aid",
     canActivate: [ScreenGuard],
     data: {
-      title: 'QA Pallets'
+      title: "First Aid",
     },
-    component: QaPalletsComponent
+    component: FirstAidComponent,
   },
   {
-    path: 'notification',
+    path: "forms/qa-pallets",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Notification'
+      title: "QA Pallets",
     },
-    component: NotificationComponent
-  }
+    component: QaPalletsComponent,
+  },
+  {
+    path: "notification",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Notification",
+    },
+    component: NotificationComponent,
+  },
 
-  ,
   {
-    path: 'activeusers',
+    path: "activeusers",
     canActivate: [ScreenGuard],
     data: {
-      title: 'Active Users'
+      title: "Active Users",
     },
-    component: ActiveusersComponent
+    component: ActiveusersComponent,
   },
   {
-    path: 'unfinishedproducts',
+    path: "unfinishedproducts",
     canActivate: [],
     data: {
-      title: 'Unfinished Products'
+      title: "Unfinished Products",
     },
-    component: UnfinishedProductsComponent
-  }
-  ,
+    component: UnfinishedProductsComponent,
+  },
   {
-    path: 'newticket',
+    path: "newticket",
     canActivate: [],
     data: {
-      title: 'Open Ticket'
+      title: "Open Ticket",
     },
-    component: TicketFormComponent
-  }
-
-  ,
-
-  {
-    path: 'builder',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'Report Builder'
-    },
-    component: ReportBuilderComponent
-  }
-
-
-  ,
-
-  {
-    path: 'historylogs',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'History Logs'
-    },
-    component: HistorylogsComponent
-  },
-  {
-    path: 'item-movement-reports',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'Movements Reports'
-    },
-    component: ItemMovementReportsComponent
-  }
-
-
-
-  ,
-  {
-    path: 'procurement/procurementOrderItemBalance',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'Procurement Order Item Balance'
-    },
-    component: ProcurementOrderItemBalanceComponent
-  },
-  {
-    path: 'procurement/procurementOrders',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'Purchase Orders'
-    },
-    component: ProcurementOrdersComponent
-  },
-  {
-    path: 'procurement/procurementOrderItems/:orderNumber',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'Procurement Order Items'
-    },
-    component: ProcurementOrderItemComponent
-  },
-  {
-    path: 'procurement/procurementOrderItems',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'Procurement Order Items'
-    },
-    component: ProcurementOrderItemComponent
-  },
-  {
-    path: 'procurement/newProcurement',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'New Procurement'
-    },
-    component: NewProcurementComponent
-  }
-  ,
-  {
-    path: 'admin',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'Admin panel'
-    },
-    component: AdminpanelComponent
+    component: TicketFormComponent,
   },
 
   {
-    path: 'services/ordered',
+    path: "builder",
     canActivate: [ScreenGuard],
     data: {
-      title: 'services'
+      title: "Report Builder",
     },
-    component: OutServicesComponent
-  },
-  {
-    path: 'services/new',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'Add Service'
-    },
-    component: NewOutServiceComponent
-  },
-  {
-    path: 'pricing/new',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'New Bidding'
-    },
-    component: NewPricingComponent
-  },
-  {
-    path: 'pricing/existing',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'Product Pricing'
-    },
-    component: PricesComponent
-  },
-  {
-    path: 'pricing/index',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'Bidding Index'
-    },
-    component: AllPricingComponent
-  },
-  {
-    path: 'itemindex',
-    canActivate: [ScreenGuard],
-    data: {
-      title: 'Item Index'
-    },
-    component: ItemIndexComponent
+    component: ReportBuilderComponent,
   },
 
+  {
+    path: "historylogs",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "History Logs",
+    },
+    component: HistorylogsComponent,
+  },
+  {
+    path: "item-movement-reports",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Movements Reports",
+    },
+    component: ItemMovementReportsComponent,
+  },
 
+  {
+    path: "procurement/procurementOrderItemBalance",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Procurement Order Item Balance",
+    },
+    component: ProcurementOrderItemBalanceComponent,
+  },
+  {
+    path: "procurement/procurementOrders",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Purchase Orders",
+    },
+    component: ProcurementOrdersComponent,
+  },
+  {
+    path: "procurement/procurementOrderItems/:orderNumber",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Procurement Order Items",
+    },
+    component: ProcurementOrderItemComponent,
+  },
+  {
+    path: "procurement/procurementOrderItems",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Procurement Order Items",
+    },
+    component: ProcurementOrderItemComponent,
+  },
+  {
+    path: "procurement/newProcurement",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "New Procurement",
+    },
+    component: NewProcurementComponent,
+  },
+  {
+    path: "admin",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Admin panel",
+    },
+    component: AdminpanelComponent,
+  },
 
+  {
+    path: "services/ordered",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "services",
+    },
+    component: OutServicesComponent,
+  },
+  {
+    path: "services/new",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Add Service",
+    },
+    component: NewOutServiceComponent,
+  },
+  {
+    path: "pricing/new",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "New Bidding",
+    },
+    component: NewPricingComponent,
+  },
+  {
+    path: "pricing/existing",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Product Pricing",
+    },
+    component: PricesComponent,
+  },
+  {
+    path: "pricing/index",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Bidding Index",
+    },
+    component: AllPricingComponent,
+  },
+  {
+    path: "itemindex",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Item Index",
+    },
+    component: ItemIndexComponent,
+  },
+  {
+    path: "pricing/reports",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Financial Reports",
+    },
+    component: FinanceReportComponent,
+  },
 ];
-

@@ -655,14 +655,14 @@
   <div class="col-4">
     <button style="visibility: hidden;" #printBtn [useExistingCss]="false" class="btn btn-success"
       [printStyle]="{'#container':{'width':'10cm','height':'10cm', 'box-sizing':'border-box','padding':'20px','font-size':'20px'},div:{'font-family':'Arial', 'padding-right': '5px' }, '#product':{'text-align':'center', 'border-bottom':'solid 2px black', 'padding':'0px 0px 20px 0px'}}"
-      printSectionId="print-section" ngxPrint>Print</button>
+      printSectionId="print-section3" ngxPrint>Print</button>
   </div>
   <div class="col-4"></div>
 </div>
 
 
 
-<div class="clearfix" id="print-section" style="visibility: hidden">
+<div class="clearfix" id="print-section3" style="visibility: hidden">
   <div *ngFor="let sticker of allStickers;let i=index">
     <div dir="rtl" class="container-fluid" id="container" style="margin-left:0px;">
       <div class="row">
