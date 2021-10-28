@@ -1,0 +1,40 @@
+<div>THis is the report page</div>
+<div class="container">
+  <div class="rowmt-3">
+    <div class="col-2"></div>
+    <div class="col-8">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>itme Number</th>
+            <th>Item cost</th>
+            <th>Order Number</th>
+            <th>Amount Supplied</th>
+            <th>Delivery Date</th>
+
+          </tr>
+        </thead>
+        <tbody *ngIf="filteredOrders">
+          <tr *ngFor="let item of filteredOrders; let i = index">
+            <td>{{i+1}}</td>
+            <td>{{item.itemNumber}}</td>
+            <td>TBD</td>
+            <td>{{item.orderNumber}}</td>
+            <td>{{item.quantitySupplied}}</td>
+            <td>{{item.deliveryDate}}</td>
+          </tr>
+
+        </tbody>
+
+
+
+      </table>
+
+
+    </div>
+    <div class="col-2"></div>
+  </div>
+
+
+</div>
