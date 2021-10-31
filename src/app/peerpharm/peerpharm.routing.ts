@@ -505,7 +505,7 @@ export const PeerPharmRputs: Routes = [
   },
 
   {
-    path: "forms/formDetails/:id",
+    path: "forms/formDetails/:id/:id2",
     canActivate: [ScreenGuard],
     data: {
       title: "Forms",

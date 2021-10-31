@@ -327,7 +327,7 @@ export class ScheduleComponent implements OnInit {
 
   openFormDetails(scheduleId) {
 
-    this.router.navigate(["/peerpharm/forms/formDetails/" + scheduleId + "scheduleId"])
+    this.router.navigate([`/peerpharm/forms/formDetails/${undefined}/${scheduleId}`])
     // location.href="http://localhost:4200/#/peerpharm/forms/formDetails/"+scheduleId+'scheduleId';
 
   }

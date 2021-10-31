@@ -18,52 +18,52 @@ import { Observable } from 'rxjs';
 export class FormdetailsComponent implements OnInit {
   form: any = {};
   disabledValue = true;
-  formQAPalletsData:any[]
-  user:any;
-  currentScheduleId:any;
+  formQAPalletsData: any[]
+  user: any;
+  currentScheduleId: any;
   averageNetoWeight = 0;
   loggedInUser: UserInfo;
-  newForm:boolean = false;
+  newForm: boolean = false;
   netoWeightArr: number[] = new Array();
-  tabView: String= "fillingForm";
-  fillingTabBtn:String ="#fff";
-  pPackingTabBtn:String ="transperent";
-  compileTabBtn:String ="transperent";
-  itemTreeTabBtn:String ="transperent";
-  allChecks: Array<any>=[];
-  formid="";
-  formDetailsItemNum:any;
-  showQAPalletsModal:boolean = false;
-  allowUpdateForm:boolean = false;
+  tabView: String = "fillingForm";
+  fillingTabBtn: String = "#fff";
+  pPackingTabBtn: String = "transperent";
+  compileTabBtn: String = "transperent";
+  itemTreeTabBtn: String = "transperent";
+  allChecks: Array<any> = [];
+  formid = "";
+  formDetailsItemNum: any;
+  showQAPalletsModal: boolean = false;
+  allowUpdateForm: boolean = false;
 
   newQAPallet = {
-    floorNumber:0,
-    kartonQuantity:0,
-    unitsInKarton:0,
-    lastFloorQuantity:0,
-    unitsQuantityPartKarton:0,
-    qaStatus:'',
-    batchNumber:'',
-    customerName:'',
-    formDetailsId:'',
-    orderNumber:'',
-    itemNumber:'',
-    isPersonalPackage:false
+    floorNumber: 0,
+    kartonQuantity: 0,
+    unitsInKarton: 0,
+    lastFloorQuantity: 0,
+    unitsQuantityPartKarton: 0,
+    qaStatus: '',
+    batchNumber: '',
+    customerName: '',
+    formDetailsId: '',
+    orderNumber: '',
+    itemNumber: '',
+    isPersonalPackage: false
   }
 
   newTest = {
-    checkTime:'',
-    checkBox_clean:'',
-    checkNetoWeight:'',
-    checkBox_closedWaterProof:'',
-    checkBox_stickerPrinting:'',
-    checkBox_lotNumberPrinting:'',
-    checkBox_correctFinalPacking:'',
+    checkTime: '',
+    checkBox_clean: '',
+    checkNetoWeight: '',
+    checkBox_closedWaterProof: '',
+    checkBox_stickerPrinting: '',
+    checkBox_lotNumberPrinting: '',
+    checkBox_correctFinalPacking: '',
 
   }
 
   constructor(
-    private excelService:ExcelService,
+    private excelService: ExcelService,
     private formsService: FormsService,
     private route: ActivatedRoute,
     private authService: AuthService,
@@ -72,109 +72,91 @@ export class FormdetailsComponent implements OnInit {
     private scheduleService: ScheduleService
   ) {
 
-   }
+  }
 
-   ngOnInit() {
-    
-    let tempId = this.route.snapshot.paramMap.get('id');
-    if(tempId.includes('scheduleId')){
-    
-      
-      this.currentScheduleId =  tempId.split('scheduleId').join('')
+  ngOnInit() {
 
-
-      this.checkIfFormExist(this.currentScheduleId)
-     
-  
-     
-    } else{
-      this.getFormData(true);
-    }
-    debugger;
-    
+    let formID = this.route.snapshot.paramMap.get('id');
+    let scheduleID = this.route.snapshot.paramMap.get('id2');
+    // if (tempId.includes('scheduleId')) {
+    //   this.currentScheduleId = tempId.split('scheduleId').join('')
+    //   this.checkIfFormExist(this.currentScheduleId)
+    // } else {
+    //   this.getFormData(true);
+    // }
     this.getUserInfo();
+    if(scheduleID && scheduleID != '0') {
+      this.checkIfFormExist(scheduleID)
+      .then(formID => {
+        this.getFormData(true, formID)
+      }).catch(scheduleID => {
+        this.getScheduleDetails(scheduleID)
+      })
+    } 
+    else this.getFormData(true, formID)
     // this.UserDisableAuth();
     // this.wrapAllChecks();
   }
 
   async checkIfFormExist(scheduleId) {
-
-    this.formsService.getFormIdByScheduleId(scheduleId).subscribe(data=>{
-      debugger;
-      if(data.formId){
-        this.formid = data.formId
-        this.getFormData(true)
-      } else {
-        
-        this.getScheduleDetails(scheduleId)
-      }
+    return new Promise((resolve, reject) => {
+      this.formsService.getFormIdByScheduleId(scheduleId).subscribe(data => {
+        if (data.formId != 'noform') {
+          resolve(data.formId)
+          // this.formid = data.formId
+          // this.getFormData(true)
+        } else {
+          reject(scheduleId)
+        }
+      })
     })
 
-  }
-
-  async getScheduleDetails(scheduleId){
-
-      this.scheduleService.getScheduleById(scheduleId).subscribe(data=>{
-        debugger;
-        if(data){
-          let tempObj = {
-            batchN:data.batch,
-            itemN:data.item,
-            costumerName:data.costumer,
-            productName:data.productName,
-            orderNumber:data.orderN,
-            orderQuantity:data.qty,
-  
-          }
-          this.formDetailsItemNum = data.item
-          this.form = tempObj
-          this.form.scheduleId = scheduleId
-          this.newForm = true;
-        }
-        
-  
-      })
 
   }
 
-  async getFormData(allChecks) {
-    debugger;
-    const id = this.route.snapshot.paramMap.get('id');
-    if(id.includes('scheduleId')){
-      // do nothing
-    } else {
-      this.formid = id
-    }
-    
-    if (this.formid) {
-      await this.formsService.getFormData(this.formid).subscribe(res => {
-        this.form = res[0];
-        debugger;
-        this.formDetailsItemNum = this.form.itemN
-        if(this.form.productionEndDate){
-          let days = this.form.productionEndDate.slice(8,10)
-          let monthes = this.form.productionEndDate.slice(5,7)
-          this.form.productionEndDate = this.form.productionEndDate.slice(0,5);
-          this.form.productionEndDate = this.form.productionEndDate+days+'-'+monthes
-
+  async getScheduleDetails(scheduleId) {
+    this.scheduleService.getScheduleById(scheduleId).subscribe(data => {
+      if (data) {
+        let tempObj = {
+          batchN: data.batch,
+          itemN: data.item,
+          costumerName: data.costumer,
+          productName: data.productName,
+          orderNumber: data.orderN,
+          orderQuantity: data.qty,
         }
-       
-        this.form.produc
-        ;
-        this.form.checkNetoWeight.forEach(element => {
-          if (element) {
-            const netNumber = parseInt(element, 10);
-            this.netoWeightArr.push(netNumber);
-          }
-        });
-        this.CalcAvgWeight();
-        if(allChecks) this.wrapAllChecks();
+        this.formDetailsItemNum = data.item
+        this.form = tempObj
+        this.form.scheduleId = scheduleId
+        this.newForm = true;
+      }
+    })
+  }
+
+  async getFormData(allChecks, formID) {
+    this.formid = formID
+    await this.formsService.getFormData(this.formid).subscribe(res => {
+      this.form = res[0];
+      debugger;
+      this.formDetailsItemNum = this.form.itemN
+      if (this.form.productionEndDate) {
+        let days = this.form.productionEndDate.slice(8, 10)
+        let monthes = this.form.productionEndDate.slice(5, 7)
+        this.form.productionEndDate = this.form.productionEndDate.slice(0, 5);
+        this.form.productionEndDate = this.form.productionEndDate + days + '-' + monthes
+      }
+      this.form.checkNetoWeight.forEach(element => {
+        if (element) {
+          const netNumber = parseInt(element, 10);
+          this.netoWeightArr.push(netNumber);
+        }
       });
-    }
+      this.CalcAvgWeight();
+      if (allChecks) this.wrapAllChecks();
+    });
   }
 
-  async addNewTest(newTest){
-    
+  async addNewTest(newTest) {
     this.form.checkTime.push(newTest.checkTime);
     this.form.checkBox_clean.push(newTest.checkBox_clean);
     this.form.checkNetoWeight.push(newTest.checkNetoWeight);
@@ -182,25 +164,21 @@ export class FormdetailsComponent implements OnInit {
     this.form.checkBox_stickerPrinting.push(newTest.checkBox_stickerPrinting);
     this.form.checkBox_lotNumberPrinting.push(newTest.checkBox_lotNumberPrinting);
     this.form.checkBox_correctFinalPacking.push(newTest.checkBox_correctFinalPacking);
-    
-    debugger;
     this.updateFormDetails();
     this.allChecks.push(newTest)
-
-
   }
 
   deleteQAPallet(QAPallet) {
 
-  this.formsService.deleteQAPallet(QAPallet).subscribe(data=>{
+    this.formsService.deleteQAPallet(QAPallet).subscribe(data => {
 
-    if(data){
-      this.toastService.success('משטח נמחק בהצלחה')
-    } else {
-      this.toastService.success('אירעה שגיאה , אנא פנה למנהל מערכת')
-    }
-    this.loadQAPallets(this.form._id);
-  })    
+      if (data) {
+        this.toastService.success('משטח נמחק בהצלחה')
+      } else {
+        this.toastService.success('אירעה שגיאה , אנא פנה למנהל מערכת')
+      }
+      this.loadQAPallets(this.form._id);
+    })
 
   }
 
@@ -215,15 +193,15 @@ export class FormdetailsComponent implements OnInit {
     this.newQAPallet.batchNumber = this.form.batchN;
     this.newQAPallet.customerName = this.form.costumerName
 
-    
-    if(this.newQAPallet.qaStatus == 'עובר לאריזה אישית') this.newQAPallet.isPersonalPackage = true
 
-    this.formsService.createNewQaPallet(this.newQAPallet).subscribe(result=>{
+    if (this.newQAPallet.qaStatus == 'עובר לאריזה אישית') this.newQAPallet.isPersonalPackage = true
 
-      if(result){
-       
+    this.formsService.createNewQaPallet(this.newQAPallet).subscribe(result => {
+
+      if (result) {
+
         result = this.calculateSumAmount(result)
-        let tempObj = {...this.newQAPallet}
+        let tempObj = { ...this.newQAPallet }
 
         this.formQAPalletsData.push(tempObj)
         this.toastService.success('משטח חדש נוסף בהצלחה')
@@ -241,51 +219,51 @@ export class FormdetailsComponent implements OnInit {
   }
 
 
-  updateFormDetails(){
+  updateFormDetails() {
     debugger;
 
     try {
 
-      this.formsService.updateFormDetails(this.form).subscribe(result=>{
+      this.formsService.updateFormDetails(this.form).subscribe(result => {
 
-        if(result.ok == 1){
-  
-          this.getFormData(false)
+        if (result.ok == 1) {
+
+          this.getFormData(this.formid, false)
           this.toastService.success('טופס עודכן בהצלחה !');
           this.showQAPalletsModal = false;
-          
+
         } else {
-  
+
           this.toastService.error('טופס לא עודכן , אנא נסה שנית או פנה למנהל מערכת')
-  
+
         }
-  
+
       })
-      
+
     } catch (error) {
-      
+
       this.toastService.error('אירעה שגיאה בעדכון , אנא נסה שנית')
 
     }
-  
+
 
   }
 
-  goBack(){
+  goBack() {
     window.history.back();
   }
 
-  createFormDetails(){
+  createFormDetails() {
     this.form.quantity_Produced = 0;
-    this.formsService.createFormDetails(this.form).subscribe(data=>{
-      if(data){
-        this.toastService.success('טופס נוצר בהצלחה') !
+    this.formsService.createFormDetails(this.form).subscribe(data => {
+      if (data) {
+        this.toastService.success('טופס נוצר בהצלחה')!
         this.newForm = false;
       }
     })
   }
 
-  
+
 
   CalcAvgWeight() {
     const arrlength = this.netoWeightArr.length;
@@ -298,10 +276,10 @@ export class FormdetailsComponent implements OnInit {
 
   async loadQAPallets(formId) {
     debugger;
-    this.formsService.getQAPalletsByFormId(formId).subscribe(QAPallets =>{
-        
-      if(QAPallets){
-        
+    this.formsService.getQAPalletsByFormId(formId).subscribe(QAPallets => {
+
+      if (QAPallets) {
+
         this.showQAPalletsModal = true;
 
         QAPallets = this.calculateSumAmount(QAPallets);
@@ -313,26 +291,26 @@ export class FormdetailsComponent implements OnInit {
 
   }
 
-  calculateSumAmount(QAPallets){
+  calculateSumAmount(QAPallets) {
 
     for (let i = 0; i < QAPallets.length; i++) {
-  
+
       let count = 0;
 
-      if(QAPallets[i].palletStatus == 'done') QAPallets[i].palletStatus = 'הועלה על משטח'
-      if(QAPallets[i].palletStatus == 'open') QAPallets[i].palletStatus = 'ממתין למשטח'
+      if (QAPallets[i].palletStatus == 'done') QAPallets[i].palletStatus = 'הועלה על משטח'
+      if (QAPallets[i].palletStatus == 'open') QAPallets[i].palletStatus = 'ממתין למשטח'
 
-      count = QAPallets[i].floorNumber*QAPallets[i].kartonQuantity*QAPallets[i].unitsInKarton
+      count = QAPallets[i].floorNumber * QAPallets[i].kartonQuantity * QAPallets[i].unitsInKarton
 
-      if(QAPallets[i].lastFloorQuantity > 0) count += QAPallets[i].lastFloorQuantity*QAPallets[i].unitsInKarton
+      if (QAPallets[i].lastFloorQuantity > 0) count += QAPallets[i].lastFloorQuantity * QAPallets[i].unitsInKarton
 
-      if(QAPallets[i].unitsQuantityPartKarton > 0) count += QAPallets[i].unitsQuantityPartKarton
+      if (QAPallets[i].unitsQuantityPartKarton > 0) count += QAPallets[i].unitsQuantityPartKarton
 
       QAPallets[i].sumAmount = count;
     }
 
     return QAPallets
-    
+
   }
 
   getUserInfo() {
@@ -343,7 +321,7 @@ export class FormdetailsComponent implements OnInit {
       if (this.user.authorization) {
         if (this.authService.loggedInUser.authorization.includes("updateFormDetails")) {
           this.allowUpdateForm = true;
-            debugger;
+          debugger;
           this.disabledValue = false
 
         }
@@ -373,9 +351,9 @@ export class FormdetailsComponent implements OnInit {
   //   console.log(this.authService.loggedInUser.formsdisable);
   // }
 
-  wrapAllChecks(){
+  wrapAllChecks() {
     debugger;
-    for (let index = 0; index < this.form.checkTime.length; index++) { 
+    for (let index = 0; index < this.form.checkTime.length; index++) {
       this.allChecks.push({
         checkTime: this.form.checkTime[index],
         checkBox_clean: this.form.checkBox_clean[index],
@@ -385,55 +363,55 @@ export class FormdetailsComponent implements OnInit {
         checkBox_lotNumberPrinting: this.form.checkBox_lotNumberPrinting[index],
         checkBox_correctFinalPacking: this.form.checkBox_correctFinalPacking[index],
       });
-    }    
+    }
   }
 
-  tabChange(view){
+  tabChange(view) {
 
     switch (view) {
       case 'fillingForm': {
         this.tabView = 'fillingForm';
-        this.fillingTabBtn="#fff"
-        this.pPackingTabBtn="#eef5f9";
-        this.compileTabBtn="#eef5f9";
-        this.itemTreeTabBtn="#eef5f9"
+        this.fillingTabBtn = "#fff"
+        this.pPackingTabBtn = "#eef5f9";
+        this.compileTabBtn = "#eef5f9";
+        this.itemTreeTabBtn = "#eef5f9"
         break;
       }
       case 'personalPackingForm': {
         this.tabView = 'packingForm';
-        this.fillingTabBtn="#eef5f9"
-        this.pPackingTabBtn="#fff";
-        this.compileTabBtn="#eef5f9";
-        this.itemTreeTabBtn="#eef5f9"
+        this.fillingTabBtn = "#eef5f9"
+        this.pPackingTabBtn = "#fff";
+        this.compileTabBtn = "#eef5f9";
+        this.itemTreeTabBtn = "#eef5f9"
 
         break;
       }
       case 'compileForm': {
         this.tabView = 'compileForm';
-        this.fillingTabBtn="#eef5f9"
-        this.pPackingTabBtn="#eef5f9";
-        this.compileTabBtn="#fff";
-        this.itemTreeTabBtn="#eef5f9"
+        this.fillingTabBtn = "#eef5f9"
+        this.pPackingTabBtn = "#eef5f9";
+        this.compileTabBtn = "#fff";
+        this.itemTreeTabBtn = "#eef5f9"
 
         break;
       }
       case 'itemTree': {
         this.tabView = 'itemTree';
-        this.fillingTabBtn="#eef5f9"
-        this.pPackingTabBtn="#eef5f9";
-        this.compileTabBtn="#eef5f9";
-        this.itemTreeTabBtn="#fff"
+        this.fillingTabBtn = "#eef5f9"
+        this.pPackingTabBtn = "#eef5f9";
+        this.compileTabBtn = "#eef5f9";
+        this.itemTreeTabBtn = "#fff"
 
         break;
       }
-    } 
+    }
   }
 
-    
-  
 
 
-  
+
+
+
 
 
 }
