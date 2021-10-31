@@ -18,6 +18,7 @@ export class AllPlanningComponent implements OnInit {
   workPlansInterval: any = null
   currentWorkPlan: WorkPlan;
   materialsForFormules: Array<any>
+  disableCheckBox: boolean = false
   showMaterialsForFormules: boolean = false
   showWorkPlan: boolean = false
   loadData: boolean = false;
@@ -68,6 +69,11 @@ export class AllPlanningComponent implements OnInit {
     console.log(this.checkedWorkPlans)
   }
 
+  showHideCheckBox() {
+    if(this.showCheckbox) this.checkedWorkPlans = []
+    this.showCheckbox = !this.showCheckbox
+  }
+
   exportAll() {
     let excel = []
     for (let workPlan of this.workPlans) {
@@ -103,15 +109,17 @@ export class AllPlanningComponent implements OnInit {
         let temp = orderItemsToExplode.concat(workPlan.orderItems)
         orderItemsToExplode = temp
       }
-      this.toastr.info("This might take a few seconds...", "Please Wait");
+      this.toastr.info("אנא המתן...", "מחשב כמויות");
       this.loadData = true;
+      this.disableCheckBox = true
       this.inventoryService
         .getMaterialsForFormules(orderItemsToExplode)
         .subscribe((data) => {
-          this.checkedWorkPlans = []
+          // this.checkedWorkPlans = []
           this.materialsForFormules = data.newArray;
           this.showMaterialsForFormules = true;
           this.loadData = false;
+          this.disableCheckBox = false
         });
     }
 

@@ -34,7 +34,7 @@
         </div>
     </div>
     <h2 class="mt-4">
-        Order Items
+        {{workPlan.orderItems.length}} Order Items
         <span class="float-right">
             <img *ngIf="!loadData" ngbTooltip="ייצוא פריטים" class="click" (click)="export(workPlan.orderItems, 'items for work plan'+workPlan.serialNumber)"
                 src="../../../../../assets/images/excel.png" class="img" alt="">
@@ -47,6 +47,7 @@
         <table class="table">
             <thead class="thead-dark">
                 <tr>
+                    <th>#</th>
                     <th>Item</th>
                     <th>Customer</th>
                     <th>Order</th>
@@ -64,6 +65,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let orderItem of workPlan.orderItems; let i = index">
+                    <td>{{i+1}}</td>
                     <td>{{orderItem.itemNumber}}</td>
                     <td>{{orderItem.customerName}}</td>
                     <td>{{orderItem.orderNumber}}</td>
@@ -100,7 +102,7 @@
                     </td>
                     <td *ngIf="authorized">
                         <button (click)="deleteLine(i)" class="btn btn-danger">
-                            מחיקת שורה
+                            מחיקה
                             <i class="far fa-trash-alt"></i>
                         </button>
                     </td>
@@ -112,12 +114,13 @@
     <h2>
         <!-- <img class="click" (click)="export(workPlan.productionFormules, 'formules for work plan'+workPlan.serialNumber)"
             src="../../../../../assets/images/excel.png" class="img" alt="">  -->
-            Production Formules
+            {{workPlan.productionFormules.length}} Production Formules
         </h2>
-    <div class="row mt-4">
+    <div class="row mt-4 formules">
         <table class="table formules-table">
             <thead class="thead-dark">
                 <tr>
+                    <th>#</th>
                     <th>Formule</th>
                     <th>סה"כ ק"ג</th>
                     <th>סטטוס חומרים</th>
@@ -126,7 +129,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let formule of workPlan.productionFormules">
+                <tr *ngFor="let formule of workPlan.productionFormules; let i = index">
+                    <td>{{i+1}}</td>
                     <td>{{formule.formule}}</td>
                     <td>{{formule.totalKG}}</td>
                     <td *ngIf="formule.enoughMaterials"><i ngbTooltip="כמות מלאי תקינה" class="far fa-thumbs-up"></i>

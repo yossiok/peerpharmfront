@@ -6,6 +6,7 @@ import { FormulesService } from 'src/app/services/formules.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ProductionService } from 'src/app/services/production.service';
 import { ProductionFormule, WorkPlan } from '../WorkPlan';
+import { ConfirmService } from '../../../../services/confirm.modal.service';
 
 @Component({
   selector: 'app-planning-details',
@@ -34,11 +35,21 @@ export class PlanningDetailsComponent implements OnInit {
     private productionService: ProductionService,
     private excelService: ExcelService,
     private formuleService: FormulesService,
-    private inventoryService: InventoryService
+    private inventoryService: InventoryService,
+    private modalService: ConfirmService
   ) { }
 
   ngOnInit(): void {
     this.authorized = this.authService.loggedInUser.authorization.includes('creamProductionManager')
+  }
+
+  authenticate(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.modalService.userAnserEventEmitter.subscribe(userChoice => {
+        resolve(userChoice);
+      });
+      this.modalService.confirm({ title: 'title', message: 'message' });
+    })
   }
 
   closeWorkPlan(i: number) {
@@ -98,11 +109,20 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   printFormule(formule: ProductionFormule) {
-    this.formuleService.getFormuleByNumber(formule.formule).subscribe(data => {
-      this.finalFormule = this.formuleCalculate(data, formule.totalKG)
-      console.log(this.finalFormule)
-      this.finalFormule.weight = formule.totalKG
-      setTimeout(() => this.printFormuleBtn.nativeElement.click(), 500)
+    this.authenticate().then((approved) => {
+      if (approved) {
+        // this.toastr.success('אתה תותח')
+        this.formuleService.getFormuleByNumber(formule.formule).subscribe(data => {
+          this.finalFormule = this.formuleCalculate(data, formule.totalKG)
+          console.log(this.finalFormule)
+          this.finalFormule.weight = formule.totalKG
+          setTimeout(() => {
+            this.printFormuleBtn.nativeElement.click()
+            setTimeout(()=> this.finalFormule = undefined, 500)
+          }, 500)
+        })
+      }
+      else this.toastr.error('אימות נכשל')
     })
   }
 
@@ -116,7 +136,7 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   loadMaterialsForFormule() {
-    this.toastr.info("This might take a few seconds...", "Please Wait");
+    this.toastr.info("אנא המתן...", "מחשב כמויות");
     this.loadData = true;
     this.inventoryService
       .getMaterialsForFormules(this.workPlan.orderItems)

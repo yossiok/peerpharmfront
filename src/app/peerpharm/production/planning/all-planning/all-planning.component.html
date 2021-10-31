@@ -1,6 +1,7 @@
 <div>
     <h1>Work Plans</h1>
     <div class="row mt-4 d-flex flex-row">
+        <!--side bar-->
         <div class="d-flex flex-column bg-light m-2 p-2">
             <img class="click" ngbTooltip="רענן תכניות" (click)="getWorkPlans()" style="width: 50px"
                 src="../../../../../assets/images/update2.png" alt="">
@@ -8,7 +9,7 @@
             <img class="click" (click)="exportAll()" ngbTooltip="ייצוא לאקסל"
                 src="../../../../../assets/images/excel.png" style="width: 50px;" alt="">
             <div class="row mt-4"></div>
-            <button ngbTooltip="בחירת תכניות" (click)="showCheckbox = !showCheckbox" class="btn btn-secondary"
+            <button ngbTooltip="בחירת תכניות" (click)="showHideCheckBox()" class="btn btn-secondary"
                 style="width: 52px;">
                 <i class="fas fa-check-circle"></i>
             </button>
@@ -17,15 +18,19 @@
                 ngbTooltip="כתב כמויות" style="width: 50px" src="../../../../../assets/images/allOrder.png" alt="">
             <div *ngIf="loadData" class="smallerLoader"></div>
         </div>
-        <div *ngIf="!showWorkPlan" class="wrapper ml-5">
+        <!--work plans-->
+        <div *ngIf="!showWorkPlan && !showMaterialsForFormules" class="wrapper ml-5">
             <div class="box click" *ngFor="let workPlan of workPlans; let i = index">
-                <input *ngIf="showCheckbox" class="checkbox" type="checkbox" (change)="addOrRemove($event, i)">
+                <input *ngIf="showCheckbox" [disabled]="disableCheckBox" class="checkbox" type="checkbox" (change)="addOrRemove($event, i)">
                 <div (click)="openWorkPlan(workPlan.serialNumber)">
                     <div class="service-line mt-4">
-                        <h3>Work Plan no. {{workPlan.serialNumber}}</h3>
+                        <h3>{{workPlan.serialNumber}}</h3>
                     </div>
                     <div class="service-line">
                         <h4>{{workPlan.date | date: 'short'}}</h4>
+                    </div>
+                    <div class="service-line">
+                        <h4>{{workPlan.remark}}</h4>
                     </div>
                     <div class="service-line">
                         <h4>{{workPlan.status | workPlanStatus}}</h4>
@@ -37,13 +42,14 @@
 
 </div>
 
+<!--Work Plan modal-->
 <div class="position-fixed work-plan" *ngIf="showWorkPlan">
     <app-planning-details (updateWorkPlans)="getWorkPlans()" (closeWorkPlanEmitter)="closeWorkPlan($event)"
         [workPlan]="currentWorkPlan">
     </app-planning-details>
 </div>
 
-<!--כתב כמויות-->
+<!--כתבי כמויות-->
 <div *ngIf="showMaterialsForFormules" class="position-fixed work-plan w-75 p-5 rounded">
     <button style="visibility: hidden" #printAmounts ngxPrint printSectionId="print-amounts"></button>
     <i (click)="showMaterialsForFormules = false" class="fa fa-times float-right h3 close"></i>
