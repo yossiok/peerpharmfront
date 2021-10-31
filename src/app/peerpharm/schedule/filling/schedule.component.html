@@ -432,7 +432,8 @@
                 </select>
               </td>
               <td class="showInTablet">
-                <button (click)="openFormDetails(line._id)" class="btn btn-success"><b>טופס חדש</b></button>
+                <button *ngIf="line.status == 'open'" (click)="openFormDetails(line._id)" class="btn btn-success"><b>טופס חדש</b></button>
+                <button *ngIf="line.status != 'open'" (click)="openFormDetails(line._id)" class="btn btn-warning"><b>כניסה לטופס</b></button>
               </td>
               <td class="hideInTablet">
                 <div *ngIf="line.batchSpecStatus == 1" class="qc-batch">
