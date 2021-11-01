@@ -74,6 +74,14 @@ export class AllPlanningComponent implements OnInit {
     this.showCheckbox = !this.showCheckbox
   }
 
+  setColor(status) {
+    switch (status) {
+      case 1: return '#eba834'
+      case 2: return '#c7ed1f'
+      case 3: return '#24f03c'
+    }
+  }
+
   exportAll() {
     let excel = []
     for (let workPlan of this.workPlans) {

@@ -1,5 +1,6 @@
 <div>
     <h1>Work Plans</h1>
+    <i class="fas fa-check-double"></i>
     <div class="row mt-4 d-flex flex-row">
         <!--side bar-->
         <div class="d-flex flex-column bg-light m-2 p-2">
@@ -20,20 +21,25 @@
         </div>
         <!--work plans-->
         <div *ngIf="!showWorkPlan && !showMaterialsForFormules" class="wrapper ml-5">
-            <div class="box click" *ngFor="let workPlan of workPlans; let i = index">
+            <div class="box click" [style.background]="setColor(workPlan.status)" *ngFor="let workPlan of workPlans; let i = index">
                 <input *ngIf="showCheckbox" [disabled]="disableCheckBox" class="checkbox" type="checkbox" (change)="addOrRemove($event, i)">
                 <div (click)="openWorkPlan(workPlan.serialNumber)">
                     <div class="service-line mt-4">
                         <h3>{{workPlan.serialNumber}}</h3>
                     </div>
                     <div class="service-line">
-                        <h4>{{workPlan.date | date: 'short'}}</h4>
+                        <h4>{{workPlan.date | date: 'dd/MM/yy'}}</h4>
                     </div>
                     <div class="service-line">
                         <h4>{{workPlan.remark}}</h4>
                     </div>
                     <div class="service-line">
                         <h4>{{workPlan.status | workPlanStatus}}</h4>
+                        <i *ngIf="workPlan.status == 2" class="fas fa-check"></i>
+                        <span *ngIf="workPlan.status == 3">
+                            <i class="fas fa-check"></i>
+                            <i class="fas fa-check"></i>
+                        </span>
                     </div>
                 </div>
             </div>

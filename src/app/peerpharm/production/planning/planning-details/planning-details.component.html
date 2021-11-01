@@ -3,8 +3,13 @@
     <h1 class="text-center">Work Plan {{workPlan.serialNumber}}</h1>
     <div class="d-flex flex-row justify-content-between w-75 mt-4">
         <div class="h2">
-            <span class="p-2 rounded" [style.color]="setColor(workPlan.status)">{{workPlan.status |
+            <span class="p-2 rounded status" [style.color]="setColor(workPlan.status)">{{workPlan.status |
                 workPlanStatus}}</span>
+                <i [style.color]="setColor(2)" *ngIf="workPlan.status == 2" class="fas fa-check"></i>
+                <span [style.color]="setColor(3)" *ngIf="workPlan.status == 3">
+                    <i class="fas fa-check"></i>
+                    <i class="fas fa-check"></i>
+                </span>
         </div>
         <div class="h3">
             <span class="p-2 rounded">{{workPlan.remark}}</span>
