@@ -25,6 +25,7 @@ export class ShelfListComponent implements OnInit {
   itemType: any;
   whareHouse: any;
   allowedWHS: string[]
+  allowedCountYear: boolean = false
 
 
   item = {
@@ -63,6 +64,7 @@ export class ShelfListComponent implements OnInit {
   ngOnInit() {
     this.getAllCostumers();
     this.allowedWHS = this.authService.loggedInUser.allowedWH
+    this.allowedCountYear = this.authService.loggedInUser.authorization.includes('allowedCountYear')
   }
 
 

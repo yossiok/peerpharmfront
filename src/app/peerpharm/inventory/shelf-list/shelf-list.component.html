@@ -118,7 +118,7 @@
             <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
               <input type="text" class="form-control" [(ngModel)]="item.signature">
             </td>
-            <td><button *ngIf="false" [disabled]="updatingAmount" [style.cursor]="updatingAmount ? 'progress' : 'pointer'"
+            <td><button *ngIf="allowedCountYear" [disabled]="updatingAmount" [style.cursor]="updatingAmount ? 'progress' : 'pointer'"
                 (click)="updateShelfAmount(shelf)" class="btn btn-danger">Update Amounts</button></td>
 
           </tr>
