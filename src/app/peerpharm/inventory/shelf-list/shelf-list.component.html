@@ -35,12 +35,12 @@
       <input class="form-control" (keyup)="filterByShelf($event)">
     </div>
     <div class="col-2">
-      <label class="form-control">Costumer</label>
+      <label class="form-control">Item Number</label>
     </div>
     <div class="col-2">
-      <input list="costumers" class="form-control" type="text" (change)="filterByCostumer($event)">
-      <datalist id="costumers">
-        <option *ngFor="let costumer of allCostumers" [value]="costumer.costumerName">{{costumer.costumerName}}</option>
+      <input list="itemNumbers" class="form-control" type="text" (change)="filterByIetmNumber($event)">
+      <datalist id="itemNumbers">
+        <option *ngFor="let shelf of allShelfsCopy" [value]="shelf._id">{{shelf._id}}</option>
       </datalist>
     </div>
   </div>
@@ -118,8 +118,9 @@
             <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
               <input type="text" class="form-control" [(ngModel)]="item.signature">
             </td>
-            <td><button *ngIf="allowedCountYear" [disabled]="updatingAmount" [style.cursor]="updatingAmount ? 'progress' : 'pointer'"
-                (click)="updateShelfAmount(shelf)" class="btn btn-danger">Update Amounts</button></td>
+            <td><button *ngIf="false" [disabled]="updatingAmount"
+                [style.cursor]="updatingAmount ? 'progress' : 'pointer'" (click)="updateShelfAmount(shelf)"
+                class="btn btn-danger">Update Amounts</button></td>
 
           </tr>
         </tbody>
