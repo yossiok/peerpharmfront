@@ -1,25 +1,35 @@
-<div>THis is the report page</div>
+<div>This is the report page</div>
 <div class="container">
-  <div class="rowmt-3">
-    <div class="col-2"></div>
+  <div class="row mt-3">
+    <div class="col-2"><button (click)="exportToExcel()">Export to Excel</button></div>
     <div class="col-8">
       <table class="table table-striped">
         <thead>
           <tr>
             <th>#</th>
             <th>itme Number</th>
-            <th>Item cost</th>
+            <th>Components Cost</th>
+            <th>Materials Cost</th>
+            <th>Shipping cost</th>
+            <th>Total cost per item</th>
+            <th>Total cost per amount supplied</th>
             <th>Order Number</th>
             <th>Amount Supplied</th>
             <th>Delivery Date</th>
 
           </tr>
         </thead>
-        <tbody *ngIf="filteredOrders">
+        <tbody *ngIf="getAllOrders">
           <tr *ngFor="let item of filteredOrders; let i = index">
             <td>{{i+1}}</td>
             <td>{{item.itemNumber}}</td>
-            <td>TBD</td>
+            <td>{{item.componentsTotalCost}}</td>
+            <td>{{item.materialsCost}}</td>
+            <td>{{item.shippingCost}}</td>
+            <td>{{item.componentsTotalCost + item.materialsCost + item.shippingCost}}</td>
+            <td>
+              {{((item.componentsTotalCost + item.materialsCost + item.shippingCost)*item.quantitySupplied).toFixed(2)}}
+            </td>
             <td>{{item.orderNumber}}</td>
             <td>{{item.quantitySupplied}}</td>
             <td>{{item.deliveryDate}}</td>
