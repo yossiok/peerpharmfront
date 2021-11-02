@@ -518,20 +518,24 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   makePlan() {
-    let notExploded = false
-    let readyForProduction = true
-    for(let item of this.selectedArr) {
-      if(item.enoughStock === undefined) notExploded = true
-    }
-    if(notExploded) this.toastSrv.error('יש לבצע פיצוץ לפני שליחת תכנית עבודה!')
+    if (this.selectedArr.length == 0) this.toastSrv.error('יש לבחור לפחות פריט אחד')
     else {
-      let remark;
-      while(remark == undefined) remark = prompt('אנא רשום שם / הערה לתכנית עבודה:')
-      this.orderService.makePlan(this.selectedArr, remark).subscribe(data => {
-        if(data == 'No formules for all products') this.toastSrv.error('יש לעדכן פורמולות עבור כל המוצרים', 'פורמולות חסרות')
-        else if(data.orderItems.length > 0 && data.productionFormules.length > 0) this.toastSrv.success('נשמרה בהצלחה.',`תכנית עבודה ${data.serialNumber}`)
-        else this.toastSrv.warning('היתה בעיה. אנא בדוק את תכנית העבודה במסך "Planning"') 
-      })
+      let notExploded = false
+      let readyForProduction = true
+      for (let item of this.selectedArr) {
+        if (item.enoughStock === undefined) notExploded = true
+      }
+      if (notExploded) this.toastSrv.error('יש לבצע פיצוץ לפני שליחת תכנית עבודה!')
+      else {
+        let remark;
+        while (remark == undefined) remark = prompt('אנא רשום שם / הערה לתכנית עבודה:')
+        this.orderService.makePlan(this.selectedArr, remark).subscribe(data => {
+          if (data == 'No formules for all products') this.toastSrv.error('יש לעדכן פורמולות עבור כל המוצרים', 'פורמולות חסרות')
+          else if (data.msg == 'duplicate formules') this.toastSrv.error('יש למחוק את אחד המופעים על מנת להמשיך', `פורמולה מס. ${data.formule} מופיעה פעמיים במערכת`)
+          else if (data.orderItems.length > 0 && data.productionFormules.length > 0) this.toastSrv.success('נשמרה בהצלחה.', `תכנית עבודה ${data.serialNumber}`)
+          else this.toastSrv.warning('היתה בעיה. אנא בדוק את תכנית העבודה במסך "Planning"')
+        })
+      }
     }
   }
 
@@ -844,9 +848,9 @@ export class OrderdetailsComponent implements OnInit {
         .subscribe((data) => {
           // this.calculateMaterials(materials);
           this.materialsForFormules = data.newArray;
-          for(let item of data.items) {
-            for(let element of this.selectedArr) {
-              if(element.itemNumber == item.itemNumber) element.enoughStock = item.enoughStock
+          for (let item of data.items) {
+            for (let element of this.selectedArr) {
+              if (element.itemNumber == item.itemNumber) element.enoughStock = item.enoughStock
             }
           }
           this.showMaterialsForFormules = true;
@@ -858,29 +862,29 @@ export class OrderdetailsComponent implements OnInit {
 
   calculateMaterials(materials) {
     // this.inventoryService.getAllMaterialsArrivals().subscribe((arrivals) => {
-      // for (let i = 0; i < materials.length; i++) {
-      //   for (let j = 0; j < arrivals.length; j++) {
-      //     if (arrivals[j].internalNumber == materials[i].itemNumber) {
-      //       materials[i].kgProduction = this.formatNumber(
-      //         Number(materials[i].kgProduction)
-      //       );
-      //       materials[i].measureType = arrivals[i].mesureType;
-      //       if (materials[i].totalQnt) {
-      //         materials[i].totalQnt =
-      //           Number(materials[i].totalQnt) + arrivals[j].totalQnt;
-      //       } else {
-      //         if (
-      //           arrivals[j].totalQnt != "" ||
-      //           arrivals[j].totalQnt != undefined ||
-      //           arrivals[j].totalQnt != null ||
-      //           !isNaN(arrivals[j].totalQnt)
-      //         )
-      //           materials[i].totalQnt = parseInt(arrivals[j].totalQnt);
-      //       }
-      //     }
-      //   }
-      // }
-   
+    // for (let i = 0; i < materials.length; i++) {
+    //   for (let j = 0; j < arrivals.length; j++) {
+    //     if (arrivals[j].internalNumber == materials[i].itemNumber) {
+    //       materials[i].kgProduction = this.formatNumber(
+    //         Number(materials[i].kgProduction)
+    //       );
+    //       materials[i].measureType = arrivals[i].mesureType;
+    //       if (materials[i].totalQnt) {
+    //         materials[i].totalQnt =
+    //           Number(materials[i].totalQnt) + arrivals[j].totalQnt;
+    //       } else {
+    //         if (
+    //           arrivals[j].totalQnt != "" ||
+    //           arrivals[j].totalQnt != undefined ||
+    //           arrivals[j].totalQnt != null ||
+    //           !isNaN(arrivals[j].totalQnt)
+    //         )
+    //           materials[i].totalQnt = parseInt(arrivals[j].totalQnt);
+    //       }
+    //     }
+    //   }
+    // }
+
     // });
   }
 

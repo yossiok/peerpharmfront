@@ -92,4 +92,9 @@ export class ProductionService {
     let url = this.baseUrl + `productionSchedule/workplan`;
     return this.http.post(url, JSON.stringify(workPlan), this.options).pipe(map(res => res.json()))
   }
+
+  deleteWorkPlan(serialNumber) {
+    const url = this.baseUrl + `productionSchedule/workplan?delete=${serialNumber}`;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
 }

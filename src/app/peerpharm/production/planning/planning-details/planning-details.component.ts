@@ -20,14 +20,17 @@ export class PlanningDetailsComponent implements OnInit {
   @Output() updateWorkPlans: EventEmitter<any> = new EventEmitter<any>()
   @ViewChild('editWeight') editWeightDiv: ElementRef
   @ViewChild('printFormuleBtn') printFormuleBtn: ElementRef
+  @ViewChild('formuleSection') formuleSection: ElementRef
+  @ViewChild('printAmounts') printAmounts: ElementRef
 
-  finalFormule: any;
+  // finalFormule: any;
   statuses: number[] = [1, 2, 3]
   materialsForFormules: Array<any>;
   edit: number = -1
   authorized: boolean = false
   loadData: boolean;
   showMaterialsForFormules: boolean = false;
+  printingFormules: boolean = false
 
   constructor(
     private authService: AuthService,
@@ -79,11 +82,21 @@ export class PlanningDetailsComponent implements OnInit {
     } else this.toastr.warning('לא בוצעו שינויים')
   }
 
+  deleteWorkPlan() {
+    if(confirm('למחוק פק"ע???')) {
+      this.productionService.deleteWorkPlan(this.workPlan.serialNumber).subscribe(data => {
+        this.updateWorkPlans.emit()
+        this.closeWorkPlanEmitter.emit(-1)
+        console.log(data)
+      })
+    }
+  }
+
   setColor(status) {
     switch (status) {
-      case 1: return '#eba834'
-      case 2: return '#e6f02b'
-      case 3: return '#24f03c'
+      case 1: return '#e5e831'
+      case 2: return '#15eb20'
+      case 3: return '#595850'
     }
   }
 
@@ -108,21 +121,38 @@ export class PlanningDetailsComponent implements OnInit {
     this.toastr.info(msg, title)
   }
 
-  printFormule(formule: ProductionFormule) {
-    this.authenticate().then((approved) => {
-      if (approved) {
-        // this.toastr.success('אתה תותח')
-        this.formuleService.getFormuleByNumber(formule.formule).subscribe(data => {
-          this.finalFormule = this.formuleCalculate(data, formule.totalKG)
-          console.log(this.finalFormule)
-          this.finalFormule.weight = formule.totalKG
-          setTimeout(() => {
-            this.printFormuleBtn.nativeElement.click()
-            setTimeout(()=> this.finalFormule = undefined, 500)
-          }, 500)
+  async moveToProduction() {
+    if (confirm('להעביר פק"ע לייצור?')) {
+      this.workPlan.status = 2
+      this.saveChanges()
+      let formulesPrinted = await this.printFormules()
+      let amountsLoaded = await this.loadMaterialsForFormule()
+      setTimeout(()=> {
+        this.printAmounts.nativeElement.click()
+        setTimeout(()=> {
+          this.showMaterialsForFormules = false
         })
-      }
-      else this.toastr.error('אימות נכשל')
+      }, 500)
+    } else this.toastr.error('בוטל')
+
+  }
+
+  printFormules() {
+    return new Promise((resolve, reject) => {
+      // this.authenticate().then((approved) => {
+      // if (approved) {
+      this.printingFormules = true
+      // this.toastr.success('אתה תותח')
+      setTimeout(() => {
+        this.printFormuleBtn.nativeElement.click()
+        setTimeout(() => {
+          this.printingFormules = false
+          resolve(true)
+        }, 1000)
+      }, 500)
+      // }
+      // else this.toastr.error('אימות נכשל')
+      // })
     })
   }
 
@@ -136,15 +166,19 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   loadMaterialsForFormule() {
-    this.toastr.info("אנא המתן...", "מחשב כמויות");
-    this.loadData = true;
-    this.inventoryService
-      .getMaterialsForFormules(this.workPlan.orderItems)
-      .subscribe((data) => {
-        this.materialsForFormules = data.newArray;
-        this.showMaterialsForFormules = true;
-        this.loadData = false;
-      });
+    return new Promise((resolve, reject) => {
+
+      this.toastr.info("אנא המתן...", "מחשב כמויות");
+      this.loadData = true;
+      this.inventoryService
+        .getMaterialsForFormules(this.workPlan.orderItems)
+        .subscribe((data) => {
+          this.materialsForFormules = data.newArray;
+          this.showMaterialsForFormules = true;
+          this.loadData = false;
+          resolve(true)
+        });
+    })
   }
 
   checkAmountsForMaterial(prod, stock) {

@@ -8,6 +8,11 @@
     width: 60px;
 }
 
+.big-img {
+  cursor: pointer;
+  width: 250px;
+}
+
 .click {
     cursor: pointer
 }
@@ -32,13 +37,17 @@
 }
 
 .kg-input{
-    width: 39%
+    width: 80%
 }
 
 .formules {
     max-height: 400px;
-    width: 70%;
+    // width: 70%;
     overflow-y: auto;
+}
+
+.delete-btn {
+    margin-left: 25%;
 }
 
 .smallerLoader {
@@ -92,3 +101,8 @@ input[type=number] {
 }
 
 /*******************************************************************/
+
+
+@media print {
+  footer {page-break-after: always;}
+}
