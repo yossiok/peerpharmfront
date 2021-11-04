@@ -281,10 +281,10 @@ export class OrderdetailsComponent implements OnInit {
     private excelService: ExcelService,
     private authService: AuthService,
     private notificationService: NotificationService
-  ) { }
+  ) {}
 
   exportAsXLSXOrders() {
-    this.ordersItems.map(oi => oi.quantity = Number(oi.quantity)) // לשימוש תפ"י
+    this.ordersItems.map((oi) => (oi.quantity = Number(oi.quantity))); // לשימוש תפ"י
     this.excelService.exportAsExcelFile(this.ordersItems, "data");
   }
 
@@ -372,7 +372,7 @@ export class OrderdetailsComponent implements OnInit {
             item.colorBtn = "#33FFE0";
           });
           this.ordersData = orders.ordersData;
-          await this.colorOrderItemsLines(orders.orderItems).then((data) => { });
+          await this.colorOrderItemsLines(orders.orderItems).then((data) => {});
           this.ordersItems = orders.orderItems;
           this.productionRequirements = orders.orderItems;
 
@@ -414,7 +414,7 @@ export class OrderdetailsComponent implements OnInit {
                       });
 
                       await this.colorOrderItemsLines(orderItems).then(
-                        (data) => { }
+                        (data) => {}
                       );
                       this.ordersItems = orderItems;
                       this.productionRequirements = orderItems;
@@ -518,23 +518,46 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   makePlan() {
-    if (this.selectedArr.length == 0) this.toastSrv.error('יש לבחור לפחות פריט אחד')
+    if (this.selectedArr.length == 0)
+      this.toastSrv.error("יש לבחור לפחות פריט אחד");
     else {
-      let notExploded = false
-      let readyForProduction = true
+      let notExploded = false;
+      let readyForProduction = true;
       for (let item of this.selectedArr) {
-        if (item.enoughStock === undefined) notExploded = true
+        if (item.enoughStock === undefined) notExploded = true;
       }
-      if (notExploded) this.toastSrv.error('יש לבצע פיצוץ לפני שליחת תכנית עבודה!')
+      if (notExploded)
+        this.toastSrv.error("יש לבצע פיצוץ לפני שליחת תכנית עבודה!");
       else {
         let remark;
-        while (remark == undefined) remark = prompt('אנא רשום שם / הערה לתכנית עבודה:')
-        this.orderService.makePlan(this.selectedArr, remark).subscribe(data => {
-          if (data == 'No formules for all products') this.toastSrv.error('יש לעדכן פורמולות עבור כל המוצרים', 'פורמולות חסרות')
-          else if (data.msg == 'duplicate formules') this.toastSrv.error('יש למחוק את אחד המופעים על מנת להמשיך', `פורמולה מס. ${data.formule} מופיעה פעמיים במערכת`)
-          else if (data.orderItems.length > 0 && data.productionFormules.length > 0) this.toastSrv.success('נשמרה בהצלחה.', `תכנית עבודה ${data.serialNumber}`)
-          else this.toastSrv.warning('היתה בעיה. אנא בדוק את תכנית העבודה במסך "Planning"')
-        })
+        while (remark == undefined)
+          remark = prompt("אנא רשום שם / הערה לתכנית עבודה:");
+        this.orderService
+          .makePlan(this.selectedArr, remark)
+          .subscribe((data) => {
+            if (data == "No formules for all products")
+              this.toastSrv.error(
+                "יש לעדכן פורמולות עבור כל המוצרים",
+                "פורמולות חסרות"
+              );
+            else if (data.msg == "duplicate formules")
+              this.toastSrv.error(
+                "יש למחוק את אחד המופעים על מנת להמשיך",
+                `פורמולה מס. ${data.formule} מופיעה פעמיים במערכת`
+              );
+            else if (
+              data.orderItems.length > 0 &&
+              data.productionFormules.length > 0
+            )
+              this.toastSrv.success(
+                "נשמרה בהצלחה.",
+                `תכנית עבודה ${data.serialNumber}`
+              );
+            else
+              this.toastSrv.warning(
+                'היתה בעיה. אנא בדוק את תכנית העבודה במסך "Planning"'
+              );
+          });
       }
     }
   }
@@ -657,14 +680,16 @@ export class OrderdetailsComponent implements OnInit {
 
   isSelected(ev, item) {
     if (ev.target.checked == true) {
-      let cont = true
-      if (!item.formuleExist) cont = confirm('לפריט זה לא קיימת פורמולה. האם אתה בטוח שברצונך להוסיף אותו לרשימה?')
+      let cont = true;
+      if (!item.formuleExist)
+        cont = confirm(
+          "לפריט זה לא קיימת פורמולה. האם אתה בטוח שברצונך להוסיף אותו לרשימה?"
+        );
       if (cont) {
         var isSelected = this.selectedArr;
         isSelected.push({ ...item });
         this.selectedArr = isSelected;
-      }
-      else ev.target.checked = false
+      } else ev.target.checked = false;
     }
 
     if (ev.target.checked == false) {
@@ -672,7 +697,6 @@ export class OrderdetailsComponent implements OnInit {
       var tempArr = isSelected.filter((x) => x.itemNumber != item.itemNumber);
       this.selectedArr = tempArr;
     }
-
   }
 
   private getDismissReason(reason: any): string {
@@ -850,7 +874,8 @@ export class OrderdetailsComponent implements OnInit {
           this.materialsForFormules = data.newArray;
           for (let item of data.items) {
             for (let element of this.selectedArr) {
-              if (element.itemNumber == item.itemNumber) element.enoughStock = item.enoughStock
+              if (element.itemNumber == item.itemNumber)
+                element.enoughStock = item.enoughStock;
             }
           }
           this.showMaterialsForFormules = true;
@@ -884,12 +909,11 @@ export class OrderdetailsComponent implements OnInit {
     //     }
     //   }
     // }
-
     // });
   }
 
   checkAmountsForMaterial(prod, stock) {
-    return Number(stock) - Number(prod)
+    return Number(stock) - Number(prod);
   }
 
   materialsToExcel() {
@@ -1278,8 +1302,8 @@ export class OrderdetailsComponent implements OnInit {
         } else if (res == "No netWeightK") {
           alert(
             "לפריט מספר " +
-            obj.itemNumber +
-            '\nאין משקל נטו בעץ פריט.\nלא ניתן לפתוח פק"ע לפריט'
+              obj.itemNumber +
+              '\nאין משקל נטו בעץ פריט.\nלא ניתן לפתוח פק"ע לפריט'
           );
         } else {
           this.toastSrv.error(
@@ -1607,7 +1631,7 @@ export class OrderdetailsComponent implements OnInit {
           } else if (batches.length > 1)
             reject(
               "More than one batch exist with Number " +
-              this.inputBatch.nativeElement.value
+                this.inputBatch.nativeElement.value
             );
           else if (batches.length == 0) reject(`Batch ${batch} Not Found.`);
         });
@@ -1688,10 +1712,10 @@ export class OrderdetailsComponent implements OnInit {
     if (
       confirm(
         "Item " +
-        item.itemNumber +
-        "\n From order " +
-        item.orderNumber +
-        "\n Is ready?"
+          item.itemNumber +
+          "\n From order " +
+          item.orderNumber +
+          "\n Is ready?"
       )
     ) {
       this.orderService.editItemOrderStatus(item).subscribe((res) => {
@@ -1874,10 +1898,10 @@ export class OrderdetailsComponent implements OnInit {
     ev.dataTransfer.setData(
       "Text/html",
       ev.target.dataset.ordernumber +
-      ";" +
-      ev.target.dataset.alloamount +
-      ";" +
-      ev.target.dataset.index
+        ";" +
+        ev.target.dataset.alloamount +
+        ";" +
+        ev.target.dataset.index
     );
   }
 
