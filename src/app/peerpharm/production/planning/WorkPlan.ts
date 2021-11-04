@@ -20,7 +20,8 @@ export interface ProductionFormule {
     totalKG: number,
     batchNumber: string,
     ordersAndItems: orderAndItem[],
-    formuleData: Object  
+    formuleData: Object,
+    numOfItems: number  
 }
 
 export interface WorkPlan {

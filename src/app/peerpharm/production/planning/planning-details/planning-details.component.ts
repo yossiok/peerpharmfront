@@ -31,6 +31,7 @@ export class PlanningDetailsComponent implements OnInit {
   loadData: boolean;
   showMaterialsForFormules: boolean = false;
   printingFormules: boolean = false
+  formulePrinting: any;
 
   constructor(
     private authService: AuthService,
@@ -83,7 +84,7 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   deleteWorkPlan() {
-    if(confirm('למחוק פק"ע???')) {
+    if (confirm('למחוק פק"ע???')) {
       this.productionService.deleteWorkPlan(this.workPlan.serialNumber).subscribe(data => {
         this.updateWorkPlans.emit()
         this.closeWorkPlanEmitter.emit(-1)
@@ -122,14 +123,15 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   async moveToProduction() {
+    console.log(this.workPlan.productionFormules)
     if (confirm('להעביר פק"ע לייצור?')) {
       this.workPlan.status = 2
       this.saveChanges()
-      let formulesPrinted = await this.printFormules()
       let amountsLoaded = await this.loadMaterialsForFormule()
-      setTimeout(()=> {
+      let formulesPrinted = await this.authenticateAndPrintFormules()
+      setTimeout(() => {
         this.printAmounts.nativeElement.click()
-        setTimeout(()=> {
+        setTimeout(() => {
           this.showMaterialsForFormules = false
         })
       }, 500)
@@ -137,23 +139,43 @@ export class PlanningDetailsComponent implements OnInit {
 
   }
 
-  printFormules() {
-    return new Promise((resolve, reject) => {
-      // this.authenticate().then((approved) => {
-      // if (approved) {
-      this.printingFormules = true
-      // this.toastr.success('אתה תותח')
-      setTimeout(() => {
-        this.printFormuleBtn.nativeElement.click()
-        setTimeout(() => {
-          this.printingFormules = false
-          resolve(true)
-        }, 1000)
-      }, 500)
-      // }
-      // else this.toastr.error('אימות נכשל')
-      // })
+  // printFormule(formule) {
+  //   return new Promise((resolve, reject) => {
+  //     this.formulePrinting = { ...formule }
+  //     setTimeout(() => {
+  //       this.printFormuleBtn.nativeElement.click(), 500
+  //       resolve(true)
+  //     })
+  //   })
+  // }
+
+  authenticateAndPrintFormules() {
+    this.authenticate().then(result => {
+      if (result) this.printFormules()
+      else this.toastr.error('אימות נכשל')
     })
+  }
+
+  async printFormules() {
+    this.printingFormules = true
+
+    // calculate total items for printing pages 
+    for (let formule of this.workPlan.productionFormules) {
+      formule.formuleData = this.formuleCalculate(formule.formuleData, formule.totalKG)
+      let numOfItems = 0
+      for (let phase of formule.formuleData['phases']) {
+        for (let item of phase.items) {
+          numOfItems++
+        }
+      }
+      formule.numOfItems = numOfItems
+    }
+    setTimeout(() => {
+      this.printFormuleBtn.nativeElement.click()
+      setTimeout(() => {
+        this.printingFormules = false
+      }, 1000)
+    }, 500)
   }
 
   formuleCalculate(data, formuleWeight) {
@@ -167,17 +189,22 @@ export class PlanningDetailsComponent implements OnInit {
 
   loadMaterialsForFormule() {
     return new Promise((resolve, reject) => {
-
-      this.toastr.info("אנא המתן...", "מחשב כמויות");
-      this.loadData = true;
-      this.inventoryService
-        .getMaterialsForFormules(this.workPlan.orderItems)
-        .subscribe((data) => {
-          this.materialsForFormules = data.newArray;
-          this.showMaterialsForFormules = true;
-          this.loadData = false;
-          resolve(true)
-        });
+      if (this.materialsForFormules && this.materialsForFormules.length > 0) {
+        this.showMaterialsForFormules = true;
+        resolve(true)
+      }
+      else {
+        this.toastr.info("אנא המתן...", "מחשב כמויות");
+        this.loadData = true;
+        this.inventoryService
+          .getMaterialsForFormules(this.workPlan.orderItems)
+          .subscribe((data) => {
+            this.materialsForFormules = data.newArray;
+            this.showMaterialsForFormules = true;
+            this.loadData = false;
+            resolve(true)
+          });
+      }
     })
   }
 

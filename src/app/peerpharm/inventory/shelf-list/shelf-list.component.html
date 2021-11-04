@@ -78,6 +78,7 @@
             <th>Count Date</th>
             <th>Counted Amount</th>
             <th>Signature</th>
+            <th></th>
           </tr>
         </thead>
         <ng-container *ngIf="fetchingShelfs">
@@ -90,8 +91,8 @@
             <td>{{shelf._id}}</td>
             <td>{{shelf.position}}</td>
             <td>{{shelf.total}}</td>
-            <td (click)="editShelfAmount(shelf.item,shelf.position)"
-              *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position">{{shelf.costumer}}</td>
+            <!-- <td (click)="editShelfAmount(shelf.item,shelf.position)"
+              *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position">{{shelf.costumer}}</td> -->
             <!-- <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
               <input list="costumers" class="form-control" (change)="updateShelfCostumer(shelf)"
                 [(ngModel)]="item.costumer">
@@ -118,7 +119,7 @@
             <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
               <input type="text" class="form-control" [(ngModel)]="item.signature">
             </td>
-            <td><button *ngIf="false" [disabled]="updatingAmount"
+            <td><button *ngIf="allowedCountYear" [disabled]="updatingAmount"
                 [style.cursor]="updatingAmount ? 'progress' : 'pointer'" (click)="updateShelfAmount(shelf)"
                 class="btn btn-danger">Update Amounts</button></td>
 

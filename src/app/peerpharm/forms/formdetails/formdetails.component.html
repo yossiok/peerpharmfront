@@ -73,16 +73,14 @@
         </td>
         <td>כמות חביות</td>
         <td>
-          <input id="div_drumsAmount" [(ngModel)]="form.drumsAmount" class="inputDiv form-control" style="width:100px"
+          <input type="number" id="div_drumsAmount" [(ngModel)]="form.drumsAmount" class="inputDiv form-control" style="width:100px"
             [disabled]="disabledValue" />
         </td>
       </tr>
       <tr>
         <td>תאריך ייצור/תאריך סיום</td>
         <td>
-          <input id="div_productionDate" [(ngModel)]="form.productaionDate" class="inputDiv form-control"
-            style="width:100px" [disabled]="disabledValue" />
-          <input id="div_productionDate" [(ngModel)]="form.productionEndDate" class="inputDiv form-control"
+          <input type="date" id="div_productionDate" [(ngModel)]="form.productaionDate" class="inputDiv form-control"
             style="width:100px" [disabled]="disabledValue" />
         </td>
         <td>תאריך תפוגה</td>
