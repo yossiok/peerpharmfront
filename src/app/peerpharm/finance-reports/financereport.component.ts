@@ -70,13 +70,15 @@ export class FinanceReportComponent implements OnInit {
   waitingText: string = "Getting item data...";
   currencies: Currencies;
   excelData: any[];
+  allSalesByCMX: any[];
 
   async ngOnInit() {
     this.today = new Date();
     this.today = moment(this.today).format("DD/MM/YYYY");
 
-    this.getAllOrdersFinance();
+    // this.getAllOrdersFinance();
     this.getCurrencies();
+    this.getAllSalesByCMX();
   }
   getCurrencies() {
     this.procuremetnService.getCurrencies().subscribe((currencies) => {
@@ -91,13 +93,14 @@ export class FinanceReportComponent implements OnInit {
       .getAllOrders()
       .pipe(finalize(() => this.getAllPackedBills()))
       .subscribe((orders) => {
-        // console.log(orders);
+        console.log(orders);
+
         const thisYear = new RegExp("2021");
         let currentYearOrders = orders.filter((order) => {
           // console.log(order.deliveryDate);
           // console.log(thisYear.test(order.deliveryDate));
-          if (thisYear.test(order.deliveryDate) && order.status == "close")
-            return order;
+          // if (thisYear.test(order.deliveryDate) && order.status == "close")
+          if (thisYear.test(order.deliveryDate)) return order;
         });
         this.financeReport = currentYearOrders;
         for (let order of this.financeReport) {
@@ -220,6 +223,15 @@ export class FinanceReportComponent implements OnInit {
         }
 
         console.log(this.filteredOrders);
+      });
+  }
+
+  getAllSalesByCMX() {
+    this.ordersService
+      .getAllSalesByCMX()
+      .pipe(finalize(() => this.getItemComponents()))
+      .subscribe((data) => {
+        this.filteredOrders = data;
       });
   }
 
