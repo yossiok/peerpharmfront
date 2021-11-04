@@ -30,10 +30,10 @@
                     <div class="service-line">
                         <h4>{{workPlan.date | date: 'dd/MM/yy'}}</h4>
                     </div>
-                    <div class="service-line">
+                    <div class="service-line remark">
                         <h4>{{workPlan.remark}}</h4>
                     </div>
-                    <div class="service-line">
+                    <div class="service-line status">
                         <h4>{{workPlan.status | workPlanStatus}}</h4>
                         <i *ngIf="workPlan.status == 2" class="fas fa-check"></i>
                         <span *ngIf="workPlan.status == 3">

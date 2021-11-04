@@ -60,6 +60,15 @@
     height: 1056px;
   }
 
+  .remark {
+    max-height: 30px;
+    overflow-y: auto;
+  }
+
+  .status {
+    text-decoration: underline;
+  }
+
   .img {
     width: 35px;
     cursor: pointer;
@@ -89,7 +98,7 @@
     
     /* Handle on hover */
     ::-webkit-scrollbar-thumb:hover {
-      background: #4e3bcf;
+      background: #363638;
     }
     /*********************************************************************/
 

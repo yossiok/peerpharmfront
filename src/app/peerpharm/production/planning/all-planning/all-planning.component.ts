@@ -59,6 +59,7 @@ export class AllPlanningComponent implements OnInit {
     }
   }
 
+  // add or remove selection
   addOrRemove(event, i) {
     if (event.target.checked) this.checkedWorkPlans.push(this.workPlans[i])
     else {
@@ -76,9 +77,9 @@ export class AllPlanningComponent implements OnInit {
 
   setColor(status) {
     switch (status) {
-      case 1: return '#eba834'
-      case 2: return '#c7ed1f'
-      case 3: return '#24f03c'
+      case 1: return '#e5e831'
+      case 2: return '#15eb20'
+      case 3: return '#595850'
     }
   }
 

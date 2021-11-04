@@ -12,18 +12,27 @@ interface OrderItem{
     totalKG: number,
     remarks: string,
     enoughComponents: boolean,
-    batchNumber: string
 }
 
 export interface ProductionFormule {
     enoughMaterials: boolean,
     formule: string,
-    totalKG: number
+    totalKG: number,
+    batchNumber: string,
+    ordersAndItems: orderAndItem[],
+    formuleData: Object  
 }
 
 export interface WorkPlan {
   orderItems: OrderItem[],
   productionFormules: ProductionFormule[],
   status: number,
-  serialNumber: number
+  serialNumber: number,
+  date: Date,
+  remark: string
+}
+
+export interface orderAndItem {
+  order: string,
+  item: string
 }
