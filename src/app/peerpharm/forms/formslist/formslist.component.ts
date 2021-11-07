@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsService } from '../../../services/forms.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-formslist',
@@ -15,7 +16,7 @@ export class FormslistComponent implements OnInit {
   sortByFillingDate: Boolean = false;
   showLoader: Boolean = true;
   year: string = '2021'
-  constructor(private formsService: FormsService, private excelService: ExcelService, private authService: AuthService) { }
+  constructor(private formsService: FormsService, private excelService: ExcelService, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.getForms();
@@ -136,6 +137,12 @@ export class FormslistComponent implements OnInit {
   // this.excelService.exportAsExcelFile(data, 'fault_forms');
   // }
 
+  // openFormDetails(formId) {
+  //   let url = this.router.serializeUrl(
+  //     this.router.createUrlTree([`/peerpharm/forms/formDetails/${formId}/0`])
+  //   );
+  //   window.open(url, '_blank');
+  // }
 
   FilterForms(enteredText, field) {
     ;

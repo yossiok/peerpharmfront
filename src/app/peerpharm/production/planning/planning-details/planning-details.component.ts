@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { ExcelService } from 'src/app/services/excel.service';
@@ -15,6 +15,15 @@ import { ConfirmService } from '../../../../services/confirm.modal.service';
 })
 export class PlanningDetailsComponent implements OnInit {
 
+  // @HostListener('document:click', ['$event'])
+  // clickout(event) {
+  //   event.stopPropagation()
+  //   if(this.tableDiv.nativeElement.contains(event.target)) {
+
+  //   } else {
+  //     this.edit = -1
+  //   }
+  // }
   @Input() workPlan: WorkPlan;
   @Output() closeWorkPlanEmitter: EventEmitter<number> = new EventEmitter<number>()
   @Output() updateWorkPlans: EventEmitter<any> = new EventEmitter<any>()
@@ -22,6 +31,7 @@ export class PlanningDetailsComponent implements OnInit {
   @ViewChild('printFormuleBtn') printFormuleBtn: ElementRef
   @ViewChild('formuleSection') formuleSection: ElementRef
   @ViewChild('printAmounts') printAmounts: ElementRef
+  @ViewChild('tableDiv') tableDiv: ElementRef
 
   // finalFormule: any;
   statuses: number[] = [1, 2, 3]
@@ -31,6 +41,7 @@ export class PlanningDetailsComponent implements OnInit {
   loadData: boolean;
   showMaterialsForFormules: boolean = false;
   printingFormules: boolean = false
+  formulePrinting: any;
 
   constructor(
     private authService: AuthService,
@@ -49,7 +60,8 @@ export class PlanningDetailsComponent implements OnInit {
   authenticate(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.modalService.userAnserEventEmitter.subscribe(userChoice => {
-        resolve(userChoice);
+        if (userChoice) resolve(userChoice);
+        else reject(false)
       });
       this.modalService.confirm({ title: 'title', message: 'message' });
     })
@@ -83,7 +95,7 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   deleteWorkPlan() {
-    if(confirm('למחוק פק"ע???')) {
+    if (confirm('למחוק פק"ע???')) {
       this.productionService.deleteWorkPlan(this.workPlan.serialNumber).subscribe(data => {
         this.updateWorkPlans.emit()
         this.closeWorkPlanEmitter.emit(-1)
@@ -122,38 +134,28 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   async moveToProduction() {
+    console.log(this.workPlan.productionFormules)
     if (confirm('להעביר פק"ע לייצור?')) {
       this.workPlan.status = 2
       this.saveChanges()
-      let formulesPrinted = await this.printFormules()
-      let amountsLoaded = await this.loadMaterialsForFormule()
-      setTimeout(()=> {
-        this.printAmounts.nativeElement.click()
-        setTimeout(()=> {
-          this.showMaterialsForFormules = false
-        })
-      }, 500)
+      let approved = await this.authenticate()
+      if (approved) {
+        let amountsLoaded = await this.loadMaterialsForFormule(true)
+        let formulesPrinted = await this.printFormules()
+      }
+      else this.toastr.error('אימות נכשל')
     } else this.toastr.error('בוטל')
-
   }
 
-  printFormules() {
-    return new Promise((resolve, reject) => {
-      // this.authenticate().then((approved) => {
-      // if (approved) {
-      this.printingFormules = true
-      // this.toastr.success('אתה תותח')
+  async printFormules() {
+    this.printingFormules = true
+    setTimeout(() => {
+      this.printFormuleBtn.nativeElement.click()
       setTimeout(() => {
-        this.printFormuleBtn.nativeElement.click()
-        setTimeout(() => {
-          this.printingFormules = false
-          resolve(true)
-        }, 1000)
-      }, 500)
-      // }
-      // else this.toastr.error('אימות נכשל')
-      // })
-    })
+        this.printingFormules = false
+        this.showMaterialsForFormules = false
+      }, 1000)
+    }, 1000)
   }
 
   formuleCalculate(data, formuleWeight) {
@@ -165,20 +167,29 @@ export class PlanningDetailsComponent implements OnInit {
     return data;
   }
 
-  loadMaterialsForFormule() {
-    return new Promise((resolve, reject) => {
-
-      this.toastr.info("אנא המתן...", "מחשב כמויות");
-      this.loadData = true;
-      this.inventoryService
-        .getMaterialsForFormules(this.workPlan.orderItems)
-        .subscribe((data) => {
-          this.materialsForFormules = data.newArray;
+  async loadMaterialsForFormule(authenticated) {
+    if (!authenticated) authenticated = await this.authenticate()
+    if (authenticated) {
+      return new Promise((resolve, reject) => {
+        if (this.materialsForFormules && this.materialsForFormules.length > 0) {
           this.showMaterialsForFormules = true;
-          this.loadData = false;
           resolve(true)
-        });
-    })
+        }
+        else {
+          this.toastr.info("אנא המתן...", "מחשב כמויות");
+          this.loadData = true;
+          this.inventoryService
+            .getMaterialsForFormules(this.workPlan.orderItems)
+            .subscribe((data) => {
+              this.materialsForFormules = data.newArray;
+              this.showMaterialsForFormules = true;
+              this.loadData = false;
+              resolve(true)
+            });
+        }
+      })
+    }
+    else this.toastr.error('אימות נכשל')
   }
 
   checkAmountsForMaterial(prod, stock) {

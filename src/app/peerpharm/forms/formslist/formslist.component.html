@@ -79,7 +79,8 @@
       <table class="table table-hover table-striped">
         <thead class="text-white bg-info">
           <tr>
-            <th>Form Number
+            <th>
+              #
               <i class="ti-exchange-vertical" (click)="sortFormsByFormNumber()" style="cursor:pointer"></i>
             </th>
             <th>Item Number</th>
@@ -103,11 +104,12 @@
         <tbody>
 
 
-          <tr [class.read-only]="checkPermission()" *ngFor="let form of forms; let i = index">
+          <!-- (click)="openFormDetails(form._id)"  -->
+          <tr 
+          routerLink="/peerpharm/forms/formDetails/{{form._id}}/0" 
+          [class.read-only]="checkPermission()" *ngFor="let form of forms; let i = index">
             <td>
-              <a target="_blank" routerLink="/peerpharm/forms/formDetails/{{form._id}}/0">
-                {{ i }}
-              </a>
+            {{i+1}}
             </td>
             <td>{{ form.itemN }}</td>
             <td>{{ form.productName }}</td>
