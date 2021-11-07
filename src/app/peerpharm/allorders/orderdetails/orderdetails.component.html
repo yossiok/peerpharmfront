@@ -1048,7 +1048,7 @@
 
             <th>Material Number</th>
             <th>Material Name</th>
-            <th>KG Production</th>
+            <!--<th>KG Production</th>-->
             <th>Quantity In Stock</th>
 
           </tr>
@@ -1058,7 +1058,7 @@
 
             <td>{{material.itemNumber}}</td>
             <td>{{material.itemName}}</td>
-            <td>{{material.kgProduction}}</td>
+           <!-- <td>{{material.kgProduction}}</td>-->
             <td
               [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
               {{material.materialArrivals[0].amount}}</td>
