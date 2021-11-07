@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/services/auth.service';
 import { ExcelService } from 'src/app/services/excel.service';
@@ -15,6 +15,15 @@ import { ConfirmService } from '../../../../services/confirm.modal.service';
 })
 export class PlanningDetailsComponent implements OnInit {
 
+  // @HostListener('document:click', ['$event'])
+  // clickout(event) {
+  //   event.stopPropagation()
+  //   if(this.tableDiv.nativeElement.contains(event.target)) {
+
+  //   } else {
+  //     this.edit = -1
+  //   }
+  // }
   @Input() workPlan: WorkPlan;
   @Output() closeWorkPlanEmitter: EventEmitter<number> = new EventEmitter<number>()
   @Output() updateWorkPlans: EventEmitter<any> = new EventEmitter<any>()
@@ -22,6 +31,7 @@ export class PlanningDetailsComponent implements OnInit {
   @ViewChild('printFormuleBtn') printFormuleBtn: ElementRef
   @ViewChild('formuleSection') formuleSection: ElementRef
   @ViewChild('printAmounts') printAmounts: ElementRef
+  @ViewChild('tableDiv') tableDiv: ElementRef
 
   // finalFormule: any;
   statuses: number[] = [1, 2, 3]
@@ -50,7 +60,8 @@ export class PlanningDetailsComponent implements OnInit {
   authenticate(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.modalService.userAnserEventEmitter.subscribe(userChoice => {
-        resolve(userChoice);
+        if (userChoice) resolve(userChoice);
+        else reject(false)
       });
       this.modalService.confirm({ title: 'title', message: 'message' });
     })
@@ -127,55 +138,24 @@ export class PlanningDetailsComponent implements OnInit {
     if (confirm('להעביר פק"ע לייצור?')) {
       this.workPlan.status = 2
       this.saveChanges()
-      let amountsLoaded = await this.loadMaterialsForFormule()
-      let formulesPrinted = await this.authenticateAndPrintFormules()
-      setTimeout(() => {
-        this.printAmounts.nativeElement.click()
-        setTimeout(() => {
-          this.showMaterialsForFormules = false
-        })
-      }, 500)
-    } else this.toastr.error('בוטל')
-
-  }
-
-  // printFormule(formule) {
-  //   return new Promise((resolve, reject) => {
-  //     this.formulePrinting = { ...formule }
-  //     setTimeout(() => {
-  //       this.printFormuleBtn.nativeElement.click(), 500
-  //       resolve(true)
-  //     })
-  //   })
-  // }
-
-  authenticateAndPrintFormules() {
-    this.authenticate().then(result => {
-      if (result) this.printFormules()
+      let approved = await this.authenticate()
+      if (approved) {
+        let amountsLoaded = await this.loadMaterialsForFormule(true)
+        let formulesPrinted = await this.printFormules()
+      }
       else this.toastr.error('אימות נכשל')
-    })
+    } else this.toastr.error('בוטל')
   }
 
   async printFormules() {
     this.printingFormules = true
-
-    // calculate total items for printing pages 
-    for (let formule of this.workPlan.productionFormules) {
-      formule.formuleData = this.formuleCalculate(formule.formuleData, formule.totalKG)
-      let numOfItems = 0
-      for (let phase of formule.formuleData['phases']) {
-        for (let item of phase.items) {
-          numOfItems++
-        }
-      }
-      formule.numOfItems = numOfItems
-    }
     setTimeout(() => {
       this.printFormuleBtn.nativeElement.click()
       setTimeout(() => {
         this.printingFormules = false
+        this.showMaterialsForFormules = false
       }, 1000)
-    }, 500)
+    }, 1000)
   }
 
   formuleCalculate(data, formuleWeight) {
@@ -187,25 +167,29 @@ export class PlanningDetailsComponent implements OnInit {
     return data;
   }
 
-  loadMaterialsForFormule() {
-    return new Promise((resolve, reject) => {
-      if (this.materialsForFormules && this.materialsForFormules.length > 0) {
-        this.showMaterialsForFormules = true;
-        resolve(true)
-      }
-      else {
-        this.toastr.info("אנא המתן...", "מחשב כמויות");
-        this.loadData = true;
-        this.inventoryService
-          .getMaterialsForFormules(this.workPlan.orderItems)
-          .subscribe((data) => {
-            this.materialsForFormules = data.newArray;
-            this.showMaterialsForFormules = true;
-            this.loadData = false;
-            resolve(true)
-          });
-      }
-    })
+  async loadMaterialsForFormule(authenticated) {
+    if (!authenticated) authenticated = await this.authenticate()
+    if (authenticated) {
+      return new Promise((resolve, reject) => {
+        if (this.materialsForFormules && this.materialsForFormules.length > 0) {
+          this.showMaterialsForFormules = true;
+          resolve(true)
+        }
+        else {
+          this.toastr.info("אנא המתן...", "מחשב כמויות");
+          this.loadData = true;
+          this.inventoryService
+            .getMaterialsForFormules(this.workPlan.orderItems)
+            .subscribe((data) => {
+              this.materialsForFormules = data.newArray;
+              this.showMaterialsForFormules = true;
+              this.loadData = false;
+              resolve(true)
+            });
+        }
+      })
+    }
+    else this.toastr.error('אימות נכשל')
   }
 
   checkAmountsForMaterial(prod, stock) {

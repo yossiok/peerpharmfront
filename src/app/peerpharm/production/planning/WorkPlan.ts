@@ -21,7 +21,7 @@ export interface ProductionFormule {
     batchNumber: string,
     ordersAndItems: orderAndItem[],
     formuleData: Object,
-    numOfItems: number  
+    // numOfItems: number  
 }
 
 export interface WorkPlan {

@@ -49,12 +49,12 @@
             <img *ngIf="!loadData" ngbTooltip="ייצוא פריטים" class="click"
                 (click)="export(workPlan.orderItems, 'items for work plan'+workPlan.serialNumber)"
                 src="../../../../../assets/images/excel.png" class="img" alt="">
-            <img *ngIf="!loadData && authorized" class="click ml-2" (click)="loadMaterialsForFormule()"
+            <img *ngIf="!loadData && authorized" class="click ml-2" (click)="loadMaterialsForFormule(false)"
                 ngbTooltip="כתב כמויות" style="width: 50px" src="../../../../../assets/images/allOrder.png" alt="">
             <div *ngIf="loadData" class="smallerLoader"></div>
         </span>
     </h2>
-    <div class="row mt-4">
+    <div class="row mt-4" #tableDiv>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -166,7 +166,7 @@
         </div>
         <div class="col-4">
             <span *ngIf="authorized"><img class="big-img" ngbTooltip='שלח לייצור' (click)="moveToProduction()"
-                    src="../../../../../assets/images/filter.png" alt=""></span>
+                    src="../../../../../assets/images/filter.png" alt="לחץ כאן על מנת לשלוח פורמולות לייצור"></span>
         </div>
     </div>
 
@@ -178,18 +178,64 @@
 </div>
 
 <button #printFormuleBtn
-    [printStyle]="{  h2: {'display': 'inline'} ,footer: {'page-break-after': 'always'}, table:{ 'counter-reset': 'page', 'border-collapse':'collapse'},th : {'border': 'solid 1px black','font-size':'22px'}, tr : {'border': 'solid 2px black'}, td : {'border': 'solid 1px black', 'padding':'5px','font-size': '22px'}}"
+    [printStyle]="{  h2: {'display': 'inline'}, h3: { 'display': 'none'}, footer: {'page-break-after': 'always'}, table:{ 'counter-reset': 'page', 'border-collapse':'collapse'},th : {'border': 'solid 1px black','font-size':'22px'}, tr : {'border': 'solid 2px black'}, td : {'border': 'solid 1px black', 'padding':'5px','font-size': '22px'}}"
     printTitle="Formules: Production Weighting" printSectionId="formuleSection" ngxPrint
     style="display: none;"></button>
 
-<div style="visibility: hidden;" id="formuleSection" class="row mt-3 d-flex flex-row">
-    <div *ngIf="printingFormules">
+<div id="formuleSection">
 
-        
-        
-        <ng-container *ngFor="let formulePrinting of workPlan.productionFormules">
-            <h1 *ngIf="formulePrinting.numOfItems > 16">Page 1 of 2</h1>
-            <h1 *ngIf="formulePrinting.numOfItems <= 16">Page 1 of 1</h1>
+    <!--כתב כמויות-->
+    <div *ngIf="showMaterialsForFormules" class="m-5 p-5">
+        <!-- <button style="visibility: hidden" #printAmounts ngxPrint printSectionId="print-amounts"></button> -->
+        <i (click)="showMaterialsForFormules = false" class="fa fa-times float-right h3 close"></i>
+        <h1 class="text-center">כתב כמויות</h1>
+        <h3 dir="rtl">
+            <img ngbTooltip="ייצוא" (click)="exportExplosion(materialsForFormules, 'כתב כמויות')"
+                src="../../../../../assets/images/excel.png" class="img" alt="">
+            <img ngbTooltip="הדפסה" (click)="printAmounts.click()" src="../../../../../assets/images/print.png"
+                class="img2" alt="">
+        </h3>
+        <div>
+
+            <h2 dir="rtl">כתב כמויות לתכנית עבודה {{workPlan.serialNumber}}</h2>
+            <br>
+            <table class="table table-striped mt-4">
+                <thead class="bg-success text-white">
+                    <tr>
+
+                        <th>Material Number</th>
+                        <th>Material Name</th>
+                        <th>Required</th>
+                        <th>In Stock</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let material of materialsForFormules">
+
+                        <td>{{material.itemNumber}}</td>
+                        <td>{{material.itemName}}</td>
+                        <td>{{material.kgProduction}}</td>
+                        <td
+                            [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
+                            {{material.materialArrivals[0].amount | number}}</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer></footer>
+
+    </div>
+
+
+
+    <div *ngIf="printingFormules" class="row mt-3 d-flex flex-row">
+
+        <ng-container *ngFor="let formulePrinting of workPlan.productionFormules; let i = index">
+            <!-- <h1 *ngIf="formulePrinting.numOfItems > 16">Page 1 of 2</h1>
+            <h1 *ngIf="formulePrinting.numOfItems <= 16">Page 1 of 1</h1> -->
+            <h1>Formule {{i+1}} Start</h1>
 
             <table class="table table-bordered">
                 <thead class="text-info">
@@ -273,7 +319,7 @@
                 <td style="font-weight: bold">Final PH:</td>
                 <td colspan="2"><input style="height: 60px;" type="text"></td>
             </tr>
-            <h1 *ngIf="formulePrinting.numOfItems > 16">Page 2 of 2</h1>
+            <!-- <h1 *ngIf="formulePrinting.numOfItems > 16">Page 2 of 2</h1> -->
             <footer>
                 <tr>{{formulePrinting.formule}}</tr>
                 <tr>{{formulePrinting.formuleData.formuleName}}</tr>
@@ -284,51 +330,10 @@
                         order {{orderAndItem.order}}, item {{orderAndItem.item}}
                     </span>
                 </tr>
+                <h1>Formule {{i+1}} End</h1>
+
             </footer>
         </ng-container>
-    </div>
-</div>
-
-
-<!--כתב כמויות-->
-<div *ngIf="showMaterialsForFormules" class="m-5 p-5">
-    <button style="visibility: hidden" #printAmounts ngxPrint printSectionId="print-amounts"></button>
-    <i (click)="showMaterialsForFormules = false" class="fa fa-times float-right h3 close"></i>
-    <h1 class="text-center">כתב כמויות</h1>
-    <h2 dir="rtl">
-        <img ngbTooltip="ייצוא" (click)="exportExplosion(materialsForFormules, 'כתב כמויות')"
-            src="../../../../../assets/images/excel.png" class="img" alt="">
-        <img ngbTooltip="הדפסה" (click)="printAmounts.click()" src="../../../../../assets/images/print.png" class="img2"
-            alt="">
-    </h2>
-    <div id="print-amounts">
-
-        <h2 dir="rtl">כתב כמויות לתכנית עבודה {{workPlan.serialNumber}}</h2>
-        <br>
-        <table class="table table-striped mt-4">
-            <thead class="bg-success text-white">
-                <tr>
-
-                    <th>Material Number</th>
-                    <th>Material Name</th>
-                    <th>Required</th>
-                    <th>In Stock</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let material of materialsForFormules">
-
-                    <td>{{material.itemNumber}}</td>
-                    <td>{{material.itemName}}</td>
-                    <td>{{material.kgProduction}}</td>
-                    <td
-                        [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
-                        {{material.materialArrivals[0].amount | number}}</td>
-
-                </tr>
-            </tbody>
-        </table>
     </div>
 
 </div>
