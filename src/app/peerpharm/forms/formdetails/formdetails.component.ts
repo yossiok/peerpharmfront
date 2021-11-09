@@ -137,7 +137,6 @@ export class FormdetailsComponent implements OnInit {
     this.formid = formID
     await this.formsService.getFormData(this.formid).subscribe(res => {
       this.form = res[0];
-      debugger;
       this.formDetailsItemNum = this.form.itemN
       if (this.form.productionEndDate) {
         let days = this.form.productionEndDate.slice(8, 10)
@@ -184,7 +183,6 @@ export class FormdetailsComponent implements OnInit {
 
   addNewQAPallet() {
 
-    debugger;
     this.form
     this.newQAPallet.batchNumber = this.form.batchN;
     this.newQAPallet.itemNumber = this.form.itemN;
@@ -220,7 +218,6 @@ export class FormdetailsComponent implements OnInit {
 
 
   updateFormDetails() {
-    debugger;
 
     try {
 
@@ -275,7 +272,6 @@ export class FormdetailsComponent implements OnInit {
   }
 
   async loadQAPallets(formId) {
-    debugger;
     this.formsService.getQAPalletsByFormId(formId).subscribe(QAPallets => {
 
       if (QAPallets) {
@@ -321,7 +317,6 @@ export class FormdetailsComponent implements OnInit {
       if (this.user.authorization) {
         if (this.authService.loggedInUser.authorization.includes("updateFormDetails")) {
           this.allowUpdateForm = true;
-          debugger;
           this.disabledValue = false
 
         }
@@ -335,7 +330,6 @@ export class FormdetailsComponent implements OnInit {
         this.user = user;
         if (this.user.authorization) {
           if (this.authService.loggedInUser.authorization.includes("updateFormDetails")) {
-            debugger;
             this.allowUpdateForm = true;
             this.disabledValue = false
           }
@@ -352,7 +346,6 @@ export class FormdetailsComponent implements OnInit {
   // }
 
   wrapAllChecks() {
-    debugger;
     for (let index = 0; index < this.form.checkTime.length; index++) {
       this.allChecks.push({
         checkTime: this.form.checkTime[index],

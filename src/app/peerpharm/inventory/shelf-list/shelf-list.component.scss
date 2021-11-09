@@ -19,3 +19,43 @@
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
   }
+
+  .sortable {
+    
+  }
+
+  .sortable:hover {
+    background: rgb(56, 123, 199);
+    cursor: pointer;
+  }
+
+  .click {
+    cursor: pointer
+  }
+
+  .new-shelf {
+    background: rgb(188, 146, 228);
+  }
+
+  .save-form {
+    background: rgb(43, 153, 226);
+    width: 275px;
+    height: 98px;
+    font-size: 28px;
+  }
+
+  
+// Hide arrows from input type number  :
+/*********************************************** ********************/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/*******************************************************************/
