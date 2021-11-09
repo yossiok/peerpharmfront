@@ -71,6 +71,7 @@ export class FinanceReportComponent implements OnInit {
   currencies: Currencies;
   excelData: any[];
   allSalesByCMX: any[];
+  itemCounter: number = 0;
 
   async ngOnInit() {
     this.today = new Date();
@@ -238,6 +239,7 @@ export class FinanceReportComponent implements OnInit {
   // Get all item's components
   getItemComponents() {
     this.waitingText = "Getting components data...";
+    this.itemCounter = 0;
     for (let i = 0; i < this.filteredOrders.length; i++) {
       // for (let i = 0; i < 10; i++) {
       // To continue from here on sunday
@@ -297,12 +299,17 @@ export class FinanceReportComponent implements OnInit {
                   // this.getSuppliersForComponents();
                   // this.getStockAmounts();
                 })
+                .then(() => {
+                  this.itemCounter++;
+                  console.log("Counter no.: " + this.itemCounter);
+                  // if (this.itemCounter == this.filteredOrders.length - 1)
+                  if (this.itemCounter == 20) this.exportToExcel();
+                })
                 .catch((error) => this.toastr.error(error.message));
             }
           );
         });
     }
-    // console.log(this.filteredOrders);
     this.getAllOrders = true;
   }
 

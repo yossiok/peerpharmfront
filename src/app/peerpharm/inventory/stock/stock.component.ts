@@ -644,8 +644,11 @@ export class StockComponent implements OnInit {
     this.numberSearchInput.nativeElement.focus();
   }
 
-  getItemPurchases() {
+  getItemPurchases(component) {
     let numbers = this.components.map((c) => c.componentN);
+    if (component) {
+      component.purchaseOrders = [];
+    }
     this.procuretServ.getPurchasesForMulti(numbers).subscribe((purchases) => {
       for (let component of this.components) {
         for (let purchase of purchases) {
@@ -1760,7 +1763,7 @@ export class StockComponent implements OnInit {
           try {
             this.loadingText = "(2/4) מחשב כמויות... ";
             this.getAmountsFromShelfs();
-            this.getItemPurchases();
+            this.getItemPurchases(false);
             this.getAllocations();
           } catch (e) {
             this.smallLoader = false;

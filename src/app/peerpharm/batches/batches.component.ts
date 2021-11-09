@@ -189,6 +189,9 @@ export class BatchesComponent implements OnInit {
       }
     }
   }
+  cancelEdit(id) {
+    this.EditRowId = false;
+  }
 
   stopInterval() {
     clearInterval(this.myRefresh);
