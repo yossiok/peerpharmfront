@@ -285,10 +285,19 @@ export class InventoryService {
       .pipe(map((res) => res.json()));
   }
 
+  // ספירת מלאי - עדכון מדף ספציפי 
   newShelfYearCount(shelf, whareHouse): Observable<any> {
     let url = this.baseUrl + "itemShell/newShelfYearCount";
     return this.http
       .post(url, JSON.stringify({ ...shelf, whareHouse }), this.options)
+      .pipe(map((res) => res.json()));
+  }
+
+  // ספירת מלאי - עדכון של כל המדפים במחסן
+  takeStock(updates) {
+    let url = this.baseUrl + "itemShell/updateManyAndSaveStockTake";
+    return this.http
+      .post(url, JSON.stringify(updates), this.options)
       .pipe(map((res) => res.json()));
   }
 

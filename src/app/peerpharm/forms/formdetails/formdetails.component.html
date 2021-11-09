@@ -37,43 +37,43 @@
       <tr>
         <td>מספר הזמנה</td>
         <td>
-          <input id="div_orderNumber" [(ngModel)]="form.orderNumber" style="width:100px" disabled
-            class="form-control" />
+          <input id="div_orderNumber" [(ngModel)]="form.orderNumber" disabled
+            class="form-control inputDiv" />
         </td>
         <td>כמות מוזמנת</td>
         <td>
           <input id="div_orderQuantity" [(ngModel)]="form.orderQuantity" class="inputDiv form-control"
-            style="width:100px" disabled/>
+           disabled/>
         </td>
       </tr>
       <tr>
         <td [translate]="'Product Name'">שם המוצר</td>
-        <td colspan="3">
+        <td [ngbTooltip]="form.productName" colspan="3">
           <input type="text" [(ngModel)]="form.productName" id="div_productName" style="width:571px"
-            disabled class="form-control" />
+            disabled class="form-control inputDivLonger" />
         </td>
       </tr>
       <tr>
         <td>שם הלקוח</td>
         <td>
-          <input id="div_costumerName" [(ngModel)]="form.costumerName" style="width:100px" disabled
-            class="form-control" />
+          <input id="div_costumerName" [(ngModel)]="form.costumerName" disabled
+            class="form-control inputDivLonger" />
         </td>
         <td>מק"ט</td>
         <td>
-          <input id="div_itemN" [(ngModel)]="form.itemN" class="inputDiv form-control" style="width:100px"
+          <input id="div_itemN" [(ngModel)]="form.itemN" class="inputDiv form-control"
             disabled />
         </td>
       </tr>
       <tr>
         <td>מס' אצווה</td>
         <td>
-          <input type="text" [(ngModel)]="form.batchN" id="div_batchN" style="width:100px" disabled
-            class="form-control" />
+          <input type="text" [(ngModel)]="form.batchN" id="div_batchN" disabled
+            class="form-control inputDivLonger" />
         </td>
         <td>כמות חביות</td>
         <td>
-          <input type="number" id="div_drumsAmount" [(ngModel)]="form.drumsAmount" class="inputDiv form-control" style="width:100px"
+          <input type="number" id="div_drumsAmount" [(ngModel)]="form.drumsAmount" class="inputDiv form-control"
             [disabled]="disabledValue" />
         </td>
       </tr>
@@ -81,59 +81,59 @@
         <td>תאריך ייצור/תאריך סיום</td>
         <td>
           <input type="date" id="div_productionDate" [(ngModel)]="form.productaionDate" class="inputDiv form-control"
-            style="width:100px" [disabled]="disabledValue" />
+           [disabled]="disabledValue" />
         </td>
         <td>תאריך תפוגה</td>
         <td>
-          <input id="div_expirationDate" [(ngModel)]="form.expirationDate" class="inputDiv form-control"
-            style="width:100px" [disabled]="disabledValue" />
+          <input type="date" id="div_expirationDate" [(ngModel)]="form.expirationDate" class="inputDiv form-control"
+           [disabled]="disabledValue" />
         </td>
       </tr>
       <tr>
         <td>תאריך מילוי</td>
         <td>
-          <input id="div_fillDate" [(ngModel)]="form.fillingDate" class="inputDiv form-control" style="width:100px"
+          <input type="date" id="div_fillDate" [(ngModel)]="form.fillingDate" class="inputDiv form-control"
             [disabled]="disabledValue" />
         </td>
         <td>מילוי ע"י</td>
         <td>
-          <input id="div_fillingBy" [(ngModel)]="form.filledBy" class="inputDiv form-control" style="width:100px"
+          <input id="div_fillingBy" [(ngModel)]="form.filledBy" class="inputDiv form-control"
             [disabled]="disabledValue" />
         </td>
       </tr>
       <tr>
         <td>שעת התחלת מילוי</td>
         <td>
-          <input id="div_fillingStart" [(ngModel)]="form.fillStartTime" class="inputDiv form-control"
-            style="width:100px" [disabled]="disabledValue" />
+          <input type="time" id="div_fillingStart" [(ngModel)]="form.fillStartTime" class="inputDiv form-control"
+           [disabled]="disabledValue" />
         </td>
         <td>שעת סיום מילוי</td>
         <td>
-          <input id="div_endTimeWork" [(ngModel)]="form.endTimeWork" class="inputDiv form-control" style="width:100px"
+          <input type="time" id="div_endTimeWork" [(ngModel)]="form.endTimeWork" class="inputDiv form-control"
             [disabled]="disabledValue" />
         </td>
       </tr>
       <tr>
         <td>טווח סטיה</td>
         <td>
-          <input id="div_weightRange" [(ngModel)]="form.weightRange" class="inputDiv form-control" style="width:100px"
+          <input id="div_weightRange" [(ngModel)]="form.weightRange" class="inputDiv form-control"
             [disabled]="disabledValue" />
         </td>
         <td>משקל נטו</td>
         <td>
-          <input id="div_netoWeight" [(ngModel)]="form.netWeight" class="inputDiv form-control" style="width:100px"
+          <input type="number" id="div_netoWeight" [(ngModel)]="form.netWeight" class="inputDiv form-control"
             [disabled]="disabledValue" />
         </td>
       </tr>
       <tr>
         <td>הדבקה ע"י</td>
         <td>
-          <input id="div_lableldBy" [(ngModel)]="form.labeledBy" class="inputDiv form-control" style="width:100px"
+          <input id="div_lableldBy" [(ngModel)]="form.labeledBy" class="inputDiv form-control"
             [disabled]="disabledValue" />
         </td>
         <td>אריזה ע"י</td>
         <td>
-          <input id="div_packegeBy" [(ngModel)]="form.packageBy" class="inputDiv form-control" style="width:100px"
+          <input id="div_packegeBy" [(ngModel)]="form.packageBy" class="inputDiv form-control"
             [disabled]="disabledValue" />
         </td>
       </tr>
@@ -174,7 +174,7 @@
         </td>
         <td>חתימת מנהל מאשר</td>
         <td>
-          <input id="div_mangaerSign" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
+          <input id="div_mangaerSign" class="inputDiv form-control" [disabled]="disabledValue"
             [value]="form.directorFrontSignature" />
         </td>
       </tr>
@@ -258,177 +258,6 @@
         </td>
       </tr>
 
-
-
-      <!-- <tr>
-              <td>שעת בדיקה</td>
-              <td colspan="3">
-                <input
-                  id="div_checkTime1"
-                  class="inputDiv"
-                  style="width:100px; margin:10px"
-                  [(ngModel)]="form.checkTime1"
-                  [disabled]="disabledValue"
-                />
-                <input
-                  id="div_checkTime2"
-                  class="inputDiv"
-                  style="width:100px; margin:10px"
-                  [(ngModel)]="form.checkTime2"
-                  [disabled]="disabledValue"
-                />
-                <input
-                  id="div_checkTime3"
-                  class="inputDiv"
-                  style="width:100px; margin:10px"
-                  [(ngModel)]="form.checkTime3"
-                  [disabled]="disabledValue"
-                />
-                <input
-                  id="div_checkTime4"
-                  class="inputDiv"
-                  style="width:100px; margin:10px"
-                  [(ngModel)]="form.checkTime4"
-                  [disabled]="disabledValue"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>נקיון מכלים</td>
-              <td colspan="3">
-                <input
-                  type="checkbox"
-                  id="clean1"
-                  style="margin-left:100px; margin-right:90px; margin-top:10px; margin-bottom:10px"
-                  [disabled]="disabledValue"
-                />
-                <input
-                  type="checkbox"
-                  id="clean2"
-                  style="margin-left:100px"
-                  [disabled]="disabledValue"
-                />
-                <input
-                  type="checkbox"
-                  id="clean3"
-                  style="margin-left:100px"
-                  [disabled]="disabledValue"
-                />
-                <input
-                  type="checkbox"
-                  id="clean4"
-                  style="margin-left:100px"
-                  [disabled]="disabledValue"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>משקל נטו</td>
-              <td colspan="3">
-                <div *ngFor=" let neto of netoWeightArr">
-                    <input
-                    id="div_netWeight1"
-                    class="inputDiv"
-                    style="width:100px; margin:10px"
-                    [value] = neto
-                    [disabled]="disabledValue"
-                  />
-                </div>
-              </td>
-            </tr>
-            <tr>
-                <td>משקל ממוצע</td>
-                <td colspan="3">
-                  <input
-                    class="inputDiv"
-                    style="width:100px; margin:10px"
-                    [disabled]="disabledValue"
-                    [value] = "averageNetoWeight"
-                  />
-                </td>
-              </tr>
-            <tr>
-              <td>סגירה ואיטום</td>
-              <td colspan="3">
-                <input
-                  type="checkbox"
-                  id="div_seeling1"
-                  style="margin-left:100px; margin-right:90px; margin-top:10px; margin-bottom:10px"
-                />
-                <input type="checkbox" id="div_seeling2" style="margin-left:100px" [disabled]="disabledValue"/>
-                <input type="checkbox" id="div_seeling3" style="margin-left:100px" [disabled]="disabledValue"/>
-                <input type="checkbox" id="div_seeling4" style="margin-left:100px" [disabled]="disabledValue"/>
-              </td>
-            </tr>
-            <tr>
-              <td>תקינות הדבקת התוויות</td>
-              <td colspan="3">
-                <input
-                  type="checkbox"
-                  id="div_lables1"
-                  style="margin-left:100px; margin-right:90px; margin-top:10px; margin-bottom:10px"
-                />
-                <input
-                  type="checkbox"
-                  id="div_lables2"
-                  style="margin-left:100px"
-                  [disabled]="disabledValue"
-                />
-                <input
-                  type="checkbox"
-                  id="div_lables3"
-                  style="margin-left:100px"
-                  [disabled]="disabledValue"
-                />
-                <input
-                  type="checkbox"
-                  id="div_lables4"
-                  style="margin-left:100px"
-                  [disabled]="disabledValue"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>בדיקת מס' אצוות</td>
-              <td colspan="3">
-                <input
-                  type="checkbox"
-                  id="div_batch1"
-                  style="margin-left:100px; margin-right:90px; margin-top:10px; margin-bottom:10px"
-                />
-                <input type="checkbox" id="div_batch2" style="margin-left:100px" [disabled]="disabledValue"/>
-                <input type="checkbox" id="div_batch3" style="margin-left:100px" [disabled]="disabledValue"/>
-                <input type="checkbox" id="div_batch4" style="margin-left:100px" [disabled]="disabledValue"/>
-              </td>
-            </tr>
-            <tr>
-              <td>תקינות אריזה סופית</td>
-              <td colspan="3">
-                <input
-                  type="checkbox"
-                  id="div_finalPackage1"
-                  style="margin-left:100px; margin-right:90px; margin-top:10px; margin-bottom:10px"
-                />
-                <input
-                  type="checkbox"
-                  id="div_finalPackage2"
-                  style="margin-left:100px"
-                  [disabled]="disabledValue"
-                />
-                <input
-                  type="checkbox"
-                  id="div_finalPackage3"
-                  style="margin-left:100px"
-                  [disabled]="disabledValue"
-                />
-                <input
-                  type="checkbox"
-                  id="div_finalPackage4"
-                  style="margin-left:100px"
-                  [disabled]="disabledValue"
-                />
-              </td>
-            </tr> -->
       <tr style="background-color:50D7FF">
         <td colspan="4" class="subHeader"></td>
       </tr>
@@ -456,9 +285,9 @@
         </td>
         <td>ייצור חלקי</td>
         <td>
-          <input class="form-control" *ngIf="form.batchStatus =='part'" style="width:14%" type="checkbox" id="ccc"
+          <input class="form-control" *ngIf="form.batchStatus =='part'" style="width:5%" type="checkbox" id="ccc"
             [disabled]="disabledValue" [checked]='true' />
-          <input class="form-control" *ngIf="form.batchStatus !='part'" style="width:14%" type="checkbox" id="ccc"
+          <input class="form-control" *ngIf="form.batchStatus !='part'" style="width:5%" type="checkbox" id="ccc"
             [disabled]="disabledValue" [checked]='false' />
         </td>
       </tr>

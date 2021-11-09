@@ -1,23 +1,21 @@
 <div class="text-center shadow bg-white w-75 mx-auto rounded p-5">
   <div class="row mt-4">
     <div class="col-12">
-      <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info ">Shelf List</h1>
+      <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info ">Stocktaking</h1>
     </div>
   </div>
 
   <div class="row mt-4">
     <div class="col-1">
-      <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
-        style="background: none;border:none" printSectionId="print-section" ngxPrint><img
+      <button [printStyle]="{tr : {'border': 'solid 1px black'}}"
+        style="visibility: hidden;" printSectionId="print-section" #printStocktake ngxPrint><img
           src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
       <img style="width: 50px; height: 50px" (click)="exportShelfListToXl()" src="../../../../assets/images/excel.png"
         alt="">
     </div>
 
-    <div class="col-2">
-      <label class="form-control">Whare House</label>
-    </div>
-    <div class="col-2">
+    <div class="col-3">
+      <label>Whare House</label>
       <select (change)="getShelfsByWH($event)" class="form-control">
         <option selected="true" disabled="disabled">WhareHouse</option>
         <option value="Kasem">Kasem</option>
@@ -28,105 +26,123 @@
         <option value="Labels">Labels</option>
       </select>
     </div>
-    <div class="col-2">
-      <label class="form-control">Position</label>
-    </div>
-    <div class="col-1">
+    <div class="col-3">
+      <label>Position</label>
       <input class="form-control" (keyup)="filterByShelf($event)">
     </div>
-    <div class="col-2">
-      <label class="form-control">Item Number</label>
-    </div>
-    <div class="col-2">
+    <div class="col-3">
+      <label>Item Number</label>
       <input list="itemNumbers" class="form-control" type="text" (change)="filterByIetmNumber($event)">
       <datalist id="itemNumbers">
-        <option *ngFor="let shelf of allShelfsCopy" [value]="shelf._id">{{shelf._id}}</option>
+        <option *ngFor="let shelf of allShelfsCopy" [value]="shelf._id.item">{{shelf._id.item}}</option>
       </datalist>
     </div>
   </div>
 
-  <form *ngIf="false" [formGroup]="newShelfForm" (ngSubmit)="addNewItemShelf()">
-    <div class="row mt-2">
-      <div class="col-2"><input type="number" class="form-control" (change)="validateItem()" formControlName="item"
-          placeholder="item number">
+  <div *ngIf="allowedCountYear && allShelfs && allShelfs.length > 0"
+    class="new-shelf d-flex flex-row justify-content-around p-5 mt-5 mb-5">
+    <form [formGroup]="newShelfForm" (ngSubmit)="addNewItemShelf()">
+      <h3>Add new Shelf</h3>
+      <div class="row">
+        <div class="col-3">
+          <input type="number" class="form-control" (change)="validateItem()" formControlName="item"
+            placeholder="item number">
+        </div>
+        <div class="col-3">
+          <select class="form-control" formControlName="position">
+            <option value="">Choose Position</option>
+            <option *ngFor="let shelf of shellNums" [value]="shelf._id">{{shelf.position}}</option>
+          </select>
+        </div>
+        <div class="col-3">
+          <input type="number" class="form-control" formControlName="amount" placeholder="Amount">
+        </div>
+        <div class="col-3"><button [disabled]="!whareHouse" [style.cursor]="whareHouse ? 'pointer' : 'not-allowed'"
+            type="submit" class="btn btn-primary">הכנס</button></div>
       </div>
-      <div class="col-2">
-        <select class="form-control" formControlName="position">
-          <option value="">Choose Position</option>
-          <option *ngFor="let shelf of shellNums" [value]="shelf._id">{{shelf.position}}</option>
-        </select>
-      </div>
-      <div class="col-2">
-        <input type="number" class="form-control" formControlName="amount" placeholder="Amount">
-      </div>
-      <div class="col-2"><button [disabled]="!whareHouse" [style.cursor]="whareHouse ? 'pointer' : 'not-allowed'"
-          type="submit" class="btn btn-primary">New Shelf</button></div>
-    </div>
-  </form>
+    </form>
+
+  </div>
 
   <div id="print-section" class="row mt-4">
-    <div class="col-12">
-      <table class="table table-bordered table-hover">
-        <thead class="bg-info text-white">
-          <tr>
-            <th>#</th>
-            <th>Item Number</th>
-            <th>Position</th>
-            <th>Amount</th>
-            <!-- <th>Costumer</th> -->
-            <!-- <th>Arrival Date</th> -->
-            <th>Count Date</th>
-            <th>Counted Amount</th>
-            <th>Signature</th>
-            <th></th>
-          </tr>
-        </thead>
-        <ng-container *ngIf="fetchingShelfs">
-          <div class="bigLoader"></div>
-        </ng-container>
-        <tbody *ngIf="!fetchingShelfs">
+    <h1 dir="rtl" *ngIf="whareHouse">ספירת מלאי {{whareHouse}}</h1>
+    <table class="table table-bordered table-hover">
+      <thead class="bg-primary text-white">
+        <tr>
+          <th>#</th>
+          <!--1-->
+          <th class="sortable" (click)="sortByItem()"><i class="fas fa-filter"></i> Item Number</th>
+          <!--1-->
+          <th *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i> Batch</th>
+          <!--3.5-->
+          <th class="sortable" (click)="sortByPosition()"><i class="fas fa-filter"></i> Position</th>
+          <!--2-->
+          <th class="sortable" (click)="sortByAmount()"><i class="fas fa-filter"></i> Amount</th>
+          <!--3-->
+          <!-- <th>Last Count Date</th> -->
+          <!-- <th>Last Counted Amount</th> -->
+          <th>Counted</th>
+          <!--4-->
+          <th>Difference</th>
+          <!--4.5-->
+          <th *ngIf="allowedCountYear && !printing">Count</th>
+          <!--5-->
+        </tr>
+      </thead>
+      <ng-container *ngIf="fetchingShelfs">
+        <div class="bigLoader"></div>
+      </ng-container>
+      <tbody *ngIf="!fetchingShelfs">
 
-          <tr *ngFor="let shelf of allShelfs;let i = index">
-            <td>{{i+1}}</td>
-            <td>{{shelf._id}}</td>
-            <td>{{shelf.position}}</td>
-            <td>{{shelf.total}}</td>
-            <!-- <td (click)="editShelfAmount(shelf.item,shelf.position)"
-              *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position">{{shelf.costumer}}</td> -->
-            <!-- <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
-              <input list="costumers" class="form-control" (change)="updateShelfCostumer(shelf)"
-                [(ngModel)]="item.costumer">
-              <datalist id="costumers">
-                <option *ngFor="let costumer of allCostumers" [value]="costumer.costumerName">{{costumer.costumerName}}
-                </option>
-              </datalist>
-            </td> -->
-            <!-- <td>{{shelf.arrivalDate | date:'short'}}</td> -->
-            <td (click)="editShelfAmount(shelf.item,shelf.position)"
-              *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
-            <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
-              <input type="date" class="form-control" [(ngModel)]="item.countDate">
-            </td>
+        <tr *ngFor="let shelf of allShelfs;let i = index">
+          <td>{{i+1}}</td>
+          <!--1-->
+          <td>{{shelf._id.item}}</td>
+          <!--1-->
+          <td *ngIf="itemType == 'material'">{{shelf._id.supplierBatchNumber}}</td>
+          <!--3.5-->
+          <td>{{shelf._id.position}}</td>
+          <!--2-->
+          <td>{{shelf.total}}</td>
+          <!--3-->
+          <!-- <td>{{shelf.lastCount.date}}</td> -->
+          <!-- <td>{{shelf.lastCount.amount}}</td> -->
 
-            <td (click)="editShelfAmount(shelf.item,shelf.position)"
-              *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
-            <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
-              <input type="number" class="form-control" [(ngModel)]="shelf.countedAmount">
-            </td>
+          <td *ngIf="shelfId != shelf._id">{{shelf.countedAmount}}</td>
+          <!--4-->
+          <td *ngIf="shelfId == shelf._id">
+            <input #countInput type="number" class="form-control" (keyup)="calculateDifference(shelf)"
+              [(ngModel)]="shelf.countedAmount">
+          </td>
 
-            <td (click)="editShelfAmount(shelf.item,shelf.position)"
-              *ngIf="shelfItemN != shelf.item || shelfPos != shelf.position"></td>
-            <td *ngIf="shelfItemN == shelf.item && shelfPos == shelf.position">
-              <input type="text" class="form-control" [(ngModel)]="item.signature">
-            </td>
-            <td><button *ngIf="allowedCountYear" [disabled]="updatingAmount"
-                [style.cursor]="updatingAmount ? 'progress' : 'pointer'" (click)="updateShelfAmount(shelf)"
-                class="btn btn-danger">Update Amounts</button></td>
+          <td><span *ngIf="shelf.difference">{{shelf.difference}}</span></td>
+          <!--4.5-->
 
-          </tr>
-        </tbody>
-      </table>
+          <td *ngIf="allowedCountYear && shelfId != shelf._id && !printing">
+            <!--5-->
+            <button (click)="editShelfAmount(shelf)" class="btn btn-primary">
+              <i class="click fa fa-pencil-alt"></i> Count
+            </button>
+          </td>
+
+          <td *ngIf="allowedCountYear && shelfId == shelf._id && !printing">
+            <!--1-->
+            <button [disabled]="updatingAmount" [style.cursor]="updatingAmount ? 'progress' : 'pointer'"
+              (click)="setShelfs()" class="btn btn-danger">Save to Form
+            </button>
+          </td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="allowedCountYear" class="row mt-4">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <button (click)="takeStock()" class="btn save-form w-50">Update Stocktaking!</button>
     </div>
+    <div class="col-3"></div>
   </div>
 
   <div class="row mt-3">
@@ -187,3 +203,47 @@
     </div>
   </div>
 </div>
+
+
+<ng-template #updatesModal let-modal>
+
+  <div dir="rtl" class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">אתה עומד לעדכן את הפריטים הבאים:</h4>
+    </div>
+    <div class="modal-body">
+      <table class='table'>
+        <thead class='tableHeader'>
+
+          <tr>
+            <th>פריט</th>
+            <th>מיקום</th>
+            <th *ngIf="itemType == 'material'">באטץ'</th>
+            <th>כמות ישנה</th>
+            <th>כמות חדשה</th>
+          </tr>
+        </thead>
+        <tbody id="table_body">
+          <tr *ngFor="let update of updates">
+            <td>{{update._id.item}}</td>
+            <td>{{update._id.position}}</td>
+            <td *ngIf="itemType == 'material'">{{update._id.supplierBatchNumber}}</td>
+            <td>{{update.total}}</td>
+            <td [style.background]="'lightcoral'">{{update.countedAmount}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <div class="row mt-4">
+        <h4>האם ברצונך להמשיך?</h4>
+        <div class="m-4 d-flex flex-row justify-content-around w-75">
+          <button class="btn btn-danger" (click)="update()">כן</button>
+          <button class="btn btn-secondary" (click)="modalService.dismissAll()">ביטול</button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+    </div>
+  </div>
+
+</ng-template>

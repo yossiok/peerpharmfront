@@ -6,6 +6,7 @@ import {
   ViewChild,
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
 import { CostumersService } from "src/app/services/costumers.service";
@@ -22,24 +23,24 @@ export class ShelfListComponent implements OnInit {
   allShelfs: any;
   allCostumers: any;
   EditRow: any;
-  shelfPos: any;
-  shelfItemN: any;
   materialShelfs: any;
   allShelfsCopy: any;
   itemType: string = "";
   whareHouse: string = "";
+  shelfId: any = {}
   allowedWHS: string[];
   allowedCountYear: boolean = false;
-
-  item = {
-    countDate: this.formatDate(new Date()),
-    countedAmount: "",
-    signature: "עמר",
-    costumer: "",
-  };
+  sortPositionOrder: number = 1
+  sortItemNumberOrder: number = 1
+  sortAmountOrder: number = 1
+  sortBatchOrder: number = 1
+  updates: any = []
 
   @ViewChild("shelfPosition") shelfPosition: ElementRef;
   @ViewChild("shelfAmount") shelfAmount: ElementRef;
+  @ViewChild("countInput") countInput: ElementRef;
+  @ViewChild("updatesModal") updatesModal: ElementRef;
+  @ViewChild("printStocktake") printStocktake: ElementRef;
   updatingAmount: boolean;
   fetchingShelfs: boolean;
 
@@ -50,12 +51,13 @@ export class ShelfListComponent implements OnInit {
     amount: new FormControl(null, Validators.required),
   });
   shellNums: any;
+  printing: boolean = false
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
     event: KeyboardEvent
   ) {
     this.edit("");
-    this.editShelfAmount("", "");
+    this.editShelfAmount("");
   }
 
   constructor(
@@ -64,8 +66,9 @@ export class ShelfListComponent implements OnInit {
     private itemService: ItemsService,
     private inventorySrv: InventoryService,
     private xlSrv: ExcelService,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private modalService: NgbModal
+  ) { }
 
   ngOnInit() {
     this.getAllCostumers();
@@ -74,15 +77,7 @@ export class ShelfListComponent implements OnInit {
       this.authService.loggedInUser.authorization.includes("allowedCountYear");
   }
 
-  editShelfAmount(item, position) {
-    if (item != "" && position != "") {
-      this.shelfPos = position;
-      this.shelfItemN = item;
-    } else {
-      this.shelfPos = "";
-      this.shelfItemN = "";
-    }
-  }
+
 
   getAllWhShelfs() {
     this.inventorySrv.getWhareHousesList().subscribe((res) => {
@@ -100,44 +95,43 @@ export class ShelfListComponent implements OnInit {
 
   getShelfsByWH(ev) {
     this.fetchingShelfs = true;
-    let whareHouse = ev.target.value;
-    this.whareHouse = ev.target.value;
-    // console.log(this.whareHouse, whareHouse);
+    let whareHouse = ev.target ? ev.target.value : ev;
+    // this.whareHouse = ev.target.value;
     this.getAllWhShelfs();
     switch (whareHouse) {
       case "material":
         this.itemType = whareHouse;
-        whareHouse = "Rosh HaAyin";
+        this.whareHouse = "Rosh HaAyin";
         break;
       case "component":
         this.itemType = whareHouse;
-        whareHouse = "Rosh HaAyin";
+        this.whareHouse = "Rosh HaAyin";
         break;
       case "Rosh HaAyin products":
         this.itemType = "product";
+        this.whareHouse = whareHouse
         break;
       case "NEW KASEM":
         this.itemType = "component";
+        this.whareHouse = whareHouse
         break;
       case "Kasem":
         this.itemType = "component";
+        this.whareHouse = whareHouse
         break;
       case "Labels":
         this.itemType = "component";
-    }
-    if (whareHouse == "material" || whareHouse == "component") {
-      this.itemType = whareHouse;
-      whareHouse = "Rosh HaAyin";
+        this.whareHouse = whareHouse
     }
     // console.log(whareHouse, this.itemType);
     this.inventorySrv
-      .shelfListByWH(whareHouse, this.itemType)
+      .shelfListByWH(this.whareHouse, this.itemType)
       .subscribe((data) => {
         // console.log(data);
         this.fetchingShelfs = false;
         if (data) {
           data.sort((a, b) =>
-            a.position > b.position ? 1 : b.position > a.position ? -1 : 0
+            a._id.position > b._id.position ? 1 : -1
           );
           this.allShelfs = data;
           // console.log(this.allShelfs);
@@ -145,6 +139,74 @@ export class ShelfListComponent implements OnInit {
         } else this.toastSrv.error("No Shelfs in Wharehouse");
       });
   }
+
+  sortByPosition() {
+    if (this.sortPositionOrder == 1) {
+      this.allShelfs = this.allShelfs.sort((a, b) => a._id.position > b._id.position ? 1 : -1);
+      this.sortPositionOrder = -1
+    }
+    else {
+      this.allShelfs = this.allShelfs.sort((a, b) => a._id.position < b._id.position ? 1 : -1);
+      this.sortPositionOrder = 1
+    }
+  }
+
+  sortByItem() {
+    if (this.sortItemNumberOrder == 1) {
+      this.allShelfs = this.allShelfs.sort((a, b) => a._id.item > b._id.item ? 1 : -1);
+      this.sortItemNumberOrder = -1
+    }
+    else {
+      this.allShelfs = this.allShelfs.sort((a, b) => a._id.item < b._id.item ? 1 : -1);
+      this.sortItemNumberOrder = 1
+    }
+  }
+
+  sortByAmount() {
+    if (this.sortAmountOrder == 1) {
+      this.allShelfs = this.allShelfs.sort((a, b) => a.total > b.total ? 1 : -1);
+      this.sortAmountOrder = -1
+    }
+    else {
+      this.allShelfs = this.allShelfs.sort((a, b) => a.total < b.total ? 1 : -1);
+      this.sortAmountOrder = 1
+    }
+  }
+
+  sortByBatch() {
+    if (this.sortBatchOrder == 1) {
+      this.allShelfs = this.allShelfs.sort((a, b) => a._id.supplierBatchNumber > b._id.supplierBatchNumber ? 1 : -1);
+      this.sortBatchOrder = -1
+    }
+    else {
+      this.allShelfs = this.allShelfs.sort((a, b) => a._id.supplierBatchNumber < b._id.supplierBatchNumber ? 1 : -1);
+      this.sortBatchOrder = 1
+    }
+  }
+
+  filterByIetmNumber(ev) {
+    this.allShelfs = this.allShelfsCopy;
+    let itemNumber = ev.target.value;
+    // console.log(itemNumber);
+    if (itemNumber != "") {
+      this.allShelfs = this.allShelfs.filter(
+        (shelf) => shelf._id.item == itemNumber
+      ).sort((a, b) => a._id.itemNumber > b._id.itemNumber ? 1 : -1)
+    } else {
+      this.allShelfs = this.allShelfsCopy;
+    }
+  }
+
+  // filterByCostumer(ev) {
+  //   this.allShelfs = this.allShelfsCopy;
+  //   let costumer = ev.target.value;
+
+  //   if (costumer != "") {
+  //     this.allShelfs = this.allShelfs.filter((s) => s.costumer == costumer);
+  //   } else {
+  //     this.allShelfs = this.allShelfsCopy;
+  //   }
+  // }
 
   filterByShelf(ev) {
     this.allShelfs = this.allShelfsCopy;
@@ -154,10 +216,10 @@ export class ShelfListComponent implements OnInit {
     if (position != "") {
       if (position == "QC ROOM") {
         this.allShelfs = this.allShelfs.filter((s) =>
-          s.position.includes(position)
+          s._id.position.includes(position)
         );
       } else {
-        this.allShelfs = this.allShelfs.filter((s) => regExp.test(s.position));
+        this.allShelfs = this.allShelfs.filter((s) => regExp.test(s._id.position));
       }
     } else {
       this.allShelfs = this.allShelfsCopy;
@@ -178,33 +240,85 @@ export class ShelfListComponent implements OnInit {
     }
   }
 
+  editShelfAmount(shelf) {
+    if (shelf != "") {
+      if (this.itemType == 'material') alert('שים לב! יש לעדכן חומרי גלם לפי באטץ!')
+      this.shelfId = shelf._id
+    } else this.shelfId = {}
+    setTimeout(() => this.countInput.nativeElement.focus(), 500)
+  }
+
+  setShelfs() {
+    this.shelfId = {}
+  }
+
+  calculateDifference(shelf) {
+    shelf.difference = -1 * (shelf.total - shelf.countedAmount)
+  }
+
+  takeStock() {
+    this.allShelfs = this.allShelfsCopy
+    this.updates = this.allShelfs.filter(s => s.countedAmount != null)
+    console.log('updates before sending: ', this.updates)
+    this.modalService.open(this.updatesModal)
+  }
+
+  printStocktakeForm() {
+    this.printing = true
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.printStocktake.nativeElement.click()
+        resolve(true)
+      }, 500)
+    })
+  }
+
+  update() {
+    this.printStocktakeForm().then(result => {
+      if (result) {
+        this.modalService.dismissAll()
+        this.inventorySrv.takeStock({ itemType: this.itemType, updates: this.updates, whareHouse: this.whareHouse }).subscribe(data => {
+          console.log('response: ', data)
+          if (data.messages.length > 0) {
+            this.toastSrv.warning('צור קשר במיידי עם צוות מחשוב', 'ייתכן כי היתה בעיה')
+            console.log(data.messages)
+          }
+          else {
+            this.toastSrv.success('אנא וודא כמויות', 'עודכן בהצלחה!')
+            // fetch updated shelfs
+            if (this.whareHouse == 'Rosh HaAyin') this.getShelfsByWH(this.itemType)
+            else this.getShelfsByWH(this.whareHouse)
+          }
+          setTimeout(() => this.printing = false, 2000)
+        })
+      }
+      else this.toastSrv.error('משהו השתבש')
+    })
+  }
+
   exportShelfListToXl() {
     let shelfs = [...this.allShelfs];
     this.xlSrv.exportAsExcelFile(shelfs, "Shelf Report");
   }
 
-  updateShelfAmount(shelf) {
-    this.updatingAmount = true;
-    shelf.countDate = this.item.countDate;
-    shelf.signature = this.item.signature;
-    if (confirm("האם לעדכן מדף ?")) {
-      this.inventorySrv.updateShelfAmount(shelf).subscribe((data) => {
-        this.updatingAmount = false;
-        if (data) {
-          let UIShelf = this.allShelfs.find(
-            (s) => s._id == data.item && s.position == data.position
-          );
-          if (UIShelf) {
-            UIShelf.total = data.amount;
-            this.toastSrv.success("פריט עודכן בהצלחה !");
-          } else this.toastSrv.error("משהו השתבש");
-          this.editShelfAmount("", "");
-          this.item.countedAmount = "";
-          this.item.signature = "עמר";
-        }
-      });
-    }
-  }
+  // updateShelfAmount(shelf) {
+  //   this.updatingAmount = true;
+  //   if (confirm("האם לעדכן מדף ?")) {
+  //     this.inventorySrv.updateShelfAmount(shelf).subscribe((data) => {
+  //       this.updatingAmount = false;
+  //       if (data) {
+  //         let UIShelf = this.allShelfs.find(
+  //           (s) => s._id == data.item && s.position == data.position
+  //         );
+  //         if (UIShelf) {
+  //           UIShelf.total = data.amount;
+  //           this.toastSrv.success("פריט עודכן בהצלחה !");
+  //         } else this.toastSrv.error("משהו השתבש");
+  //         this.editShelfAmount("");
+  //       }
+  //     });
+  //   }
+  // }
 
   validateItem() {
     if (!this.itemType) this.toastSrv.error("", "יש להגדיר מחסן");
@@ -237,46 +351,23 @@ export class ShelfListComponent implements OnInit {
     }
   }
 
-  filterByIetmNumber(ev) {
-    this.allShelfs = this.allShelfsCopy;
-    let itemNumber = ev.target.value;
-    // console.log(itemNumber);
-    if (itemNumber != "") {
-      this.allShelfs = this.allShelfs.filter(
-        (shelf) => shelf._id == itemNumber
-      );
-    } else {
-      this.allShelfs = this.allShelfsCopy;
-    }
-  }
 
-  filterByCostumer(ev) {
-    this.allShelfs = this.allShelfsCopy;
-    let costumer = ev.target.value;
-
-    if (costumer != "") {
-      this.allShelfs = this.allShelfs.filter((s) => s.costumer == costumer);
-    } else {
-      this.allShelfs = this.allShelfsCopy;
-    }
-  }
-
-  updateShelfCostumer(shelf) {
-    this.inventorySrv
-      .updateShelfCostumer(shelf, this.item.costumer)
-      .subscribe((data) => {
-        if (data) {
-          let shelf = this.allShelfs.find(
-            (s) => s.item == data.item && s.position == data.position
-          );
-          if (shelf) {
-            shelf.costumer = data.tempCostumer;
-            this.toastSrv.success("לקוח עודכן בהצלחה !");
-            this.editShelfAmount("", "");
-          }
-        }
-      });
-  }
+  // updateShelfCostumer(shelf) {
+  //   this.inventorySrv
+  //     .updateShelfCostumer(shelf, this.item.costumer)
+  //     .subscribe((data) => {
+  //       if (data) {
+  //         let shelf = this.allShelfs.find(
+  //           (s) => s.item == data.item && s.position == data.position
+  //         );
+  //         if (shelf) {
+  //           shelf.costumer = data.tempCostumer;
+  //           this.toastSrv.success("לקוח עודכן בהצלחה !");
+  //           this.editShelfAmount("", "");
+  //         }
+  //       }
+  //     });
+  // }
 
   updateShelf(id) {
     let amount = this.shelfAmount.nativeElement.value;
