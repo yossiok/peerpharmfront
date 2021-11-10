@@ -1,7 +1,16 @@
 <div>This is the report page</div>
 <div class="container">
   <div class="row mt-3">
-    <div class="col-2"><button (click)="exportToExcel()">Export to Excel</button></div>
+    <div class="col-2"><button (click)="exportToExcel()">Export to Excel</button><br><br><br>
+      <button (click)="getAllItemsSales()">Load Last</button><br><br><br>
+      <button (click)="getAllSalesByCMX('500')">Load 500</button><br><br><br>
+      <button (click)="getAllSalesByCMX('1000')">Load 1000 </button><br><br><br>
+      <button (click)="getAllSalesByCMX('1500')">Load 1500</button><br><br><br>
+      <button (click)="getAllSalesByCMX('2000')">Load 2000</button><br><br><br>
+      <button (click)="getAllSalesByCMX('2500')">Load 2500</button><br><br><br>
+      <button (click)="getAllSalesByCMX('2786')">Load 3000</button>
+
+    </div>
     <div class="col-8">
       <table class="table table-striped">
         <thead>

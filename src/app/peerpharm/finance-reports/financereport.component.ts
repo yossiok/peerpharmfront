@@ -22,6 +22,7 @@ import { Currencies } from "../procurement/Currencies";
 import { ExcelService } from "src/app/services/excel.service";
 import { filter } from "lodash";
 import { ConsoleLogger } from "@aws-amplify/core";
+import { FinanceService } from "src/app/services/finance.service";
 
 @Component({
   selector: "app-finance-report",
@@ -39,7 +40,8 @@ export class FinanceReportComponent implements OnInit {
     private formuleService: FormulesService,
     private invtSer: InventoryService,
     private procuremetnService: Procurementservice,
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    private financeService: FinanceService
   ) {}
   orders: any[];
   ordersCopy: any[];
@@ -72,6 +74,14 @@ export class FinanceReportComponent implements OnInit {
   excelData: any[];
   allSalesByCMX: any[];
   itemCounter: number = 0;
+  itemGroupOne: any[];
+  itemGroupTwo: any[];
+  itemGroupThree: any[];
+  itemGroupFour: any[];
+  itemGroupFive: any[];
+  itemGroupSix: any[];
+  end: number = 0;
+  salescostreports: any[] = [];
 
   async ngOnInit() {
     this.today = new Date();
@@ -79,7 +89,7 @@ export class FinanceReportComponent implements OnInit {
 
     // this.getAllOrdersFinance();
     this.getCurrencies();
-    this.getAllSalesByCMX();
+    // this.getAllSalesByCMX();
   }
   getCurrencies() {
     this.procuremetnService.getCurrencies().subscribe((currencies) => {
@@ -94,7 +104,7 @@ export class FinanceReportComponent implements OnInit {
       .getAllOrders()
       .pipe(finalize(() => this.getAllPackedBills()))
       .subscribe((orders) => {
-        console.log(orders);
+        // console.log(orders);
 
         const thisYear = new RegExp("2021");
         let currentYearOrders = orders.filter((order) => {
@@ -219,6 +229,7 @@ export class FinanceReportComponent implements OnInit {
             if (item.orderNumber == order.orderNumber) {
               item.deliveryDate = order.deliveryDate;
               this.filteredOrders.push(item);
+              console.log(item);
             }
           }
         }
@@ -227,11 +238,12 @@ export class FinanceReportComponent implements OnInit {
       });
   }
 
-  getAllSalesByCMX() {
+  getAllSalesByCMX(group) {
     this.ordersService
       .getAllSalesByCMX()
       .pipe(finalize(() => this.getItemComponents()))
       .subscribe((data) => {
+        this.end = Number(group);
         this.filteredOrders = data;
       });
   }
@@ -240,8 +252,16 @@ export class FinanceReportComponent implements OnInit {
   getItemComponents() {
     this.waitingText = "Getting components data...";
     this.itemCounter = 0;
-    for (let i = 0; i < this.filteredOrders.length; i++) {
-      // for (let i = 0; i < 10; i++) {
+    confirm(
+      "This task may take more than an hour, are you sure you want to preceed?"
+    );
+    // let start = this.end - 500;
+    let start = this.end < 500 ? 0 : this.end - 500;
+    console.log("start: ", start);
+    console.log("End: ", this.end);
+
+    // for (let i = 0; i < this.filteredOrders.length; i++) {
+    for (let i = start; i < this.end; i++) {
       // To continue from here on sunday
       console.log(this.filteredOrders[i]);
       this.item = this.filteredOrders[i];
@@ -279,22 +299,33 @@ export class FinanceReportComponent implements OnInit {
               )
                 .then((result) => {
                   console.log(result);
+                  this.filteredOrders[i].componentsTotalCost = result.itemPrice;
+                  this.filteredOrders[i].shippingCost = result.shippingPrice;
                   console.log(this.filteredOrders[i]);
-                  this.filteredOrders[i].componentsTotalCost = result.itemPrice
-                    ? result.itemPrice
-                    : 0;
-                  this.filteredOrders[i].shippingCost = result.shippingPrice
-                    ? result.shippingPrice
-                    : 0;
+                  this.financeService
+                    .addSalesCost(this.filteredOrders[i])
+                    .subscribe((data) => {
+                      if (data.msg) {
+                        this.toastr.error(data.msg);
+                      } else {
+                        console.log(this.filteredOrders[i]);
+                        this.filteredOrders[i].componentsTotalCost =
+                          result.itemPrice ? result.itemPrice : 0;
+                        this.filteredOrders[i].shippingCost =
+                          result.shippingPrice ? result.shippingPrice : 0;
+                        console.log("End of calculation round no.: " + i);
+                        this.calculating = false;
+                        this.loadingCustomers = true;
+                      }
+                    });
+
                   // this.filteredOrders[i].totalItemCost = this.filteredOrders[i]
                   //   .materialsCost
                   //   ? result.itemPrice + this.filteredOrders[i].materialsCost
                   //   : result.itemPrice;
                   // this.filteredOrders[i].totalShippingCost =
                   //   result.shippingPrice;
-                  console.log("End of calculation roung no.: " + i);
-                  this.calculating = false;
-                  this.loadingCustomers = true;
+
                   // this.getCustomersForItem(this.item.itemNumber);
                   // this.getSuppliersForComponents();
                   // this.getStockAmounts();
@@ -303,59 +334,80 @@ export class FinanceReportComponent implements OnInit {
                   this.itemCounter++;
                   console.log("Counter no.: " + this.itemCounter);
                   // if (this.itemCounter == this.filteredOrders.length - 1)
-                  if (this.itemCounter == 20) this.exportToExcel();
+                  // if (this.itemCounter == this.filteredOrders.length - 1)
+                  //   this.exportToExcel();
+                  if (this.itemCounter == this.end - start - 1) {
+                    this.toastr.success("Loading data to the DB started");
+                  }
                 })
-                .catch((error) => this.toastr.error(error.message));
+                .catch((error) => {
+                  console.log(error.message);
+                  this.toastr.error(error.message);
+                });
             }
           );
         });
     }
+    this.toastr.success("Loading data finished");
     this.getAllOrders = true;
   }
 
   exportToExcel() {
     let num = 0;
     this.excelData = [];
-    for (let item of this.filteredOrders) {
-      num++;
-      //continue on Mondy from here. Remove the NaN for the excel.
-      item.componentsTotalCost = item.componentsTotalCost
-        ? item.componentsTotalCost
-        : 0;
-      item.shippingCost = item.shippingCost ? item.shippingCost : 0;
-      item.materialsCost = item.materialsCost ? item.materialsCost : 0;
+    this.financeService.getAllItemsSales().subscribe((data) => {
+      if (data.msg) {
+        this.toastr.error(data.msg);
+      } else {
+        let reportData = data;
+        for (let item of reportData) {
+          num++;
+          //continue on Mondy from here. Remove the NaN for the excel.
+          item.componentsTotalCost = item.componentsTotalCost
+            ? item.componentsTotalCost
+            : 0;
+          item.shippingCost = item.shippingCost ? item.shippingCost : 0;
+          item.materialsCost = item.materialsCost ? item.materialsCost : 0;
 
-      let exportData = {
-        "No.": num,
-        "Delivery Date": item.deliveryDate,
-        "Product Cat.": item.itemNumber,
-        "Order Number": item.orderNumber,
-        "Product cost(components)": item.componentsTotalCost,
-        "Product cost (materials)": item.materialsCost.toFixed(2),
-        "Product cost (shipping)": item.shippingCost.toFixed(2),
-        "Total cost per product": (
-          item.materialsCost +
-          item.componentsTotalCost +
-          item.shippingCost
-        ).toFixed(2),
-        "Quantity Ordered": Number(item.orderAmount),
-        "Quantity supplied": item.quantitySupplied,
-        "Total cost": (
-          (item.materialsCost + item.componentsTotalCost + item.shippingCost) *
-          item.quantitySupplied
-        ).toFixed(2),
-      };
-      this.excelData.push(exportData);
-      // console.log(this.excelData.length);
-      console.log("Round number: " + num);
-      // console.log(exportData);
-      // console.log(this.excelData);
-      if (this.excelData.length >= this.filteredOrders.length) {
-        console.log("excel is exported");
-        // if (this.excelData.length == this.filteredOrders.length) {
-        this.excelService.exportAsExcelFile(this.excelData, "finance");
+          let created = new Date(item.createdAt);
+          // let createdAt = created.toLocaleDateString();
+          let createdAt = moment(created).format("DD/MM/YYYY");
+          console.log(item);
+          let exportData = {
+            "No.": num,
+            "Calc. Date": createdAt,
+            "Product Cat.": item.itemNumber,
+            "Product Name": item.ItemName,
+            "Product cost(components)": item.componentsTotalCost.toFixed(4),
+            "Product cost (materials)": item.materialsCost.toFixed(4),
+            "Product cost (shipping)": item.shippingCost.toFixed(4),
+            "Total cost per product": (
+              item.materialsCost +
+              item.componentsTotalCost +
+              item.shippingCost
+            ).toFixed(4),
+            "Quantity supplied": item.quantitySupplied,
+            "Total cost": (
+              (item.materialsCost +
+                item.componentsTotalCost +
+                item.shippingCost) *
+              item.quantitySupplied
+            ).toFixed(2),
+          };
+          this.excelData.push(exportData);
+          // console.log(this.excelData.length);
+          console.log("Round number: " + num);
+          // console.log(exportData);
+          // console.log(this.excelData);
+          if (this.excelData.length >= reportData.length) {
+            console.log("excel is exported");
+            this.excelService.exportAsExcelFile(this.excelData, "finance");
+            this.toastr.success("Report exported to Excel");
+          }
+        }
       }
-    }
+    });
+
     // console.log(this.excelData);
     // if (this.excelData.length > 0) {
     //   console.log("excel is exported");
@@ -393,7 +445,7 @@ export class FinanceReportComponent implements OnInit {
           .then((itemComponents) => {
             // console.log(itemComponents);
             this.itemComponents = itemComponents;
-            // console.log(this.itemComponents);
+            console.log(this.itemComponents);
             // Calculate total item price
             for (let component of this.itemComponents) {
               if (typeof Number(component.price) == typeof 0)
@@ -477,9 +529,59 @@ export class FinanceReportComponent implements OnInit {
           ? component.shippingPrice
           : "No shipping Price";
         componentPricing.imgUrl = component.img;
+        console.log(componentPricing);
         itemComponents.push(componentPricing);
       }
       resolve(itemComponents);
+    });
+  }
+
+  //filter the items that were not inserted ito the salescostreports
+
+  getAllItemsSales() {
+    this.financeService
+      .getAllItemsSales()
+      .pipe(finalize(() => this.getNonInserted()))
+      .subscribe((data) => {
+        if (data.msg) {
+          console.log(data.msg);
+          this.toastr.error(data.msg);
+        } else {
+          this.salescostreports = data;
+        }
+      });
+  }
+
+  getNonInserted() {
+    this.ordersService.getAllSalesByCMX().subscribe((data) => {
+      if (data.msg) {
+        this.toastr.error(data.msg);
+      } else {
+        this.filteredOrders = data;
+
+        for (let item of this.salescostreports) {
+          let index = this.filteredOrders.findIndex(
+            (sr) => sr.itemNumber == item.itemNumber
+          );
+          if (index > -1) {
+            this.filteredOrders.splice(index, 1);
+          }
+        }
+        console.log(this.filteredOrders);
+        let exportToExcel = [];
+        for (let item of this.filteredOrders) {
+          let exportItem = {
+            "Product Number": item.itemNumber,
+            "Product Name": item.ItemName,
+            "Quantity sold": item.quantitySupplied,
+          };
+          exportToExcel.push(exportItem);
+        }
+        this.excelService.exportAsExcelFile(exportToExcel, "orfenItems");
+        this.toastr.success("Items exported to Excel");
+        this.end = this.filteredOrders.length;
+        this.getItemComponents();
+      }
     });
   }
 }
