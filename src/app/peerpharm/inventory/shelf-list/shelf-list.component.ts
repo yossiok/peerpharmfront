@@ -46,7 +46,7 @@ export class ShelfListComponent implements OnInit {
 
   newShelfForm: FormGroup = new FormGroup({
     item: new FormControl(null, Validators.required),
-    whareHouse: new FormControl(null, Validators.required),
+    // whareHouse: new FormControl(null, Validators.required),
     position: new FormControl(null, Validators.required),
     amount: new FormControl(null, Validators.required),
   });
@@ -77,7 +77,17 @@ export class ShelfListComponent implements OnInit {
       this.authService.loggedInUser.authorization.includes("allowedCountYear");
   }
 
-
+  addNewItemShelf() {
+    this.inventorySrv
+      .newShelfYearCount(this.newShelfForm.value, this.whareHouse)
+      .subscribe((data) => {
+        if (data._id) {
+          this.allShelfs.push(data)
+          console.log(this.allShelfs)
+          this.toastSrv.success("מדף הוקם בהצלחה");
+        } else this.toastSrv.error("משהו השתבש");
+      });
+  }
 
   getAllWhShelfs() {
     this.inventorySrv.getWhareHousesList().subscribe((res) => {
@@ -331,17 +341,7 @@ export class ShelfListComponent implements OnInit {
     }
   }
 
-  addNewItemShelf() {
-    this.inventorySrv
-      .newShelfYearCount(this.newShelfForm.value, this.whareHouse)
-      .subscribe((data) => {
-        if (data.length > 0) {
-          this.allShelfs = data;
-          this.allShelfsCopy = data;
-          this.toastSrv.success("מדף הוקם בהצלחה");
-        } else this.toastSrv.error("משהו השתבש");
-      });
-  }
+
 
   edit(id) {
     if (id != "") {

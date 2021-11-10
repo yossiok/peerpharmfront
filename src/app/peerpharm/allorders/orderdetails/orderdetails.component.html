@@ -1042,6 +1042,7 @@
     </div>
 
     <div class="container w-50" style="overflow: auto;" id="materialsPrint" class="modal-body">
+      <h1>חוסרים עבור הפריטים הנבחרים</h1>
       <table id="procurementItems" class="table table-striped">
         <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
           <tr>
@@ -1054,16 +1055,15 @@
           </tr>
         </thead>
         <tbody id="table_body">
-          <tr *ngFor="let material of materialsForFormules">
-
-            <td>{{material.itemNumber}}</td>
-            <td>{{material.itemName}}</td>
-           <!-- <td>{{material.kgProduction}}</td>-->
-            <td
-              [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
-              {{material.materialArrivals[0].amount}}</td>
-
-          </tr>
+          <ng-container *ngFor="let material of materialsForFormules">
+            <tr *ngIf="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0">
+              <td>{{material.itemNumber}}</td>
+              <td>{{material.itemName}}</td>
+              <!-- <td>{{material.kgProduction}}</td>-->
+              <td>
+                {{material.materialArrivals[0].amount}}</td>
+            </tr>
+          </ng-container>
         </tbody>
       </table>
       <br>
@@ -1155,8 +1155,8 @@
   <div class="row">
     <span class="spanTitle">Total Items: {{totalOrderQty}}</span>
     <span class='spanTitle'> Order Date:</span><span class="orderSpanDetails"> {{orderDate| date:'dd/MM/YYYY'}}
-    </span><span class='spanTitle'> Delivery Date: </span><span
-      class="orderSpanDetails">{{deliveryDate| date:'dd/MM/YYYY'}}</span>
+    </span><span class='spanTitle'> Delivery Date: </span><span class="orderSpanDetails">{{deliveryDate|
+      date:'dd/MM/YYYY'}}</span>
   </div>
   <br><br>
   <div class="row">

@@ -1,12 +1,12 @@
 <div class="text-center shadow bg-white w-75 mx-auto rounded p-5">
   <div class="row mt-4">
     <div class="col-12">
-      <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info ">Stocktaking</h1>
+      <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info ">רשימת מדפים</h1>
     </div>
   </div>
 
-  <div class="row mt-4">
-    <div class="col-1">
+  <div dir="rtl" class="row mt-4">
+    <div *ngIf="whareHouse" class="col-1">
       <button [printStyle]="{tr : {'border': 'solid 1px black'}}"
         style="visibility: hidden;" printSectionId="print-section" #printStocktake ngxPrint><img
           src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
@@ -15,9 +15,9 @@
     </div>
 
     <div class="col-3">
-      <label>Whare House</label>
+      <label>מחסן</label>
       <select (change)="getShelfsByWH($event)" class="form-control">
-        <option selected="true" disabled="disabled">WhareHouse</option>
+        <option selected="true" disabled="disabled">בחר מחסן</option>
         <option value="Kasem">Kasem</option>
         <option value="material">Rosh HaAyin - Materials</option>
         <option value="component">Rosh HaAyin - Components</option>
@@ -26,12 +26,12 @@
         <option value="Labels">Labels</option>
       </select>
     </div>
-    <div class="col-3">
-      <label>Position</label>
+    <div *ngIf="whareHouse" class="col-3">
+      <label>סנן לפי איתור</label>
       <input class="form-control" (keyup)="filterByShelf($event)">
     </div>
-    <div class="col-3">
-      <label>Item Number</label>
+    <div *ngIf="whareHouse" class="col-3">
+      <label>סנן לפי פריט</label>
       <input list="itemNumbers" class="form-control" type="text" (change)="filterByIetmNumber($event)">
       <datalist id="itemNumbers">
         <option *ngFor="let shelf of allShelfsCopy" [value]="shelf._id.item">{{shelf._id.item}}</option>
@@ -39,53 +39,53 @@
     </div>
   </div>
 
-  <div *ngIf="allowedCountYear && allShelfs && allShelfs.length > 0"
+  <div dir="rtl" *ngIf="allowedCountYear && allShelfs && allShelfs.length > 0"
     class="new-shelf d-flex flex-row justify-content-around p-5 mt-5 mb-5">
     <form [formGroup]="newShelfForm" (ngSubmit)="addNewItemShelf()">
-      <h3>Add new Shelf</h3>
+      <h3>הכנס מלאי שלא נמצא ברשימה (יש לוודא שהמדף אכן קיים במחסן)</h3>
       <div class="row">
         <div class="col-3">
           <input type="number" class="form-control" (change)="validateItem()" formControlName="item"
-            placeholder="item number">
+            placeholder='מק"ט'>
         </div>
         <div class="col-3">
           <select class="form-control" formControlName="position">
-            <option value="">Choose Position</option>
+            <option value="">איתור</option>
             <option *ngFor="let shelf of shellNums" [value]="shelf._id">{{shelf.position}}</option>
           </select>
         </div>
         <div class="col-3">
-          <input type="number" class="form-control" formControlName="amount" placeholder="Amount">
+          <input type="number" class="form-control" formControlName="amount" placeholder="כמות">
         </div>
-        <div class="col-3"><button [disabled]="!whareHouse" [style.cursor]="whareHouse ? 'pointer' : 'not-allowed'"
+        <div class="col-3"><button [disabled]="!newShelfForm.valid" [style.cursor]="whareHouse ? 'pointer' : 'not-allowed'"
             type="submit" class="btn btn-primary">הכנס</button></div>
       </div>
     </form>
 
   </div>
 
-  <div id="print-section" class="row mt-4">
-    <h1 dir="rtl" *ngIf="whareHouse">ספירת מלאי {{whareHouse}}</h1>
-    <table class="table table-bordered table-hover">
+  <div dir="rtl" *ngIf="whareHouse" id="print-section" class="row mt-4">
+    <h1 dir="rtl" *ngIf="whareHouse">מלאי {{whareHouse}} - {{itemType}}s</h1>
+    <table dir="rtl" class="table table-bordered table-hover">
       <thead class="bg-primary text-white">
         <tr>
           <th>#</th>
           <!--1-->
-          <th class="sortable" (click)="sortByItem()"><i class="fas fa-filter"></i> Item Number</th>
+          <th class="sortable" (click)="sortByItem()"><i class="fas fa-filter"></i> מק"ט</th>
           <!--1-->
-          <th *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i> Batch</th>
+          <th *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i> באטץ'</th>
           <!--3.5-->
-          <th class="sortable" (click)="sortByPosition()"><i class="fas fa-filter"></i> Position</th>
+          <th class="sortable" (click)="sortByPosition()"><i class="fas fa-filter"></i> איתור</th>
           <!--2-->
-          <th class="sortable" (click)="sortByAmount()"><i class="fas fa-filter"></i> Amount</th>
+          <th class="sortable" (click)="sortByAmount()"><i class="fas fa-filter"></i> כמות</th>
           <!--3-->
           <!-- <th>Last Count Date</th> -->
           <!-- <th>Last Counted Amount</th> -->
-          <th>Counted</th>
+          <th>ספירה נוכחית</th>
           <!--4-->
-          <th>Difference</th>
+          <th>פער</th>
           <!--4.5-->
-          <th *ngIf="allowedCountYear && !printing">Count</th>
+          <th *ngIf="allowedCountYear && !printing"></th>
           <!--5-->
         </tr>
       </thead>
@@ -121,14 +121,14 @@
           <td *ngIf="allowedCountYear && shelfId != shelf._id && !printing">
             <!--5-->
             <button (click)="editShelfAmount(shelf)" class="btn btn-primary">
-              <i class="click fa fa-pencil-alt"></i> Count
+              <i class="click fa fa-pencil-alt"></i> הכנס ספירה
             </button>
           </td>
 
           <td *ngIf="allowedCountYear && shelfId == shelf._id && !printing">
             <!--1-->
             <button [disabled]="updatingAmount" [style.cursor]="updatingAmount ? 'progress' : 'pointer'"
-              (click)="setShelfs()" class="btn btn-danger">Save to Form
+              (click)="setShelfs()" class="btn btn-danger">שמור לטופס
             </button>
           </td>
 
@@ -140,12 +140,12 @@
   <div *ngIf="allowedCountYear" class="row mt-4">
     <div class="col-3"></div>
     <div class="col-6">
-      <button (click)="takeStock()" class="btn save-form w-50">Update Stocktaking!</button>
+      <button *ngIf="whareHouse" (click)="takeStock()" class="btn save-form w-50">עדכן מלאי {{whareHouse}} - {{itemType}}s</button>
     </div>
     <div class="col-3"></div>
   </div>
 
-  <div class="row mt-3">
+  <!-- <div class="row mt-3">
     <div class="col-2"></div>
     <div class="col-2"></div>
     <div class="col-2">
@@ -156,9 +156,9 @@
     </div>
     <div class="col-2"></div>
     <div class="col-2"></div>
-  </div>
+  </div> -->
 
-  <div class="row mt-2">
+  <!-- <div class="row mt-2">
     <div class="col-12">
       <table style="font-size: 25px;" class="table table-bordered table-hover">
         <thead>
@@ -201,7 +201,7 @@
         </tbody>
       </table>
     </div>
-  </div>
+  </div> -->
 </div>
 
 
