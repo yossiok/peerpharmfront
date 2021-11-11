@@ -148,6 +148,11 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   async printFormules() {
+
+    for (let formule of this.workPlan.productionFormules) {
+      formule.formuleData = this.formuleCalculate(formule.formuleData, formule.totalKG)
+    }
+    
     this.printingFormules = true
     setTimeout(() => {
       this.printFormuleBtn.nativeElement.click()
