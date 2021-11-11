@@ -248,8 +248,8 @@
                 <div>
                   <img src="../../../../assets/images/refreshData.png" class="float-right small" alt="get user name"
                     (click)="getItemPurchases(component)">
-                  <span *ngIf="component.purchaseOrders.length == 0">אין הזמנות פתוחות לפריט</span>
-                  <table *ngIf="component.purchaseOrders.length > 0" style="zoom:0.7">
+                  <span *ngIf="component.purchaseOrders && component.purchaseOrders.length == 0">אין הזמנות פתוחות לפריט</span>
+                  <table *ngIf="component.purchaseOrders && component.purchaseOrders.length > 0" style="zoom:0.7">
                     <thead class="text-white">
                       <tr>
                         <th class="text-white">PO #</th>
