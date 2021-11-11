@@ -281,28 +281,17 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           changes.purchaseData.currentValue.sumShippingCost = 0;
       }
       if (this.isEdit) {
-        if (changes.purchaseData.currentValue.remarks == null)
-          changes.purchaseData.currentValue.remarks = "";
-        if (!changes.purchaseData.currentValue.closeReason)
-          changes.purchaseData.currentValue.closeReason = "";
-        if (!changes.purchaseData.currentValue.userEmail)
-          changes.purchaseData.currentValue.userEmail = "";
-        if (!changes.purchaseData.currentValue.supplierCountry)
-          changes.purchaseData.currentValue.supplierCountry = "";
-        if (!changes.purchaseData.currentValue.user)
-          changes.purchaseData.currentValue.user = "";
-        if (!changes.purchaseData.currentValue.shippingPercentage)
-          changes.purchaseData.currentValue.shippingPercentage = 0;
-        if (!changes.purchaseData.currentValue.finalPurchasePrice)
-          changes.purchaseData.currentValue.finalPurchasePrice = 0;
-        if (!changes.purchaseData.currentValue.origin)
-          changes.purchaseData.currentValue.origin = "";
-        if (!changes.purchaseData.currentValue.statusUpdates)
-          changes.purchaseData.currentValue.statusUpdates = [];
-        if (!changes.purchaseData.currentValue.statusChange)
-          changes.purchaseData.currentValue.statusChange = null;
-        if (!changes.purchaseData.currentValue.requestedDate)
-          changes.purchaseData.currentValue.requestedDate = null;
+        if (changes.purchaseData.currentValue.remarks == null) changes.purchaseData.currentValue.remarks = "";
+        if (!changes.purchaseData.currentValue.closeReason) changes.purchaseData.currentValue.closeReason = "";
+        if (!changes.purchaseData.currentValue.userEmail) changes.purchaseData.currentValue.userEmail = "";
+        if (!changes.purchaseData.currentValue.supplierCountry) changes.purchaseData.currentValue.supplierCountry = "";
+        if (!changes.purchaseData.currentValue.user) changes.purchaseData.currentValue.user = "";
+        if (!changes.purchaseData.currentValue.shippingPercentage) changes.purchaseData.currentValue.shippingPercentage = 0;
+        if (!changes.purchaseData.currentValue.finalPurchasePrice) changes.purchaseData.currentValue.finalPurchasePrice = 0;
+        if (!changes.purchaseData.currentValue.origin) changes.purchaseData.currentValue.origin = "";
+        if (!changes.purchaseData.currentValue.statusUpdates) changes.purchaseData.currentValue.statusUpdates = [];
+        if (!changes.purchaseData.currentValue.statusChange) changes.purchaseData.currentValue.statusChange = null;
+        if (!changes.purchaseData.currentValue.requestedDate) changes.purchaseData.currentValue.requestedDate = null;
         this.newPurchase.setValue(changes.purchaseData.currentValue);
       }
     }
@@ -1039,17 +1028,21 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       .setPurchaseStatus(this.newPurchase.value)
       .subscribe((data) => {
         if (data) {
+          this.purchaseData = data
+          this.newProcurementSaved.emit(data)
           this.toastr.success("סטטוס עודכן בהצלחה !");
         } else this.toastr.error("משהו השתבש...");
       });
-  }
-
-  setStatusDate() {
-    this.newPurchase.controls.statusChange.setValue(this.statusDate);
-    this.procurementService
+    }
+    
+    setStatusDate() {
+      this.newPurchase.controls.statusChange.setValue(this.statusDate);
+      this.procurementService
       .setPurchaseStatus(this.newPurchase.value)
       .subscribe((data) => {
         if (data) {
+          this.purchaseData = data
+          this.newProcurementSaved.emit(data)
           this.modalService.dismissAll();
           this.toastr.success("סטטוס עודכן בהצלחה !");
         } else this.toastr.error("משהו השתבש...");

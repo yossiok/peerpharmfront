@@ -77,10 +77,10 @@
               <option value="waitingForApproval">waiting approval</option>
               <option value="approvedBySupplier">approved</option>
               <option value="ready">ready</option>
-              <option value="sentBySupplier">sent by supplier</option>
+              <!-- <option value="sentBySupplier">sent by supplier</option> -->
               <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="ETD">Estimated
                 Departure(E.T.D)</option>
-              <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="ETA">Estimated
+              <option value="ETA">Estimated
                 Arrival(E.T.A)</option>
               <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="cstClear">custom cleared
               </option>
