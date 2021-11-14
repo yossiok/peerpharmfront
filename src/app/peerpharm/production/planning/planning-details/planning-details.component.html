@@ -216,7 +216,7 @@
                         <td>{{material.itemNumber}}</td>
                         <td>{{material.itemName}}</td>
                         <td>{{material.kgProduction}}</td>
-                        <td
+                        <td *ngIf="material.materialArrivals[0]"
                             [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
                             {{material.materialArrivals[0].amount | number}}</td>
 
