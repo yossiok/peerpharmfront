@@ -72,6 +72,7 @@ export class PlanningDetailsComponent implements OnInit {
 
   authenticate(): Promise<boolean> {
     return new Promise((resolve, reject) => {
+      // resolve(true)
       this.modalService.userAnserEventEmitter.subscribe((userChoice) => {
         if (userChoice) resolve(userChoice);
         else reject(false);
@@ -86,25 +87,42 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   setStatus(event) {
+    let currentStatus = this.workPlan.status;
     if (confirm("האם אתה בטוח שברצונך לשנות סטטוס?")) {
       this.workPlan.status = event.target.value;
-      this.saveChanges();
+      this.saveChanges()
+        .then((success) => {
+          this.toastr.success("סטטוס עודכן בהצלחה");
+        })
+        .catch((error) => {
+          this.toastr.error(error);
+          this.workPlan.status = currentStatus;
+        });
     }
   }
 
   saveChanges() {
-    this.productionService.editWorkPlan(this.workPlan).subscribe((data) => {
-      if (data.status) this.toastr.success("הפרטים נשמרו בהצלחה");
-      this.edit = -1;
-      this.workPlan = data;
-      this.updateWorkPlans.emit();
+    return new Promise((resolve, reject) => {
+      this.productionService.editWorkPlan(this.workPlan).subscribe((data) => {
+        if (data.status) {
+          this.toastr.success("הפרטים נשמרו בהצלחה");
+          this.edit = -1;
+          this.workPlan = data;
+          this.updateWorkPlans.emit();
+          resolve(true);
+        } else if (data.error) {
+          reject(data.error);
+        }
+      });
     });
   }
 
   deleteLine(i: number) {
     if (confirm("השורה תימחק והכמויות יחושבו מחדש. האם אתה בטוח?")) {
       this.workPlan.orderItems.splice(i, 1);
-      this.saveChanges();
+      this.saveChanges()
+        .then((success) => this.toastr.success("השורה נמחקה בהצלחה"))
+        .catch((error) => this.toastr.error(error));
     } else this.toastr.warning("לא בוצעו שינויים");
   }
 
