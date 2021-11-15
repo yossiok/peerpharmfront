@@ -246,19 +246,14 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       if (!this.purchaseData.closeReason) this.purchaseData.closeReason = "";
       if (!this.purchaseData.userEmail) this.purchaseData.userEmail = "";
       if (!this.purchaseData.user) this.purchaseData.user = "";
-      if (!this.purchaseData.supplierCountry)
-        this.purchaseData.supplierCountry = "";
-      if (!this.purchaseData.shippingPercentage)
-        this.purchaseData.shippingPercentage = 0;
-      if (!this.purchaseData.finalPurchasePrice)
-        this.purchaseData.finalPurchasePrice = 0;
+      if (!this.purchaseData.supplierCountry) this.purchaseData.supplierCountry = "";
+      if (!this.purchaseData.shippingPercentage) this.purchaseData.shippingPercentage = 0;
+      if (!this.purchaseData.finalPurchasePrice) this.purchaseData.finalPurchasePrice = 0;
       if (!this.purchaseData.origin) this.purchaseData.origin = "";
-      if (!this.purchaseData.statusUpdates)
-        this.purchaseData.statusUpdates = [];
-      if (!this.purchaseData.statusChange)
-        this.purchaseData.statusChange = null;
-      if (!this.purchaseData.requestedDate)
-        this.purchaseData.requestedDate = null;
+      if (!this.purchaseData.statusUpdates) this.purchaseData.statusUpdates = [];
+      if (!this.purchaseData.statusChange) this.purchaseData.statusChange = null;
+      if (!this.purchaseData.requestedDate) this.purchaseData.requestedDate = null;
+      if (!this.purchaseData.arrivalDate) this.purchaseData.arrivalDate = null;
       this.newPurchase.setValue(this.purchaseData as PurchaseData);
       this.newPurchase.controls.orderType.setValue(this.purchaseData.orderType);
     } else this.purchaseData = undefined;
