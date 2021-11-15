@@ -285,7 +285,7 @@ export class InventoryService {
       .pipe(map((res) => res.json()));
   }
 
-  // ספירת מלאי - עדכון מדף ספציפי 
+  // ספירת מלאי - עדכון מדף ספציפי
   newShelfYearCount(shelf, whareHouse): Observable<any> {
     let url = this.baseUrl + "itemShell/newShelfYearCount";
     return this.http
@@ -647,6 +647,14 @@ export class InventoryService {
     return this.http
       .post(url, JSON.stringify(reportForm), this.options)
       .pipe(map((reponse) => reponse.json()));
+  }
+  getInvRepCosts(type) {
+    let url = this.baseUrl + "component/inventoryCosts?itemType=" + type;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  getProductsStock() {
+    let url = this.baseUrl + "component/productsStock";
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
   getpurchaseRec(query) {

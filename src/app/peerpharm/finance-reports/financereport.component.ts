@@ -82,6 +82,9 @@ export class FinanceReportComponent implements OnInit {
   itemGroupSix: any[];
   end: number = 0;
   salescostreports: any[] = [];
+  loader: boolean = false;
+  itemType: string;
+  itemsList: any[];
 
   async ngOnInit() {
     this.today = new Date();
@@ -239,17 +242,22 @@ export class FinanceReportComponent implements OnInit {
   }
 
   getAllSalesByCMX(group) {
+    this.loader = true;
+    this.filteredOrders = [];
     this.ordersService
       .getAllSalesByCMX()
       .pipe(finalize(() => this.getItemComponents()))
       .subscribe((data) => {
         this.end = Number(group);
-        this.filteredOrders = data;
+        this.itemsList = [...data];
+        this.filteredOrders = [...data];
+        this.loader = false;
       });
   }
 
   // Get all item's components
   getItemComponents() {
+    this.loader = true;
     this.waitingText = "Getting components data...";
     this.itemCounter = 0;
     confirm(
@@ -350,56 +358,67 @@ export class FinanceReportComponent implements OnInit {
     }
     this.toastr.success("Loading data finished");
     this.getAllOrders = true;
+    this.loader = false;
   }
 
   exportToExcel() {
     let num = 0;
     this.excelData = [];
+    this.loader = true;
     this.financeService.getAllItemsSales().subscribe((data) => {
+      console.log(data);
       if (data.msg) {
         this.toastr.error(data.msg);
       } else {
         let reportData = data;
+
         for (let item of reportData) {
           num++;
-          //continue on Mondy from here. Remove the NaN for the excel.
-          item.componentsTotalCost = item.componentsTotalCost
-            ? item.componentsTotalCost
-            : 0;
-          item.shippingCost = item.shippingCost ? item.shippingCost : 0;
-          item.materialsCost = item.materialsCost ? item.materialsCost : 0;
+          let index = this.itemsList.findIndex(
+            (li) => item.itemNumber == li.itemNumber
+          );
+          console.log("Index is: " + index);
+          if (index > -1) {
+            //continue on Mondy from here. Remove the NaN for the excel.
+            item.componentsTotalCost = item.componentsTotalCost
+              ? item.componentsTotalCost
+              : 0;
+            item.shippingCost = item.shippingCost ? item.shippingCost : 0;
+            item.materialsCost = item.materialsCost ? item.materialsCost : 0;
 
-          let created = new Date(item.createdAt);
-          // let createdAt = created.toLocaleDateString();
-          let createdAt = moment(created).format("DD/MM/YYYY");
-          console.log(item);
-          let exportData = {
-            "No.": num,
-            "Calc. Date": createdAt,
-            "Product Cat.": item.itemNumber,
-            "Product Name": item.ItemName,
-            "Product cost(components)": item.componentsTotalCost.toFixed(4),
-            "Product cost (materials)": item.materialsCost.toFixed(4),
-            "Product cost (shipping)": item.shippingCost.toFixed(4),
-            "Total cost per product": (
-              item.materialsCost +
-              item.componentsTotalCost +
-              item.shippingCost
-            ).toFixed(4),
-            "Quantity supplied": item.quantitySupplied,
-            "Total cost": (
-              (item.materialsCost +
+            let created = new Date(item.createdAt);
+            // let createdAt = created.toLocaleDateString();
+            let createdAt = moment(created).format("DD/MM/YYYY");
+            console.log(item);
+            let exportData = {
+              "No.": num,
+              "Calc. Date": createdAt,
+              "Product Cat.": item.itemNumber,
+              "Product Name": item.itemName,
+              "Product cost(components)": item.componentsTotalCost.toFixed(4),
+              "Product cost (materials)": item.materialsCost.toFixed(4),
+              "Product cost (shipping)": item.shippingCost.toFixed(4),
+              "Total cost per product": (
+                item.materialsCost +
                 item.componentsTotalCost +
-                item.shippingCost) *
-              item.quantitySupplied
-            ).toFixed(2),
-          };
-          this.excelData.push(exportData);
-          // console.log(this.excelData.length);
-          console.log("Round number: " + num);
-          // console.log(exportData);
-          // console.log(this.excelData);
-          if (this.excelData.length >= reportData.length) {
+                item.shippingCost
+              ).toFixed(4),
+              "Quantity supplied": item.quantitySupplied,
+              "Total cost": (
+                (item.materialsCost +
+                  item.componentsTotalCost +
+                  item.shippingCost) *
+                item.quantitySupplied
+              ).toFixed(2),
+            };
+            this.excelData.push(exportData);
+            // console.log(this.excelData.length);
+            console.log("Round number: " + num);
+            // console.log(exportData);
+            // console.log(this.excelData);
+          }
+          if (num >= reportData.length) {
+            this.loader = false;
             console.log("excel is exported");
             this.excelService.exportAsExcelFile(this.excelData, "finance");
             this.toastr.success("Report exported to Excel");
@@ -581,6 +600,73 @@ export class FinanceReportComponent implements OnInit {
         this.toastr.success("Items exported to Excel");
         this.end = this.filteredOrders.length;
         this.getItemComponents();
+      }
+    });
+  }
+
+  getInvRepCosts(type) {
+    this.itemType = type;
+    let sortOrder;
+    this.loader = true;
+    this.filteredOrders = [];
+    this.excelData = [];
+    this.invtSer.getInvRepCosts(type).subscribe((data) => {
+      this.loader = false;
+      console.log(data);
+      this.excelData = [];
+      this.filteredOrders = [];
+
+      let createdAt = moment(this.today).format("DD/MM/YYYY");
+      for (let item of data) {
+        let itemObj = {
+          "Item Type": item.itemType,
+          "Item Number": item.itemNumber,
+          "Item Name": item.itemName,
+          "Item Cost": item.actualPrice,
+          "Item Coin": item.actualCoin,
+          "Amount in Stock": item.totalAmount,
+          Date: createdAt,
+        };
+        this.excelData.push(itemObj);
+        this.filteredOrders.push(item);
+      }
+
+      sortOrder = [
+        "Date",
+        "Item Type",
+        "Item Number",
+        "Item Name",
+        "Item Cost",
+        "Item Coin",
+        "Amount in Stock",
+      ];
+
+      this.getAllOrders = true;
+      this.loader = false;
+      this.excelService.exportAsExcelFile(
+        this.excelData,
+        "Inventory Report",
+        sortOrder
+      );
+    });
+  }
+  getInvRepProdCosts() {
+    let sortOrder;
+    this.loader = true;
+    this.filteredOrders = [];
+    this.excelData = [];
+    this.invtSer.getProductsStock().subscribe((data) => {
+      if (data.msg) {
+        this.toastr.error(data.msg);
+      } else {
+        console.log(data);
+        this.end = data.length;
+        for (let item of data) {
+          item.quantitySupplied = item.totalAmount;
+        }
+        this.itemsList = data;
+        this.filteredOrders = data;
+        this.loader = false;
       }
     });
   }

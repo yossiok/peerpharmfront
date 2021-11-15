@@ -1,59 +1,180 @@
-<div>This is the report page</div>
-<div class="container">
-  <div class="row mt-3">
-    <div class="col-2"><button (click)="exportToExcel()">Export to Excel</button><br><br><br>
-      <button (click)="getAllItemsSales()">Load Last</button><br><br><br>
-      <button (click)="getAllSalesByCMX('500')">Load 500</button><br><br><br>
-      <button (click)="getAllSalesByCMX('1000')">Load 1000 </button><br><br><br>
-      <button (click)="getAllSalesByCMX('1500')">Load 1500</button><br><br><br>
-      <button (click)="getAllSalesByCMX('2000')">Load 2000</button><br><br><br>
-      <button (click)="getAllSalesByCMX('2500')">Load 2500</button><br><br><br>
-      <button (click)="getAllSalesByCMX('2786')">Load 3000</button>
-
+<div class="container text-center bg-white shadow-lg">
+  <div class="row mt-4">
+    <div class="col-12">
+      <h1 class="text-info">Finance Reports</h1>
     </div>
-    <div class="col-8">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>itme Number</th>
-            <th>Components Cost</th>
-            <th>Materials Cost</th>
-            <th>Shipping cost</th>
-            <th>Total cost per item</th>
-            <th>Total cost per amount supplied</th>
-            <th>Order Number</th>
-            <th>Amount Supplied</th>
-            <th>Delivery Date</th>
-
-          </tr>
-        </thead>
-        <tbody *ngIf="getAllOrders">
-          <tr *ngFor="let item of filteredOrders; let i = index">
-            <td>{{i+1}}</td>
-            <td>{{item.itemNumber}}</td>
-            <td>{{item.componentsTotalCost}}</td>
-            <td>{{item.materialsCost}}</td>
-            <td>{{item.shippingCost}}</td>
-            <td>{{item.componentsTotalCost + item.materialsCost + item.shippingCost}}</td>
-            <td>
-              {{((item.componentsTotalCost + item.materialsCost + item.shippingCost)*item.quantitySupplied).toFixed(2)}}
-            </td>
-            <td>{{item.orderNumber}}</td>
-            <td>{{item.quantitySupplied}}</td>
-            <td>{{item.deliveryDate}}</td>
-          </tr>
-
-        </tbody>
-
-
-
-      </table>
-
-
-    </div>
-    <div class="col-2"></div>
   </div>
 
+  <mat-tab-group mat-align-tabls='center'>
+    <mat-tab label="Products Sales costs">
+      <div class="row mt-4">
+        <div class="col-12">
+          <h4>Products Sales costs</h4>
+        </div>
+      </div>
 
+      <div class="row mt-3">
+        <div class="col-2"><button (click)="exportToExcel()">Export to Excel</button><br><br><br>
+          <button (click)="getAllItemsSales()">Load Last</button><br><br><br>
+          <button (click)="getAllSalesByCMX('500')">Load 500</button><br><br><br>
+          <button (click)="getAllSalesByCMX('1000')">Load 1000 </button><br><br><br>
+          <button (click)="getAllSalesByCMX('1500')">Load 1500</button><br><br><br>
+          <button (click)="getAllSalesByCMX('2000')">Load 2000</button><br><br><br>
+          <button (click)="getAllSalesByCMX('2500')">Load 2500</button><br><br><br>
+          <button (click)="getAllSalesByCMX('2786')">Load 3000</button>
+
+        </div>
+        <div class="col-8">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>itme Number</th>
+                <th>Components Cost</th>
+                <th>Materials Cost</th>
+                <th>Shipping cost</th>
+                <th>Total cost per item</th>
+                <th>Total cost per amount supplied</th>
+                <th>Order Number</th>
+                <th>Amount Supplied</th>
+                <th>Delivery Date</th>
+
+              </tr>
+            </thead>
+            <tbody *ngIf="getAllOrders">
+              <tr *ngFor="let item of filteredOrders; let i = index">
+                <td>{{i+1}}</td>
+                <td>{{item.itemNumber}}</td>
+                <td>{{item.componentsTotalCost}}</td>
+                <td>{{item.materialsCost}}</td>
+                <td>{{item.shippingCost}}</td>
+                <td>{{item.componentsTotalCost + item.materialsCost + item.shippingCost}}</td>
+                <td>
+                  {{((item.componentsTotalCost + item.materialsCost + item.shippingCost)*item.quantitySupplied).toFixed(2)}}
+                </td>
+                <td>{{item.orderNumber}}</td>
+                <td>{{item.quantitySupplied}}</td>
+                <td>{{item.deliveryDate}}</td>
+              </tr>
+
+            </tbody>
+
+
+
+          </table>
+
+
+        </div>
+        <div class="col-2"></div>
+      </div>
+    </mat-tab>
+
+
+    <mat-tab label="Stock Raw Materials">
+      <div class="row mt-4">
+        <div class="col-12">
+          <h4>Stock costs: Monthly Report</h4>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-2"><button (click)="exportToExcel()">Export Products to Excel</button><br><br><br>
+          <button (click)="getInvRepProdCosts()">Products List</button><br><br><br>
+          <button (click)="getItemComponents()">Products Pricing</button><br><br><br>
+          <button (click)="getInvRepCosts('component')">Componenets</button><br><br><br>
+          <button (click)="getInvRepCosts('material')">Materials </button><br><br><br>
+        </div>
+        <div class="col-8">
+          <div class="bigLoader" *ngIf="loader"></div>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th colspan="5">Stock Report for {{itemType}}, {{today| date:'dd/MM/YYY'}} </th>
+              </tr>
+              <tr>
+                <th>#</th>
+                <td>Item Type</td>
+                <th>Item Number</th>
+                <th>Item Name</th>
+                <th>Item Cost</th>
+                <th>Item Coin</th>
+                <th>Item Amount</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="getAllOrders">
+              <tr *ngFor="let item of filteredOrders; let i = index">
+                <td>{{i+1}}</td>
+                <td>{{item.itemType}}</td>
+                <td>{{item.itemNumber}}</td>
+                <td>{{item.itemName}}</td>
+                <td>{{item.actualPrice}}</td>
+                <td>{{item.actualCoin}}</td>
+                <td>{{item.totalAmount}}</td>
+              </tr>
+
+            </tbody>
+
+
+
+          </table>
+
+
+        </div>
+        <div class="col-2"></div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Stock Products">
+      <div class="row mt-4">
+        <div class="col-12">
+          <h4>Stock costs: Monthly Report for Proudcts</h4>
+        </div>
+      </div>
+
+      <div class="row mt-3">
+        <div class="col-2"><button (click)="exportToExcel()">Export Products to Excel</button><br><br><br>
+          <button (click)="getInvRepProdCosts()">Products List</button><br><br><br>
+          <button (click)="getItemComponents()">Products Pricing</button><br><br><br>
+          <button (click)="getInvRepCosts('component')">Componenets</button><br><br><br>
+          <button (click)="getInvRepCosts('material')">Materials </button><br><br><br>
+        </div>
+        <div class="col-8">
+          <div class="bigLoader" *ngIf="loader"></div>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th colspan="5">Stock Report for {{itemType}}, {{today| date:'dd/MM/YYY'}} </th>
+              </tr>
+              <tr>
+                <th>#</th>
+                <td>Item Type</td>
+                <th>Item Number</th>
+                <th>Item Name</th>
+                <th>Item Cost</th>
+                <th>Item Coin</th>
+                <th>Item Amount</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="getAllOrders">
+              <tr *ngFor="let item of filteredOrders; let i = index">
+                <td>{{i+1}}</td>
+                <td>{{item.itemType}}</td>
+                <td>{{item.itemNumber}}</td>
+                <td>{{item.itemName}}</td>
+                <td>{{item.actualPrice}}</td>
+                <td>{{item.actualCoin}}</td>
+                <td>{{item.totalAmount}}</td>
+              </tr>
+
+            </tbody>
+
+
+
+          </table>
+
+
+        </div>
+        <div class="col-2"></div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
 </div>

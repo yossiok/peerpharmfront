@@ -11,6 +11,10 @@ import { FormulesService } from "src/app/services/formules.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ItemsService } from "src/app/services/items.service";
 import * as _ from "lodash";
+import { fromEventPattern } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
+import { WorkPlan } from "../planning/WorkPlan";
+import { ProductionService } from "src/app/services/production.service";
 
 interface FormuleWeight {
   formuleNumber: any;
@@ -48,6 +52,8 @@ export class WeightProductionComponent implements OnInit {
   printStickerBtn: Boolean = false;
   edit: boolean = false;
   showPill: boolean = true;
+  importedFormule: any;
+  workPlan: WorkPlan;
 
   barcode = {
     materialId: "",
@@ -81,17 +87,40 @@ export class WeightProductionComponent implements OnInit {
     private inventorySrv: InventoryService,
     private toastSrv: ToastrService,
     private modalService: NgbModal,
-    private itemService: ItemsService
-  ) { }
+    private itemService: ItemsService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private productionService: ProductionService
+  ) {}
 
   ngOnInit() {
     setTimeout(() => {
       this.formuleNumber.nativeElement.focus();
     }, 500);
+    this.importedFormule = this.route.queryParamMap.subscribe((params) => {
+      console.log(params);
+      let workPlanId = params["params"].workPlan || null;
+
+      console.log(workPlanId);
+      if (workPlanId) {
+        this.displayFormules(workPlanId);
+      }
+    });
+  }
+  ngOnDestroy() {
+    this.importedFormule.unsubscribe();
   }
 
   deleteFormule(i) {
-    if (confirm("להסיר פורמולה?")) this.formules.splice(i, 1);
+    console.log(i);
+    if (confirm("להסיר פורמולה?")) {
+      this.formules.splice(i, 1);
+      this.finalWeight = 0;
+      for (let formule of this.formules) {
+        this.finalWeight += Number(formule.formuleWeight);
+      }
+      this.newCompareFormules();
+    }
   }
 
   newProcess() {
@@ -106,12 +135,22 @@ export class WeightProductionComponent implements OnInit {
   }
 
   checkFormule(e) {
+    console.log(e.target.value);
     this.formuleSrv.getFormuleByNumber(e.target.value).subscribe((data) => {
-      if (data == null) {
-        this.toastSrv.error(`Formule Number ${e.target.value} Not Found!`);
-        this.formuleExist = false;
+      console.log(data);
+      if (data) {
+        if (data.msg) {
+          console.log(data);
+          this.toastSrv.error(`Formule Number ${e.target.value} Not Found!`);
+          this.formuleExist = false;
+        } else if (data) {
+          console.log(data);
+          this.formuleExist = true;
+        }
       } else {
-        this.formuleExist = true;
+        this.toastSrv.error(`Formule Number ${e.target.value} Not Found!`);
+        console.log("this formula doesn't exist");
+        this.formuleExist = false;
       }
     });
   }
@@ -124,17 +163,59 @@ export class WeightProductionComponent implements OnInit {
       this.itemService
         .getItemData(this.formuleNumber.nativeElement.value)
         .subscribe((itemData) => {
-          this.addFormuleWeight(itemData);
+          console.log(itemData);
+          if (itemData.length != 0) {
+            if (itemData.msg) {
+              this.toastSrv.error(itemData.msg);
+              this.formuleNumber.nativeElement.focus();
+              return;
+            } else {
+              this.addFormuleWeight(itemData);
+            }
+          } else {
+            this.toastSrv.error(
+              "Item number not found, check if there is an item defined for this formule."
+            );
+            this.formuleNumber.nativeElement.focus();
+            return;
+          }
         });
     } else {
       this.toastSrv.error("Please fill all fields");
-      this.formuleNumber.nativeElement.focus();
+      this.formuleWeight.nativeElement.focus();
     }
+  }
+  displayFormules(id) {
+    console.log(id);
+    this.productionService.getWorkPlan(id).subscribe((data) => {
+      if (data.msg) {
+        this.toastSrv.error(data.msg);
+        return;
+      } else if (data) {
+        this.finalWeight = 0;
+        console.log(data);
+        for (let orderItem of data.orderItems) {
+          let formuleWeight: FormuleWeight = {
+            formuleNumber: orderItem.itemNumber,
+            formuleWeight: orderItem.totalKG,
+            formuleOrder: orderItem.orderNumber,
+            formuleUnitWeight: orderItem.netWeightGr,
+            data: orderItem.formule,
+          };
+          this.finalWeight += Number(formuleWeight.formuleWeight);
+          this.formules.push(formuleWeight);
+        }
+      } else {
+        this.toastSrv.error("Workplan was not found.", "Try again");
+        return;
+      }
+    });
   }
 
   addFormuleWeight(itemData) {
+    console.log(itemData);
     let formuleWeight: FormuleWeight = {
-      formuleNumber: this.formuleNumber.nativeElement.value,
+      formuleNumber: itemData[0].itemNumber,
       formuleWeight: this.formuleWeight.nativeElement.value,
       formuleOrder: this.orderNumber.nativeElement.value,
       formuleUnitWeight: itemData[0].netWeightK,
@@ -142,19 +223,22 @@ export class WeightProductionComponent implements OnInit {
       data: {},
     };
     this.formuleSrv
-      .getFormuleByNumber(this.formuleNumber.nativeElement.value)
+      .getFormuleByNumber(formuleWeight.formuleNumber)
       .subscribe((data) => {
         if (data == null) {
           this.toastSrv.error(
-            `Formule Number ${this.formuleNumber.nativeElement.value} Not Found!`
+            `Formule Number ${formuleWeight.formuleNumber} Not Found!`
           );
+          return;
+        } else if (data.msg) {
+          this.toastSrv.error(data.msg);
           return;
         } else {
           formuleWeight.data = this.formuleCalculate(
             data,
-            this.formuleWeight.nativeElement.value
+            formuleWeight.formuleWeight
           );
-          this.finalWeight += Number(this.formuleWeight.nativeElement.value);
+          this.finalWeight += Number(formuleWeight.formuleWeight);
           this.formules.push(formuleWeight);
         }
         this.formuleNumber.nativeElement.value = "";
@@ -173,6 +257,74 @@ export class WeightProductionComponent implements OnInit {
     return data;
   }
 
+  newCompareFormules() {
+    let identical = true;
+
+    for (let formule = 0; formule < this.formules.length - 1; formule++) {
+      for (
+        let phase = 0;
+        phase < this.formules[formule].data.phases.length;
+        phase++
+      ) {
+        console.log(this.formules[formule].data.phases[phase]);
+        for (
+          let item = 0;
+          item < this.formules[formule].data.phases[phase].items.length;
+          item++
+        ) {
+          // console.log(this.formules[formule].data.phases[phase].items[item]);
+          // console.log(
+          //   this.formules[formule].data.phases[phase].items[item].itemNumber
+          // );
+          let currentItem =
+            this.formules[formule].data.phases[phase].items[item];
+          console.log(currentItem.itemNumber);
+          let itemsToCompare =
+            this.formules[formule + 1].data.phases[phase].items;
+          console.log(itemsToCompare);
+          let index = itemsToCompare.findIndex((item) => {
+            console.log(item.itemNumber);
+            console.log(currentItem.itemNumber);
+            return item.itemNumber == currentItem.itemNumber;
+          });
+          if (index == -1) {
+            console.log(index);
+            identical = false;
+            console.log("index is: " + identical);
+            this.formules[formule].data.phases[phase].items[item].color =
+              "orange";
+          } else if (
+            Number(currentItem.percentage) !=
+            Number(itemsToCompare[index].percentage)
+          ) {
+            console.log(index);
+            console.log("index is: " + identical);
+            console.log("Item percentage: " + currentItem.percentage);
+            console.log(
+              "Comperted Item percentage: " + itemsToCompare[index].percentage
+            );
+            identical = false;
+            currentItem.color = "orange";
+            itemsToCompare[index].color = "orange";
+            console.log(
+              this.formules[formule + 1].data.phases[phase].items[index]
+            );
+          } else {
+            currentItem.color = "lightgreen";
+            itemsToCompare[index].color = "lightgreen";
+            console.log(
+              this.formules[formule + 1].data.phases[phase].items[index]
+            );
+          }
+        }
+      }
+    }
+
+    if (identical == true) {
+      this.toastSrv.success("Twin Formules!", "The formules are identical.");
+    }
+  }
+
   compareFormules() {
     for (let i = 0; i < this.formules.length - 1; i++) {
       if (
@@ -181,8 +333,9 @@ export class WeightProductionComponent implements OnInit {
           this.formules[i + 1].data.phases
         )
       ) {
-        this.finalFormule = this.formules[i];
-        this.toastSrv.success("Twin Formules!");
+        // this.finalFormule = this.formules[i];
+        this.toastSrv.success("Twin Formules!", "The formules are identical");
+        return;
       } else {
         for (let j = 0; j < this.formules[i].data.phases.length; j++) {
           for (
@@ -204,9 +357,12 @@ export class WeightProductionComponent implements OnInit {
   }
 
   chooseFormule(formule) {
-    this.showPill = false
-    this.finalFormule = { ...formule }
-    this.finalFormule.data = this.formuleCalculate(this.finalFormule.data, this.finalWeight)
+    this.showPill = false;
+    this.finalFormule = { ...formule };
+    this.finalFormule.data = this.formuleCalculate(
+      this.finalFormule.data,
+      this.finalWeight
+    );
   }
 
   printFormule() {

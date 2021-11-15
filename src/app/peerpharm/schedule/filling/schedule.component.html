@@ -276,6 +276,11 @@
             <input type="radio" name="type" value="laser" [(ngModel)]="scheduleLine.mkp" />Laser<br />
             <input type="radio" name="type" value="stickers" [(ngModel)]="scheduleLine.mkp" />Stickers<br />
           </td>
+          <td>
+            <input type="radio" name="type" value="mkp2" [(ngModel)]="scheduleLine.mkp" />MKP 2<br />
+            <input type="radio" name="type" value="packaging" [(ngModel)]="scheduleLine.mkp" />Packaging<br />
+            <input type="radio" name="type" value="cream" [(ngModel)]="scheduleLine.mkp" />Cream <br />
+          </td>
           <td class="printlessTd"></td>
           <td class="printlessTd">
             <button [class.read-only]="checkPermission()" class="btn btn-info form-control border border-dark "
@@ -432,8 +437,10 @@
                 </select>
               </td>
               <td class="showInTablet">
-                <button *ngIf="line.status == 'open'" (click)="openFormDetails(line._id)" class="btn btn-success"><b>טופס חדש</b></button>
-                <button *ngIf="line.status != 'open'" (click)="openFormDetails(line._id)" class="btn btn-warning"><b>כניסה לטופס</b></button>
+                <button *ngIf="line.status == 'open'" (click)="openFormDetails(line._id)"
+                  class="btn btn-success"><b>טופס חדש</b></button>
+                <button *ngIf="line.status != 'open'" (click)="openFormDetails(line._id)"
+                  class="btn btn-warning"><b>כניסה לטופס</b></button>
               </td>
               <td class="hideInTablet">
                 <div *ngIf="line.batchSpecStatus == 1" class="qc-batch">

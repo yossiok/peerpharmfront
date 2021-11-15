@@ -3,7 +3,7 @@
     <button class="btn btn-primary rounded-pill" (click)="newProcess()">New Process - F2</button>
   </div>
   <div class="col-3">
-    <button class="btn btn-secondary rounded-pill" (click)="compareFormules()">Compare Formules - F4</button>
+    <button class="btn btn-secondary rounded-pill" (click)="newCompareFormules()">Compare Formules - F4</button>
   </div>
   <div class="col-2">
     <button (click)="printFormule()" [disabled]="!finalFormule"
@@ -59,7 +59,7 @@
 
   <div *ngIf="formules.length > 0 && !finalFormule" class=" mt-2 text-center p-2 rounded shadow">
     <div class="row mt-3 d-flex flex-row">
-      <div *ngFor="let formule of formules; let index = i" class="col-3">
+      <div *ngFor="let formule of formules; let i=index" class="col-3">
         <div>
           <div class="d-flex flex-row justify-content-between">
 

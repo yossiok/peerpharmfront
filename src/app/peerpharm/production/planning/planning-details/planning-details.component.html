@@ -1,339 +1,336 @@
 <div *ngIf="!showMaterialsForFormules" class="m-5 p-5">
-    <i (click)="closeWorkPlan(-1)" class="fa fa-times float-right h3 close"></i>
-    <h1 [style.color]="setColor(workPlan.status)" class="text-center status">Work Plan {{workPlan.serialNumber}}</h1>
-    <div class="d-flex flex-row justify-content-between w-75 mt-4">
-        <div class="h2">
-            <span class="p-2 rounded status" [style.color]="setColor(workPlan.status)">{{workPlan.status |
+  <i (click)="closeWorkPlan(-1)" class="fa fa-times float-right h3 close"></i>
+  <h1 [style.color]="setColor(workPlan.status)" class="text-center status">Work Plan {{workPlan.serialNumber}}</h1>
+  <div class="d-flex flex-row justify-content-between w-75 mt-4">
+    <div class="h2">
+      <span class="p-2 rounded status" [style.color]="setColor(workPlan.status)">{{workPlan.status |
                 workPlanStatus}}</span>
-            <i [style.color]="setColor(2)" *ngIf="workPlan.status == 2" class="fas fa-check status"></i>
-            <span [style.color]="setColor(3)" *ngIf="workPlan.status == 3">
-                <i class="fas fa-check status"></i>
-                <i class="fas fa-check status"></i>
-            </span>
-        </div>
-        <div class="h3">
-            <span [style.background]="setColor(workPlan.status)"
-                [style.color]="workPlan.status == 3 ? 'white' : 'black'"
-                class="p-3 rounded-pill">{{workPlan.remark}}</span>
-        </div>
-        <div class="h3">
-            <span [style.background]="setColor(workPlan.status)"
-                [style.color]="workPlan.status == 3 ? 'white' : 'black'" class="p-3 rounded-pill">{{workPlan.date |
+      <i [style.color]="setColor(2)" *ngIf="workPlan.status == 2" class="fas fa-check status"></i>
+      <span [style.color]="setColor(3)" *ngIf="workPlan.status == 3">
+        <i class="fas fa-check status"></i>
+        <i class="fas fa-check status"></i>
+      </span>
+    </div>
+    <div class="h3">
+      <span [style.background]="setColor(workPlan.status)" [style.color]="workPlan.status == 3 ? 'white' : 'black'"
+        class="p-3 rounded-pill">{{workPlan.remark}}</span>
+    </div>
+    <div class="h3">
+      <span [style.background]="setColor(workPlan.status)" [style.color]="workPlan.status == 3 ? 'white' : 'black'"
+        class="p-3 rounded-pill">{{workPlan.date |
                 date:
                 'short'}}</span>
-        </div>
     </div>
+  </div>
 
-    <div *ngIf="authorized" class="row mt-4">
-        <div class="h2">
-            <select (change)="setStatus($event)" class="form-control">
-                <option disabled value="0">Change Status</option>
-                <option *ngFor="let status of statuses"
-                    [style.backgroundColor]="workPlan.status == status ? 'rgb(133, 133, 209)' : ''" [value]="status">
-                    {{status | workPlanStatus}}
-                </option>
-            </select>
-        </div>
-        <div class="h2">
-            <!-- <button class="btn btn-info rounded" style="font-size: 28px">
+  <div *ngIf="authorized" class="row mt-4">
+    <div class="h2">
+      <select (change)="setStatus($event)" class="form-control">
+        <option disabled value="0">Change Status</option>
+        <option *ngFor="let status of statuses"
+          [style.backgroundColor]="workPlan.status == status ? 'rgb(133, 133, 209)' : ''" [value]="status">
+          {{status | workPlanStatus}}
+        </option>
+      </select>
+    </div>
+    <div class="h2">
+      <!-- <button class="btn btn-info rounded" style="font-size: 28px">
                 <i (click)="edit = true" ngbTooltip="ערוך פרטים" class="fas fa-pencil-alt"></i>
             </button> -->
-        </div>
-        <div class="h2">
-            <!-- <img ngbTooltip="שמור שינויים" (click)="saveChanges()" class="img2 click" src="../../../../../assets/images/aprroved.png" alt=""> -->
-        </div>
     </div>
-    <h2 class="mt-4">
-        {{workPlan.orderItems.length}} Order Items
-        <span class="float-right">
-            <img *ngIf="!loadData" ngbTooltip="ייצוא פריטים" class="click"
-                (click)="export(workPlan.orderItems, 'items for work plan'+workPlan.serialNumber)"
-                src="../../../../../assets/images/excel.png" class="img" alt="">
-            <img *ngIf="!loadData && authorized" class="click ml-2" (click)="loadMaterialsForFormule(false)"
-                ngbTooltip="כתב כמויות" style="width: 50px" src="../../../../../assets/images/allOrder.png" alt="">
-            <div *ngIf="loadData" class="smallerLoader"></div>
-        </span>
-    </h2>
-    <div class="row mt-4" #tableDiv>
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th>#</th>
-                    <th>Item</th>
-                    <th>Customer</th>
-                    <th>Order</th>
-                    <th>Description</th>
-                    <th>משקל</th>
-                    <th>כמות</th>
-                    <th>סה"כ ק"ג</th>
-                    <th>חומרי גלם</th>
-                    <th>קומפוננטים</th>
-                    <th>הערות</th>
-                    <th></th>
-                    <th *ngIf="authorized"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let orderItem of workPlan.orderItems; let i = index">
-                    <td>{{i+1}}</td>
-                    <td>{{orderItem.itemNumber}}</td>
-                    <td>{{orderItem.customerName}}</td>
-                    <td>{{orderItem.orderNumber}}</td>
-                    <td>{{orderItem.description}}</td>
-                    <td>{{orderItem.netWeightGr}}</td>
-                    <td>{{orderItem.quantity}}</td>
-                    <td #editWeight>
-                        <span *ngIf="edit != i">{{orderItem.totalKG}}</span>
-                        <input class="kg-input" *ngIf="edit == i" type="number" [(ngModel)]="orderItem.totalKG">
-                    </td>
-                    <td class="text-center" *ngIf="orderItem.enoughMaterials"><i ngbTooltip="כמות מלאי תקינה"
-                            class="far fa-thumbs-up"></i></td>
-                    <td class="text-center" *ngIf="!orderItem.enoughMaterials"><i ngbTooltip="חסרים חומרי גלם במלאי"
-                            class="fas fa-exclamation-circle"></i></td>
-                    <td class="text-center" *ngIf="orderItem.enoughComponents"><i ngbTooltip="כמות מלאי תקינה"
-                            class="far fa-thumbs-up"></i></td>
-                    <td class="text-center" *ngIf="!orderItem.enoughComponents"><i ngbTooltip="חסרים קומפוננטים במלאי"
-                            class="fas fa-exclamation-circle"></i></td>
-
-                    <td>
-                        <span *ngIf="edit != i">{{orderItem.remarks}}</span>
-                        <input *ngIf="edit == i" type="text" [(ngModel)]="orderItem.remarks">
-                    </td>
-                    <td>
-                        <img *ngIf="edit == i && authorized" ngbTooltip="שמור שינויים" (click)="saveChanges(i)"
-                            class="img click" src="../../../../../assets/images/aprroved.png" alt="">
-                        <button *ngIf="edit != i && authorized" (click)="edit = i" class="btn btn-secondary rounded">
-                            עריכה
-                            <i class="fas fa-pencil-alt"></i>
-                        </button>
-                    </td>
-                    <td *ngIf="authorized">
-                        <button (click)="deleteLine(i)" class="btn btn-danger">
-                            מחיקה
-                            <i class="far fa-trash-alt"></i>
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-
-        </table>
+    <div class="h2">
+      <!-- <img ngbTooltip="שמור שינויים" (click)="saveChanges()" class="img2 click" src="../../../../../assets/images/aprroved.png" alt=""> -->
     </div>
-    <h2>
-        <!-- <img class="click" (click)="export(workPlan.productionFormules, 'formules for work plan'+workPlan.serialNumber)"
+  </div>
+  <h2 class="mt-4">
+    {{workPlan.orderItems.length}} Order Items
+    <span class="float-right">
+      <img *ngIf="!loadData" ngbTooltip="ייצוא פריטים" class="click"
+        (click)="export(workPlan.orderItems, 'items for work plan'+workPlan.serialNumber)"
+        src="../../../../../assets/images/excel.png" class="img" alt="">
+      <img *ngIf="!loadData && authorized" class="click ml-2" (click)="loadMaterialsForFormule(false)"
+        ngbTooltip="כתב כמויות" style="width: 50px" src="../../../../../assets/images/allOrder.png" alt="">
+      <div *ngIf="loadData" class="smallerLoader"></div>
+    </span>
+  </h2>
+  <div class="row mt-4" #tableDiv>
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th>#</th>
+          <th>Item</th>
+          <th>Customer</th>
+          <th>Order</th>
+          <th>Description</th>
+          <th>משקל</th>
+          <th>כמות</th>
+          <th>סה"כ ק"ג</th>
+          <th>חומרי גלם</th>
+          <th>קומפוננטים</th>
+          <th>הערות</th>
+          <th></th>
+          <th *ngIf="authorized"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let orderItem of workPlan.orderItems; let i = index">
+          <td>{{i+1}}</td>
+          <td>{{orderItem.itemNumber}}</td>
+          <td>{{orderItem.customerName}}</td>
+          <td>{{orderItem.orderNumber}}</td>
+          <td>{{orderItem.description}}</td>
+          <td>{{orderItem.netWeightGr}}</td>
+          <td>{{orderItem.quantity}}</td>
+          <td #editWeight>
+            <span *ngIf="edit != i">{{orderItem.totalKG}}</span>
+            <input class="kg-input" *ngIf="edit == i" type="number" [(ngModel)]="orderItem.totalKG">
+          </td>
+          <td class="text-center" *ngIf="orderItem.enoughMaterials"><i ngbTooltip="כמות מלאי תקינה"
+              class="far fa-thumbs-up"></i></td>
+          <td class="text-center" *ngIf="!orderItem.enoughMaterials"><i ngbTooltip="חסרים חומרי גלם במלאי"
+              class="fas fa-exclamation-circle"></i></td>
+          <td class="text-center" *ngIf="orderItem.enoughComponents"><i ngbTooltip="כמות מלאי תקינה"
+              class="far fa-thumbs-up"></i></td>
+          <td class="text-center" *ngIf="!orderItem.enoughComponents"><i ngbTooltip="חסרים קומפוננטים במלאי"
+              class="fas fa-exclamation-circle"></i></td>
+
+          <td>
+            <span *ngIf="edit != i">{{orderItem.remarks}}</span>
+            <input *ngIf="edit == i" type="text" [(ngModel)]="orderItem.remarks">
+          </td>
+          <td>
+            <img *ngIf="edit == i && authorized" ngbTooltip="שמור שינויים" (click)="saveChanges(i)" class="img click"
+              src="../../../../../assets/images/aprroved.png" alt="">
+            <button *ngIf="edit != i && authorized" (click)="edit = i" class="btn btn-secondary rounded">
+              עריכה
+              <i class="fas fa-pencil-alt"></i>
+            </button>
+          </td>
+          <td *ngIf="authorized">
+            <button (click)="deleteLine(i)" class="btn btn-danger">
+              מחיקה
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+  <h2>
+    <!-- <img class="click" (click)="export(workPlan.productionFormules, 'formules for work plan'+workPlan.serialNumber)"
             src="../../../../../assets/images/excel.png" class="img" alt="">  -->
-        {{workPlan.productionFormules.length}} Production Formules
-    </h2>
-    <div class="row mt-4">
-        <div class="col-8 formules">
+    {{workPlan.productionFormules.length}} Production Formules
+  </h2>
+  <div class="row mt-4">
+    <div class="col-8 formules">
 
-            <table class="table formules-table">
-                <thead class="thead-dark">
-                    <tr>
-                        <th>#</th>
-                        <th>Formule</th>
-                        <th>פריטים / הזמנות</th>
-                        <th>סה"כ ק"ג</th>
-                        <th>סטטוס חומרים</th>
-                        <th>Batch?</th>
-                        <!-- <th>הערות</th> -->
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let formule of workPlan.productionFormules; let i = index">
-                        <td>{{i+1}}</td>
-                        <td>{{formule.formule}}</td>
-                        <td>
-                            <span *ngFor="let orderAndItem of formule.ordersAndItems">
-                                order {{orderAndItem.order}}, item {{orderAndItem.item}}
-                            </span>
-                        </td>
-                        <td>{{formule.totalKG}}</td>
-                        <td *ngIf="formule.enoughMaterials"><i ngbTooltip="כמות מלאי תקינה"
-                                class="far fa-thumbs-up"></i>
-                        </td>
-                        <td *ngIf="!formule.enoughMaterials"><i ngbTooltip="חסרים קומפוננטים במלאי"
-                                class="fas fa-exclamation-circle"></i></td>
-                        <td class="text-center" class="text-success text-left" *ngIf="formule.batchNumber">
-                            {{formule.batchNumber}}</td>
-                        <td *ngIf="!formule.batchNumber"><i ngbTooltip="לא יוצר באטץ'" class="far fa-times-circle"></i>
-                        </td>
+      <table class="table formules-table">
+        <thead class="thead-dark">
+          <tr>
+            <th>#</th>
+            <th>Formule</th>
+            <th>פריטים / הזמנות</th>
+            <th>סה"כ ק"ג</th>
+            <th>סטטוס חומרים</th>
+            <th>Batch?</th>
+            <!-- <th>הערות</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let formule of workPlan.productionFormules; let i = index">
+            <td>{{i+1}}</td>
+            <td>{{formule.formule}}</td>
+            <td>
+              <span *ngFor="let orderAndItem of formule.ordersAndItems">
+                order {{orderAndItem.order}}, item {{orderAndItem.item}}
+              </span>
+            </td>
+            <td>{{formule.totalKG}}</td>
+            <td *ngIf="formule.enoughMaterials"><i ngbTooltip="כמות מלאי תקינה" class="far fa-thumbs-up"></i>
+            </td>
+            <td *ngIf="!formule.enoughMaterials"><i ngbTooltip="חסרים קומפוננטים במלאי"
+                class="fas fa-exclamation-circle"></i></td>
+            <td class="text-center" class="text-success text-left" *ngIf="formule.batchNumber">
+              {{formule.batchNumber}}</td>
+            <td *ngIf="!formule.batchNumber"><i ngbTooltip="לא יוצר באטץ'" class="far fa-times-circle"></i>
+            </td>
 
-                        <!-- <td>{{orderItem.remarks}}</td> -->
-                    </tr>
-                </tbody>
+            <!-- <td>{{orderItem.remarks}}</td> -->
+          </tr>
+        </tbody>
 
-            </table>
-        </div>
-        <div class="col-4">
-            <span *ngIf="authorized"><img class="big-img" ngbTooltip='שלח לייצור' (click)="moveToProduction()"
-                    src="../../../../../assets/images/filter.png" alt="לחץ כאן על מנת לשלוח פורמולות לייצור"></span>
-        </div>
+      </table>
     </div>
-
-    <div class="row mt-5"></div>
-    <div class="row mt-5"></div>
-    <div class="row mt-5">
-        <button (click)="deleteWorkPlan()" class="btn btn-danger w-50 delete-btn">מחיקת פק"ע</button>
+    <div class="col-4">
+      <span *ngIf="authorized"><img class="big-img" ngbTooltip='שלח לייצור' (click)="weightFormules()"
+          src="../../../../../assets/images/filter.png" alt="לחץ כאן על מנת לשלוח פורמולות לייצור"></span>
     </div>
+  </div>
+
+  <div class="row mt-5"></div>
+  <div class="row mt-5"></div>
+  <div class="row mt-5">
+    <button (click)="deleteWorkPlan()" class="btn btn-danger w-50 delete-btn">מחיקת פק"ע</button>
+  </div>
 </div>
 
 <button #printFormuleBtn
-    [printStyle]="{  h2: {'display': 'inline'}, h3: { 'display': 'none'}, footer: {'page-break-after': 'always'}, table:{ 'counter-reset': 'page', 'border-collapse':'collapse'},th : {'border': 'solid 1px black','font-size':'22px'}, tr : {'border': 'solid 2px black'}, td : {'border': 'solid 1px black', 'padding':'5px','font-size': '22px'}}"
-    printTitle="Formules: Production Weighting" printSectionId="formuleSection" ngxPrint
-    style="display: none;"></button>
+  [printStyle]="{  h2: {'display': 'inline'}, h3: { 'display': 'none'}, footer: {'page-break-after': 'always'}, table:{ 'counter-reset': 'page', 'border-collapse':'collapse'},th : {'border': 'solid 1px black','font-size':'22px'}, tr : {'border': 'solid 2px black'}, td : {'border': 'solid 1px black', 'padding':'5px','font-size': '22px'}}"
+  printTitle="Formules: Production Weighting" printSectionId="formuleSection" ngxPrint style="display: none;"></button>
 
 <div id="formuleSection">
 
-    <!--כתב כמויות-->
-    <div *ngIf="showMaterialsForFormules" class="m-5 p-5">
-        <!-- <button style="visibility: hidden" #printAmounts ngxPrint printSectionId="print-amounts"></button> -->
-        <i (click)="showMaterialsForFormules = false" class="fa fa-times float-right h3 close"></i>
-        <h1 class="text-center">כתב כמויות</h1>
-        <h3 dir="rtl">
-            <img ngbTooltip="ייצוא" (click)="exportExplosion(materialsForFormules, 'כתב כמויות')"
-                src="../../../../../assets/images/excel.png" class="img" alt="">
-            <img ngbTooltip="הדפסה" (click)="printAmounts.click()" src="../../../../../assets/images/print.png"
-                class="img2" alt="">
-        </h3>
-        <div>
+  <!--כתב כמויות-->
+  <div *ngIf="showMaterialsForFormules" class="m-5 p-5">
+    <!-- <button style="visibility: hidden" #printAmounts ngxPrint printSectionId="print-amounts"></button> -->
+    <i (click)="showMaterialsForFormules = false" class="fa fa-times float-right h3 close"></i>
+    <h1 class="text-center">כתב כמויות</h1>
+    <h3 dir="rtl">
+      <img ngbTooltip="ייצוא" (click)="exportExplosion(materialsForFormules, 'כתב כמויות')"
+        src="../../../../../assets/images/excel.png" class="img" alt="">
+      <img ngbTooltip="הדפסה" (click)="printAmounts.click()" src="../../../../../assets/images/print.png" class="img2"
+        alt="">
+    </h3>
+    <div>
 
-            <h2 dir="rtl">כתב כמויות לתכנית עבודה {{workPlan.serialNumber}}</h2>
-            <br>
-            <table class="table table-striped mt-4">
-                <thead class="bg-success text-white">
-                    <tr>
+      <h2 dir="rtl">כתב כמויות לתכנית עבודה {{workPlan.serialNumber}}</h2>
+      <br>
+      <table class="table table-striped mt-4">
+        <thead class="bg-success text-white">
+          <tr>
 
-                        <th>Material Number</th>
-                        <th>Material Name</th>
-                        <th>Required</th>
-                        <th>In Stock</th>
+            <th>Material Number</th>
+            <th>Material Name</th>
+            <th>Required</th>
+            <th>In Stock</th>
 
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let material of materialsForFormules">
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let material of materialsForFormules">
 
-                        <td>{{material.itemNumber}}</td>
-                        <td>{{material.itemName}}</td>
-                        <td>{{material.kgProduction}}</td>
-                        <td *ngIf="material.materialArrivals[0]"
-                            [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
-                            {{material.materialArrivals[0].amount | number}}</td>
+            <td>{{material.itemNumber}}</td>
+            <td>{{material.itemName}}</td>
+            <td>{{material.kgProduction}}</td>
+            <td *ngIf="material.materialArrivals[0]"
+              [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
+              {{material.materialArrivals[0].amount | number}}</td>
 
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <footer></footer>
-
+          </tr>
+        </tbody>
+      </table>
     </div>
+    <footer></footer>
+
+  </div>
 
 
 
-    <div *ngIf="printingFormules" class="row mt-3 d-flex flex-row">
+  <div *ngIf="printingFormules" class="row mt-3 d-flex flex-row">
 
-        <ng-container *ngFor="let formulePrinting of workPlan.productionFormules; let i = index">
-            <!-- <h1 *ngIf="formulePrinting.numOfItems > 16">Page 1 of 2</h1>
+    <ng-container *ngFor="let formulePrinting of workPlan.productionFormules; let i = index">
+      <!-- <h1 *ngIf="formulePrinting.numOfItems > 16">Page 1 of 2</h1>
             <h1 *ngIf="formulePrinting.numOfItems <= 16">Page 1 of 1</h1> -->
-            <h1>Formule {{i+1}} Start</h1>
+      <h1>Formule {{i+1}} Start</h1>
 
-            <table class="table table-bordered">
-                <thead class="text-info">
-                    <tr>
-                        <th scope="col">Item number</th>
-                        <th scope="col">Item name</th>
-                        <th scope="col">Orders / Items</th>
-                        <th scope="col">Weight</th>
-                        <!-- <th scope="col">WPU</th> -->
-                        <th scope="col">PH</th>
-                        <th class="w-50" scope="col">Remarks</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>{{formulePrinting.formule}}</td>
-                        <td>{{formulePrinting.formuleData.formuleName}}</td>
-                        <td>
-                            <span *ngFor="let orderAndItem of formulePrinting.ordersAndItems">
-                                order {{orderAndItem.order}}, item {{orderAndItem.item}}
-                                <br>
-                            </span>
-                        </td>
-                        <td class="text-center">{{formulePrinting.totalKG}}KG</td>
-                        <!-- <td>{{formulePrinting.formuleUnitWeight}}gr.</td> -->
-                        <td>{{formulePrinting.formuleData.phFrom}}-{{formulePrinting.formuleData.phTo}}</td>
-                        <td></td>
-                    </tr>
-                    <tr class="bg-light">
-                        <td style="font-weight: bold">Date:</td>
-                        <td><input style="height: 60px;" type="text"></td>
-                        <td style="font-weight: bold">Batch:</td>
-                        <td><input style="height: 60px;" type="text" value="21pp"></td>
-                        <td style="font-weight: bold">Final PH:</td>
-                        <td colspan="2"><input style="height: 60px;" type="text"></td>
-                    </tr>
-                </tbody>
-            </table>
+      <table class="table table-bordered">
+        <thead class="text-info">
+          <tr>
+            <th scope="col">Item number</th>
+            <th scope="col">Item name</th>
+            <th scope="col">Orders / Items</th>
+            <th scope="col">Weight</th>
+            <!-- <th scope="col">WPU</th> -->
+            <th scope="col">PH</th>
+            <th class="w-50" scope="col">Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{formulePrinting.formule}}</td>
+            <td>{{formulePrinting.formuleData.formuleName}}</td>
+            <td>
+              <span *ngFor="let orderAndItem of formulePrinting.ordersAndItems">
+                order {{orderAndItem.order}}, item {{orderAndItem.item}}
+                <br>
+              </span>
+            </td>
+            <td class="text-center">{{formulePrinting.totalKG}}KG</td>
+            <!-- <td>{{formulePrinting.formuleUnitWeight}}gr.</td> -->
+            <td>{{formulePrinting.formuleData.phFrom}}-{{formulePrinting.formuleData.phTo}}</td>
+            <td></td>
+          </tr>
+          <tr class="bg-light">
+            <td style="font-weight: bold">Date:</td>
+            <td><input style="height: 60px;" type="text"></td>
+            <td style="font-weight: bold">Batch:</td>
+            <td><input style="height: 60px;" type="text" value="21pp"></td>
+            <td style="font-weight: bold">Final PH:</td>
+            <td colspan="2"><input style="height: 60px;" type="text"></td>
+          </tr>
+        </tbody>
+      </table>
 
-            <table class="table table-hover">
-                <thead class="bg-info text-white">
-                    <tr>
-                        <th scope="col">Phase</th>
-                        <th scope="col">Item</th>
-                        <th scope="col">Raw Material Name</th>
-                        <th scope="col">Percentage</th>
-                        <th scope="col">KG</th>
-                        <th scope="col">Remarks</th>
-                        <th scope="col">Lot</th>
-                        <th>Done?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <ng-container *ngFor="let phase of formulePrinting.formuleData.phases">
-                        <tr *ngFor="let item of phase.items; let i = index">
-                            <td style="padding:5px" *ngIf="i == 0" [attr.rowspan]="phase.items.length" class="phase">{{
+      <table class="table table-hover">
+        <thead class="bg-info text-white">
+          <tr>
+            <th scope="col">Phase</th>
+            <th scope="col">Item</th>
+            <th scope="col">Raw Material Name</th>
+            <th scope="col">Percentage</th>
+            <th scope="col">KG</th>
+            <th scope="col">Remarks</th>
+            <th scope="col">Lot</th>
+            <th>Done?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let phase of formulePrinting.formuleData.phases">
+            <tr *ngFor="let item of phase.items; let i = index">
+              <td style="padding:5px" *ngIf="i == 0" [attr.rowspan]="phase.items.length" class="phase">{{
                                 phase.phaseName }}</td>
-                            <td style="padding:5px">{{ item.itemNumber }}</td>
-                            <td style="padding:5px">{{ item.itemName }}</td>
-                            <td style="padding:5px">{{ item.percentage }}%</td>
-                            <td style="padding:5px">{{ item.kgProd | number }}</td>
-                            <td>{{item.remarks}}</td>
-                            <td *ngIf="item.check != true" style="padding:5px"><input
-                                    (change)="weightProduction(item.itemNumber, item.itemName, $event, item.kgProd)"
-                                    class="form-control rounded-pill"></td>
-                            <td *ngIf="item.check == true" style="padding:5px"><i class="fa fa-check text-info"></i>
-                            </td>
-                            <td></td>
-                        </tr>
-                    </ng-container>
-                </tbody>
-            </table>
-            <br><br>
-            <tr class="bg-light">
-                <td style="font-weight: bold">Date:</td>
-                <td><input style="height: 60px;" type="text"></td>
-                &nbsp;&nbsp;
-                <td style="font-weight: bold">Batch:</td>
-                <td><input style="height: 60px;" type="text" value="21pp"></td>
-                &nbsp;&nbsp;
-                <td style="font-weight: bold">Final PH:</td>
-                <td colspan="2"><input style="height: 60px;" type="text"></td>
+              <td style="padding:5px">{{ item.itemNumber }}</td>
+              <td style="padding:5px">{{ item.itemName }}</td>
+              <td style="padding:5px">{{ item.percentage }}%</td>
+              <td style="padding:5px">{{ item.kgProd | number }}</td>
+              <td>{{item.remarks}}</td>
+              <td *ngIf="item.check != true" style="padding:5px"><input
+                  (change)="weightProduction(item.itemNumber, item.itemName, $event, item.kgProd)"
+                  class="form-control rounded-pill"></td>
+              <td *ngIf="item.check == true" style="padding:5px"><i class="fa fa-check text-info"></i>
+              </td>
+              <td></td>
             </tr>
-            <!-- <h1 *ngIf="formulePrinting.numOfItems > 16">Page 2 of 2</h1> -->
-            <footer>
-                <tr>{{formulePrinting.formule}}</tr>
-                <tr>{{formulePrinting.formuleData.formuleName}}</tr>
-                <tr class="text-center">{{formulePrinting.formuleData.Weight}}KG</tr>
-                <tr>{{formulePrinting.formuleData.phFrom}} - {{formulePrinting.formuleData.phTo}}</tr>
-                <tr>
-                    <span *ngFor="let orderAndItem of formulePrinting.ordersAndItems">
-                        order {{orderAndItem.order}}, item {{orderAndItem.item}}
-                    </span>
-                </tr>
-                <h1>Formule {{i+1}} End</h1>
+          </ng-container>
+        </tbody>
+      </table>
+      <br><br>
+      <tr class="bg-light">
+        <td style="font-weight: bold">Date:</td>
+        <td><input style="height: 60px;" type="text"></td>
+        &nbsp;&nbsp;
+        <td style="font-weight: bold">Batch:</td>
+        <td><input style="height: 60px;" type="text" value="21pp"></td>
+        &nbsp;&nbsp;
+        <td style="font-weight: bold">Final PH:</td>
+        <td colspan="2"><input style="height: 60px;" type="text"></td>
+      </tr>
+      <!-- <h1 *ngIf="formulePrinting.numOfItems > 16">Page 2 of 2</h1> -->
+      <footer>
+        <tr>{{formulePrinting.formule}}</tr>
+        <tr>{{formulePrinting.formuleData.formuleName}}</tr>
+        <tr class="text-center">{{formulePrinting.formuleData.Weight}}KG</tr>
+        <tr>{{formulePrinting.formuleData.phFrom}} - {{formulePrinting.formuleData.phTo}}</tr>
+        <tr>
+          <span *ngFor="let orderAndItem of formulePrinting.ordersAndItems">
+            order {{orderAndItem.order}}, item {{orderAndItem.item}}
+          </span>
+        </tr>
+        <h1>Formule {{i+1}} End</h1>
 
-            </footer>
-        </ng-container>
-    </div>
+      </footer>
+    </ng-container>
+  </div>
 
 </div>
