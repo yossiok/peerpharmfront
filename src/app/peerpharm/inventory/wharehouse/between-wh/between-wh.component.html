@@ -4,18 +4,21 @@
   <form [formGroup]="movementForm" (ngSubmit)="addItem()">
     <h3>העברת סחורה בין מחסנים</h3>
     <div class="row mt-4">
+      <p class="h5">* = שדה חובה</p>
+    </div>
+    <div class="row mt-4">
 
 
       <div *ngIf="!disabled" class="col-2">
         <label>
-          פריט (לפי מספר)
+          מק"ט *
         </label>
         <input type="number" #first [disabled]="disabled" formControlName="item" class="form-control"
           (change)="checkComponentNumber()">
       </div>
       <div *ngIf="!disabled" class="col-2">
         <label class="d-block">
-          (לפי שם) פריט
+          שם
         </label>
         <input class="d-inline form-control" type="text" #name formControlName="itemName">
         <button class="d-inline" type="button" (click)="getNames(name)">Find</button>
@@ -27,7 +30,7 @@
 
 
       <div class="col-2">
-        <label>ממחסן</label>
+        <label>ממחסן *</label>
         <select class="form-control" formControlName="WH_originId" (change)="getChunks('o')">
           <option disabled value="">בחר מחסן</option>
           <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id" [disabled]="allMovements.length>0">
@@ -37,7 +40,7 @@
 
       </div>
       <div class="col-2">
-        <label>ממדף</label>
+        <label>ממדף *</label>
         <select class="form-control" (change)="setOriginPosition()" formControlName="shell_id_in_whareHouse_Origin">
           <option disabled value="">בחר מדף</option>
           <option *ngFor="let shelf of originWHShelfs" [disabled]="shelf.position == 'MINUS'"
@@ -48,7 +51,7 @@
 
       </div>
       <div class="col-2">
-        <label>כמות</label>
+        <label>כמות *</label>
         <input type="number" formControlName="amount" (change)="checkAmount()" class="form-control">
       </div>
 
@@ -84,7 +87,7 @@
     <div class="row mt-4">
       <div class="col-4"></div>
       <div class="col-2">
-        <label>למחסן</label>
+        <label>למחסן *</label>
         <select class="form-control" formControlName="WH_destId" #whid (change)="getChunks('d')"
           (change)="getAllShelfsOfDest($event)">
           <option disabled value="">בחר מחסן</option>
@@ -95,7 +98,7 @@
       </div>
       <div class="col-2">
 
-        <label>למדף</label>
+        <label>למדף *</label>
         <select class="form-control" (change)="setDestPosition()" formControlName="shell_id_in_whareHouse_Dest">
           <option disabled value="">בחר מדף</option>
           <option *ngFor="let shelf of destWHShelfs" [disabled]="shelf.position == 'MINUS'"

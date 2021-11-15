@@ -4,9 +4,12 @@
   <form [formGroup]="shelfChange" (ngSubmit)="changeShelf()">
     <h3>שינוי מדף</h3>
     <div class="row mt-4">
+      <p class="h5">* = שדה חובה</p>
+    </div>
+    <div class="row mt-4">
 
       <div class="col-2">
-        <label>מחסן</label>
+        <label>מחסן *</label>
         <select class="form-control" formControlName="whareHouseID" (change)="itemNumber ? getShelfs() : null" #first
           (change)="getAllShellsOfWhareHouse()">
           <option disabled value="">בחר מחסן</option>
@@ -17,13 +20,13 @@
 
       <div *ngIf="!disabled" class="col-2">
         <label>
-          פריט (לפי מספר)
+          מק"ט *
         </label>
         <input type="number" [disabled]="disabled" formControlName="item" (change)="getShelfs()" class="form-control">
       </div>
       <div *ngIf="!disabled" class="col-2">
         <label class="d-block">
-          (לפי שם) פריט
+          שם
         </label>
         <input class="d-inline form-control" type="text" #name>
         <button class="d-inline" type="button" (click)="getNames(name)">Find</button>
@@ -34,7 +37,7 @@
       </div>
       <div class="col-2">
 
-        <label>מדף ישן</label>
+        <label>מדף ישן *</label>
         <select class="form-control" formControlName="old_shell_id_in_whareHouse">
           <option disabled value="">בחר מדף</option>
           <option *ngFor="let shellNum of shelfsWithItem" [disabled]="shellNum.position == 'MINUS'"
@@ -53,7 +56,7 @@
 
       </div>
       <div class="col-2">
-        <label>כמות</label>
+        <label>כמות *</label>
         <input type="number" formControlName="amount" class="form-control">
       </div>
 
@@ -70,7 +73,7 @@
     <div class="row mt-4">
       <div class="col-6"></div>
       <div class="col-2">
-        <label>מדף חדש</label>
+        <label>מדף חדש *</label>
         <select class="form-control" formControlName="new_shell_id_in_whareHouse">
           <option disabled value="">בחר מדף</option>
           <option *ngFor="let shellNum of shellNums" [disabled]="shellNum.position == 'MINUS'" [value]="shellNum._id">

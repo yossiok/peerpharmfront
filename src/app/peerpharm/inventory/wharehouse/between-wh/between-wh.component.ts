@@ -110,12 +110,16 @@ export class BetweenWHComponent implements OnInit {
         )
         .subscribe((data) => {
           if (data.length > 0) {
+            if(data[0].itemType == 'material') {
+              reject('לא ניתן להעביר חומרי גלם דרך טופס זה')
+              return
+            }
             this.noItem = false;
             this.itemNames = data;
             resolve(true);
           } else {
             this.noItem = true;
-            reject(false);
+            reject('פריט לא קיים :(');
           }
         });
     });
@@ -250,7 +254,7 @@ export class BetweenWHComponent implements OnInit {
       })
       .catch((e) => {
         console.log("error: ", e);
-        this.toastr.error("", "פריט לא קיים :(");
+        this.toastr.error("", e);
       });
   }
 

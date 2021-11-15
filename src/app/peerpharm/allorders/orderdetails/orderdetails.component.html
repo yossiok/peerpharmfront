@@ -350,7 +350,7 @@
                 <input type="radio" name="type" #type value='laser' [(ngModel)]="chosenType">Laser<br>
                 <input type="radio" name="type" #type value='stickers' [(ngModel)]="chosenType">Stickers<br>
                 <input type="radio" name="type" #type value='mkp2' [(ngModel)]="chosenType">Mkp2<br>
-                <!-- <input type="radio" name="type" #type value='packaging' [(ngModel)]="chosenType">Packaging<br> -->
+                <input type="radio" name="type" #type value='packaging' [(ngModel)]="chosenType">Packaging<br>
               </td>
               <td placement="top" [ngbTooltip]="item.productionApproved ? '' : 'Item Not Approved by PP&C'"><button
                   *ngIf="setScheduleAllowed" [disabled]="!item.productionApproved"
