@@ -183,14 +183,14 @@
 
   <!--כתב כמויות-->
   <div *ngIf="showMaterialsForFormules" class="m-5 p-5">
-    <!-- <button style="visibility: hidden" #printAmounts ngxPrint printSectionId="print-amounts"></button> -->
+
     <i (click)="showMaterialsForFormules = false" class="fa fa-times float-right h3 close"></i>
     <h1 class="text-center">כתב כמויות</h1>
     <h3 dir="rtl">
       <img ngbTooltip="ייצוא" (click)="exportExplosion(materialsForFormules, 'כתב כמויות')"
         src="../../../../../assets/images/excel.png" class="img" alt="">
-      <img ngbTooltip="הדפסה" (click)="printAmounts.click()" src="../../../../../assets/images/print.png" class="img2"
-        alt="">
+      <img ngbTooltip="הדפסה" (click)="printFormuleBtn.click()" src="../../../../../assets/images/print.png"
+        class="img2" alt="">
     </h3>
     <div>
 

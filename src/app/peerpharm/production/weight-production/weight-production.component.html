@@ -10,11 +10,15 @@
       [style.cursor]="finalFormule ? 'pointer' : 'not-allowed'" class="btn btn-success form-control rounded-pill">Print
       - F10</button>
     <button #printFormuleBtn
-      [printStyle]="{table:{ 'border-collapse':'collapse'},th : {'border': 'solid 1px black','font-size':'22px'}, tr : {'border': 'solid 2px black'}, td : {'border': 'solid 1px black', 'padding':'5px','font-size': '22px'}}"
+      [printStyle]="{ footer: {'page-break-after': 'always'},table:{ 'border-collapse':'collapse'},th : {'border': 'solid 1px black','font-size':'22px'}, tr : {'border': 'solid 2px black'}, td : {'border': 'solid 1px black', 'padding':'5px','font-size': '22px'}}"
       printTitle="Formules: Production Weighting" printSectionId="formuleSection" ngxPrint
       style="display: none;"></button>
   </div>
-  <div class="col-3"></div>
+  <div class="col-2"></div>
+  <div class="col-1">
+    <button *ngIf="showBOM" class="btn btn-info rounded-pill" (click)="openBillOfMaterials()">
+      &nbsp;&nbsp;&nbsp;BOM&nbsp;&nbsp;&nbsp;</button>
+  </div>
   <button class="btn btn-primary rounded-pill" (click)="edit = !edit">Edit Percentage</button>
 </div>
 <div class="row mt-4"></div>
@@ -208,6 +212,29 @@
         </ng-container>
       </tbody>
     </table>
+    <footer></footer>
+    <table class='table table-striped'>
+      <thead class='tableHeader'>
+        <th dir="rtl" colspan="4">כתב כמויות לפקודת עבודה מספר: {{workPlanId}}</th>
+        <tr>
+          <th>Material no.</th>
+          <th>Material Name</th>
+          <th>Required (Kg)</th>
+          <th>In Stock (Kg)</th>
+        </tr>
+      </thead>
+      <tbody id="table_body">
+        <tr *ngFor="let material of billOfMaterials">
+          <td>{{material.itemNumber}}</td>
+          <td>{{material.itemName}}</td>
+          <td>{{material.kgProd}}</td>
+          <td *ngIf="material.itemAmount[0]"
+            [style.backgroundColor]="checkAmountsForMaterial(material.kgProd, material.itemAmount[0].amount) < 0 ? 'red' : 'lightgreen'">
+            {{material.itemAmount[0].amount}}</td>
+
+        </tr>
+      </tbody>
+    </table>
 
   </div>
 
@@ -278,6 +305,12 @@
       </div>
 
     </div>
+
+
+
+
+
+
   </div>
 
   <ng-template #reduceMaterialAmount let-c="close" let-d="dismiss">
@@ -302,3 +335,57 @@
   </ng-template>
 
 </div>
+
+<button #printBOMBtn
+  [printStyle]="{  h2: {'display': 'inline'}, h3: { 'display': 'none'}, footer: {'page-break-after': 'always'}, table:{ 'counter-reset': 'page', 'border-collapse':'collapse'},th : {'border': 'solid 1px black','font-size':'22px'}, tr : {'border': 'solid 2px black'}, td : {'border': 'solid 1px black', 'padding':'5px','font-size': '22px'}}"
+  printTitle="Formules: Bill Of Materials" printSectionId="bomSection" ngxPrint style="display: none;"></button>
+
+<ng-template #bomModal let-modal let-close="close">
+
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title mr-3" id="modal-basic-title">Bill Of Materials</h4>
+      <img ngbTooltip="ייצוא" (click)="exportBOM()" src="../../../../../assets/images/excel.png" class="img" width="35"
+        alt="">
+      <img ngbTooltip="הדפסה" (click)="printBOMBtn.click()" src="../../../../../assets/images/print.png" class="img2"
+        width="35" alt="">
+      <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <h3 dir="rtl">
+
+      </h3>
+    </div>
+    <div class="modal-body">
+      <div id="bomSection">
+
+        <table class='table table-striped'>
+          <thead class='tableHeader'>
+            <th dir="rtl" colspan="4">כתב כמויות לפקודת עבודה מספר: {{workPlanId}}</th>
+            <tr>
+              <th>Material no.</th>
+              <th>Material Name</th>
+              <th>Required (Kg)</th>
+              <th>In Stock (Kg)</th>
+            </tr>
+          </thead>
+          <tbody id="table_body">
+            <tr *ngFor="let material of billOfMaterials">
+              <td>{{material.itemNumber}}</td>
+              <td>{{material.itemName}}</td>
+              <td>{{material.kgProd}}</td>
+              <td *ngIf="material.itemAmount[0]"
+                [style.backgroundColor]="checkAmountsForMaterial(material.kgProd, material.itemAmount[0].amount) < 0 ? 'red' : 'lightgreen'">
+                {{material.itemAmount[0].amount}}</td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br>
+    </div>
+    <div class="modal-footer">
+    </div>
+  </div>
+
+</ng-template>

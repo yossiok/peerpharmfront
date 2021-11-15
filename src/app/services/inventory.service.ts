@@ -213,6 +213,12 @@ export class InventoryService {
       .post(url, JSON.stringify(materials), this.options)
       .pipe(map((res) => res.json()));
   }
+  getBOM(materials): Observable<any> {
+    let url = this.baseUrl + "material/billOfMaterials";
+    return this.http
+      .post(url, JSON.stringify(materials), this.options)
+      .pipe(map((res) => res.json()));
+  }
   getAllocatedOrdersByNumber(componentN): Observable<any> {
     let url = this.baseUrl + "component?allocatedOrders=" + componentN;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));

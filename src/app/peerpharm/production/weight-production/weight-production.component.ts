@@ -8,7 +8,7 @@ import {
 import { InventoryService } from "src/app/services/inventory.service";
 import { ToastrService } from "ngx-toastr";
 import { FormulesService } from "src/app/services/formules.service";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { ItemsService } from "src/app/services/items.service";
 import * as _ from "lodash";
 import { fromEventPattern } from "rxjs";
@@ -31,11 +31,13 @@ interface FormuleWeight {
 })
 export class WeightProductionComponent implements OnInit {
   @ViewChild("printFormuleBtn") printFormuleBtn: ElementRef;
+  @ViewChild("printBOMBtn") printBOMBtn: ElementRef;
   @ViewChild("reduceMaterialAmount") reduceMaterialAmount: ElementRef;
   @ViewChild("formuleNumberElement") formuleNumberElement: ElementRef;
   @ViewChild("formuleNumber") formuleNumber: ElementRef;
   @ViewChild("formuleWeight") formuleWeight: ElementRef;
   @ViewChild("orderNumber") orderNumber: ElementRef;
+  @ViewChild("bomModal") bomModal: ElementRef;
 
   formules: FormuleWeight[] = [];
 
@@ -54,6 +56,10 @@ export class WeightProductionComponent implements OnInit {
   showPill: boolean = true;
   importedFormule: any;
   workPlan: WorkPlan;
+  workPlanId: number;
+  showBOM: boolean = false;
+  billOfMaterials: any[] = [];
+  openModal: boolean = false;
 
   barcode = {
     materialId: "",
@@ -103,6 +109,7 @@ export class WeightProductionComponent implements OnInit {
 
       console.log(workPlanId);
       if (workPlanId) {
+        this.workPlanId = workPlanId;
         this.displayFormules(workPlanId);
       }
     });
@@ -363,6 +370,19 @@ export class WeightProductionComponent implements OnInit {
       this.finalFormule.data,
       this.finalWeight
     );
+    console.log(this.finalFormule.data);
+    this.inventorySrv.getBOM(this.finalFormule.data).subscribe((data) => {
+      console.log(data);
+      this.billOfMaterials = data;
+      this.showBOM = true;
+    });
+  }
+  openBillOfMaterials() {
+    this.modalService.open(this.bomModal);
+  }
+
+  checkAmountsForMaterial(prod, stock) {
+    return Number(stock) - Number(prod);
   }
 
   printFormule() {
