@@ -375,19 +375,23 @@ export class BatchesComponent implements OnInit {
           batch.weightQtyLeft != null
         ) {
           let obj = {
-            batchNumber: batch.batchNumber,
-            produced: batch.produced,
-            item: batch.item,
-            itemName: batch.itemName,
-            expration: batch.expration,
-            order: batch.order,
-            ph: batch.ph,
-            weightKg: batch.weightKg,
+            "Batch no.": batch.batchNumber,
+            PH: batch.ph,
+            "Production Date": batch.produced ? batch.produced.toString().slice(0,10) : 'Production Date not Supplied by User',
+            "Expiration Date": batch.expration ? batch.expration.toString().slice(0,10) : 'Expiration Date not Supplied by User',
+            "Item": batch.item,
+            "": batch.itemName,
+            "Order": batch.order,
+            "Quantity Required (Kg)": batch.weightKg,
+            "Quantity Produced (Kg)": batch.weightKg - batch.weightQtyLeft,
+            "Quantity Reamined (Kg)": batch.weightQtyLeft,
+            "Barrels Qty": batch.barrels
           };
           excelTable.push(obj);
         }
       });
-      this.exportAsXLSX(excelTable);
+      this.excelService.exportAsExcelFile(excelTable, `Batches from ${this.lastBatchToExport}, Exported on ${new Date().getDate()}/${new Date().getMonth() +1}/${new Date().getFullYear()}`);
+
       this.lastBatchToExport = "";
     } else {
       this.toastSrv.error("No batch number to follow");

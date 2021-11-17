@@ -161,10 +161,10 @@
       <label class="form-control text-success">Contact</label>
     </div>
     <div class="col-2">
-      <label class="form-control text-success">Currency</label>
+      <label class="form-control text-success">Origin</label>
     </div>
     <div class="col-2">
-      <label class="form-control text-success">Origin</label>
+      <label class="form-control text-success">Currency</label>
     </div>
   </div>
   <div class="row mt-2">
@@ -181,13 +181,18 @@
       <input type="text" class="form-control" [(ngModel)]="currentSupplier.contactName">
     </div>
     <div class="col-2">
-      <input type="text" class="form-control" [(ngModel)]="currentSupplier.currency">
+      <select class="form-control" [(ngModel)]="currentSupplier.origin">
+        <option value="israel">Israel</option>
+        <option value="import">import</option>
+      </select>
     </div>
     <div class="col-2">
-      <select class="form-control" [(ngModel)]="currentSupplier.origin">
-        <option value=""></option>
-        <option value="import">import</option>
-        <option value="israel">Israel</option>
+      <select class="form-control" [(ngModel)]="currentSupplier.currency">
+        <option value="USD">USD</option>
+        <option value="ILS">ILS</option>
+        <option value="GBP">GBP</option>
+        <option value="EUR">EUR</option>
+        <option value="JPY">JPY</option>
       </select>
     </div>
   </div>

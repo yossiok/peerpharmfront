@@ -270,6 +270,24 @@ export class SuppliersComponent implements OnInit {
         delete object.priceList
       })
     }
+
+    else {
+      let suppliers = [...data]
+      data = []
+      for(let supplier of suppliers) {
+        data.push({
+          "no.": supplier.suplierNumber,
+          "Name": supplier.suplierName,
+          "Address": supplier.address,
+          "City": supplier.city,
+          "Phone - Office": supplier.phoneNum,
+          "Cellular": supplier.cellularNum,
+          "Fax": supplier.faxNum,
+          "Last Update": supplier.lastUpdated ? supplier.lastUpdated.slice(0,10) : "Never Updated"
+        })
+      }
+
+    }
     this.excelService.exportAsExcelFile(data, fileName);
   }
 
