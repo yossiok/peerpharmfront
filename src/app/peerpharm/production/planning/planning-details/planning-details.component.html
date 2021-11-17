@@ -4,7 +4,7 @@
   <div class="d-flex flex-row justify-content-between w-75 mt-4">
     <div class="h2">
       <span class="p-2 rounded status" [style.color]="setColor(workPlan.status)">{{workPlan.status |
-                workPlanStatus}}</span>
+        workPlanStatus}}</span>
       <i [style.color]="setColor(2)" *ngIf="workPlan.status == 2" class="fas fa-check status"></i>
       <span [style.color]="setColor(3)" *ngIf="workPlan.status == 3">
         <i class="fas fa-check status"></i>
@@ -18,8 +18,8 @@
     <div class="h3">
       <span [style.background]="setColor(workPlan.status)" [style.color]="workPlan.status == 3 ? 'white' : 'black'"
         class="p-3 rounded-pill">{{workPlan.date |
-                date:
-                'short'}}</span>
+        date:
+        'short'}}</span>
     </div>
   </div>
 
@@ -163,7 +163,7 @@
       </table>
     </div>
     <div class="col-4">
-      <span *ngIf="authorized"><img class="big-img" ngbTooltip='שלח לייצור' (click)="weightFormules()"
+      <span *ngIf="authorized"><img class="big-img" ngbTooltip='שלח לייצור' (click)="moveToProduction()"
           src="../../../../../assets/images/filter.png" alt="לחץ כאן על מנת לשלוח פורמולות לייצור"></span>
     </div>
   </div>
@@ -232,35 +232,33 @@
     <ng-container *ngFor="let formulePrinting of workPlan.productionFormules; let i = index">
       <!-- <h1 *ngIf="formulePrinting.numOfItems > 16">Page 1 of 2</h1>
             <h1 *ngIf="formulePrinting.numOfItems <= 16">Page 1 of 1</h1> -->
-      <h1>Formule {{i+1}} Start</h1>
+      <h1>Formule {{i+1}}</h1>
 
       <table class="table table-bordered">
         <thead class="text-info">
           <tr>
             <th scope="col">Item number</th>
             <th scope="col">Item name</th>
-            <th scope="col">Orders / Items</th>
+            <th scope="col">Order Number</th>
             <th scope="col">Weight</th>
-            <!-- <th scope="col">WPU</th> -->
+            <th scope="col">WPU</th>
             <th scope="col">PH</th>
             <th class="w-50" scope="col">Remarks</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>{{formulePrinting.ordersAndItems[0].item}}</td>
-            <td>{{formulePrinting.formuleData.formuleName}}</td>
-            <td>
-              <span *ngFor="let orderAndItem of formulePrinting.ordersAndItems">
-                order {{orderAndItem.order}}, item {{orderAndItem.item}}
-                <br>
-              </span>
-            </td>
-            <td class="text-center">{{formulePrinting.totalKG}}KG</td>
-            <!-- <td>{{formulePrinting.formuleUnitWeight}}gr.</td> -->
-            <td>{{formulePrinting.formuleData.phFrom}}-{{formulePrinting.formuleData.phTo}}</td>
-            <td></td>
-          </tr>
+          <ng-container *ngFor="let item of workPlan.orderItems">
+            <tr *ngIf="item.parentFormule == formulePrinting.formule">
+            <!-- <tr> -->
+              <td>{{item.itemNumber}}</td>
+              <td>{{item.description}}</td>
+              <td>{{item.orderNumber}}</td>
+              <td>{{item.totalKG}}</td>
+              <td>{{item.netWeightGr}}</td>
+              <td>{{item.formule.phFrom}} - {{item.formule.phTo}}</td>
+              <td></td>
+            </tr>
+          </ng-container>
           <tr class="bg-light">
             <td style="font-weight: bold">Date:</td>
             <td><input style="height: 60px;" type="text"></td>
@@ -289,7 +287,7 @@
           <ng-container *ngFor="let phase of formulePrinting.formuleData.phases">
             <tr *ngFor="let item of phase.items; let i = index">
               <td style="padding:5px" *ngIf="i == 0" [attr.rowspan]="phase.items.length" class="phase">{{
-                                phase.phaseName }}</td>
+                phase.phaseName }}</td>
               <td style="padding:5px">{{ item.itemNumber }}</td>
               <td style="padding:5px">{{ item.itemName }}</td>
               <td style="padding:5px">{{ item.percentage }}%</td>
