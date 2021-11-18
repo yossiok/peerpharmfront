@@ -31,10 +31,11 @@
 
 
   </ng-container>
-  <!-- <ng-container *ngIf="(multi && !showingAllOrders) ||(!multi && !showingAllOrders)">
-  <span class='spanTitle' >Costumer Important Remark:</span>
-  <span *ngIf="costumersNumbers.length < 2"> {{costumerImpRemark}} </span>
-  <span *ngIf="costumersNumbers.length > 1"> <b style="color: red"> ריבוי לקוחות- לא ניתן לצפות בהערות חשובות</b> </span>
+  <!-- <ng-container 
+    *ngIf="(multi && !showingAllOrders) ||(!multi && !showingAllOrders)">
+    <span class='spanTitle' >Costumer Important Remark:</span>
+    <span *ngIf="costumersNumbers.length < 2"> {{costumerImpRemark}} </span>
+    <span *ngIf="costumersNumbers.length > 1"> <b style="color: red"> ריבוי לקוחות- לא ניתן לצפות בהערות חשובות</b> </span>
 </ng-container > -->
 
 </div>
@@ -178,14 +179,17 @@
       <tr style="border: 2px solid black; box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
         [style.background-color]="item.color">
 
-
+        <!--#-->
         <td *ngIf="item._id===EditRowId">
           <input #id type='hidden' [value]="item._id" style='width:370px'>
           <input #itemNumber type='hidden' [value]="item.itemNumber">{{i+1}}
-        </td>
+        </td>        
         <td *ngIf="item._id!==EditRowId"><b>{{i+1}}</b></td>
-        <td><input type="checkbox" (change)="isSelected($event,item)"></td>
 
+        <!--check-->
+        <td><input type="checkbox" (change)="isSelected($event,item)"></td>
+  
+        <!--Multi: Order Number-->
         <td *ngIf="multi==true">{{item.orderNumber}}</td>
 
         <!--Formule exist?-->
@@ -230,12 +234,11 @@
         </td>
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.discription}}</td>
 
-        <!--Barcode, weight-->
+        <!--Barcode-->
         <td *ngIf="item._id!==EditRowId">{{item.barcodeK}}</td>
         <td *ngIf="item._id==EditRowId">{{item.barcodeK}}</td>
-
-
-
+        
+        <!--weight-->
         <td *ngIf="item._id===EditRowId"><input #netWeightGr type='number' [value]="item.netWeightGr"
             style='width:70px'>
         </td>
@@ -245,15 +248,13 @@
         <td *ngIf="item._id===EditRowId"><input #quantity type='number' [value]=item.quantity style='width:70px'></td>
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.quantity}}</td>
 
-
-
         <!--Quantity Supplied-->
         <td *ngIf="item._id===EditRowId">{{item.quantitySupplied}}</td>
         <td *ngIf="item._id!==EditRowId">{{item.quantitySupplied}}</td>
 
+        <!--Dates-->
         <td>{{item.itemOrderDate | date: 'dd/MM/YYY' }}</td>
         <td>{{item.packingDate | date: 'dd/MM/YYY' }}</td>
-
         <td *ngIf="item._id===EditRowId"><input #itemDeliveryDate type='date' [value]=item.itemDeliveryDate
             style='width:170px'></td>
         <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.ietmDeliveryDate| date: 'dd/MM/YYYY'}}</td>
@@ -263,8 +264,8 @@
             src="../../../../assets/images/aprroved.png" /> / <img *ngIf="item.fillingStatus ==='filled'"
             style="width:15px" src="../../../../assets/images/aprroved.png" /></td>
 
-        <td *ngIf="item._id===EditRowId"></td>
         <!--?-->
+        <td *ngIf="item._id===EditRowId"></td>
 
         <!--Remarks-->
         <td *ngIf="item._id===EditRowId"><input #itemRemarks type='text' [value]=item.itemRemarks style='width:130px' />
