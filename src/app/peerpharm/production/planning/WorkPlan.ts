@@ -3,7 +3,7 @@ interface OrderItem{
     customerName: string,
     description: string,
     enoughMaterials: boolean,
-    formule: Object,
+    formule: any,
     itemNumber: string,
     netWeightGr: number,
     orderNumber: string,
@@ -12,6 +12,8 @@ interface OrderItem{
     totalKG: number,
     remarks: string,
     enoughComponents: boolean,
+    status: number,
+    checked: boolean
 }
 
 export interface ProductionFormule {
@@ -21,6 +23,7 @@ export interface ProductionFormule {
     batchNumber: string,
     ordersAndItems: orderAndItem[],
     formuleData: Object,
+    status: number
     // numOfItems: number  
 }
 

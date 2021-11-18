@@ -52,6 +52,7 @@ export class PlanningDetailsComponent implements OnInit {
   showMaterialsForFormules: boolean = false;
   printingFormules: boolean = false;
   formulePrinting: any;
+  statusTest: number = 1
 
   constructor(
     private authService: AuthService,
@@ -62,7 +63,7 @@ export class PlanningDetailsComponent implements OnInit {
     private inventoryService: InventoryService,
     private modalService: ConfirmService,
     public router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.authorized = this.authService.loggedInUser.authorization.includes(
@@ -84,6 +85,45 @@ export class PlanningDetailsComponent implements OnInit {
 
   closeWorkPlan(i: number) {
     this.closeWorkPlanEmitter.emit(i);
+  }
+
+  checkAll(event) {
+    for (let oi of this.workPlan.orderItems) oi.checked = event.target.checked
+  }
+
+  createPAKA() {
+    let orderItemsChecked = this.workPlan.orderItems.filter(oi => oi.checked == true)
+
+    for (let element of orderItemsChecked) {
+      if (element.formule.parentNumber) element.parentFormule = element.formule.parentNumber
+      else element.parentFormule = element.formule.formuleNumber
+      let allreadyExist = this.workPlan.productionFormules.findIndex(pf => pf.formule == element.parentFormule)
+      if (allreadyExist != -1) {
+        this.workPlan.productionFormules[allreadyExist].totalKG += element.totalKG
+        this.workPlan.productionFormules[allreadyExist].enoughMaterials = !this.workPlan.productionFormules[allreadyExist].enoughMaterials || element.enoughMaterials === false ? false : true
+        this.workPlan.productionFormules[allreadyExist].ordersAndItems.push({
+          order: element.orderNumber,
+          item: element.itemNumber
+        })
+      }
+      else this.workPlan.productionFormules.push({
+        ordersAndItems: [{
+          order: element.orderNumber,
+          item: element.itemNumber
+        }],
+        status: element.status,
+        formuleData: element.formule,
+        formule: element.parentFormule,
+        totalKG: element.totalKG,
+        enoughMaterials: element.enoughMaterials,
+        batchNumber: ''
+      })
+    }
+
+    this.saveChanges().then(saved => {
+      this.toastr.success()
+    }).catch(err => this.toastr.error(err))
+
   }
 
   setStatus(event) {

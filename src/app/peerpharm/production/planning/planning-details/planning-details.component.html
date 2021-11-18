@@ -58,6 +58,9 @@
       <thead class="thead-dark">
         <tr>
           <th>#</th>
+          <th>
+            <input (change)="checkAll($event)" type="checkbox" class="check-box">
+          </th>
           <th>Item</th>
           <th>Customer</th>
           <th>Order</th>
@@ -67,6 +70,7 @@
           <th>סה"כ ק"ג</th>
           <th>חומרי גלם</th>
           <th>קומפוננטים</th>
+          <th>סטטוס ייצור</th>
           <th>הערות</th>
           <th></th>
           <th *ngIf="authorized"></th>
@@ -75,6 +79,9 @@
       <tbody>
         <tr *ngFor="let orderItem of workPlan.orderItems; let i = index">
           <td>{{i+1}}</td>
+          <td>
+            <input [(ngModel)]="orderItem.checked" type="checkbox" class="check-box">
+          </td>
           <td>{{orderItem.itemNumber}}</td>
           <td>{{orderItem.customerName}}</td>
           <td>{{orderItem.orderNumber}}</td>
@@ -93,7 +100,7 @@
               class="far fa-thumbs-up"></i></td>
           <td class="text-center" *ngIf="!orderItem.enoughComponents"><i ngbTooltip="חסרים קומפוננטים במלאי"
               class="fas fa-exclamation-circle"></i></td>
-
+          <td [style.background]="orderItem.status | orderItemBatchStatusColor">{{orderItem.status | orderItemBatchStatus}}</td>
           <td>
             <span *ngIf="edit != i">{{orderItem.remarks}}</span>
             <input *ngIf="edit == i" type="text" [(ngModel)]="orderItem.remarks">
@@ -117,9 +124,16 @@
 
     </table>
   </div>
+
+  <div class="row mt-4">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <button class="btn btn-success" (click)="createPAKA()">Create Production Formules</button>
+      <!-- <button class="btn btn-info" >Compare</button> -->
+    </div>
+    <div class="col-3"></div>
+  </div>
   <h2>
-    <!-- <img class="click" (click)="export(workPlan.productionFormules, 'formules for work plan'+workPlan.serialNumber)"
-            src="../../../../../assets/images/excel.png" class="img" alt="">  -->
     {{workPlan.productionFormules.length}} Production Formules
   </h2>
   <div class="row mt-4">
@@ -133,8 +147,8 @@
             <th>פריטים / הזמנות</th>
             <th>סה"כ ק"ג</th>
             <th>סטטוס חומרים</th>
+            <th>סטטוס ייצור</th>
             <th>Batch?</th>
-            <!-- <th>הערות</th> -->
           </tr>
         </thead>
         <tbody>
@@ -151,12 +165,12 @@
             </td>
             <td *ngIf="!formule.enoughMaterials"><i ngbTooltip="חסרים קומפוננטים במלאי"
                 class="fas fa-exclamation-circle"></i></td>
+            <td [style.background]="formule.status | orderItemBatchStatusColor">{{formule.status | orderItemBatchStatus}}>{{formule.status | orderItemBatchStatus}}</td>
             <td class="text-center" class="text-success text-left" *ngIf="formule.batchNumber">
               {{formule.batchNumber}}</td>
             <td *ngIf="!formule.batchNumber"><i ngbTooltip="לא יוצר באטץ'" class="far fa-times-circle"></i>
             </td>
 
-            <!-- <td>{{orderItem.remarks}}</td> -->
           </tr>
         </tbody>
 
@@ -249,7 +263,7 @@
         <tbody>
           <ng-container *ngFor="let item of workPlan.orderItems">
             <tr *ngIf="item.parentFormule == formulePrinting.formule">
-            <!-- <tr> -->
+              <!-- <tr> -->
               <td>{{item.itemNumber}}</td>
               <td>{{item.description}}</td>
               <td>{{item.orderNumber}}</td>
