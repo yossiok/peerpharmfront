@@ -963,52 +963,44 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   exportAsXLSX(expression): void {
+
     switch (expression) {
+
       case "purchaseData":
-        let exelData = [...this.procurementData];
-        exelData.map((purchase) => {
-          delete purchase.billNumber;
-          delete purchase._id;
-          delete purchase.deliveryCerts;
-          delete purchase.outOfCountry;
-          delete purchase.closeReason;
-          delete purchase.recommendId;
-          delete purchase.stockitems;
-          delete purchase.paymentStatus;
-          if (purchase.creationDate)
-            purchase.creationDate = purchase.creationDate.slice(0, 10);
-          if (purchase.arrivalDate)
-            purchase.arrivalDate = purchase.arrivalDate.slice(0, 10);
-        });
-        this.excelService.exportAsExcelFile(exelData, "purchase orders", [
-          "orderNumber",
-          "supplierNumber",
-          "supplierName",
-          "supplierEmail",
-          "status",
-          "orderType",
-          "creationDate",
-          "arrivalDate",
-          "sumShippingCost",
-          "shippingPercentage",
-          "finalPurchasePrice",
-          "user",
-          "userEmail",
-          "remarks",
-        ]);
+        let exelData = [];
+        for (let purchase of this.procurementData) {
+          exelData.push({
+            Order: purchase.orderNumber,
+            Supplier: purchase.supplierNumber,
+            "": purchase.supplierName,
+            Status: this.hebStat(purchase.status) ,
+            ET: purchase.status == 'ETA' || purchase.status == 'ETD' ? purchase.statusChange ? purchase.statusChange.slice(0,10) : "" : "",
+            "Item Type": purchase.orderType,
+            "Opened At": purchase.creationDate ? purchase.creationDate.slice(0,10) : "",
+            User: purchase.user,
+            Remarks: purchase.remarks,
+            Origin: purchase.origin,
+          })
+        }
+     
+        this.excelService.exportAsExcelFile(exelData, "purchase orders");
         break;
+
       case "purchaseRecommendations":
         this.excelService.exportAsExcelFile(
           this.purchaseRecommendations,
           "data"
         );
         break;
+
       case "purchaseArrivals":
         this.excelService.exportAsExcelFile(this.procurementArrivals, "data");
         break;
+
       case "billsToCheck":
         this.excelService.exportAsExcelFile(this.certificate, "data");
         break;
+
       case "purchaseItems":
         let allItems = [];
         for (let purchaseOrder of this.procurementData) {
@@ -1047,6 +1039,7 @@ export class ProcurementOrdersComponent implements OnInit {
         }
         this.excelService.exportAsExcelFile(allItems, "purchase items");
         break;
+        
       default:
     }
   }
