@@ -59,7 +59,7 @@
         <tr>
           <th>#</th>
           <th>
-            <input (change)="checkAll($event)" type="checkbox" class="check-box">
+            <input (change)="checkAllItems($event)" type="checkbox" class="check-box">
           </th>
           <th>Item</th>
           <th>Customer</th>
@@ -100,7 +100,7 @@
               class="far fa-thumbs-up"></i></td>
           <td class="text-center" *ngIf="!orderItem.enoughComponents"><i ngbTooltip="חסרים קומפוננטים במלאי"
               class="fas fa-exclamation-circle"></i></td>
-          <td [style.background]="orderItem.status | orderItemBatchStatusColor">{{orderItem.status | orderItemBatchStatus}}</td>
+          <td [style.background]="orderItem.status | orderItemBatchStatusColor">{{orderItem.status | orderItemBatchStatus}} <button (click)="changeStatus(i)">Change Status</button></td>
           <td>
             <span *ngIf="edit != i">{{orderItem.remarks}}</span>
             <input *ngIf="edit == i" type="text" [(ngModel)]="orderItem.remarks">
@@ -143,6 +143,9 @@
         <thead class="thead-dark">
           <tr>
             <th>#</th>
+            <th>
+              <input (change)="checkAllFormules($event)" type="checkbox" class="check-box">
+            </th>
             <th>Formule</th>
             <th>פריטים / הזמנות</th>
             <th>סה"כ ק"ג</th>
@@ -154,6 +157,9 @@
         <tbody>
           <tr *ngFor="let formule of workPlan.productionFormules; let i = index">
             <td>{{i+1}}</td>
+            <td>
+              <input [(ngModel)]="formule.checked" type="checkbox" class="check-box">
+            </td>
             <td>{{formule.formule}}</td>
             <td>
               <span *ngFor="let orderAndItem of formule.ordersAndItems">
@@ -176,7 +182,10 @@
 
       </table>
     </div>
-    <div class="col-4">
+    <div class="col-1">
+      <button class="btn btn-info" (click)="weightFormules()">Compare</button>
+    </div>
+    <div class="col-3">
       <span *ngIf="authorized"><img class="big-img" ngbTooltip='שלח לייצור' (click)="moveToProduction()"
           src="../../../../../assets/images/filter.png" alt="לחץ כאן על מנת לשלוח פורמולות לייצור"></span>
     </div>

@@ -98,6 +98,13 @@ export class ProductionService {
       .pipe(map((res) => res.json()));
   }
 
+  setItemsSttatusTo3(workPlanId, itemNumbers: string[]) {
+    let url = this.baseUrl + `productionSchedule/setItemsSttatusTo3`;
+    return this.http
+      .post(url, JSON.stringify({ workPlanId, itemNumbers }), this.options)
+      .pipe(map((res) => res.json()));
+  }
+
   getWorkPlan(serialNumber) {
     const url =
       this.baseUrl + `productionSchedule/workplan?workPlan=${serialNumber}`;

@@ -104,13 +104,13 @@ export class WeightProductionComponent implements OnInit {
       this.formuleNumber.nativeElement.focus();
     }, 500);
     this.importedFormule = this.route.queryParamMap.subscribe((params) => {
-      console.log(params);
-      let workPlanId = params["params"].workPlan || null;
+      console.log('params: ',params);
+      let workPlanId = params["params"].workPlanId || null;
+      let formuleNumbers = params["params"].formuleNumbers || null
 
-      console.log(workPlanId);
-      if (workPlanId) {
+      if (workPlanId && formuleNumbers) {
         this.workPlanId = workPlanId;
-        this.displayFormules(workPlanId);
+        this.displayFormules(workPlanId, formuleNumbers);
       }
     });
   }
@@ -192,25 +192,27 @@ export class WeightProductionComponent implements OnInit {
       this.formuleWeight.nativeElement.focus();
     }
   }
-  displayFormules(id) {
-    console.log(id);
-    this.productionService.getWorkPlan(id).subscribe((data) => {
+
+  displayFormules(workPlanId, formuleNumbers) {
+    this.productionService.getWorkPlan(workPlanId).subscribe((data) => {
       if (data.msg) {
         this.toastSrv.error(data.msg);
         return;
       } else if (data) {
         this.finalWeight = 0;
-        console.log(data);
         for (let orderItem of data.orderItems) {
-          let formuleWeight: FormuleWeight = {
-            formuleNumber: orderItem.itemNumber,
-            formuleWeight: orderItem.totalKG,
-            formuleOrder: orderItem.orderNumber,
-            formuleUnitWeight: orderItem.netWeightGr,
-            data: orderItem.formule,
-          };
-          this.finalWeight += Number(formuleWeight.formuleWeight);
-          this.formules.push(formuleWeight);
+          let exist = formuleNumbers.find(f => f == orderItem.itemNumber)
+          if(exist) {
+            let formuleWeight: FormuleWeight = {
+              formuleNumber: orderItem.itemNumber,
+              formuleWeight: orderItem.totalKG,
+              formuleOrder: orderItem.orderNumber,
+              formuleUnitWeight: orderItem.netWeightGr,
+              data: orderItem.formule,
+            };
+            this.finalWeight += Number(formuleWeight.formuleWeight);
+            this.formules.push(formuleWeight);
+          }
         }
       } else {
         this.toastSrv.error("Workplan was not found.", "Try again");
@@ -364,6 +366,9 @@ export class WeightProductionComponent implements OnInit {
   }
 
   chooseFormule(formule) {
+    console.log('formules: ',this.formules)
+    let formuleNumbers = this.formules.map( f => f.formuleNumber)
+    this.productionService.setItemsSttatusTo3(this.workPlanId, formuleNumbers)
     this.showPill = false;
     this.finalFormule = { ...formule };
     this.finalFormule.data = this.formuleCalculate(
@@ -377,6 +382,7 @@ export class WeightProductionComponent implements OnInit {
       this.showBOM = true;
     });
   }
+
   openBillOfMaterials() {
     this.modalService.open(this.bomModal);
   }
