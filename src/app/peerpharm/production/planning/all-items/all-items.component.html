@@ -70,7 +70,8 @@
       <h2 class="text-center">Order Items List</h2>
 
       <form novalidate="" class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"><button
-          type="button" id="btnCreateWP" class="btn btn-primary flex-shrink-0" disabled="">Create Workplan</button>
+          type="button" id="btnCreateWP" class="btn btn-primary flex-shrink-0" (click)="makePlan()"
+          [disabled]="selectedArr.length==0">Create Workplan</button>
       </form>
     </div>
     <div _ngcontent-eot-c271="" class="right-part bg-white">
@@ -78,6 +79,7 @@
         <thead class="bg-secondary text-white">
           <tr>
             <th>Select</th>
+            <th>Parent/Formule</th>
             <th>Order</th>
             <th>Item Number</th>
             <th>Item Name</th>
@@ -96,6 +98,7 @@
             <td>
               <input type="checkbox" (change)="isSelected($event,item)">
             </td>
+            <td>{{item.formule.parentNumber? item.formule.parentNumber: item.formule.formuleNumber}}</td>
             <td>{{item.orderNumber}}</td>
             <td>{{item.orderItem.itemNumber}}</td>
             <td>{{item.orderItem.discription}}</td>
