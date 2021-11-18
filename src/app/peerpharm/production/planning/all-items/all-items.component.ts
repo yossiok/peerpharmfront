@@ -27,6 +27,7 @@ export class AllItemsComponent implements OnInit {
   showCheckbox: boolean = false;
   authorized: boolean = false;
   orderItems: any[] = [];
+  filteredOrderItems: any[] = [];
   viewOrderItems: boolean = true;
   viewWorkPlans: boolean = false;
   filteredWorkPlans: any[] = [];
@@ -37,7 +38,7 @@ export class AllItemsComponent implements OnInit {
   closedWPCount: number;
   onholdWPCount: number;
   cancelledWPCount: number;
-  selectedArr: any[];
+  selectedArr: any[] = [];
 
   constructor(
     private productionService: ProductionService,
@@ -61,9 +62,15 @@ export class AllItemsComponent implements OnInit {
   getAllOrderItems() {
     this.orderItems = [];
 
-    this.ordersService.getAllOpenOrderItems().subscribe((data) => {
+    this.ordersService.getAllOpenOrderItemsNew().subscribe((data) => {
       console.log(data);
       this.orderItems = data;
+      this.filteredOrderItems = data;
+      for (let i = 1; i <= 7; i++) {
+        this.filteredOrderItems = this.orderItems.filter((oi) => {
+          return oi.status == i;
+        });
+      }
     });
   }
   getWorkPlans() {
@@ -222,26 +229,74 @@ export class AllItemsComponent implements OnInit {
   }
 
   isSelected(ev, item) {
-    console.log(ev.target.checked);
-    console.log(item);
-    if (ev.target.checked == true) {
+    if (ev.target.checked) {
       let cont = true;
-      if (!item.formuleExist)
+      if (!item.formule.formuleNumber)
         cont = confirm(
           "לפריט זה לא קיימת פורמולה. האם אתה בטוח שברצונך להוסיף אותו לרשימה?"
         );
-      if (cont) {
-        var isSelected = this.selectedArr;
-        isSelected.push({ ...item });
-        this.selectedArr = isSelected;
-      } else ev.target.checked = false;
-    }
 
-    if (ev.target.checked == false) {
-      var isSelected = this.selectedArr;
-      var tempArr = isSelected.filter((x) => x.itemNumber != item.itemNumber);
-      this.selectedArr = tempArr;
+      if (cont) {
+        console.log("Befor push of item");
+        console.log(item);
+        let newItem = {
+          formule: item.formule,
+          customerID: item.costumerInternalId,
+          customerName: item.costumer,
+          description: item.orderItem.discription,
+          itemNumber: item.orderItem.itemNumber,
+          enoughtComponents: true,
+          netWeightGr: item.orderItem.netWeightGr,
+          quantity: item.orderItem.quantity,
+          remarks: item.orderItem.itemRemarks,
+          totalKG: item.orderItem.qtyKg,
+          orderNumber: item.orderItem.orderNumber,
+          _id: item.orderItem._id,
+        };
+        this.selectedArr.push(newItem);
+      } else ev.target.checked = false;
+    } else {
+      let index = this.selectedArr.findIndex((oi) => {
+        return oi._id == item.orderItem._id;
+      });
+      this.selectedArr.splice(index, 1);
     }
     console.log(this.selectedArr);
+  }
+
+  makePlan() {
+    if (this.selectedArr.length == 0)
+      this.toastr.error("יש לבחור לפחות פריט אחד");
+    else {
+      let remark = prompt("אנא רשום שם / הערה לתכנית עבודה:");
+      if (!remark) return;
+
+      this.ordersService
+        .makePlan(this.selectedArr, remark)
+        .subscribe((data) => {
+          console.log(data);
+
+          if (data.error && data.error == "No formules for all products")
+            this.toastr.error(
+              `יש לעדכן פורמולות עבור הפריטים הבאים: ${data.missingFormules}`,
+              "פורמולות חסרות"
+            );
+          else if (data.msg == "duplicate formules")
+            this.toastr.error(
+              "יש למחוק את אחד המופעים על מנת להמשיך",
+              `פורמולה מס. ${data.formule} מופיעה פעמיים במערכת`
+            );
+          else if (data.orderItems.length) {
+            this.workPlans.unshift(data);
+            this.toastr.success(
+              "נשמרה בהצלחה.",
+              `תכנית עבודה ${data.serialNumber}`
+            );
+          } else
+            this.toastr.warning(
+              'היתה בעיה. אנא בדוק את תכנית העבודה במסך "Planning"'
+            );
+        });
+    }
   }
 }
