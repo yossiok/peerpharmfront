@@ -72,7 +72,7 @@
   <option value="done">Closed</option>
 </select>
 <div class="text-center">
-  <button class="btn btn-primary" (click)="makePlan()">Add Cream Production Work Plan</button>
+  <button class="btn btn-primary" (click)="updatePakaStatus()">Add Cream Production Work Plan</button>
 </div>
 
 <div *ngIf="orderExplodeLoader" class="loading">Loading&#8230;</div>
@@ -89,6 +89,7 @@
       <th *ngIf="openFormule"></th>
       <th><img src="../../../../assets/images/print.png" ngbTooltip="Print Order Details" class="reportImg click"
           (click)="printOrder = true"></th>
+      <th>WP Status</th>
       <th *ngIf="showingAllOrders || multi">Order Number</th>
       <th style="width:200px;" class="header">Item Number </th>
       <th class="header">Item Important Remark</th>
@@ -132,6 +133,7 @@
     <tr *ngIf="!showingAllOrders" class='inputTr' (click)="edit('')">
       <td>#</td>
       <td><input disabled type="checkbox" (change)="checkboxAllOrders($event)"></td>
+      <td></td>
       <td></td>
       <td *ngIf="!showingAllOrders && multi"><input style="box-shadow:1px 1px 2px black;"
           class="form-control form-control-sm" placeholder="Order Number" [(ngModel)]="itemData.orderNumber" #orderNum
@@ -186,6 +188,7 @@
         <td *ngIf="item._id!==EditRowId"><b>{{i+1}}</b></td>
         <td><input type="checkbox" (change)="isSelected($event,item)"></td>
 
+        <td *ngIf="multi==true">{{item.pakaStatus | orderItemBatchStatus}}</td>
         <td *ngIf="multi==true">{{item.orderNumber}}</td>
 
         <!--Formule exist?-->
