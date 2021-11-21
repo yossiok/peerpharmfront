@@ -100,7 +100,7 @@
               class="far fa-thumbs-up"></i></td>
           <td class="text-center" *ngIf="!orderItem.enoughComponents"><i ngbTooltip="חסרים קומפוננטים במלאי"
               class="fas fa-exclamation-circle"></i></td>
-          <td [style.background]="orderItem.status | orderItemBatchStatusColor">{{orderItem.status | orderItemBatchStatus}} <button (click)="changeStatus(i)">Change Status</button></td>
+          <td [style.background]="orderItem.status | orderItemBatchStatusColor">{{orderItem.status | orderItemBatchStatus}}</td>
           <td>
             <span *ngIf="edit != i">{{orderItem.remarks}}</span>
             <input *ngIf="edit == i" type="text" [(ngModel)]="orderItem.remarks">
@@ -171,7 +171,7 @@
             </td>
             <td *ngIf="!formule.enoughMaterials"><i ngbTooltip="חסרים קומפוננטים במלאי"
                 class="fas fa-exclamation-circle"></i></td>
-            <td [style.background]="formule.status | orderItemBatchStatusColor">{{formule.status | orderItemBatchStatus}}>{{formule.status | orderItemBatchStatus}}</td>
+            <td [style.background]="formule.status | orderItemBatchStatusColor">{{formule.status | orderItemBatchStatus}}</td>
             <td class="text-center" class="text-success text-left" *ngIf="formule.batchNumber">
               {{formule.batchNumber}}</td>
             <td *ngIf="!formule.batchNumber"><i ngbTooltip="לא יוצר באטץ'" class="far fa-times-circle"></i>

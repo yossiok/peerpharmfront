@@ -98,10 +98,10 @@ export class ProductionService {
       .pipe(map((res) => res.json()));
   }
 
-  setItemsSttatusTo3(workPlanId, itemNumbers: string[]) {
-    let url = this.baseUrl + `productionSchedule/setItemsSttatusTo3`;
+  joinFormules(workPlanId, itemNumbers: string[], finalFormule) {
+    let url = this.baseUrl + `productionSchedule/joinFormules`;
     return this.http
-      .post(url, JSON.stringify({ workPlanId, itemNumbers }), this.options)
+      .post(url, JSON.stringify({ workPlanId, itemNumbers, finalFormule }), this.options)
       .pipe(map((res) => res.json()));
   }
 
