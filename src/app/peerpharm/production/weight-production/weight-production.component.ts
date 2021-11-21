@@ -97,20 +97,20 @@ export class WeightProductionComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private productionService: ProductionService
-  ) {}
+  ) { }
 
   ngOnInit() {
     setTimeout(() => {
       this.formuleNumber.nativeElement.focus();
     }, 500);
     this.importedFormule = this.route.queryParamMap.subscribe((params) => {
-      console.log(params);
-      let workPlanId = params["params"].workPlan || null;
+      console.log('params: ', params);
+      let workPlanId = params["params"].workPlanId || null;
+      let formuleNumbers = params["params"].formuleNumbers || null
 
-      console.log(workPlanId);
-      if (workPlanId) {
+      if (workPlanId && formuleNumbers) {
         this.workPlanId = workPlanId;
-        this.displayFormules(workPlanId);
+        this.displayFormules(workPlanId, formuleNumbers);
       }
     });
   }
@@ -192,25 +192,27 @@ export class WeightProductionComponent implements OnInit {
       this.formuleWeight.nativeElement.focus();
     }
   }
-  displayFormules(id) {
-    console.log(id);
-    this.productionService.getWorkPlan(id).subscribe((data) => {
+
+  displayFormules(workPlanId, formuleNumbers) {
+    this.productionService.getWorkPlan(workPlanId).subscribe((data) => {
       if (data.msg) {
         this.toastSrv.error(data.msg);
         return;
       } else if (data) {
         this.finalWeight = 0;
-        console.log(data);
         for (let orderItem of data.orderItems) {
-          let formuleWeight: FormuleWeight = {
-            formuleNumber: orderItem.itemNumber,
-            formuleWeight: orderItem.totalKG,
-            formuleOrder: orderItem.orderNumber,
-            formuleUnitWeight: orderItem.netWeightGr,
-            data: orderItem.formule,
-          };
-          this.finalWeight += Number(formuleWeight.formuleWeight);
-          this.formules.push(formuleWeight);
+          let exist = formuleNumbers.find(f => f == orderItem.itemNumber)
+          if (exist) {
+            let formuleWeight: FormuleWeight = {
+              formuleNumber: orderItem.itemNumber,
+              formuleWeight: orderItem.totalKG,
+              formuleOrder: orderItem.orderNumber,
+              formuleUnitWeight: orderItem.netWeightGr,
+              data: orderItem.formule,
+            };
+            this.finalWeight += Number(formuleWeight.formuleWeight);
+            this.formules.push(formuleWeight);
+          }
         }
       } else {
         this.toastSrv.error("Workplan was not found.", "Try again");
@@ -268,67 +270,36 @@ export class WeightProductionComponent implements OnInit {
     let identical = true;
 
     for (let formule = 0; formule < this.formules.length - 1; formule++) {
+      if(this.formules[formule].data.phases.length == 0) {
+        this.toastSrv.error('לא קיימות פאזות באחת או יותר מהפורמולות...', 'חסר מידע!')
+        return
+      }
       for (
         let phase = 0;
         phase < this.formules[formule].data.phases.length;
         phase++
       ) {
-        console.log(this.formules[formule].data.phases[phase]);
-        for (
-          let item = 0;
-          item < this.formules[formule].data.phases[phase].items.length;
-          item++
-        ) {
-          // console.log(this.formules[formule].data.phases[phase].items[item]);
-          // console.log(
-          //   this.formules[formule].data.phases[phase].items[item].itemNumber
-          // );
-          let currentItem =
-            this.formules[formule].data.phases[phase].items[item];
-          console.log(currentItem.itemNumber);
-          let itemsToCompare =
-            this.formules[formule + 1].data.phases[phase].items;
-          console.log(itemsToCompare);
-          let index = itemsToCompare.findIndex((item) => {
-            console.log(item.itemNumber);
-            console.log(currentItem.itemNumber);
-            return item.itemNumber == currentItem.itemNumber;
-          });
+        for (let item = 0; item < this.formules[formule].data.phases[phase].items.length; item++) {
+          let currentItem = this.formules[formule].data.phases[phase].items[item];
+          let itemsToCompare = this.formules[formule + 1].data.phases[phase].items;
+          let index = itemsToCompare.findIndex((item) => item.itemNumber == currentItem.itemNumber);
           if (index == -1) {
-            console.log(index);
             identical = false;
-            console.log("index is: " + identical);
-            this.formules[formule].data.phases[phase].items[item].color =
-              "orange";
-          } else if (
-            Number(currentItem.percentage) !=
-            Number(itemsToCompare[index].percentage)
-          ) {
-            console.log(index);
-            console.log("index is: " + identical);
-            console.log("Item percentage: " + currentItem.percentage);
-            console.log(
-              "Comperted Item percentage: " + itemsToCompare[index].percentage
-            );
+            this.formules[formule].data.phases[phase].items[item].color = "orange";
+          } else if (Number(currentItem.percentage) != Number(itemsToCompare[index].percentage)) {
             identical = false;
             currentItem.color = "orange";
             itemsToCompare[index].color = "orange";
-            console.log(
-              this.formules[formule + 1].data.phases[phase].items[index]
-            );
           } else {
             currentItem.color = "lightgreen";
             itemsToCompare[index].color = "lightgreen";
-            console.log(
-              this.formules[formule + 1].data.phases[phase].items[index]
-            );
           }
         }
       }
     }
 
     if (identical == true) {
-      this.toastSrv.success("Twin Formules!", "The formules are identical.");
+      this.toastSrv.success("The formules are identical.", "Twin Formules!");
     }
   }
 
@@ -364,19 +335,35 @@ export class WeightProductionComponent implements OnInit {
   }
 
   chooseFormule(formule) {
+    console.log('formules: ', this.formules)
+    let formuleNumbers = this.formules.map(f => f.formuleNumber)
+    // this.productionService.setItemsSttatusTo3(this.workPlanId, formuleNumbers)
     this.showPill = false;
     this.finalFormule = { ...formule };
     this.finalFormule.data = this.formuleCalculate(
       this.finalFormule.data,
       this.finalWeight
     );
-    console.log(this.finalFormule.data);
-    this.inventorySrv.getBOM(this.finalFormule.data).subscribe((data) => {
-      console.log(data);
-      this.billOfMaterials = data;
-      this.showBOM = true;
-    });
+    if (this.workPlanId) {
+      this.productionService.joinFormules(this.workPlanId, formuleNumbers, this.finalFormule).subscribe(data => {
+        console.log(data)
+        console.log(this.finalFormule.data);
+        this.inventorySrv.getBOM(this.finalFormule.data).subscribe((data) => {
+          console.log(data);
+          this.billOfMaterials = data;
+          this.showBOM = true;
+        });
+      })
+    }
+    else {
+      this.inventorySrv.getBOM(this.finalFormule.data).subscribe((data) => {
+        console.log(data);
+        this.billOfMaterials = data;
+        this.showBOM = true;
+      });
+    }
   }
+
   openBillOfMaterials() {
     this.modalService.open(this.bomModal);
   }

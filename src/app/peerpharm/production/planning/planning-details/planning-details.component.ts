@@ -87,8 +87,12 @@ export class PlanningDetailsComponent implements OnInit {
     this.closeWorkPlanEmitter.emit(i);
   }
 
-  checkAll(event) {
+  checkAllItems(event) {
     for (let oi of this.workPlan.orderItems) oi.checked = event.target.checked
+  }
+
+  checkAllFormules(event) {
+    for (let oi of this.workPlan.productionFormules) oi.checked = event.target.checked
   }
 
   createPAKA() {
@@ -116,7 +120,7 @@ export class PlanningDetailsComponent implements OnInit {
         formule: element.parentFormule,
         totalKG: element.totalKG,
         enoughMaterials: element.enoughMaterials,
-        batchNumber: ''
+        batchNumber: '',
       })
     }
 
@@ -139,6 +143,11 @@ export class PlanningDetailsComponent implements OnInit {
           this.workPlan.status = currentStatus;
         });
     }
+  }
+
+  changeStatus(i) {
+    this.workPlan.orderItems[i].status = 3
+    this.saveChanges().then(succes=> {})
   }
 
   saveChanges() {
@@ -214,7 +223,8 @@ export class PlanningDetailsComponent implements OnInit {
     console.log(this.workPlan.productionFormules);
     this.router.navigate(["/peerpharm/formules/weight-production"], {
       queryParams: {
-        workPlan: this.workPlan.serialNumber,
+        formuleNumbers: this.workPlan.productionFormules.filter(f => f.checked).map(f => f.formule),
+        workPlanId: this.workPlan.serialNumber
       },
     });
   }

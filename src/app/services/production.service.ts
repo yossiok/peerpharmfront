@@ -98,6 +98,13 @@ export class ProductionService {
       .pipe(map((res) => res.json()));
   }
 
+  joinFormules(workPlanId, itemNumbers: string[], finalFormule) {
+    let url = this.baseUrl + `productionSchedule/joinFormules`;
+    return this.http
+      .post(url, JSON.stringify({ workPlanId, itemNumbers, finalFormule }), this.options)
+      .pipe(map((res) => res.json()));
+  }
+
   getWorkPlan(serialNumber) {
     const url =
       this.baseUrl + `productionSchedule/workplan?workPlan=${serialNumber}`;

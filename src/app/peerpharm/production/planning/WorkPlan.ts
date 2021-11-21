@@ -13,7 +13,7 @@ interface OrderItem{
     remarks: string,
     enoughComponents: boolean,
     status: number,
-    checked: boolean
+    checked?: boolean
 }
 
 export interface ProductionFormule {
@@ -23,7 +23,8 @@ export interface ProductionFormule {
     batchNumber: string,
     ordersAndItems: orderAndItem[],
     formuleData: Object,
-    status: number
+    status: number,
+    checked?: boolean
     // numOfItems: number  
 }
 
