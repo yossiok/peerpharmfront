@@ -39,6 +39,14 @@ export class AllItemsComponent implements OnInit {
   onholdWPCount: number;
   cancelledWPCount: number;
   selectedArr: any[] = [];
+  waitingCount: number = 0;
+  plannedCount: number = 0;
+  approvedCount: number = 0;
+  scheduledCount: number = 0;
+  allocatedCount: number = 0;
+  inProdCount: number = 0;
+  producedCount: number = 0;
+  nullCount: number = 0;
 
   constructor(
     private productionService: ProductionService,
@@ -61,16 +69,54 @@ export class AllItemsComponent implements OnInit {
 
   getAllOrderItems() {
     this.orderItems = [];
+    this.waitingCount = 0;
+    this.plannedCount = 0;
+    this.approvedCount = 0;
+    this.scheduledCount = 0;
+    this.allocatedCount = 0;
+    this.inProdWPCount = 0;
+    this.producedCount = 0;
 
     this.ordersService.getAllOpenOrderItemsNew().subscribe((data) => {
       console.log(data);
       this.orderItems = data;
-      this.filteredOrderItems = data;
       for (let i = 1; i <= 7; i++) {
         this.filteredOrderItems = this.orderItems.filter((oi) => {
-          return oi.status == i;
+          return oi.orderItem.pakaStatus == i;
         });
+
+        switch (i) {
+          case 1:
+            this.waitingCount = 0 + this.filteredOrderItems.length;
+            break;
+          case 2:
+            this.plannedCount = 0 + this.filteredOrderItems.length;
+            break;
+          case 3:
+            this.approvedCount = 0 + this.filteredOrderItems.length;
+            break;
+          case 4:
+            this.scheduledCount = 0 + this.filteredOrderItems.length;
+            break;
+          case 5:
+            this.allocatedCount = 0 + this.filteredOrderItems.length;
+            break;
+          case 6:
+            this.inProdCount = 0 + this.filteredOrderItems.length;
+            break;
+          case 7:
+            this.producedCount = 0 + this.filteredOrderItems.length;
+            break;
+          case null:
+            this.waitingCount = 0 + this.filteredOrderItems.length;
+            break;
+          default:
+            this.waitingCount = 0 + this.filteredOrderItems.length;
+            break;
+        }
       }
+
+      this.viewOrders(1);
     });
   }
   getWorkPlans() {
@@ -223,7 +269,17 @@ export class AllItemsComponent implements OnInit {
     this.viewWorkPlans = true;
   }
 
-  viewOrders() {
+  viewOrders(status) {
+    console.log("view orders clicked! Status = " + status);
+    this.filteredOrderItems = [];
+    if (status != 0) {
+      this.filteredOrderItems = this.orderItems.filter((oi) => {
+        return oi.orderItem.pakaStatus == status;
+      });
+    } else {
+      this.filteredOrderItems = this.orderItems;
+    }
+
     this.viewOrderItems = true;
     this.viewWorkPlans = false;
   }
@@ -248,10 +304,11 @@ export class AllItemsComponent implements OnInit {
           enoughtComponents: true,
           netWeightGr: item.orderItem.netWeightGr,
           quantity: item.orderItem.quantity,
-          remarks: item.orderItem.itemRemarks,
+          remarks: null,
           totalKG: item.orderItem.qtyKg,
           orderNumber: item.orderItem.orderNumber,
           _id: item.orderItem._id,
+          pakaStatus: item.orderItem.pakaStatus,
         };
         this.selectedArr.push(newItem);
       } else ev.target.checked = false;
@@ -274,7 +331,8 @@ export class AllItemsComponent implements OnInit {
       this.ordersService
         .makePlan(this.selectedArr, remark)
         .subscribe((data) => {
-          console.log(data);
+          console.log(data.workPlan);
+          console.log(data.result);
 
           if (data.error && data.error == "No formules for all products")
             this.toastr.error(
@@ -286,8 +344,19 @@ export class AllItemsComponent implements OnInit {
               "יש למחוק את אחד המופעים על מנת להמשיך",
               `פורמולה מס. ${data.formule} מופיעה פעמיים במערכת`
             );
-          else if (data.orderItems.length) {
-            this.workPlans.unshift(data);
+          else if (data.workPlan.orderItems.length) {
+            this.workPlans.unshift(data.workPlan);
+            for (let item of this.orderItems) {
+              let index = data.workPlan.orderItems.findIndex(
+                (oi) => oi._id == item.orderItem._id
+              );
+              if (index > -1) {
+                this.orderItems[index].orderItem.pakaStatus = 2;
+                this.orderItems[index].orderItem.workPlanId =
+                  data.workPlan.serialNumber;
+              }
+            }
+            this.getAllOrderItems();
             this.toastr.success(
               "נשמרה בהצלחה.",
               `תכנית עבודה ${data.serialNumber}`

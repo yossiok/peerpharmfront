@@ -1,68 +1,68 @@
-<a _ngcontent-eot-c271="" href="javascript:void(0)"
-  class="btn btn-success show-left-part d-block d-md-none ti-menu "></a>
-<div _ngcontent-eot-c271="" class="main-part ">
-  <div _ngcontent-eot-c271="" class="left-part bg-white fixed-left-part">
-    <div _ngcontent-eot-c271="" class="position-relative">
-      <div _ngcontent-eot-c271="" class="px-3 py-3 d-flex align-items-center border-bottom">
-        <p _ngcontent-eot-c271="" class="mb-0  mt-5 py-1 text-center font-18 font-bold">Order Items</p>
+<a href="javascript:void(0)" class="btn btn-success show-left-part d-block d-md-none ti-menu "></a>
+<div class="main-part ">
+  <div class="left-part bg-white fixed-left-part">
+    <div class="position-relative">
+      <div class="px-3 py-3 d-flex align-items-center border-bottom">
+        <p class="mb-0  mt-5 py-1 text-center font-18 font-bold">Order Items</p>
       </div>
-      <ul _ngcontent-eot-c271="" class="tasklist list-style-none">
-        <li _ngcontent-eot-c271="" class="task-item d-flex all border-bottom active" (click)="viewOrders() "> All <span
-            _ngcontent-eot-c271="" class="badge badge-primary ml-auto pt-1">5</span></li>
-        <li _ngcontent-eot-c271="" class="task-item d-flex incomplete border-bottom" click="getWokPlan(23)">
-          Order <span _ngcontent-eot-c271="" class="badge badge-danger ml-auto pt-1"
-            style="background-color: #FFC000;">3</span></li>
-        <li _ngcontent-eot-c271="" class=" task-item d-flex complete border-bottom"> PP&C Draft<span
-            _ngcontent-eot-c271="" class="badge badge-success ml-auto pt-1" style="background-color: #68e37d;">2</span>
+      <ul class="tasklist list-style-none">
+
+        <li style="cursor: pointer" class="task-item d-flex incomplete border-bottom" (click)="viewOrders(1)">
+          {{1|orderItemBatchStatus}} <span class="badge badge-danger ml-auto pt-1"
+            [style.background]="1|orderItemBatchStatusColor">{{waitingCount}}</span></li>
+        <li style="cursor: pointer" class=" task-item d-flex complete border-bottom" (click)="viewOrders(2) ">
+          {{2|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
+            [style.background]="2|orderItemBatchStatusColor">{{plannedCount}}</span>
         </li>
-        <li _ngcontent-eot-c271="" class="task-item d-flex complete border-bottom"> Formula Approved <span
-            _ngcontent-eot-c271="" class="badge badge-success ml-auto pt-1" style="background-color: #5B9BD5;">2</span>
+        <li style="cursor: pointer" class="task-item d-flex complete border-bottom" (click)="viewOrders(3)">
+          {{3|orderItemBatchStatus}} <span class="badge badge-success ml-auto pt-1"
+            [style.background]="3|orderItemBatchStatusColor">{{approvedCount}}</span>
         </li>
-        <li _ngcontent-eot-c271="" class="task-item d-flex complete border-bottom">Scheduled <span
-            _ngcontent-eot-c271="" class="badge badge-success ml-auto pt-1" style="background-color: #ED7D31;">2</span>
+        <li style="cursor: pointer" class="task-item d-flex complete border-bottom" (click)="viewOrders(4)">
+          {{4|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
+            [style.background]="4|orderItemBatchStatusColor">{{scheduledCount}}</span>
         </li>
-        <li _ngcontent-eot-c271="" class="task-item d-flex complete border-bottom">Materials Allocated <span
-            _ngcontent-eot-c271="" class="badge badge-success ml-auto pt-1" style="background-color: #C48170;">2</span>
+        <li style="cursor: pointer" class="task-item d-flex complete border-bottom" (click)="viewOrders(5)">
+          {{5|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
+            [style.background]="5|orderItemBatchStatusColor">{{allocatedCount}}</span>
         </li>
-        <li _ngcontent-eot-c271="" class="task-item d-flex complete border-bottom">In Production <span _ngcontent-eot-c271=""
-            class="badge badge-success ml-auto pt-1" style="background-color: #A5A5A5;">2</span></li>
-        <li _ngcontent-eot-c271="" class="task-item d-flex complete border-bottom">Produced <span _ngcontent-eot-c271=""
-            class="badge badge-success ml-auto pt-1" style="background-color: #1a8a22;">2</span></li>
+        <li style="cursor: pointer" class="task-item d-flex complete border-bottom" (click)="viewOrders(6)">
+          {{6|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
+            [style.background]="6|orderItemBatchStatusColor">{{inProdCount}}</span>
+        </li>
+        <li style="cursor: pointer" class="task-item d-flex complete border-bottom" (click)="viewOrders(7)">
+          {{7|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
+            [style.background]="7|orderItemBatchStatusColor">{{producedCount}}</span></li>
+        <li style="cursor: pointer" class="task-item d-flex all border-bottom active" (click)="viewOrders(0)"> All <span
+            class="badge badge-primary ml-auto pt-1">{{orderItems.length}}</span></li>
       </ul>
     </div>
-    <div _ngcontent-eot-c271="" class="px-3 py-3 d-flex align-items-center border-bottom">
-      <p _ngcontent-eot-c271="" class="mb-0  mt-5 py-1 text-center font-18 font-bold">Work Plans</p>
+    <div class="px-3 py-3 d-flex align-items-center border-bottom">
+      <p class="mb-0  mt-5 py-1 text-center font-18 font-bold">Work Plans</p>
     </div>
-    <ul _ngcontent-eot-c271="" class="tasklist list-style-none">
-      <li _ngcontent-eot-c271="" class="task-item d-flex all border-bottom active" style="cursor: pointer"
-        (click)="viewWP(0)">All <span _ngcontent-eot-c271=""
+    <ul class="tasklist list-style-none">
+      <li class="task-item d-flex all border-bottom active" style="cursor: pointer" (click)="viewWP(0)">All <span
           class="badge badge-primary ml-auto pt-1">{{workPlans.length}}</span>
       </li>
-      <li _ngcontent-eot-c271="" class=" task-item d-flex complete border-bottom" style="cursor: pointer"
-        (click)="viewWP(1)"> Draft<span _ngcontent-eot-c271="" class="badge badge-success ml-auto pt-1"
-          style="background-color: #30E845;">{{draftWPCount}}</span>
+      <li class=" task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(1)"> Draft<span
+          class="badge badge-success ml-auto pt-1" style="background-color: #30E845;">{{draftWPCount}}</span>
       </li>
-      <li _ngcontent-eot-c271="" class="task-item d-flex complete border-bottom" style="cursor: pointer"
-        (click)="viewWP(2)"> Moved to Production <span _ngcontent-eot-c271="" class="badge badge-success ml-auto pt-1"
+      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(2)"> Moved to
+        Production <span class="badge badge-success ml-auto pt-1"
           style="background-color: #5B9BD5;">{{movedWPCount}}</span>
       </li>
-      <li _ngcontent-eot-c271="" class="task-item d-flex complete border-bottom" style="cursor: pointer"
-        (click)="viewWP(3)">In Production <span _ngcontent-eot-c271="" class="badge badge-success ml-auto pt-1"
-          style="background-color: #ED7D31;">{{inProdWPCount}}</span>
+      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(3)">In Production
+        <span class="badge badge-success ml-auto pt-1" style="background-color: #ED7D31;">{{inProdWPCount}}</span>
       </li>
-      <li _ngcontent-eot-c271="" class="task-item d-flex complete border-bottom" style="cursor: pointer"
-        (click)="viewWP(4)">Manufactured <span _ngcontent-eot-c271="" class="badge badge-success ml-auto pt-1"
-          style="background-color: #C48170;">{{manufWPCount}}</span>
+      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(4)">Manufactured <span
+          class="badge badge-success ml-auto pt-1" style="background-color: #C48170;">{{manufWPCount}}</span>
       </li>
-      <li _ngcontent-eot-c271="" class="task-item d-flex complete border-bottom" style="cursor: pointer"
-        (click)="viewWP(5)">Closed <span _ngcontent-eot-c271="" class="badge badge-success ml-auto pt-1"
-          style="background-color: #A5A5A5;">{{closedWPCount}}</span></li>
-      <li _ngcontent-eot-c271="" class="task-item d-flex complete border-bottom" style="cursor: pointer"
-        (click)="viewWP(5)">On Hold <span _ngcontent-eot-c271="" class="badge badge-success ml-auto pt-1"
-          style="background-color: #dd1212;">{{onholdWPCount}}</span></li>
-      <li _ngcontent-eot-c271="" class="task-item d-flex complete border-bottom" style="cursor: pointer"
-        (click)="viewWP(5)">Cancelled <span _ngcontent-eot-c271="" class="badge badge-success ml-auto pt-1"
-          style="background-color: #dd4b12;">{{cancelledWPCount}}</span></li>
+      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(5)">Closed <span
+          class="badge badge-success ml-auto pt-1" style="background-color: #A5A5A5;">{{closedWPCount}}</span></li>
+      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(5)">On Hold <span
+          class="badge badge-success ml-auto pt-1" style="background-color: #dd1212;">{{onholdWPCount}}</span></li>
+      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(5)">Cancelled <span
+          class="badge badge-success ml-auto pt-1" style="background-color: #dd4b12;">{{cancelledWPCount}}</span></li>
     </ul>
   </div>
   <div *ngIf="viewOrderItems">
@@ -74,7 +74,7 @@
           [disabled]="selectedArr.length==0">Create Workplan</button>
       </form>
     </div>
-    <div _ngcontent-eot-c271="" class="right-part bg-white">
+    <div class="right-part bg-white">
       <table class="table table-striped">
         <thead class="bg-secondary text-white">
           <tr>
@@ -93,7 +93,7 @@
           </tr>
 
         </thead>
-        <tbody class="border border-light" *ngFor="let item of orderItems ; let i = index">
+        <tbody class="border border-light" *ngFor="let item of filteredOrderItems ; let i = index">
           <tr>
             <td>
               <input type="checkbox" (change)="isSelected($event,item)">
@@ -107,8 +107,9 @@
             <td>{{item.orderDate|date:'dd/MM/YYYY'}}</td>
             <td></td>
             <td></td>
-            <td>{{item.status}}</td>
-            <td>{{item.orderItem.user}}</td>
+            <td [style.background]="item.orderItem.pakaStatus| orderItemBatchStatusColor">
+              {{item.orderItem.pakaStatus|orderItemBatchStatus}}</td>
+            <td>{{item.orderItem.workPlanId}}</td>
           </tr>
         </tbody>
       </table>
@@ -118,7 +119,7 @@
   <div *ngIf="viewWorkPlans">
 
     <h2 class="text-center">Workplans List</h2>
-    <div _ngcontent-eot-c271="" class="right-part bg-white">
+    <div class="right-part bg-white">
       <table class="table table-striped">
         <thead class="bg-secondary text-white">
           <tr>
@@ -134,9 +135,9 @@
         <tbody class="border border-light" *ngFor="let workplan of filteredWorkPlans; let i = index">
           <tr>
             <td>
-              <div _ngcontent-eot-c271="" class="custom-control custom-checkbox"><input _ngcontent-eot-c271=""
-                  type="checkbox" class="custom-control-input ng-untouched ng-pristine ng-valid" id="i"><label
-                  _ngcontent-eot-c271="" class="custom-control-label" for="i"></label></div>
+              <div class="custom-control custom-checkbox"><input type="checkbox"
+                  class="custom-control-input ng-untouched ng-pristine ng-valid" id="i"><label
+                  class="custom-control-label" for="i"></label></div>
             </td>
             <td style=" text-decoration: underline; cursor:pointer" (click)="openWorkPlan(workplan.serialNumber)">
               {{workplan.serialNumber}}</td>
