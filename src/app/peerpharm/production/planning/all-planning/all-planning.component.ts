@@ -77,10 +77,19 @@ export class AllPlanningComponent implements OnInit {
 
   setColor(status) {
     switch (status) {
-      case 1: return '#e5e831'
-      case 2: return '#15eb20'
-      case 3: return '#595850'
+      case 1: return '#FFC000'
+      case 2: return '#68e37d'
+      case 3: return '#5B9BD5'
+      case 4: return '#ED7D31'
+      case 5: return '#C48170'
     }
+  }
+
+  filterByRole(status) {
+    if(this.authService.loggedInUser.userName == 'andrey') {
+      return status > 2
+    }
+    else return true
   }
 
   exportAll() {

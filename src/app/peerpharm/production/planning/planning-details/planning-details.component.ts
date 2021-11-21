@@ -189,12 +189,11 @@ export class PlanningDetailsComponent implements OnInit {
 
   setColor(status) {
     switch (status) {
-      case 1:
-        return "#e5e831";
-      case 2:
-        return "#15eb20";
-      case 3:
-        return "#595850";
+      case 1: return "#FFC000";
+      case 2: return "#68e37d";
+      case 3: return "#5B9BD5";
+      case 3: return "#ED7D31";
+      case 3: return "#C48170";
     }
   }
 
