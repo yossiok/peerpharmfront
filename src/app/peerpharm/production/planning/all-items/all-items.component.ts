@@ -47,6 +47,7 @@ export class AllItemsComponent implements OnInit {
   inProdCount: number = 0;
   producedCount: number = 0;
   nullCount: number = 0;
+  formuleToggle: boolean = true;
 
   constructor(
     private productionService: ProductionService,
@@ -367,5 +368,44 @@ export class AllItemsComponent implements OnInit {
             );
         });
     }
+  }
+
+  sortItemsTwo(field, sub) {
+    // let field = "formule";
+    // let sub = "formuleNumber";
+    if (this.formuleToggle) {
+      this.filteredOrderItems.sort((a, b) =>
+        a[field][sub] > b[field][sub]
+          ? 1
+          : a[field][sub] < b[field][sub]
+          ? -1
+          : 0
+      );
+    } else {
+      this.filteredOrderItems.sort((a, b) =>
+        a[field][sub] > b[field][sub]
+          ? -1
+          : a[field][sub] < b[field][sub]
+          ? 1
+          : 0
+      );
+    }
+    this.formuleToggle = !this.formuleToggle;
+    console.log(this.filteredOrderItems);
+  }
+  sortItemsOne(field) {
+    // let field = "formule";
+    // let sub = "formuleNumber";
+    if (this.formuleToggle) {
+      this.filteredOrderItems.sort((a, b) =>
+        a[field] > b[field] ? 1 : a[field] < b[field] ? -1 : 0
+      );
+    } else {
+      this.filteredOrderItems.sort((a, b) =>
+        a[field] > b[field] ? -1 : a[field] < b[field] ? 1 : 0
+      );
+    }
+    this.formuleToggle = !this.formuleToggle;
+    console.log(this.filteredOrderItems);
   }
 }
