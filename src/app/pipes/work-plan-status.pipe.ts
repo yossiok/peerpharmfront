@@ -8,16 +8,16 @@ export class WorkPlanStatusPipe implements PipeTransform {
     let status = "";
     switch (value) {
       case 1:
-        status = "Draft";
+        status = "Order";
         break;
       case 2:
-        status = "Moved to Production";
+        status = "PP&C Draft";
         break;
       case 3:
-        status = "in Production";
+        status = "Formula Approved";
         break;
       case 4:
-        status = "Manufactured";
+        status = "Scheduled";
         break;
       case 5:
         status = "Closed";
