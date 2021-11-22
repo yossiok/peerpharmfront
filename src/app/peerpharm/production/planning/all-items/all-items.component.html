@@ -79,15 +79,21 @@
         <thead class="bg-secondary text-white">
           <tr>
             <th>Select</th>
-            <th>Parent/Formule</th>
-            <th>Order</th>
-            <th>Item Number</th>
+            <th><i class="ti-exchange-vertical" (click)="sortItemsTwo('formule', 'formuleNumber')"
+                style="cursor:pointer"></i>Parent/Formule</th>
+            <th><i class="ti-exchange-vertical" (click)="sortItemsOne('orderNumber')" style="cursor:pointer"></i>Order
+            </th>
+            <th><i class="ti-exchange-vertical" (click)="sortItemsTwo('orderItem', 'itemNumber')"
+                style="cursor:pointer"></i>Item Number</th>
             <th>Item Name</th>
             <th>Quantity (u)</th>
             <th>Weight (Kg.)</th>
-            <th>Order Date</th>
+            <th><i class="ti-exchange-vertical" (click)="sortItemsOne('orderDate')" style="cursor:pointer"></i>Order
+              Date
+            </th>
             <th>Priority</th>
-            <th>Due Date</th>
+            <th><i class="ti-exchange-vertical" (click)="sortItemsOne('orderDate')" style="cursor:pointer"></i>Due Date
+            </th>
             <th>Stage</th>
             <th>Workplan</th>
           </tr>
@@ -106,7 +112,7 @@
             <td>{{item.orderItem.qtyKg}}</td>
             <td>{{item.orderDate|date:'dd/MM/YYYY'}}</td>
             <td></td>
-            <td></td>
+            <td>{{item.orderItem.batchDueDate| date:'dd/MM/YYYY'}}</td>
             <td [style.background]="item.orderItem.pakaStatus| orderItemBatchStatusColor">
               {{item.orderItem.pakaStatus|orderItemBatchStatus}}</td>
             <td>{{item.orderItem.workPlanId}}</td>
