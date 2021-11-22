@@ -53,6 +53,8 @@ export class PlanningDetailsComponent implements OnInit {
   printingFormules: boolean = false;
   formulePrinting: any;
   statusTest: number = 1
+  notAndrey: boolean = true
+  editDueDate: number = -1
 
   constructor(
     private authService: AuthService,
@@ -124,41 +126,57 @@ export class PlanningDetailsComponent implements OnInit {
       })
     }
 
-    this.saveChanges().then(saved => {
-      this.toastr.success()
-    }).catch(err => this.toastr.error(err))
+    this.saveChanges()
+    .then((succesMessage) => this.toastr.success(succesMessage))
+    .catch((errorMessage) => this.toastr.error(errorMessage));
 
   }
 
-  setStatus(event) {
-    let currentStatus = this.workPlan.status;
-    if (confirm("האם אתה בטוח שברצונך לשנות סטטוס?")) {
-      this.workPlan.status = event.target.value;
-      this.saveChanges()
-        .then((success) => {
-          this.toastr.success("סטטוס עודכן בהצלחה");
-        })
-        .catch((error) => {
-          this.toastr.error(error);
-          this.workPlan.status = currentStatus;
-        });
-    }
+  // setStatus(event) {
+  //   let currentStatus = this.workPlan.status;
+  //   if (confirm("האם אתה בטוח שברצונך לשנות סטטוס?")) {
+  //     this.workPlan.status = event.target.value;
+
+  //     this.saveChanges()
+  //     .then((succesMessage) => this.toastr.success(succesMessage, 'פורמולות מאושרות'))
+  //     .catch((errorMessage) => this.toastr.error(errorMessage));
+
+  //     this.saveChanges()
+  //       .then((success) => {
+  //         this.toastr.success("סטטוס עודכן בהצלחה");
+  //       })
+  //       .catch((error) => {
+  //         this.toastr.error(error);
+  //         this.workPlan.status = currentStatus;
+  //       });
+  //   }
+  // }
+
+  scheduleBatch(i) {
+    this.workPlan.productionFormules[i].status = 4
+    this.saveChanges()
+      .then(succesMessage => {
+        this.toastr.success(succesMessage)
+        this.editDueDate = -1  
+      })
+      .catch(errorMessage => this.toastr.error(errorMessage))
   }
 
-  changeStatus(i) {
-    this.workPlan.orderItems[i].status = 3
-    this.saveChanges().then(succes=> {})
-  }
+  // changeStatus(i) {
+  //   this.workPlan.orderItems[i].status = 3
+  //   this.saveChanges()
+  //   .then(succesMessage => this.toastr.success(succesMessage))
+  //   .catch(errorMessage => this.toastr.error(errorMessage))
+  // }
 
-  saveChanges() {
+  saveChanges(): Promise<string> {
     return new Promise((resolve, reject) => {
       this.productionService.editWorkPlan(this.workPlan).subscribe((data) => {
         if (data.status) {
-          this.toastr.success("הפרטים נשמרו בהצלחה");
           this.edit = -1;
           this.workPlan = data;
           this.updateWorkPlans.emit();
-          resolve(true);
+          resolve("הפרטים נשמרו בהצלחה");
         } else if (data.error) {
           reject(data.error);
         }
@@ -170,8 +188,8 @@ export class PlanningDetailsComponent implements OnInit {
     if (confirm("השורה תימחק והכמויות יחושבו מחדש. האם אתה בטוח?")) {
       this.workPlan.orderItems.splice(i, 1);
       this.saveChanges()
-        .then((success) => this.toastr.success("השורה נמחקה בהצלחה"))
-        .catch((error) => this.toastr.error(error));
+        .then((succesMessage) => this.toastr.success(succesMessage, 'השורה נמחקה בהצלחה'))
+        .catch((errorMessage) => this.toastr.error(errorMessage));
     } else this.toastr.warning("לא בוצעו שינויים");
   }
 
@@ -228,10 +246,12 @@ export class PlanningDetailsComponent implements OnInit {
     });
   }
 
-  async moveToProduction() {
-    if (confirm('להעביר פק"ע לייצור?')) {
-      this.workPlan.status = 2;
-      this.saveChanges();
+  async approveFormules() {
+    if (confirm('האם אתה מאשר את כל הפורמולות?')) {
+      this.workPlan.productionFormules.map(f => f.status = 3)
+      this.saveChanges()
+      .then((succesMessage) => this.toastr.success(succesMessage, 'פורמולות מאושרות'))
+      .catch((errorMessage) => this.toastr.error(errorMessage));
       let approved = await this.authenticate();
       if (approved) {
         let amountsLoaded = await this.loadMaterialsForFormule(true);

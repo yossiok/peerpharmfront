@@ -1,9 +1,10 @@
 <div *ngIf="!showMaterialsForFormules" class="m-5 p-5">
   <i (click)="closeWorkPlan(-1)" class="fa fa-times float-right h3 close"></i>
-  <h1 [style.color]="setColor(workPlan.status)" class="text-center status">Work Plan {{workPlan.serialNumber}}</h1>
+  <h1 [style.color]="workPlan.status | orderItemBatchStatusColor" class="text-center status">Work Plan {{workPlan.serialNumber}}</h1>
+  <div class="row mt-4"></div>
   <div class="d-flex flex-row justify-content-between w-75 mt-4">
     <div class="h2">
-      <span class="p-2 rounded status" [style.color]="setColor(workPlan.status)">{{workPlan.status |
+      <span class="p-2 rounded status" [style.color]="workPlan.status | orderItemBatchStatusColor">{{workPlan.status |
         workPlanStatus}}</span>
       <i [style.color]="setColor(2)" *ngIf="workPlan.status == 2" class="fas fa-check status"></i>
       <span [style.color]="setColor(3)" *ngIf="workPlan.status == 3">
@@ -12,19 +13,19 @@
       </span>
     </div>
     <div class="h3">
-      <span [style.background]="setColor(workPlan.status)" [style.color]="workPlan.status == 3 ? 'white' : 'black'"
+      <span [style.background]="workPlan.status | orderItemBatchStatusColor" [style.color]="workPlan.status == 3 ? 'white' : 'black'"
         class="p-3 rounded-pill">{{workPlan.remark}}</span>
     </div>
     <div class="h3">
-      <span [style.background]="setColor(workPlan.status)" [style.color]="workPlan.status == 3 ? 'white' : 'black'"
+      <span [style.background]="workPlan.status | orderItemBatchStatusColor" [style.color]="workPlan.status == 3 ? 'white' : 'black'"
         class="p-3 rounded-pill">{{workPlan.date |
         date:
         'short'}}</span>
     </div>
   </div>
 
-  <div *ngIf="authorized" class="row mt-4">
-    <div class="h2">
+  <div *ngIf="authorized" class="row">
+    <!-- <div class="h2">
       <select (change)="setStatus($event)" class="form-control">
         <option disabled value="0">Change Status</option>
         <option *ngFor="let status of statuses"
@@ -32,7 +33,7 @@
           {{status | workPlanStatus}}
         </option>
       </select>
-    </div>
+    </div> -->
     <div class="h2">
       <!-- <button class="btn btn-info rounded" style="font-size: 28px">
                 <i (click)="edit = true" ngbTooltip="ערוך פרטים" class="fas fa-pencil-alt"></i>
@@ -100,7 +101,8 @@
               class="far fa-thumbs-up"></i></td>
           <td class="text-center" *ngIf="!orderItem.enoughComponents"><i ngbTooltip="חסרים קומפוננטים במלאי"
               class="fas fa-exclamation-circle"></i></td>
-          <td [style.background]="orderItem.status | orderItemBatchStatusColor">{{orderItem.status | orderItemBatchStatus}}</td>
+          <td [style.background]="orderItem.status | orderItemBatchStatusColor">{{orderItem.status |
+            orderItemBatchStatus}}</td>
           <td>
             <span *ngIf="edit != i">{{orderItem.remarks}}</span>
             <input *ngIf="edit == i" type="text" [(ngModel)]="orderItem.remarks">
@@ -151,6 +153,7 @@
             <th>סה"כ ק"ג</th>
             <th>סטטוס חומרים</th>
             <th>סטטוס ייצור</th>
+            <th>תאריך ביצוע</th>
             <th>Batch?</th>
           </tr>
         </thead>
@@ -171,7 +174,20 @@
             </td>
             <td *ngIf="!formule.enoughMaterials"><i ngbTooltip="חסרים קומפוננטים במלאי"
                 class="fas fa-exclamation-circle"></i></td>
-            <td [style.background]="formule.status | orderItemBatchStatusColor">{{formule.status | orderItemBatchStatus}}</td>
+            <td [style.background]="formule.status | orderItemBatchStatusColor">
+              {{formule.status | orderItemBatchStatus}}
+              <span *ngIf="formule.dueDate">{{formule.dueDate | date: 'dd/MM/yyyy'}}</span>
+            </td>
+            <td>
+              <span [disabled]="!authorized" (click)="editDueDate = i" *ngIf="editDueDate != i">
+                <span class="click" *ngIf="authorized">
+                  <button class="btn btn-secondary">Enter / Change Date</button>
+                </span>
+              </span>
+              <span *ngIf="editDueDate == i && authorized">
+                <input type="date" [disabled]="!authorized" (change)="scheduleBatch(i)" [(ngModel)]="formule.dueDate">
+              </span>
+            </td>
             <td class="text-center" class="text-success text-left" *ngIf="formule.batchNumber">
               {{formule.batchNumber}}</td>
             <td *ngIf="!formule.batchNumber"><i ngbTooltip="לא יוצר באטץ'" class="far fa-times-circle"></i>
@@ -186,7 +202,7 @@
       <button class="btn btn-info" (click)="weightFormules()">Compare</button>
     </div>
     <div class="col-3">
-      <span *ngIf="authorized"><img class="big-img" ngbTooltip='שלח לייצור' (click)="moveToProduction()"
+      <span *ngIf="authorized"><img class="big-img" ngbTooltip='Approve Formules' (click)="approveFormules()"
           src="../../../../../assets/images/filter.png" alt="לחץ כאן על מנת לשלוח פורמולות לייצור"></span>
     </div>
   </div>
