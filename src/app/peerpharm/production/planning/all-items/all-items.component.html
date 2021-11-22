@@ -7,7 +7,7 @@
       </div>
       <ul class="tasklist list-style-none">
 
-        <li style="cursor: pointer" class="task-item d-flex incomplete border-bottom" (click)="viewOrders(1)">
+        <li style="cursor: pointer" class="task-item d-flex incomplete border-bottom" (click)="viewOrders(1);">
           {{1|orderItemBatchStatus}} <span class="badge badge-danger ml-auto pt-1"
             [style.background]="1|orderItemBatchStatusColor">{{waitingCount}}</span></li>
         <li style="cursor: pointer" class=" task-item d-flex complete border-bottom" (click)="viewOrders(2) ">
@@ -79,43 +79,54 @@
         <thead class="bg-secondary text-white">
           <tr>
             <th>Select</th>
-            <th><i class="ti-exchange-vertical" (click)="sortItemsTwo('formule', 'formuleNumber')"
+            <th><i class="ti-exchange-vertical" (click)="sortItemsTwo('formule', 'formuleNumber');"
                 style="cursor:pointer"></i>Parent/Formule</th>
             <th><i class="ti-exchange-vertical" (click)="sortItemsOne('orderNumber')" style="cursor:pointer"></i>Order
             </th>
-            <th><i class="ti-exchange-vertical" (click)="sortItemsTwo('orderItem', 'itemNumber')"
-                style="cursor:pointer"></i>Item Number</th>
-            <th>Item Name</th>
+            <th><i class="ti-exchange-vertical" (click)="sortItemsOne('itemNumber')" style="cursor:pointer"></i>Item
+              Number</th>
+            <th><i class="ti-exchange-vertical" (click)="sortItemsOne('discription');" style="cursor:pointer"></i>Item
+              Name</th>
+            <th><i class="ti-exchange-vertical" (click)="sortItemsOne('netWeightGr');" style="cursor:pointer"></i>Unit
+              Weight</th>
             <th>Quantity (u)</th>
             <th>Weight (Kg.)</th>
             <th><i class="ti-exchange-vertical" (click)="sortItemsOne('orderDate')" style="cursor:pointer"></i>Order
               Date
             </th>
             <th>Priority</th>
-            <th><i class="ti-exchange-vertical" (click)="sortItemsOne('orderDate')" style="cursor:pointer"></i>Due Date
+            <th><i class="ti-exchange-vertical" (click)="sortItemsOne('itemOrderDate')" style="cursor:pointer"></i>Due
+              Date
             </th>
-            <th>Stage</th>
-            <th>Workplan</th>
+            <th><i class="ti-exchange-vertical" (click)="sortItemsOne('pakaStatus');" style="cursor:pointer"></i>Stage
+            </th>
+            <th><i class="ti-exchange-vertical" (click)="sortItemsOne('workPlanId');"
+                style="cursor:pointer"></i>Workplan</th>
           </tr>
 
         </thead>
         <tbody class="border border-light" *ngFor="let item of filteredOrderItems ; let i = index">
           <tr>
             <td>
-              <input type="checkbox" (change)="isSelected($event,item)">
+              <input type="checkbox" (checked)="item.iseSelected" (change)="isSelected($event,item)">
             </td>
             <td>{{item.formule.parentNumber? item.formule.parentNumber: item.formule.formuleNumber}}</td>
             <td>{{item.orderNumber}}</td>
-            <td>{{item.orderItem.itemNumber}}</td>
-            <td>{{item.orderItem.discription}}</td>
-            <td>{{item.orderItem.quantity}}</td>
-            <td>{{item.orderItem.qtyKg}}</td>
-            <td>{{item.orderDate|date:'dd/MM/YYYY'}}</td>
-            <td></td>
-            <td>{{item.orderItem.batchDueDate| date:'dd/MM/YYYY'}}</td>
-            <td [style.background]="item.orderItem.pakaStatus| orderItemBatchStatusColor">
-              {{item.orderItem.pakaStatus|orderItemBatchStatus}}</td>
-            <td>{{item.orderItem.workPlanId}}</td>
+            <td>{{item.itemNumber}}</td>
+            <td>{{item.discription}}</td>
+            <td>{{item.netWeightGr}}</td>
+            <td><span *ngIf="edit == -1" (click)="edit = i">{{item.quantity}}</span>
+              <span *ngIf="edit == i">
+                <input type="number" [(ngModel)]="item.quantity"><i class="fas fa-save" (click)="edit=-1"></i>
+              </span>
+            </td>
+            <td>{{item.quantity*item.netWeightGr}}</td>
+            <td>{{item.itemOrderDate|date:'dd/MM/YYYY'}}</td>
+            <td>Medium</td>
+            <td>{{item.dueDate| date:'dd/MM/YYYY'}}</td>
+            <td [style.background]="item.pakaStatus | orderItemBatchStatusColor">
+              {{item.pakaStatus |orderItemBatchStatus}}</td>
+            <td [style.background]="item.WPstatus | orderItemBatchStatusColor">{{item.workPlanId}}</td>
           </tr>
         </tbody>
       </table>

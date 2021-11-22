@@ -1,13 +1,15 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-  name: 'orderItemBatchStatusColor'
+  name: "orderItemBatchStatusColor",
 })
 export class OrderItemBatchStatusColorPipe implements PipeTransform {
-
   transform(value: number): string {
     let color = "";
     switch (value) {
+      case 0:
+        color = "#FFF";
+        break;
       case 1:
         color = "#FFC000";
         break;
@@ -34,5 +36,4 @@ export class OrderItemBatchStatusColorPipe implements PipeTransform {
     }
     return color;
   }
-
 }

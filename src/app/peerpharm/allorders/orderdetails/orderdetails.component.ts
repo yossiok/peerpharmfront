@@ -187,6 +187,7 @@ export class OrderdetailsComponent implements OnInit {
     actionTime: [],
     itemOrderDate: "",
     itemDeliveryDate: "",
+    pakaStatus: 0,
   };
   show: boolean;
   EditRowId: any = "";
@@ -536,11 +537,23 @@ export class OrderdetailsComponent implements OnInit {
         }
       }
       if (validOrders.length > 0) {
+        console.log(validOrders);
         this.orderService.updatePakaStatus(validOrders).subscribe((data) => {
           console.log(data);
           if (data.msg) this.toastSrv.error(data.msg);
           else if (data.n == validOrders.length && data.ok == 1) {
             console.log(data);
+            for (let item of validOrders) {
+              let index = this.ordersItems.findIndex(
+                (oi) => oi._id == item._id
+              );
+              if (index > 0) {
+                console.log(item);
+                this.ordersItems[index].pakaStatus = 1;
+                this.ordersItems[index].isSelected = false;
+              }
+            }
+
             this.toastSrv.success(" הפריטים נשלחו בהצלחה למסך פקעות ");
           } else
             this.toastSrv.warning(
@@ -676,12 +689,16 @@ export class OrderdetailsComponent implements OnInit {
         );
       if (cont) {
         var isSelected = this.selectedArr;
+        item.isSelected = true;
         isSelected.push({ ...item });
         this.selectedArr = isSelected;
-      } else ev.target.checked = false;
+      } else {
+        ev.target.checked = false;
+      }
     }
 
     if (ev.target.checked == false) {
+      item.iseSelected = false;
       var isSelected = this.selectedArr;
       var tempArr = isSelected.filter((x) => x.itemNumber != item.itemNumber);
       this.selectedArr = tempArr;
@@ -975,6 +992,7 @@ export class OrderdetailsComponent implements OnInit {
     this.orderService
       .getOrderItemsByNumber(orderNum)
       .subscribe((orderItems) => {
+        console.log(orderItems);
         orderItems.map((item) => {
           //check License
           if (
@@ -1048,8 +1066,10 @@ export class OrderdetailsComponent implements OnInit {
               item = orderItems[0];
             }
           });
+          console.log(this.ordersItems);
         } else {
           this.ordersItems = orderItems;
+          console.log(this.ordersItems);
           this.productionRequirements = orderItems;
 
           this.ordersItemsCopy = orderItems;

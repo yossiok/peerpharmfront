@@ -1,15 +1,17 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-  name: 'orderItemBatchStatus'
+  name: "orderItemBatchStatus",
 })
 export class OrderItemBatchStatusPipe implements PipeTransform {
-
   transform(value: number): string {
     let status = "";
     switch (value) {
+      case 0:
+        status = "New";
+        break;
       case 1:
-        status = "Order";
+        status = "Waiting";
         break;
       case 2:
         status = "PP&C Draft";
@@ -34,5 +36,4 @@ export class OrderItemBatchStatusPipe implements PipeTransform {
     }
     return status;
   }
-
 }

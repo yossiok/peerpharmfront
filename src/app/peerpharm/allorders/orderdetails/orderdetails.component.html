@@ -186,9 +186,10 @@
           <input #itemNumber type='hidden' [value]="item.itemNumber">{{i+1}}
         </td>
         <td *ngIf="item._id!==EditRowId"><b>{{i+1}}</b></td>
-        <td><input type="checkbox" (change)="isSelected($event,item)"></td>
+        <td><input type="checkbox" [checked]="item.isSelected" (change)="isSelected($event,item)"></td>
 
-        <td *ngIf="multi==true">{{item.pakaStatus | orderItemBatchStatus}}</td>
+        <td [style.background]="item.pakaStatus|orderItemBatchStatusColor">
+          {{item.pakaStatus | orderItemBatchStatus}}</td>
         <td *ngIf="multi==true">{{item.orderNumber}}</td>
 
         <!--Formule exist?-->

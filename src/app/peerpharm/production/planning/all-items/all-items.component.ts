@@ -48,6 +48,7 @@ export class AllItemsComponent implements OnInit {
   producedCount: number = 0;
   nullCount: number = 0;
   formuleToggle: boolean = true;
+  edit: number = -1;
 
   constructor(
     private productionService: ProductionService,
@@ -81,9 +82,23 @@ export class AllItemsComponent implements OnInit {
     this.ordersService.getAllOpenOrderItemsNew().subscribe((data) => {
       console.log(data);
       this.orderItems = data;
+      for (let item of this.orderItems) {
+        item.origQty = item.quantity;
+        console.log(item.origQty);
+        item.isSelected = false;
+        item.WPstatus = 0;
+        if (item.workPlans) {
+          item.pakaStatus = item.workPlans.itemStatus;
+          item.dueDate = item.workPlans.dueDate;
+          item.workPlanId = item.workPlans.workPlanId;
+          item.quantity = item.workPlans.quantity;
+          item.WPstatus = item.workPlans.WPstatus;
+        }
+      }
+      console.log(this.orderItems);
       for (let i = 1; i <= 7; i++) {
         this.filteredOrderItems = this.orderItems.filter((oi) => {
-          return oi.orderItem.pakaStatus == i;
+          return oi.pakaStatus == i;
         });
 
         switch (i) {
@@ -275,7 +290,7 @@ export class AllItemsComponent implements OnInit {
     this.filteredOrderItems = [];
     if (status != 0) {
       this.filteredOrderItems = this.orderItems.filter((oi) => {
-        return oi.orderItem.pakaStatus == status;
+        return oi.pakaStatus == status;
       });
     } else {
       this.filteredOrderItems = this.orderItems;
@@ -294,7 +309,7 @@ export class AllItemsComponent implements OnInit {
         );
 
       if (cont) {
-        console.log("Befor push of item");
+        console.log("Before push of item");
         console.log(item);
         let newItem = {
           formule: item.formule,
@@ -306,7 +321,9 @@ export class AllItemsComponent implements OnInit {
           netWeightGr: item.orderItem.netWeightGr,
           quantity: item.orderItem.quantity,
           remarks: null,
-          totalKG: item.orderItem.qtyKg,
+          totalKG:
+            Number(item.orderItem.quantity) *
+            Number(item.orderItem.netWeightGr),
           orderNumber: item.orderItem.orderNumber,
           _id: item.orderItem._id,
           pakaStatus: item.orderItem.pakaStatus,
@@ -328,6 +345,25 @@ export class AllItemsComponent implements OnInit {
     else {
       let remark = prompt("אנא רשום שם / הערה לתכנית עבודה:");
       if (!remark) return;
+      for (let item of this.selectedArr) {
+        let totalQ = item.origQty;
+        let qtyProd = 0;
+        let qtyToProd = 0;
+        for (let oi of this.orderItems) {
+          if (item._id == oi._id && item.workPlans) {
+            qtyProd += oi.quantity;
+          } else if (item._id == oi._id) {
+            qtyToProd += oi.quantity;
+          }
+        }
+
+        if (qtyToProd > totalQ - qtyProd) {
+          alert(
+            "כמות היחידות שהוזנו לפקודת העבודה חורגת מהכמות שהוזמנה על ידי הלקוח"
+          );
+          return;
+        }
+      }
 
       this.ordersService
         .makePlan(this.selectedArr, remark)
