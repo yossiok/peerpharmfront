@@ -24,7 +24,8 @@ export interface ProductionFormule {
     ordersAndItems: orderAndItem[],
     formuleData: Object,
     status: number,
-    checked?: boolean
+    checked?: boolean,
+    dueDate?: Date
     // numOfItems: number  
 }
 
