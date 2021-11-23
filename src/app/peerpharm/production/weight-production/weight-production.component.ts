@@ -346,8 +346,6 @@ export class WeightProductionComponent implements OnInit {
     );
     if (this.workPlanId) {
       this.productionService.joinFormules(this.workPlanId, formuleNumbers, this.finalFormule).subscribe(data => {
-        console.log(data)
-        console.log(this.finalFormule.data);
         this.inventorySrv.getBOM(this.finalFormule.data).subscribe((data) => {
           console.log(data);
           this.billOfMaterials = data;

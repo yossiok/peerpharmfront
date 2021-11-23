@@ -26,7 +26,7 @@ export class OrderItemBatchStatusPipe implements PipeTransform {
         status = "Materials Allocated";
         break;
       case 6:
-        status = "in Production";
+        status = "Produced";
         break;
       case 7:
         status = "Done";

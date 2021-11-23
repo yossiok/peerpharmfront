@@ -13,7 +13,8 @@ interface OrderItem{
     remarks: string,
     enoughComponents: boolean,
     status: number,
-    checked?: boolean
+    checked?: boolean,
+    hasFormule?: boolean
 }
 
 export interface ProductionFormule {
@@ -39,8 +40,8 @@ export interface WorkPlan {
 }
 
 export interface orderAndItem {
-  order: string,
-  item: string,
+  orderNumber: string,
+  itemNumber: string,
   itemName: string,
-  weightKg: number
+  weightKg: number,
 }

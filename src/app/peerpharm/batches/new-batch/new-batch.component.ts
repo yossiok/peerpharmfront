@@ -32,6 +32,7 @@ export class NewBatchComponent implements OnInit {
   newBatchAllowed: boolean = false;
   currentItems: any[] = []
   workPlan: WorkPlan
+  workPlanFormule: string;
 
   newBatchForm: FormGroup = new FormGroup({
     chosenFormule: new FormControl('', Validators.required),
@@ -69,13 +70,12 @@ export class NewBatchComponent implements OnInit {
         this.prodSchedServ.getWorkPlan(params['params'].workPlanId).subscribe(workPlan => {
           console.log(workPlan)
           this.workPlan = workPlan
+          this.workPlanFormule = params['params'].formule
           let formule = this.workPlan.productionFormules.find(f => f.formule == params['params'].formule)
-          this.newBatchForm.value.itemsToCook = formule.ordersAndItems.map(oai => ({
-            orderNumber: oai.order,
-            itemNumber: oai.item,
-            weightKg: oai.weightKg,
-            itemName: oai.itemName
-          }))
+          for(let item of formule.ordersAndItems) {
+            this.newBatchForm.value.itemsToCook.push(item)
+          }
+          // this.newBatchForm.value.itemsToCook = formule.ordersAndItems
         })
       }
     })
@@ -257,14 +257,21 @@ export class NewBatchComponent implements OnInit {
                   if (data.msg = 'succsess') {
                     this.printBtn.nativeElement.click();
                     this.toastSrv.success('באטצ נוסף בהצלחה !')
-                    setTimeout(() => {
-
-                      // this.newBatchForm.reset()
-                      // this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
-                      //this.newBatchForm.controls.itemsToCook.setValue([])
-                      this.allStickers = [];
-                      this.getLastBatch();
-                    }, 2000)
+                    let productionFormuleIndex = this.workPlan.productionFormules.findIndex(f => f.formule == this.workPlanFormule)
+                    this.workPlan.productionFormules[productionFormuleIndex].status = 6
+                    this.prodSchedServ.editWorkPlan(this.workPlan).subscribe(data => {
+                      console.log(data)
+                      if(data.serialNumber) this.toastSrv.success(`פק"ע ${this.workPlan.serialNumber} עודכנה בהצלחה`)
+                      else this.toastSrv.error('היתה בעיה בעדכון הפק"ע. אנא פנה לתמיכה')
+                      setTimeout(() => {
+                        
+                        // this.newBatchForm.reset()
+                        // this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
+                        //this.newBatchForm.controls.itemsToCook.setValue([])
+                        this.allStickers = [];
+                        this.getLastBatch();
+                      }, 2000)
+                    })
                   }
                   else if (data.msg == 'Batch Allready Exist') this.toastSrv.error('Please fill a different batch number.', 'Batch number allready exist.')
                   else this.toastSrv.error('Something went wrong.')

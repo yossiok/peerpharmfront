@@ -33,7 +33,7 @@
         <div *ngIf="!showWorkPlan && !showMaterialsForFormules" class="wrapper col-9">
             <ng-container *ngFor="let workPlan of workPlans; let i = index">
 
-                <div class="box click" [style.background]="setColor(workPlan.status)"
+                <div class="box click" [style.background]="workPlan.status | orderItemBatchStatusColor"
                     *ngIf="filterByRole(workPlan.status)">
                     <input *ngIf="showCheckbox" [disabled]="disableCheckBox" class="checkbox" type="checkbox"
                         (change)="addOrRemove($event, i)">
@@ -48,7 +48,7 @@
                             <h4>{{workPlan.remark}}</h4>
                         </div>
                         <div class="service-line status">
-                            <h4>{{workPlan.status | workPlanStatus}}</h4>
+                            <h4>{{workPlan.status | orderItemBatchStatus}}</h4>
                             <i *ngIf="workPlan.status == 2" class="fas fa-check"></i>
                             <span *ngIf="workPlan.status == 3">
                                 <i class="fas fa-check"></i>

@@ -1,11 +1,12 @@
 <div *ngIf="!showMaterialsForFormules" class="m-5 p-5">
   <i (click)="closeWorkPlan(-1)" class="fa fa-times float-right h3 close"></i>
-  <h1 [style.color]="workPlan.status | orderItemBatchStatusColor" class="text-center status">Work Plan {{workPlan.serialNumber}}</h1>
+  <h1 [style.color]="workPlan.status | orderItemBatchStatusColor" class="text-center status">Work Plan
+    {{workPlan.serialNumber}}</h1>
   <div class="row mt-4"></div>
   <div class="d-flex flex-row justify-content-between w-75 mt-4">
     <div class="h2">
       <span class="p-2 rounded status" [style.color]="workPlan.status | orderItemBatchStatusColor">{{workPlan.status |
-        workPlanStatus}}</span>
+        orderItemBatchStatus}}</span>
       <i [style.color]="setColor(2)" *ngIf="workPlan.status == 2" class="fas fa-check status"></i>
       <span [style.color]="setColor(3)" *ngIf="workPlan.status == 3">
         <i class="fas fa-check status"></i>
@@ -13,12 +14,12 @@
       </span>
     </div>
     <div class="h3">
-      <span [style.background]="workPlan.status | orderItemBatchStatusColor" [style.color]="workPlan.status == 3 ? 'white' : 'black'"
-        class="p-3 rounded-pill">{{workPlan.remark}}</span>
+      <span [style.background]="workPlan.status | orderItemBatchStatusColor"
+        [style.color]="workPlan.status == 3 ? 'white' : 'black'" class="p-3 rounded-pill">{{workPlan.remark}}</span>
     </div>
     <div class="h3">
-      <span [style.background]="workPlan.status | orderItemBatchStatusColor" [style.color]="workPlan.status == 3 ? 'white' : 'black'"
-        class="p-3 rounded-pill">{{workPlan.date |
+      <span [style.background]="workPlan.status | orderItemBatchStatusColor"
+        [style.color]="workPlan.status == 3 ? 'white' : 'black'" class="p-3 rounded-pill">{{workPlan.date |
         date:
         'short'}}</span>
     </div>
@@ -63,7 +64,7 @@
             <input (change)="checkAllItems($event)" type="checkbox" class="check-box">
           </th>
           <th>Item</th>
-          <th>Customer</th>
+          <th>Parent Formule</th>
           <th>Order</th>
           <th>Description</th>
           <th>משקל</th>
@@ -81,11 +82,13 @@
         <tr *ngFor="let orderItem of workPlan.orderItems; let i = index">
           <td>{{i+1}}</td>
           <td>
-            <input [(ngModel)]="orderItem.checked" type="checkbox" class="check-box">
+            <span *ngIf="orderItem.hasFormule"><i class="fas fa-check"></i></span>
+            <input *ngIf="!orderItem.hasFormule" [(ngModel)]="orderItem.checked" type="checkbox" class="check-box">
           </td>
           <td>{{orderItem.itemNumber}}</td>
-          <td>{{orderItem.customerName}}</td>
-          <td>{{orderItem.orderNumber}}</td>
+          <td>{{orderItem.parentFormule}}</td>
+          <td><span [ngbTooltip]="orderItem.customerName">{{orderItem.orderNumber}} <i class="fas fa-info"></i></span>
+          </td>
           <td>{{orderItem.description}}</td>
           <td>{{orderItem.netWeightGr}}</td>
           <td>{{orderItem.quantity}}</td>
@@ -139,7 +142,7 @@
     {{workPlan.productionFormules.length}} Production Formules
   </h2>
   <div class="row mt-4">
-    <div class="col-8 formules">
+    <div class="col-10 formules">
 
       <table class="table formules-table">
         <thead class="thead-dark">
@@ -162,12 +165,13 @@
           <tr *ngFor="let formule of workPlan.productionFormules; let i = index">
             <td>{{i+1}}</td>
             <td>
-              <input [(ngModel)]="formule.checked" type="checkbox" class="check-box">
+              <span *ngIf="formule.status >= 3"><i class="fas fa-check"></i></span>
+              <input *ngIf="formule.status < 3" [(ngModel)]="formule.checked" type="checkbox" class="check-box">
             </td>
             <td>{{formule.formule}}</td>
             <td>
               <span *ngFor="let orderAndItem of formule.ordersAndItems">
-                order {{orderAndItem.order}}, item {{orderAndItem.item}}
+                order {{orderAndItem.orderNumber}}, item {{orderAndItem.itemNumber}}, {{orderAndItem.weightKg}}KG <br>
               </span>
             </td>
             <td>{{formule.totalKG}}</td>
@@ -177,19 +181,23 @@
                 class="fas fa-exclamation-circle"></i></td>
             <td [style.background]="formule.status | orderItemBatchStatusColor">
               {{formule.status | orderItemBatchStatus}}
-              <span *ngIf="formule.dueDate">{{formule.dueDate | date: 'dd/MM/yyyy'}}</span>
+              <span *ngIf="formule.status == 4">{{formule.dueDate | date: 'dd/MM/yyyy'}}</span>
             </td>
             <td>
               <span [disabled]="!authorized" (click)="editDueDate = i" *ngIf="editDueDate != i">
-                <span class="click" *ngIf="authorized">
-                  <button class="btn btn-secondary">Enter / Change Date</button>
+                <span [ngbTooltip]="formule.status < 3 ? 'Formula Not Approved!' : ''" class="click" *ngIf="authorized">
+                  <button [disabled]="formule.status < 3" class="btn schedule-button">Enter / Change Date</button>
                 </span>
               </span>
               <span *ngIf="editDueDate == i && authorized">
                 <input type="date" [disabled]="!authorized" (change)="scheduleBatch(i)" [(ngModel)]="formule.dueDate">
               </span>
             </td>
-            <td><button (click)="addBatch(formule)" class="btn btn-default">Add Batch</button></td>
+            <td>
+              <span [ngbTooltip]="formule.status < 3 ? 'Formula Not Approved!' : ''">
+                <button (click)="addBatch(formule)" class="btn batch-btn" [disabled]="formule.status < 3">Add Batch</button>
+              </span>
+            </td>
             <td class="text-center" class="text-success text-left" *ngIf="formule.batchNumber">
               {{formule.batchNumber}}</td>
             <td *ngIf="!formule.batchNumber"><i ngbTooltip="לא יוצר באטץ'" class="far fa-times-circle"></i>
@@ -200,12 +208,12 @@
 
       </table>
     </div>
-    <div class="col-1">
+    <div class="col-1 d-flex flex-column justify-content-around">
       <button class="btn btn-info" (click)="weightFormules()">Compare</button>
-    </div>
-    <div class="col-3">
-      <span *ngIf="authorized"><img class="big-img" ngbTooltip='Approve Formules' (click)="approveFormules()"
+      <span *ngIf="authorized"><img class="img2" ngbTooltip='Approve Formules' (click)="approveFormules()"
           src="../../../../../assets/images/filter.png" alt="לחץ כאן על מנת לשלוח פורמולות לייצור"></span>
+    </div>
+    <div class="col-1">
     </div>
   </div>
 

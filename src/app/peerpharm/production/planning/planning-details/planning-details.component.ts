@@ -71,6 +71,7 @@ export class PlanningDetailsComponent implements OnInit {
     this.authorized = this.authService.loggedInUser.authorization.includes(
       "creamProductionManager"
     );
+    this.workPlan.orderItems.sort((a, b) => <any>a.parentFormule - <any>b.parentFormule)
   }
 
   authenticate(): Promise<boolean> {
@@ -109,16 +110,17 @@ export class PlanningDetailsComponent implements OnInit {
         this.workPlan.productionFormules[allreadyExist].totalKG += element.totalKG
         this.workPlan.productionFormules[allreadyExist].enoughMaterials = !this.workPlan.productionFormules[allreadyExist].enoughMaterials || element.enoughMaterials === false ? false : true
         this.workPlan.productionFormules[allreadyExist].ordersAndItems.push({
-          order: element.orderNumber,
-          item: element.itemNumber,
+          orderNumber: element.orderNumber,
+          itemNumber: element.itemNumber,
           itemName: element.description,
           weightKg: element.totalKG
         })
+        element.hasFormule = true
       }
       else this.workPlan.productionFormules.push({
         ordersAndItems: [{
-          order: element.orderNumber,
-          item: element.itemNumber,
+          orderNumber: element.orderNumber,
+          itemNumber: element.itemNumber,
           itemName: element.description,
           weightKg: element.totalKG
         }],
@@ -129,6 +131,7 @@ export class PlanningDetailsComponent implements OnInit {
         enoughMaterials: element.enoughMaterials,
         batchNumber: '',
       })
+      element.hasFormule = true
     }
 
     this.saveChanges()
@@ -262,8 +265,8 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   async approveFormules() {
-    if (confirm('האם אתה מאשר את כל הפורמולות?')) {
-      this.workPlan.productionFormules.map(f => f.status = 3)
+    if (confirm('האם לאשר את כל הפורמולות שנבחרו?')) {
+      this.workPlan.productionFormules.map(f => f.checked ? f.status = 3 : null)
       this.saveChanges()
       .then((succesMessage) => this.toastr.success(succesMessage, 'פורמולות מאושרות'))
       .catch((errorMessage) => this.toastr.error(errorMessage));
