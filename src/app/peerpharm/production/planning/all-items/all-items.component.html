@@ -117,7 +117,9 @@
             <td>{{item.netWeightGr}}</td>
             <td><span *ngIf="edit == -1" (click)="edit = i">{{item.quantity}}</span>
               <span *ngIf="edit == i">
-                <input type="number" [(ngModel)]="item.quantity"><i class="fas fa-save" (click)="edit=-1"></i>
+                <input type="number" [attr.max]="item.maxQty" [(ngModel)]="item.quantity"><i class="fas fa-save"
+                  (click)="item=-1"></i>
+                <!-- (click)="splitOrderItem(item)"></i> -->
               </span>
             </td>
             <td>{{item.quantity*item.netWeightGr}}</td>
