@@ -84,7 +84,7 @@ export class AllItemsComponent implements OnInit {
       this.orderItems = data;
       for (let item of this.orderItems) {
         item.origQty = item.quantity;
-        console.log(item.origQty);
+        item.maxQty = item.quantity;
         item.isSelected = false;
         item.WPstatus = 0;
         if (item.workPlans) {
@@ -313,20 +313,21 @@ export class AllItemsComponent implements OnInit {
         console.log(item);
         let newItem = {
           formule: item.formule,
+          partentFormule: item.formule.parentNumber
+            ? item.formule.parentNumber
+            : item.formule.formuleNumber,
           customerID: item.costumerInternalId,
           customerName: item.costumer,
-          description: item.orderItem.discription,
-          itemNumber: item.orderItem.itemNumber,
+          description: item.discription,
+          itemNumber: item.itemNumber,
           enoughtComponents: true,
-          netWeightGr: item.orderItem.netWeightGr,
-          quantity: item.orderItem.quantity,
+          netWeightGr: item.netWeightGr,
+          quantity: item.quantity,
           remarks: null,
-          totalKG:
-            Number(item.orderItem.quantity) *
-            Number(item.orderItem.netWeightGr),
-          orderNumber: item.orderItem.orderNumber,
-          _id: item.orderItem._id,
-          pakaStatus: item.orderItem.pakaStatus,
+          totalKG: Number(item.quantity) * Number(item.netWeightGr),
+          orderNumber: item.orderNumber,
+          _id: item._id,
+          status: 2,
         };
         this.selectedArr.push(newItem);
       } else ev.target.checked = false;
@@ -381,16 +382,15 @@ export class AllItemsComponent implements OnInit {
               "יש למחוק את אחד המופעים על מנת להמשיך",
               `פורמולה מס. ${data.formule} מופיעה פעמיים במערכת`
             );
-          else if (data.workPlan.orderItems.length) {
+          else if (data.workPlan.orderItems.length > 0) {
             this.workPlans.unshift(data.workPlan);
             for (let item of this.orderItems) {
               let index = data.workPlan.orderItems.findIndex(
-                (oi) => oi._id == item.orderItem._id
+                (oi) => oi._id == item._id
               );
               if (index > -1) {
-                this.orderItems[index].orderItem.pakaStatus = 2;
-                this.orderItems[index].orderItem.workPlanId =
-                  data.workPlan.serialNumber;
+                this.orderItems[index].pakaStatus = 2;
+                this.orderItems[index].workPlanId = data.workPlan.serialNumber;
               }
             }
             this.getAllOrderItems();
@@ -443,5 +443,22 @@ export class AllItemsComponent implements OnInit {
     }
     this.formuleToggle = !this.formuleToggle;
     console.log(this.filteredOrderItems);
+  }
+
+  splitOrderItem(item) {
+    this.edit = -1;
+    console.log(item);
+    let newItem = { ...item };
+    let index = this.orderItems.findIndex((oi) => {
+      return oi._id == newItem._id && !oi.workPlans;
+    });
+
+    this.orderItems[index].quantity = this.orderItems[index].maxQty;
+    this.orderItems[index].maxQty -= newItem.quantity;
+    this.orderItems.splice(index + 1, 0, newItem);
+
+    console.log(this.orderItems);
+
+    this.viewOrders(1);
   }
 }
