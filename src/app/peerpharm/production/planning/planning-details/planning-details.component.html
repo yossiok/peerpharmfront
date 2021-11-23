@@ -154,6 +154,7 @@
             <th>סטטוס חומרים</th>
             <th>סטטוס ייצור</th>
             <th>תאריך ביצוע</th>
+            <th></th>
             <th>Batch?</th>
           </tr>
         </thead>
@@ -188,6 +189,7 @@
                 <input type="date" [disabled]="!authorized" (change)="scheduleBatch(i)" [(ngModel)]="formule.dueDate">
               </span>
             </td>
+            <td><button (click)="addBatch(formule)" class="btn btn-default">Add Batch</button></td>
             <td class="text-center" class="text-success text-left" *ngIf="formule.batchNumber">
               {{formule.batchNumber}}</td>
             <td *ngIf="!formule.batchNumber"><i ngbTooltip="לא יוצר באטץ'" class="far fa-times-circle"></i>

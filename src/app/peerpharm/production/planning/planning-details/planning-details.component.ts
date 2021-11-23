@@ -97,6 +97,7 @@ export class PlanningDetailsComponent implements OnInit {
     for (let oi of this.workPlan.productionFormules) oi.checked = event.target.checked
   }
 
+  // create formules from items
   createPAKA() {
     let orderItemsChecked = this.workPlan.orderItems.filter(oi => oi.checked == true)
 
@@ -109,13 +110,17 @@ export class PlanningDetailsComponent implements OnInit {
         this.workPlan.productionFormules[allreadyExist].enoughMaterials = !this.workPlan.productionFormules[allreadyExist].enoughMaterials || element.enoughMaterials === false ? false : true
         this.workPlan.productionFormules[allreadyExist].ordersAndItems.push({
           order: element.orderNumber,
-          item: element.itemNumber
+          item: element.itemNumber,
+          itemName: element.description,
+          weightKg: element.totalKG
         })
       }
       else this.workPlan.productionFormules.push({
         ordersAndItems: [{
           order: element.orderNumber,
-          item: element.itemNumber
+          item: element.itemNumber,
+          itemName: element.description,
+          weightKg: element.totalKG
         }],
         status: element.status,
         formuleData: element.formule,
@@ -160,6 +165,16 @@ export class PlanningDetailsComponent implements OnInit {
         this.editDueDate = -1  
       })
       .catch(errorMessage => this.toastr.error(errorMessage))
+  }
+
+  addBatch(formule) {
+    console.log(formule)
+    this.router.navigate(["/peerpharm/batches/newBatch"], {
+      queryParams: {
+        formule: formule.formule,
+        workPlanId: this.workPlan.serialNumber
+      },
+    });
   }
 
   // changeStatus(i) {

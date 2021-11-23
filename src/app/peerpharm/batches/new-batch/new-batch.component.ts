@@ -6,6 +6,10 @@ import { InventoryService } from 'src/app/services/inventory.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { OrdersService } from 'src/app/services/orders.service';
+import { ActivatedRoute } from '@angular/router';
+import { ProductionService } from 'src/app/services/production.service';
+import { WorkPlan } from '../../production/planning/WorkPlan';
+import { AotCompiler } from '@angular/compiler';
 
 @Component({
   selector: 'app-new-batch',
@@ -27,6 +31,7 @@ export class NewBatchComponent implements OnInit {
   disableButton: boolean;
   newBatchAllowed: boolean = false;
   currentItems: any[] = []
+  workPlan: WorkPlan
 
   newBatchForm: FormGroup = new FormGroup({
     chosenFormule: new FormControl('', Validators.required),
@@ -48,11 +53,32 @@ export class NewBatchComponent implements OnInit {
     private itemSrv: ItemsService,
     private batchService: BatchesService,
     private authService: AuthService,
-    private orderService: OrdersService) { }
+    private orderService: OrdersService,
+    private route: ActivatedRoute,
+    private prodSchedServ: ProductionService) { }
 
   ngOnInit() {
     this.getLastBatch();
     this.newBatchAllowed = this.authService.loggedInUser.authorization.includes("newBatch") ? true : false
+    this.getWorkPlan()
+  }
+
+  getWorkPlan() {
+    this.route.queryParamMap.subscribe(params => {
+      if(params["params"].workPlanId) {
+        this.prodSchedServ.getWorkPlan(params['params'].workPlanId).subscribe(workPlan => {
+          console.log(workPlan)
+          this.workPlan = workPlan
+          let formule = this.workPlan.productionFormules.find(f => f.formule == params['params'].formule)
+          this.newBatchForm.value.itemsToCook = formule.ordersAndItems.map(oai => ({
+            orderNumber: oai.order,
+            itemNumber: oai.item,
+            weightKg: oai.weightKg,
+            itemName: oai.itemName
+          }))
+        })
+      }
+    })
   }
 
   ngDoCheck() {

@@ -40,5 +40,7 @@ export interface WorkPlan {
 
 export interface orderAndItem {
   order: string,
-  item: string
+  item: string,
+  itemName: string,
+  weightKg: number
 }

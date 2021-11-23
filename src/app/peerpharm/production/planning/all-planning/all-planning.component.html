@@ -3,7 +3,7 @@
     <i class="fas fa-check-double"></i>
     <div class="row mt-4">
         <!--side bar-->
-        <div class="col-1 d-flex flex-column m-2 p-3 index" style="height: 475px;">
+        <div class="col-1 d-flex flex-column m-2 p-3 index" style="height: fit-content;">
             <div>
                 <img class="click" ngbTooltip="רענן תכניות" (click)="getWorkPlans()" style="width: 50px"
                     src="../../../../../assets/images/update2.png" alt=""> - רענן
@@ -29,7 +29,8 @@
             <div *ngIf="loadData" class="smallerLoader"></div>
         </div>
         <!--work plans-->
-        <div *ngIf="!showWorkPlan && !showMaterialsForFormules" class="wrapper col-8">
+        <div *ngIf="showWorkPlan || showMaterialsForFormules" class="col-10"></div>
+        <div *ngIf="!showWorkPlan && !showMaterialsForFormules" class="wrapper col-9">
             <ng-container *ngFor="let workPlan of workPlans; let i = index">
 
                 <div class="box click" [style.background]="setColor(workPlan.status)"
