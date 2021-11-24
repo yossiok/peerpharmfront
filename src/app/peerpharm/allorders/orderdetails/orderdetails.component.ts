@@ -526,8 +526,9 @@ export class OrderdetailsComponent implements OnInit {
     else {
       let validOrders = [];
       let nonValidOrders = [];
+      // check if the item already exists in the wp open items.//
       for (let oi of this.selectedArr) {
-        if (oi.pakaStatus > 0) {
+        if (oi.pakaStatus && oi.pakaStatus > 0) {
           nonValidOrders.push(oi);
           this.toastSrv.error(
             `${oi.itemNumber} of order ${oi.orderNumber} already sent to workplan`
@@ -547,13 +548,13 @@ export class OrderdetailsComponent implements OnInit {
               let index = this.ordersItems.findIndex(
                 (oi) => oi._id == item._id
               );
-              if (index > 0) {
+              if (index > -1) {
                 console.log(item);
                 this.ordersItems[index].pakaStatus = 1;
                 this.ordersItems[index].isSelected = false;
               }
             }
-
+            this.selectedArr = [];
             this.toastSrv.success(" הפריטים נשלחו בהצלחה למסך פקעות ");
           } else
             this.toastSrv.warning(
