@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { ToastrService } from "ngx-toastr";
 import { WorkPlanStatusPipe } from "src/app/pipes/work-plan-status.pipe";
 import { AuthService } from "src/app/services/auth.service";
@@ -49,7 +49,11 @@ export class AllItemsComponent implements OnInit {
   producedCount: number = 0;
   nullCount: number = 0;
   formuleToggle: boolean = true;
+  sortToggle: number = 1;
   edit: number = -1;
+  currentView: number = 1;
+
+  @ViewChild("oiFilter") oiFilter: ElementRef;
 
   constructor(
     private productionService: ProductionService,
@@ -92,20 +96,27 @@ export class AllItemsComponent implements OnInit {
         item.maxQty = Number(item.maxQty);
         item.quantity = Number(item.quantity);
         item.isSelected = false;
+        item.isSelectedColor = "#FEFEFE";
         item.WPstatus = 0;
+        item.dueDate =
+          item.workPlans && item.workPlans.dueDate
+            ? item.workPlans.dueDate
+            : null;
         item.itemOrderDate = item.itemOrderDate
           ? item.itemOrderDate
           : item.order.orderDate;
         item.itemOrderDate = new Date(item.itemOrderDate);
         if (item.workPlans) {
           if (item.wpSplit && item.maxQty > 0) {
-            let newItem = { ...item };
-            newItem.pakaStatus = 1;
-            newItem.quantity = item.wpRemainQty;
-            this.orderItems.push(newItem);
+            if (this.orderItems.findIndex((oi) => oi._id == item._id) == -1) {
+              let newItem = { ...item };
+              newItem.pakaStatus = 1;
+              newItem.quantity = item.wpRemainQty;
+              this.orderItems.push(newItem);
+            }
           }
           item.pakaStatus = item.workPlans.itemStatus;
-          item.dueDate = item.workPlans.dueDate;
+          // item.dueDate = item.workPlans.dueDate ? item.workPlans.dueDate : null;
           item.workPlanId = item.workPlans.workPlanId;
           item.quantity = item.workPlans.quantity;
           item.WPstatus = item.workPlans.WPstatus;
@@ -304,6 +315,7 @@ export class AllItemsComponent implements OnInit {
 
   viewOrders(status) {
     console.log("view orders clicked! Status = " + status);
+    this.currentView = status;
     this.filteredOrderItems = [];
     if (status != 0) {
       this.filteredOrderItems = this.orderItems.filter((oi) => {
@@ -315,6 +327,7 @@ export class AllItemsComponent implements OnInit {
 
     this.viewOrderItems = true;
     this.viewWorkPlans = false;
+    this.oiFilter.nativeElement.value = "";
   }
 
   isSelected(ev, item) {
@@ -329,6 +342,8 @@ export class AllItemsComponent implements OnInit {
         this.edit = -1;
         let ind = this.filteredOrderItems.findIndex((fi) => fi._id == item._id);
         this.filteredOrderItems[ind].isSelected = true;
+        this.filteredOrderItems[ind].isSelectedColor = "#ccc";
+
         console.log("Before push of item");
         console.log(item);
         let newItem = {
@@ -356,8 +371,10 @@ export class AllItemsComponent implements OnInit {
       } else ev.target.checked = false;
     } else {
       item.isSelected = false;
+      item.isSelectedColor = "#FEFEFE";
       let ind = this.filteredOrderItems.findIndex((fi) => fi._id == item._id);
       this.filteredOrderItems[ind].isSelected = false;
+      this.filteredOrderItems[ind].isSelectedColor = "#FEFEFE";
       let index = this.selectedArr.findIndex((oi) => {
         return oi._id == item._id;
       });
@@ -439,43 +456,25 @@ export class AllItemsComponent implements OnInit {
   }
 
   sortItemsTwo(field, sub) {
-    // let field = "formule";
-    // let sub = "formuleNumber";
-    if (this.formuleToggle) {
-      this.filteredOrderItems.sort((a, b) =>
-        a[field][sub] > b[field][sub]
-          ? 1
-          : a[field][sub] < b[field][sub]
-          ? -1
-          : 0
-      );
-    } else {
-      this.filteredOrderItems.sort((a, b) =>
-        a[field][sub] > b[field][sub]
-          ? -1
-          : a[field][sub] < b[field][sub]
-          ? 1
-          : 0
-      );
-    }
-    this.formuleToggle = !this.formuleToggle;
-    console.log(this.filteredOrderItems);
+    let i = this.sortToggle;
+    this.filteredOrderItems.sort((a, b) =>
+      a[field][sub] > b[field][sub] ? i : a[field][sub] < b[field][sub] ? -i : 0
+    );
+    this.sortToggle *= -1;
   }
   sortItemsOne(field) {
-    // let field = "formule";
-    console.log(field);
-    if (this.formuleToggle) {
-      this.filteredOrderItems.sort((a, b) => {
-        console.log(a[field]);
-        return a[field] > b[field] ? 1 : a[field] < b[field] ? -1 : 0;
-      });
-    } else {
-      this.filteredOrderItems.sort((a, b) =>
-        a[field] > b[field] ? -1 : a[field] < b[field] ? 1 : 0
-      );
-    }
-    this.formuleToggle = !this.formuleToggle;
-    console.log(this.filteredOrderItems);
+    let i = this.sortToggle;
+    this.filteredOrderItems.sort((a, b) => {
+      return a[field] > b[field] ? i : a[field] < b[field] ? -i : 0;
+    });
+    this.sortToggle *= -1;
+  }
+  sortWpOne(field) {
+    let i = this.sortToggle;
+    this.filteredWorkPlans.sort((a, b) => {
+      return a[field] > b[field] ? i : a[field] < b[field] ? -i : 0;
+    });
+    this.sortToggle *= -1;
   }
 
   splitOrderItem(item) {
@@ -493,5 +492,35 @@ export class AllItemsComponent implements OnInit {
     console.log(this.orderItems);
 
     this.viewOrders(1);
+  }
+
+  findInValues(arr, value) {
+    value = String(value).toLowerCase();
+    return arr.filter((o) =>
+      Object.entries(o).some((entry) =>
+        String(entry[1]).toLowerCase().includes(value)
+      )
+    );
+  }
+
+  filterOrderItems() {
+    let value = this.oiFilter.nativeElement.value;
+    console.log(value);
+    value = String(value).toLowerCase().trim();
+    if (value == "") {
+      this.clearOrderItems();
+    } else {
+      let array = [...this.filteredOrderItems];
+      let arrayCopy = [...this.filteredOrderItems];
+      this.filteredOrderItems = array.filter((o) =>
+        Object.entries(o).some((entry) =>
+          String(entry[1]).toLowerCase().includes(value)
+        )
+      );
+    }
+  }
+  clearOrderItems() {
+    this.viewOrders(this.currentView);
+    this.oiFilter.nativeElement.value = "";
   }
 }

@@ -72,16 +72,21 @@
     </ul>
   </div>
   <div *ngIf="viewOrderItems">
-    <div _ngcontent-phl-c148="" class="px-3 py-3 d-flex align-items-center border-bottom bg-light">
-      <h2 class="text-center">Order Items List</h2>
-
-      <form novalidate="" class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"><button
-          type="button" id="btnCreateWP" class="btn btn-primary flex-shrink-0" (click)="makePlan()"
-          [disabled]="selectedArr.length==0">Create Workplan</button>
-      </form>
-    </div>
+    <h1 class="text-center">Order Items List</h1>
     <div class="right-part bg-white">
-      <table class="table table-striped">
+      <div class="px-3 py-3 d-flex align-items-center border-bottom bg-light">
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" #oiFilter
+            (keyup)="filterOrderItems()">
+          <button class="btn btn-outline-primary my-2 my-sm-0" type="button" (click)="clearOrderItems()">Clear</button>
+        </form>
+        <form novalidate="" class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"><button
+            type="button" id="btnCreateWP" class="btn btn-primary flex-shrink-0" (click)="makePlan()"
+            [disabled]="selectedArr.length==0">Create Workplan</button>
+        </form>
+      </div>
+
+      <table class="table table-light">
         <thead class="bg-secondary text-white">
           <tr>
             <th>Select</th>
@@ -113,8 +118,8 @@
           </tr>
 
         </thead>
-        <tbody class="border border-light" *ngFor="let item of filteredOrderItems ; let i = index">
-          <tr>
+        <tbody *ngFor="let item of filteredOrderItems ; let i = index">
+          <tr [style.backgroundColor]="item.isSelectedColor">
             <td>
               <input type="checkbox" (checked)="item.isSelected" (change)="isSelected($event,item)">
             </td>
@@ -138,7 +143,10 @@
             <td>{{item.dueDate| date:'dd/MM/YYYY'}}</td>
             <td [style.background]="item.pakaStatus | orderItemBatchStatusColor">
               {{item.pakaStatus |orderItemBatchStatus}}</td>
-            <td [style.background]="item.WPstatus | orderItemBatchStatusColor">{{item.workPlanId}}</td>
+            <td [style.background]="item.WPstatus | orderItemBatchStatusColor"
+              style="text-decoration: underline; cursor:pointer" (click)="openWorkPlan(item.workPlanId)">
+              {{item.workPlanId}}</td>
+
           </tr>
         </tbody>
       </table>
@@ -153,8 +161,8 @@
         <thead class="bg-secondary text-white">
           <tr>
             <th>Select</th>
-            <th>WP Number</th>
-            <th>Created at</th>
+            <th class="ti-exchange-vertical" (click)="sortWpOne('serialNumber')" style="cursor:pointer">WP Number</th>
+            <th class="ti-exchange-vertical" (click)="sortWpOne('date')" style="cursor:pointer">Created at</th>
             <th>Related Orders</th>
             <th>Status</th>
 
@@ -171,8 +179,9 @@
             <td style=" text-decoration: underline; cursor:pointer" (click)="openWorkPlan(workplan.serialNumber)">
               {{workplan.serialNumber}}</td>
             <td>{{workplan.date|date:'dd/MM/YYY'}}</td>
-            <td>{{workplan.orderItems[0].orderNumber}}</td>
-            <td>{{workplan.status | workPlanStatus}}</td>
+            <td><span *ngFor="let order of workplan.orderItems">{{order.orderNumber}},&nbsp;</span></td>
+            <td [style.backgroundColor]="workplan.status|orderItemBatchStatusColor">{{workplan.status | workPlanStatus}}
+            </td>
           </tr>
         </tbody>
       </table>
