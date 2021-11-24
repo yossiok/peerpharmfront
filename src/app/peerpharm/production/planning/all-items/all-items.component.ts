@@ -8,6 +8,7 @@ import { ProductionService } from "src/app/services/production.service";
 import { WorkPlan } from "../WorkPlan";
 import { OrdersService } from "../../../../services/orders.service";
 import { NextPartNumberMarker } from "@aws-amplify/core/node_modules/aws-sdk/clients/s3";
+import { isNgContent, isNgTemplate } from "@angular/compiler";
 
 @Component({
   selector: "app-all-items",
@@ -81,19 +82,35 @@ export class AllItemsComponent implements OnInit {
 
     this.ordersService.getAllOpenOrderItemsNew().subscribe((data) => {
       console.log(data);
-      this.orderItems = data;
-      for (let item of this.orderItems) {
-        item.origQty = item.quantity;
-        item.maxQty = item.quantity;
+      // this.orderItems = data;
+      for (let item of data) {
+        item.origQty = Number(item.quantity);
+        item.maxQty =
+          item.wpRemainQty || item.wpRemainQty == 0
+            ? item.wpRemainQty
+            : item.quantity;
+        item.maxQty = Number(item.maxQty);
+        item.quantity = Number(item.quantity);
         item.isSelected = false;
         item.WPstatus = 0;
+        item.itemOrderDate = item.itemOrderDate
+          ? item.itemOrderDate
+          : item.order.orderDate;
+        item.itemOrderDate = new Date(item.itemOrderDate);
         if (item.workPlans) {
+          if (item.wpSplit && item.maxQty > 0) {
+            let newItem = { ...item };
+            newItem.pakaStatus = 1;
+            newItem.quantity = item.wpRemainQty;
+            this.orderItems.push(newItem);
+          }
           item.pakaStatus = item.workPlans.itemStatus;
           item.dueDate = item.workPlans.dueDate;
           item.workPlanId = item.workPlans.workPlanId;
           item.quantity = item.workPlans.quantity;
           item.WPstatus = item.workPlans.WPstatus;
         }
+        this.orderItems.push(item);
       }
       console.log(this.orderItems);
       for (let i = 1; i <= 7; i++) {
@@ -309,20 +326,26 @@ export class AllItemsComponent implements OnInit {
         );
 
       if (cont) {
+        this.edit = -1;
+        let ind = this.filteredOrderItems.findIndex((fi) => fi._id == item._id);
+        this.filteredOrderItems[ind].isSelected = true;
         console.log("Before push of item");
         console.log(item);
         let newItem = {
+          isSelected: true,
           formule: item.formule,
-          partentFormule: item.formule.parentNumber
+          parentFormule: item.formule.parentNumber
             ? item.formule.parentNumber
             : item.formule.formuleNumber,
-          customerID: item.costumerInternalId,
-          customerName: item.costumer,
+          customerID: item.order.costumerInternalId,
+          customerName: item.order.costumer,
           description: item.discription,
           itemNumber: item.itemNumber,
           enoughtComponents: true,
           netWeightGr: item.netWeightGr,
           quantity: item.quantity,
+          origQty: item.origQty,
+          wpRemainQty: item.maxQty,
           remarks: null,
           totalKG: Number(item.quantity) * Number(item.netWeightGr),
           orderNumber: item.orderNumber,
@@ -332,8 +355,11 @@ export class AllItemsComponent implements OnInit {
         this.selectedArr.push(newItem);
       } else ev.target.checked = false;
     } else {
+      item.isSelected = false;
+      let ind = this.filteredOrderItems.findIndex((fi) => fi._id == item._id);
+      this.filteredOrderItems[ind].isSelected = false;
       let index = this.selectedArr.findIndex((oi) => {
-        return oi._id == item.orderItem._id;
+        return oi._id == item._id;
       });
       this.selectedArr.splice(index, 1);
     }
@@ -347,18 +373,16 @@ export class AllItemsComponent implements OnInit {
       let remark = prompt("אנא רשום שם / הערה לתכנית עבודה:");
       if (!remark) return;
       for (let item of this.selectedArr) {
-        let totalQ = item.origQty;
-        let qtyProd = 0;
-        let qtyToProd = 0;
-        for (let oi of this.orderItems) {
-          if (item._id == oi._id && item.workPlans) {
-            qtyProd += oi.quantity;
-          } else if (item._id == oi._id) {
-            qtyToProd += oi.quantity;
-          }
+        if (Number(item.quantity) < Number(item.origQty)) {
+          item.wpSplit = true;
+          item.wpProdQty = item.wpProdQty
+            ? item.wpProdQty + item.quantity
+            : item.quantity;
+          item.wpRemainQty = item.wpRemainQty
+            ? item.wpRemainQty - item.quantity
+            : item.qantity - item.wpProdQty;
         }
-
-        if (qtyToProd > totalQ - qtyProd) {
+        if (item.remainQty <= 0) {
           alert(
             "כמות היחידות שהוזנו לפקודת העבודה חורגת מהכמות שהוזמנה על ידי הלקוח"
           );
@@ -369,8 +393,13 @@ export class AllItemsComponent implements OnInit {
       this.ordersService
         .makePlan(this.selectedArr, remark)
         .subscribe((data) => {
+          console.log(data);
           console.log(data.workPlan);
           console.log(data.result);
+          if (!data) {
+            this.toastr.error("Work plan creation failed");
+            return;
+          }
 
           if (data.error && data.error == "No formules for all products")
             this.toastr.error(
@@ -382,7 +411,9 @@ export class AllItemsComponent implements OnInit {
               "יש למחוק את אחד המופעים על מנת להמשיך",
               `פורמולה מס. ${data.formule} מופיעה פעמיים במערכת`
             );
-          else if (data.workPlan.orderItems.length > 0) {
+          else if (data.msg) {
+            this.toastr.error(data.msg);
+          } else if (data.workPlan.orderItems.length > 0) {
             this.workPlans.unshift(data.workPlan);
             for (let item of this.orderItems) {
               let index = data.workPlan.orderItems.findIndex(
@@ -398,6 +429,7 @@ export class AllItemsComponent implements OnInit {
               "נשמרה בהצלחה.",
               `תכנית עבודה ${data.serialNumber}`
             );
+            this.selectedArr = [];
           } else
             this.toastr.warning(
               'היתה בעיה. אנא בדוק את תכנית העבודה במסך "Planning"'
@@ -431,11 +463,12 @@ export class AllItemsComponent implements OnInit {
   }
   sortItemsOne(field) {
     // let field = "formule";
-    // let sub = "formuleNumber";
+    console.log(field);
     if (this.formuleToggle) {
-      this.filteredOrderItems.sort((a, b) =>
-        a[field] > b[field] ? 1 : a[field] < b[field] ? -1 : 0
-      );
+      this.filteredOrderItems.sort((a, b) => {
+        console.log(a[field]);
+        return a[field] > b[field] ? 1 : a[field] < b[field] ? -1 : 0;
+      });
     } else {
       this.filteredOrderItems.sort((a, b) =>
         a[field] > b[field] ? -1 : a[field] < b[field] ? 1 : 0

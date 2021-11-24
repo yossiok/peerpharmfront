@@ -44,25 +44,31 @@
       <li class="task-item d-flex all border-bottom active" style="cursor: pointer" (click)="viewWP(0)">All <span
           class="badge badge-primary ml-auto pt-1">{{workPlans.length}}</span>
       </li>
-      <li class=" task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(1)"> Draft<span
-          class="badge badge-success ml-auto pt-1" style="background-color: #30E845;">{{draftWPCount}}</span>
+      <li class=" task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(1)">
+        {{1|workPlanStatus}}<span class="badge badge-success ml-auto pt-1"
+          style="background-color: #30E845;">{{draftWPCount}}</span>
       </li>
-      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(2)"> Moved to
-        Production <span class="badge badge-success ml-auto pt-1"
+      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(2)">
+        {{2|workPlanStatus}}<span class="badge badge-success ml-auto pt-1"
           style="background-color: #5B9BD5;">{{movedWPCount}}</span>
       </li>
-      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(3)">In Production
+      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(3)">
+        {{3|workPlanStatus}}
         <span class="badge badge-success ml-auto pt-1" style="background-color: #ED7D31;">{{inProdWPCount}}</span>
       </li>
-      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(4)">Manufactured <span
-          class="badge badge-success ml-auto pt-1" style="background-color: #C48170;">{{manufWPCount}}</span>
+      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(4)">
+        {{4|workPlanStatus}}<span class="badge badge-success ml-auto pt-1"
+          style="background-color: #C48170;">{{manufWPCount}}</span>
       </li>
-      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(5)">Closed <span
-          class="badge badge-success ml-auto pt-1" style="background-color: #A5A5A5;">{{closedWPCount}}</span></li>
-      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(5)">On Hold <span
+      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(5)">
+        {{5|workPlanStatus}}<span class="badge badge-success ml-auto pt-1"
+          style="background-color: #A5A5A5;">{{closedWPCount}}</span></li>
+      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(6)">
+        {{6|workPlanStatus}}<span this.onholdWPCount=this.filteredWorkPlans.length;
           class="badge badge-success ml-auto pt-1" style="background-color: #dd1212;">{{onholdWPCount}}</span></li>
-      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(5)">Cancelled <span
-          class="badge badge-success ml-auto pt-1" style="background-color: #dd4b12;">{{cancelledWPCount}}</span></li>
+      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(7)">
+        {{7|workPlanStatus}}<span class="badge badge-success ml-auto pt-1"
+          style="background-color: #dd4b12;">{{cancelledWPCount}}</span></li>
     </ul>
   </div>
   <div *ngIf="viewOrderItems">
@@ -89,13 +95,15 @@
               Name</th>
             <th><i class="ti-exchange-vertical" (click)="sortItemsOne('netWeightGr');" style="cursor:pointer"></i>Unit
               Weight</th>
-            <th>Quantity (u)</th>
+            <th>Order Qty (u)</th>
+            <th>Remain Qty (u)</th>
+            <th>WP Qty (u)</th>
             <th>Weight (Kg.)</th>
-            <th><i class="ti-exchange-vertical" (click)="sortItemsOne('orderDate')" style="cursor:pointer"></i>Order
+            <th><i class="ti-exchange-vertical" (click)="sortItemsOne('itemOrderDate')" style="cursor:pointer"></i>Order
               Date
             </th>
             <th>Priority</th>
-            <th><i class="ti-exchange-vertical" (click)="sortItemsOne('itemOrderDate')" style="cursor:pointer"></i>Due
+            <th><i class="ti-exchange-vertical" (click)="sortItemsOne('dueDate')" style="cursor:pointer"></i>Due
               Date
             </th>
             <th><i class="ti-exchange-vertical" (click)="sortItemsOne('pakaStatus');" style="cursor:pointer"></i>Stage
@@ -108,17 +116,19 @@
         <tbody class="border border-light" *ngFor="let item of filteredOrderItems ; let i = index">
           <tr>
             <td>
-              <input type="checkbox" (checked)="item.iseSelected" (change)="isSelected($event,item)">
+              <input type="checkbox" (checked)="item.isSelected" (change)="isSelected($event,item)">
             </td>
             <td>{{item.formule.parentNumber? item.formule.parentNumber: item.formule.formuleNumber}}</td>
             <td>{{item.orderNumber}}</td>
             <td>{{item.itemNumber}}</td>
             <td>{{item.discription}}</td>
             <td>{{item.netWeightGr}}</td>
+            <td>{{item.origQty}}</td>
+            <td>{{item.maxQty}}</td>
             <td><span *ngIf="edit == -1" (click)="edit = i">{{item.quantity}}</span>
               <span *ngIf="edit == i">
-                <input type="number" [attr.max]="item.maxQty" [(ngModel)]="item.quantity"><i class="fas fa-save"
-                  (click)="item=-1"></i>
+                <input [attr.disabled]="item.isSelected? '' :null" type="number" [attr.max]="item.maxQty" min="0"
+                  [(ngModel)]="item.quantity"><i class="fas fa-save" (click)="edit=-1"></i>
                 <!-- (click)="splitOrderItem(item)"></i> -->
               </span>
             </td>
