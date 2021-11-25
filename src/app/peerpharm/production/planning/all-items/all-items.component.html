@@ -33,7 +33,7 @@
         <li style="cursor: pointer" class="task-item d-flex complete border-bottom" (click)="viewOrders(7)">
           {{7|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
             [style.background]="7|orderItemBatchStatusColor">{{producedCount}}</span></li>
-        <li style="cursor: pointer" class="task-item d-flex all border-bottom active" (click)="viewOrders(0)"> All <span
+        <li style="cursor: pointer" class="task-item d-flex all border-bottom active" (click)="viewOrders(8)"> All <span
             class="badge badge-primary ml-auto pt-1">{{orderItems.length}}</span></li>
       </ul>
     </div>
@@ -41,9 +41,7 @@
       <p class="mb-0  mt-5 py-1 text-center font-18 font-bold">Work Plans</p>
     </div>
     <ul class="tasklist list-style-none">
-      <li class="task-item d-flex all border-bottom active" style="cursor: pointer" (click)="viewWP(0)">All <span
-          class="badge badge-primary ml-auto pt-1">{{workPlans.length}}</span>
-      </li>
+
       <li class=" task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(1)">
         {{1|workPlanStatus}}<span class="badge badge-success ml-auto pt-1"
           style="background-color: #30E845;">{{draftWPCount}}</span>
@@ -69,10 +67,17 @@
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(7)">
         {{7|workPlanStatus}}<span class="badge badge-success ml-auto pt-1"
           style="background-color: #dd4b12;">{{cancelledWPCount}}</span></li>
+      <li class="task-item d-flex all border-bottom active" style="cursor: pointer" (click)="viewWP(8)">All <span
+          class="badge badge-primary ml-auto pt-1">{{workPlans.length}}</span>
+      </li>
     </ul>
   </div>
   <div *ngIf="viewOrderItems">
-    <h1 class="text-center">Order Items List</h1>
+    <h1 class="text-center"><span class="heading1" [style.backgroundColor]="currentView|orderItemBatchStatusColor">
+        {{currentView|orderItemBatchStatus}} Order Items List
+
+      </span>
+    </h1>
     <div class="right-part bg-white">
       <div class="px-3 py-3 d-flex align-items-center border-bottom bg-light">
         <form class="form-inline my-2 my-lg-0">
@@ -86,7 +91,7 @@
         </form>
       </div>
 
-      <table class="table table-light">
+      <table class="table table-light ">
         <thead class="bg-secondary text-white">
           <tr>
             <th>Select</th>
@@ -94,7 +99,7 @@
                 style="cursor:pointer"></i>Parent/Formule</th>
             <th><i class="ti-exchange-vertical" (click)="sortItemsOne('orderNumber')" style="cursor:pointer"></i>Order
             </th>
-            <th><i class="ti-exchange-vertical" (click)="sortItemsOne('itemNumber')" style="cursor:pointer"></i>Item
+            <th><i class="ti-exchange-vertical click" (click)="sortItemsOne('itemNumber')"></i>Item
               Number</th>
             <th><i class="ti-exchange-vertical" (click)="sortItemsOne('discription');" style="cursor:pointer"></i>Item
               Name</th>
@@ -119,7 +124,7 @@
 
         </thead>
         <tbody *ngFor="let item of filteredOrderItems ; let i = index">
-          <tr [style.backgroundColor]="item.isSelectedColor">
+          <tr [style.backgroundColor]="item.isSelectedColor" class=" border-bottom border-dark">
             <td>
               <input type="checkbox" (checked)="item.isSelected" (change)="isSelected($event,item)">
             </td>
@@ -155,15 +160,27 @@
   </div>
   <div *ngIf="viewWorkPlans">
 
-    <h2 class="text-center">Workplans List</h2>
+    <h1 class="text-center">
+      <span class="heading1"
+        [style.backgroundColor]="currentWPView|orderItemBatchStatusColor">{{currentWPView| workPlanStatus}} Workplans
+        List</span> </h1>
     <div class="right-part bg-white">
+      <div class="px-3 py-3 d-flex align-items-center border-bottom bg-light">
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" #wpFilter
+            (keyup)="filterWorkPlans()">
+          <button class="btn btn-outline-primary my-2 my-sm-0" type="button" (click)="clearWorkPlans()">Clear</button>
+        </form>
+      </div>
       <table class="table table-striped">
         <thead class="bg-secondary text-white">
           <tr>
-            <th>Select</th>
+
             <th class="ti-exchange-vertical" (click)="sortWpOne('serialNumber')" style="cursor:pointer">WP Number</th>
             <th class="ti-exchange-vertical" (click)="sortWpOne('date')" style="cursor:pointer">Created at</th>
-            <th>Related Orders</th>
+            <th>Orders</th>
+            <th>Items</th>
+            <th>Remark</th>
             <th>Status</th>
 
           </tr>
@@ -171,15 +188,12 @@
         </thead>
         <tbody class="border border-light" *ngFor="let workplan of filteredWorkPlans; let i = index">
           <tr>
-            <td>
-              <div class="custom-control custom-checkbox"><input type="checkbox"
-                  class="custom-control-input ng-untouched ng-pristine ng-valid" id="i"><label
-                  class="custom-control-label" for="i"></label></div>
-            </td>
             <td style=" text-decoration: underline; cursor:pointer" (click)="openWorkPlan(workplan.serialNumber)">
               {{workplan.serialNumber}}</td>
             <td>{{workplan.date|date:'dd/MM/YYY'}}</td>
             <td><span *ngFor="let order of workplan.orderItems">{{order.orderNumber}},&nbsp;</span></td>
+            <td><span *ngFor="let order of workplan.orderItems">{{order.itemNumber}},&nbsp;</span></td>
+            <td>{{workplan.remark}}</td>
             <td [style.backgroundColor]="workplan.status|orderItemBatchStatusColor">{{workplan.status | workPlanStatus}}
             </td>
           </tr>

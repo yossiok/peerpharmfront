@@ -1,5 +1,10 @@
 * {
-    font-size: large;
+  font-size: large;
+}
+
+.heading1 {
+  font-size: 2rem;
+  padding: 5px 20px
 }
 
 .close {
@@ -12,94 +17,105 @@
   color: white
 }
 
+table {
+
+  tbody {
+
+    td {
+      border-bottom: solid 2px #8d8b8b;
+
+    }
+  }
+}
+
 .wrapper {
-    display: grid;
-    grid-template-columns: 100px 100px 100px 100px 100px;
-    grid-gap: 285px;
-    grid-row-gap: 53px;
-    color: rgb(236, 117, 117);
-  }
-  
-  .box {
-    background-color: rgb(115, 181, 235);
-    color: rgb(22, 6, 6);
-    border-radius: 5px;
-    padding: 20px;
-    font-size: 150%;
-    width: 291%;
-    height:200px
-  }
+  display: grid;
+  grid-template-columns: 100px 100px 100px 100px 100px;
+  grid-gap: 285px;
+  grid-row-gap: 53px;
+  color: rgb(236, 117, 117);
+}
 
-  .checkbox {
-    width: 28px;
-    height: 28px;
-    color: aliceblue;
-  }
+.box {
+  background-color: rgb(115, 181, 235);
+  color: rgb(22, 6, 6);
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 150%;
+  width: 291%;
+  height: 200px
+}
 
-  .click {
-    cursor: pointer
-  }
+.checkbox {
+  width: 28px;
+  height: 28px;
+  color: aliceblue;
+}
 
-  .smallerLoader {
-    border: 6px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid #3498db;
-    width: 50px;
-    height: 50px;
-    -webkit-animation: spin 2s linear infinite; /* Safari */
-    animation: spin 2s linear infinite;
-  }
+.click {
+  cursor: pointer
+}
 
-  .work-plan {
-    top: 135px;
-    left: 400px;
-    background-color: #d4e3e4;
-    width: 70%;
-    // border-radius: 27px;
-    overflow-y: auto;
-    height: 1056px;
-  }
+.smallerLoader {
+  border: 6px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #3498db;
+  width: 50px;
+  height: 50px;
+  -webkit-animation: spin 2s linear infinite;
+  /* Safari */
+  animation: spin 2s linear infinite;
+}
 
-  .remark {
-    max-height: 30px;
-    overflow-y: auto;
-  }
+.work-plan {
+  top: 135px;
+  left: 400px;
+  background-color: #d4e3e4;
+  width: 70%;
+  // border-radius: 27px;
+  overflow-y: auto;
+  height: 1056px;
+}
 
-  .status {
-    text-decoration: underline;
-  }
+.remark {
+  max-height: 30px;
+  overflow-y: auto;
+}
 
-  .img {
-    width: 35px;
-    cursor: pointer;
-  }
+.status {
+  text-decoration: underline;
+}
+
+.img {
+  width: 35px;
+  cursor: pointer;
+}
 
 .img2 {
-    width: 50px;
-    cursor: pointer;
-  }
+  width: 50px;
+  cursor: pointer;
+}
 
-    /******************Scroll Bar********************************************/
-    ::-webkit-scrollbar {
-      width: 10px;
-    }
-    
-    /* Track */
-    ::-webkit-scrollbar-track {
-      box-shadow: inset 0 0 5px grey; 
-      border-radius: 10px;
-    }
-     
-    /* Handle */
-    ::-webkit-scrollbar-thumb {
-      background: rgb(27, 27, 25);
-      border-radius: 10px;
-    }
-    
-    /* Handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-      background: #363638;
-    }
-    /*********************************************************************/
+/******************Scroll Bar********************************************/
+::-webkit-scrollbar {
+  width: 10px;
+}
 
-  
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(27, 27, 25);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #363638;
+}
+
+/*********************************************************************/

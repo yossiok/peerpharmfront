@@ -7,26 +7,32 @@ export class WorkPlanStatusPipe implements PipeTransform {
   transform(value: number): string {
     let status = "";
     switch (value) {
+      case 0:
+        status = "New";
+        break;
       case 1:
-        status = "Order";
+        status = "New";
         break;
       case 2:
-        status = "PP&C Draft";
+        status = "Draft";
         break;
       case 3:
-        status = "Formula Approved";
+        status = "Approved";
         break;
       case 4:
         status = "Scheduled";
         break;
       case 5:
-        status = "Closed";
+        status = "Done";
         break;
       case 6:
         status = "On Hold";
         break;
       case 7:
         status = "Cancelled";
+        break;
+      case 8:
+        status = "All";
         break;
       default:
         status = "Unknown";

@@ -31,6 +31,9 @@ export class OrderItemBatchStatusColorPipe implements PipeTransform {
       case 7:
         color = "#1a8a22";
         break;
+      case 8:
+        color = "#7460EE";
+        break;
       default:
         color = "";
     }

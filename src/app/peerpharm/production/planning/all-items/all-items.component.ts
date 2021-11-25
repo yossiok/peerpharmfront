@@ -28,10 +28,8 @@ export class AllItemsComponent implements OnInit {
   showCheckbox: boolean = false;
   authorized: boolean = false;
   orderItems: any[] = [];
-  filteredOrderItems: any[] = [];
   viewOrderItems: boolean = true;
   viewWorkPlans: boolean = false;
-  filteredWorkPlans: any[] = [];
   draftWPCount: number;
   movedWPCount: number;
   inProdWPCount: number;
@@ -52,8 +50,14 @@ export class AllItemsComponent implements OnInit {
   sortToggle: number = 1;
   edit: number = -1;
   currentView: number = 1;
+  currentWPView: number = 1;
+  filteredOrderItems: any[] = [];
+  filteredOrderItemsCopy: any[] = [];
+  filteredWorkPlans: any[] = [];
+  filteredWorkPlansCopy: any[] = [];
 
   @ViewChild("oiFilter") oiFilter: ElementRef;
+  @ViewChild("wpFilter") wpFilter: ElementRef;
 
   constructor(
     private productionService: ProductionService,
@@ -300,13 +304,16 @@ export class AllItemsComponent implements OnInit {
   }
 
   viewWP(status) {
-    console.log("WP clicked! Status = " + status);
-    if (status != 0) {
+    this.currentWPView = status;
+    console.log("WP clicked! Status = " + this.currentWPView);
+    if (status != 8) {
       this.filteredWorkPlans = this.workPlans.filter((wp) => {
         return wp.status == status;
       });
+      this.filteredWorkPlansCopy = [...this.filteredWorkPlans];
     } else {
       this.filteredWorkPlans = this.workPlans;
+      this.filteredWorkPlansCopy = [...this.filteredWorkPlans];
     }
 
     this.viewOrderItems = false;
@@ -315,9 +322,10 @@ export class AllItemsComponent implements OnInit {
 
   viewOrders(status) {
     console.log("view orders clicked! Status = " + status);
+
     this.currentView = status;
     this.filteredOrderItems = [];
-    if (status != 0) {
+    if (status != 8) {
       this.filteredOrderItems = this.orderItems.filter((oi) => {
         return oi.pakaStatus == status;
       });
@@ -522,5 +530,23 @@ export class AllItemsComponent implements OnInit {
   clearOrderItems() {
     this.viewOrders(this.currentView);
     this.oiFilter.nativeElement.value = "";
+  }
+  filterWorkPlans() {
+    let value = this.wpFilter.nativeElement.value;
+    console.log(value);
+    value = String(value).toLowerCase();
+    if (value == "") {
+      this.clearWorkPlans();
+    } else {
+      this.filteredWorkPlans = this.filteredWorkPlansCopy.filter((o) =>
+        Object.entries(o).some((entry) =>
+          String(entry[1]).toLowerCase().includes(value)
+        )
+      );
+    }
+  }
+  clearWorkPlans() {
+    this.viewWP(this.currentWPView);
+    this.wpFilter.nativeElement.value = "";
   }
 }
