@@ -9,6 +9,7 @@ import { WorkPlan } from "../WorkPlan";
 import { OrdersService } from "../../../../services/orders.service";
 import { NextPartNumberMarker } from "@aws-amplify/core/node_modules/aws-sdk/clients/s3";
 import { isNgContent, isNgTemplate } from "@angular/compiler";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "app-all-items",
@@ -66,14 +67,21 @@ export class AllItemsComponent implements OnInit {
     private inventoryService: InventoryService,
     private toastr: ToastrService,
     private authService: AuthService,
-    private ordersService: OrdersService
-  ) {}
+    private ordersService: OrdersService,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
     this.getWorkPlans();
     this.authorized = this.authService.loggedInUser.authorization.includes(
       "creamProductionManager"
     );
+    this.route.queryParamMap.subscribe(params => {
+      if (params["params"].workPlanId) {
+        this.currentWorkPlan = params["params"].workPlanId
+        this.showWorkPlan = true
+      } 
+    })
 
     this.getAllOrderItems();
   }

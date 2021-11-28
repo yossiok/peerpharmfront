@@ -6,7 +6,7 @@ import { InventoryService } from 'src/app/services/inventory.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { OrdersService } from 'src/app/services/orders.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductionService } from 'src/app/services/production.service';
 import { WorkPlan } from '../../production/planning/WorkPlan';
 import { AotCompiler } from '@angular/compiler';
@@ -56,7 +56,8 @@ export class NewBatchComponent implements OnInit {
     private authService: AuthService,
     private orderService: OrdersService,
     private route: ActivatedRoute,
-    private prodSchedServ: ProductionService) { }
+    private prodSchedServ: ProductionService,
+    private router: Router) { }
 
   ngOnInit() {
     this.getLastBatch();
@@ -93,6 +94,17 @@ export class NewBatchComponent implements OnInit {
     this.batchService.getLastBatch().subscribe(data => {
       this.lastBatch = data;
     })
+  }
+
+  backToWP() {
+    this.router.navigate(
+      ["/peerpharm/production/planning"],
+      {
+        queryParams: {
+          workPlanId: this.workPlan.serialNumber
+        },
+      }
+    );
   }
 
 
@@ -254,7 +266,7 @@ export class NewBatchComponent implements OnInit {
               if (con) {
                 // add batch to batches list
                 this.batchService.addBatch(this.newBatchForm.value).subscribe(data => {
-                  if (data.msg = 'succsess') {
+                  if (data.msg == 'succsess') {
                     this.printBtn.nativeElement.click();
                     this.toastSrv.success('באטצ נוסף בהצלחה !')
                     let productionFormuleIndex = this.workPlan.productionFormules.findIndex(f => f.formule == this.workPlanFormule)

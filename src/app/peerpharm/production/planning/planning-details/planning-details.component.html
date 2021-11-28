@@ -158,7 +158,7 @@
             <th>סטטוס ייצור</th>
             <th>תאריך ביצוע</th>
             <th></th>
-            <th>Batch?</th>
+            <!-- <th>Batch?</th> -->
           </tr>
         </thead>
         <tbody>
@@ -182,9 +182,10 @@
             <td [style.background]="formule.status | orderItemBatchStatusColor">
               {{formule.status | orderItemBatchStatus}}
               <span *ngIf="formule.status == 4">{{formule.dueDate | date: 'dd/MM/yyyy'}}</span>
+              <span *ngIf="formule.status == 6">{{formule.batchNumber}}</span>
             </td>
             <td>
-              <span [disabled]="!authorized" (click)="editDueDate = i" *ngIf="editDueDate != i">
+              <span [disabled]="!authorized" (click)="editDueDate = i" *ngIf="editDueDate != i && !formule.batchNumber">
                 <span [ngbTooltip]="formule.status < 3 ? 'Formula Not Approved!' : ''" class="click" *ngIf="authorized">
                   <button [disabled]="formule.status < 3" class="btn schedule-button">Enter / Change Date</button>
                 </span>
@@ -194,30 +195,43 @@
               </span>
             </td>
             <td>
-              <span [ngbTooltip]="formule.status < 3 ? 'Formula Not Approved!' : ''">
-                <button (click)="addBatch(formule)" class="btn batch-btn" [disabled]="formule.status < 3">Add Batch</button>
+              <span *ngIf="!formule.batchNumber" [ngbTooltip]="formule.status < 3 ? 'Formula Not Approved!' : ''">
+                <button (click)="addBatch(formule)" class="btn batch-btn" [disabled]="formule.status < 3">Add
+                  Batch</button>
               </span>
             </td>
-            <td class="text-center" class="text-success text-left" *ngIf="formule.batchNumber">
+            <!-- <td class="text-center" class="text-success text-left" *ngIf="formule.batchNumber">
               {{formule.batchNumber}}</td>
             <td *ngIf="!formule.batchNumber"><i ngbTooltip="לא יוצר באטץ'" class="far fa-times-circle"></i>
-            </td>
+            </td> -->
 
           </tr>
         </tbody>
 
       </table>
     </div>
-    <div class="col-1 d-flex flex-column justify-content-around">
-      <button class="btn btn-info" (click)="weightFormules()">Compare</button>
-      <span *ngIf="authorized"><img class="img2" ngbTooltip='Approve Formules' (click)="approveFormules()"
-          src="../../../../../assets/images/filter.png" alt="לחץ כאן על מנת לשלוח פורמולות לייצור"></span>
-    </div>
-    <div class="col-1">
-    </div>
+
   </div>
 
-  <div class="row mt-5"></div>
+  <div class="row mt-5 long d-flex flex-row justify-content-around">
+      <div>
+        <button class="btn btn-info formule-side" (click)="weightFormules()">
+          <i style="font-size: 46px" class="fas fa-clone"></i>
+          Compare & Approve</button>
+      </div>
+      <div>
+        <button class="btn btn-info formule-side">
+          <span *ngIf="authorized"><img class="img2" ngbTooltip='Approve Formules' (click)="approveFormules()"
+              src="../../../../../assets/images/filter.png" alt="לחץ כאן על מנת לשלוח פורמולות לייצור"></span>
+          Approve All & Print
+        </button>
+      </div>
+      <!-- <div>
+        <button class="btn btn-success formule-side" (click)="printFormules(true)">
+          <img class="img" src="../../../../../assets/images/print.png" alt="">
+           Print</button>
+      </div> -->
+  </div>
   <div class="row mt-5"></div>
   <div class="row mt-5">
     <button (click)="deleteWorkPlan()" class="btn btn-danger w-50 delete-btn">מחיקת פק"ע</button>
@@ -231,7 +245,7 @@
 <div id="formuleSection">
 
   <!--כתב כמויות-->
-  <div *ngIf="showMaterialsForFormules" class="m-5 p-5">
+  <div *ngIf="showMaterialsForFormules && checkedFormules.length > 1" class="m-5 p-5">
 
     <i (click)="showMaterialsForFormules = false" class="fa fa-times float-right h3 close"></i>
     <h1 class="text-center">כתב כמויות</h1>
@@ -261,10 +275,10 @@
 
             <td>{{material.itemNumber}}</td>
             <td>{{material.itemName}}</td>
-            <td>{{material.kgProduction}}</td>
-            <td *ngIf="material.materialArrivals[0]"
-              [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
-              {{material.materialArrivals[0].amount | number}}</td>
+            <td>{{material.kgProd}}</td>
+            <td *ngIf="material.itemAmount[0]"
+              [style.backgroundColor]="checkAmountsForMaterial(material.kgProd, material.itemAmount[0].amount) < 0 ? 'red' : 'lightgreen'">
+              {{material.itemAmount[0].amount | number}}</td>
 
           </tr>
         </tbody>
@@ -278,7 +292,7 @@
 
   <div *ngIf="printingFormules" class="row mt-3 d-flex flex-row">
 
-    <ng-container *ngFor="let formulePrinting of workPlan.productionFormules; let i = index">
+    <ng-container *ngFor="let formulePrinting of checkedFormules; let i = index">
       <!-- <h1 *ngIf="formulePrinting.numOfItems > 16">Page 1 of 2</h1>
             <h1 *ngIf="formulePrinting.numOfItems <= 16">Page 1 of 1</h1> -->
       <h1>Formule {{i+1}}</h1>

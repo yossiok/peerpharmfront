@@ -15,6 +15,7 @@ import { fromEventPattern } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { WorkPlan } from "../planning/WorkPlan";
 import { ProductionService } from "src/app/services/production.service";
+import { Location } from "@angular/common";
 
 interface FormuleWeight {
   formuleNumber: any;
@@ -96,7 +97,8 @@ export class WeightProductionComponent implements OnInit {
     private itemService: ItemsService,
     private route: ActivatedRoute,
     private router: Router,
-    private productionService: ProductionService
+    private productionService: ProductionService,
+    private location: Location
   ) { }
 
   ngOnInit() {
@@ -116,6 +118,17 @@ export class WeightProductionComponent implements OnInit {
   }
   ngOnDestroy() {
     this.importedFormule.unsubscribe();
+  }
+
+  backToWP() {
+    this.router.navigate(
+      ["/peerpharm/production/planning"],
+      {
+        queryParams: {
+          workPlanId: this.workPlanId
+        },
+      }
+    );
   }
 
   deleteFormule(i) {
@@ -270,7 +283,7 @@ export class WeightProductionComponent implements OnInit {
     let identical = true;
 
     for (let formule = 0; formule < this.formules.length - 1; formule++) {
-      if(this.formules[formule].data.phases.length == 0) {
+      if (this.formules[formule].data.phases.length == 0) {
         this.toastSrv.error('לא קיימות פאזות באחת או יותר מהפורמולות...', 'חסר מידע!')
         return
       }
@@ -335,7 +348,6 @@ export class WeightProductionComponent implements OnInit {
   }
 
   chooseFormule(formule) {
-    console.log('formules: ', this.formules)
     let formuleNumbers = this.formules.map(f => f.formuleNumber)
     // this.productionService.setItemsSttatusTo3(this.workPlanId, formuleNumbers)
     this.showPill = false;

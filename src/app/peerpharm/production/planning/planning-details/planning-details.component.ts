@@ -55,6 +55,7 @@ export class PlanningDetailsComponent implements OnInit {
   statusTest: number = 1
   notAndrey: boolean = true
   editDueDate: number = -1
+  checkedFormules: ProductionFormule[]
 
   constructor(
     private authService: AuthService,
@@ -68,9 +69,7 @@ export class PlanningDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.authorized = this.authService.loggedInUser.authorization.includes(
-      "creamProductionManager"
-    );
+    this.authorized = this.authService.loggedInUser.authorization.includes("creamProductionManager");
     this.workPlan.orderItems.sort((a, b) => <any>a.parentFormule - <any>b.parentFormule)
   }
 
@@ -135,8 +134,8 @@ export class PlanningDetailsComponent implements OnInit {
     }
 
     this.saveChanges()
-    .then((succesMessage) => this.toastr.success(succesMessage))
-    .catch((errorMessage) => this.toastr.error(errorMessage));
+      .then((succesMessage) => this.toastr.success(succesMessage))
+      .catch((errorMessage) => this.toastr.error(errorMessage));
 
   }
 
@@ -165,7 +164,7 @@ export class PlanningDetailsComponent implements OnInit {
     this.saveChanges()
       .then(succesMessage => {
         this.toastr.success(succesMessage)
-        this.editDueDate = -1  
+        this.editDueDate = -1
       })
       .catch(errorMessage => this.toastr.error(errorMessage))
   }
@@ -265,20 +264,26 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   async approveFormules() {
-    if (confirm('האם לאשר את כל הפורמולות שנבחרו?')) {
-      this.workPlan.productionFormules.map(f => f.checked ? f.status = 3 : null)
-      this.saveChanges()
-      .then((succesMessage) => this.toastr.success(succesMessage, 'פורמולות מאושרות'))
-      .catch((errorMessage) => this.toastr.error(errorMessage));
-      let approved = await this.authenticate();
-      if (approved) {
-        let amountsLoaded = await this.loadMaterialsForFormule(true);
-        let formulesPrinted = await this.printFormules();
-      } else this.toastr.error("אימות נכשל");
-    } else this.toastr.error("בוטל");
+      if (confirm('לאשר לייצור?')) {
+
+        // change status
+        this.workPlan.productionFormules.map(f => f.checked ? f.status = 3 : null)
+
+        this.saveChanges()
+          .then((succesMessage) => this.toastr.success(succesMessage, 'פורמולות מאושרות'))
+          .catch((errorMessage) => this.toastr.error(errorMessage));
+        let approved = await this.authenticate();
+        if (approved) {
+          let amountsLoaded = await this.loadMaterialsForFormule(true);
+          let formulesPrinted = await this.printFormules();
+        } else this.toastr.error("אימות נכשל");
+      }
   }
 
-  async printFormules() {
+  async printFormules(all?) {
+
+    // if (all) this.checkedFormules = [...this.workPlan.productionFormules]
+
     for (let formule of this.workPlan.productionFormules) {
       formule.formuleData = this.formuleCalculate(
         formule.formuleData,
@@ -306,6 +311,7 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   async loadMaterialsForFormule(authenticated) {
+    if (!this.checkedFormules) this.checkedFormules = this.workPlan.productionFormules.filter(f => f.checked)
     if (!authenticated) authenticated = await this.authenticate();
     if (authenticated) {
       return new Promise((resolve, reject) => {
@@ -314,11 +320,19 @@ export class PlanningDetailsComponent implements OnInit {
           resolve(true);
         } else {
           this.toastr.info("אנא המתן...", "מחשב כמויות");
+          for (let formule of this.checkedFormules) {
+            formule.formuleData = this.formuleCalculate(
+              formule.formuleData,
+              formule.totalKG
+            );
+          }
           this.loadData = true;
+          console.log('checked for,ules: ', this.checkedFormules)
           this.inventoryService
-            .getMaterialsForFormules(this.workPlan.orderItems)
+            .getBomMulti(this.checkedFormules)
             .subscribe((data) => {
-              this.materialsForFormules = data.newArray;
+              console.log('BOM MuLTI: ', data)
+              this.materialsForFormules = data;
               this.showMaterialsForFormules = true;
               this.loadData = false;
               resolve(true);
