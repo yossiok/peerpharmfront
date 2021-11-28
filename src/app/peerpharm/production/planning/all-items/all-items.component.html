@@ -43,29 +43,29 @@
     <ul class="tasklist list-style-none">
 
       <li class=" task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(1)">
-        {{1|workPlanStatus}}<span class="badge badge-success ml-auto pt-1"
+        {{1|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
           style="background-color: #30E845;">{{draftWPCount}}</span>
       </li>
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(2)">
-        {{2|workPlanStatus}}<span class="badge badge-success ml-auto pt-1"
+        {{2|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
           style="background-color: #5B9BD5;">{{movedWPCount}}</span>
       </li>
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(3)">
-        {{3|workPlanStatus}}
+        {{3|orderItemBatchStatus}}
         <span class="badge badge-success ml-auto pt-1" style="background-color: #ED7D31;">{{inProdWPCount}}</span>
       </li>
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(4)">
-        {{4|workPlanStatus}}<span class="badge badge-success ml-auto pt-1"
+        {{4|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
           style="background-color: #C48170;">{{manufWPCount}}</span>
       </li>
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(5)">
-        {{5|workPlanStatus}}<span class="badge badge-success ml-auto pt-1"
+        {{5|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
           style="background-color: #A5A5A5;">{{closedWPCount}}</span></li>
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(6)">
-        {{6|workPlanStatus}}<span this.onholdWPCount=this.filteredWorkPlans.length;
+        {{6|orderItemBatchStatus}}<span this.onholdWPCount=this.filteredWorkPlans.length;
           class="badge badge-success ml-auto pt-1" style="background-color: #dd1212;">{{onholdWPCount}}</span></li>
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(7)">
-        {{7|workPlanStatus}}<span class="badge badge-success ml-auto pt-1"
+        {{7|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
           style="background-color: #dd4b12;">{{cancelledWPCount}}</span></li>
       <li class="task-item d-flex all border-bottom active" style="cursor: pointer" (click)="viewWP(8)">All <span
           class="badge badge-primary ml-auto pt-1">{{workPlans.length}}</span>
@@ -162,7 +162,8 @@
 
     <h1 class="text-center">
       <span class="heading1"
-        [style.backgroundColor]="currentWPView|orderItemBatchStatusColor">{{currentWPView| workPlanStatus}} Workplans
+        [style.backgroundColor]="currentWPView|orderItemBatchStatusColor">{{currentWPView| orderItemBatchStatus}}
+        Workplans
         List</span> </h1>
     <div class="right-part bg-white">
       <div class="px-3 py-3 d-flex align-items-center border-bottom bg-light">
@@ -178,8 +179,8 @@
 
             <th class="ti-exchange-vertical" (click)="sortWpOne('serialNumber')" style="cursor:pointer">WP Number</th>
             <th class="ti-exchange-vertical" (click)="sortWpOne('date')" style="cursor:pointer">Created at</th>
-            <th>Orders</th>
-            <th>Items</th>
+            <th class='orders'>Orders</th>
+            <th class='orders'>Items</th>
             <th>Remark</th>
             <th>Status</th>
 
@@ -191,10 +192,11 @@
             <td style=" text-decoration: underline; cursor:pointer" (click)="openWorkPlan(workplan.serialNumber)">
               {{workplan.serialNumber}}</td>
             <td>{{workplan.date|date:'dd/MM/YYY'}}</td>
-            <td><span *ngFor="let order of workplan.orderItems">{{order.orderNumber}},&nbsp;</span></td>
-            <td><span *ngFor="let order of workplan.orderItems">{{order.itemNumber}},&nbsp;</span></td>
+            <td class='orders'><span *ngFor="let order of workplan.orderItems">{{order.orderNumber}},&nbsp;</span></td>
+            <td class='orders'><span *ngFor="let order of workplan.orderItems">{{order.itemNumber}},&nbsp;</span></td>
             <td>{{workplan.remark}}</td>
-            <td [style.backgroundColor]="workplan.status|orderItemBatchStatusColor">{{workplan.status | workPlanStatus}}
+            <td [style.backgroundColor]="workplan.status|orderItemBatchStatusColor">
+              {{workplan.status | orderItemBatchStatus}}
             </td>
           </tr>
         </tbody>
