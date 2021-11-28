@@ -366,9 +366,11 @@ export class OrderdetailsComponent implements OnInit {
         this.showingAllOrders = true;
         this.loadData = true;
         this.orderService.getOpenOrdersItems().subscribe(async (orders) => {
+          console.log(orders);
           this.loadData = false;
           this.multi = true;
           orders.orderItems.forEach((item) => {
+            item.pakaStatus = item.pakaStatus ? item.pakaStatus : 0;
             item.isExpand = "+";
             item.colorBtn = "#33FFE0";
           });
@@ -398,6 +400,7 @@ export class OrderdetailsComponent implements OnInit {
                 if (orders.ordersIds.length > 1) {
                   this.ordersData = orders.ordersData;
                   this.ordersData.map((order) => {
+                    order.pakaStatus = order.pakaStatus ? order.pakaStatus : 0;
                     if (
                       order.costumerImpRemark != undefined &&
                       order.costumerImpRemark != ""
@@ -828,6 +831,7 @@ export class OrderdetailsComponent implements OnInit {
       this.documentationBeforeSend.costumerName = res[0].costumer;
       this.costumerImpRemark = res[0].costumerImpRemark;
       this.ordersData = res;
+
       this.checkCostumersImportantRemarks(res);
       if (!this.multi) {
         this.orderStage = res[0].stage;
@@ -995,6 +999,7 @@ export class OrderdetailsComponent implements OnInit {
       .subscribe((orderItems) => {
         console.log(orderItems);
         orderItems.map((item) => {
+          item.pakaStatus = item.pakaStatus ? item.pakaStatus : 0;
           //check License
           if (
             item.licsensNumber != "" &&

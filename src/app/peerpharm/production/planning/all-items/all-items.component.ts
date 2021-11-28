@@ -439,6 +439,7 @@ export class AllItemsComponent implements OnInit {
           else if (data.msg) {
             this.toastr.error(data.msg);
           } else if (data.workPlan.orderItems.length > 0) {
+            console.log(data.workPlan);
             this.workPlans.unshift(data.workPlan);
             for (let item of this.orderItems) {
               let index = data.workPlan.orderItems.findIndex(
@@ -452,7 +453,7 @@ export class AllItemsComponent implements OnInit {
             this.getAllOrderItems();
             this.toastr.success(
               "נשמרה בהצלחה.",
-              `תכנית עבודה ${data.serialNumber}`
+              `תכנית עבודה ${data.workPlan.serialNumber}`
             );
             this.selectedArr = [];
           } else
@@ -534,6 +535,7 @@ export class AllItemsComponent implements OnInit {
   filterWorkPlans() {
     let value = this.wpFilter.nativeElement.value;
     console.log(value);
+    console.log(this.filteredWorkPlansCopy);
     value = String(value).toLowerCase();
     if (value == "") {
       this.clearWorkPlans();

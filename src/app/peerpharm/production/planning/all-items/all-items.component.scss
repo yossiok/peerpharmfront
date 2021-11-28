@@ -4,26 +4,28 @@
 
 .heading1 {
   font-size: 2rem;
-  padding: 5px 20px
+  padding: 5px 20px;
 }
 
 .close {
   cursor: pointer;
-  padding: 5px
+  padding: 5px;
 }
 
 .close:hover {
   background-color: rgb(42, 117, 119);
-  color: white
+  color: white;
 }
 
 table {
-
+  th.orders,
+  td.orders {
+    word-wrap: break-word;
+    max-width: 400px;
+  }
   tbody {
-
     td {
       border-bottom: solid 2px #8d8b8b;
-
     }
   }
 }
@@ -43,7 +45,7 @@ table {
   padding: 20px;
   font-size: 150%;
   width: 291%;
-  height: 200px
+  height: 200px;
 }
 
 .checkbox {
@@ -53,7 +55,7 @@ table {
 }
 
 .click {
-  cursor: pointer
+  cursor: pointer;
 }
 
 .smallerLoader {
