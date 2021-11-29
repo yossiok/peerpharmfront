@@ -10,6 +10,7 @@
       [style.cursor]="finalFormule ? 'pointer' : 'not-allowed'" class="btn btn-success form-control rounded-pill">Print
       - F10</button>
     <button #printFormuleBtn
+      styleSheetFile="../../../../assets/stylesheets/formule-weight-print.css"
       [printStyle]="{ footer: {'page-break-after': 'always'},table:{ 'border-collapse':'collapse'},th : {'border': 'solid 1px black','font-size':'22px'}, tr : {'border': 'solid 2px black'}, td : {'border': 'solid 1px black', 'padding':'5px','font-size': '22px'}}"
       printTitle="Formules: Production Weighting" printSectionId="formuleSection" ngxPrint
       style="display: none;"></button>
@@ -202,7 +203,7 @@
             <td style="padding:5px">{{ item.itemName }}</td>
             <td style="padding:5px">{{ item.percentage }}%</td>
             <td style="padding:5px">{{ item.kgProd | number }}</td>
-            <td>{{item.remarks}}</td>
+            <td class="remarks">{{item.remarks}}</td>
             <td *ngIf="item.check != true" style="padding:5px"><input
                 (change)="weightProduction(item.itemNumber, item.itemName, $event, item.kgProd)"
                 class="form-control rounded-pill"></td>
