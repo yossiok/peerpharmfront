@@ -6,6 +6,7 @@ import { InventoryService } from "src/app/services/inventory.service";
 import { Procurementservice } from "src/app/services/procurement.service";
 import { SuppliersService } from "src/app/services/suppliers.service";
 import { WarehouseService } from "src/app/services/warehouse.service";
+import { CostumersService } from "src/app/services/costumers.service";
 
 @Component({
   selector: "app-inv-arrivals",
@@ -34,6 +35,7 @@ export class InvArrivalsComponent implements OnInit {
   disabled: boolean = false;
   noItem: boolean = true;
   showStickerForm: boolean = false;
+  customersList: any[];
 
   componentArrival: FormGroup = new FormGroup({
     itemType: new FormControl("component", Validators.required),
@@ -46,6 +48,7 @@ export class InvArrivalsComponent implements OnInit {
     isNewItemShell: new FormControl(false, Validators.required),
     supplier: new FormControl(""),
     purchaseOrder: new FormControl(null),
+    ownerId: new FormControl(""),
   });
   stickerItem: any;
 
@@ -55,7 +58,8 @@ export class InvArrivalsComponent implements OnInit {
     private supplierService: SuppliersService,
     private purchaseService: Procurementservice,
     private warehouseService: WarehouseService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private customersService: CostumersService
   ) {}
 
   ngOnInit(): void {
@@ -64,8 +68,25 @@ export class InvArrivalsComponent implements OnInit {
       this.disabled = true;
       this.componentArrival.controls.item.setValue(this.itemNumber);
     }
+    this.checkOwnerShip();
     this.getSuppliers();
     this.getHistoricalReceptions();
+    this.getCustomers();
+  }
+
+  getCustomers() {
+    this.customersService.getAllCostumers().subscribe((customers) => {
+      if (customers.msg) {
+        this.toastr.error(customers.msg);
+        console.log(customers.msg);
+      } else if (customers) {
+        this.customersList = customers;
+        console.log(customers);
+      } else if (!customers) {
+        this.toastr.error("רשימת בספקים לא הועלתה");
+        console.log("Customers list wasn't retrieved from the data base");
+      }
+    });
   }
 
   getHistoricalReceptions() {
@@ -99,11 +120,14 @@ export class InvArrivalsComponent implements OnInit {
 
   getSuppliers() {
     this.supplierService.getAllSuppliers().subscribe((data) => {
+      console.log(data);
       this.allSuppliers = data;
+      console.log(this.allSuppliers);
     });
   }
 
   getPurchaseOrders(e) {
+    console.log(e.target.value);
     this.purchaseService
       .getAllOrdersFromSupplier(e.target.value)
       .subscribe((data) => {
@@ -124,22 +148,40 @@ export class InvArrivalsComponent implements OnInit {
         .getCmptByitemNumber(this.componentArrival.value.item)
         .subscribe((data) => {
           if (data.length > 0) {
-            if(data[0].itemType == 'material') {
-              reject('לא ניתן להכניס חומרי גלם דרך טופס זה')
-              return
-            } 
+            if (data[0].itemType == "material") {
+              reject("לא ניתן להכניס חומרי גלם דרך טופס זה");
+              return;
+            }
             this.noItem = false;
             this.itemNames = data;
             resolve(true);
           } else {
             this.noItem = true;
-            reject('פריט לא קיים :(');
+            reject("פריט לא קיים :(");
           }
         });
     });
   }
 
+  checkOwnerShip() {
+    this.componentArrival
+      .get("ownerId")
+      .valueChanges.subscribe((selectedValue) => {
+        console.log(selectedValue);
+
+        if (selectedValue != "" && selectedValue != "0001") {
+          let shellArr = this.shellNums.filter(
+            (sn) => sn.position == "CUSTOMER"
+          );
+          this.shellNums = [
+            { position: "CUSTOMER", shell_id_in_whareHouse: "CU-001" },
+          ];
+        }
+      });
+  }
+
   getShelfs() {
+    console.log("Get Shelf initiated");
     if (
       this.componentArrival.value.whareHouseID == "5c31bb6f91ca6b2510349ce9"
     ) {
@@ -178,11 +220,12 @@ export class InvArrivalsComponent implements OnInit {
             });
       })
       .catch((e) => {
-        this.toastr.error('', e);
+        this.toastr.error("", e);
       });
   }
 
   getAllShellsOfWhareHouse() {
+    console.log("Get all shelves initiated");
     this.componentArrival.controls.isNewItemShell.setValue(true);
     this.inventoryService
       .getWhareHouseShelfList(this.componentArrival.value.whareHouseID)
@@ -241,6 +284,7 @@ export class InvArrivalsComponent implements OnInit {
   }
 
   addToStock() {
+    console.log(this.allArrivals);
     this.sending = true;
     setTimeout(() => (this.sending = false), 7000); //if something goes wrong
     this.inventoryService

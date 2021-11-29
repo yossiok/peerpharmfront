@@ -24,7 +24,7 @@
       </div>
       <div *ngIf="!disabled" class="col-2">
         <label class="d-block">
-         שם
+          שם
         </label>
         <input class="d-inline form-control" type="text" #name>
         <button class="d-inline" type="button" (click)="getNames(name)">Find</button>
@@ -48,6 +48,12 @@
               (click)="getAllShellsOfWhareHouse()" class="btn btn-warning">הכנס למדף חדש</button>
           </span>
         </div>
+        <div class="mt-1" *ngIf="">
+          <span [ngbTooltip]="noItem ? 'יש להזין מספר פריט תקין' : ''">
+            <button type="button" [disabled]="noItem" [style.cursor]="noItem ? 'not-allowed' : 'pointer'"
+              (click)="getAllShellsOfWhareHouse()" class="btn btn-warning">הכנס למדף חדש</button>
+          </span>
+        </div>
       </div>
       <div class="col-2">
         <label>כמות *</label>
@@ -61,8 +67,18 @@
     </div>
     <div class="row mt-4">
       <div class="col-2">
-        <label>ספק</label>
+        <label>בעלות</label>
+        <input list="customers" class="form-control" formControlName="ownerId">
+        <datalist id="customers">
+          <option value="0001" selected>PeerPharm</option>
+          <option *ngFor="let customer of customersList" value="{{customer.costumerId}}">
+            {{customer.costumerId}} - {{customer.costumerName}}
+          </option>
+        </datalist>
 
+      </div>
+      <div class="col-2">
+        <label>ספק</label>
         <input list="suppliers" (change)="getPurchaseOrders($event)" class="form-control" formControlName="supplier">
         <datalist id="suppliers">
           <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">

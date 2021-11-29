@@ -110,7 +110,7 @@ export class AllItemsComponent implements OnInit {
           ? item.itemOrderDate
           : item.order.orderDate;
         item.itemOrderDate = new Date(item.itemOrderDate);
-        if (item.workPlans) {
+        if (item.workPlans && item.workPlans.length > 0) {
           if (item.wpSplit && item.maxQty > 0) {
             if (this.orderItems.findIndex((oi) => oi._id == item._id) == -1) {
               let newItem = { ...item };
@@ -119,7 +119,7 @@ export class AllItemsComponent implements OnInit {
               this.orderItems.push(newItem);
             }
           }
-          item.pakaStatus = item.workPlans.itemStatus;
+          item.pakaStatus = item.workPlans[0].itemStatus;
           // item.dueDate = item.workPlans.dueDate ? item.workPlans.dueDate : null;
           item.workPlanId = item.workPlans.workPlanId;
           item.quantity = item.workPlans.quantity;
