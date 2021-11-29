@@ -81,6 +81,7 @@ import { InventoryReportsComponent } from "./inventory/inventory-reports/invento
 import { YieldsComponent } from "./production/yield/yields/yields.component";
 import { YieldHistoryComponent } from "./production/yield/yield-history/yield-history.component";
 import { AllPlanningComponent } from "./production/planning/all-planning/all-planning.component";
+import { AllItemsComponent } from "./production/planning/all-items/all-items.component";
 import { FinanceReportComponent } from "./finance-reports/financereport.component";
 
 export const PeerPharmRputs: Routes = [
@@ -348,7 +349,15 @@ export const PeerPharmRputs: Routes = [
       title: "Formule Table",
     },
     component: AllFormulesComponent,
-    canActivate: [TwoFactor],
+    // canActivate: [TwoFactor],
+  },
+  {
+    path: "production/all-items",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Open Items",
+    },
+    component: AllItemsComponent,
   },
   {
     path: "production/planning",
@@ -412,7 +421,7 @@ export const PeerPharmRputs: Routes = [
       title: "Weight Production",
     },
     component: WeightProductionComponent,
-    canActivate: [TwoFactor],
+    // canActivate: [TwoFactor],
   },
   {
     path: "production/scanMaterial",

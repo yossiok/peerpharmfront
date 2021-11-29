@@ -386,6 +386,14 @@ export const ROUTES: RouteInfo[] = [
     class: "has-arrow",
     extralink: false,
     submenu: [
+      // {
+      //   path: "/peerpharm/production/all-items",
+      //   title: "Open Items",
+      //   icon: "fas fa-i-cursor",
+      //   class: "",
+      //   extralink: false,
+      //   submenu: [],
+      // },
       {
         path: "/peerpharm/production/planning",
         title: "Planning",
