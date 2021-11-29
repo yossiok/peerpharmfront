@@ -69,19 +69,19 @@ export class AllItemsComponent implements OnInit {
     private authService: AuthService,
     private ordersService: OrdersService,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getWorkPlans();
     this.authorized = this.authService.loggedInUser.authorization.includes(
       "creamProductionManager"
     );
-    this.route.queryParamMap.subscribe(params => {
+    this.route.queryParamMap.subscribe((params) => {
       if (params["params"].workPlanId) {
-        this.currentWorkPlan = params["params"].workPlanId
-        this.showWorkPlan = true
-      } 
-    })
+        this.currentWorkPlan = params["params"].workPlanId;
+        this.showWorkPlan = true;
+      }
+    });
 
     this.getAllOrderItems();
   }
@@ -118,7 +118,7 @@ export class AllItemsComponent implements OnInit {
           ? item.itemOrderDate
           : item.order.orderDate;
         item.itemOrderDate = new Date(item.itemOrderDate);
-        if (item.workPlans && item.workPlans.length > 0) {
+        if (item.workPlans) {
           if (item.wpSplit && item.maxQty > 0) {
             if (this.orderItems.findIndex((oi) => oi._id == item._id) == -1) {
               let newItem = { ...item };
@@ -126,12 +126,15 @@ export class AllItemsComponent implements OnInit {
               newItem.quantity = item.wpRemainQty;
               this.orderItems.push(newItem);
             }
+          } else {
+            item.pakaStatus = item.workPlans.itemStatus;
+            console.log(item.workPlans.workPlanId);
+            console.log(item.workPlans.itemStatus);
+            // item.dueDate = item.workPlans.dueDate ? item.workPlans.dueDate : null;
+            item.workPlanId = item.workPlans.workPlanId;
+            item.quantity = item.workPlans.quantity;
+            item.WPstatus = item.workPlans.WPstatus;
           }
-          item.pakaStatus = item.workPlans[0].itemStatus;
-          // item.dueDate = item.workPlans.dueDate ? item.workPlans.dueDate : null;
-          item.workPlanId = item.workPlans.workPlanId;
-          item.quantity = item.workPlans.quantity;
-          item.WPstatus = item.workPlans.WPstatus;
         }
         this.orderItems.push(item);
       }
