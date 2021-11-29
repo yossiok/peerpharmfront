@@ -14,7 +14,7 @@ import { ExcelService } from "src/app/services/excel.service";
 import { FormulesService } from "src/app/services/formules.service";
 import { InventoryService } from "src/app/services/inventory.service";
 import { ProductionService } from "src/app/services/production.service";
-import { ProductionFormule, WorkPlan } from "../WorkPlan";
+import { OrderItem, ProductionFormule, WorkPlan } from "../WorkPlan";
 import { ConfirmService } from "../../../../services/confirm.modal.service";
 import { Router } from "@angular/router";
 
@@ -102,46 +102,52 @@ export class PlanningDetailsComponent implements OnInit {
     for (let oi of this.workPlan.productionFormules) oi.checked = event.target.checked
   }
 
+  checkForItemsInFormule(formule: ProductionFormule, orderItem: OrderItem) {
+    return formule.ordersAndItems.find(oi => oi.itemNumber == orderItem.itemNumber && oi.orderNumber == oi.orderNumber)
+  }
+
   // create formules from items
   createPAKA() {
-    let orderItemsChecked = this.workPlan.orderItems.filter(oi => oi.checked == true)
+    if (confirm('ברגע שתיצור פורמולות לא תוכל יותר לשנות כמויות. להמשיך?')) {
 
-    for (let element of orderItemsChecked) {
-      if (element.formule.parentNumber) element.parentFormule = element.formule.parentNumber
-      else element.parentFormule = element.formule.formuleNumber
-      let allreadyExist = this.workPlan.productionFormules.findIndex(pf => pf.formule == element.parentFormule)
-      if (allreadyExist != -1) {
-        this.workPlan.productionFormules[allreadyExist].totalKG += element.totalKG
-        this.workPlan.productionFormules[allreadyExist].enoughMaterials = !this.workPlan.productionFormules[allreadyExist].enoughMaterials || element.enoughMaterials === false ? false : true
-        this.workPlan.productionFormules[allreadyExist].ordersAndItems.push({
-          orderNumber: element.orderNumber,
-          itemNumber: element.itemNumber,
-          itemName: element.description,
-          weightKg: element.totalKG
+      let orderItemsChecked = this.workPlan.orderItems.filter(oi => oi.checked == true)
+
+      for (let element of orderItemsChecked) {
+        if (element.formule.parentNumber) element.parentFormule = element.formule.parentNumber
+        else element.parentFormule = element.formule.formuleNumber
+        let allreadyExist = this.workPlan.productionFormules.findIndex(pf => pf.formule == element.parentFormule)
+        if (allreadyExist != -1) {
+          this.workPlan.productionFormules[allreadyExist].totalKG += element.totalKG
+          this.workPlan.productionFormules[allreadyExist].enoughMaterials = !this.workPlan.productionFormules[allreadyExist].enoughMaterials || element.enoughMaterials === false ? false : true
+          this.workPlan.productionFormules[allreadyExist].ordersAndItems.push({
+            orderNumber: element.orderNumber,
+            itemNumber: element.itemNumber,
+            itemName: element.description,
+            weightKg: element.totalKG
+          })
+          element.hasFormule = true
+        }
+        else this.workPlan.productionFormules.push({
+          ordersAndItems: [{
+            orderNumber: element.orderNumber,
+            itemNumber: element.itemNumber,
+            itemName: element.description,
+            weightKg: element.totalKG
+          }],
+          status: element.status,
+          formuleData: element.formule,
+          formule: element.parentFormule,
+          totalKG: element.totalKG,
+          enoughMaterials: element.enoughMaterials,
+          batchNumber: '',
         })
         element.hasFormule = true
       }
-      else this.workPlan.productionFormules.push({
-        ordersAndItems: [{
-          orderNumber: element.orderNumber,
-          itemNumber: element.itemNumber,
-          itemName: element.description,
-          weightKg: element.totalKG
-        }],
-        status: element.status,
-        formuleData: element.formule,
-        formule: element.parentFormule,
-        totalKG: element.totalKG,
-        enoughMaterials: element.enoughMaterials,
-        batchNumber: '',
-      })
-      element.hasFormule = true
+
+      this.saveChanges()
+        .then((succesMessage) => this.toastr.success(succesMessage))
+        .catch((errorMessage) => this.toastr.error(errorMessage));
     }
-
-    this.saveChanges()
-      .then((succesMessage) => this.toastr.success(succesMessage))
-      .catch((errorMessage) => this.toastr.error(errorMessage));
-
   }
 
   // setStatus(event) {
@@ -269,20 +275,20 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   async approveFormules() {
-      if (confirm('לאשר לייצור?')) {
+    if (confirm('לאשר לייצור?')) {
 
-        // change status
-        this.workPlan.productionFormules.map(f => f.checked ? f.status = 3 : null)
+      // change status
+      this.workPlan.productionFormules.map(f => f.status = 3)
 
-        this.saveChanges()
-          .then((succesMessage) => this.toastr.success(succesMessage, 'פורמולות מאושרות'))
-          .catch((errorMessage) => this.toastr.error(errorMessage));
-        let approved = await this.authenticate();
-        if (approved) {
-          let amountsLoaded = await this.loadMaterialsForFormule(true);
-          let formulesPrinted = await this.printFormules();
-        } else this.toastr.error("אימות נכשל");
-      }
+      this.saveChanges()
+        .then((succesMessage) => this.toastr.success(succesMessage, 'פורמולות מאושרות'))
+        .catch((errorMessage) => this.toastr.error(errorMessage));
+      let approved = await this.authenticate();
+      if (approved) {
+        let amountsLoaded = await this.loadMaterialsForFormule(true);
+        let formulesPrinted = await this.printFormules();
+      } else this.toastr.error("אימות נכשל");
+    }
   }
 
   async printFormules(all?) {
@@ -325,23 +331,19 @@ export class PlanningDetailsComponent implements OnInit {
           resolve(true);
         } else {
           this.toastr.info("אנא המתן...", "מחשב כמויות");
-          for (let formule of this.checkedFormules) {
+          for (let formule of this.workPlan.productionFormules) {
             formule.formuleData = this.formuleCalculate(
               formule.formuleData,
               formule.totalKG
             );
           }
           this.loadData = true;
-          console.log('checked for,ules: ', this.checkedFormules)
-          this.inventoryService
-            .getBomMulti(this.checkedFormules)
-            .subscribe((data) => {
-              console.log('BOM MuLTI: ', data)
-              this.materialsForFormules = data;
-              this.showMaterialsForFormules = true;
-              this.loadData = false;
-              resolve(true);
-            });
+          this.inventoryService.getBomMulti(this.workPlan.productionFormules).subscribe((data) => {
+            this.materialsForFormules = data;
+            this.showMaterialsForFormules = true;
+            this.loadData = false;
+            resolve(true);
+          });
         }
       });
     } else this.toastr.error("אימות נכשל");

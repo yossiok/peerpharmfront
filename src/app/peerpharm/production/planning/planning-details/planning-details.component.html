@@ -249,7 +249,7 @@
 <div id="formuleSection">
 
   <!--כתב כמויות-->
-  <div *ngIf="showMaterialsForFormules && checkedFormules.length > 1" class="m-5 p-5">
+  <div *ngIf="showMaterialsForFormules && workPlan.productionFormules.length > 1" class="m-5 p-5">
 
     <i (click)="showMaterialsForFormules = false" class="fa fa-times float-right h3 close"></i>
     <h1 class="text-center">כתב כמויות</h1>
@@ -296,9 +296,9 @@
 
   <div *ngIf="printingFormules" class="row mt-3 d-flex flex-row">
 
-    <ng-container *ngFor="let formulePrinting of checkedFormules; let i = index">
-      <!-- <h1 *ngIf="formulePrinting.numOfItems > 16">Page 1 of 2</h1>
-            <h1 *ngIf="formulePrinting.numOfItems <= 16">Page 1 of 1</h1> -->
+    <ng-container *ngFor="let formule of workPlan.productionFormules; let i = index">
+      <!-- <h1 *ngIf="formule.numOfItems > 16">Page 1 of 2</h1>
+            <h1 *ngIf="formule.numOfItems <= 16">Page 1 of 1</h1> -->
       <h1>Formule {{i+1}}</h1>
 
       <table class="table table-bordered">
@@ -315,7 +315,7 @@
         </thead>
         <tbody>
           <ng-container *ngFor="let item of workPlan.orderItems">
-            <tr *ngIf="item.parentFormule == formulePrinting.formule">
+            <tr *ngIf="checkForItemsInFormule(formule, item)">
               <!-- <tr> -->
               <td>{{item.itemNumber}}</td>
               <td>{{item.description}}</td>
@@ -351,7 +351,7 @@
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngFor="let phase of formulePrinting.formuleData.phases">
+          <ng-container *ngFor="let phase of formule.formuleData.phases">
             <tr *ngFor="let item of phase.items; let i = index">
               <td style="padding:5px" *ngIf="i == 0" [attr.rowspan]="phase.items.length" class="phase">{{
                 phase.phaseName }}</td>
@@ -381,15 +381,15 @@
         <td style="font-weight: bold">Final PH:</td>
         <td colspan="2"><input style="height: 60px;" type="text"></td>
       </tr>
-      <!-- <h1 *ngIf="formulePrinting.numOfItems > 16">Page 2 of 2</h1> -->
+      <!-- <h1 *ngIf="formule.numOfItems > 16">Page 2 of 2</h1> -->
       <footer>
-        <tr>{{formulePrinting.formule}}</tr>
-        <tr>{{formulePrinting.formuleData.formuleName}}</tr>
-        <tr class="text-center">{{formulePrinting.formuleData.Weight}}KG</tr>
-        <tr>{{formulePrinting.formuleData.phFrom}} - {{formulePrinting.formuleData.phTo}}</tr>
+        <tr>{{formule.formule}}</tr>
+        <tr>{{formule.formuleData.formuleName}}</tr>
+        <tr class="text-center">{{formule.formuleData.Weight}}KG</tr>
+        <tr>{{formule.formuleData.phFrom}} - {{formule.formuleData.phTo}}</tr>
         <tr>
-          <span *ngFor="let orderAndItem of formulePrinting.ordersAndItems">
-            order {{orderAndItem.order}}, item {{orderAndItem.item}}
+          <span *ngFor="let orderAndItem of formule.ordersAndItems">
+            order {{orderAndItem.orderNumber}}, item {{orderAndItem.itemNumber}}
           </span>
         </tr>
         <h1>Formule {{i+1}} End</h1>
