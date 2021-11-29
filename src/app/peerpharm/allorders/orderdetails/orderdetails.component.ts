@@ -371,6 +371,11 @@ export class OrderdetailsComponent implements OnInit {
           this.multi = true;
           orders.orderItems.forEach((item) => {
             item.pakaStatus = item.pakaStatus ? item.pakaStatus : 0;
+            if (item.workPlans && item.workPlans.length > 0) {
+              let i = item.workPlans.length - 1;
+              item.pakaStatus = item.workPlans[i].itemStatus;
+            }
+            console.log(item);
             item.isExpand = "+";
             item.colorBtn = "#33FFE0";
           });
@@ -401,6 +406,11 @@ export class OrderdetailsComponent implements OnInit {
                   this.ordersData = orders.ordersData;
                   this.ordersData.map((order) => {
                     order.pakaStatus = order.pakaStatus ? order.pakaStatus : 0;
+                    if (order.workPlans && order.workPlans.length > 0) {
+                      let i = order.workPlans.length - 1;
+                      order.pakaStatus = order.workPlans[i].itemStatus;
+                    }
+                    console.log(order);
                     if (
                       order.costumerImpRemark != undefined &&
                       order.costumerImpRemark != ""
@@ -1000,6 +1010,12 @@ export class OrderdetailsComponent implements OnInit {
         console.log(orderItems);
         orderItems.map((item) => {
           item.pakaStatus = item.pakaStatus ? item.pakaStatus : 0;
+          if (item.workPlans && item.workPlans.length > 0) {
+            let i = item.workPlans.length - 1;
+            console.log("Index is: " + i);
+            item.pakaStatus = item.workPlans[i].itemStatus;
+          }
+
           //check License
           if (
             item.licsensNumber != "" &&
