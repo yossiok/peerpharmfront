@@ -73,6 +73,11 @@ export class PlanningDetailsComponent implements OnInit {
     this.workPlan.orderItems.sort((a, b) => <any>a.parentFormule - <any>b.parentFormule)
   }
 
+  checkItemsFormules() {
+    let allItemsHaveFormules = this.workPlan.orderItems.find(oi => !oi.hasFormule)
+    return allItemsHaveFormules
+  }
+
   authenticate(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       // resolve(true)
