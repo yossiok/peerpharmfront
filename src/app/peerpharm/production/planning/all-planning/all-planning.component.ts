@@ -97,7 +97,7 @@ export class AllPlanningComponent implements OnInit {
   }
 
   filterByRole(status) {
-    if(this.authService.loggedInUser.userName == 'andrey') {
+    if(this.authService.loggedInUser.authorization.includes("andrey")) {
       return status > 2
     }
     else return true

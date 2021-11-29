@@ -56,6 +56,7 @@ export class PlanningDetailsComponent implements OnInit {
   notAndrey: boolean = true
   editDueDate: number = -1
   checkedFormules: ProductionFormule[]
+  andreyisalazyworkersowehavetoworkharderfrohim: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
 
   constructor(
     private authService: AuthService,
@@ -70,6 +71,7 @@ export class PlanningDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.authorized = this.authService.loggedInUser.authorization.includes("creamProductionManager");
+    this.notAndrey = !this.authService.loggedInUser.authorization.includes('andrey')
     this.workPlan.orderItems.sort((a, b) => <any>a.parentFormule - <any>b.parentFormule)
   }
 
@@ -170,7 +172,10 @@ export class PlanningDetailsComponent implements OnInit {
   //   }
   // }
 
-  scheduleBatch(i) {
+  scheduleBatch(i, event) {
+    let date = new Date()
+    date.setDate(date.getDate() + Number(event.target.value))
+    this.workPlan.productionFormules[i].dueDate = date
     this.workPlan.productionFormules[i].status = 4
     this.saveChanges()
       .then(succesMessage => {

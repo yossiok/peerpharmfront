@@ -44,7 +44,7 @@
       <!-- <img ngbTooltip="שמור שינויים" (click)="saveChanges()" class="img2 click" src="../../../../../assets/images/aprroved.png" alt=""> -->
     </div>
   </div>
-  <h2 class="mt-4">
+  <h2 *ngIf="notAndrey" class="mt-4">
     {{workPlan.orderItems.length}} Order Items
     <span class="float-right">
       <img *ngIf="!loadData" ngbTooltip="ייצוא פריטים" class="click"
@@ -55,7 +55,7 @@
       <div *ngIf="loadData" class="smallerLoader"></div>
     </span>
   </h2>
-  <div class="row mt-4" #tableDiv>
+  <div *ngIf="notAndrey" class="row mt-4" #tableDiv>
     <table class="table">
       <thead class="thead-dark">
         <tr>
@@ -129,7 +129,7 @@
 
     </table>
   </div>
-  <div class="row mt-5">
+  <div *ngIf="notAndrey" class="row mt-5">
     <div class="col-5"></div>
     <div class="col-2">
       <button *ngIf="checkItemsFormules()" class="btn btn-success cpf" (click)="createPAKA()">Create Production Formules</button>
@@ -137,7 +137,7 @@
     </div>
     <div class="col-5"></div>
   </div>
-  <div class="row mt-5">
+  <div *ngIf="notAndrey" class="row mt-5">
     <div class="col-5"></div>
     <div class="col-2">
       <i class="fas fa-long-arrow-alt-down big-arrow"></i>
@@ -146,7 +146,7 @@
   </div>
 
   <h2>
-    {{workPlan.productionFormules.length}} Production Formules
+    {{workPlan.productionFormules.length}} Batches
   </h2>
   <div class="row mt-4">
     <table class="table">
@@ -161,7 +161,7 @@
           <th>סה"כ ק"ג</th>
           <th>סטטוס חומרים</th>
           <th>סטטוס ייצור</th>
-          <th>תאריך ביצוע</th>
+          <th>מתי אבשל?</th>
           <th></th>
           <!-- <th>Batch?</th> -->
         </tr>
@@ -176,7 +176,7 @@
           <td>{{formule.formule}}</td>
           <td>
             <span *ngFor="let orderAndItem of formule.ordersAndItems">
-              order {{orderAndItem.orderNumber}}, item {{orderAndItem.itemNumber}}, {{orderAndItem.weightKg}}KG <br>
+              order <span class="order-span">{{orderAndItem.orderNumber}}</span>, item <span class="item-span">{{orderAndItem.itemNumber}}</span> {{orderAndItem.itemName}}, {{orderAndItem.weightKg}}KG <br>
             </span>
           </td>
           <td>{{formule.totalKG}}</td>
@@ -192,17 +192,19 @@
           <td>
             <span [disabled]="!authorized" (click)="editDueDate = i" *ngIf="editDueDate != i && !formule.batchNumber">
               <span [ngbTooltip]="formule.status < 3 ? 'Formula Not Approved!' : ''" class="click" *ngIf="authorized">
-                <button [disabled]="formule.status < 3" class="btn schedule-button">Enter / Change Date</button>
+                <button [disabled]="formule.status < 3" class="btn schedule-button">מתי אבשל?</button>
               </span>
             </span>
             <span *ngIf="editDueDate == i && authorized">
-              <input type="date" [disabled]="!authorized" (change)="scheduleBatch(i)" [(ngModel)]="formule.dueDate">
+              <!-- <input type="date" [disabled]="!authorized" (change)="scheduleBatch(i)" [(ngModel)]="formule.dueDate"> -->
+              <select class="form-control" (change)="scheduleBatch(i, $event)">
+                <option *ngFor="let number of andreyisalazyworkersowehavetoworkharderfrohim" [value]="number">בעוד {{number}} ימים</option>
+              </select>
             </span>
           </td>
           <td>
             <span *ngIf="!formule.batchNumber" [ngbTooltip]="formule.status < 3 ? 'Formula Not Approved!' : ''">
-              <button (click)="addBatch(formule)" class="btn batch-btn" [disabled]="formule.status < 3">Add
-                Batch</button>
+              <button (click)="addBatch(formule)" class="btn batch-btn" [disabled]="formule.status < 3">בישלתי</button>
             </span>
           </td>
           <!-- <td class="text-center" class="text-success text-left" *ngIf="formule.batchNumber">
@@ -217,7 +219,7 @@
 
   </div>
 
-  <div class="row mt-5 long d-flex flex-row justify-content-around">
+  <div *ngIf="notAndrey" class="row mt-5 long d-flex flex-row justify-content-around">
     <div>
       <button class="btn btn-info formule-side" (click)="weightFormules()">
         <i style="font-size: 46px" class="fas fa-clone"></i>
@@ -237,7 +239,7 @@
       </div> -->
   </div>
   <div class="row mt-5"></div>
-  <div class="row mt-5">
+  <div *ngIf="notAndrey" class="row mt-5">
     <button (click)="deleteWorkPlan()" class="btn btn-danger w-50 delete-btn">מחיקת פק"ע</button>
   </div>
 </div>
