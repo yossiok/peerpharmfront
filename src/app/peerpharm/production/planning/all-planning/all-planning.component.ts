@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { WorkPlanStatusPipe } from 'src/app/pipes/work-plan-status.pipe';
 import { AuthService } from 'src/app/services/auth.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ProductionService } from 'src/app/services/production.service';
+import { resolve } from 'url';
 import { WorkPlan } from '../WorkPlan';
 
 @Component({
@@ -31,17 +33,26 @@ export class AllPlanningComponent implements OnInit {
     private workPlanStatusPipe: WorkPlanStatusPipe,
     private inventoryService: InventoryService,
     private toastr: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private route: ActivatedRoute
   ) { }
 
-  ngOnInit(): void {
-    this.getWorkPlans()
+  async ngOnInit() {
+    let bool = await this.getWorkPlans()
     this.authorized = this.authService.loggedInUser.authorization.includes('creamProductionManager')
+    this.route.queryParamMap.subscribe(params => {
+      if (params["params"].workPlanId && bool) {
+        this.openWorkPlan(Number(params["params"].workPlanId))
+      } 
+    })
   }
 
   getWorkPlans() {
-    this.productionService.getAllWorkPlans().subscribe(workPlans => {
-      this.workPlans = workPlans
+    return new Promise((resolve, reject) => {
+      this.productionService.getAllWorkPlans().subscribe(workPlans => {
+        this.workPlans = workPlans
+        resolve(true)
+      })
     })
   }
 

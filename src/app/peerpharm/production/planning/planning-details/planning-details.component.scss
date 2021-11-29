@@ -33,12 +33,21 @@
   background: blue;
 }
 
+.long {
+  height: 418px;
+}
+
+.formule-side {
+  width: 116px;
+  height: 123px;
+}
+
 .status {
     text-shadow: 2px 2px 5px rgb(15, 1, 1);
 }
 
 .formules-table {
-    width: 90%;
+    // width: 90%;
     // background-color: rgb(133, 133, 209);
 }
 
@@ -54,8 +63,16 @@
     width: 80%
 }
 
+.cpf {
+  margin-left: -78px;
+}
+
+.big-arrow {
+  font-size: 100px;
+}
+
 .formules {
-    max-height: 400px;
+    // max-height: 400px;
     // width: 70%;
     overflow-y: auto;
 }

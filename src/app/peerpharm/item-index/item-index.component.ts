@@ -601,7 +601,6 @@ export class ItemIndexComponent implements OnInit {
   //pricing
 
   test() {
-    debugger;
   }
 
   addToPriceHistory() {

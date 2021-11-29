@@ -1,4 +1,4 @@
-interface OrderItem{
+export interface OrderItem{
     customerID: string,
     customerName: string,
     description: string,
