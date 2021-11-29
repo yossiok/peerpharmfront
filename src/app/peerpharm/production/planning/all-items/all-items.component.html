@@ -48,25 +48,27 @@
       </li> -->
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(2)">
         {{2|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
-          style="background-color: #5B9BD5;">{{movedWPCount}}</span>
+          [style.background]="2|orderItemBatchStatusColor">{{movedWPCount}}</span>
       </li>
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(3)">
         {{3|orderItemBatchStatus}}
-        <span class="badge badge-success ml-auto pt-1" style="background-color: #ED7D31;">{{inProdWPCount}}</span>
+        <span class="badge badge-success ml-auto pt-1"
+          [style.background]="3|orderItemBatchStatusColor">{{inProdWPCount}}</span>
       </li>
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(4)">
         {{4|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
-          style="background-color: #C48170;">{{manufWPCount}}</span>
+          [style.background]="4|orderItemBatchStatusColor">{{manufWPCount}}</span>
       </li>
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(5)">
         {{5|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
-          style="background-color: #A5A5A5;">{{closedWPCount}}</span></li>
+          [style.background]="5|orderItemBatchStatusColor">{{closedWPCount}}</span></li>
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(6)">
         {{6|orderItemBatchStatus}}<span this.onholdWPCount=this.filteredWorkPlans.length;
-          class="badge badge-success ml-auto pt-1" style="background-color: #dd1212;">{{onholdWPCount}}</span></li>
+          class="badge badge-success ml-auto pt-1"
+          [style.background]="6|orderItemBatchStatusColor">{{onholdWPCount}}</span></li>
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(7)">
         {{7|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
-          style="background-color: #dd4b12;">{{cancelledWPCount}}</span></li>
+          [style.background]="7|orderItemBatchStatusColor">{{cancelledWPCount}}</span></li>
       <li class="task-item d-flex all border-bottom active" style="cursor: pointer" (click)="viewWP(8)">All <span
           class="badge badge-primary ml-auto pt-1">{{workPlans.length}}</span>
       </li>
