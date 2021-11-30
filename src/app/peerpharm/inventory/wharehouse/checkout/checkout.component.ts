@@ -166,11 +166,11 @@ export class CheckoutComponent implements OnInit {
     this.inventoryService
       .checkoutComponents(this.outGoing)
       .subscribe((data) => {
-        if (data.msg)
-          this.toastr.error(
-            "ייתכן שהפעולה בוצעה. אנא פנה לצוות הפיתוח.",
-            "היתה בעיה"
-          );
+        if (data.msg) { 
+          // this.toastr.error("ייתכן שהפעולה בוצעה. אנא פנה לצוות הפיתוח.","היתה בעיה");
+          this.toastr.error(data.msg, "שגיאה:");
+          console.log(data.msg)
+          }
         else {
           //set certificate data
           this.certificateReception =
