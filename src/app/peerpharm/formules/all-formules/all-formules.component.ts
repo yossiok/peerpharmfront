@@ -1009,11 +1009,17 @@ export class AllFormulesComponent implements OnInit {
     if (confirm("האם אתה בטוח שאתה רוצה למחוק פורמולה זו ?")) {
       if (prompt("הזיני סיסמא") == this.password) {
         this.formuleService.deleteFormuleById({ id }).subscribe((data) => {
-          if (data) {
+          console.log(data);
+          if (data.msg) {
+            console.log(data);
+            this.toastSrv.error(data.msg);
+          } else if (data) {
             this.allFormules = this.allFormules.filter(
               (f) => f._id != data._id
             );
             this.toastSrv.success("פורמולה נמחקה בהצלחה !");
+          } else {
+            this.toastSrv.error("Operation failed");
           }
         });
       }
