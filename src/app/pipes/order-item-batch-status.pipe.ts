@@ -14,16 +14,16 @@ export class OrderItemBatchStatusPipe implements PipeTransform {
         status = "Waiting";
         break;
       case 2:
-        status = "PP&C Draft";
+        status = "PP&C";
         break;
       case 3:
-        status = "Formula Approved";
+        status = "Formula";
         break;
       case 4:
         status = "Scheduled";
         break;
       case 5:
-        status = "Materials Allocated";
+        status = "Materials";
         break;
       case 6:
         status = "Produced";
