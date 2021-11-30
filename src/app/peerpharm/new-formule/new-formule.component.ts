@@ -245,28 +245,38 @@ export class NewFormuleComponent implements OnInit {
       .getFormuleByNumber(this.childrenToAdd)
       .subscribe((data) => {
         console.log(data);
-        if (data && data.parentNumber != "" && data.parentNumber != null) {
+        if (!data) {
+          console.log("פרומולת בן לא קיימת");
+          this.Toastr.error("פורמולת בן לא קיימת");
+          this.childrenToAdd = "";
+        } else if (data.msg) {
+          this.Toastr.error(data.msg);
+          console.log(data);
+          return;
+        } else if (
+          (data && data.parentNumber != "" && data.parentNumber != null) ||
+          data.formuleType == "child"
+        ) {
           this.Toastr.error("פורמולת בן קיימת אצל אב אחר");
           this.childToAdd.nativeElement.focus();
           return;
-        } else {
+        } else if (data) {
           console.log("Entered else");
-          try {
-            this.formuleService.addChildToFather(obj).subscribe((data) => {
-              if (data.msg) {
-                this.Toastr.warning(data.msg);
-                this.childrenToAdd = "";
-              } else {
-                this.formuleService.newFormuleAdded.emit(data);
-                this.Toastr.success(
-                  "פורמולה מספר" + data.formuleNumber + "נוצרה בהצלחה"
-                );
-                this.childrenToAdd = "";
-              }
-            });
-          } catch (error) {
-            console.log(error);
-          }
+
+          this.formuleService.addChildToFather(obj).subscribe((data) => {
+            if (data.msg) {
+              this.Toastr.error(data.msg);
+              this.childrenToAdd = "";
+              return;
+            } else {
+              this.formuleService.newFormuleAdded.emit(data);
+              this.Toastr.success(
+                "פורמולה מספר" + data.formuleNumber + "נוספה בהצלחה"
+              );
+              this.childrenToAdd = "";
+              return;
+            }
+          });
         }
       });
   }
@@ -322,7 +332,12 @@ export class NewFormuleComponent implements OnInit {
         .getFormuleByNumber(childrenNumber)
         .subscribe((data) => {
           console.log(data._doc);
-          if (data.parentNumber != "" && data.parentNumber != null) {
+          console.log(data.parentNumber);
+          console.log(data.formuleType);
+          if (
+            (data.parentNumber != "" && data.parentNumber != null) ||
+            data.formuleType == "child"
+          ) {
             this.Toastr.error("פורמולת בן קיימת אצל אב אחר");
           } else {
             var tempArr = [];
@@ -361,9 +376,21 @@ export class NewFormuleComponent implements OnInit {
     ) {
       this.Toastr.error("אנא מלא את כל הפרטים");
     } else {
-      this.formuleService.newFormule(this.newFormule).subscribe((data) => {
-        if (data == "formule number exist") {
-          this.Toastr.error("מספר פורמולה קיים");
+      console.log(this.newFormule);
+      this.formuleService.addNewFormule(this.newFormule).subscribe((data) => {
+        if (data.msg) {
+          this.Toastr.error(data.msg);
+          console.log(data);
+          // this.newFormule.date = "";
+          // this.newFormule.formuleCategory = "";
+          this.newFormule.formuleNumber = "";
+          // this.newFormule.formuleName = "";
+          // this.newFormule.phFrom = null;
+          // this.newFormule.phTo = null;
+          // this.newFormule.viscoFrom = null;
+          // this.newFormule.viscoTo = null;
+
+          return;
         } else {
           this.Toastr.success("פורמולה הוקמה בהצלחה , אנא המשיך עם הקמת פאזות");
           this.formuleAdd = false;
@@ -468,8 +495,14 @@ export class NewFormuleComponent implements OnInit {
     if (this.newPhase.items.length < Number(this.newPhase.amountOfItems)) {
       this.Toastr.error("מספר הפריטים שהוספת קטן יותר מאשר מצוין בפאזה");
     } else {
+      console.log(this.newPhase);
       this.formuleService.addNewPhase(this.newPhase).subscribe((data) => {
-        if (data) {
+        console.log(data);
+        if (data.msg) {
+          this.Toastr.error(data.msg);
+          console.log(data);
+          return;
+        } else if (data) {
           this.Toastr.success("פאזה הוקמה בהצלחה");
           this.resetPhaseForm();
           this.currentFormule = data;
@@ -480,6 +513,8 @@ export class NewFormuleComponent implements OnInit {
             }
           }
           this.allPercentage = num;
+        } else {
+          this.Toastr.error("Operation failed ");
         }
       });
     }

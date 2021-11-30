@@ -192,6 +192,12 @@ export class FormulesService {
       .post(url, JSON.stringify(newFormuleDetails), this.options)
       .pipe(map((res) => res.json()));
   }
+  addNewFormule(newFormuleDetails) {
+    let url = this.baseUrl + "formules/addNewFormule";
+    return this.http
+      .post(url, JSON.stringify(newFormuleDetails), this.options)
+      .pipe(map((res) => res.json()));
+  }
   addItemToFormule(newItem) {
     let url = this.baseUrl + "formules/addItemToFormule";
     return this.http
