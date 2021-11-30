@@ -128,7 +128,7 @@
         <tbody *ngFor="let item of filteredOrderItems ; let i = index">
           <tr [style.backgroundColor]="item.isSelectedColor" class=" border-bottom border-dark">
             <td>
-              <input type="checkbox" (checked)="item.isSelected" (change)="isSelected($event,item)">
+              <input class="check-box" type="checkbox" (checked)="item.isSelected" (change)="isSelected($event,item)">
             </td>
             <td>{{item.formule.parentNumber? item.formule.parentNumber: item.formule.formuleNumber}}</td>
             <td>{{item.orderNumber}}</td>
