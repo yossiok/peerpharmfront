@@ -374,7 +374,7 @@ export class AllFormulesComponent implements OnInit {
       .subscribe((data) => {
         formule = data;
 
-        if (formule.formuleType == "father") {
+        if (formule.formuleType == "father" && formule.children.length > 0) {
           formule.newItem = true;
           const newItem = {
             itemName: this.newItem.itemName,
@@ -775,10 +775,12 @@ export class AllFormulesComponent implements OnInit {
 
   saveFormuleFormation() {
     this.draggable = false;
+    console.log(this.currentFormuleNumber);
     this.formuleService
       .getFormuleByNumber(this.currentFormuleNumber)
       .subscribe((data) => {
-        if (data.formuleType == "father") {
+        console.log(data);
+        if (data.formuleType == "father" && data.children.length > 0) {
           this.chooseFathersToUpdate = true;
           this.allChosenChildsToUpdate = data.children;
           this.updatingFormule = false;

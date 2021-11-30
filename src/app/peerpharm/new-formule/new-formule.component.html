@@ -22,27 +22,27 @@
           </select>
         </div>
         <div class="col-2"></div>
-        <div *ngIf="chooseChildren != true" class="col-2">
+        <!-- <div *ngIf="chooseChildren != true" class="col-2">
           <label>Base Formule:</label>
-        </div>
-        <div *ngIf="chooseChildren != true" class="col-2">
+        </div> -->
+        <!-- <div *ngIf="chooseChildren != true" class="col-2">
           <select class="form-control" (change)="createFormuleFromBase($event)">
             <option></option>
             <option *ngFor="let formule of baseFormules" [value]="formule.formuleName">{{formule.formuleNumber}}:
               {{formule.formuleName}}
             </option>
           </select>
-        </div>
-        <div *ngIf="chooseChildren == true" class="col-2">
+        </div> -->
+        <!-- <div *ngIf="chooseChildren == true" class="col-2">
           <input class="form-control" #addChildren type="number">
           <select class="form-control">
             <option *ngFor="let child of allChildren">{{child.childNumber}}</option>
           </select>
 
-        </div>
-        <div *ngIf="chooseChildren == true" class="col-2">
+        </div> -->
+        <!-- <div *ngIf="chooseChildren == true" class="col-2">
           <button (click)="addChildrenToFather()" class="btn btn-info">Add Child</button>
-        </div>
+        </div> -->
         <div class="col-1"></div>
       </div>
 
