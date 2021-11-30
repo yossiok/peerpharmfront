@@ -59,6 +59,7 @@ export class NeworderComponent implements OnInit {
   problematicMaterials: any[]
   formuleExist: boolean = false
   isTooOld: boolean = false
+  noNeto: boolean = false
 
   constructor(
     private modalService: NgbModal,
@@ -288,6 +289,7 @@ export class NeworderComponent implements OnInit {
   }
 
   searchItem(itemNumber) {
+    this.noNeto = false
     this.itemName = "";
     this.existOrderItem = [];
     //console.log(itemNumber);
@@ -298,6 +300,10 @@ export class NeworderComponent implements OnInit {
           res[0].name + " " + res[0].subName + " " + res[0].discriptionK
         );
         this.orderItemForm.controls.netWeightK.setValue(res[0].netWeightK);
+        if(!res[0].netWeightK) {
+          this.noNeto = true
+          this.orderItemForm.controls.netWeightK.setValue(res[0].volumeKey);
+        }
 
         //check license
         if (res[0].licsensNumber != "") {
