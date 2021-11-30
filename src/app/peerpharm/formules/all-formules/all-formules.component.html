@@ -683,7 +683,7 @@
     </div>
     <div class="col-4">
       Formule Number: {{ currentFormule.formuleNumber }}
-      <button class="btn btn-info rounded-pill ml-3" [printStyle]="{table:{'border-collapse':'collapse' },
+      <button [ngClass]="partialPrice ? 'btn-danger' : 'btn-info' " class="btn rounded-pill ml-3" [printStyle]="{table:{'border-collapse':'collapse' },
           td : {'border': '1px solid black', 'font-size':'20px'},
           tr : {'border': 'solid 2px black'},
           th : {'border': 'solid 2px black'},
@@ -706,14 +706,14 @@
       Date: {{ today | date: "dd/MM/yyyy" }}
     </div>
     <div class="col-1">
-      <i (click)="formulePriceModal = false" class="click click-info h2 p-2 rounded fa fa-times text-info"></i>
+      <i (click)="formulePriceModal = false" [ngClass]="partialPrice ? 'text-danger click-danger' : 'text-info click-info' " class="click h2 p-2 rounded fa fa-times"></i>
     </div>
   </div>
 
   <div class="row mt-3">
     <div class="col-12">
       <table class="table table-striped table-hover">
-        <thead class="text-white bg-info">
+        <thead [ngClass]="partialPrice ? 'text-white bg-danger' : 'text-white bg-info' ">
           <tr>
             <th>Material Number</th>
             <th>Material Name</th>
@@ -725,7 +725,7 @@
         </thead>
         <tbody>
           <tr *ngFor="let material of formuleMaterialPrices">
-            <td>{{ material.itemNumber }}</td>
+            <td (click)="openIndex(material.itemNumber)" [style.background]="material.price == 'צריך לעדכן מחיר ספק' ? 'red' : ''">{{ material.itemNumber }}</td>
             <td>{{ material.itemName }}</td>
             <td>{{ material.percentage }}</td>
             <td>{{ material.kgPrice}} {{material.coin | currencySymbol}}</td>
@@ -733,9 +733,7 @@
               עדכון זמני
             </td>
             <td *ngIf="material.price != 'צריך לעדכן מחיר ספק'"></td>
-            <td (click)="navigateToInventory(material.itemNumber)" [ngClass]="{
-                updatePrice: material.price == 'צריך לעדכן מחיר ספק'
-              }">
+            <td>
               {{ material.price }} &#8362;
             </td>
 

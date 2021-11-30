@@ -61,6 +61,11 @@
       cursor: pointer;
   }
 
+  .click-danger:hover {
+    color: white !important;
+    background: #dd0f19;    
+  }
+
   .click-info:hover {
     color: white !important;
     background: #007bff;

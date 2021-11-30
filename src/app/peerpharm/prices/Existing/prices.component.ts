@@ -34,6 +34,8 @@ export class PricesComponent implements OnInit {
   allComponents: any;
   waitingText: string = "Getting item data...";
   currencies: Currencies;
+  partialFormulePrice: boolean;
+  itemsMissingPrice: string[] = [];
 
   constructor(
     private itemService: ItemsService,
@@ -106,11 +108,18 @@ export class PricesComponent implements OnInit {
 
   // Get formule price for item
   async getFormulePrice() {
+    this.partialFormulePrice = false
     return new Promise((resolve, reject) => {
       this.formuleService
         .getFormulePriceByNumber(this.item.itemNumber)
         .subscribe((response) => {
           if (response.msg) this.toastr.error(response.msg);
+          for(let item of response.formulePrices) {
+            if(!item.price) {
+              this.partialFormulePrice = true
+              this.itemsMissingPrice.push(item.itemNumber)
+            } 
+          }
           this.item.formulePrice = response.formulePrice
             ? response.formulePrice * (this.item.netWeightK / 1000)
             : null;

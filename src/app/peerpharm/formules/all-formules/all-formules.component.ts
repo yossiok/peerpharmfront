@@ -135,6 +135,7 @@ export class AllFormulesComponent implements OnInit {
   password: string = "martha@2021";
   dragging: boolean = false;
   updatingFormule: boolean = false;
+  partialPrice: boolean;
 
   constructor(
     private invtSer: InventoryService,
@@ -552,7 +553,13 @@ export class AllFormulesComponent implements OnInit {
     }
   }
 
+  //TODO: route to item index and present item 
+  openIndex(itemNumber) {
+    // this.router...
+  }
+
   getFormulePrice(formule) {
+    this.partialPrice = false
     this.spinnerLoader = true;
     setTimeout(() => {
       if (this.spinnerLoader) {
@@ -568,6 +575,7 @@ export class AllFormulesComponent implements OnInit {
         data.forEach((material) => {
           if (material.price == null || material.price == undefined) {
             material.price = "צריך לעדכן מחיר ספק";
+            this.partialPrice = true
           } else {
             if (
               material.price != "צריך לעדכן מחיר ספק" &&
