@@ -22,7 +22,7 @@
         <label>
           מק"ט *
         </label>
-        <input type="number" [disabled]="disabled" formControlName="item" (change)="getShelfs()" class="form-control">
+        <input type="number" [disabled]="disabled" formControlName="item" (blur)="getShelfs()" class="form-control">
       </div>
       <div *ngIf="!disabled" class="col-2">
         <label class="d-block">

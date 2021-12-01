@@ -58,6 +58,7 @@ export class HistMovementsComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.getAllUsers();
+    console.log(this.historicalMovements.controls);
   }
 
   ngOnChanges(changes: SimpleChanges) {

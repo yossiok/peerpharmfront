@@ -124,16 +124,16 @@ export class InvArrivalsComponent implements OnInit {
         .getCmptByitemNumber(this.componentArrival.value.item)
         .subscribe((data) => {
           if (data.length > 0) {
-            if(data[0].itemType == 'material') {
-              reject('לא ניתן להכניס חומרי גלם דרך טופס זה')
-              return
-            } 
+            if (data[0].itemType == "material") {
+              reject("לא ניתן להכניס חומרי גלם דרך טופס זה");
+              return;
+            }
             this.noItem = false;
             this.itemNames = data;
             resolve(true);
           } else {
             this.noItem = true;
-            reject('פריט לא קיים :(');
+            reject("פריט לא קיים :(");
           }
         });
     });
@@ -178,7 +178,7 @@ export class InvArrivalsComponent implements OnInit {
             });
       })
       .catch((e) => {
-        this.toastr.error('', e);
+        this.toastr.error("", e);
       });
   }
 
@@ -227,13 +227,14 @@ export class InvArrivalsComponent implements OnInit {
     //push arrival to allArrivals
     this.allArrivals.push(this.componentArrival.value);
     //22/08/2021 Dani Morag:
-    // reset the fields of the add component arrival except for the spplier and warehouse. Further to the request of Tomer
+    // reset the fields of the add component arrival except for the supplier and warehouse. Further to the request of Tomer
     this.componentArrival.get("itemType").reset();
     this.componentArrival.get("item").reset();
     this.componentArrival.get("amount").reset();
     this.componentArrival.get("shell_id_in_whareHouse").reset();
     this.componentArrival.get("position").reset();
     this.componentArrival.get("isNewItemShell").reset();
+    this.shellNums = [];
 
     this.componentArrival.controls.isNewItemShell.setValue(false);
     this.componentArrival.controls.itemType.setValue("component");

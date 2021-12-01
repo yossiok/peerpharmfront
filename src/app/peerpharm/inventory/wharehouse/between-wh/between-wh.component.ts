@@ -110,16 +110,16 @@ export class BetweenWHComponent implements OnInit {
         )
         .subscribe((data) => {
           if (data.length > 0) {
-            if(data[0].itemType == 'material') {
-              reject('לא ניתן להעביר חומרי גלם דרך טופס זה')
-              return
+            if (data[0].itemType == "material") {
+              reject("לא ניתן להעביר חומרי גלם דרך טופס זה");
+              return;
             }
             this.noItem = false;
             this.itemNames = data;
             resolve(true);
           } else {
             this.noItem = true;
-            reject('פריט לא קיים :(');
+            reject("פריט לא קיים :(");
           }
         });
     });
@@ -143,7 +143,11 @@ export class BetweenWHComponent implements OnInit {
   checkComponentNumber() {
     console.log(this.movementForm.value.item);
     console.log("Sending value: " + this.sending);
-    if (!this.sending) {
+
+    if (!this.movementForm.value.item) {
+      alert("אנא הכנס מספר פריט");
+      return;
+    } else if (!this.sending) {
       this.inventoryService
         .getCmptByitemNumber(this.movementForm.value.item)
         .subscribe((data) => {
@@ -154,8 +158,9 @@ export class BetweenWHComponent implements OnInit {
               this.itemNames[0].componentName
             );
             if (this.allMovements.length > 0) {
+              console.log(this.allMovements);
               this.getChunks("o");
-              this.getChunks("d");
+              // this.getChunks("d");
             }
           } else {
             console.log("No item found");
@@ -195,62 +200,60 @@ export class BetweenWHComponent implements OnInit {
         if (!WHID) this.toastr.error("אנא בחר מחסן.");
         else if (!this.movementForm.value.item)
           this.toastr.error("אנא הזן מספר פריט.");
-        else
-          this.inventoryService
-            .getShelfListForItemInWhareHouse2(
-              this.movementForm.value.item,
-              WHID
-            )
-            .subscribe((chunks) => {
-              if (chunks.msg) this.toastr.error("בעיה בהזנת הנתונים.");
-              else if (chunks.length == 0) {
-                // no existing cunks for item
-                // if origin - break
-                if (whType == "o") this.toastr.error("הפריט לא נמצא במחסן זה");
-                // if destination - ask for approval to enter to new shelf
-                else if (whType == "d") {
-                  let noShellsForItem = confirm(
-                    "הפריט לא נמצא על אף אחד מהמדפים במחסן זה. להכניס למדף חדש?"
-                  );
-                  if (noShellsForItem) {
-                    // approved - announce new itemShell (chunk) and get all shelfs of destination WH
-                    this.movementForm.controls.isNewItemShell.setValue(true);
-                    this.getAllShelfsOfDest(WHID);
-                    let whName = this.reallyAllWhareHouses.find(
-                      (wh) => wh._id == this.movementForm.value.WH_destId
-                    ).name;
-                    this.movementForm.controls.WH_destName.setValue(whName);
-                    this.movementForm.controls.shell_id_in_whareHouse_Dest.setValue(
-                      this.destWHShelfs[0].shell_id_in_whareHouse
-                    ); //stupid bug
-                    this.setDestPosition();
-                  }
-                }
-              } else {
-                if (whType == "o") {
-                  this.originWHShelfs = chunks;
-                  this.movementForm.controls.shell_id_in_whareHouse_Origin.setValue(
-                    this.originWHShelfs[0].shell_id_in_whareHouse
-                  ); //stupid bug
-                  this.setOriginPosition();
-                  let whName = this.allWhareHouses.find(
-                    (wh) => wh._id == this.movementForm.value.WH_originId
-                  ).name;
-                  this.movementForm.controls.WH_originName.setValue(whName);
-                }
-                if (whType == "d") {
-                  this.destWHShelfs = chunks;
-                  this.movementForm.controls.shell_id_in_whareHouse_Dest.setValue(
-                    this.destWHShelfs[0].shell_id_in_whareHouse
-                  ); //stupid bug
-                  this.setDestPosition();
+        else console.log(this.movementForm.value.item, WHID);
+        this.inventoryService
+          .getShelfListForItemInWhareHouse2(this.movementForm.value.item, WHID)
+          .subscribe((chunks) => {
+            console.log(chunks);
+            if (chunks.msg) this.toastr.error("בעיה בהזנת הנתונים.");
+            else if (chunks.length == 0) {
+              // no existing cunks for item
+              // if origin - break
+              if (whType == "o") this.toastr.error("הפריט לא נמצא במחסן זה");
+              // if destination - ask for approval to enter to new shelf
+              else if (whType == "d") {
+                let noShellsForItem = confirm(
+                  "הפריט לא נמצא על אף אחד מהמדפים במחסן זה. להכניס למדף חדש?"
+                );
+                if (noShellsForItem) {
+                  // approved - announce new itemShell (chunk) and get all shelfs of destination WH
+                  this.movementForm.controls.isNewItemShell.setValue(true);
+                  this.getAllShelfsOfDest(WHID);
                   let whName = this.reallyAllWhareHouses.find(
                     (wh) => wh._id == this.movementForm.value.WH_destId
                   ).name;
                   this.movementForm.controls.WH_destName.setValue(whName);
+                  this.movementForm.controls.shell_id_in_whareHouse_Dest.setValue(
+                    this.destWHShelfs[0].shell_id_in_whareHouse
+                  ); //stupid bug
+                  this.setDestPosition();
                 }
               }
-            });
+            } else {
+              if (whType == "o") {
+                this.originWHShelfs = chunks;
+                this.movementForm.controls.shell_id_in_whareHouse_Origin.setValue(
+                  this.originWHShelfs[0].shell_id_in_whareHouse
+                ); //stupid bug
+                this.setOriginPosition();
+                let whName = this.allWhareHouses.find(
+                  (wh) => wh._id == this.movementForm.value.WH_originId
+                ).name;
+                this.movementForm.controls.WH_originName.setValue(whName);
+              }
+              if (whType == "d") {
+                this.destWHShelfs = chunks;
+                this.movementForm.controls.shell_id_in_whareHouse_Dest.setValue(
+                  this.destWHShelfs[0].shell_id_in_whareHouse
+                ); //stupid bug
+                this.setDestPosition();
+                let whName = this.reallyAllWhareHouses.find(
+                  (wh) => wh._id == this.movementForm.value.WH_destId
+                ).name;
+                this.movementForm.controls.WH_destName.setValue(whName);
+              }
+            }
+          });
       })
       .catch((e) => {
         console.log("error: ", e);
@@ -328,6 +331,7 @@ export class BetweenWHComponent implements OnInit {
       this.movementForm.controls.isNewItemShell.setValue(false);
       this.movementForm.controls.itemType.setValue("component");
       this.itemNames = [];
+      this.originWHShelfs = [];
       this.first.nativeElement.focus();
     }, 500);
   }
@@ -348,7 +352,8 @@ export class BetweenWHComponent implements OnInit {
       console.log(data);
       if (data.msg) {
         this.sending = false;
-        this.toastr.error(data.msg, "שגיאה");
+        alert(data.msg);
+        this.toastr.error("Operation Falied", data.msg);
       } else {
         setTimeout(() => {
           this.printBtn2.nativeElement.click();
@@ -356,6 +361,7 @@ export class BetweenWHComponent implements OnInit {
         setTimeout(() => {
           this.movementForm.reset();
           this.allMovements = [];
+          this.originWHShelfs = [];
           this.reception = null;
           this.movementForm.controls.isNewItemShell.setValue(false);
           this.movementForm.controls.itemType.setValue("component");

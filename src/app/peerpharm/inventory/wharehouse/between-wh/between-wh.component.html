@@ -14,7 +14,7 @@
           מק"ט *
         </label>
         <input type="number" #first [disabled]="disabled" formControlName="item" class="form-control"
-          (change)="checkComponentNumber()">
+          (blur)="checkComponentNumber()">
       </div>
       <div *ngIf="!disabled" class="col-2">
         <label class="d-block">

@@ -125,14 +125,17 @@ export class ShelfChangeComponent implements OnInit {
     this.inventoryService
       .changeItemPosition(this.shelfChange.value)
       .subscribe((data) => {
-        if (data.msg) this.toastr.error(data.msg, "שגיאה");
-        else {
+        if (data.msg) {
+          this.toastr.error(data.msg, "שגיאה");
+          this.shelfsWithItem = [];
+        } else {
           //set certificate data
           this.sending = false;
           this.toastr.success("שינויים נשמרו בהצלחה", "נשמר");
           this.shelfChange.reset();
           this.shelfChange.controls.itemType.setValue("component");
           this.first.nativeElement.focus();
+          this.shelfsWithItem;
         }
       });
   }

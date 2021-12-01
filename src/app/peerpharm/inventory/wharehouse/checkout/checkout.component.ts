@@ -71,6 +71,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   getShelfs() {
+    console.log(this.componentCheckout.value.item);
     this.inventoryService
       .getCmptByitemNumber(this.componentCheckout.value.item)
       .subscribe((data) => {
@@ -157,6 +158,7 @@ export class CheckoutComponent implements OnInit {
     this.componentCheckout.controls.item.setValue(this.itemNumber);
     this.componentCheckout.controls.isNewItemShell.setValue(false);
     this.componentCheckout.controls.itemType.setValue("component");
+    this.shellNums = [];
     this.first.nativeElement.focus();
   }
 
