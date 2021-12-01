@@ -248,7 +248,8 @@
                 <div>
                   <img src="../../../../assets/images/refreshData.png" class="float-right small" alt="get user name"
                     (click)="getItemPurchases(component)">
-                  <span *ngIf="component.purchaseOrders && component.purchaseOrders.length == 0">אין הזמנות פתוחות לפריט</span>
+                  <span *ngIf="component.purchaseOrders && component.purchaseOrders.length == 0">אין הזמנות פתוחות
+                    לפריט</span>
                   <table *ngIf="component.purchaseOrders && component.purchaseOrders.length > 0" style="zoom:0.7">
                     <thead class="text-white">
                       <tr>
@@ -1390,7 +1391,8 @@
       </div>
 
       <div [style.width]="'1094px'" class="m-2 p-4 border border-primary bg-success text-white" *ngIf="dir=='WHChange'">
-        <app-between-wh [itemNumber]="resCmpt.componentN" [allWhareHouses]="whareHouses"></app-between-wh>
+        <app-between-wh [itemNumber]="resCmpt.componentN" [allWhareHouses]="whareHouses"
+          [reallyAllWhareHouses]="reallyAllWhareHouses"></app-between-wh>
       </div>
 
 

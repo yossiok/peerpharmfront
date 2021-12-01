@@ -240,6 +240,7 @@ export class StockComponent implements OnInit {
   //var's to edit itemshelf in allowed wh for user
   user: UserInfo;
   whareHouses: Array<any>;
+  reallyAllWhareHouses: Array<any>;
   curentWhareHouseId: String;
   curentWhareHouseName: String;
   relatedOrderNum: String = "";
@@ -1024,6 +1025,7 @@ export class StockComponent implements OnInit {
   getUserAllowedWH() {
     this.inventoryService.getWhareHousesList().subscribe((res) => {
       if (res) {
+        this.reallyAllWhareHouses = res;
         let displayAllowedWH = [];
         for (const wh of res) {
           if (this.authService.loggedInUser.allowedWH.includes(wh._id)) {
