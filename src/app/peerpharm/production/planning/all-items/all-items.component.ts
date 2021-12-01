@@ -69,7 +69,7 @@ export class AllItemsComponent implements OnInit {
     private authService: AuthService,
     private ordersService: OrdersService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getWorkPlans();
@@ -101,10 +101,9 @@ export class AllItemsComponent implements OnInit {
       // this.orderItems = data;
       for (let item of data) {
         item.origQty = Number(item.quantity);
-        item.maxQty =
-          item.wpRemainQty || item.wpRemainQty == 0
-            ? item.wpRemainQty
-            : item.quantity;
+        item.maxQty = item.wpRemainQty || item.wpRemainQty == 0
+          ? item.wpRemainQty
+          : item.quantity;
         item.maxQty = Number(item.maxQty);
         item.quantity = Number(item.quantity);
         item.isSelected = false;
@@ -178,6 +177,7 @@ export class AllItemsComponent implements OnInit {
       this.viewOrders(1);
     });
   }
+
   getWorkPlans() {
     this.productionService.getAllWorkPlans().subscribe((workPlans) => {
       this.workPlans = workPlans;
@@ -482,6 +482,7 @@ export class AllItemsComponent implements OnInit {
     );
     this.sortToggle *= -1;
   }
+
   sortItemsOne(field) {
     let i = this.sortToggle;
     this.filteredOrderItems.sort((a, b) => {
@@ -489,6 +490,7 @@ export class AllItemsComponent implements OnInit {
     });
     this.sortToggle *= -1;
   }
+
   sortWpOne(field) {
     let i = this.sortToggle;
     this.filteredWorkPlans.sort((a, b) => {
@@ -539,10 +541,12 @@ export class AllItemsComponent implements OnInit {
       );
     }
   }
+
   clearOrderItems() {
     this.viewOrders(this.currentView);
     this.oiFilter.nativeElement.value = "";
   }
+  
   filterWorkPlans() {
     let value = this.wpFilter.nativeElement.value;
     console.log(value);

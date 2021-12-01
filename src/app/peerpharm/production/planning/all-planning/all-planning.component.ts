@@ -16,6 +16,7 @@ import { WorkPlan } from '../WorkPlan';
 })
 export class AllPlanningComponent implements OnInit {
   workPlans: WorkPlan[];
+  workPlansCopy: WorkPlan[];
   checkedWorkPlans: WorkPlan[] = []
   workPlansInterval: any = null
   currentWorkPlan: WorkPlan;
@@ -43,7 +44,7 @@ export class AllPlanningComponent implements OnInit {
     this.route.queryParamMap.subscribe(params => {
       if (params["params"].workPlanId && bool) {
         this.openWorkPlan(Number(params["params"].workPlanId))
-      } 
+      }
     })
   }
 
@@ -51,6 +52,7 @@ export class AllPlanningComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.productionService.getAllWorkPlans().subscribe(workPlans => {
         this.workPlans = workPlans
+        this.workPlansCopy = [...workPlans]
         resolve(true)
       })
     })
@@ -70,6 +72,36 @@ export class AllPlanningComponent implements OnInit {
     }
   }
 
+  filterWorkPlans(event) {
+    let value = event.target.value.toLowerCase().trim()
+    this.workPlans = this.workPlansCopy.filter((o) =>
+      Object.entries(o).some((entry) =>
+        String(entry[1]).toLowerCase().includes(value)
+      )
+    );
+  }
+
+  filterByStatus(event) {
+    let status = event.target.value
+    if (status == 0) this.workPlans = this.workPlansCopy
+    else this.workPlans = this.workPlansCopy.filter(wp => wp.status == status)
+  }
+
+  filterByItemOrOrder(event) {
+    let value = event.target.value
+    this.workPlans = this.workPlansCopy.filter((o) =>
+      Object.entries(o.orderItems).some((entry) =>
+        String(entry[1].itemNumber).toLowerCase().includes(value) ||
+        String(entry[1].orderNumber).toLowerCase().includes(value) ||
+        String(entry[1].description).toLowerCase().includes(value)
+      )
+    );
+  }
+
+  clearFilter() {
+    this.workPlans = this.workPlansCopy
+  }
+
   // add or remove selection
   addOrRemove(event, i) {
     if (event.target.checked) this.checkedWorkPlans.push(this.workPlans[i])
@@ -82,7 +114,7 @@ export class AllPlanningComponent implements OnInit {
   }
 
   showHideCheckBox() {
-    if(this.showCheckbox) this.checkedWorkPlans = []
+    if (this.showCheckbox) this.checkedWorkPlans = []
     this.showCheckbox = !this.showCheckbox
   }
 
@@ -97,7 +129,7 @@ export class AllPlanningComponent implements OnInit {
   }
 
   filterByRole(status) {
-    if(this.authService.loggedInUser.authorization.includes("andrey")) {
+    if (this.authService.loggedInUser.authorization.includes("andrey")) {
       return status > 2
     }
     else return true
