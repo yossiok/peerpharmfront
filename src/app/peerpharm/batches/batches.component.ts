@@ -117,6 +117,10 @@ export class BatchesComponent implements OnInit {
     this.getUserInfo();
   }
 
+  ngOnDestroy() {
+    this.stopInterval()
+  }
+
   checkPermission() {
     return this.authService.loggedInUser.screenPermission == "5";
   }

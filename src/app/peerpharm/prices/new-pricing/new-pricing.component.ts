@@ -65,6 +65,7 @@ export class NewPricingComponent implements OnInit {
     componentNumber: '',
     componentName: '',
   }
+  partialFormulePrice: boolean;
 
   constructor(
     private invtSer: InventoryService,
@@ -135,6 +136,7 @@ export class NewPricingComponent implements OnInit {
 
 
   calculatePPK() {
+    this.partialFormulePrice = false
     this.loading = true
     setTimeout(() => {
       if (this.loading) {
@@ -145,7 +147,12 @@ export class NewPricingComponent implements OnInit {
     this.formuleService.getFormulePriceByNumber(this.newPricingForm.value.formuleNumber).subscribe(response => {
       this.loading = false
       if (response.msg) this.toastr.error(response.msg)
-      else this.newPricingForm.controls.PPK.setValue(response.formulePrice)
+      else {
+        this.newPricingForm.controls.PPK.setValue(response.formulePrice)
+        for(let item of response.formulePrices) {
+          if(!item.price) this.partialFormulePrice = true
+        }
+      } 
     })
   }
 

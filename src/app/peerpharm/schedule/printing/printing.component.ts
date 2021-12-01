@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ItemsService } from 'src/app/services/items.service';
 import { ArrayServiceService } from 'src/app/utils/array-service.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ExcelService } from 'src/app/services/excel.service';
 
 @Component({
   selector: 'app-schedule',
@@ -82,8 +83,9 @@ export class PrintingComponent implements OnInit {
     private scheduleService: ScheduleService,
     private toastSrv: ToastrService,
     private itemsService: ItemsService,
-    private authService: AuthService) { }
-
+    private excelService: ExcelService,
+    private authService: AuthService
+  ) { }
 
 
   ngOnInit() {
@@ -104,6 +106,29 @@ export class PrintingComponent implements OnInit {
     });
   }
 
+  exportToExcel() {
+    let excel = []
+    for(let line of this.scheduleData) {
+      excel.push({
+        Item: line.itemN,
+        "Item Name": line.itemName,
+        Order: line.orderN,
+        Customer: line.costumer,
+        status: line.status,
+        Component: line.cmptN,
+        "Component Name": line.cmptName,
+        color: line.color,
+        "Total Quantity": line.qty,
+        "Quantity Produced": line.qtyProduced,
+        "Schedule Date": line.scheduleDate ? line.scheduleDate.toString().slice(0,10) : "Not Defined",
+        "Print Date": line.printDate ? line.printDate.toString().slice(0,10) : "Not Defined",
+        Position: line.position,
+        Remarks: line.marks,
+      })
+    }
+    this.excelService.exportAsExcelFile(excel, `Printing Schedule ${new Date().toString().slice(0,10)}`)
+  }
+
   dateChanged(date) {
     date = new Date(date)
     // date=date.setHours(2,0,0,0);
@@ -118,19 +143,16 @@ export class PrintingComponent implements OnInit {
             // showing only for that date 
             res.map(elem => {
               let pastDue = (moment(elem.date).format() < moment(this.today).format());
-              if (elem.status == "printed") {
-                elem.trColor = this.lineColorDone;
-              } else if (pastDue) {
-                elem.trColor = this.lineColorPastDue;
-              }
+              if (elem.status == "printed") elem.trColor = this.lineColorDone;
+              else if (pastDue) elem.trColor = this.lineColorPastDue
             });
             this.scheduleData = res;
           }
         })
     }
     else this.toastSrv.error('Invalid Date!')
-
   }
+
   getAllSchedule() {
     this.fetchingSchedules = true;
     this.date.nativeElement.value = "";

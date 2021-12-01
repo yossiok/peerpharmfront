@@ -105,13 +105,13 @@
 
 
           <!-- (click)="openFormDetails(form._id)"  -->
+          <!-- routerLink="/peerpharm/forms/formDetails/{{form._id}}/0"  -->
           <tr 
-          routerLink="/peerpharm/forms/formDetails/{{form._id}}/0" 
           [class.read-only]="checkPermission()" *ngFor="let form of forms; let i = index">
             <td>
             {{i+1}}
             </td>
-            <td>{{ form.itemN }}</td>
+            <td><a routerLink="/peerpharm/forms/formDetails/{{form._id}}/0">{{ form.itemN }}</a></td>
             <td>{{ form.productName }}</td>
             <td>{{ form.fillingDate }}</td>
             <td>{{ form.orderNumber }}</td>

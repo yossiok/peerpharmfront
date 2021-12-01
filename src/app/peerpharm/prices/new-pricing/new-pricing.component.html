@@ -34,10 +34,12 @@
                 <h4 class="text-info">{{newPricingForm.value.customer}}</h4>
             </div>
             <div class="row mt-2">
-                <label>Product Name: &nbsp;<span class="h5 text-info">{{newPricingForm.value.productName}}</span></label>
+                <label>Product Name: &nbsp;<span
+                        class="h5 text-info">{{newPricingForm.value.productName}}</span></label>
             </div>
             <div class="row mt-2">
-                <label>Product Number: &nbsp;<span class="h5 text-info">{{newPricingForm.value.productNumber}}</span></label>
+                <label>Product Number: &nbsp;<span
+                        class="h5 text-info">{{newPricingForm.value.productNumber}}</span></label>
             </div>
 
             <h4 class="mt-4">Price Details:</h4>
@@ -122,8 +124,15 @@
                                 formControlName="formuleNumber">
                             <button type="button" class="btn btn-outline-primary" (click)="calculatePPK()">Calculate
                                 Price per Kilo</button>
-                            <p *ngIf="newPricingForm.value.PPK">price per kilo: {{newPricingForm.value.PPK | currency:
-                                'ILS'}}</p>
+                            <p class="p-2" *ngIf="newPricingForm.value.PPK">
+                                <span class="p-2 h5">
+                                    price per kilo: {{newPricingForm.value.PPK | currency: 'ILS'}}
+                                </span>
+                                <span class="text-danger h4" *ngIf="partialFormulePrice">
+                                    <i class="fas fa-exclamation-triangle text-danger"></i>
+                                    &nbsp; Missing prices, Please check.
+                                </span>
+                            </p>
                             <div class="smallerLoader" *ngIf="loading"></div>
                         </div>
                         <div class="form-group">
@@ -132,7 +141,7 @@
                             <button type="button" (click)="calculateForML()" class="btn btn-outline-primary">
                                 Calculate Price For Netto Weight
                             </button>
-                            <p *ngIf="newPricingForm.value.PPML">formule price: {{newPricingForm.value.PPML | currency:
+                            <p class="h5 mt-2" *ngIf="newPricingForm.value.PPML">formule price: {{newPricingForm.value.PPML | currency:
                                 'ILS'}}</p>
                         </div>
                         <button *ngIf="!biddingToUpdate" type="button" class="m-2 btn btn-secondary"
@@ -217,7 +226,7 @@
                 <mat-tab [disabled]="!biddingToUpdate" label="Final Fees">
                     <div class="p-5 mx-auto">
                         <h2>Final Fees</h2>
-                    
+
                         <div class="form-group">
                             <label for="">One-time Expenses</label>
                             <input type="number" placeholder="one-time expenses" formControlName="oneTimeExp"
@@ -241,7 +250,8 @@
                         </div>
                         <div class="form-group">
                             <label for="">Remarks</label>
-                            <textarea class="form-control w-25" cols="20" rows="5" placeholder="remarks" formControlName="remarks"></textarea>
+                            <textarea class="form-control w-25" cols="20" rows="5" placeholder="remarks"
+                                formControlName="remarks"></textarea>
                         </div>
                         <div class="mt-2">
                             <button *ngIf="!biddingToUpdate" type="button" class="m-2 btn btn-secondary"

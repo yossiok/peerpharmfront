@@ -50,11 +50,15 @@
                                 </tr>
                                 <tr *ngIf="allowed">
                                     <td>FormulePrice:</td>
-                                    <td></td>
-                                    <td>{{item.formulePrice}}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td>
+                                    </td>
+                                    <td [style.background]="partialFormulePrice ? 'red' : ''">{{item.formulePrice}}</td>
+                                    <td class="h4" colspan="3">
+                                        <span *ngIf="partialFormulePrice" class="text-danger">
+                                            <i class="fas fa-exclamation-triangle"></i> Missing Price: 
+                                        </span>
+                                        <span style="color: red;" *ngFor="let item of itemsMissingPrice">{{item}}, </span>
+                                    </td>
                                 </tr>
                                 <tr *ngIf="allowed">
                                     <td>Total Item Price:</td>

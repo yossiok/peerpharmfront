@@ -1771,8 +1771,7 @@ export class OrderdetailsComponent implements OnInit {
 
     this.printSchedule.cmptN = cmpt.number;
     this.printSchedule.itemN = item.itemNumber;
-    this.printSchedule.itemName =
-      item.name + " " + item.subName + " " + item.discriptionK;
+    this.printSchedule.itemName = item.discription
     this.printSchedule.cmptName = cmpt.discription;
     this.modalService.open(content).result.then((result) => {
       if (result == "Saved") {
