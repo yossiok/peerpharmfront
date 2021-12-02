@@ -94,7 +94,7 @@
           <td>{{orderItem.quantity}}</td>
           <td #editWeight>
             <span *ngIf="edit != i">{{orderItem.totalKG}}</span>
-            <input class="kg-input" *ngIf="edit == i" type="number" [(ngModel)]="orderItem.totalKG">
+            <input placeholder="Enter Weight" *ngIf="edit == i" type="number" [(ngModel)]="orderItem.totalKG">
           </td>
           <td class="text-center" *ngIf="orderItem.enoughMaterials"><i ngbTooltip="כמות מלאי תקינה"
               class="far fa-thumbs-up"></i></td>
@@ -108,7 +108,7 @@
             orderItemBatchStatus}}</td>
           <td>
             <span *ngIf="edit != i">{{orderItem.remarks}}</span>
-            <input *ngIf="edit == i" type="text" [(ngModel)]="orderItem.remarks">
+            <input placeholder="Remarks" *ngIf="edit == i" type="text" [(ngModel)]="orderItem.remarks">
           </td>
           <td>
             <img *ngIf="edit == i && authorized" ngbTooltip="שמור שינויים" (click)="saveChanges(i)" class="img click"
@@ -163,6 +163,7 @@
           <th>סטטוס ייצור</th>
           <th>מתי אבשל?</th>
           <th></th>
+          <th></th>
           <!-- <th>Batch?</th> -->
         </tr>
       </thead>
@@ -179,7 +180,10 @@
               order <span class="order-span">{{orderAndItem.orderNumber}}</span>, item <span class="item-span">{{orderAndItem.itemNumber}}</span> {{orderAndItem.itemName}}, {{orderAndItem.weightKg}}KG <br>
             </span>
           </td>
-          <td>{{formule.totalKG}}</td>
+          <td>
+            <span (click)="editF = i" *ngIf="editF != i">{{formule.totalKG}}</span>
+            <input placeholder="Enter Weight" *ngIf="editF == i" type="number" [(ngModel)]="formule.totalKG">
+          </td>
           <td *ngIf="formule.enoughMaterials"><i ngbTooltip="כמות מלאי תקינה" class="far fa-thumbs-up"></i>
           </td>
           <td *ngIf="!formule.enoughMaterials"><i ngbTooltip="חסרים קומפוננטים במלאי"
@@ -211,6 +215,10 @@
               {{formule.batchNumber}}</td>
             <td *ngIf="!formule.batchNumber"><i ngbTooltip="לא יוצר באטץ'" class="far fa-times-circle"></i>
             </td> -->
+            <td>
+              <img *ngIf="editF == i && authorized" ngbTooltip="שמור שינויים" (click)="saveChanges(i)" class="img click"
+              src="../../../../../assets/images/aprroved.png" alt="">
+            </td>
 
         </tr>
       </tbody>
@@ -226,8 +234,8 @@
         Compare & Approve</button>
     </div>
     <div>
-      <button class="btn btn-info formule-side">
-        <span *ngIf="authorized"><img class="img2" ngbTooltip='Approve Formules' (click)="approveFormules()"
+      <button class="btn btn-info formule-side" (click)="approveFormules()">
+        <span *ngIf="authorized"><img class="img2" ngbTooltip='Approve Formules' 
             src="../../../../../assets/images/filter.png" alt="לחץ כאן על מנת לשלוח פורמולות לייצור"></span>
         Approve All & Print
       </button>
