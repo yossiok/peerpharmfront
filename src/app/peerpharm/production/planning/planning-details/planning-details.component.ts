@@ -47,6 +47,7 @@ export class PlanningDetailsComponent implements OnInit {
   statuses: number[] = [1, 2, 3];
   materialsForFormules: Array<any>;
   edit: number = -1;
+  editF: number = -1;
   authorized: boolean = false;
   loadData: boolean;
   showMaterialsForFormules: boolean = false;
@@ -207,6 +208,7 @@ export class PlanningDetailsComponent implements OnInit {
       this.productionService.editWorkPlan(this.workPlan).subscribe((data) => {
         if (data.status) {
           this.edit = -1;
+          this.editF = -1
           this.workPlan = data;
           this.updateWorkPlans.emit();
           resolve("הפרטים נשמרו בהצלחה");
