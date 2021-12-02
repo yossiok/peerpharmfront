@@ -7,15 +7,15 @@
 
   <div dir="rtl" class="row mt-4">
     <div *ngIf="whareHouse" class="col-1">
-      <button [printStyle]="{tr : {'border': 'solid 1px black'}}"
-        style="visibility: hidden;" printSectionId="print-section" #printStocktake ngxPrint><img
-          src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button>
+      <button [printStyle]="{tr : {'border': 'solid 1px black'}}" style="visibility: hidden;"
+        printSectionId="print-section" #printStocktake ngxPrint><img src="../../../../assets/images/print.png"
+          alt="Print" style="width: 55px;"></button>
       <img style="width: 50px; height: 50px" (click)="exportShelfListToXl()" src="../../../../assets/images/excel.png"
         alt="">
     </div>
 
     <div class="col-3">
-      last yearCount: {{lastYearCount.serialNumber}}
+
       <label>מחסן</label>
       <select (change)="getShelfsByWH($event)" class="form-control">
         <option selected="true" disabled="disabled">בחר מחסן</option>
@@ -46,8 +46,7 @@
       <h3>הכנס מלאי שלא נמצא ברשימה (יש לוודא שהמדף אכן קיים במחסן)</h3>
       <div class="row">
         <div class="col-3">
-          <input type="number" class="form-control" (change)="validateItem()" formControlName="item"
-            placeholder='מק"ט'>
+          <input type="number" class="form-control" (change)="validateItem()" formControlName="item" placeholder='מק"ט'>
         </div>
         <div class="col-3">
           <select class="form-control" formControlName="position">
@@ -58,37 +57,45 @@
         <div class="col-3">
           <input type="number" class="form-control" formControlName="amount" placeholder="כמות">
         </div>
-        <div class="col-3"><button [disabled]="!newShelfForm.valid" [style.cursor]="whareHouse ? 'pointer' : 'not-allowed'"
-            type="submit" class="btn btn-primary">הכנס</button></div>
+        <div class="col-3"><button [disabled]="!newShelfForm.valid"
+            [style.cursor]="whareHouse ? 'pointer' : 'not-allowed'" type="submit" class="btn btn-primary">הכנס</button>
+        </div>
       </div>
     </form>
 
   </div>
 
   <div dir="rtl" *ngIf="whareHouse" id="print-section" class="row mt-4">
-    <h1 dir="rtl" *ngIf="whareHouse">מלאי {{whareHouse}} - {{itemType}}s</h1>
     <table dir="rtl" class="table table-bordered table-hover">
-      <thead class="bg-primary text-white">
+      <thead>
+        <tr>
+          <td class="header" colspan="1">
+            דף ספירת מלאי לשנת הכספים 2021
+          </td>
+          <td class="header" colspan="5">
+            Peerpharm Ltd - עמל 17 אזור תעשיה ,אפק ראש העין 4809256.
+          </td>
+        </tr>
+        <tr>
+          <td class="header" colspan="3">
+            מלאי {{whareHouse}} - {{itemType}}s
+          </td>
+          <td class="header" colspan="3">
+            טופס מספר {{lastYearCount.serialNumber + 1}}
+          </td>
+        </tr>
         <tr>
           <th>#</th>
-          <!--1-->
           <th class="sortable" (click)="sortByItem()"><i class="fas fa-filter"></i> מק"ט</th>
-          <th class="sortable" (click)="sortByItem()"><i class="fas fa-filter"></i> תיאור</th>
-          <!--1-->
+          <th class="sortable desc" (click)="sortByItem()"><i class="fas fa-filter"></i> תיאור</th>
           <th *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i> באטץ'</th>
-          <!--3.5-->
           <th class="sortable" (click)="sortByPosition()"><i class="fas fa-filter"></i> איתור</th>
-          <!--2-->
           <!-- <th class="sortable" (click)="sortByAmount()"><i class="fas fa-filter"></i> כמות</th> -->
-          <!--3-->
           <!-- <th>Last Count Date</th> -->
           <!-- <th>Last Counted Amount</th> -->
           <th>ספירה נוכחית</th>
-          <!--4-->
-          <th>פער</th>
-          <!--4.5-->
-          <th *ngIf="allowedCountYear && !printing"></th>
-          <!--5-->
+          <!-- <th>פער</th> -->
+          <!-- <th *ngIf="allowedCountYear && !printing"></th> -->
         </tr>
       </thead>
       <ng-container *ngIf="fetchingShelfs">
@@ -98,43 +105,34 @@
 
         <tr *ngFor="let shelf of allShelfs;let i = index">
           <td>{{i+1}}</td>
-          <!--1-->
           <td>{{shelf._id.item}}</td>
           <td>{{shelf._id.name}}</td>
-          <!--1-->
           <td *ngIf="itemType == 'material'">{{shelf._id.supplierBatchNumber}}</td>
-          <!--3.5-->
           <!-- <td>{{shelf._id.position}}</td> -->
           <td></td>
-          <!--2-->
           <!-- <td>{{shelf.total}}</td> -->
-          <!--3-->
           <!-- <td>{{shelf.lastCount.date}}</td> -->
           <!-- <td>{{shelf.lastCount.amount}}</td> -->
 
           <td *ngIf="shelfId != shelf._id">{{shelf.countedAmount}}</td>
-          <!--4-->
           <td *ngIf="shelfId == shelf._id">
             <input #countInput type="number" class="form-control" (keyup)="calculateDifference(shelf)"
               [(ngModel)]="shelf.countedAmount">
           </td>
 
-          <td><span *ngIf="shelf.difference">{{shelf.difference}}</span></td>
-          <!--4.5-->
+          <!-- <td><span *ngIf="shelf.difference">{{shelf.difference}}</span></td> -->
 
-          <td *ngIf="allowedCountYear && shelfId != shelf._id && !printing">
-            <!--5-->
+          <!-- <td *ngIf="allowedCountYear && shelfId != shelf._id && !printing">
             <button (click)="editShelfAmount(shelf)" class="btn btn-primary">
               <i class="click fa fa-pencil-alt"></i> הכנס ספירה
             </button>
-          </td>
+          </td> -->
 
-          <td *ngIf="allowedCountYear && shelfId == shelf._id && !printing">
-            <!--1-->
+          <!-- <td *ngIf="allowedCountYear && shelfId == shelf._id && !printing">
             <button [disabled]="updatingAmount" [style.cursor]="updatingAmount ? 'progress' : 'pointer'"
               (click)="setShelfs()" class="btn btn-danger">שמור לטופס
             </button>
-          </td>
+          </td> -->
 
         </tr>
       </tbody>
@@ -144,68 +142,21 @@
   <div *ngIf="allowedCountYear" class="row mt-4">
     <div class="col-3"></div>
     <div class="col-6">
-      <button *ngIf="whareHouse" (click)="takeStock()" class="btn save-form w-50">עדכן מלאי {{whareHouse}} - {{itemType}}s</button>
+      <button *ngIf="whareHouse" ngxPrint printSectionId="print-section"
+        styleSheetFile="../../../../assets/stylesheets/year-count.css" class="btn save-form w-50">הדפס דף סופר</button>
     </div>
     <div class="col-3"></div>
   </div>
 
-  <!-- <div class="row mt-3">
-    <div class="col-2"></div>
-    <div class="col-2"></div>
-    <div class="col-2">
-      <label class="form-control">Material</label>
+  <!-- <div *ngIf="allowedCountYear" class="row mt-4">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <button *ngIf="whareHouse" ngxPrint printSectionId="print-section" (click)="takeStock()" class="btn save-form w-50">עדכן מלאי {{whareHouse}} - {{itemType}}s</button>
     </div>
-    <div class="col-2">
-      <input class="form-control" (blur)="searchForShelfs($event)">
-    </div>
-    <div class="col-2"></div>
-    <div class="col-2"></div>
+    <div class="col-3"></div>
   </div> -->
 
-  <!-- <div class="row mt-2">
-    <div class="col-12">
-      <table style="font-size: 25px;" class="table table-bordered table-hover">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Name</th>
-            <th>Position</th>
-            <th>Amount</th>
-            <th>Expire Date</th>
-            <th>Arrival Date</th>
-            <th>Batch</th>
-            <th>Supplier Batch</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let shelf of materialShelfs;let i = index">
-            <td>{{i+1}}</td>
-            <td>{{shelf.materialName}}</td>
-            <td (click)="edit(shelf._id)" *ngIf="EditRow != shelf._id">{{shelf.position}}</td>
-            <td *ngIf="EditRow == shelf._id">
-              <input #shelfPosition class="form-control" [value]="shelf.position">
-            </td>
 
-            <td (click)="edit(shelf._id)" *ngIf="EditRow != shelf._id">{{shelf.amount}}</td>
-            <td *ngIf="EditRow == shelf._id">
-              <input #shelfAmount class="form-control" [value]="shelf.amount">
-            </td>
-
-            <td>{{shelf.expirationDate | date: 'dd/MM/yyyy'}}</td>
-            <td>{{shelf.arrivalDate | date: 'dd/MM/yyyy'}}</td>
-
-            <td>{{shelf.batchNumber}}</td>
-
-            <td>{{shelf.supplierBatchNumber}}</td>
-            <td><i *ngIf="EditRow == shelf._id" (click)="updateShelf(shelf._id)" class="fa fa-save text-success"></i>
-            </td>
-
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div> -->
 </div>
 
 

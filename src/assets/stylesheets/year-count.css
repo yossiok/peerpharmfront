@@ -1,0 +1,17 @@
+.desc {
+    width: 50%;
+}
+
+tr {
+    border: none;
+}
+
+td {
+    border: 1px solid black;
+    height:48px;
+}
+
+.header {
+    text-align: center;
+    margin: auto;
+}
