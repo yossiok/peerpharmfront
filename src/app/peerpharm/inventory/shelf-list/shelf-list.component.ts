@@ -27,14 +27,14 @@ export class ShelfListComponent implements OnInit {
   allShelfsCopy: any;
   itemType: string = "";
   whareHouse: string = "";
-  shelfId: any = {}
+  shelfId: any = {};
   allowedWHS: string[];
   allowedCountYear: boolean = false;
-  sortPositionOrder: number = 1
-  sortItemNumberOrder: number = 1
-  sortAmountOrder: number = 1
-  sortBatchOrder: number = 1
-  updates: any = []
+  sortPositionOrder: number = 1;
+  sortItemNumberOrder: number = 1;
+  sortAmountOrder: number = 1;
+  sortBatchOrder: number = 1;
+  updates: any = [];
 
   @ViewChild("shelfPosition") shelfPosition: ElementRef;
   @ViewChild("shelfAmount") shelfAmount: ElementRef;
@@ -51,7 +51,7 @@ export class ShelfListComponent implements OnInit {
     amount: new FormControl(null, Validators.required),
   });
   shellNums: any;
-  printing: boolean = false
+  printing: boolean = false;
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
     event: KeyboardEvent
@@ -68,7 +68,7 @@ export class ShelfListComponent implements OnInit {
     private xlSrv: ExcelService,
     private authService: AuthService,
     private modalService: NgbModal
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getAllCostumers();
@@ -82,8 +82,8 @@ export class ShelfListComponent implements OnInit {
       .newShelfYearCount(this.newShelfForm.value, this.whareHouse)
       .subscribe((data) => {
         if (data._id) {
-          this.allShelfs.push(data)
-          console.log(this.allShelfs)
+          this.allShelfs.push(data);
+          console.log(this.allShelfs);
           this.toastSrv.success("מדף הוקם בהצלחה");
         } else this.toastSrv.error("משהו השתבש");
       });
@@ -119,19 +119,19 @@ export class ShelfListComponent implements OnInit {
         break;
       case "Rosh HaAyin products":
         this.itemType = "product";
-        this.whareHouse = whareHouse
+        this.whareHouse = whareHouse;
         break;
       case "NEW KASEM":
         this.itemType = "component";
-        this.whareHouse = whareHouse
+        this.whareHouse = whareHouse;
         break;
       case "Kasem":
         this.itemType = "component";
-        this.whareHouse = whareHouse
+        this.whareHouse = whareHouse;
         break;
       case "Labels":
         this.itemType = "component";
-        this.whareHouse = whareHouse
+        this.whareHouse = whareHouse;
     }
     // console.log(whareHouse, this.itemType);
     this.inventorySrv
@@ -140,11 +140,9 @@ export class ShelfListComponent implements OnInit {
         // console.log(data);
         this.fetchingShelfs = false;
         if (data) {
-          data.sort((a, b) =>
-            a._id.position > b._id.position ? 1 : -1
-          );
+          data.sort((a, b) => (a._id.position > b._id.position ? 1 : -1));
           this.allShelfs = data;
-          // console.log(this.allShelfs);
+          console.log(this.allShelfs);
           this.allShelfsCopy = data;
         } else this.toastSrv.error("No Shelfs in Wharehouse");
       });
@@ -152,45 +150,57 @@ export class ShelfListComponent implements OnInit {
 
   sortByPosition() {
     if (this.sortPositionOrder == 1) {
-      this.allShelfs = this.allShelfs.sort((a, b) => a._id.position > b._id.position ? 1 : -1);
-      this.sortPositionOrder = -1
-    }
-    else {
-      this.allShelfs = this.allShelfs.sort((a, b) => a._id.position < b._id.position ? 1 : -1);
-      this.sortPositionOrder = 1
+      this.allShelfs = this.allShelfs.sort((a, b) =>
+        a._id.position > b._id.position ? 1 : -1
+      );
+      this.sortPositionOrder = -1;
+    } else {
+      this.allShelfs = this.allShelfs.sort((a, b) =>
+        a._id.position < b._id.position ? 1 : -1
+      );
+      this.sortPositionOrder = 1;
     }
   }
 
   sortByItem() {
     if (this.sortItemNumberOrder == 1) {
-      this.allShelfs = this.allShelfs.sort((a, b) => a._id.item > b._id.item ? 1 : -1);
-      this.sortItemNumberOrder = -1
-    }
-    else {
-      this.allShelfs = this.allShelfs.sort((a, b) => a._id.item < b._id.item ? 1 : -1);
-      this.sortItemNumberOrder = 1
+      this.allShelfs = this.allShelfs.sort((a, b) =>
+        a._id.item > b._id.item ? 1 : -1
+      );
+      this.sortItemNumberOrder = -1;
+    } else {
+      this.allShelfs = this.allShelfs.sort((a, b) =>
+        a._id.item < b._id.item ? 1 : -1
+      );
+      this.sortItemNumberOrder = 1;
     }
   }
 
   sortByAmount() {
     if (this.sortAmountOrder == 1) {
-      this.allShelfs = this.allShelfs.sort((a, b) => a.total > b.total ? 1 : -1);
-      this.sortAmountOrder = -1
-    }
-    else {
-      this.allShelfs = this.allShelfs.sort((a, b) => a.total < b.total ? 1 : -1);
-      this.sortAmountOrder = 1
+      this.allShelfs = this.allShelfs.sort((a, b) =>
+        a.total > b.total ? 1 : -1
+      );
+      this.sortAmountOrder = -1;
+    } else {
+      this.allShelfs = this.allShelfs.sort((a, b) =>
+        a.total < b.total ? 1 : -1
+      );
+      this.sortAmountOrder = 1;
     }
   }
 
   sortByBatch() {
     if (this.sortBatchOrder == 1) {
-      this.allShelfs = this.allShelfs.sort((a, b) => a._id.supplierBatchNumber > b._id.supplierBatchNumber ? 1 : -1);
-      this.sortBatchOrder = -1
-    }
-    else {
-      this.allShelfs = this.allShelfs.sort((a, b) => a._id.supplierBatchNumber < b._id.supplierBatchNumber ? 1 : -1);
-      this.sortBatchOrder = 1
+      this.allShelfs = this.allShelfs.sort((a, b) =>
+        a._id.supplierBatchNumber > b._id.supplierBatchNumber ? 1 : -1
+      );
+      this.sortBatchOrder = -1;
+    } else {
+      this.allShelfs = this.allShelfs.sort((a, b) =>
+        a._id.supplierBatchNumber < b._id.supplierBatchNumber ? 1 : -1
+      );
+      this.sortBatchOrder = 1;
     }
   }
 
@@ -199,9 +209,9 @@ export class ShelfListComponent implements OnInit {
     let itemNumber = ev.target.value;
     // console.log(itemNumber);
     if (itemNumber != "") {
-      this.allShelfs = this.allShelfs.filter(
-        (shelf) => shelf._id.item == itemNumber
-      ).sort((a, b) => a._id.itemNumber > b._id.itemNumber ? 1 : -1)
+      this.allShelfs = this.allShelfs
+        .filter((shelf) => shelf._id.item == itemNumber)
+        .sort((a, b) => (a._id.itemNumber > b._id.itemNumber ? 1 : -1));
     } else {
       this.allShelfs = this.allShelfsCopy;
     }
@@ -229,7 +239,9 @@ export class ShelfListComponent implements OnInit {
           s._id.position.includes(position)
         );
       } else {
-        this.allShelfs = this.allShelfs.filter((s) => regExp.test(s._id.position));
+        this.allShelfs = this.allShelfs.filter((s) =>
+          regExp.test(s._id.position)
+        );
       }
     } else {
       this.allShelfs = this.allShelfsCopy;
@@ -252,58 +264,67 @@ export class ShelfListComponent implements OnInit {
 
   editShelfAmount(shelf) {
     if (shelf != "") {
-      if (this.itemType == 'material') alert('שים לב! יש לעדכן חומרי גלם לפי באטץ!')
-      this.shelfId = shelf._id
-    } else this.shelfId = {}
-    setTimeout(() => this.countInput.nativeElement.focus(), 500)
+      if (this.itemType == "material")
+        alert("שים לב! יש לעדכן חומרי גלם לפי באטץ!");
+      this.shelfId = shelf._id;
+    } else this.shelfId = {};
+    setTimeout(() => this.countInput.nativeElement.focus(), 500);
   }
 
   setShelfs() {
-    this.shelfId = {}
+    this.shelfId = {};
   }
 
   calculateDifference(shelf) {
-    shelf.difference = -1 * (shelf.total - shelf.countedAmount)
+    shelf.difference = -1 * (shelf.total - shelf.countedAmount);
   }
 
   takeStock() {
-    this.allShelfs = this.allShelfsCopy
-    this.updates = this.allShelfs.filter(s => s.countedAmount != null)
-    console.log('updates before sending: ', this.updates)
-    this.modalService.open(this.updatesModal)
+    this.allShelfs = this.allShelfsCopy;
+    this.updates = this.allShelfs.filter((s) => s.countedAmount != null);
+    console.log("updates before sending: ", this.updates);
+    this.modalService.open(this.updatesModal);
   }
 
   printStocktakeForm() {
-    this.printing = true
+    this.printing = true;
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        this.printStocktake.nativeElement.click()
-        resolve(true)
-      }, 500)
-    })
+        this.printStocktake.nativeElement.click();
+        resolve(true);
+      }, 500);
+    });
   }
 
   update() {
-    this.printStocktakeForm().then(result => {
+    this.printStocktakeForm().then((result) => {
       if (result) {
-        this.modalService.dismissAll()
-        this.inventorySrv.takeStock({ itemType: this.itemType, updates: this.updates, whareHouse: this.whareHouse }).subscribe(data => {
-          console.log('response: ', data)
-          if (data.messages.length > 0) {
-            this.toastSrv.warning('צור קשר במיידי עם צוות מחשוב', 'ייתכן כי היתה בעיה')
-            console.log(data.messages)
-          }
-          else {
-            this.toastSrv.success('אנא וודא כמויות', 'עודכן בהצלחה!')
-            // fetch updated shelfs
-            if (this.whareHouse == 'Rosh HaAyin') this.getShelfsByWH(this.itemType)
-            else this.getShelfsByWH(this.whareHouse)
-          }
-          setTimeout(() => this.printing = false, 2000)
-        })
-      }
-      else this.toastSrv.error('משהו השתבש')
-    })
+        this.modalService.dismissAll();
+        this.inventorySrv
+          .takeStock({
+            itemType: this.itemType,
+            updates: this.updates,
+            whareHouse: this.whareHouse,
+          })
+          .subscribe((data) => {
+            console.log("response: ", data);
+            if (data.messages.length > 0) {
+              this.toastSrv.warning(
+                "צור קשר במיידי עם צוות מחשוב",
+                "ייתכן כי היתה בעיה"
+              );
+              console.log(data.messages);
+            } else {
+              this.toastSrv.success("אנא וודא כמויות", "עודכן בהצלחה!");
+              // fetch updated shelfs
+              if (this.whareHouse == "Rosh HaAyin")
+                this.getShelfsByWH(this.itemType);
+              else this.getShelfsByWH(this.whareHouse);
+            }
+            setTimeout(() => (this.printing = false), 2000);
+          });
+      } else this.toastSrv.error("משהו השתבש");
+    });
   }
 
   exportShelfListToXl() {
@@ -341,8 +362,6 @@ export class ShelfListComponent implements OnInit {
     }
   }
 
-
-
   edit(id) {
     if (id != "") {
       this.EditRow = id;
@@ -350,7 +369,6 @@ export class ShelfListComponent implements OnInit {
       this.EditRow = "";
     }
   }
-
 
   // updateShelfCostumer(shelf) {
   //   this.inventorySrv
