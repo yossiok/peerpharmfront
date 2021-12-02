@@ -3,6 +3,7 @@ import { Http, Headers, RequestOptions, Jsonp } from "@angular/http";
 import { Observable, BehaviorSubject, ReplaySubject } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { tap, map } from "rxjs/operators";
+import { YearCount } from "../peerpharm/inventory/shelf-list/YearCount";
 
 @Injectable({
   providedIn: "root",
@@ -289,6 +290,12 @@ export class InventoryService {
     return this.http
       .post(url, JSON.stringify(shelf), this.options)
       .pipe(map((res) => res.json()));
+  }
+
+  // ספירת מלאי - get last yearCount
+  getLastYearCount():Observable<YearCount> {
+    let url = `${this.baseUrl}itemShell/lastYearCount`;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
   // ספירת מלאי - עדכון מדף ספציפי

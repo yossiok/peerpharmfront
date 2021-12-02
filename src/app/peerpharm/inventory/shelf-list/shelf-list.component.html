@@ -15,6 +15,7 @@
     </div>
 
     <div class="col-3">
+      last yearCount: {{lastYearCount.serialNumber}}
       <label>מחסן</label>
       <select (change)="getShelfsByWH($event)" class="form-control">
         <option selected="true" disabled="disabled">בחר מחסן</option>
@@ -72,12 +73,13 @@
           <th>#</th>
           <!--1-->
           <th class="sortable" (click)="sortByItem()"><i class="fas fa-filter"></i> מק"ט</th>
+          <th class="sortable" (click)="sortByItem()"><i class="fas fa-filter"></i> תיאור</th>
           <!--1-->
           <th *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i> באטץ'</th>
           <!--3.5-->
           <th class="sortable" (click)="sortByPosition()"><i class="fas fa-filter"></i> איתור</th>
           <!--2-->
-          <th class="sortable" (click)="sortByAmount()"><i class="fas fa-filter"></i> כמות</th>
+          <!-- <th class="sortable" (click)="sortByAmount()"><i class="fas fa-filter"></i> כמות</th> -->
           <!--3-->
           <!-- <th>Last Count Date</th> -->
           <!-- <th>Last Counted Amount</th> -->
@@ -98,12 +100,14 @@
           <td>{{i+1}}</td>
           <!--1-->
           <td>{{shelf._id.item}}</td>
+          <td>{{shelf._id.name}}</td>
           <!--1-->
           <td *ngIf="itemType == 'material'">{{shelf._id.supplierBatchNumber}}</td>
           <!--3.5-->
-          <td>{{shelf._id.position}}</td>
+          <!-- <td>{{shelf._id.position}}</td> -->
+          <td></td>
           <!--2-->
-          <td>{{shelf.total}}</td>
+          <!-- <td>{{shelf.total}}</td> -->
           <!--3-->
           <!-- <td>{{shelf.lastCount.date}}</td> -->
           <!-- <td>{{shelf.lastCount.amount}}</td> -->

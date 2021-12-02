@@ -13,6 +13,7 @@ import { CostumersService } from "src/app/services/costumers.service";
 import { ExcelService } from "src/app/services/excel.service";
 import { InventoryService } from "src/app/services/inventory.service";
 import { ItemsService } from "src/app/services/items.service";
+import { YearCount } from "./YearCount";
 
 @Component({
   selector: "app-shelf-list",
@@ -20,6 +21,8 @@ import { ItemsService } from "src/app/services/items.service";
   styleUrls: ["./shelf-list.component.scss"],
 })
 export class ShelfListComponent implements OnInit {
+  
+  lastYearCount: YearCount;
   allShelfs: any;
   allCostumers: any;
   EditRow: any;
@@ -71,10 +74,21 @@ export class ShelfListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getLastYearCount()
     this.getAllCostumers();
     this.allowedWHS = this.authService.loggedInUser.allowedWH;
     this.allowedCountYear =
       this.authService.loggedInUser.authorization.includes("allowedCountYear");
+  }
+
+  getLastYearCount() {
+    this.inventorySrv.getLastYearCount().subscribe(data => {
+      this.lastYearCount = data
+    })
+  }
+
+  exportYearCountForm() {
+
   }
 
   addNewItemShelf() {
@@ -133,18 +147,13 @@ export class ShelfListComponent implements OnInit {
         this.itemType = "component";
         this.whareHouse = whareHouse
     }
-    // console.log(whareHouse, this.itemType);
-    this.inventorySrv
-      .shelfListByWH(this.whareHouse, this.itemType)
-      .subscribe((data) => {
-        // console.log(data);
+    this.inventorySrv.shelfListByWH(this.whareHouse, this.itemType).subscribe((data) => {
         this.fetchingShelfs = false;
         if (data) {
           data.sort((a, b) =>
             a._id.position > b._id.position ? 1 : -1
           );
           this.allShelfs = data;
-          // console.log(this.allShelfs);
           this.allShelfsCopy = data;
         } else this.toastSrv.error("No Shelfs in Wharehouse");
       });
