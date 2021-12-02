@@ -293,7 +293,7 @@ export class InventoryService {
   }
 
   // ספירת מלאי - get last yearCount
-  getLastYearCount():Observable<YearCount> {
+  getLastYearCount(): Observable<YearCount> {
     let url = `${this.baseUrl}itemShell/lastYearCount`;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
@@ -303,6 +303,13 @@ export class InventoryService {
     let url = this.baseUrl + "itemShell/newShelfYearCount";
     return this.http
       .post(url, JSON.stringify({ ...shelf, whareHouse }), this.options)
+      .pipe(map((res) => res.json()));
+  }
+
+  sendExcel(excel) {
+    let url = this.baseUrl + "itemShell/newCountUpload";
+    return this.http
+      .post(url, JSON.stringify(excel), this.options)
       .pipe(map((res) => res.json()));
   }
 
