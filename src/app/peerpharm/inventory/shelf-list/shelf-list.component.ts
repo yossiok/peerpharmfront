@@ -14,6 +14,7 @@ import { ExcelService } from "src/app/services/excel.service";
 import { InventoryService } from "src/app/services/inventory.service";
 import { ItemsService } from "src/app/services/items.service";
 import { YearCount } from "./YearCount";
+import * as XLSX from "xlsx";
 
 @Component({
   selector: "app-shelf-list",
@@ -43,6 +44,7 @@ export class ShelfListComponent implements OnInit {
   @ViewChild("countInput") countInput: ElementRef;
   @ViewChild("updatesModal") updatesModal: ElementRef;
   @ViewChild("printStocktake") printStocktake: ElementRef;
+  @ViewChild("uploadExFile") uploadExFile: ElementRef;
   updatingAmount: boolean;
   fetchingShelfs: boolean;
 
@@ -440,22 +442,38 @@ export class ShelfListComponent implements OnInit {
     return [year, month, day].join("-");
   }
 
-  sendExcelToData(ev) {
+  sendExcelToData(ev: any) {
+    console.log(ev);
+    console.log(ev.target);
+    console.log(ev.target.files);
+    console.log(ev.target.files[0]);
     if (confirm("האם אתה בטוח שבחרת בקובץ הנכון ?") == true) {
       // this.showCurtain=true;
-      let reader = new FileReader();
+      const target: DataTransfer = <DataTransfer>ev.target;
+      console.log(target.files.length);
+      if (target.files.length > 1) {
+        alert("ניתן לבחור קובץ אחד בלבד");
+        this.uploadExFile.nativeElement.value = "";
+        return;
+      }
 
-      reader.readAsDataURL(ev.files[0]); // read file as data url
+      const reader: FileReader = new FileReader();
 
-      reader.onload = (event) => {
-        // called once readAsDataURL is completed
+      // reader.readAsDataURL(ev.target.files[0]); // read file as data url
+      reader.readAsBinaryString(target.files[0]);
 
-        let excelToSend = event.target["result"];
-        // excelToSend = excelToSend.replace("data:application/pdf;base64,","");
-        this.inventorySrv.sendExcel({ data: excelToSend }).subscribe((data) => {
-          // this.showCurtain=false;
-          alert(data.msg);
+      // reader.onLoad is called once readAsBinaryString is completed
+      reader.onload = (event: any) => {
+        // binaryStr is the binary string rsult of the excel file reading
+        const binaryStr = event.target.result;
+
+        const workBook: XLSX.WorkBook = XLSX.read(binaryStr, {
+          type: "binary",
         });
+        const workSheetName: string = workBook.SheetNames[0];
+        const workSheet: XLSX.WorkSheet = workBook.Sheets[workSheetName];
+        let wsJson = XLSX.utils.sheet_to_json(workSheet);
+        console.log(wsJson);
       };
     }
   }

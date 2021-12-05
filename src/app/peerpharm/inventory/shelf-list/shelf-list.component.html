@@ -38,6 +38,10 @@
         <option *ngFor="let shelf of allShelfsCopy" [value]="shelf._id.item">{{shelf._id.item}}</option>
       </datalist>
     </div>
+    <div class="col-2">
+      <label>העלה קובץ ספירת מלאי</label>
+      <input type="file" multiple="false" id="excelFile" (change)="sendExcelToData($event)" #uploadExFile>
+    </div>
   </div>
 
   <div dir="rtl" *ngIf="allowedCountYear && allShelfs && allShelfs.length > 0"
