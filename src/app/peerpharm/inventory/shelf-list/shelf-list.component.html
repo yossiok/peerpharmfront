@@ -85,18 +85,18 @@
           </td>
         </tr>
         <tr>
-          <th style="width: 5px;">#</th>
-          <th class="sortable" (click)="sortByItem()"><i class="fas fa-filter"></i> מק"ט</th>
+          <th class="runner">#</th>
+          <th class="sortable item" (click)="sortByItem()"><i class="fas fa-filter"></i> מק"ט</th>
           <th class="sortable desc" (click)="sortByItem()"><i class="fas fa-filter"></i> תיאור</th>
-          <th *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i> באטץ'</th>
-          <th class="sortable" (click)="sortByPosition()"><i class="fas fa-filter"></i> איתור</th>
-          <th> יחידת מידה</th>
+          <th class="batch" *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i> באטץ'</th>
+          <th class="sortable position" (click)="sortByPosition()"><i class="fas fa-filter"></i> איתור</th>
+          <th class="measure"> יחידת מידה</th>
           <!-- <th class="sortable" (click)="sortByAmount()"><i class="fas fa-filter"></i> כמות</th> -->
           <!-- <th>Last Count Date</th> -->
           <!-- <th>Last Counted Amount</th> -->
-          <th>ספירה נוכחית</th>
-          <th>פריט חברה?</th>
-          <th>הערות</th>
+          <th class="count">ספירה נוכחית</th>
+          <th class="owner">פריט חברה?</th>
+          <th class="remarks">הערות</th>
           <!-- <th>פער</th> -->
           <!-- <th *ngIf="allowedCountYear && !printing"></th> -->
         </tr>
@@ -108,7 +108,7 @@
       <tbody *ngIf="!fetchingShelfs">
 
         <tr *ngFor="let shelf of allShelfs;let i = index">
-          <td style="width: 5px;">{{i+1}}</td>
+          <td>{{i+1}}</td>
           <td>{{shelf._id.item}}</td>
           <td>{{shelf._id.name}}</td>
           <td *ngIf="itemType == 'material'">{{shelf._id.supplierBatchNumber}}</td>
@@ -120,7 +120,7 @@
           <!-- <td>{{shelf.lastCount.amount}}</td> -->
 
           <td *ngIf="shelfId != shelf._id">{{shelf.countedAmount}}</td>
-          <td *ngIf="shelfId != shelf._id">כן / לא</td>
+          <td *ngIf="shelfId != shelf._id"> כן / לא </td>
           <td *ngIf="shelfId != shelf._id"></td>
           <td *ngIf="shelfId == shelf._id">
             <input #countInput type="number" class="form-control" (keyup)="calculateDifference(shelf)"

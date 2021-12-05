@@ -1,5 +1,38 @@
+.runner {
+    width: 2%;
+}
+
+.item {
+    width: 3%;
+}
+
 .desc {
-    width: 50%;
+    width: 25%;
+}
+
+.batch {
+    width: 10%;
+}
+
+.position {
+    width: 5%;
+}
+
+.measure {
+    width: 5%;
+}
+
+.count {
+    width: 10%;
+}
+
+.owner {
+    width: 10%;
+    text-align: center;
+}
+
+.remarks {
+    width: 30%;
 }
 
 tr {
