@@ -57,7 +57,7 @@ export class PlanningDetailsComponent implements OnInit {
   notAndrey: boolean = true
   editDueDate: number = -1
   checkedFormules: ProductionFormule[]
-  andreyisalazyworkersowehavetoworkharderfrohim: number[] = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,,17,18,19,20,21,22,23,24,25,26,27,28,29,30]
+  andreyisalazyworkersowehavetoworkharderfrohim: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, , 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
 
   constructor(
     private authService: AuthService,
@@ -111,7 +111,7 @@ export class PlanningDetailsComponent implements OnInit {
 
   // create formules from items
   createPAKA() {
-    if (confirm('ברגע שתיצור פורמולות לא תוכל יותר לשנות כמויות. להמשיך?')) {
+    if (confirm('ברגע שתיצור פורמולות שינויים במשקלי הפריטים לא ישפיעו יותר. להמשיך?')) {
 
       let orderItemsChecked = this.workPlan.orderItems.filter(oi => oi.checked == true)
 
@@ -228,6 +228,21 @@ export class PlanningDetailsComponent implements OnInit {
     } else this.toastr.warning("לא בוצעו שינויים");
   }
 
+  deleteProductionFormules() {
+    if(confirm('כל הפורמולות יימחקו ותצטרך ליצור אותן מחדש. להמשיך?')){
+      this.workPlan.productionFormules = []
+      // TODO: update status
+      this.workPlan.orderItems.map(oi => {
+        oi.hasFormule = false
+        oi.status = 2
+        return oi
+      })
+      this.saveChanges()
+      .then((succesMessage) => this.toastr.success(succesMessage, 'פורמולות נמחקו'))
+      .catch((errorMessage) => this.toastr.error(errorMessage));
+    }
+  }
+
   deleteWorkPlan() {
     if (confirm('למחוק פק"ע???')) {
       this.productionService
@@ -288,20 +303,25 @@ export class PlanningDetailsComponent implements OnInit {
       this.workPlan.productionFormules.map(f => f.status = 3)
 
       this.saveChanges()
-        .then((succesMessage) => this.toastr.success(succesMessage, 'פורמולות מאושרות'))
-        .catch((errorMessage) => this.toastr.error(errorMessage));
-      let approved = await this.authenticate();
-      if (approved) {
-        let amountsLoaded = await this.loadMaterialsForFormule(true);
-        let formulesPrinted = await this.printFormules();
-      } else this.toastr.error("אימות נכשל");
+        .then((succesMessage) => {
+          this.toastr.success(succesMessage, 'פורמולות מאושרות')
+          this.authenticate()
+            .then(async approved => {
+              if (approved) {
+                let amountsLoaded = await this.loadMaterialsForFormule(true);
+                let formulesPrinted = await this.printFormules();
+              } else this.toastr.error("אימות נכשל");
+            }).catch(authFailedMsg => {
+              this.toastr.error('אימות נכשל!')
+            })
+        })
+        .catch((errorMessage) => {
+          this.toastr.error(errorMessage)
+        });
     }
   }
 
-  async printFormules(all?) {
-
-    // if (all) this.checkedFormules = [...this.workPlan.productionFormules]
-
+  async printFormules() {
     for (let formule of this.workPlan.productionFormules) {
       formule.formuleData = this.formuleCalculate(
         formule.formuleData,

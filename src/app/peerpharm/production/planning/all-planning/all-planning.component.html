@@ -70,7 +70,7 @@
                                 <h4>{{workPlan.remark}}</h4>
                             </div>
                             <div class="service-line status">
-                                <h4>{{workPlan.status | orderItemBatchStatus}}</h4>
+                                <!-- <h4>{{workPlan.status | orderItemBatchStatus}}</h4> -->
                                 <i *ngIf="workPlan.status == 3" class="fas fa-check"></i>
                                 <span *ngIf="workPlan.status == 4">
                                     <i class="fas fa-check"></i>
@@ -91,6 +91,8 @@
             <div class="status-index-item" [style.background]="'#ED7D31'">Scheduled <i class="far fa-calendar-alt"></i>
             </div>
             <div class="status-index-item" [style.background]="'#C48170'">Materials <i class="fas fa-tint"></i>
+            </div>
+            <div class="status-index-item" [style.background]="'#A5A5A5'">Produced <i class="fas fa-archive"></i>
             </div>
         </div>
     </div>
