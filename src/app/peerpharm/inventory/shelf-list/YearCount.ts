@@ -15,7 +15,7 @@ export interface YearCount {
     userName: string,
     whareHouse: string,
     updates: ShelfStocktake[],
-    serialNumber: Number
+    serialNumber: number
 }
 
   

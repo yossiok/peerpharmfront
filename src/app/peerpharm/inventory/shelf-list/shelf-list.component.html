@@ -73,7 +73,7 @@
     <table dir="rtl" class="table table-bordered table-hover">
       <thead>
         <tr>
-          <td class="header" colspan="1">
+          <td class="header" colspan="3">
             דף ספירת מלאי לשנת הכספים 2021
           </td>
           <td class="header" colspan="5">
@@ -84,20 +84,23 @@
           <td class="header" colspan="3">
             מלאי {{whareHouse}} - {{itemType}}s
           </td>
-          <td class="header" colspan="3">
+          <td class="header" colspan="5">
             טופס מספר {{lastYearCount.serialNumber + 1}}
           </td>
         </tr>
         <tr>
-          <th>#</th>
+          <th style="width: 5px;">#</th>
           <th class="sortable" (click)="sortByItem()"><i class="fas fa-filter"></i> מק"ט</th>
           <th class="sortable desc" (click)="sortByItem()"><i class="fas fa-filter"></i> תיאור</th>
           <th *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i> באטץ'</th>
           <th class="sortable" (click)="sortByPosition()"><i class="fas fa-filter"></i> איתור</th>
+          <th> יחידת מידה</th>
           <!-- <th class="sortable" (click)="sortByAmount()"><i class="fas fa-filter"></i> כמות</th> -->
           <!-- <th>Last Count Date</th> -->
           <!-- <th>Last Counted Amount</th> -->
           <th>ספירה נוכחית</th>
+          <th>פריט חברה?</th>
+          <th>הערות</th>
           <!-- <th>פער</th> -->
           <!-- <th *ngIf="allowedCountYear && !printing"></th> -->
         </tr>
@@ -105,20 +108,24 @@
       <ng-container *ngIf="fetchingShelfs">
         <div class="bigLoader"></div>
       </ng-container>
+   
       <tbody *ngIf="!fetchingShelfs">
 
         <tr *ngFor="let shelf of allShelfs;let i = index">
-          <td>{{i+1}}</td>
+          <td style="width: 5px;">{{i+1}}</td>
           <td>{{shelf._id.item}}</td>
           <td>{{shelf._id.name}}</td>
           <td *ngIf="itemType == 'material'">{{shelf._id.supplierBatchNumber}}</td>
           <!-- <td>{{shelf._id.position}}</td> -->
+          <td></td>
           <td></td>
           <!-- <td>{{shelf.total}}</td> -->
           <!-- <td>{{shelf.lastCount.date}}</td> -->
           <!-- <td>{{shelf.lastCount.amount}}</td> -->
 
           <td *ngIf="shelfId != shelf._id">{{shelf.countedAmount}}</td>
+          <td *ngIf="shelfId != shelf._id">כן / לא</td>
+          <td *ngIf="shelfId != shelf._id"></td>
           <td *ngIf="shelfId == shelf._id">
             <input #countInput type="number" class="form-control" (keyup)="calculateDifference(shelf)"
               [(ngModel)]="shelf.countedAmount">
@@ -140,6 +147,24 @@
 
         </tr>
       </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3">שם הסופר/ת: __________________</td>
+          <td colspan="2">תאריך ספירה: ____________________</td>
+          <td colspan="2">חתימת הסופר/ת: _______________</td>
+        </tr>
+        <tr>
+          <td colspan="3">שם הבקר/ית: __________________</td>
+          <td colspan="2">תאריך הבדיקה: ____________________</td>
+          <td colspan="2">חתימת הבקר/ית: _______________</td>
+        </tr>
+        <tr>
+          <td colspan="2">שם המקליד/ה: __________________</td>
+          <td colspan="2">תאריך הקלדה: ____________________</td>
+          <td>שעה: _______________</td>
+          <td colspan="2">חתימת המקליד/ה: _______________</td>
+        </tr>
+      </tfoot>
     </table>
   </div>
 

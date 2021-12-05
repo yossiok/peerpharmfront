@@ -338,8 +338,19 @@ export class ShelfListComponent implements OnInit {
   }
 
   exportShelfListToXl() {
-    let shelfs = [...this.allShelfs];
-    this.xlSrv.exportAsExcelFile(shelfs, "Shelf Report");
+    let shelfs = [];
+    for(let shelf of this.allShelfs) {
+      shelfs.push({
+        'מק"ט': shelf._id.item,
+        'תיאור הפריט': shelf._id.name[0],
+        'איתור': "",
+        "יח' מידה": "",
+        "כמות": "",
+        "פריט חברה": "",
+        "הערות": ""
+      })
+    }
+    this.xlSrv.exportAsExcelFile(shelfs, `ספירת מלאי ${this.lastYearCount.serialNumber + 1}, ${this.whareHouse} - ${this.itemType}s, 2021`);
   }
 
   // updateShelfAmount(shelf) {
