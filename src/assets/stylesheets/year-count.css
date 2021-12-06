@@ -35,13 +35,18 @@
     width: 30%;
 }
 
+table {
+    border-collapse: collapse;
+}
+
 tr {
     border: none;
 }
 
 td {
     border: 1px solid black;
-    height:37px;
+    height:39px;
+    padding-right: 2px;
 }
 
 .item-td {
