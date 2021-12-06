@@ -190,9 +190,15 @@ export class ShelfListComponent implements OnInit {
       .subscribe((data) => {
         this.fetchingShelfs = false;
         if (data) {
-          data.sort((a, b) => (a._id.position > b._id.position ? 1 : -1));
-          this.allShelfs = data;
-          this.allShelfsCopy = data;
+          let allShelfsWithOrWithoutItems = data.emptyShells.concat(data.itemShells)
+          allShelfsWithOrWithoutItems.sort((a, b) => (a._id.position > b._id.position ? 1 : -1));
+          let emptyLines = []
+          for(let i = 0; i < 50; i++) {
+            emptyLines.push({ _id: { } })
+          }
+          allShelfsWithOrWithoutItems = allShelfsWithOrWithoutItems.concat(emptyLines)
+          this.allShelfs = allShelfsWithOrWithoutItems;
+          this.allShelfsCopy = allShelfsWithOrWithoutItems;
           console.log(data);
         } else this.toastSrv.error("No Shelfs in Wharehouse");
       });
