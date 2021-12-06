@@ -89,9 +89,8 @@
           </td>
         </tr>
         <td colspan="4">שם הקובץ: {{fileName}}</td>
-        <td colspan="4">תאריך עריכת הקובץ: {{fileDate| date: 'dd/MM/YYYY HH:mm' }}</td>
-
-
+        <td colspan="2">תאריך עריכת הקובץ: {{fileDate| date: 'dd/MM/YYYY ' }}</td>
+        <td colspan="2">שעת עריכת הקובץ: {{fileDate| date: 'HH:mm' }}</td>
         <tr>
           <th class="runner">#</th>
           <th class="sortable item" (click)="sortByItem()"><i class="fas fa-filter"></i> מק"ט</th>
@@ -114,9 +113,7 @@
       <ng-container *ngIf="fetchingShelfs">
         <div class="bigLoader"></div>
       </ng-container>
-
       <tbody *ngIf="!fetchingShelfs">
-
         <tr *ngFor="let shelf of allShelfs;let i = index">
           <td>{{i+1}}</td>
           <td>{{shelf._id.item}}</td>
