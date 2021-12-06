@@ -13,6 +13,9 @@
       <img style="width: 50px; height: 50px; cursor: pointer;" (click)="exportShelfListToXl()"
         src="../../../../assets/images/excel.png" alt="">
     </div>
+    <ng-container *ngIf="fetchingPrices">
+      <div class="bigLoader"></div>
+    </ng-container>
 
     <div class="col-3">
 
@@ -194,7 +197,9 @@
           <th class="measure"> יחידת מידה</th>
           <th>ספירה קודמת</th>
           <th class="count">ספירה נוכחית</th>
-          <th class="count">הפרש</th>
+          <th class="count">הפרש בכמות</th>
+          <th class="count">הפרש במחיר</th>
+          <th class="count">מטבע</th>
           <th class="owner">פריט חברה?</th>
           <th class="remarks">הערות</th>
 
@@ -209,15 +214,20 @@
           <td>{{shelf.itemPosition}}</td>
           <td class="item-td">{{shelf.itemNumber}}</td>
           <td>{{shelf.itemName}}</td>
-          <td *ngIf="itemType == 'material'">{{shelf._id.supplierBatchNumber}}</td>
+          <td *ngIf="itemType == 'material'">{{shelf.itemBatch}}</td>
           <td *ngIf="itemType=='component'">Unit</td>
           <td *ngIf="itemType=='material'">Grams</td>
           <td> {{shelf.prevQty}}</td>
           <td>{{shelf.itemQty}}</td>
-          <td [style.backgroundColor]="shelf.itemQty-shelf.prevQty<0? 'red': 'green'">{{shelf.itemQty-shelf.prevQty}}
+          <td [ngClass]="shelf.itemQty-shelf.prevQty> 50||shelf.itemQty-shelf.prevQty<-50? 'minus': 'plus'">
+            {{shelf.itemQty-shelf.prevQty}}
           </td>
+          <td [ngClass]="shelf.itemQty-shelf.prevQty> 50||shelf.itemQty-shelf.prevQty<-50? 'minus': 'plus'">
+            {{(shelf.itemQty-shelf.prevQty)*shelf.itemPrice}}
+          </td>
+          <td>{{shelf.itemCoin}}</td>
           <td>{{shelf.companyOwned}}</td>
-          <td> {{shelf.itemRremark}} </td>
+          <td> {{shelf.itemRemark}} </td>
         </tr>
       </tbody>
       <tfoot>
