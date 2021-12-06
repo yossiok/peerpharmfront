@@ -91,7 +91,7 @@ export class ShelfListComponent implements OnInit {
 
   getLastYearCount() {
     this.inventorySrv.getLastYearCount().subscribe((data) => {
-      this.lastYearCount = data;
+      this.lastYearCount = data[0];
     });
   }
 
