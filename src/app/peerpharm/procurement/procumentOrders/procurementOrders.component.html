@@ -266,7 +266,7 @@
                     <textarea [value]="line.remarks" #purchaseRemarks></textarea>
                   </td>
                   <td [style.background]="setStatusColor(line.status)" [style.color]="setStatusTextColor(line.status)">
-                    <label>{{hebStat(line.status)}} {{line.statusChange | date: 'dd/MM'}}</label>
+                    <label>{{hebStat(line.status)}} {{line.statusChange | date: 'dd/MM/yyyy'}}</label>
                   </td>
                   <td><button class="btn btn-primary" (click)="printOrder(line)">Print</button></td>
                   <td>{{line.user}}</td>

@@ -68,6 +68,14 @@
     </form>
 
   </div>
+  <div *ngIf="allowedCountYear" class="row mt-4">
+    <div class="col-3"></div>
+    <div class="col-6">
+      <button *ngIf="whareHouse" ngxPrint printSectionId="print-section"
+        styleSheetFile="../../../../assets/stylesheets/year-count.css" class="btn save-form w-50">הדפס דף סופר</button>
+    </div>
+    <div class="col-3"></div>
+  </div>
 
   <div dir="rtl" *ngIf="whareHouse" id="print-section" class="row mt-4">
     <table dir="rtl" class="table table-bordered table-hover">
@@ -101,8 +109,7 @@
           <!-- <th class="sortable" (click)="sortByAmount()"><i class="fas fa-filter"></i> כמות</th> -->
           <!-- <th>Last Count Date</th> -->
           <!-- <th>Last Counted Amount</th> -->
-          <th></th>
-          <th class="count">ספירה נוכחית</th>
+          <th class="count">כמות</th>
           <th class="owner">פריט חברה?</th>
           <th class="remarks">הערות</th>
           <!-- <th>פער</th> -->
@@ -120,7 +127,6 @@
           <td>{{shelf._id.name}}</td>
           <td *ngIf="itemType == 'material'">{{shelf._id.supplierBatchNumber}}</td>
           <!-- <td>{{shelf._id.position}}</td> -->
-          <td></td>
           <td></td>
           <!-- <td>{{shelf.total}}</td> -->
           <!-- <td>{{shelf.lastCount.date}}</td> -->
@@ -171,14 +177,7 @@
     </table>
   </div>
 
-  <div *ngIf="allowedCountYear" class="row mt-4">
-    <div class="col-3"></div>
-    <div class="col-6">
-      <button *ngIf="whareHouse" ngxPrint printSectionId="print-section"
-        styleSheetFile="../../../../assets/stylesheets/year-count.css" class="btn save-form w-50">הדפס דף סופר</button>
-    </div>
-    <div class="col-3"></div>
-  </div>
+
 
   <!-- <div *ngIf="allowedCountYear" class="row mt-4">
     <div class="col-3"></div>
