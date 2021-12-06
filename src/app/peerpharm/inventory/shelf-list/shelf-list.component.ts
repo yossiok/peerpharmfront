@@ -40,9 +40,12 @@ export class ShelfListComponent implements OnInit {
   updates: any = [];
   allCountShelves: any = [];
   allCountShelvesCopy: any = [];
-  showCurrent: boolean = false;
+  showFile: boolean = false;
   fileName: string = "";
   fileDate: Date = null;
+  componentsPrices = [];
+  materialsPrices = [];
+  productsPrices = [];
 
   @ViewChild("shelfPosition") shelfPosition: ElementRef;
   @ViewChild("shelfAmount") shelfAmount: ElementRef;
@@ -84,9 +87,37 @@ export class ShelfListComponent implements OnInit {
   ngOnInit() {
     this.getLastYearCount();
     this.getAllCostumers();
+    this.getInvRepCosts();
     this.allowedWHS = this.authService.loggedInUser.allowedWH;
     this.allowedCountYear =
       this.authService.loggedInUser.authorization.includes("allowedCountYear");
+  }
+
+  getInvRepCosts() {
+    this.inventorySrv.getInvRepCosts("component").subscribe((data) => {
+      console.log(data);
+      if (data.msg) {
+        this.toastSrv.error(data.msg);
+        return;
+      } else if (data) {
+        this.componentsPrices = data;
+      } else {
+        this.toastSrv.error("Components prices were not found");
+        return;
+      }
+    });
+    this.inventorySrv.getInvRepCosts("material").subscribe((data) => {
+      console.log(data);
+      if (data.msg) {
+        this.toastSrv.error(data.msg);
+        return;
+      } else if (data) {
+        this.materialsPrices = data;
+      } else {
+        this.toastSrv.error("Materials prices were not found");
+        return;
+      }
+    });
   }
 
   getLastYearCount() {
@@ -110,6 +141,7 @@ export class ShelfListComponent implements OnInit {
   }
 
   getAllWhShelfs() {
+    this.showFile = false;
     this.inventorySrv.getWhareHousesList().subscribe((res) => {
       let whid = res.find((wh) => wh.name == this.whareHouse)._id;
       if (this.allowedWHS.includes(whid)) {
@@ -357,7 +389,7 @@ export class ShelfListComponent implements OnInit {
     for (let shelf of this.allShelfs) {
       shelfs.push({
         'מק"ט': shelf._id.item,
-        "תיאור הפריט": shelf._id.name[0],
+        "תיאור הפריט": shelf._id.name,
         איתור: shelf._id.position,
         "יח' מידה": "",
         כמות: "",
@@ -508,6 +540,7 @@ export class ShelfListComponent implements OnInit {
           this.selectWh.nativeElement.value = this.whareHouse;
           this.fileName = target.files[0].name;
           this.fileDate = ev.target.files[0].lastModified;
+          this.showFile = true;
           for (let item of wsJson) {
             let shelf = {
               itemNumber: item['מק"ט'],
@@ -547,6 +580,7 @@ export class ShelfListComponent implements OnInit {
               }
             });
         } else {
+          this.showFile = false;
           this.fetchingShelfs = false;
           this.toastSrv.error("No Shelfs in Wharehouse");
         }

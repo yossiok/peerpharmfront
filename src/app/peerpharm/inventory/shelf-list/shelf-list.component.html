@@ -77,7 +77,7 @@
     <div class="col-3"></div>
   </div>
 
-  <div dir="rtl" *ngIf="whareHouse" id="print-section" class="row mt-4">
+  <div dir="rtl" *ngIf="whareHouse && !showFile" id="print-section" class="row mt-4">
     <table dir="rtl" class="table table-bordered table-hover">
       <thead>
         <tr>
@@ -96,15 +96,13 @@
             טופס מספר {{lastYearCount.serialNumber + 1}}
           </td>
         </tr>
-        <td colspan="4">שם הקובץ: {{fileName}}</td>
-        <td colspan="2">תאריך עריכת הקובץ: {{fileDate| date: 'dd/MM/YYYY ' }}</td>
-        <td colspan="2">שעת עריכת הקובץ: {{fileDate| date: 'HH:mm' }}</td>
         <tr>
           <th class="runner">#</th>
           <th class="sortable position" (click)="sortByPosition()"><i class="fas fa-filter"></i> איתור</th>
           <th class="sortable item" (click)="sortByItem()"><i class="fas fa-filter"></i> מק"ט</th>
           <th class="sortable desc" (click)="sortByItem()"><i class="fas fa-filter"></i> תיאור</th>
-          <th class="batch" *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i> באטץ'</th>
+          <th class="batch" *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i> באטץ'
+          </th>
           <th class="measure"> יחידת מידה</th>
           <!-- <th class="sortable" (click)="sortByAmount()"><i class="fas fa-filter"></i> כמות</th> -->
           <!-- <th>Last Count Date</th> -->
@@ -127,7 +125,8 @@
           <td>{{shelf._id.name}}</td>
           <td *ngIf="itemType == 'material'">{{shelf._id.supplierBatchNumber}}</td>
           <!-- <td>{{shelf._id.position}}</td> -->
-          <td></td>
+          <td *ngIf="itemType=='component'">Unit</td>
+          <td *ngIf="itemType=='material'">Grams</td>
           <!-- <td>{{shelf.total}}</td> -->
           <!-- <td>{{shelf.lastCount.date}}</td> -->
           <!-- <td>{{shelf.lastCount.amount}}</td> -->
@@ -177,15 +176,86 @@
     </table>
   </div>
 
+  <div dir="rtl" *ngIf="showFile" class="row mt-4">
+    <table dir="rtl" class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <td class="header" colspan="3">
+            קובץ ספירת מלאי לשנת הכספים 2021
+          </td>
+          <td class="header" colspan="5">
+            Peerpharm Ltd - עמל 17 אזור תעשיה ,אפק ראש העין 4809256.
+          </td>
+        </tr>
+        <td colspan="2">מחסן: {{whareHouse}} - {{itemType}}s</td>
+        <td colspan="2">שם הקובץ: {{fileName}}</td>
+        <td colspan="2">תאריך עריכת הקובץ: {{fileDate| date: 'dd/MM/YYYY ' }}</td>
+        <td colspan="2">שעת עריכת הקובץ: {{fileDate| date: 'HH:mm' }}</td>
+        <tr>
+          <th class="runner">#</th>
+          <th class="sortable position" (click)="sortByPosition()"><i class="fas fa-filter"></i> איתור</th>
+          <th class="sortable item" (click)="sortByItem()"><i class="fas fa-filter"></i> מק"ט</th>
+          <th class="sortable desc" (click)="sortByItem()"><i class="fas fa-filter"></i> תיאור</th>
+          <th class="batch" *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i> באטץ'
+          </th>
+          <th class="measure"> יחידת מידה</th>
+          <th>ספירה קודמת</th>
+          <th class="count">ספירה נוכחית</th>
+          <th class="count">הפרש</th>
+          <th class="owner">פריט חברה?</th>
+          <th class="remarks">הערות</th>
 
+        </tr>
+      </thead>
+      <ng-container *ngIf="fetchingShelfs">
+        <div class="bigLoader"></div>
+      </ng-container>
+      <tbody *ngIf="!fetchingShelfs">
+        <tr *ngFor="let shelf of allCountShelves;let i = index">
+          <td>{{i+1}}</td>
+          <td>{{shelf.itemPosition}}</td>
+          <td class="item-td">{{shelf.itemNumber}}</td>
+          <td>{{shelf.itemName}}</td>
+          <td *ngIf="itemType == 'material'">{{shelf._id.supplierBatchNumber}}</td>
+          <td *ngIf="itemType=='component'">Unit</td>
+          <td *ngIf="itemType=='material'">Grams</td>
+          <td> {{shelf.prevQty}}</td>
+          <td>{{shelf.itemQty}}</td>
+          <td [style.backgroundColor]="shelf.itemQty-shelf.prevQty<0? 'red': 'green'">{{shelf.itemQty-shelf.prevQty}}
+          </td>
+          <td>{{shelf.companyOwned}}</td>
+          <td> {{shelf.itemRremark}} </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3">שם הסופר/ת: __________________</td>
+          <td colspan="2">תאריך ספירה: ____________________</td>
+          <td colspan="2">חתימת הסופר/ת: _______________</td>
+        </tr>
+        <tr>
+          <td colspan="3">שם הבקר/ית: __________________</td>
+          <td colspan="2">תאריך הבדיקה: ____________________</td>
+          <td colspan="2">חתימת הבקר/ית: _______________</td>
+        </tr>
+        <tr>
+          <td colspan="2">שם המקליד/ה: __________________</td>
+          <td colspan="2">תאריך הקלדה: ____________________</td>
+          <td>שעה: _______________</td>
+          <td colspan="2">חתימת המקליד/ה: _______________</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
 
-  <!-- <div *ngIf="allowedCountYear" class="row mt-4">
+  <div *ngIf="allowedCountYear && !showFile" class="row mt-4">
     <div class="col-3"></div>
     <div class="col-6">
-      <button *ngIf="whareHouse" ngxPrint printSectionId="print-section" (click)="takeStock()" class="btn save-form w-50">עדכן מלאי {{whareHouse}} - {{itemType}}s</button>
+      <button *ngIf="whareHouse &&!showFile" ngxPrint printSectionId="print-section"
+        styleSheetFile="../../../../assets/stylesheets/year-count.css" class="btn save-form w-50">הדפס דף סופר</button>
     </div>
     <div class="col-3"></div>
-  </div> -->
+  </div>
 
 
 </div>
