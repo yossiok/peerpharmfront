@@ -10,14 +10,14 @@
       <button [printStyle]="{tr : {'border': 'solid 1px black'}}" style="visibility: hidden;"
         printSectionId="print-section" #printStocktake ngxPrint><img src="../../../../assets/images/print.png"
           alt="Print" style="width: 55px;"></button>
-      <img style="width: 50px; height: 50px" (click)="exportShelfListToXl()" src="../../../../assets/images/excel.png"
-        alt="">
+      <img style="width: 50px; height: 50px; cursor: pointer;" (click)="exportShelfListToXl()"
+        src="../../../../assets/images/excel.png" alt="">
     </div>
 
     <div class="col-3">
 
       <label>מחסן</label>
-      <select (change)="getShelfsByWH($event)" class="form-control">
+      <select (change)="getShelfsByWH($event)" #selectWh class="form-control">
         <option selected="true" disabled="disabled">בחר מחסן</option>
         <option value="Kasem">Kasem</option>
         <option value="material">Rosh HaAyin - Materials</option>
@@ -88,6 +88,10 @@
             טופס מספר {{lastYearCount.serialNumber + 1}}
           </td>
         </tr>
+        <td colspan="4">שם הקובץ: {{fileName}}</td>
+        <td colspan="4">תאריך עריכת הקובץ: {{fileDate| date: 'dd/MM/YYYY HH:mm' }}</td>
+
+
         <tr>
           <th class="runner">#</th>
           <th class="sortable position" (click)="sortByPosition()"><i class="fas fa-filter"></i> איתור</th>
@@ -98,6 +102,7 @@
           <!-- <th class="sortable" (click)="sortByAmount()"><i class="fas fa-filter"></i> כמות</th> -->
           <!-- <th>Last Count Date</th> -->
           <!-- <th>Last Counted Amount</th> -->
+          <th></th>
           <th class="count">ספירה נוכחית</th>
           <th class="owner">פריט חברה?</th>
           <th class="remarks">הערות</th>
@@ -108,7 +113,7 @@
       <ng-container *ngIf="fetchingShelfs">
         <div class="bigLoader"></div>
       </ng-container>
-   
+
       <tbody *ngIf="!fetchingShelfs">
 
         <tr *ngFor="let shelf of allShelfs;let i = index">
@@ -117,7 +122,8 @@
           <td class="item-td">{{shelf._id.item}}</td>
           <td>{{shelf._id.name}}</td>
           <td *ngIf="itemType == 'material'">{{shelf._id.supplierBatchNumber}}</td>
-          <td></td>
+          <!-- <td>{{shelf._id.position}}</td> -->
+          <td>{{shelf._id.position}}</td>
           <td></td>
           <!-- <td>{{shelf.total}}</td> -->
           <!-- <td>{{shelf.lastCount.date}}</td> -->

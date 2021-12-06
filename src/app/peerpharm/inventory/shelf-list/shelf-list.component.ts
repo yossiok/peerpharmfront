@@ -38,6 +38,11 @@ export class ShelfListComponent implements OnInit {
   sortAmountOrder: number = 1;
   sortBatchOrder: number = 1;
   updates: any = [];
+  allCountShelves: any = [];
+  allCountShelvesCopy: any = [];
+  showCurrent: boolean = false;
+  fileName: string = "";
+  fileDate: Date = null;
 
   @ViewChild("shelfPosition") shelfPosition: ElementRef;
   @ViewChild("shelfAmount") shelfAmount: ElementRef;
@@ -45,6 +50,8 @@ export class ShelfListComponent implements OnInit {
   @ViewChild("updatesModal") updatesModal: ElementRef;
   @ViewChild("printStocktake") printStocktake: ElementRef;
   @ViewChild("uploadExFile") uploadExFile: ElementRef;
+  @ViewChild("selectWh") selectWh: ElementRef;
+
   updatingAmount: boolean;
   fetchingShelfs: boolean;
 
@@ -154,6 +161,7 @@ export class ShelfListComponent implements OnInit {
           data.sort((a, b) => (a._id.position > b._id.position ? 1 : -1));
           this.allShelfs = data;
           this.allShelfsCopy = data;
+          console.log(data);
         } else this.toastSrv.error("No Shelfs in Wharehouse");
       });
   }
@@ -339,18 +347,27 @@ export class ShelfListComponent implements OnInit {
 
   exportShelfListToXl() {
     let shelfs = [];
-    for(let shelf of this.allShelfs) {
+    let whName: string = this.whareHouse + "-" + this.itemType;
+    for (let shelf of this.allShelfs) {
       shelfs.push({
         'מק"ט': shelf._id.item,
-        'תיאור הפריט': shelf._id.name[0],
-        'איתור': "",
+        "תיאור הפריט": shelf._id.name[0],
+        איתור: shelf._id.position,
         "יח' מידה": "",
-        "כמות": "",
+        כמות: "",
         "פריט חברה": "",
-        "הערות": ""
-      })
+        הערות: "",
+      });
     }
-    this.xlSrv.exportAsExcelFile(shelfs, `ספירת מלאי ${this.lastYearCount.serialNumber + 1}, ${this.whareHouse} - ${this.itemType}s, 2021`);
+
+    this.xlSrv.exportAsExcelFile(
+      shelfs,
+      `ספירת מלאי ${this.lastYearCount.serialNumber + 1}, ${
+        this.whareHouse
+      } - ${this.itemType}s, 2021`,
+      null,
+      whName
+    );
   }
 
   // updateShelfAmount(shelf) {
@@ -443,20 +460,21 @@ export class ShelfListComponent implements OnInit {
   }
 
   sendExcelToData(ev: any) {
-    console.log(ev);
-    console.log(ev.target);
-    console.log(ev.target.files);
     console.log(ev.target.files[0]);
+    console.log(ev.target.files[0].lastModified);
+    console.log(ev.target.files[0].lastModifiedDate);
+    console.log(ev.target.files[0].name);
     if (confirm("האם אתה בטוח שבחרת בקובץ הנכון ?") == true) {
-      // this.showCurtain=true;
       const target: DataTransfer = <DataTransfer>ev.target;
-      console.log(target.files.length);
+      //
       if (target.files.length > 1) {
         alert("ניתן לבחור קובץ אחד בלבד");
         this.uploadExFile.nativeElement.value = "";
         return;
       }
-
+      this.fetchingShelfs = true;
+      this.whareHouse = "";
+      this.itemType = "";
       const reader: FileReader = new FileReader();
 
       // reader.readAsDataURL(ev.target.files[0]); // read file as data url
@@ -470,10 +488,62 @@ export class ShelfListComponent implements OnInit {
         const workBook: XLSX.WorkBook = XLSX.read(binaryStr, {
           type: "binary",
         });
+
         const workSheetName: string = workBook.SheetNames[0];
         const workSheet: XLSX.WorkSheet = workBook.Sheets[workSheetName];
         let wsJson = XLSX.utils.sheet_to_json(workSheet);
         console.log(wsJson);
+        if (wsJson) {
+          this.allCountShelves = [];
+
+          let names = workSheetName.split("-");
+          this.whareHouse = names[0];
+          this.itemType = names[1];
+          this.selectWh.nativeElement.value = this.whareHouse;
+          this.fileName = target.files[0].name;
+          this.fileDate = ev.target.files[0].lastModified;
+          for (let item of wsJson) {
+            let shelf = {
+              itemNumber: item['מק"ט'],
+              itemName: item["תיאור הפריט"],
+              itemPosition: item["איתור"],
+              itemUnit: item["יח' מידה"],
+              prevQty: 0,
+              itemQty: item["כמות"],
+              companyOwned: item["פריט חברה"],
+              itemRemark: item["הערות"],
+            };
+            this.allCountShelves.push(shelf);
+          }
+          console.log(this.allCountShelves);
+          this.inventorySrv
+            .shelfListByWH(this.whareHouse, this.itemType)
+            .subscribe((data) => {
+              console.log(data);
+              if (data) {
+                for (let item of this.allCountShelves) {
+                  let index = data.findIndex((shelf) => {
+                    return (
+                      shelf._id.item == item.itemNumber &&
+                      shelf._id.position == item.itemPosition
+                    );
+                  });
+                  console.log(index);
+                  if (index != -1) {
+                    item.prevQty = data[index].total;
+                  }
+                }
+                this.fetchingShelfs = false;
+                console.log(this.allCountShelves);
+              } else {
+                this.toastSrv.error("No data found");
+                this.fetchingShelfs = false;
+              }
+            });
+        } else {
+          this.fetchingShelfs = false;
+          this.toastSrv.error("No Shelfs in Wharehouse");
+        }
       };
     }
   }
