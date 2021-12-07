@@ -37,11 +37,11 @@ export class FormdetailsComponent implements OnInit {
   allowUpdateForm: boolean = false;
 
   newQAPallet = {
-    floorNumber: 0,
-    kartonQuantity: 0,
-    unitsInKarton: 0,
-    lastFloorQuantity: 0,
-    unitsQuantityPartKarton: 0,
+    floorNumber: null,
+    kartonQuantity: null,
+    unitsInKarton: null,
+    lastFloorQuantity: null,
+    unitsQuantityPartKarton: null,
     qaStatus: '',
     batchNumber: '',
     customerName: '',

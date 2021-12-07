@@ -207,7 +207,7 @@
                 <td>{{check.checkBox_correctFinalPacking}}</td>
               </tr>
               <tr *ngIf="!disabledValue">
-                <td><input [disabled]="disabledValue" [(ngModel)]="newTest.checkTime" class="form-control"></td>
+                <td><input type="time" [disabled]="disabledValue" [(ngModel)]="newTest.checkTime" class="form-control"></td>
 
                 <td>
                   <select [disabled]="disabledValue" [(ngModel)]="newTest.checkBox_clean" class="form-control">
@@ -216,7 +216,7 @@
                   </select>
                 </td>
 
-                <td><input [disabled]="disabledValue" [(ngModel)]="newTest.checkNetoWeight" class="form-control"></td>
+                <td><input type="number" [disabled]="disabledValue" [(ngModel)]="newTest.checkNetoWeight" class="form-control"></td>
 
                 <td>
                   <select [disabled]="disabledValue" [(ngModel)]="newTest.checkBox_closedWaterProof"
@@ -285,9 +285,9 @@
         </td>
         <td>ייצור חלקי</td>
         <td>
-          <input class="form-control" *ngIf="form.batchStatus =='part'" style="width:5%" type="checkbox" id="ccc"
+          <input class="form-control" *ngIf="form.batchStatus =='part'" style="width:12%" type="checkbox" id="ccc"
             [disabled]="disabledValue" [checked]='true' />
-          <input class="form-control" *ngIf="form.batchStatus !='part'" style="width:5%" type="checkbox" id="ccc"
+          <input class="form-control" *ngIf="form.batchStatus !='part'" style="width:12%" type="checkbox" id="ccc"
             [disabled]="disabledValue" [checked]='false' />
         </td>
       </tr>
