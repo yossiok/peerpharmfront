@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ScheduleService } from 'src/app/services/schedule.service';
 import { Costumer } from '../../classes/costumer.class';
 import { Observable } from 'rxjs';
+import { BatchesService } from 'src/app/services/batches.service';
 
 @Component({
   selector: 'app-formdetails',
@@ -69,7 +70,8 @@ export class FormdetailsComponent implements OnInit {
     private authService: AuthService,
     public translate: TranslateService,
     private toastService: ToastrService,
-    private scheduleService: ScheduleService
+    private scheduleService: ScheduleService,
+    private batchService: BatchesService
   ) {
 
   }
@@ -85,14 +87,14 @@ export class FormdetailsComponent implements OnInit {
     //   this.getFormData(true);
     // }
     this.getUserInfo();
-    if(scheduleID && scheduleID != '0') {
+    if (scheduleID && scheduleID != '0') {
       this.checkIfFormExist(scheduleID)
-      .then(formID => {
-        this.getFormData(true, formID)
-      }).catch(scheduleID => {
-        this.getScheduleDetails(scheduleID)
-      })
-    } 
+        .then(formID => {
+          this.getFormData(true, formID)
+        }).catch(scheduleID => {
+          this.getScheduleDetails(scheduleID)
+        })
+    }
     else this.getFormData(true, formID)
     // this.UserDisableAuth();
     // this.wrapAllChecks();
@@ -117,18 +119,29 @@ export class FormdetailsComponent implements OnInit {
   async getScheduleDetails(scheduleId) {
     this.scheduleService.getScheduleById(scheduleId).subscribe(data => {
       if (data) {
-        let tempObj = {
-          batchN: data.batch,
-          itemN: data.item,
-          costumerName: data.costumer,
-          productName: data.productName,
-          orderNumber: data.orderN,
-          orderQuantity: data.qty,
-        }
-        this.formDetailsItemNum = data.item
-        this.form = tempObj
-        this.form.scheduleId = scheduleId
-        this.newForm = true;
+
+        // check batch QA status
+        this.batchService.getSpecvalue(data.batch).subscribe(QAStatus => {
+          if (QAStatus.status == 1) { //Approved
+            let tempObj = {
+              batchN: data.batch,
+              itemN: data.item,
+              costumerName: data.costumer,
+              productName: data.productName,
+              orderNumber: data.orderN,
+              orderQuantity: data.qty,
+            }
+            this.formDetailsItemNum = data.item
+            this.form = tempObj
+            this.form.scheduleId = scheduleId
+            this.newForm = true;
+          }
+
+          //Not approved
+          else {
+            this.toastService.error(`לא ניתן לפתוח טופס ייצור`,`באטצ' לא מאושר ע"י QA`)
+          } 
+        })
       }
     })
   }
