@@ -558,18 +558,29 @@ export class ShelfListComponent implements OnInit {
           this.showFile = true;
           for (let item of wsJson) {
             let shelf = {
-              itemNumber: item['מק"ט'],
-              itemName: item["תיאור הפריט"],
-              itemPosition: item["איתור"],
-              itemUnit: item["יח' מידה"],
+              itemNumber: item['מק"ט'] ? item['מק"ט'].trim() : "",
+              itemName: item["תיאור הפריט"]
+                ? item["תיאור הפריט"].trim().toLowerCase()
+                : "",
+              itemPosition: item["איתור"]
+                ? item["איתור"].trim().toUpperCase()
+                : "",
+              itemUnit: item["יח' מידה"]
+                ? item["יח' מידה"].trim().toUpperCase()
+                : "",
               prevQty: 0,
               itemPrice: 0,
               itemCoin: "",
-              itemQty: item["כמות"],
-              companyOwned: item["פריט חברה"],
+              itemQty: item["כמות"] ? item["כמות"] : 0,
+              companyOwned: item["פריט חברה"]
+                ? item["פריט חברה"].trim().toUpperCase()
+                : "",
               itemRemark: item["הערות"],
-              itemBatch: item["Batch"],
+              itemBatch: item["Batch"]
+                ? item["Batch"].trim().toUpperCase()
+                : "",
             };
+            console.log(shelf);
             this.allCountShelves.push(shelf);
           }
           console.log(this.allCountShelves);
@@ -583,39 +594,64 @@ export class ShelfListComponent implements OnInit {
                 return;
               } else if (data) {
                 let itemShells = data.itemShells;
+                console.log(this.allCountShelves);
+
                 for (let item of this.allCountShelves) {
-                  let ind1 = -1;
-                  let ind2 = -1;
-                  let ind3 = -1;
-                  ind1 = itemShells.findIndex((shelf) => {
-                    return (
-                      shelf._id.item == item.itemNumber &&
-                      shelf._id.position == item.itemPosition
-                    );
-                  });
+                  let indCS = -1;
+                  let indP = -1;
+                  let indMS = -1;
+
                   if (this.itemType == "component") {
-                    ind2 = this.componentsPrices.findIndex(
+                    indCS = itemShells.findIndex((shelf) => {
+                      return (
+                        shelf._id.item.trim() == item.itemNumber &&
+                        shelf._id.position.trim().toUpperCase() ==
+                          item.itemPosition
+                      );
+                    });
+                    indP = this.componentsPrices.findIndex(
                       (cp) => cp.itemNumber == item.itemNumber
                     );
                   } else if (this.itemType == "material") {
-                    ind3 = this.materialsPrices.findIndex(
+                    indCS = itemShells.findIndex((shelf) => {
+                      return (
+                        shelf._id.item == item.itemNumber &&
+                        shelf._id.position.trim().toUpperCase() ==
+                          item.itemPosition &&
+                        shelf._id.supplierBatchNumber.trim().toUpperCase() ==
+                          item.itemBatch
+                      );
+                    });
+                    indMS = this.materialsPrices.findIndex(
                       (mp) => mp.itemNumber == item.itemNumber
                     );
                   }
 
-                  console.log(ind1);
-                  if (ind1 != -1) {
-                    item.prevQty = itemShells[ind1].total;
+                  console.log(indCS);
+                  if (indCS > -1) {
+                    console.log(itemShells[indCS].total);
+                    item.prevQty = parseFloat(itemShells[indCS].total).toFixed(
+                      2
+                    );
+                    indCS = -1;
                   }
-                  console.log(ind2);
-                  if (ind2 > -1) {
-                    item.itemPrice = this.componentsPrices[ind2].actualPrice;
-                    item.itemCoin = this.componentsPrices[ind2].actualCoin;
+                  console.log(indP);
+                  if (indP > -1) {
+                    console.log(this.componentsPrices[indP].actualPrice);
+                    item.itemPrice = parseFloat(
+                      this.componentsPrices[indP].actualPrice
+                    ).toFixed(2);
+                    item.itemCoin = this.componentsPrices[indP].actualCoin;
+                    indP = -1;
                   }
-                  console.log(ind3);
-                  if (ind3 > -1) {
-                    item.itemPrice = this.materialsPrices[ind3].actualPrice;
-                    item.itemCoin = this.materialsPrices[ind3].actualCoin;
+                  console.log(indMS);
+                  if (indMS > -1) {
+                    console.log(this.materialsPrices[indMS].actualPrice);
+                    item.itemPrice = parseFloat(
+                      this.materialsPrices[indMS].actualPrice
+                    ).toFixed(2);
+                    item.itemCoin = this.materialsPrices[indMS].actualCoin;
+                    indMS = -1;
                   }
                 }
 

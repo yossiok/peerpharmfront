@@ -74,7 +74,7 @@
   <div *ngIf="allowedCountYear" class="row mt-4">
     <div class="col-3"></div>
     <div class="col-6">
-      <button *ngIf="whareHouse" ngxPrint printSectionId="print-section"
+      <button *ngIf="whareHouse && !showFile" ngxPrint printSectionId="print-section"
         styleSheetFile="../../../../assets/stylesheets/year-count.css" class="btn save-form w-50">הדפס דף סופר</button>
     </div>
     <div class="col-3"></div>
@@ -229,7 +229,8 @@
           <td [ngClass]="shelf.itemQty-shelf.prevQty> 50||shelf.itemQty-shelf.prevQty<-50? 'minus': 'plus'">
             {{shelf.itemQty-shelf.prevQty}}
           </td>
-          <td [ngClass]="shelf.itemQty-shelf.prevQty> 50||shelf.itemQty-shelf.prevQty<-50? 'minus': 'plus'">
+          <td
+            [ngClass]="(shelf.itemQty-shelf.prevQty)*shelf.itemPrice> 500||(shelf.itemQty-shelf.prevQty)*shelf.itemPrice<-500? 'minus': 'plus'">
             {{(shelf.itemQty-shelf.prevQty)*shelf.itemPrice}}
           </td>
           <td>{{shelf.itemCoin}}</td>
@@ -237,7 +238,7 @@
           <td> {{shelf.itemRemark}} </td>
         </tr>
       </tbody>
-      <tfoot>
+      <tfoot *ngIf="!showFile">
         <tr>
           <td colspan="3">שם הסופר/ת: __________________</td>
           <td colspan="2">תאריך ספירה: ____________________</td>
