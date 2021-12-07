@@ -250,7 +250,7 @@
                   </select>
                 </td>
 
-                <td><button [disabled]="disabledValue" (click)="addNewTest(newTest)" class="btn btn-success">+</button>
+                <td><button *ngIf="allowUpdateForm" [disabled]="disabledValue" (click)="addNewTest(newTest)" class="btn btn-success">+</button>
                 </td>
               </tr>
             </tbody>
@@ -489,11 +489,11 @@
         </td>
       </tr>
 
-      <tr *ngIf="allowUpdateForm">
+      <tr>
         <td></td>
         <td colspan="2">
-          <button *ngIf="!newForm" [disabled]="disabledValue" (click)="updateFormDetails()" class="btn btn-success form-control">Update Form</button>
-          <button *ngIf="newForm" [disabled]="disabledValue" (click)="createFormDetails()" class="btn btn-success form-control">Create Form</button>
+          <button *ngIf="!newForm && allowUpdateForm" [disabled]="disabledValue" (click)="updateFormDetails()" class="btn btn-success form-control">Update Form</button>
+          <button *ngIf="newForm && allowUpdateForm" [disabled]="disabledValue" (click)="createFormDetails()" class="btn btn-success form-control">Create Form</button>
         </td>
         <td></td>
       </tr>
@@ -552,10 +552,10 @@
               {{QAPallet.qaStatus}}</td>
             <td style="font-weight: bold;font-size: medium;" [ngClass]="{green:QAPallet.palletStatus == 'הועלה על משטח',red:QAPallet.palletStatus == 'ממתין למשטח'}">
               {{QAPallet.palletStatus}}</td>
-            <td *ngIf="allowUpdateForm"><button (click)="deleteQAPallet(QAPallet)" class="btn btn-danger"><i class="fa fa-times"></i></button></td>
+            <td><button *ngIf="allowUpdateForm" (click)="deleteQAPallet(QAPallet)" class="btn btn-danger"><i class="fa fa-times"></i></button></td>
           </tr>
 
-          <tr *ngIf="allowUpdateForm">
+          <tr >
             <td></td>
             <td><input [(ngModel)]="newQAPallet.floorNumber" type="number" style="font-weight: bold;font-size: medium;" placeholder="מספר קומות" class="form-control"></td>
             <td><input [(ngModel)]="newQAPallet.kartonQuantity" type="number" style="font-weight: bold;font-size: medium;" placeholder="כמות קרטונים" class="form-control"></td>
@@ -579,7 +579,7 @@
               </select>
             </td>
             <td></td>
-            <td><button (click)="addNewQAPallet()" style="font-weight: bold;font-size: medium;" class="btn btn-success">+</button></td>
+            <td><button *ngIf="allowUpdateForm" (click)="addNewQAPallet()" style="font-weight: bold;font-size: medium;" class="btn btn-success">+</button></td>
           </tr>
         </tbody>
       </table>
