@@ -25,6 +25,7 @@ export class FormdetailsComponent implements OnInit {
   averageNetoWeight = 0;
   loggedInUser: UserInfo;
   newForm: boolean = false;
+  numberOfFormsWithSameBatch: number;
   netoWeightArr: number[] = new Array();
   tabView: String = "fillingForm";
   fillingTabBtn: String = "#fff";
@@ -121,27 +122,50 @@ export class FormdetailsComponent implements OnInit {
       if (data) {
 
         // check batch QA status
-        this.batchService.getSpecvalue(data.batch).subscribe(QAStatus => {
-          if (QAStatus.status == 1) { //Approved
-            let tempObj = {
-              batchN: data.batch,
-              itemN: data.item,
-              costumerName: data.costumer,
-              productName: data.productName,
-              orderNumber: data.orderN,
-              orderQuantity: data.qty,
-            }
-            this.formDetailsItemNum = data.item
-            this.form = tempObj
-            this.form.scheduleId = scheduleId
-            this.newForm = true;
-          }
+        let batches = data.batch.split('+') 
 
-          //Not approved
-          else {
-            this.toastService.error(`לא ניתן לפתוח טופס ייצור`,`באטצ' לא מאושר ע"י QA`)
-          } 
-        })
+        if (batches.length > 1) { // batches = ['21pp1892', '21pp1885', '21pp1899']
+          let notApprovedBatches = []
+          this.batchService.getSpecvalueMulti(batches).subscribe(response => {
+            for(let batch of response.batches) {
+              if (batch.specStatus.status != 1) notApprovedBatches.push(batch) 
+            }
+            if(notApprovedBatches.length > 0) {
+              for(let batch of notApprovedBatches) this.toastService.error(``, `באטצ' ${batch.batchNumber} לא מאושר ע"י QA`)
+              this.toastService.error('', 'לא ניתן לפתוח טופס ייצור')
+            } 
+            else {
+              let tempObj = {
+                batchN: batches.join('+'),
+                itemN: data.item,
+                costumerName: data.costumer,
+                productName: data.productName,
+                orderNumber: data.orderN,
+                orderQuantity: data.qty,
+              }
+              this.formDetailsItemNum = data.item
+              this.form = tempObj
+              this.form.scheduleId = scheduleId
+              this.newForm = true;
+            }
+  
+          })
+
+        }
+
+        // check if there is another form with that batch
+        // this.numberOfFormsWithSameBatch = 0
+        // for(let batch of batches) {
+        //   this.formsService.getFormDetailsByBatch(batch).subscribe(forms => {
+        //     if (forms.length > 0) {
+        //       for (let form of forms) {
+        //         if (form.batchN && form.batchN != "") {
+        //           this.numberOfFormsWithSameBatch++
+        //         }
+        //       }
+        //     }
+        //   })
+        // }
       }
     })
   }
@@ -196,12 +220,10 @@ export class FormdetailsComponent implements OnInit {
 
   addNewQAPallet() {
 
-    this.form
-    this.newQAPallet.batchNumber = this.form.batchN;
+    this.newQAPallet.batchNumber = this.form.batchN
     this.newQAPallet.itemNumber = this.form.itemN;
     this.newQAPallet.orderNumber = this.form.orderNumber;
     this.newQAPallet.formDetailsId = this.form._id;
-    this.newQAPallet.batchNumber = this.form.batchN;
     this.newQAPallet.customerName = this.form.costumerName
 
 
