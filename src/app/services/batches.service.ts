@@ -106,4 +106,9 @@ export class BatchesService {
     let url = this.baseUrl + "batch/specvalue?batchNum=" + batchNum;
     return this.http.get(url).pipe(map((res) => res.json()));
   }
+
+  getSpecvalueMulti(batches) {
+    let url = this.baseUrl + "batch/specvalueMulti?batches=" + batches;
+    return this.http.get(url).pipe(map((res) => res.json()));
+  }
 }

@@ -286,6 +286,11 @@ export class FormsService {
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
+  getFormDetailsByBatch(batchNumber) { 
+    let url = this.baseUrl + "formDetails?batch="+batchNumber;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
 
 
 
