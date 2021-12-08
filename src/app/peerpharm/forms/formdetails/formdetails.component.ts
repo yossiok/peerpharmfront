@@ -25,7 +25,7 @@ export class FormdetailsComponent implements OnInit {
   averageNetoWeight = 0;
   loggedInUser: UserInfo;
   newForm: boolean = false;
-  numberOfFormsWithSameBatch: number;
+  numberOfFormsWithSameBatch: number = 0
   netoWeightArr: number[] = new Array();
   tabView: String = "fillingForm";
   fillingTabBtn: String = "#fff";
@@ -152,20 +152,34 @@ export class FormdetailsComponent implements OnInit {
           })
 
         }
+        else {
+          let tempObj = {
+            batchN: data.batch,
+            itemN: data.item,
+            costumerName: data.costumer,
+            productName: data.productName,
+            orderNumber: data.orderN,
+            orderQuantity: data.qty,
+          }
+          this.formDetailsItemNum = data.item
+          this.form = tempObj
+          this.form.scheduleId = scheduleId
+          this.newForm = true;
+        }
 
         // check if there is another form with that batch
-        // this.numberOfFormsWithSameBatch = 0
-        // for(let batch of batches) {
-        //   this.formsService.getFormDetailsByBatch(batch).subscribe(forms => {
-        //     if (forms.length > 0) {
-        //       for (let form of forms) {
-        //         if (form.batchN && form.batchN != "") {
-        //           this.numberOfFormsWithSameBatch++
-        //         }
-        //       }
-        //     }
-        //   })
-        // }
+        this.numberOfFormsWithSameBatch = 0
+        for(let batch of batches) {
+          this.formsService.getFormDetailsByBatch(batch).subscribe(forms => {
+            if (forms.length > 0) {
+              for (let form of forms) {
+                if (form.batchN && form.batchN != "") {
+                  this.numberOfFormsWithSameBatch++
+                }
+              }
+            }
+          })
+        }
       }
     })
   }

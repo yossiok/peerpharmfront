@@ -77,6 +77,12 @@
             [disabled]="disabledValue" />
         </td>
       </tr>
+      <tr *ngIf="numberOfFormsWithSameBatch > 0">
+        <td></td>
+        <td>
+          <span class="text-danger">קיימים {{numberOfFormsWithSameBatch}} טפסים נוספים הכוללים את אחת האצוות</span>
+        </td>
+      </tr>
       <tr>
         <td>תאריך ייצור/תאריך סיום</td>
         <td>
