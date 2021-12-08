@@ -12,39 +12,39 @@ import { AuthService } from 'src/app/services/auth.service';
 export class BatchesMkpComponent implements OnInit {
 
 
-  mkpBatches:any[];
-  allStickers:any[]=[];
-  currentItem:any;
-  currentItemName:any;
-  currentBarrels:any;
-  currentBatchNumber:any;
-  currentExpDate:any;
-  currentProduced:any;
-  currentOrderN:any;
-  currentPH:any;
-  currentWeightKG:any; 
+  mkpBatches: any[];
+  allStickers: any[] = [];
+  currentItem: any;
+  currentItemName: any;
+  currentBarrels: any;
+  currentBatchNumber: any;
+  currentExpDate: any;
+  currentProduced: any;
+  currentOrderN: any;
+  currentPH: any;
+  currentWeightKG: any;
 
 
   @ViewChild('printBtn') printBtn: ElementRef;
 
 
   newMkpBatch = {
-    order:"",
-    item:"",
-    itemName:"",
-    produced:this.formatDate(new Date()),
-    expration:"",
-    barrels:"",
-    weightKg:"",
-    ph:"",
-    batchNumber:"",
-    type:''
+    order: "",
+    item: "",
+    itemName: "",
+    produced: this.formatDate(new Date()),
+    expration: "",
+    barrels: "",
+    weightKg: "",
+    ph: "",
+    batchNumber: "",
+    type: ''
   }
 
   constructor(
-    private toastSr:ToastrService,
-    private itemService:ItemsService,
-    private batchService:BatchesService,
+    private toastSr: ToastrService,
+    private itemService: ItemsService,
+    private batchService: BatchesService,
     private authService: AuthService) { }
 
   ngOnInit() {
@@ -56,15 +56,15 @@ export class BatchesMkpComponent implements OnInit {
   }
 
 
-  getAllMkpBatches(){
-    this.batchService.getAllMkpBatches().subscribe(data=>{
+  getAllMkpBatches() {
+    this.batchService.getAllMkpBatches().subscribe(data => {
       ;
       this.mkpBatches = data;
 
     })
   }
-  rePrint(batch){
-      
+  rePrint(batch) {
+
     this.currentItem = batch.item
     this.currentItemName = batch.itemName
     this.currentBarrels = batch.barrels
@@ -73,180 +73,181 @@ export class BatchesMkpComponent implements OnInit {
     this.currentProduced = batch.produced
     this.currentOrderN = batch.order
     this.currentPH = batch.ph
-    this.currentWeightKG =batch.weightKg
+    this.currentWeightKG = batch.weightKg
 
-    if(parseInt(batch.barrels)>1)
-  {
-    for(let x=1; x<parseInt(batch.barrels)+1 ;x++)
-    {
-      let obj={
-        item:{currentItem:this.currentItem,
-          currentItemName: this.currentItemName ,
-          currentBarrels: this.currentBarrels ,
-          currentBatchNumber: this.currentBatchNumber ,
-          currentExpDate:  this.currentExpDate ,
-          currentProduced: this.currentProduced  ,
-          currentOrderN: this.currentOrderN ,
-          currentPH: this.currentPH ,
-          currentWeightKG: this.currentWeightKG   
-        },
-        printNum:""+x+"/"+(parseInt(batch.barrels))
-      } 
-      this.allStickers.push(obj);
+    if (parseInt(batch.barrels) > 1) {
+      for (let x = 1; x < parseInt(batch.barrels) + 1; x++) {
+        let obj = {
+          item: {
+            currentItem: this.currentItem,
+            currentItemName: this.currentItemName,
+            currentBarrels: this.currentBarrels,
+            currentBatchNumber: this.currentBatchNumber,
+            currentExpDate: this.currentExpDate,
+            currentProduced: this.currentProduced,
+            currentOrderN: this.currentOrderN,
+            currentPH: this.currentPH,
+            currentWeightKG: this.currentWeightKG
+          },
+          printNum: "" + x + "/" + (parseInt(batch.barrels))
+        }
+        this.allStickers.push(obj);
+
+      }
 
     }
- 
-  }
-  else{
-    let obj={
-      item:{currentItem:this.currentItem,
-        currentItemName: this.currentItemName ,
-        currentBarrels: this.currentBarrels ,
-        currentBatchNumber: this.currentBatchNumber ,
-        currentExpDate:  this.currentExpDate ,
-        currentProduced: this.currentProduced  ,
-        currentOrderN: this.currentOrderN ,
-        currentPH: this.currentPH ,
-        currentWeightKG: this.currentWeightKG   
-      },
-      printNum:"1/1"
-    } 
-    this.allStickers.push(obj);
-  }
- 
- ;
+    else {
+      let obj = {
+        item: {
+          currentItem: this.currentItem,
+          currentItemName: this.currentItemName,
+          currentBarrels: this.currentBarrels,
+          currentBatchNumber: this.currentBatchNumber,
+          currentExpDate: this.currentExpDate,
+          currentProduced: this.currentProduced,
+          currentOrderN: this.currentOrderN,
+          currentPH: this.currentPH,
+          currentWeightKG: this.currentWeightKG
+        },
+        printNum: "1/1"
+      }
+      this.allStickers.push(obj);
+    }
 
-      setTimeout(() => {
-        this.printBtn.nativeElement.click();   
-       
-      }, 500);
-   
-     setTimeout(() => {
-      this.allStickers=[];
-     
+    ;
+
+    setTimeout(() => {
+      this.printBtn.nativeElement.click();
+
+    }, 500);
+
+    setTimeout(() => {
+      this.allStickers = [];
+
     }, 3500);
 
   }
-  addNewMkpBatch(){
+  addNewMkpBatch() {
 
-  this.currentItem = this.newMkpBatch.item
-  this.currentItemName = this.newMkpBatch.itemName
-  this.currentBarrels = this.newMkpBatch.barrels
-  this.currentBatchNumber = this.newMkpBatch.batchNumber
-  this.currentExpDate = this.newMkpBatch.expration
-  this.currentProduced = this.newMkpBatch.produced
-  this.currentOrderN = this.newMkpBatch.order
-  this.currentPH = this.newMkpBatch.ph
-  this.currentWeightKG =this.newMkpBatch.weightKg
+    this.currentItem = this.newMkpBatch.item
+    this.currentItemName = this.newMkpBatch.itemName
+    this.currentBarrels = this.newMkpBatch.barrels
+    this.currentBatchNumber = this.newMkpBatch.batchNumber
+    this.currentExpDate = this.newMkpBatch.expration
+    this.currentProduced = this.newMkpBatch.produced
+    this.currentOrderN = this.newMkpBatch.order
+    this.currentPH = this.newMkpBatch.ph
+    this.currentWeightKG = this.newMkpBatch.weightKg
 
-  if(this.currentExpDate == "" || this.currentBatchNumber == "" || this.currentExpDate == "" || this.currentProduced == "" || this.currentWeightKG == "") {
-    this.toastSr.error('אנא מלא את כל הפרטים', 'בעיה בהזנת נתונים')
-  }
-  
-
+    if (this.currentExpDate == "" || this.currentBatchNumber == "" || this.currentExpDate == "" || this.currentProduced == "" || this.currentWeightKG == "") {
+      this.toastSr.error('אנא מלא את כל הפרטים', 'בעיה בהזנת נתונים')
+    }
 
 
-  if(parseInt(this.newMkpBatch.barrels)>1)
-  {
-    for(let x=1; x<parseInt(this.newMkpBatch.barrels)+1 ;x++)
-    {
-      let obj={
-        item:{currentItem:this.currentItem,
-          currentItemName: this.currentItemName ,
-          currentBarrels: this.currentBarrels ,
-          currentBatchNumber: this.currentBatchNumber ,
-          currentExpDate:  this.currentExpDate ,
-          currentProduced: this.currentProduced  ,
-          currentOrderN: this.currentOrderN ,
-          currentPH: this.currentPH ,
-          currentWeightKG: this.currentWeightKG   
-        },
-        printNum:""+x+"/"+(parseInt(this.newMkpBatch.barrels))
-      } 
-      this.allStickers.push(obj);
+
+
+    if (parseInt(this.newMkpBatch.barrels) > 1) {
+      for (let x = 1; x < parseInt(this.newMkpBatch.barrels) + 1; x++) {
+        let obj = {
+          item: {
+            currentItem: this.currentItem,
+            currentItemName: this.currentItemName,
+            currentBarrels: this.currentBarrels,
+            currentBatchNumber: this.currentBatchNumber,
+            currentExpDate: this.currentExpDate,
+            currentProduced: this.currentProduced,
+            currentOrderN: this.currentOrderN,
+            currentPH: this.currentPH,
+            currentWeightKG: this.currentWeightKG
+          },
+          printNum: "" + x + "/" + (parseInt(this.newMkpBatch.barrels))
+        }
+        this.allStickers.push(obj);
+
+      }
 
     }
- 
+    else {
+      let obj = {
+        item: {
+          currentItem: this.currentItem,
+          currentItemName: this.currentItemName,
+          currentBarrels: this.currentBarrels,
+          currentBatchNumber: this.currentBatchNumber,
+          currentExpDate: this.currentExpDate,
+          currentProduced: this.currentProduced,
+          currentOrderN: this.currentOrderN,
+          currentPH: this.currentPH,
+          currentWeightKG: this.currentWeightKG
+        },
+        printNum: "1/1"
+      }
+      this.allStickers.push(obj);
+    }
+
+    ;
+    if (this.newMkpBatch.batchNumber != "") {
+      this.newMkpBatch.type = 'makeup'
+      let reduce = confirm('האם להוריד כמויות מהמלאי?')
+      this.batchService.addNewMkpBatch(this.newMkpBatch, reduce).subscribe(data => {
+        this.mkpBatches = data;
+        setTimeout(() => {
+          this.printBtn.nativeElement.click();
+
+        }, 500);
+        ;
+        this.toastSr.success("נוספה אצווה חדשה")
+        this.newMkpBatch.item = ""
+        this.newMkpBatch.itemName = ""
+        this.newMkpBatch.barrels = ""
+        this.newMkpBatch.batchNumber = ""
+        this.newMkpBatch.expration = ""
+
+        this.newMkpBatch.order = ""
+        this.newMkpBatch.ph = ""
+        this.newMkpBatch.weightKg = ""
+        setTimeout(() => {
+          this.allStickers = [];
+
+        }, 3500);
+
+
+      })
+    }
+
+
+
   }
-  else{
-    let obj={
-      item:{currentItem:this.currentItem,
-        currentItemName: this.currentItemName ,
-        currentBarrels: this.currentBarrels ,
-        currentBatchNumber: this.currentBatchNumber ,
-        currentExpDate:  this.currentExpDate ,
-        currentProduced: this.currentProduced  ,
-        currentOrderN: this.currentOrderN ,
-        currentPH: this.currentPH ,
-        currentWeightKG: this.currentWeightKG   
-      },
-      printNum:"1/1"
-    } 
-    this.allStickers.push(obj);
-  }
- 
- ;
-  if(this.newMkpBatch.batchNumber != "") {
-    this.newMkpBatch.type = 'makeup'
-    this.batchService.addNewMkpBatch(this.newMkpBatch).subscribe(data=>{
-      this.mkpBatches = data;
-      setTimeout(() => {
-        this.printBtn.nativeElement.click();   
-       
-      }, 500);
-      ;
-      this.toastSr.success("נוספה אצווה חדשה")
-     this.newMkpBatch.item = ""
-   this.newMkpBatch.itemName = ""
-      this.newMkpBatch.barrels = ""
-  this.newMkpBatch.batchNumber = ""
-      this.newMkpBatch.expration = ""
-    
-     this.newMkpBatch.order =""
-      this.newMkpBatch.ph= ""
-     this.newMkpBatch.weightKg =""
-     setTimeout(() => {
-      this.allStickers=[];
-     
-    }, 3500);
-  
-
-    })
-  }
-
-  
-  
-  }
 
 
 
-  
 
 
-  fillItemName(ev){
+
+  fillItemName(ev) {
     ;
     var itemNumber = ev.target.value;
-    this.itemService.getItemData(itemNumber).subscribe(data=>{
+    this.itemService.getItemData(itemNumber).subscribe(data => {
       ;
-      this.newMkpBatch.itemName = data[0].name +' '+ data[0].subName +' '+ data[0].discriptionK
+      this.newMkpBatch.itemName = data[0].name + ' ' + data[0].subName + ' ' + data[0].discriptionK
 
     })
 
   }
-  
- formatDate(date) {
-  var d = new Date(date),
+
+  formatDate(date) {
+    var d = new Date(date),
       month = '' + (d.getMonth() + 1),
       day = '' + d.getDate(),
       year = d.getFullYear();
 
-  if (month.length < 2) 
+    if (month.length < 2)
       month = '0' + month;
-  if (day.length < 2) 
+    if (day.length < 2)
       day = '0' + day;
 
-  return [year, month, day].join('-');
-}
+    return [year, month, day].join('-');
+  }
 
 
 

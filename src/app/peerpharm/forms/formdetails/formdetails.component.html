@@ -29,7 +29,8 @@
         </tr>
         <tr>
           <td>
-            <button (click)="goBack()" class="btn btn-info">חזור <i class="fa fa-arrow-left" aria-hidden="true"></i></button>
+            <button (click)="goBack()" class="btn btn-info">חזור <i class="fa fa-arrow-left"
+                aria-hidden="true"></i></button>
           </td>
         </tr>
       </thead>
@@ -37,39 +38,34 @@
       <tr>
         <td>מספר הזמנה</td>
         <td>
-          <input id="div_orderNumber" [(ngModel)]="form.orderNumber" disabled
-            class="form-control inputDiv" />
+          <input id="div_orderNumber" [(ngModel)]="form.orderNumber" disabled class="form-control inputDiv" />
         </td>
         <td>כמות מוזמנת</td>
         <td>
-          <input id="div_orderQuantity" [(ngModel)]="form.orderQuantity" class="inputDiv form-control"
-           disabled/>
+          <input id="div_orderQuantity" [(ngModel)]="form.orderQuantity" class="inputDiv form-control" disabled />
         </td>
       </tr>
       <tr>
         <td [translate]="'Product Name'">שם המוצר</td>
         <td [ngbTooltip]="form.productName" colspan="3">
-          <input type="text" [(ngModel)]="form.productName" id="div_productName" style="width:571px"
-            disabled class="form-control inputDivLonger" />
+          <input type="text" [(ngModel)]="form.productName" id="div_productName" style="width:571px" disabled
+            class="form-control inputDivLonger" />
         </td>
       </tr>
       <tr>
         <td>שם הלקוח</td>
         <td>
-          <input id="div_costumerName" [(ngModel)]="form.costumerName" disabled
-            class="form-control inputDivLonger" />
+          <input id="div_costumerName" [(ngModel)]="form.costumerName" disabled class="form-control inputDivLonger" />
         </td>
         <td>מק"ט</td>
         <td>
-          <input id="div_itemN" [(ngModel)]="form.itemN" class="inputDiv form-control"
-            disabled />
+          <input id="div_itemN" [(ngModel)]="form.itemN" class="inputDiv form-control" disabled />
         </td>
       </tr>
       <tr>
         <td>מס' אצווה</td>
         <td>
-          <input type="text" [(ngModel)]="form.batchN" id="div_batchN" disabled
-            class="form-control inputDivLonger" />
+          <input type="text" [(ngModel)]="form.batchN" id="div_batchN" disabled class="form-control inputDivLonger" />
         </td>
         <td>כמות חביות</td>
         <td>
@@ -87,12 +83,12 @@
         <td>תאריך ייצור/תאריך סיום</td>
         <td>
           <input type="date" id="div_productionDate" [(ngModel)]="form.productaionDate" class="inputDiv form-control"
-           [disabled]="disabledValue" />
+            [disabled]="disabledValue" />
         </td>
         <td>תאריך תפוגה</td>
         <td>
           <input type="date" id="div_expirationDate" [(ngModel)]="form.expirationDate" class="inputDiv form-control"
-           [disabled]="disabledValue" />
+            [disabled]="disabledValue" />
         </td>
       </tr>
       <tr>
@@ -111,7 +107,7 @@
         <td>שעת התחלת מילוי</td>
         <td>
           <input type="time" id="div_fillingStart" [(ngModel)]="form.fillStartTime" class="inputDiv form-control"
-           [disabled]="disabledValue" />
+            [disabled]="disabledValue" />
         </td>
         <td>שעת סיום מילוי</td>
         <td>
@@ -213,7 +209,8 @@
                 <td>{{check.checkBox_correctFinalPacking}}</td>
               </tr>
               <tr *ngIf="!disabledValue">
-                <td><input type="time" [disabled]="disabledValue" [(ngModel)]="newTest.checkTime" class="form-control"></td>
+                <td><input type="time" [disabled]="disabledValue" [(ngModel)]="newTest.checkTime" class="form-control">
+                </td>
 
                 <td>
                   <select [disabled]="disabledValue" [(ngModel)]="newTest.checkBox_clean" class="form-control">
@@ -222,7 +219,8 @@
                   </select>
                 </td>
 
-                <td><input type="number" [disabled]="disabledValue" [(ngModel)]="newTest.checkNetoWeight" class="form-control"></td>
+                <td><input type="number" [disabled]="disabledValue" [(ngModel)]="newTest.checkNetoWeight"
+                    class="form-control"></td>
 
                 <td>
                   <select [disabled]="disabledValue" [(ngModel)]="newTest.checkBox_closedWaterProof"
@@ -256,7 +254,8 @@
                   </select>
                 </td>
 
-                <td><button *ngIf="allowUpdateForm" [disabled]="disabledValue" (click)="addNewTest(newTest)" class="btn btn-success">+</button>
+                <td><button *ngIf="allowUpdateForm" [disabled]="disabledValue" (click)="addNewTest(newTest)"
+                    class="btn btn-success">+</button>
                 </td>
               </tr>
             </tbody>
@@ -282,14 +281,14 @@
         </td>
       </tr>
       <tr>
-        <td>ייצור מלא</td>
+        <td>באטצ' נוצל במלואו</td>
         <td>
           <input class="form-control" *ngIf="form.batchStatus =='full'" style="width:5%" type="checkbox"
             [disabled]="disabledValue" [checked]='true' />
           <input class="form-control" *ngIf="form.batchStatus !='full'" style="width:5%" type="checkbox"
             [disabled]="disabledValue" [checked]='false' />
         </td>
-        <td>ייצור חלקי</td>
+        <td>שאריות באטצ' קיימות</td>
         <td>
           <input class="form-control" *ngIf="form.batchStatus =='part'" style="width:12%" type="checkbox" id="ccc"
             [disabled]="disabledValue" [checked]='true' />
@@ -297,8 +296,13 @@
             [disabled]="disabledValue" [checked]='false' />
         </td>
       </tr>
+      <tr>
+        <hr>
+      </tr>
       <tr *ngIf="form.leftBatchWeight !=''">
-        <td><b>ייצור חלקי</b></td>
+        <td>
+          <h4>באטצ'ים שלא נוצלו במלואם:</h4>
+        </td>
       </tr>
       <tr *ngIf="form.leftBatchWeight !=''">
         <td>אצווה</td>
@@ -312,7 +316,9 @@
             style="width:100px" />
         </td>
       </tr>
-
+      <tr>
+        <hr>
+      </tr>
       <tr>
         <td>רשיון לפריט</td>
         <td>
@@ -337,8 +343,10 @@
       <tr *ngIf="allowUpdateForm">
         <td></td>
         <td colspan="2">
-          <button *ngIf="!newForm" [disabled]="disabledValue" (click)="updateFormDetails()" class="btn btn-success form-control">Update Form</button>
-          <button *ngIf="newForm" [disabled]="disabledValue" (click)="createFormDetails()" class="btn btn-success form-control">Create Form</button>
+          <button *ngIf="!newForm" [disabled]="disabledValue" (click)="updateFormDetails()"
+            class="btn btn-success form-control">עדכן טופס</button>
+          <button *ngIf="newForm" [disabled]="disabledValue" (click)="createFormDetails()"
+            class="btn btn-success form-control">צור טופס</button>
         </td>
         <td></td>
       </tr>
@@ -498,8 +506,10 @@
       <tr>
         <td></td>
         <td colspan="2">
-          <button *ngIf="!newForm && allowUpdateForm" [disabled]="disabledValue" (click)="updateFormDetails()" class="btn btn-success form-control">Update Form</button>
-          <button *ngIf="newForm && allowUpdateForm" [disabled]="disabledValue" (click)="createFormDetails()" class="btn btn-success form-control">Create Form</button>
+          <button *ngIf="!newForm && allowUpdateForm" [disabled]="disabledValue" (click)="updateFormDetails()"
+            class="btn btn-success form-control">Update Form</button>
+          <button *ngIf="newForm && allowUpdateForm" [disabled]="disabledValue" (click)="createFormDetails()"
+            class="btn btn-success form-control">Create Form</button>
         </td>
         <td></td>
       </tr>
@@ -520,11 +530,12 @@
   <div class="row mt-4">
     <div class="col-4"> </div>
     <div class="col-4">
-      <h2>משטחי בקרת איכות  
+      <h2>משטחי בקרת איכות
       </h2>
     </div>
     <div class="col-4">
-      <i style="cursor: pointer;font-size: large;" (click)="showQAPalletsModal = false" class="fa fa-times text-info"></i>
+      <i style="cursor: pointer;font-size: large;" (click)="showQAPalletsModal = false"
+        class="fa fa-times text-info"></i>
     </div>
   </div>
 
@@ -554,23 +565,32 @@
             <td style="font-weight: bold;font-size: medium;">{{QAPallet.lastFloorQuantity}}</td>
             <td style="font-weight: bold;font-size: medium;">{{QAPallet.unitsQuantityPartKarton}}</td>
             <td style="font-weight: bold;font-size: large;">{{QAPallet.sumAmount}}</td>
-            <td style="font-weight: bold;font-size: medium;" [ngClass]="{green:QAPallet.qaStatus == 'מוכן לשליחה',red:QAPallet.qaStatus != 'מוכן לשליחה'}">
+            <td style="font-weight: bold;font-size: medium;"
+              [ngClass]="{green:QAPallet.qaStatus == 'מוכן לשליחה',red:QAPallet.qaStatus != 'מוכן לשליחה'}">
               {{QAPallet.qaStatus}}</td>
-            <td style="font-weight: bold;font-size: medium;" [ngClass]="{green:QAPallet.palletStatus == 'הועלה על משטח',red:QAPallet.palletStatus == 'ממתין למשטח'}">
+            <td style="font-weight: bold;font-size: medium;"
+              [ngClass]="{green:QAPallet.palletStatus == 'הועלה על משטח',red:QAPallet.palletStatus == 'ממתין למשטח'}">
               {{QAPallet.palletStatus}}</td>
-            <td><button *ngIf="allowUpdateForm" (click)="deleteQAPallet(QAPallet)" class="btn btn-danger"><i class="fa fa-times"></i></button></td>
+            <td><button *ngIf="allowUpdateForm" (click)="deleteQAPallet(QAPallet)" class="btn btn-danger"><i
+                  class="fa fa-times"></i></button></td>
           </tr>
 
-          <tr >
+          <tr>
             <td></td>
-            <td><input [(ngModel)]="newQAPallet.floorNumber" type="number" style="font-weight: bold;font-size: medium;" placeholder="מספר קומות" class="form-control"></td>
-            <td><input [(ngModel)]="newQAPallet.kartonQuantity" type="number" style="font-weight: bold;font-size: medium;" placeholder="כמות קרטונים" class="form-control"></td>
-            <td><input [(ngModel)]="newQAPallet.unitsInKarton" type="number" style="font-weight: bold;font-size: medium;" placeholder="כמות בקרטון" class="form-control"></td>
-            <td><input [(ngModel)]="newQAPallet.lastFloorQuantity" type="number" style="font-weight: bold;font-size: medium;" placeholder="קומה אחרונה" class="form-control"></td>
-            <td><input [(ngModel)]="newQAPallet.unitsQuantityPartKarton" type="number" style="font-weight: bold;font-size: medium;" placeholder="קרטון חלקי" class="form-control"></td>
+            <td><input [(ngModel)]="newQAPallet.floorNumber" type="number" style="font-weight: bold;font-size: medium;"
+                placeholder="מספר קומות" class="form-control"></td>
+            <td><input [(ngModel)]="newQAPallet.kartonQuantity" type="number"
+                style="font-weight: bold;font-size: medium;" placeholder="כמות קרטונים" class="form-control"></td>
+            <td><input [(ngModel)]="newQAPallet.unitsInKarton" type="number"
+                style="font-weight: bold;font-size: medium;" placeholder="כמות בקרטון" class="form-control"></td>
+            <td><input [(ngModel)]="newQAPallet.lastFloorQuantity" type="number"
+                style="font-weight: bold;font-size: medium;" placeholder="קומה אחרונה" class="form-control"></td>
+            <td><input [(ngModel)]="newQAPallet.unitsQuantityPartKarton" type="number"
+                style="font-weight: bold;font-size: medium;" placeholder="קרטון חלקי" class="form-control"></td>
             <td></td>
             <td>
-              <select [(ngModel)]="newQAPallet.qaStatus" style="font-weight: bold;font-size: medium;" class="form-control">
+              <select [(ngModel)]="newQAPallet.qaStatus" style="font-weight: bold;font-size: medium;"
+                class="form-control">
                 <option value="">סטטוס</option>
                 <option value="מוכן לשליחה">מוכן לשליחה</option>
                 <option value="חסר מדבקות">חסר מדבקות</option>
@@ -585,7 +605,8 @@
               </select>
             </td>
             <td></td>
-            <td><button *ngIf="allowUpdateForm" (click)="addNewQAPallet()" style="font-weight: bold;font-size: medium;" class="btn btn-success">+</button></td>
+            <td><button *ngIf="allowUpdateForm" (click)="addNewQAPallet()" style="font-weight: bold;font-size: medium;"
+                class="btn btn-success">+</button></td>
           </tr>
         </tbody>
       </table>
@@ -594,11 +615,12 @@
 
   <div class="row mt-1">
 
-      <div class="col-4"></div>
-      <div class="col-4">
-        <button style="font-size: large;" (click)="showQAPalletsModal = false" class="form btn btn-danger form-control">סגירה</button>
-      </div>
-      <div class="col-4"></div>
+    <div class="col-4"></div>
+    <div class="col-4">
+      <button style="font-size: large;" (click)="showQAPalletsModal = false"
+        class="form btn btn-danger form-control">סגירה</button>
+    </div>
+    <div class="col-4"></div>
 
   </div>
 

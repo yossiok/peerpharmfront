@@ -22,8 +22,8 @@ export class BatchesService {
       .pipe(map((res) => res.json()));
   }
 
-  addNewMkpBatch(newMkpBatch) {
-    let url = this.baseUrl + "batch/addMkpBatch";
+  addNewMkpBatch(newMkpBatch, reduce) {
+    let url = this.baseUrl + "batch/addMkpBatch?reduce="+reduce;
     return this.http
       .post(url, JSON.stringify(newMkpBatch), this.options)
       .pipe(map((res) => res.json()));
