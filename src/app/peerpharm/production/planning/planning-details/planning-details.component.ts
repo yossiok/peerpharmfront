@@ -244,12 +244,13 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   cancelWorkPlan() {
-    if(confirm(' הפריטים יוחזרו למצב Waiting. האם לבטל פק"ע?'))
-    this.workPlan.status = 8
-    this.workPlan.productionFormules.map(f => f.status = 8)
-    this.saveChanges()
-    .then((succesMessage) => this.toastr.success(succesMessage, 'פק"ע בוטלה, פריטים הוחזרו'))
-    .catch((errorMessage) => this.toastr.error(errorMessage));
+    if(confirm(' הפריטים יוחזרו למצב Waiting. האם לבטל פק"ע?')) {
+      this.workPlan.status = 8
+      this.workPlan.productionFormules.map(f => f.status = 8)
+      this.saveChanges()
+      .then((succesMessage) => this.toastr.success(succesMessage, 'פק"ע בוטלה, פריטים הוחזרו'))
+      .catch((errorMessage) => this.toastr.error(errorMessage));
+    }
   }
 
   // deleteWorkPlan() {
