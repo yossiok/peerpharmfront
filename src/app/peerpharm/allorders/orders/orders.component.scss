@@ -16,6 +16,22 @@ button, input {
   pointer-events: none;
 }
 
+.itshak-rabin {
+  background: rgb(173, 240, 85);
+  color: rgb(153, 8, 129);
+  font-weight: bold;
+  padding: 5px;
+  font-size: large;
+}
+
+.shimon-peres {
+  background: rgb(236, 166, 245);
+  color: rgb(86, 104, 7);
+  font-weight: bold;
+  padding: 5px;
+  font-size: large;
+}
+
 .table-fixed thead {
     width: 100%;
     display: block;
@@ -130,6 +146,10 @@ td {
 .tableHeader {
   box-shadow: 2px 2px 12px 2px black !important;
   background: rgb(69, 69, 202);
+}
+
+.small {
+  width: 50px;
 }
 
 .smallerLoader {

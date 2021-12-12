@@ -51,8 +51,7 @@
     <div class="col-1"></div>
     <div class="col-2"></div>
     <div class="col-2">
-      <input matInput class="form-control" placeholder="Search Costumer By Name"
-        (change)="changeText($event)" />
+      <input matInput class="form-control" placeholder="Search Costumer By Name" (change)="changeText($event)" />
     </div>
     <div class="col-2">
       <button (click)="loadOrders()" class='btn btn-info form-control'> Load </button>
@@ -63,12 +62,28 @@
     <div class="col-2"></div>
     <div class="col-1">
       <img src="../../../../assets/images/excel.png" class="click" alt="export to excel" style="width: 40px;"
-                  (click)="exportAsXLSX()">
+        (click)="exportAsXLSX()">
     </div>
-    
+
   </div>
 
-  <div  class="row mt-4">
+  <div class="mt-2 bg-primary w-25 rounded-pill p-2">
+    <div class="row">
+      <label class="text-center text-white ml-5 mr-5 h3">Filter By Item</label>
+      <input class="form-control w-50" placeholder='הכנס שם / מק"ט' #filterItem>
+      <div *ngIf="lodingOrders" class="smallerLoader"></div>
+    </div>
+    <div *ngIf="!lodingOrders" class="row mt-2 d-flex flex-row justify-content-around">
+      <div>
+        <button class="itshak-rabin" (click)="filterByItem(filterItem.value)">Filter</button>
+      </div>
+      <div>
+        <button class="shimon-peres" (click)="allOrders(filterItem)">Reset</button>
+      </div>
+    </div>
+  </div>
+  <h4 class="text-center text-success">Showing {{orders.length}} orders <span *ngIf="filterValue != ''">Filtered by <span class="text-primary font-weight-bold">{{filterValue}}</span></span></h4>
+  <div class="row mt-4">
     <table class='table table-hover table-fixed'>
       <thead class='bg-info text-white'>
         <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black;">
@@ -79,15 +94,9 @@
           <th style="padding:5px">Order Number
             <i class="ti-exchange-vertical" (click)="sortOrdersByOrderNumber()" style="cursor:pointer"></i>
           </th>
-          <th style="width:18%; padding:5px">Costumer <select style="display: inline-block;" class="form-control w-50" (change)="filterOrdersByArea($event)">
-              <option></option>
-              <option value="דרום">דרום</option>
-              <option value="מרכז">מרכז</option>
-              <option value="השרון">השרון</option>
-              <option value="צפון מערבי">צפון מערבי</option>
-              <option value="צפון מזרחי">צפון מזרחי</option>
-              <option value="ירושלים">ירושלים</option>
-            </select></th>
+          <th style="width:18%; padding:5px">
+
+          </th>
           <th style="padding:5px">Order date
             <i class="ti-exchange-vertical" (click)="filterOrdersByDate('order')" style="cursor:pointer"></i>
           </th>
@@ -97,12 +106,13 @@
           <th style="padding:5px">Customer Order</th>
           <th style="width:12%; padding:5px">Remarks</th>
           <th style="padding:5px ; width: 7%">
-            <select style="display: inline-block;" class="form-control w-75"  (change)="searchByType($event)">
+            <select style="display: inline-block;" class="form-control w-75" (change)="searchByType($event)">
               <option value="">Type-All</option>
               <option value="Make Up">Make Up</option>
               <option value="Cosmetic">Cosmetic</option>
               <option value="Cosmetic & MakeUp">Cosmetic & MakeUp</option>
-            </select></th>
+            </select>
+          </th>
           <th style="padding:5px">Stage
             <i class="ti-exchange-vertical" (click)="sortOrdersByStage()" style="cursor:pointer"></i>
           </th>
@@ -112,7 +122,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black;" *ngFor="let order of orders; let i = index" [style.background-color]="order.color" (blur)="saveEdit(false, '')">
+        <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black;"
+          *ngFor="let order of orders; let i = index" [style.background-color]="order.color"
+          (blur)="saveEdit(false, '')">
           <td style="width:3%;">{{i+1}}</td>
           <td style="width:3%;" (click)="edit('')">
             <input type="checkbox" [(ngModel)]="order.isSelected" name="orderSelect">
@@ -194,6 +206,6 @@
 </div>
 
 <div *ngIf="newOrderModal == true"
-    class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal">
-    <app-neworder (closed)="newOrderModal = false"></app-neworder>
-  </div>
+  class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal">
+  <app-neworder (closed)="newOrderModal = false"></app-neworder>
+</div>

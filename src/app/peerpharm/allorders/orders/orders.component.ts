@@ -29,6 +29,7 @@ export class OrdersComponent implements OnInit {
   @ViewChild('stage') stage: ElementRef;
   @ViewChild('onHoldDate') onHoldDate: ElementRef;
 
+  lodingOrders: boolean = false
   orders: any[];
   ordersCopy: any[];
   EditRowId: any = "";
@@ -48,6 +49,7 @@ export class OrdersComponent implements OnInit {
     prodFinish: 0,
     done: 0,
   }
+  filterValue: string = ""
   //private orderSrc = new BehaviorSubject<Array<string>>(["3","4","5"]);
   //private orderSrc = new BehaviorSubject<string>("");
 
@@ -351,13 +353,28 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  filterOrdersByArea(ev) {
-    let orderArea = ev.target.value
-    this.ordersService.getOrdersByArea(orderArea).subscribe(data => {
-      this.orders = data;
-    })
+  // filterOrdersByArea(ev) {
+  //   let orderArea = ev.target.value
+  //   this.ordersService.getOrdersByArea(orderArea).subscribe(data => {
+  //     this.orders = data;
+  //   })
+  // }
 
+  filterByItem(value) {
+    this.lodingOrders = true
+    this.ordersService.getAllOpenOrderItemsByItemValue(value).subscribe(data => {
+      this.lodingOrders = false
+      this.filterValue = value
+      this.orders = this.ordersCopy.filter(orderFromTable => data.find(orderFromServer => orderFromServer.orderNumber == orderFromTable.orderNumber))
+    })
   }
+
+  allOrders(element) {
+    this.orders = this.ordersCopy
+    this.filterValue = ""
+    element.value = ""
+  }
+
   searchByType(ev) {
     let word = ev.target.value;
     if (word != "") {
@@ -386,17 +403,21 @@ export class OrdersComponent implements OnInit {
   }
 
   filterOrdersByDate(type) {
+
     this.orders = this.ordersCopy
+
     if (type == 'order') {
       this.orders.sort(function (a, b) {
         return new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime()
       });
     }
+
     if (type == 'delivery') {
       this.orders.sort(function (a, b) {
         return new Date(b.deliveryDate).getTime() - new Date(a.deliveryDate).getTime()
       });
     }
+
   }
 
 
@@ -474,18 +495,18 @@ export class OrdersComponent implements OnInit {
       this.loadingUri = false
       let excel = []
       for (let item of data) {
-        try{ 
+        try {
           let quantitySupplied = 0
-          if(item.orderItem.billing && item.orderItem.billing > 0) {
+          if (item.orderItem.billing && item.orderItem.billing > 0) {
             quantitySupplied = item.orderItem.billing
-            .map((b) => b.billQty)
-            .reduce((a, b) => a + b, 0);
+              .map((b) => b.billQty)
+              .reduce((a, b) => a + b, 0);
           }
           item.quantityRemained = Number(item.orderItem.quantity) - quantitySupplied;
           let missingComponents = []
           for (let component of item.componentsExplosion) {
-            if(component.amount < 0)
-            missingComponents.push(component._id)
+            if (component.amount < 0)
+              missingComponents.push(component._id)
           }
           let stringifiedMissingComponents = JSON.stringify(missingComponents)
           excel.push({
@@ -505,12 +526,12 @@ export class OrdersComponent implements OnInit {
             "קו מילוי ראשי": item.itemTree.primaryLine,
             "קו מילוי משני": item.itemTree.secondaryLine,
             "תאריך מילוי": "",
-            "כמות שמילאו": isNaN(Number(item.quantity_Produced)) ? "" : Number(item.quantity_Produced) ,
+            "כמות שמילאו": isNaN(Number(item.quantity_Produced)) ? "" : Number(item.quantity_Produced),
             "סטטוס מילוי": item.fillingStatus,
             "קומפוננטים חסרים": stringifiedMissingComponents,
             // "מדבקות": ""
           })
-        } catch(e) {
+        } catch (e) {
           console.log('error: ')
         }
       }

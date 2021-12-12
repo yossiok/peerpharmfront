@@ -58,6 +58,12 @@ export class OrdersService {
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
+  // Name OR(!) Number
+  getAllOpenOrderItemsByItemValue(itemValue): Observable<any> {
+    let url = this.baseUrl + "order?allOpenOrderItemsByItemValue=" + itemValue;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
   // getOrderCompileData(orderNumber): Observable<any> {
   //   let url = this.baseUrl + 'packingPallltItems?getAmounts=yes&orderNumber=' + orderNumber;
   //   return this.http.get(url).pipe(map(reponse => reponse.json()));
