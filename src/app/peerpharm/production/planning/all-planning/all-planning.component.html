@@ -46,6 +46,7 @@
                         <option value="3">Formula</option>
                         <option value="4">Scheduled</option>
                         <option value="6">Produced</option>
+                        <option value="8">Canceled</option>
                     </select>
                 </div>
                 <div class="col-2">
@@ -83,7 +84,7 @@
 
             </div>
         </div>
-        <div class="col-1 d-flex flex-column justify-content-between index p-3" style="height: 475px;">
+        <div class="col-1 d-flex flex-column justify-content-between index p-3" style="height: 530px;">
             <div class="status-index-item">Index:</div>
             <div class="status-index-item" [style.background]="'#68e37d'">PP&C <i class="fa fa-pencil-alt"></i>
             </div>
@@ -93,6 +94,8 @@
             <div class="status-index-item" [style.background]="'#C48170'">Materials <i class="fas fa-tint"></i>
             </div>
             <div class="status-index-item" [style.background]="'#A5A5A5'">Produced <i class="fas fa-archive"></i>
+            </div>
+            <div class="status-index-item" [style.background]="'#c93682'">Canceled <i class="fas fa-times"></i>
             </div>
         </div>
     </div>

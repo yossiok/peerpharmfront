@@ -108,6 +108,7 @@ export class OrderdetailsComponent implements OnInit {
   setScheduleAllowed: boolean = false;
   printOrder: boolean = false;
   plateImg = "";
+  currentItem: any;
 
   componentsAmounts: any = {
     bottleQuantity: 0,
@@ -507,6 +508,10 @@ export class OrderdetailsComponent implements OnInit {
           this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         }
       );
+  }
+
+  openPAKA(content) {
+    this.modalService.open(content)
   }
 
   calculateKG(netWeightGr, quantity) {

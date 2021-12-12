@@ -32,7 +32,7 @@ export class OrderItemBatchStatusPipe implements PipeTransform {
         status = "Done";
         break;
       case 8:
-        status = "All";
+        status = "Canceled";
         break;
       default:
         status = "Unknown";

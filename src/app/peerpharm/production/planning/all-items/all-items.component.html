@@ -33,7 +33,9 @@
         <li style="cursor: pointer" class="task-item d-flex complete border-bottom" (click)="viewOrders(7)">
           {{7|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
             [style.background]="7|orderItemBatchStatusColor">{{producedCount}}</span></li>
-        <li style="cursor: pointer" class="task-item d-flex all border-bottom active" (click)="viewOrders(8)"> All <span
+        <li style="cursor: pointer" class="task-item d-flex all border-bottom active" (click)="viewOrders(8)"> {{8|orderItemBatchStatus}} <span
+          [style.background]="8|orderItemBatchStatusColor" class="badge badge-primary ml-auto pt-1">{{canceledCount}}</span></li>
+        <li style="cursor: pointer" class="task-item d-flex all border-bottom active" (click)="viewOrders(9)"> All <span
             class="badge badge-primary ml-auto pt-1">{{orderItems.length}}</span></li>
       </ul>
     </div>
@@ -48,28 +50,31 @@
       </li> -->
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(2)">
         {{2|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
-          [style.background]="2|orderItemBatchStatusColor">{{movedWPCount}}</span>
+          [style.background]="2|orderItemBatchStatusColor">{{PPCWPCount}}</span>
       </li>
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(3)">
         {{3|orderItemBatchStatus}}
         <span class="badge badge-success ml-auto pt-1"
-          [style.background]="3|orderItemBatchStatusColor">{{inProdWPCount}}</span>
+          [style.background]="3|orderItemBatchStatusColor">{{FormulaWPCount}}</span>
       </li>
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(4)">
         {{4|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
-          [style.background]="4|orderItemBatchStatusColor">{{manufWPCount}}</span>
+          [style.background]="4|orderItemBatchStatusColor">{{ScheduledWPCount}}</span>
       </li>
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(5)">
         {{5|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
-          [style.background]="5|orderItemBatchStatusColor">{{closedWPCount}}</span></li>
+          [style.background]="5|orderItemBatchStatusColor">{{MaterialsWPCount}}</span></li>
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(6)">
         {{6|orderItemBatchStatus}}<span this.onholdWPCount=this.filteredWorkPlans.length;
           class="badge badge-success ml-auto pt-1"
-          [style.background]="6|orderItemBatchStatusColor">{{onholdWPCount}}</span></li>
+          [style.background]="6|orderItemBatchStatusColor">{{ProducedWPCount}}</span></li>
       <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(7)">
         {{7|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
-          [style.background]="7|orderItemBatchStatusColor">{{cancelledWPCount}}</span></li>
-      <li class="task-item d-flex all border-bottom active" style="cursor: pointer" (click)="viewWP(8)">All <span
+          [style.background]="7|orderItemBatchStatusColor">{{DoneWPCount}}</span></li>
+      <li class="task-item d-flex complete border-bottom" style="cursor: pointer" (click)="viewWP(8)">
+        {{8|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
+          [style.background]="8|orderItemBatchStatusColor">{{CancelledWPCount}}</span></li>
+      <li class="task-item d-flex all border-bottom active" style="cursor: pointer" (click)="viewWP(9)">All<span
           class="badge badge-primary ml-auto pt-1">{{workPlans.length}}</span>
       </li>
     </ul>
@@ -78,6 +83,7 @@
     <h1 class="text-center"><span class="heading1" [style.backgroundColor]="currentView|orderItemBatchStatusColor">
         {{currentView|orderItemBatchStatus}} Order Items List
 
+        
       </span>
     </h1>
     <div class="right-part bg-white">
@@ -128,7 +134,7 @@
         <tbody *ngFor="let item of filteredOrderItems ; let i = index">
           <tr [style.backgroundColor]="item.isSelectedColor" class=" border-bottom border-dark">
             <td>
-              <input class="check-box" type="checkbox" (checked)="item.isSelected" (change)="isSelected($event,item)">
+              <input [disabled]="item.pakaStatus != 1 && item.pakaStatus != 8" class="check-box" type="checkbox" (checked)="item.isSelected" (change)="isSelected($event,item)">
             </td>
             <td>{{item.formule.parentNumber? item.formule.parentNumber: item.formule.formuleNumber}}</td>
             <td>{{item.orderNumber}}</td>

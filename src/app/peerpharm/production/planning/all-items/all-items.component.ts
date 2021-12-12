@@ -31,14 +31,20 @@ export class AllItemsComponent implements OnInit {
   orderItems: any[] = [];
   viewOrderItems: boolean = true;
   viewWorkPlans: boolean = false;
+
+  // work plans
   draftWPCount: number;
-  movedWPCount: number;
-  inProdWPCount: number;
-  manufWPCount: number;
-  closedWPCount: number;
-  onholdWPCount: number;
-  cancelledWPCount: number;
+  PPCWPCount: number;
+  FormulaWPCount: number;
+  ScheduledWPCount: number;
+  MaterialsWPCount: number;
+  ProducedWPCount: number;
+  DoneWPCount: number;
+  CancelledWPCount: number;
+
   selectedArr: any[] = [];
+
+  // items
   waitingCount: number = 0;
   plannedCount: number = 0;
   approvedCount: number = 0;
@@ -46,7 +52,9 @@ export class AllItemsComponent implements OnInit {
   allocatedCount: number = 0;
   inProdCount: number = 0;
   producedCount: number = 0;
+  canceledCount: number = 0;
   nullCount: number = 0;
+
   formuleToggle: boolean = true;
   sortToggle: number = 1;
   edit: number = -1;
@@ -93,8 +101,9 @@ export class AllItemsComponent implements OnInit {
     this.approvedCount = 0;
     this.scheduledCount = 0;
     this.allocatedCount = 0;
-    this.inProdWPCount = 0;
+    this.FormulaWPCount = 0;
     this.producedCount = 0;
+    this.canceledCount = 0;
 
     this.ordersService.getAllOpenOrderItemsNew().subscribe((data) => {
       console.log(data);
@@ -117,13 +126,25 @@ export class AllItemsComponent implements OnInit {
           ? item.itemOrderDate
           : item.order.orderDate;
         item.itemOrderDate = new Date(item.itemOrderDate);
+        console.log(item.itemNumber)
+        debugger
         if (item.workPlans) {
           if (item.wpSplit && item.maxQty > 0) {
             if (this.orderItems.findIndex((oi) => oi._id == item._id) == -1) {
-              let newItem = { ...item };
-              newItem.pakaStatus = 1;
-              newItem.quantity = item.wpRemainQty;
-              this.orderItems.push(newItem);
+              
+              // newItem1 = remained qty
+              let newItem1 = { ...item };
+              newItem1.pakaStatus = 1;
+              newItem1.quantity = item.wpRemainQty;
+              newItem1.workPlanId = null
+              this.orderItems.push(newItem1);
+              
+              // newItem2 = Prod qty (workPlan)
+              let newItem2 = {...item}
+              newItem2.pakaStatus = item.workPlans.itemStatus;
+              newItem2.quantity = item.wpProdQty;
+              newItem2.workPlanId = item.workPlans.workPlanId
+              this.orderItems.push(newItem2);
             }
           } else {
             item.pakaStatus = item.workPlans.itemStatus;
@@ -138,7 +159,7 @@ export class AllItemsComponent implements OnInit {
         this.orderItems.push(item);
       }
       console.log(this.orderItems);
-      for (let i = 1; i <= 7; i++) {
+      for (let i = 1; i <= 8; i++) {
         this.filteredOrderItems = this.orderItems.filter((oi) => {
           return oi.pakaStatus == i;
         });
@@ -165,6 +186,9 @@ export class AllItemsComponent implements OnInit {
           case 7:
             this.producedCount = 0 + this.filteredOrderItems.length;
             break;
+          case 8:
+            this.canceledCount = 0 + this.filteredOrderItems.length;
+            break;
           case null:
             this.waitingCount = 0 + this.filteredOrderItems.length;
             break;
@@ -182,7 +206,7 @@ export class AllItemsComponent implements OnInit {
     this.productionService.getAllWorkPlans().subscribe((workPlans) => {
       this.workPlans = workPlans;
       console.log(this.workPlans);
-      for (let i = 1; i <= 7; i++) {
+      for (let i = 1; i <= 8; i++) {
         this.filteredWorkPlans = [];
         this.filteredWorkPlans = this.workPlans.filter((wp) => {
           return wp.status == i;
@@ -192,22 +216,25 @@ export class AllItemsComponent implements OnInit {
             this.draftWPCount = this.filteredWorkPlans.length;
             break;
           case 2:
-            this.movedWPCount = this.filteredWorkPlans.length;
+            this.PPCWPCount = this.filteredWorkPlans.length;
             break;
           case 3:
-            this.inProdWPCount = this.filteredWorkPlans.length;
+            this.FormulaWPCount = this.filteredWorkPlans.length;
             break;
           case 4:
-            this.manufWPCount = this.filteredWorkPlans.length;
+            this.ScheduledWPCount = this.filteredWorkPlans.length;
             break;
           case 5:
-            this.closedWPCount = this.filteredWorkPlans.length;
+            this.MaterialsWPCount = this.filteredWorkPlans.length;
             break;
           case 6:
-            this.onholdWPCount = this.filteredWorkPlans.length;
+            this.ProducedWPCount = this.filteredWorkPlans.length;
             break;
           case 7:
-            this.cancelledWPCount = this.filteredWorkPlans.length;
+            this.DoneWPCount = this.filteredWorkPlans.length;
+            break;
+          case 8:
+            this.CancelledWPCount = this.filteredWorkPlans.length;
             break;
         }
       }
@@ -317,7 +344,7 @@ export class AllItemsComponent implements OnInit {
   viewWP(status) {
     this.currentWPView = status;
     console.log("WP clicked! Status = " + this.currentWPView);
-    if (status != 8) {
+    if (status != 9) {
       this.filteredWorkPlans = this.workPlans.filter((wp) => {
         return wp.status == status;
       });
@@ -336,7 +363,7 @@ export class AllItemsComponent implements OnInit {
 
     this.currentView = status;
     this.filteredOrderItems = [];
-    if (status != 8) {
+    if (status != 9) {
       this.filteredOrderItems = this.orderItems.filter((oi) => {
         return oi.pakaStatus == status;
       });

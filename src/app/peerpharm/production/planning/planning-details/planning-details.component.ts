@@ -243,17 +243,26 @@ export class PlanningDetailsComponent implements OnInit {
     }
   }
 
-  deleteWorkPlan() {
-    if (confirm('למחוק פק"ע???')) {
-      this.productionService
-        .deleteWorkPlan(this.workPlan.serialNumber)
-        .subscribe((data) => {
-          this.updateWorkPlans.emit();
-          this.closeWorkPlanEmitter.emit(-1);
-          console.log(data);
-        });
-    }
+  cancelWorkPlan() {
+    if(confirm(' הפריטים יוחזרו למצב Waiting. האם לבטל פק"ע?'))
+    this.workPlan.status = 8
+    this.workPlan.productionFormules.map(f => f.status = 8)
+    this.saveChanges()
+    .then((succesMessage) => this.toastr.success(succesMessage, 'פק"ע בוטלה, פריטים הוחזרו'))
+    .catch((errorMessage) => this.toastr.error(errorMessage));
   }
+
+  // deleteWorkPlan() {
+  //   if (confirm('למחוק פק"ע???')) {
+  //     this.productionService
+  //       .deleteWorkPlan(this.workPlan.serialNumber)
+  //       .subscribe((data) => {
+  //         this.updateWorkPlans.emit();
+  //         this.closeWorkPlanEmitter.emit(-1);
+  //         console.log(data);
+  //       });
+  //   }
+  // }
 
   setColor(status) {
     switch (status) {

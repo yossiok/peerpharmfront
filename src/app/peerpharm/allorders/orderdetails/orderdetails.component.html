@@ -87,9 +87,9 @@
           ngbTooltip="Problems Report" (click)="exportProblems()">
       </th>
       <th *ngIf="openFormule"></th>
+      <th>WP Status</th>
       <th><img src="../../../../assets/images/print.png" ngbTooltip="Print Order Details" class="reportImg click"
           (click)="printOrder = true"></th>
-      <th>WP Status</th>
       <th *ngIf="showingAllOrders || multi">Order Number</th>
       <th style="width:200px;" class="header">Item Number </th>
       <th class="header">Item Important Remark</th>
@@ -188,8 +188,8 @@
         <td *ngIf="item._id!==EditRowId"><b>{{i+1}}</b></td>
         <td><input type="checkbox" [checked]="item.isSelected" (change)="isSelected($event,item)"></td>
 
-        <td [style.background]="item.pakaStatus|orderItemBatchStatusColor">
-          {{item.pakaStatus | orderItemBatchStatus}}</td>
+        <td class="click paka-status" (click)="openPAKA(pakaStatus)" (click)="currentItem = item" [style.background]="item.workPlans.length > 1 ? '#de826a' : item.pakaStatus|orderItemBatchStatusColor">
+          {{item.workPlans.length > 1 ? 'MULTI PAKA (click to watch)' : item.pakaStatus | orderItemBatchStatus}} <br> <span class="font-weight-bold" *ngIf="item.workPlans[0] && item.workPlans[0].quantity < item.quantity">{{item.workPlans[0].quantity}}</span></td>
         <td *ngIf="multi==true">{{item.orderNumber}}</td>
 
         <!--Formule exist?-->
@@ -1219,3 +1219,19 @@
     </tbody>
   </table>
 </div>
+
+
+<ng-template #pakaStatus>
+  <div class="p-5">
+    <h1 class="border border-black">Item {{currentItem.itemNumber}}, Order {{currentItem.orderNumber}}</h1>
+    <h2 class="mt-5 font-weight-bolder">Work Plans:</h2>
+    <div class="mt-5" *ngFor="let workPlan of currentItem.workPlans; let i = index">
+      <h3 class="text-center text-decoration-underline">Work Plan {{workPlan.workPlanId}}</h3>
+      <h4 [style.background]="workPlan.WPstatus | orderItemBatchStatusColor" class="text-center p-2 m-2">Work Plan Status: {{workPlan.WPstatus | orderItemBatchStatus}}</h4>
+      <h4 [style.background]="workPlan.itemStatus | orderItemBatchStatusColor" class="text-center p-2 m-2">Item Status: {{workPlan.itemStatus | orderItemBatchStatus}}</h4>
+      <h4 class="text-center p-2 m-2">Quantity: {{workPlan.quantity}}</h4>
+      <h4 class="text-center p-2 m-2">Due Date: {{workPlan.dueDate | date: 'dd/MM'}}</h4>
+      <h4 class="text-center p-2 m-2">Batch: {{workPlan.batch}}</h4>
+    </div>
+  </div>
+</ng-template>

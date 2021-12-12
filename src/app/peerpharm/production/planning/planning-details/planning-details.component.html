@@ -248,8 +248,9 @@
       </div> -->
   </div>
   <div class="row mt-5"></div>
-  <div *ngIf="notAndrey" class="row mt-5">
-    <button (click)="deleteWorkPlan()" class="btn btn-danger w-50 delete-btn">מחיקת פק"ע</button>
+  <div *ngIf="notAndrey" class="row mt-5 d-flex flex-row justify-content-between">
+    <button (click)="cancelWorkPlan()" class="btn btn-danger">ביטול פק"ע (והחזרת פריטים)</button>
+    <button (click)="closeWorkPlan()" class="btn btn-success">סגירת פק"ע (Done!)</button>
   </div>
 </div>
 
