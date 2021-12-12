@@ -50,6 +50,11 @@
     animation: spin 2s linear infinite;
   }
 
+  .form-control {
+    display: inline !important;
+    width: 50% !important;
+  }
+
   .work-plan {
     top: 135px;
     left: 400px;
@@ -58,6 +63,15 @@
     // border-radius: 27px;
     overflow-y: auto;
     height: 1056px;
+  }
+
+  .index {
+    border: 1px solid black;
+    border-radius: 10px
+  }
+
+  .status-index-item {
+    padding: 20px;
   }
 
   .remark {

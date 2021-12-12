@@ -27,21 +27,53 @@
     color: white
 }
 
+.check-box {
+  height: 36px;
+  width: 21px;
+  background: blue;
+}
+
+.long {
+  height: 418px;
+}
+
+.formule-side {
+  width: 116px;
+  height: 123px;
+}
+
+.order-span {
+  color: #137d38;
+  text-decoration: underline;
+}
+
+.item-span {
+  color: #15137d;
+  font-weight: bold;
+}
+
 .status {
     text-shadow: 2px 2px 5px rgb(15, 1, 1);
 }
 
-.formules-table {
-    width: 90%;
-    // background-color: rgb(133, 133, 209);
+.schedule-button {
+  background: #ED7D31;
 }
 
-.kg-input{
-    width: 80%
+.batch-btn {
+  background: #A5A5A5;
+}
+
+.cpf {
+  margin-left: -78px;
+}
+
+.big-arrow {
+  font-size: 100px;
 }
 
 .formules {
-    max-height: 400px;
+    // max-height: 400px;
     // width: 70%;
     overflow-y: auto;
 }

@@ -4,7 +4,10 @@
     <div class="col-4">
       <h1 class="text-info">Add New Batch</h1>
     </div>
-    <div class="col-4"></div>
+    <div class="col-3"></div>
+    <div class="col-1">
+        <button class="btn btn-warning" *ngIf="workPlan" (click)="backToWP()">Back to PAKA {{workPlan.serialNumber}} <i class="fas fa-arrow-right"></i></button>
+    </div>
   </div>
   <div class="row mt-4">
     <div class="col-4"></div>

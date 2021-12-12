@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { WorkPlanStatusPipe } from 'src/app/pipes/work-plan-status.pipe';
 import { AuthService } from 'src/app/services/auth.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ProductionService } from 'src/app/services/production.service';
+import { resolve } from 'url';
 import { WorkPlan } from '../WorkPlan';
 
 @Component({
@@ -14,6 +16,7 @@ import { WorkPlan } from '../WorkPlan';
 })
 export class AllPlanningComponent implements OnInit {
   workPlans: WorkPlan[];
+  workPlansCopy: WorkPlan[];
   checkedWorkPlans: WorkPlan[] = []
   workPlansInterval: any = null
   currentWorkPlan: WorkPlan;
@@ -31,17 +34,27 @@ export class AllPlanningComponent implements OnInit {
     private workPlanStatusPipe: WorkPlanStatusPipe,
     private inventoryService: InventoryService,
     private toastr: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private route: ActivatedRoute
   ) { }
 
-  ngOnInit(): void {
-    this.getWorkPlans()
+  async ngOnInit() {
+    let bool = await this.getWorkPlans()
     this.authorized = this.authService.loggedInUser.authorization.includes('creamProductionManager')
+    this.route.queryParamMap.subscribe(params => {
+      if (params["params"].workPlanId && bool) {
+        this.openWorkPlan(Number(params["params"].workPlanId))
+      }
+    })
   }
 
   getWorkPlans() {
-    this.productionService.getAllWorkPlans().subscribe(workPlans => {
-      this.workPlans = workPlans
+    return new Promise((resolve, reject) => {
+      this.productionService.getAllWorkPlans().subscribe(workPlans => {
+        this.workPlans = workPlans
+        this.workPlansCopy = [...workPlans]
+        resolve(true)
+      })
     })
   }
 
@@ -59,6 +72,36 @@ export class AllPlanningComponent implements OnInit {
     }
   }
 
+  filterWorkPlans(event) {
+    let value = event.target.value.toLowerCase().trim()
+    this.workPlans = this.workPlansCopy.filter((o) =>
+      Object.entries(o).some((entry) =>
+        String(entry[1]).toLowerCase().includes(value)
+      )
+    );
+  }
+
+  filterByStatus(event) {
+    let status = event.target.value
+    if (status == 0) this.workPlans = this.workPlansCopy
+    else this.workPlans = this.workPlansCopy.filter(wp => wp.status == status)
+  }
+
+  filterByItemOrOrder(event) {
+    let value = event.target.value
+    this.workPlans = this.workPlansCopy.filter((o) =>
+      Object.entries(o.orderItems).some((entry) =>
+        String(entry[1].itemNumber).toLowerCase().includes(value) ||
+        String(entry[1].orderNumber).toLowerCase().includes(value) ||
+        String(entry[1].description).toLowerCase().includes(value)
+      )
+    );
+  }
+
+  clearFilter() {
+    this.workPlans = this.workPlansCopy
+  }
+
   // add or remove selection
   addOrRemove(event, i) {
     if (event.target.checked) this.checkedWorkPlans.push(this.workPlans[i])
@@ -71,16 +114,25 @@ export class AllPlanningComponent implements OnInit {
   }
 
   showHideCheckBox() {
-    if(this.showCheckbox) this.checkedWorkPlans = []
+    if (this.showCheckbox) this.checkedWorkPlans = []
     this.showCheckbox = !this.showCheckbox
   }
 
   setColor(status) {
     switch (status) {
-      case 1: return '#e5e831'
-      case 2: return '#15eb20'
-      case 3: return '#595850'
+      case 1: return '#FFC000'
+      case 2: return '#68e37d'
+      case 3: return '#5B9BD5'
+      case 4: return '#ED7D31'
+      case 5: return '#C48170'
     }
+  }
+
+  filterByRole(status) {
+    if (this.authService.loggedInUser.authorization.includes("andrey")) {
+      return status > 2
+    }
+    else return true
   }
 
   exportAll() {

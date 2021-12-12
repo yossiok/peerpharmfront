@@ -326,6 +326,13 @@ export class OrdersService {
       .pipe(map((reponse) => reponse.json()));
   }
 
+  updatePakaStatus(orderItems) {
+    let url = this.baseUrl + "orderitem/updatePakaStatus";
+    return this.http
+      .post(url, JSON.stringify({ orderItems }), this.options)
+      .pipe(map((reponse) => reponse.json()));
+  }
+
   //get items required elements for item: components/stickers/boxes/cartons
 
   getOrderComponents(orderItemsNumArr): Observable<any> {

@@ -1,30 +1,32 @@
 <div *ngIf="!showMaterialsForFormules" class="m-5 p-5">
   <i (click)="closeWorkPlan(-1)" class="fa fa-times float-right h3 close"></i>
-  <h1 [style.color]="setColor(workPlan.status)" class="text-center status">Work Plan {{workPlan.serialNumber}}</h1>
+  <h1 [style.color]="workPlan.status | orderItemBatchStatusColor" class="text-center status">Work Plan
+    {{workPlan.serialNumber}}</h1>
+  <div class="row mt-4"></div>
   <div class="d-flex flex-row justify-content-between w-75 mt-4">
     <div class="h2">
-      <span class="p-2 rounded status" [style.color]="setColor(workPlan.status)">{{workPlan.status |
-        workPlanStatus}}</span>
-      <i [style.color]="setColor(2)" *ngIf="workPlan.status == 2" class="fas fa-check status"></i>
-      <span [style.color]="setColor(3)" *ngIf="workPlan.status == 3">
+      <span class="p-2 rounded status" [style.color]="workPlan.status | orderItemBatchStatusColor">{{workPlan.status |
+        orderItemBatchStatus}}</span>
+      <i [style.color]="setColor(3)" *ngIf="workPlan.status == 3" class="fas fa-check status"></i>
+      <span [style.color]="setColor(4)" *ngIf="workPlan.status == 4">
         <i class="fas fa-check status"></i>
         <i class="fas fa-check status"></i>
       </span>
     </div>
     <div class="h3">
-      <span [style.background]="setColor(workPlan.status)" [style.color]="workPlan.status == 3 ? 'white' : 'black'"
-        class="p-3 rounded-pill">{{workPlan.remark}}</span>
+      <span [style.background]="workPlan.status | orderItemBatchStatusColor"
+        [style.color]="workPlan.status == 3 ? 'white' : 'black'" class="p-3 rounded-pill">{{workPlan.remark}}</span>
     </div>
     <div class="h3">
-      <span [style.background]="setColor(workPlan.status)" [style.color]="workPlan.status == 3 ? 'white' : 'black'"
-        class="p-3 rounded-pill">{{workPlan.date |
+      <span [style.background]="workPlan.status | orderItemBatchStatusColor"
+        [style.color]="workPlan.status == 3 ? 'white' : 'black'" class="p-3 rounded-pill">{{workPlan.date |
         date:
         'short'}}</span>
     </div>
   </div>
 
-  <div *ngIf="authorized" class="row mt-4">
-    <div class="h2">
+  <div *ngIf="authorized" class="row">
+    <!-- <div class="h2">
       <select (change)="setStatus($event)" class="form-control">
         <option disabled value="0">Change Status</option>
         <option *ngFor="let status of statuses"
@@ -32,7 +34,7 @@
           {{status | workPlanStatus}}
         </option>
       </select>
-    </div>
+    </div> -->
     <div class="h2">
       <!-- <button class="btn btn-info rounded" style="font-size: 28px">
                 <i (click)="edit = true" ngbTooltip="ערוך פרטים" class="fas fa-pencil-alt"></i>
@@ -42,7 +44,7 @@
       <!-- <img ngbTooltip="שמור שינויים" (click)="saveChanges()" class="img2 click" src="../../../../../assets/images/aprroved.png" alt=""> -->
     </div>
   </div>
-  <h2 class="mt-4">
+  <h2 *ngIf="notAndrey" class="mt-4">
     {{workPlan.orderItems.length}} Order Items
     <span class="float-right">
       <img *ngIf="!loadData" ngbTooltip="ייצוא פריטים" class="click"
@@ -53,13 +55,16 @@
       <div *ngIf="loadData" class="smallerLoader"></div>
     </span>
   </h2>
-  <div class="row mt-4" #tableDiv>
+  <div *ngIf="notAndrey" class="row mt-4" #tableDiv>
     <table class="table">
       <thead class="thead-dark">
         <tr>
           <th>#</th>
+          <th>
+            <input (change)="checkAllItems($event)" type="checkbox" class="check-box">
+          </th>
           <th>Item</th>
-          <th>Customer</th>
+          <th>Parent Formule</th>
           <th>Order</th>
           <th>Description</th>
           <th>משקל</th>
@@ -67,6 +72,7 @@
           <th>סה"כ ק"ג</th>
           <th>חומרי גלם</th>
           <th>קומפוננטים</th>
+          <th>סטטוס ייצור</th>
           <th>הערות</th>
           <th></th>
           <th *ngIf="authorized"></th>
@@ -75,15 +81,20 @@
       <tbody>
         <tr *ngFor="let orderItem of workPlan.orderItems; let i = index">
           <td>{{i+1}}</td>
+          <td>
+            <span *ngIf="orderItem.hasFormule"><i class="fas fa-check"></i></span>
+            <input *ngIf="!orderItem.hasFormule" [(ngModel)]="orderItem.checked" type="checkbox" class="check-box">
+          </td>
           <td>{{orderItem.itemNumber}}</td>
-          <td>{{orderItem.customerName}}</td>
-          <td>{{orderItem.orderNumber}}</td>
+          <td>{{orderItem.parentFormule}}</td>
+          <td><span [ngbTooltip]="orderItem.customerName">{{orderItem.orderNumber}} <i class="fas fa-info"></i></span>
+          </td>
           <td>{{orderItem.description}}</td>
           <td>{{orderItem.netWeightGr}}</td>
           <td>{{orderItem.quantity}}</td>
           <td #editWeight>
             <span *ngIf="edit != i">{{orderItem.totalKG}}</span>
-            <input class="kg-input" *ngIf="edit == i" type="number" [(ngModel)]="orderItem.totalKG">
+            <input placeholder="Enter Weight" *ngIf="edit == i" type="number" [(ngModel)]="orderItem.totalKG">
           </td>
           <td class="text-center" *ngIf="orderItem.enoughMaterials"><i ngbTooltip="כמות מלאי תקינה"
               class="far fa-thumbs-up"></i></td>
@@ -93,10 +104,11 @@
               class="far fa-thumbs-up"></i></td>
           <td class="text-center" *ngIf="!orderItem.enoughComponents"><i ngbTooltip="חסרים קומפוננטים במלאי"
               class="fas fa-exclamation-circle"></i></td>
-
+          <td [style.background]="orderItem.status | orderItemBatchStatusColor">{{orderItem.status |
+            orderItemBatchStatus}}</td>
           <td>
             <span *ngIf="edit != i">{{orderItem.remarks}}</span>
-            <input *ngIf="edit == i" type="text" [(ngModel)]="orderItem.remarks">
+            <input placeholder="Remarks" *ngIf="edit == i" type="text" [(ngModel)]="orderItem.remarks">
           </td>
           <td>
             <img *ngIf="edit == i && authorized" ngbTooltip="שמור שינויים" (click)="saveChanges(i)" class="img click"
@@ -117,61 +129,128 @@
 
     </table>
   </div>
-  <h2>
-    <!-- <img class="click" (click)="export(workPlan.productionFormules, 'formules for work plan'+workPlan.serialNumber)"
-            src="../../../../../assets/images/excel.png" class="img" alt="">  -->
-    {{workPlan.productionFormules.length}} Production Formules
-  </h2>
-  <div class="row mt-4">
-    <div class="col-8 formules">
-
-      <table class="table formules-table">
-        <thead class="thead-dark">
-          <tr>
-            <th>#</th>
-            <th>Formule</th>
-            <th>פריטים / הזמנות</th>
-            <th>סה"כ ק"ג</th>
-            <th>סטטוס חומרים</th>
-            <th>Batch?</th>
-            <!-- <th>הערות</th> -->
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let formule of workPlan.productionFormules; let i = index">
-            <td>{{i+1}}</td>
-            <td>{{formule.formule}}</td>
-            <td>
-              <span *ngFor="let orderAndItem of formule.ordersAndItems">
-                order {{orderAndItem.order}}, item {{orderAndItem.item}}
-              </span>
-            </td>
-            <td>{{formule.totalKG}}</td>
-            <td *ngIf="formule.enoughMaterials"><i ngbTooltip="כמות מלאי תקינה" class="far fa-thumbs-up"></i>
-            </td>
-            <td *ngIf="!formule.enoughMaterials"><i ngbTooltip="חסרים קומפוננטים במלאי"
-                class="fas fa-exclamation-circle"></i></td>
-            <td class="text-center" class="text-success text-left" *ngIf="formule.batchNumber">
-              {{formule.batchNumber}}</td>
-            <td *ngIf="!formule.batchNumber"><i ngbTooltip="לא יוצר באטץ'" class="far fa-times-circle"></i>
-            </td>
-
-            <!-- <td>{{orderItem.remarks}}</td> -->
-          </tr>
-        </tbody>
-
-      </table>
+  <div *ngIf="notAndrey" class="row mt-5">
+    <div class="col-5"></div>
+    <div class="col-2">
+      <button *ngIf="checkItemsFormules()" class="btn btn-success cpf" (click)="createPAKA()">Create Production Formules</button>
+      <!-- <button class="btn btn-info" >Compare</button> -->
     </div>
-    <div class="col-4">
-      <span *ngIf="authorized"><img class="big-img" ngbTooltip='שלח לייצור' (click)="moveToProduction()"
-          src="../../../../../assets/images/filter.png" alt="לחץ כאן על מנת לשלוח פורמולות לייצור"></span>
+    <div class="col-5"></div>
+  </div>
+  <div *ngIf="notAndrey" class="row mt-5">
+    <div class="col-5"></div>
+    <div class="col-2">
+      <i class="fas fa-long-arrow-alt-down big-arrow"></i>
     </div>
+    <div class="col-5"></div>
   </div>
 
+  <h2>
+    {{workPlan.productionFormules.length}} Batches
+    <i class="far fa-trash-alt float-right click" ngbTooltip="מחק פורמולות" (click)="deleteProductionFormules()"></i>
+  </h2>
+  <div class="row mt-4">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th>#</th>
+          <th>
+            <input (change)="checkAllFormules($event)" type="checkbox" class="check-box">
+          </th>
+          <th>Formule</th>
+          <th>פריטים / הזמנות</th>
+          <th>סה"כ ק"ג</th>
+          <th>סטטוס חומרים</th>
+          <th>סטטוס ייצור</th>
+          <th>מתי אבשל?</th>
+          <th></th>
+          <th></th>
+          <!-- <th>Batch?</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let formule of workPlan.productionFormules; let i = index">
+          <td>{{i+1}}</td>
+          <td>
+            <span *ngIf="formule.status >= 3"><i class="fas fa-check"></i></span>
+            <input *ngIf="formule.status < 3" [(ngModel)]="formule.checked" type="checkbox" class="check-box">
+          </td>
+          <td>{{formule.formule}}</td>
+          <td>
+            <span *ngFor="let orderAndItem of formule.ordersAndItems">
+              order <span class="order-span">{{orderAndItem.orderNumber}}</span>, item <span class="item-span">{{orderAndItem.itemNumber}}</span> {{orderAndItem.itemName}}, {{orderAndItem.weightKg}}KG <br>
+            </span>
+          </td>
+          <td>
+            <span (click)="editF = i" *ngIf="editF != i">{{formule.totalKG}}</span>
+            <input placeholder="Enter Weight" *ngIf="editF == i" type="number" [(ngModel)]="formule.totalKG">
+          </td>
+          <td *ngIf="formule.enoughMaterials"><i ngbTooltip="כמות מלאי תקינה" class="far fa-thumbs-up"></i>
+          </td>
+          <td *ngIf="!formule.enoughMaterials"><i ngbTooltip="חסרים קומפוננטים במלאי"
+              class="fas fa-exclamation-circle"></i></td>
+          <td [style.background]="formule.status | orderItemBatchStatusColor">
+            {{formule.status | orderItemBatchStatus}}
+            <span *ngIf="formule.status == 4">{{formule.dueDate | date: 'dd/MM/yyyy'}}</span>
+            <span *ngIf="formule.status == 6">{{formule.batchNumber}}</span>
+          </td>
+          <td>
+            <span [disabled]="!authorized" (click)="editDueDate = i" *ngIf="editDueDate != i && !formule.batchNumber">
+              <span [ngbTooltip]="formule.status < 3 ? 'Formula Not Approved!' : ''" class="click" *ngIf="authorized">
+                <button [disabled]="formule.status < 3" class="btn schedule-button">מתי אבשל?</button>
+              </span>
+            </span>
+            <span *ngIf="editDueDate == i && authorized">
+              <!-- <input type="date" [disabled]="!authorized" (change)="scheduleBatch(i)" [(ngModel)]="formule.dueDate"> -->
+              <select class="form-control" (change)="scheduleBatch(i, $event)">
+                <option *ngFor="let number of andreyisalazyworkersowehavetoworkharderfrohim" [value]="number">בעוד {{number}} ימים</option>
+              </select>
+            </span>
+          </td>
+          <td>
+            <span *ngIf="!formule.batchNumber" [ngbTooltip]="formule.status < 3 ? 'Formula Not Approved!' : ''">
+              <button (click)="addBatch(formule)" class="btn batch-btn" [disabled]="formule.status < 3">בישלתי</button>
+            </span>
+          </td>
+          <!-- <td class="text-center" class="text-success text-left" *ngIf="formule.batchNumber">
+              {{formule.batchNumber}}</td>
+            <td *ngIf="!formule.batchNumber"><i ngbTooltip="לא יוצר באטץ'" class="far fa-times-circle"></i>
+            </td> -->
+            <td>
+              <img *ngIf="editF == i && authorized" ngbTooltip="שמור שינויים" (click)="saveChanges(i)" class="img click"
+              src="../../../../../assets/images/aprroved.png" alt="">
+            </td>
+
+        </tr>
+      </tbody>
+
+    </table>
+
+  </div>
+
+  <div *ngIf="notAndrey" class="row mt-5 long d-flex flex-row justify-content-around">
+    <div>
+      <button class="btn btn-info formule-side" (click)="weightFormules()">
+        <i style="font-size: 46px" class="fas fa-clone"></i>
+        Compare & Approve</button>
+    </div>
+    <div>
+      <button class="btn btn-info formule-side" (click)="approveFormules()">
+        <span *ngIf="authorized"><img class="img2" ngbTooltip='Approve Formules' 
+            src="../../../../../assets/images/filter.png" alt="לחץ כאן על מנת לשלוח פורמולות לייצור"></span>
+        Approve All & Print
+      </button>
+    </div>
+    <!-- <div>
+        <button class="btn btn-success formule-side" (click)="printFormules(true)">
+          <img class="img" src="../../../../../assets/images/print.png" alt="">
+           Print</button>
+      </div> -->
+  </div>
   <div class="row mt-5"></div>
-  <div class="row mt-5"></div>
-  <div class="row mt-5">
-    <button (click)="deleteWorkPlan()" class="btn btn-danger w-50 delete-btn">מחיקת פק"ע</button>
+  <div *ngIf="notAndrey" class="row mt-5 d-flex flex-row justify-content-between">
+    <button (click)="cancelWorkPlan()" class="btn btn-danger">ביטול פק"ע (והחזרת פריטים)</button>
+    <button (click)="closeWorkPlan()" class="btn btn-success">סגירת פק"ע (Done!)</button>
   </div>
 </div>
 
@@ -182,7 +261,7 @@
 <div id="formuleSection">
 
   <!--כתב כמויות-->
-  <div *ngIf="showMaterialsForFormules" class="m-5 p-5">
+  <div *ngIf="showMaterialsForFormules && workPlan.productionFormules.length > 1" class="m-5 p-5">
 
     <i (click)="showMaterialsForFormules = false" class="fa fa-times float-right h3 close"></i>
     <h1 class="text-center">כתב כמויות</h1>
@@ -212,10 +291,10 @@
 
             <td>{{material.itemNumber}}</td>
             <td>{{material.itemName}}</td>
-            <td>{{material.kgProduction}}</td>
-            <td *ngIf="material.materialArrivals[0]"
-              [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
-              {{material.materialArrivals[0].amount | number}}</td>
+            <td>{{material.kgProd}}</td>
+            <td *ngIf="material.itemAmount[0]"
+              [style.backgroundColor]="checkAmountsForMaterial(material.kgProd, material.itemAmount[0].amount) < 0 ? 'red' : 'lightgreen'">
+              {{material.itemAmount[0].amount | number}}</td>
 
           </tr>
         </tbody>
@@ -229,9 +308,9 @@
 
   <div *ngIf="printingFormules" class="row mt-3 d-flex flex-row">
 
-    <ng-container *ngFor="let formulePrinting of workPlan.productionFormules; let i = index">
-      <!-- <h1 *ngIf="formulePrinting.numOfItems > 16">Page 1 of 2</h1>
-            <h1 *ngIf="formulePrinting.numOfItems <= 16">Page 1 of 1</h1> -->
+    <ng-container *ngFor="let formule of workPlan.productionFormules; let i = index">
+      <!-- <h1 *ngIf="formule.numOfItems > 16">Page 1 of 2</h1>
+            <h1 *ngIf="formule.numOfItems <= 16">Page 1 of 1</h1> -->
       <h1>Formule {{i+1}}</h1>
 
       <table class="table table-bordered">
@@ -248,8 +327,8 @@
         </thead>
         <tbody>
           <ng-container *ngFor="let item of workPlan.orderItems">
-            <tr *ngIf="item.parentFormule == formulePrinting.formule">
-            <!-- <tr> -->
+            <tr *ngIf="checkForItemsInFormule(formule, item)">
+              <!-- <tr> -->
               <td>{{item.itemNumber}}</td>
               <td>{{item.description}}</td>
               <td>{{item.orderNumber}}</td>
@@ -284,7 +363,7 @@
           </tr>
         </thead>
         <tbody>
-          <ng-container *ngFor="let phase of formulePrinting.formuleData.phases">
+          <ng-container *ngFor="let phase of formule.formuleData.phases">
             <tr *ngFor="let item of phase.items; let i = index">
               <td style="padding:5px" *ngIf="i == 0" [attr.rowspan]="phase.items.length" class="phase">{{
                 phase.phaseName }}</td>
@@ -314,15 +393,15 @@
         <td style="font-weight: bold">Final PH:</td>
         <td colspan="2"><input style="height: 60px;" type="text"></td>
       </tr>
-      <!-- <h1 *ngIf="formulePrinting.numOfItems > 16">Page 2 of 2</h1> -->
+      <!-- <h1 *ngIf="formule.numOfItems > 16">Page 2 of 2</h1> -->
       <footer>
-        <tr>{{formulePrinting.formule}}</tr>
-        <tr>{{formulePrinting.formuleData.formuleName}}</tr>
-        <tr class="text-center">{{formulePrinting.formuleData.Weight}}KG</tr>
-        <tr>{{formulePrinting.formuleData.phFrom}} - {{formulePrinting.formuleData.phTo}}</tr>
+        <tr>{{formule.formule}}</tr>
+        <tr>{{formule.formuleData.formuleName}}</tr>
+        <tr class="text-center">{{formule.formuleData.Weight}}KG</tr>
+        <tr>{{formule.formuleData.phFrom}} - {{formule.formuleData.phTo}}</tr>
         <tr>
-          <span *ngFor="let orderAndItem of formulePrinting.ordersAndItems">
-            order {{orderAndItem.order}}, item {{orderAndItem.item}}
+          <span *ngFor="let orderAndItem of formule.ordersAndItems">
+            order {{orderAndItem.orderNumber}}, item {{orderAndItem.itemNumber}}
           </span>
         </tr>
         <h1>Formule {{i+1}} End</h1>

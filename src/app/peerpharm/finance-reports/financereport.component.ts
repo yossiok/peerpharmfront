@@ -625,6 +625,7 @@ export class FinanceReportComponent implements OnInit {
           "Item Cost": item.actualPrice,
           "Item Coin": item.actualCoin,
           "Amount in Stock": item.totalAmount,
+          "Owner ID": item.ownerId,
           Date: createdAt,
         };
         this.excelData.push(itemObj);
