@@ -17,7 +17,7 @@
       <div class="bigLoader"></div>
     </ng-container>
 
-    <div class="col-3">
+    <div class="col-3" *ngIf="!fetchingPrices">
 
       <label>מחסן</label>
       <select (change)="getShelfsByWH($event)" #selectWh class="form-control">
@@ -30,20 +30,27 @@
         <option value="Labels">Labels</option>
       </select>
     </div>
-    <div *ngIf="whareHouse" class="col-3">
+    <div *ngIf="whareHouse && !showFile" class="col-3">
       <label>סנן לפי איתור</label>
       <input class="form-control" (keyup)="filterByShelf($event)">
     </div>
-    <div *ngIf="whareHouse" class="col-3">
+    <div *ngIf="whareHouse && !showFile" class="col-3">
       <label>סנן לפי פריט</label>
       <input list="itemNumbers" class="form-control" type="text" (change)="filterByIetmNumber($event)">
       <datalist id="itemNumbers">
         <option *ngFor="let shelf of allShelfsCopy" [value]="shelf._id.item">{{shelf._id.item}}</option>
       </datalist>
     </div>
-    <div *ngIf="allowedCountYear" class="col-2">
+    <div class="col-2" *ngIf="allowedCountYear && !this.fetchingPrices">
       <label>העלה קובץ ספירת מלאי</label>
       <input type="file" multiple="false" id="excelFile" (change)="sendExcelToData($event)" #uploadExFile>
+    </div>
+    <div class="col-2" *ngIf="showFile">
+      <label>טען נתונים למלאי זמני</label><br>
+      <button class="btn btn-primary" (click)="sendDataToDB()">
+        שלח נתונים
+      </button>
+
     </div>
   </div>
 
@@ -101,7 +108,8 @@
         </tr>
         <tr>
           <th class="runner">#</th>
-          <th class="sortable position" (click)="sortByPosition()"><i class="fas fa-filter"></i> איתור</th>
+          <th>איתור</th>
+          <!-- <th class="sortable position" (click)="sortByPosition()"><i class="fas fa-filter"></i> איתור</th> -->
           <th class="sortable item" (click)="sortByItem()"><i class="fas fa-filter"></i> מק"ט</th>
           <th class="sortable desc" (click)="sortByItem()"><i class="fas fa-filter"></i> תיאור</th>
           <th class="batch" *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i> באטץ'
@@ -202,8 +210,9 @@
           <th class="batch" *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i> באטץ'
           </th>
           <th class="measure"> יחידת מידה</th>
-          <th>ספירה קודמת</th>
+          <th>מלאי נוכחי</th>
           <th class="count">ספירה נוכחית</th>
+          <th class="count">ספירה חוזרת</th>
           <th class="count">הפרש בכמות</th>
           <th class="count">הפרש במחיר</th>
           <th class="count">מטבע</th>
@@ -226,12 +235,15 @@
           <td *ngIf="itemType=='material'">Grams</td>
           <td> {{shelf.prevQty}}</td>
           <td>{{shelf.itemQty}}</td>
-          <td [ngClass]="shelf.itemQty-shelf.prevQty> 50||shelf.itemQty-shelf.prevQty<-50? 'minus': 'plus'">
-            {{shelf.itemQty-shelf.prevQty}}
+          <td *ngIf="i == EditRow"><input type="number" id="repeatCount" name="repeatCount" #repeatCount
+              [value]="shelf.repeatCount"><i class="ti-save text-success m-r-10"
+              (click)="saveEdit(i, shelf.repeatCount)" style="cursor:pointer"></i></td>
+          <td *ngIf="i != EditRow" (click)="edit(i)">{{shelf.repeatCount}}</td>
+          <td [ngClass]="shelf.diffQty> 50||shelf.diffQty<-50? 'minus': 'plus'">
+            {{shelf.diffQty}}
           </td>
-          <td
-            [ngClass]="(shelf.itemQty-shelf.prevQty)*shelf.itemPrice> 500||(shelf.itemQty-shelf.prevQty)*shelf.itemPrice<-500? 'minus': 'plus'">
-            {{(shelf.itemQty-shelf.prevQty)*shelf.itemPrice}}
+          <td [ngClass]="(shelf.diffQty)*shelf.itemPrice> 500||(shelf.diffQty)*shelf.itemPrice<-500? 'minus': 'plus'">
+            {{(shelf.diffQty)*shelf.itemPrice}}
           </td>
           <td>{{shelf.itemCoin}}</td>
           <td>{{shelf.companyOwned}}</td>
@@ -314,3 +326,71 @@
   </div>
 
 </ng-template>
+<!-- <div style="display:none">
+  <button ngxPrint printSectionId="pages-ptrint-section" #printPages
+    styleSheetFile="../../../../assets/stylesheets/year-count.css" class="btn"></button>
+</div>
+
+<div dir="rtl" id="pages-ptrint-section" class="row mt-4">
+
+  <table dir="rtl" class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th class="header" colspan="3">
+          דף ספירת מלאי לשנת הכספים 2021
+        </th>
+        <th class="header" colspan="5">
+          Peerpharm Ltd - עמל 17 אזור תעשיה ,אפק ראש העין 4809256.
+        </th>
+      </tr>
+      <tr>
+        <td class="header" colspan="3"></td>
+        <td *ngIf="formNum" class="header" colspan="5">{{formNum}}</td>
+      </tr> 
+      <tr>
+        <th class="runner">#</th>
+        <th>איתור</th>
+        <th> מק"ט</th>
+        <th>תיאור</th>
+        <th>יחידה</th>
+        <th class="count">כמות</th>
+        <th class="owner"> פריט חברה?</th>
+        <th class="remarks">הערות</th>
+        <th> באטץ'</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let shelf of pageForm;let i = index">
+        <td>{{shelf.A}}</td>
+        <td>{{shelf.B}}</td>
+        <td class="item-td">{{shelf.C}}</td>
+        <td>{{shelf.D}}</td>
+        <td>{{shelf.E}}</td>
+        <td>{{shelf.F}}</td>
+        <td>{{shelf.G}}</td>
+        <td>{{shelf.H}}</td>
+        <td>{{shelf.I}}</td>
+      </tr>
+
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3">שם הסופר/ת: __________________</td>
+        <td colspan="2">תאריך ספירה: ____________________</td>
+        <td colspan="2">חתימת הסופר/ת: _______________</td>
+      </tr>
+      <tr>
+        <td colspan="3">שם הבקר/ית: __________________</td>
+        <td colspan="2">תאריך הבדיקה: ____________________</td>
+        <td colspan="2">חתימת הבקר/ית: _______________</td>
+      </tr>
+      <tr>
+        <td colspan="2">שם המקליד/ה: __________________</td>
+        <td colspan="2">תאריך הקלדה: ____________________</td>
+        <td>שעה: _______________</td>
+        <td colspan="2">חתימת המקליד/ה: _______________</td>
+      </tr>
+    </tfoot>
+  </table>
+
+</div> -->
