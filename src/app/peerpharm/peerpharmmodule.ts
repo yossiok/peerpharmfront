@@ -177,6 +177,8 @@ import { WorkPlanStatusPipe } from "../pipes/work-plan-status.pipe";
 import { AllPlanningComponent } from "./production/planning/all-planning/all-planning.component";
 import { AllItemsComponent } from "./production/planning/all-items/all-items.component";
 import { PlanningDetailsComponent } from "./production/planning/planning-details/planning-details.component";
+import { OrderItemBatchStatusPipe } from "../pipes/order-item-batch-status.pipe";
+import { OrderItemBatchStatusColorPipe } from "../pipes/order-item-batch-status-color.pipe";
 
 @NgModule({
   exports: [
@@ -326,6 +328,8 @@ import { PlanningDetailsComponent } from "./production/planning/planning-details
     FormulesTypesPipe,
     WarehousesNamesPipe,
     WorkPlanStatusPipe,
+    OrderItemBatchStatusPipe,
+    OrderItemBatchStatusColorPipe,
     AllPlanningComponent,
     AllItemsComponent,
     PlanningDetailsComponent,

@@ -1,9 +1,9 @@
-interface OrderItem{
+export interface OrderItem{
     customerID: string,
     customerName: string,
     description: string,
     enoughMaterials: boolean,
-    formule: Object,
+    formule: any,
     itemNumber: string,
     netWeightGr: number,
     orderNumber: string,
@@ -12,6 +12,9 @@ interface OrderItem{
     totalKG: number,
     remarks: string,
     enoughComponents: boolean,
+    status: number,
+    checked?: boolean,
+    hasFormule?: boolean
 }
 
 export interface ProductionFormule {
@@ -21,6 +24,9 @@ export interface ProductionFormule {
     batchNumber: string,
     ordersAndItems: orderAndItem[],
     formuleData: Object,
+    status: number,
+    checked?: boolean,
+    dueDate?: Date
     // numOfItems: number  
 }
 
@@ -34,6 +40,8 @@ export interface WorkPlan {
 }
 
 export interface orderAndItem {
-  order: string,
-  item: string
+  orderNumber: string,
+  itemNumber: string,
+  itemName: string,
+  weightKg: number,
 }

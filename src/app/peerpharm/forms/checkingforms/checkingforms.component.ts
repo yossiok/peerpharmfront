@@ -191,17 +191,17 @@ export class CheckingformsComponent implements OnInit {
     }
     if(phNumber == 'PH02'){
       this.calibrationWeek.toolModel = 'HANNA HI 8424 NEW ידני'
-      this.calibrationWeek.toolPlace = 'הושבת 10/2018'
+      this.calibrationWeek.toolPlace = 'חדר בקרת איכות'
  
     }
     if(phNumber == 'PH03'){
       this.calibrationWeek.toolModel = 'מכשיר נייד PHB-4'
-      this.calibrationWeek.toolPlace = 'מחלקת ייצור נוזלים/קרמים לא תקין'
+      this.calibrationWeek.toolPlace = 'מחלקת ייצור נוזלים/קרמים'
  
     }
     if(phNumber == 'PH04'){
       this.calibrationWeek.toolModel = 'מכשיר נייד PHB-4'
-      this.calibrationWeek.toolPlace = 'מחלקת ייצור נוזלים/קרמים לא תקין'
+      this.calibrationWeek.toolPlace = 'מחלקת ייצור נוזלים/קרמים'
  
     }
     if(phNumber == 'PH05'){
@@ -518,7 +518,7 @@ export class CheckingformsComponent implements OnInit {
       this.calibrationDayTest.deviceModel = 'HI 2211 HANNA'
     }
     if(phNumber == 'PH02') {
-      this.calibrationDayTest.deviceLocation = 'הושבת 10.2018'
+      this.calibrationDayTest.deviceLocation = 'חדר בקרת איכות'
       this.calibrationDayTest.deviceModel = 'HANNA HI 8424 NEW ידני'
     }
     if(phNumber == 'PH03') {

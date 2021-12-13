@@ -9,6 +9,7 @@ import { ToastrService } from 'ngx-toastr';
 import { ScheduleService } from 'src/app/services/schedule.service';
 import { Costumer } from '../../classes/costumer.class';
 import { Observable } from 'rxjs';
+import { BatchesService } from 'src/app/services/batches.service';
 
 @Component({
   selector: 'app-formdetails',
@@ -24,6 +25,7 @@ export class FormdetailsComponent implements OnInit {
   averageNetoWeight = 0;
   loggedInUser: UserInfo;
   newForm: boolean = false;
+  numberOfFormsWithSameBatch: number = 0
   netoWeightArr: number[] = new Array();
   tabView: String = "fillingForm";
   fillingTabBtn: String = "#fff";
@@ -37,11 +39,11 @@ export class FormdetailsComponent implements OnInit {
   allowUpdateForm: boolean = false;
 
   newQAPallet = {
-    floorNumber: 0,
-    kartonQuantity: 0,
-    unitsInKarton: 0,
-    lastFloorQuantity: 0,
-    unitsQuantityPartKarton: 0,
+    floorNumber: null,
+    kartonQuantity: null,
+    unitsInKarton: null,
+    lastFloorQuantity: null,
+    unitsQuantityPartKarton: null,
     qaStatus: '',
     batchNumber: '',
     customerName: '',
@@ -69,7 +71,8 @@ export class FormdetailsComponent implements OnInit {
     private authService: AuthService,
     public translate: TranslateService,
     private toastService: ToastrService,
-    private scheduleService: ScheduleService
+    private scheduleService: ScheduleService,
+    private batchService: BatchesService
   ) {
 
   }
@@ -85,14 +88,14 @@ export class FormdetailsComponent implements OnInit {
     //   this.getFormData(true);
     // }
     this.getUserInfo();
-    if(scheduleID && scheduleID != '0') {
+    if (scheduleID && scheduleID != '0') {
       this.checkIfFormExist(scheduleID)
-      .then(formID => {
-        this.getFormData(true, formID)
-      }).catch(scheduleID => {
-        this.getScheduleDetails(scheduleID)
-      })
-    } 
+        .then(formID => {
+          this.getFormData(true, formID)
+        }).catch(scheduleID => {
+          this.getScheduleDetails(scheduleID)
+        })
+    }
     else this.getFormData(true, formID)
     // this.UserDisableAuth();
     // this.wrapAllChecks();
@@ -117,18 +120,66 @@ export class FormdetailsComponent implements OnInit {
   async getScheduleDetails(scheduleId) {
     this.scheduleService.getScheduleById(scheduleId).subscribe(data => {
       if (data) {
-        let tempObj = {
-          batchN: data.batch,
-          itemN: data.item,
-          costumerName: data.costumer,
-          productName: data.productName,
-          orderNumber: data.orderN,
-          orderQuantity: data.qty,
+
+        // check batch QA status
+        let batches = data.batch.split('+') 
+
+        if (batches.length > 1) { // batches = ['21pp1892', '21pp1885', '21pp1899']
+          let notApprovedBatches = []
+          this.batchService.getSpecvalueMulti(batches).subscribe(response => {
+            for(let batch of response.batches) {
+              if (batch.specStatus.status != 1) notApprovedBatches.push(batch) 
+            }
+            if(notApprovedBatches.length > 0) {
+              for(let batch of notApprovedBatches) this.toastService.error(``, `באטצ' ${batch.batchNumber} לא מאושר ע"י QA`)
+              this.toastService.error('', 'לא ניתן לפתוח טופס ייצור')
+            } 
+            else {
+              let tempObj = {
+                batchN: batches.join('+'),
+                itemN: data.item,
+                costumerName: data.costumer,
+                productName: data.productName,
+                orderNumber: data.orderN,
+                orderQuantity: data.qty,
+              }
+              this.formDetailsItemNum = data.item
+              this.form = tempObj
+              this.form.scheduleId = scheduleId
+              this.newForm = true;
+            }
+  
+          })
+
         }
-        this.formDetailsItemNum = data.item
-        this.form = tempObj
-        this.form.scheduleId = scheduleId
-        this.newForm = true;
+        else {
+          let tempObj = {
+            batchN: data.batch,
+            itemN: data.item,
+            costumerName: data.costumer,
+            productName: data.productName,
+            orderNumber: data.orderN,
+            orderQuantity: data.qty,
+          }
+          this.formDetailsItemNum = data.item
+          this.form = tempObj
+          this.form.scheduleId = scheduleId
+          this.newForm = true;
+        }
+
+        // check if there is another form with that batch
+        this.numberOfFormsWithSameBatch = 0
+        for(let batch of batches) {
+          this.formsService.getFormDetailsByBatch(batch).subscribe(forms => {
+            if (forms.length > 0) {
+              for (let form of forms) {
+                if (form.batchN && form.batchN != "") {
+                  this.numberOfFormsWithSameBatch++
+                }
+              }
+            }
+          })
+        }
       }
     })
   }
@@ -183,12 +234,10 @@ export class FormdetailsComponent implements OnInit {
 
   addNewQAPallet() {
 
-    this.form
-    this.newQAPallet.batchNumber = this.form.batchN;
+    this.newQAPallet.batchNumber = this.form.batchN
     this.newQAPallet.itemNumber = this.form.itemN;
     this.newQAPallet.orderNumber = this.form.orderNumber;
     this.newQAPallet.formDetailsId = this.form._id;
-    this.newQAPallet.batchNumber = this.form.batchN;
     this.newQAPallet.customerName = this.form.costumerName
 
 

@@ -1,42 +1,42 @@
 import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-  name: "workPlanStatus",
+  name: "orderItemBatchStatusColor",
 })
-export class WorkPlanStatusPipe implements PipeTransform {
+export class OrderItemBatchStatusColorPipe implements PipeTransform {
   transform(value: number): string {
-    let status = "";
+    let color = "";
     switch (value) {
       case 0:
-        status = "New";
+        color = "#FFF";
         break;
       case 1:
-        status = "New";
+        color = "#FFC000";
         break;
       case 2:
-        status = "Draft";
+        color = "#68e37d";
         break;
       case 3:
-        status = "Approved";
+        color = "#5B9BD5";
         break;
       case 4:
-        status = "Scheduled";
+        color = "#ED7D31";
         break;
       case 5:
-        status = "Done";
+        color = "#C48170";
         break;
       case 6:
-        status = "On Hold";
+        color = "#A5A5A5";
         break;
       case 7:
-        status = "Cancelled";
+        color = "#1a8a22";
         break;
       case 8:
-        status = "All";
+        color = "#c93682";
         break;
       default:
-        status = "Unknown";
+        color = "";
     }
-    return status;
+    return color;
   }
 }

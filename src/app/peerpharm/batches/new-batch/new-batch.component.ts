@@ -6,6 +6,10 @@ import { InventoryService } from 'src/app/services/inventory.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { OrdersService } from 'src/app/services/orders.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProductionService } from 'src/app/services/production.service';
+import { WorkPlan } from '../../production/planning/WorkPlan';
+import { AotCompiler } from '@angular/compiler';
 
 @Component({
   selector: 'app-new-batch',
@@ -27,6 +31,8 @@ export class NewBatchComponent implements OnInit {
   disableButton: boolean;
   newBatchAllowed: boolean = false;
   currentItems: any[] = []
+  workPlan: WorkPlan
+  workPlanFormule: string;
 
   newBatchForm: FormGroup = new FormGroup({
     chosenFormule: new FormControl('', Validators.required),
@@ -48,11 +54,32 @@ export class NewBatchComponent implements OnInit {
     private itemSrv: ItemsService,
     private batchService: BatchesService,
     private authService: AuthService,
-    private orderService: OrdersService) { }
+    private orderService: OrdersService,
+    private route: ActivatedRoute,
+    private prodSchedServ: ProductionService,
+    private router: Router) { }
 
   ngOnInit() {
     this.getLastBatch();
     this.newBatchAllowed = this.authService.loggedInUser.authorization.includes("newBatch") ? true : false
+    this.getWorkPlan()
+  }
+
+  getWorkPlan() {
+    this.route.queryParamMap.subscribe(params => {
+      if(params["params"].workPlanId) {
+        this.prodSchedServ.getWorkPlan(params['params'].workPlanId).subscribe(workPlan => {
+          console.log(workPlan)
+          this.workPlan = workPlan
+          this.workPlanFormule = params['params'].formule
+          let formule = this.workPlan.productionFormules.find(f => f.formule == params['params'].formule)
+          for(let item of formule.ordersAndItems) {
+            this.newBatchForm.value.itemsToCook.push(item)
+          }
+          // this.newBatchForm.value.itemsToCook = formule.ordersAndItems
+        })
+      }
+    })
   }
 
   ngDoCheck() {
@@ -67,6 +94,17 @@ export class NewBatchComponent implements OnInit {
     this.batchService.getLastBatch().subscribe(data => {
       this.lastBatch = data;
     })
+  }
+
+  backToWP() {
+    this.router.navigate(
+      ["/peerpharm/production/planning"],
+      {
+        queryParams: {
+          workPlanId: this.workPlan.serialNumber
+        },
+      }
+    );
   }
 
 
@@ -228,17 +266,24 @@ export class NewBatchComponent implements OnInit {
               if (con) {
                 // add batch to batches list
                 this.batchService.addBatch(this.newBatchForm.value).subscribe(data => {
-                  if (data.msg = 'succsess') {
+                  if (data.msg == 'succsess') {
                     this.printBtn.nativeElement.click();
                     this.toastSrv.success('באטצ נוסף בהצלחה !')
-                    setTimeout(() => {
-
-                      // this.newBatchForm.reset()
-                      // this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
-                      //this.newBatchForm.controls.itemsToCook.setValue([])
-                      this.allStickers = [];
-                      this.getLastBatch();
-                    }, 2000)
+                    let productionFormuleIndex = this.workPlan.productionFormules.findIndex(f => f.formule == this.workPlanFormule)
+                    this.workPlan.productionFormules[productionFormuleIndex].status = 6
+                    this.prodSchedServ.editWorkPlan(this.workPlan).subscribe(data => {
+                      console.log(data)
+                      if(data.serialNumber) this.toastSrv.success(`פק"ע ${this.workPlan.serialNumber} עודכנה בהצלחה`)
+                      else this.toastSrv.error('היתה בעיה בעדכון הפק"ע. אנא פנה לתמיכה')
+                      setTimeout(() => {
+                        
+                        // this.newBatchForm.reset()
+                        // this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
+                        //this.newBatchForm.controls.itemsToCook.setValue([])
+                        this.allStickers = [];
+                        this.getLastBatch();
+                      }, 2000)
+                    })
                   }
                   else if (data.msg == 'Batch Allready Exist') this.toastSrv.error('Please fill a different batch number.', 'Batch number allready exist.')
                   else this.toastSrv.error('Something went wrong.')

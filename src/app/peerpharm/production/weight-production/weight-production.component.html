@@ -15,12 +15,18 @@
       printTitle="Formules: Production Weighting" printSectionId="formuleSection" ngxPrint
       style="display: none;"></button>
   </div>
-  <div class="col-2"></div>
+  <div class="col-2">
+  </div>
   <div class="col-1">
     <button *ngIf="showBOM" class="btn btn-info rounded-pill" (click)="openBillOfMaterials()">
       &nbsp;&nbsp;&nbsp;BOM&nbsp;&nbsp;&nbsp;</button>
   </div>
-  <button class="btn btn-primary rounded-pill" (click)="edit = !edit">Edit Percentage</button>
+  <div class="col-1">
+    <button class="btn btn-primary rounded-pill" (click)="edit = !edit">Edit Percentage</button>
+  </div>
+  <div class="col-1">
+    <button class="btn btn-warning" *ngIf="workPlanId" (click)="backToWP()">Back to PAKA {{workPlanId}} <i class="fas fa-arrow-right"></i></button>
+  </div>
 </div>
 <div class="row mt-4"></div>
 
@@ -214,7 +220,7 @@
       </tbody>
     </table>
     <footer></footer>
-    <table class='table table-striped'>
+    <table *ngIf="formules.length > 1" class='table table-striped'>
       <thead class='tableHeader'>
         <th dir="rtl" colspan="4">כתב כמויות לפקודת עבודה מספר: {{workPlanId}}</th>
         <tr>

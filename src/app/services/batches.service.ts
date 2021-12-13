@@ -22,8 +22,8 @@ export class BatchesService {
       .pipe(map((res) => res.json()));
   }
 
-  addNewMkpBatch(newMkpBatch) {
-    let url = this.baseUrl + "batch/addMkpBatch";
+  addNewMkpBatch(newMkpBatch, reduce) {
+    let url = this.baseUrl + "batch/addMkpBatch?reduce="+reduce;
     return this.http
       .post(url, JSON.stringify(newMkpBatch), this.options)
       .pipe(map((res) => res.json()));
@@ -104,6 +104,11 @@ export class BatchesService {
 
   getSpecvalue(batchNum) {
     let url = this.baseUrl + "batch/specvalue?batchNum=" + batchNum;
+    return this.http.get(url).pipe(map((res) => res.json()));
+  }
+
+  getSpecvalueMulti(batches) {
+    let url = this.baseUrl + "batch/specvalueMulti?batches=" + batches;
     return this.http.get(url).pipe(map((res) => res.json()));
   }
 }

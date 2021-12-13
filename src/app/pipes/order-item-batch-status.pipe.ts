@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from "@angular/core";
 
 @Pipe({
-  name: "workPlanStatus",
+  name: "orderItemBatchStatus",
 })
-export class WorkPlanStatusPipe implements PipeTransform {
+export class OrderItemBatchStatusPipe implements PipeTransform {
   transform(value: number): string {
     let status = "";
     switch (value) {
@@ -11,28 +11,28 @@ export class WorkPlanStatusPipe implements PipeTransform {
         status = "New";
         break;
       case 1:
-        status = "New";
+        status = "Waiting";
         break;
       case 2:
-        status = "Draft";
+        status = "PP&C";
         break;
       case 3:
-        status = "Approved";
+        status = "Formula";
         break;
       case 4:
         status = "Scheduled";
         break;
       case 5:
-        status = "Done";
+        status = "Materials";
         break;
       case 6:
-        status = "On Hold";
+        status = "Produced";
         break;
       case 7:
-        status = "Cancelled";
+        status = "Done";
         break;
       case 8:
-        status = "All";
+        status = "Canceled";
         break;
       default:
         status = "Unknown";
