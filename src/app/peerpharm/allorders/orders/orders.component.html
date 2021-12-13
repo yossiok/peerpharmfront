@@ -59,9 +59,21 @@
     <div class="col-2">
       <button (click)="loadOrdersItems()" class='btn btn-info form-control'> Show Items </button>
     </div>
-    <div class="col-2"></div>
+    <div class="col-2 border border-dark p-2">
+      <label class="h4 text-primary">אצוות מוכנות</label><br>
+      <div class="d-flex flex-row justify-content-between">
+        <div>
+          <label class="h5">עדכון נתונים</label><br>
+          <input type="file" multiple="false" id="excelFile" (change)="uploadFreeBatchesFile($event)" #uploadExFile>
+        </div>
+        <div>
+          <label class="h5">הצגת נתונים</label><br>
+          <button (click)="downloadFreeBatches()">הצג אצוות</button>
+        </div>
+      </div>
+    </div>
     <div class="col-1">
-      <img src="../../../../assets/images/excel.png" class="click" alt="export to excel" style="width: 40px;"
+      <img src="../../../../assets/images/excel.png" ngbTooltip='דו"ח הזמנות' class="click" alt="export to excel" style="width: 40px;"
         (click)="exportAsXLSX()">
     </div>
 
@@ -208,4 +220,9 @@
 <div *ngIf="newOrderModal == true"
   class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal">
   <app-neworder (closed)="newOrderModal = false"></app-neworder>
+</div>
+
+<div *ngIf="freeBatchesModal == true"
+  class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal batches-modal p-5">
+  <app-free-batches [orders]="orders" [freeBatches]="freeBatches" (closed)="freeBatchesModal = false"></app-free-batches>
 </div>

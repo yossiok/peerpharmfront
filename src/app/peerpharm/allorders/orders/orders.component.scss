@@ -12,6 +12,13 @@ button, input {
     right: 0px !important
 }
 
+.batches-modal {
+  height: 700px;
+  overflow-y: auto;
+  width: 100%;
+  display: block;
+}
+
 .read-only {
   pointer-events: none;
 }

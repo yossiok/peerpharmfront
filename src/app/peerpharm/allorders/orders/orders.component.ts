@@ -1,14 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
 import { OrdersService } from '../../../services/orders.service'
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { IfStmt } from '@angular/compiler';
 import { ToastrService } from 'ngx-toastr';
-import { log } from 'util';
 import { ChatService } from 'src/app/shared/chat.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ExcelService } from 'src/app/services/excel.service';
+import * as XLSX from "xlsx";
+import { FreeBatches } from '../free-batches/FreeBatch';
 
 
 
@@ -18,6 +17,7 @@ import { ExcelService } from 'src/app/services/excel.service';
   styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent implements OnInit {
+  
   @ViewChild('orderRemarks') orderRemarks: ElementRef;
   @ViewChild('orderType') orderType: ElementRef;
   @ViewChild('deliveryDate') deliveryDate: ElementRef;
@@ -28,19 +28,8 @@ export class OrdersComponent implements OnInit {
   @ViewChild('id') id: ElementRef;
   @ViewChild('stage') stage: ElementRef;
   @ViewChild('onHoldDate') onHoldDate: ElementRef;
+  @ViewChild('uploadExFile') uploadExFile: ElementRef
 
-  lodingOrders: boolean = false
-  orders: any[];
-  ordersCopy: any[];
-  EditRowId: any = "";
-  today: any;
-  selectAllOrders: boolean = false;
-  newOrderModal: boolean = false;
-  loadingUri: boolean = false
-  onHoldStrDate: String;
-  stageSortDir: string = "done";
-  numberSortDir: string = "oldFirst";
-  sortCurrType: String = "OrderNumber";
   stagesCount = {
     new: 0,
     partialCmpt: 0,
@@ -49,9 +38,21 @@ export class OrdersComponent implements OnInit {
     prodFinish: 0,
     done: 0,
   }
+  orders: any[];
+  ordersCopy: any[];
+  freeBatches: any[];
+  today: any;
+  EditRowId: any = "";
+  onHoldStrDate: String;
   filterValue: string = ""
-  //private orderSrc = new BehaviorSubject<Array<string>>(["3","4","5"]);
-  //private orderSrc = new BehaviorSubject<string>("");
+  stageSortDir: string = "done";
+  numberSortDir: string = "oldFirst";
+  sortCurrType: String = "OrderNumber";
+  lodingOrders: boolean = false
+  selectAllOrders: boolean = false;
+  newOrderModal: boolean = false;
+  loadingUri: boolean = false
+  freeBatchesModal: boolean = false
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -59,7 +60,6 @@ export class OrdersComponent implements OnInit {
   }
 
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
-
     if (event.key === 'F2') {
       if (this.newOrderModal == true) {
         this.newOrderModal = false;
@@ -67,7 +67,6 @@ export class OrdersComponent implements OnInit {
         this.newOrderModal = true;
       }
     }
-
   }
 
   constructor(
@@ -81,14 +80,6 @@ export class OrdersComponent implements OnInit {
 
   ngOnInit() {
 
-    if (this.authService.loggedInUser.screenPermission == '5') {
-      // document.getElementById
-      var allDivs = document.getElementsByClassName("container-fluid text-center bg-white")
-      // for(let i = 0; i < allDivs.length; i++) {
-      //   allDivs[i].style.pointerEvents = "none"
-      // }
-      // map(elem => elem.style.pointerEvents = "none");
-    }
     this.today = new Date();
     this.today = moment(this.today).format("DD/MM/YYYY");
     this.getOrders();
@@ -103,16 +94,90 @@ export class OrdersComponent implements OnInit {
   }
 
   exportAsXLSX() {
-    let ordersToReport = this.orders.map(order => {
-      delete order._id
-      delete order.__v
-      delete order.color
-      delete order.stageColor
-      delete order.onHoldDate
-      delete order.status
-      return order
+    let orders = []
+    console.log('orders: ', this.orders)
+    for (let order of this.orders) {
+      orders.push({
+        "הזמנה+לקוח": order.NumberCostumer,
+        "מס' הזמנה": order.orderNumber,
+        "לקוח": order.costumer,
+        'מק"ט לקוח (פנימי)': order.costumerInternalId,
+        "תאריך הזמנה": order.orderDate,
+        "תאריך אספקה (משוער)": order.deliveryDate,
+        "סוג הזמנה": order.type,
+        "משתמש": order.user,
+        "הערות": order.orderRemarks,
+      })
+    }
+    this.excelService.exportAsExcelFile(orders, `דו"ח הזמנות ${new Date().toString().slice(0, 10)}`);
+  }
+
+  uploadFreeBatchesFile(ev) {
+    if (confirm("האם אתה בטוח שבחרת בקובץ הנכון ?")) {
+      let remark = prompt('הזן הערה לקובץ')
+      const target: DataTransfer = <DataTransfer>ev.target;
+      //
+      if (target.files.length > 1) {
+        alert("ניתן לבחור קובץ אחד בלבד");
+        this.uploadExFile.nativeElement.value = "";
+        return;
+      }
+      const reader: FileReader = new FileReader();
+
+      // reader.readAsDataURL(ev.target.files[0]); // read file as data url
+      reader.readAsBinaryString(target.files[0]);
+
+      // reader.onLoad is called once readAsBinaryString is completed
+      reader.onload = (event: any) => {
+        // binaryStr is the binary string rsult of the excel file reading
+        const binaryStr = event.target.result;
+
+        const workBook: XLSX.WorkBook = XLSX.read(binaryStr, {
+          type: "binary",
+        });
+
+        const workSheetName: string = workBook.SheetNames[0];
+        const workSheet: XLSX.WorkSheet = workBook.Sheets[workSheetName];
+        let wsJson = XLSX.utils.sheet_to_json(workSheet);
+        // let names = workSheetName.split("-");
+        let fileName = target.files[0].name;
+        let fileDate = ev.target.files[0].lastModified;
+        let batches = wsJson.map(el => ({
+          batchNumber: <string>el["אצווה"],
+          orderNumber: <string>el["הזמנה"],
+          originalQnt: <number>el["כמות מקורית"],
+          updatedQnt: <number>el["כמות נוכחית"],
+          position: <string>el["מיקום"],
+          itemNumber: <string>el['מק"ט'],
+          itemName: <string>el["תאור"],
+        }))
+
+
+        let freeBatches: FreeBatches = {
+          batches,
+          date: fileDate,
+          fileName,
+          userName: this.authService.loggedInUser.userName,
+          remark
+        }
+
+        this.ordersService.uploadFreeBatches(freeBatches).subscribe(data => {
+          if(data.msg == 'success') this.toastSrv.success('File Uploaded successfully')
+          else this.toastSrv.error(data.msg)
+        })
+      }
+    }
+  }
+
+  downloadFreeBatches() {
+    this.ordersService.downloadFreeBatches().subscribe(data => {
+      console.log(data)
+      if(data.msg == 'success') {
+        this.freeBatches = data.freeBatches
+        this.freeBatchesModal = true
+      }
+      else this.toastSrv.error(data.msg)
     })
-    this.excelService.exportAsExcelFile(ordersToReport, 'data');
   }
 
   checkPermission() {
