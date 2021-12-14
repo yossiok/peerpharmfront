@@ -26,7 +26,7 @@ export class FreeBatchesComponent implements OnInit {
     getAllOpenOrderITems() {
         this.loadingData = true
         this.ordersService.getAllOpenOrderItems().subscribe(data => {
-            let filtered = data.filter(i => i.orderItem.batch == "")
+            let filtered = data.filter(i => i.orderItem.pakaStatus == 0 || !i.orderItem.pakaStatus)
             this.orderItemsAndOrders = filtered.map(oi => ({
                 itemNumber: oi.orderItem.itemNumber,
                 orderNumber: oi.orderNumber
