@@ -1,0 +1,48 @@
+
+<div dir="rtl">
+
+    
+    <h1>אצוות חופשיות</h1>
+
+    <div class="float-left">
+        <button *ngIf="!loadingData" class="cross-data-btn" (click)="getAllOpenOrderITems()">מצא פריטי אצוות בהזמנות פתוחות</button>
+        <div *ngIf="loadingData" class="smallerLoader"></div>
+    </div>
+    
+    <div class="row mt-5 d-flex flex-row justify-content-around">
+        <div><span class="head-title"> שם הקובץ: </span> <span class="head-content">{{freeBatches.fileName}}</span></div>
+        <div><span class="head-title">תאריך עריכת הקובץ: </span> <span class="head-content">{{freeBatches.date}}</span></div>
+        <div><span class="head-title">משתמש: </span> <span class="head-content">{{freeBatches.userName}}</span></div>
+        <div><span class="head-title">הערה: </span> <span class="head-content">{{freeBatches.remark}}</span></div>
+    </div>
+    <div class="row mt-4">
+        
+    </div>
+    <div class="row mt-5">
+        <table class="table">
+            <thead>
+                <th>מיקום</th>
+                <th colspan="2">מק"ט</th>
+                <th>באטץ'</th>
+                <th>הזמנה</th>
+                <th>כמות מקורית</th>
+                <th>כמות נוכחית</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let batch of freeBatches.batches" [style.background]="batch.color">
+                    <td>{{batch.position}}</td>
+                    <td>{{batch.itemNumber}}</td>
+                    <td>{{batch.itemName}}</td>
+                    <td>{{batch.batchNumber}}</td>
+                    <td>{{batch.orderNumber}}</td>
+                    <td>{{batch.originalQnt}}</td>
+                    <td>{{batch.updatedQnt}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="row mt-5">
+        <button (click)="closeModal()">סגור</button>
+    </div>
+</div>

@@ -23,7 +23,7 @@ export class OrdersService {
 
   refreshOrders: EventEmitter<any> = new EventEmitter();
 
-  constructor(private http: Http) {}
+  constructor(private http: Http) { }
 
   getOrders(): Observable<any> {
     let url = this.baseUrl + "order";
@@ -55,6 +55,12 @@ export class OrdersService {
   getAllOpenOrderItemsByItemNumber(itemNumber): Observable<any> {
     let url =
       this.baseUrl + "order?allOpenOrderItemsByItemNumber=" + itemNumber;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
+  // Name OR(!) Number
+  getAllOpenOrderItemsByItemValue(itemValue): Observable<any> {
+    let url = this.baseUrl + "order?allOpenOrderItemsByItemValue=" + itemValue;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
@@ -324,6 +330,16 @@ export class OrdersService {
     return this.http
       .post(url, JSON.stringify({ orderItems }), this.options)
       .pipe(map((reponse) => reponse.json()));
+  }
+
+  uploadFreeBatches(freeBatches) {
+    let url = this.baseUrl + "order/freebatches";
+    return this.http.post(url, JSON.stringify(freeBatches), this.options).pipe(map((reponse) => reponse.json()));
+  }
+
+  downloadFreeBatches() {
+    let url = this.baseUrl + "order/freebatches"
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
   updatePakaStatus(orderItems) {
