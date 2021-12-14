@@ -11,7 +11,7 @@
     
     <div class="row mt-5 d-flex flex-row justify-content-around">
         <div><span class="head-title"> שם הקובץ: </span> <span class="head-content">{{freeBatches.fileName}}</span></div>
-        <div><span class="head-title">תאריך עריכת הקובץ: </span> <span class="head-content">{{freeBatches.date}}</span></div>
+        <div><span class="head-title">תאריך עריכת הקובץ: </span> <span class="head-content">{{freeBatches.date | date: 'dd/MM/yyyy'}}</span></div>
         <div><span class="head-title">משתמש: </span> <span class="head-content">{{freeBatches.userName}}</span></div>
         <div><span class="head-title">הערה: </span> <span class="head-content">{{freeBatches.remark}}</span></div>
     </div>
@@ -21,15 +21,18 @@
     <div class="row mt-5">
         <table class="table">
             <thead>
+                <th>#</th>
                 <th>מיקום</th>
-                <th colspan="2">מק"ט</th>
-                <th>באטץ'</th>
+                <th>מק"ט</th>
+                <th>תאור</th>
+                <th>אצווה</th>
                 <th>הזמנה</th>
                 <th>כמות מקורית</th>
                 <th>כמות נוכחית</th>
             </thead>
             <tbody>
-                <tr *ngFor="let batch of freeBatches.batches" [style.background]="batch.color">
+                <tr *ngFor="let batch of freeBatches.batches; let i = index" [style.background]="batch.color">
+                    <td>{{i+1}}</td>
                     <td>{{batch.position}}</td>
                     <td>{{batch.itemNumber}}</td>
                     <td>{{batch.itemName}}</td>
