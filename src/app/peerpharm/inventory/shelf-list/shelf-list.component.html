@@ -28,6 +28,10 @@
         <option value="Rosh HaAyin products">Rosh HaAyin - Products</option>
         <option value="NEW KASEM">New Kasem</option>
         <option value="Labels">Labels</option>
+        <option value="ARIEL 1">ARIEL 1</option>
+        <option value="ARIEL 2">ARIEL 2</option>
+        <option value="ARIEL 3">ARIEL 3</option>
+        <option value="ARIEL 4">ARIEL 4</option>
       </select>
     </div>
     <div *ngIf="whareHouse && !showFile" class="col-3">
@@ -41,11 +45,11 @@
         <option *ngFor="let shelf of allShelfsCopy" [value]="shelf._id.item">{{shelf._id.item}}</option>
       </datalist>
     </div>
-    <div class="col-2" *ngIf="allowedCountYear && !this.fetchingPrices">
+    <div class="col-2" *ngIf="allowedCountYear && !fetchingPrices &&!fetchingShelfs">
       <label>העלה קובץ ספירת מלאי</label>
       <input type="file" multiple="false" id="excelFile" (change)="sendExcelToData($event)" #uploadExFile>
     </div>
-    <div class="col-2" *ngIf="showFile">
+    <div class="col-2" *ngIf="showFile && !fetchingPrices && !fetchingShelfs">
       <label>טען נתונים למלאי זמני</label><br>
       <button class="btn btn-primary" (click)="sendDataToDB()">
         שלח נתונים
@@ -53,8 +57,45 @@
 
     </div>
   </div>
+  <div class="row mt-4" dir="rtl">
+    <div class="col-3" *ngIf="!fetchingPrices">
+      <label>טען קובץ ספירה קודם</label>
+      <select (change)="getFileNameByWh($event)" #selectWhFile class="form-control">
+        <option selected="true" disabled="disabled">בחר קובץ למחסן</option>
+        <option value="KASEM-component">Kasem</option>
+        <option value="Rosh HaAyin-Material">Rosh HaAyin - Materials</option>
+        <option value="Rosh HaAyin-component">Rosh HaAyin - Components</option>
+        <option value="Rosh HaAyin-product">Rosh HaAyin - Products</option>
+        <option value="NEW KASEM-component">New Kasem</option>
+        <option value="Labels-component">Labels</option>
+        <option value="ARIEL 1-component">ARIEL 1</option>
+        <option value="ARIEL 2-component">ARIEL 2</option>
+        <option value="ARIEL 3-component">ARIEL 3</option>
+        <option value="ARIEL 4-component">ARIEL 4</option>
+      </select>
+    </div>
+    <div class="col-3" *ngIf="!fetchingPrices">
+      <label>בחר קובץ ספירה קודם</label>
+      <select (change)="getFileName($event)" #selectFile class="form-control">
+        <option selected="true" disabled="disabled">בחר קובץ לצפייה</option>
+        <option *ngFor="let file of fileNames" [value]="file.fileDate">{{file.fileName}}</option>
 
-  <div dir="rtl" *ngIf="allowedCountYear && allShelfs && allShelfs.length > 0"
+      </select>
+    </div>
+  </div>
+  <div class="row mt-4" *ngIf="showFile && alloedYearUpdate">
+    <div class="col-4"></div>
+    <div class="col-4">
+      <label> עדכון מלאי על פי ספירה</label><br>
+      <button class="btn btn-secondary">עדכן מלאי לסוף 2021</button>
+    </div>
+    <div class="col-4"></div>
+
+
+
+  </div>
+
+  <!-- <div dir="rtl" *ngIf="allowedCountYear && allShelfs && allShelfs.length > 0"
     class="new-shelf d-flex flex-row justify-content-around p-5 mt-5 mb-5">
     <form [formGroup]="newShelfForm" (ngSubmit)="addNewItemShelf()">
       <h3>הכנס מלאי שלא נמצא ברשימה (יש לוודא שהמדף אכן קיים במחסן)</h3>
@@ -77,13 +118,13 @@
       </div>
     </form>
 
-  </div>
+  </div> -->
   <div *ngIf="allowedCountYear" class="row mt-4">
     <div class="col-3"></div>
-    <div class="col-6">
+    <!-- <div class="col-6" >
       <button *ngIf="whareHouse && !showFile" ngxPrint printSectionId="print-section"
         styleSheetFile="../../../../assets/stylesheets/year-count.css" class="btn save-form w-50">הדפס דף סופר</button>
-    </div>
+    </div> -->
     <div class="col-3"></div>
   </div>
 
@@ -137,7 +178,7 @@
           <td *ngIf="itemType == 'material'">{{shelf._id.supplierBatchNumber}}</td>
           <!-- <td>{{shelf._id.position}}</td> -->
           <td *ngIf="itemType=='component'">Unit</td>
-          <td *ngIf="itemType=='material'">Grams</td>
+          <td *ngIf="itemType=='material'">Kg.</td>
           <!-- <td>{{shelf.total}}</td> -->
           <!-- <td>{{shelf.lastCount.date}}</td> -->
           <!-- <td>{{shelf.lastCount.amount}}</td> -->
@@ -166,7 +207,7 @@
 
         </tr>
       </tbody>
-      <tfoot>
+      <!-- <tfoot>
         <tr>
           <td colspan="3">שם הסופר/ת: __________________</td>
           <td colspan="2">תאריך ספירה: ____________________</td>
@@ -183,7 +224,7 @@
           <td>שעה: _______________</td>
           <td colspan="2">חתימת המקליד/ה: _______________</td>
         </tr>
-      </tfoot>
+      </tfoot> -->
     </table>
   </div>
 
@@ -232,7 +273,7 @@
           <td>{{shelf.itemName}}</td>
           <td *ngIf="itemType == 'material'">{{shelf.itemBatch}}</td>
           <td *ngIf="itemType=='component'">Unit</td>
-          <td *ngIf="itemType=='material'">Grams</td>
+          <td *ngIf="itemType=='material'">Kg.</td>
           <td> {{shelf.prevQty}}</td>
           <td>{{shelf.itemQty}}</td>
           <td *ngIf="i == EditRow"><input type="number" id="repeatCount" name="repeatCount" #repeatCount
@@ -273,10 +314,10 @@
 
   <div *ngIf="allowedCountYear && !showFile" class="row mt-4">
     <div class="col-3"></div>
-    <div class="col-6">
+    <!-- <div class="col-6">
       <button *ngIf="whareHouse &&!showFile" ngxPrint printSectionId="print-section"
         styleSheetFile="../../../../assets/stylesheets/year-count.css" class="btn save-form w-50">הדפס דף סופר</button>
-    </div>
+    </div> -->
     <div class="col-3"></div>
   </div>
 

@@ -227,7 +227,7 @@ export class InventoryService {
       .post(url, JSON.stringify(formules), this.options)
       .pipe(map((res) => res.json()));
   }
-  
+
   getAllocatedOrdersByNumber(componentN): Observable<any> {
     let url = this.baseUrl + "component?allocatedOrders=" + componentN;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
@@ -297,6 +297,25 @@ export class InventoryService {
     let url = this.baseUrl + "itemShell/updateShelf";
     return this.http
       .post(url, JSON.stringify(shelf), this.options)
+      .pipe(map((res) => res.json()));
+  }
+  // ספירת מלאי, קבלת שמות קבצי אקסל שנטענו
+  getFilesListByWh(whName, type) {
+    let url =
+      this.baseUrl + "itemShell/files?whName=" + whName + "&type=" + type;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  // ספירת מלאי, קבלת נתוני קובץ לפי תאריך הקובץ
+  getYearCountFile(fileDate) {
+    let url = this.baseUrl + "itemShell/getFile?fileDate=" + fileDate;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
+  // ספירת מלאי, טעינת קובץ אקסל
+  loadCounts(countsData) {
+    let url = this.baseUrl + "itemShell/loadCounts";
+    return this.http
+      .post(url, JSON.stringify(countsData), this.options)
       .pipe(map((res) => res.json()));
   }
 

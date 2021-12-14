@@ -43,12 +43,15 @@ export class ShelfListComponent implements OnInit {
   showFile: boolean = false;
   fileName: string = "";
   fileDate: Date = null;
+  fileNames: any[] = [];
   componentsPrices = [];
   materialsPrices = [];
   productsPrices = [];
   pageForm = [];
   formNum: string = "";
   shelvesArr: any[] = [];
+  user: string;
+  allowedYearUpdate: boolean = false;
 
   @ViewChild("shelfPosition") shelfPosition: ElementRef;
   @ViewChild("shelfAmount") shelfAmount: ElementRef;
@@ -59,6 +62,8 @@ export class ShelfListComponent implements OnInit {
   @ViewChild("selectWh") selectWh: ElementRef;
   @ViewChild("repeatCount") reapeatCount: ElementRef;
   @ViewChild("printPages") printPages: ElementRef;
+  @ViewChild("selectWhFile") selectWhFile: ElementRef;
+  @ViewChild("selectFile") selectFile: ElementRef;
 
   updatingAmount: boolean;
   fetchingShelfs: boolean;
@@ -95,9 +100,13 @@ export class ShelfListComponent implements OnInit {
     this.getLastYearCount();
     this.getAllCostumers();
     this.getInvRepCosts();
+    this.user = this.authService.loggedInUser.userName;
+    console.log(this.user);
     this.allowedWHS = this.authService.loggedInUser.allowedWH;
     this.allowedCountYear =
       this.authService.loggedInUser.authorization.includes("allowedCountYear");
+    this.allowedYearUpdate =
+      this.authService.loggedInUser.authorization.includes("updateYearStock");
   }
 
   getInvRepCosts() {
@@ -170,6 +179,75 @@ export class ShelfListComponent implements OnInit {
     });
   }
 
+  getFileNameByWh(ev) {
+    this.showFile = false;
+    this.fileNames = [];
+    let whFile = ev.target ? ev.target.value : ev;
+    console.log(whFile);
+    let names = whFile.split("-");
+    let whName = names[0];
+    let type = names[1];
+    this.itemType = type;
+    this.whareHouse = whName;
+    this.inventorySrv.getFilesListByWh(whName, type).subscribe((data) => {
+      console.log(data);
+      if (data.msg) {
+        this.toastSrv.error(data.msg);
+      } else if (data) {
+        this.fileNames = data;
+      }
+    });
+  }
+
+  getFileName(ev) {
+    let fileDate = ev.target ? ev.target.value : ev;
+    console.log(fileDate);
+    // let fileDate = new Date(fileName);
+    this.allCountShelves = [];
+    this.inventorySrv.getYearCountFile(fileDate).subscribe((data) => {
+      console.log(data);
+      if (data.msg) {
+        this.toastSrv.error(data.msg);
+        return;
+      } else if (data.length == 0) {
+        this.toastSrv.warning("No data was found");
+        return;
+      } else if (data.length > 0) {
+        this.fileName = data[0].counts.fileName;
+        this.fileDate = data[0].counts.fileDate;
+
+        for (let doc of data) {
+          console.log(doc);
+          let shelf = {
+            companyOwned: doc.companyOwned,
+            countDate: doc.counts.countDate,
+            countedBy: doc.counts.countQty,
+            fileDate: doc.counts.fileDate,
+            itemBatch: doc.counts.itemBatch,
+            itemCoin: doc.counts.itemCoin,
+            itemName: doc.itemName,
+            itemNumber: doc.itemNumber,
+            itemPosition: doc.position,
+            itemPrice: doc.counts.itemPrice,
+            itemQty: doc.counts.countQty,
+            itemRemark: doc.counts.itemRemark,
+            itemUnit: doc.counts.itemUnit,
+            prevQty: doc.counts.prevQty,
+            repeatCount: doc.counts.repeatCount,
+            supervisedBy: doc.counts.supervisedBy,
+            typedBy: doc.counts.typedBy,
+            diffQty: doc.counts.repeatCount
+              ? doc.counts.prevQty - doc.counts.repeatCount
+              : doc.counts.prevQty - doc.counts.countQty,
+          };
+          console.log(shelf);
+          this.allCountShelves.push(shelf);
+          this.showFile = true;
+        }
+      }
+    });
+  }
+
   getShelfsByWH(ev) {
     this.fetchingShelfs = true;
     let whareHouse = ev.target ? ev.target.value : ev;
@@ -198,6 +276,18 @@ export class ShelfListComponent implements OnInit {
         this.whareHouse = whareHouse;
         break;
       case "Labels":
+        this.itemType = "component";
+        this.whareHouse = whareHouse;
+      case "ARIEL 1":
+        this.itemType = "component";
+        this.whareHouse = whareHouse;
+      case "ARIEL 2":
+        this.itemType = "component";
+        this.whareHouse = whareHouse;
+      case "ARIEL 3":
+        this.itemType = "component";
+        this.whareHouse = whareHouse;
+      case "ARIEL 4":
         this.itemType = "component";
         this.whareHouse = whareHouse;
     }
@@ -728,12 +818,13 @@ export class ShelfListComponent implements OnInit {
 
         // const workSheetName: string = workBook.SheetNames[0];
         this.allCountShelves = [];
+        let wsJson = [];
         for (let workSheetName of sheetNames) {
           const workSheet: XLSX.WorkSheet = workBook.Sheets[workSheetName];
-          let wsJson = XLSX.utils.sheet_to_json(workSheet);
-          console.log(wsJson);
+          let currentJson = XLSX.utils.sheet_to_json(workSheet);
+          console.log(currentJson);
 
-          if (wsJson) {
+          if (currentJson) {
             let names = workSheetName.split("-");
             this.whareHouse = names[0];
             this.itemType = names[1];
@@ -741,156 +832,151 @@ export class ShelfListComponent implements OnInit {
             this.selectWh.nativeElement.value = this.whareHouse;
             this.fileName = target.files[0].name;
             this.fileDate = ev.target.files[0].lastModified;
+            let countedBy = currentJson[2]["C"];
+            let supervisedBy = currentJson[4]["C"];
+            let typedBy = currentJson[5]["D"];
+            let countDate = currentJson[2]["F"];
+
+            console.log(countedBy, supervisedBy, typedBy);
 
             this.showFile = true;
             // for (let item of wsJson) {
-            for (let i = 8; i < wsJson.length; i++) {
-              let shelf = {
-                itemNumber: wsJson[i]["C"]
-                  ? wsJson[i]["C"].toString().trim()
-                  : "",
-                itemName: wsJson[i]["D"] ? wsJson[i]["D"].trim() : "",
-                itemPosition: wsJson[i]["B"]
-                  ? wsJson[i]["B"].trim().toUpperCase()
-                  : "",
-                itemUnit: wsJson[i]["E"]
-                  ? wsJson[i]["E"].trim().toUpperCase()
-                  : "",
-                prevQty: 0,
-                repeatCount: null,
-                diffQty: 0,
-                itemPrice: null,
-                itemCoin: "",
-                itemQty: wsJson[i]["F"] ? wsJson[i]["F"] : 0,
-                companyOwned: wsJson[i]["G"]
-                  ? wsJson[i]["G"].trim().toUpperCase()
-                  : "",
-                itemRemark: wsJson[i]["H"],
-                itemBatch: wsJson[i]["I"]
-                  ? wsJson[i]["I"].trim().toUpperCase()
-                  : "",
-              };
-              // let shelf = {
-              //   itemNumber: item['מק"ט'] ? item['מק"ט'].trim() : "",
-              //   itemName: item["תיאור הפריט"]
-              //     ? item["תיאור הפריט"].trim().toLowerCase()
-              //     : "",
-              //   itemPosition: item["איתור"]
-              //     ? item["איתור"].trim().toUpperCase()
-              //     : "",
-              //   itemUnit: item["יח' מידה"]
-              //     ? item["יח' מידה"].trim().toUpperCase()
-              //     : "",
-              //   prevQty: 0,
-              //   repeatCount: null,
-              //   diffQty: 0,
-              //   itemPrice: null,
-              //   itemCoin: "",
-              //   itemQty: item["כמות"] ? item["כמות"] : 0,
-              //   companyOwned: item["פריט חברה"]
-              //     ? item["פריט חברה"].trim().toUpperCase()
-              //     : "",
-              //   itemRemark: item["הערות"],
-              //   itemBatch: item["Batch"]
-              //     ? item["Batch"].trim().toUpperCase()
-              //     : "",
-              // };
-              console.log(shelf);
-              this.allCountShelves.push(shelf);
+            for (let i = 8; i < currentJson.length; i++) {
+              currentJson[i]["countedBy"] = countedBy;
+              currentJson[i]["supervisedBy"] = supervisedBy;
+              currentJson[i]["typedBy"] = typedBy;
+              currentJson[i]["fileName"] = this.fileName;
+              currentJson[i]["fileDate"] = this.fileDate;
+              currentJson[i]["countDate"] = countDate;
+
+              console.log(currentJson[i]);
+              wsJson.push(currentJson[i]);
             }
-            console.log(this.allCountShelves);
-            this.inventorySrv
-              .shelfListByWH(this.whareHouse, this.itemType)
-              .subscribe((data) => {
-                console.log(data);
-                console.log(data.itemShells);
-                if (data.msg) {
-                  this.toastSrv.error(data.msg);
-                  return;
-                } else if (data) {
-                  let itemShells = data.itemShells;
-                  console.log(this.allCountShelves);
-
-                  for (let item of this.allCountShelves) {
-                    let indCS = -1;
-                    let indP = -1;
-                    let indMS = -1;
-
-                    if (this.itemType == "component") {
-                      indCS = itemShells.findIndex((shelf) => {
-                        return (
-                          shelf._id.item.trim() == item.itemNumber &&
-                          shelf._id.position.trim().toUpperCase() ==
-                            item.itemPosition
-                        );
-                      });
-                      indP = this.componentsPrices.findIndex(
-                        (cp) => cp.itemNumber == item.itemNumber
-                      );
-                    } else if (this.itemType == "material") {
-                      indCS = itemShells.findIndex((shelf) => {
-                        return (
-                          shelf._id.item == item.itemNumber &&
-                          shelf._id.position.trim().toUpperCase() ==
-                            item.itemPosition &&
-                          shelf._id.supplierBatchNumber.trim().toUpperCase() ==
-                            item.itemBatch
-                        );
-                      });
-                      indMS = this.materialsPrices.findIndex(
-                        (mp) => mp.itemNumber == item.itemNumber
-                      );
-                    }
-
-                    console.log(indCS);
-                    if (indCS > -1) {
-                      console.log(itemShells[indCS].total);
-                      item.prevQty = parseInt(itemShells[indCS].total).toFixed(
-                        2
-                      );
-                      item.diffQty = item.itemQty - item.prevQty;
-                      indCS = -1;
-                    }
-                    console.log(indP);
-                    if (indP > -1) {
-                      console.log(this.componentsPrices[indP].actualPrice);
-                      item.itemPrice =
-                        0 || null
-                          ? null
-                          : parseFloat(
-                              this.componentsPrices[indP].actualPrice
-                            ).toFixed(2);
-                      item.itemCoin = this.componentsPrices[indP].actualCoin;
-                      indP = -1;
-                    }
-                    console.log(indMS);
-                    if (indMS > -1) {
-                      console.log(this.materialsPrices[indMS].actualPrice);
-                      item.itemPrice =
-                        0 || null
-                          ? null
-                          : parseFloat(
-                              this.materialsPrices[indMS].actualPrice
-                            ).toFixed(2);
-                      item.itemCoin = this.materialsPrices[indMS].actualCoin;
-                      indMS = -1;
-                    }
-                  }
-
-                  console.log(this.allCountShelves);
-                  this.uploadExFile.nativeElement.value = "";
-                } else {
-                  this.toastSrv.error("No data found");
-                  this.fetchingShelfs = false;
-                }
-                this.fetchingShelfs = false;
-              });
           } else {
             this.showFile = false;
             this.fetchingShelfs = false;
             this.toastSrv.error("No Shelfs in Wharehouse");
           }
+          console.log(wsJson);
         }
+
+        for (let i = 0; i < wsJson.length; i++) {
+          let shelf = {
+            itemNumber: wsJson[i]["C"] ? wsJson[i]["C"].toString().trim() : "",
+            itemName: wsJson[i]["D"] ? wsJson[i]["D"].trim() : "",
+            itemPosition: wsJson[i]["B"]
+              ? wsJson[i]["B"].trim().toUpperCase()
+              : "",
+            itemUnit: wsJson[i]["E"] ? wsJson[i]["E"].trim().toUpperCase() : "",
+            prevQty: 0,
+            repeatCount: null,
+            diffQty: 0,
+            itemPrice: null,
+            itemCoin: "",
+            itemQty: wsJson[i]["F"] ? wsJson[i]["F"] : 0,
+            companyOwned: wsJson[i]["G"]
+              ? wsJson[i]["G"].trim().toUpperCase()
+              : "",
+            itemRemark: wsJson[i]["H"],
+            itemBatch: wsJson[i]["I"]
+              ? wsJson[i]["I"].trim().toUpperCase()
+              : "",
+            countedBy: wsJson[i].countedBy,
+            supervisedBy: wsJson[i].supervisedBy,
+            typedBy: wsJson[i].typedBy,
+            fileName: wsJson[i].fileName,
+            fileDate: wsJson[i].fileDate,
+            countDate: wsJson[i].countDate,
+          };
+
+          console.log(shelf);
+          this.allCountShelves.push(shelf);
+        }
+        console.log(this.allCountShelves);
+        this.inventorySrv
+          .shelfListByWH(this.whareHouse, this.itemType)
+          .subscribe((data) => {
+            console.log(data);
+            console.log(data.itemShells);
+            if (data.msg) {
+              this.toastSrv.error(data.msg);
+              return;
+            } else if (data) {
+              let itemShells = data.itemShells;
+              console.log(this.allCountShelves);
+
+              for (let item of this.allCountShelves) {
+                let indCS = -1;
+                let indP = -1;
+                let indMS = -1;
+
+                if (this.itemType == "component") {
+                  indCS = itemShells.findIndex((shelf) => {
+                    return (
+                      shelf._id.item.trim() == item.itemNumber &&
+                      shelf._id.position.trim().toUpperCase() ==
+                        item.itemPosition
+                    );
+                  });
+                  indP = this.componentsPrices.findIndex(
+                    (cp) => cp.itemNumber == item.itemNumber
+                  );
+                } else if (this.itemType == "material") {
+                  indCS = itemShells.findIndex((shelf) => {
+                    return (
+                      shelf._id.item == item.itemNumber &&
+                      shelf._id.position.trim().toUpperCase() ==
+                        item.itemPosition &&
+                      shelf._id.supplierBatchNumber.trim().toUpperCase() ==
+                        item.itemBatch
+                    );
+                  });
+                  indMS = this.materialsPrices.findIndex(
+                    (mp) => mp.itemNumber == item.itemNumber
+                  );
+                }
+
+                console.log(indCS);
+                if (indCS > -1) {
+                  console.log(itemShells[indCS].total);
+                  item.prevQty = parseInt(itemShells[indCS].total).toFixed(2);
+                  item.diffQty = item.itemQty - item.prevQty;
+                  indCS = -1;
+                }
+                console.log(indP);
+                if (indP > -1) {
+                  console.log(this.componentsPrices[indP].actualPrice);
+                  item.itemPrice =
+                    0 || null
+                      ? null
+                      : parseFloat(
+                          this.componentsPrices[indP].actualPrice
+                        ).toFixed(2);
+                  item.itemCoin = this.componentsPrices[indP].actualCoin;
+                  indP = -1;
+                }
+                console.log(indMS);
+                if (indMS > -1) {
+                  console.log(this.materialsPrices[indMS].actualPrice);
+                  item.itemPrice =
+                    0 || null
+                      ? null
+                      : parseFloat(
+                          this.materialsPrices[indMS].actualPrice
+                        ).toFixed(2);
+                  item.itemCoin = this.materialsPrices[indMS].actualCoin;
+                  indMS = -1;
+                }
+              }
+
+              console.log(this.allCountShelves);
+              this.fetchingShelfs = false;
+              this.uploadExFile.nativeElement.value = "";
+            } else {
+              this.toastSrv.error("No data found");
+              this.fetchingShelfs = false;
+            }
+          });
       };
     }
   }
@@ -909,7 +995,13 @@ export class ShelfListComponent implements OnInit {
     this.loadingDataToDB = true;
     console.log(this.allCountShelves);
 
-    // this.inventorySrv.loadCounts(this.allShelfs);
+    let wh = { wh: this.whareHouse, type: this.itemType, userName: this.user };
+
+    this.inventorySrv
+      .loadCounts({ counts: this.allCountShelves, wh })
+      .subscribe((data) => {
+        console.log(data);
+      });
 
     this.loadingDataToDB = false;
   }
