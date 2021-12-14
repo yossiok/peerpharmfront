@@ -83,6 +83,7 @@ import { YieldHistoryComponent } from "./production/yield/yield-history/yield-hi
 import { AllPlanningComponent } from "./production/planning/all-planning/all-planning.component";
 import { AllItemsComponent } from "./production/planning/all-items/all-items.component";
 import { FinanceReportComponent } from "./finance-reports/financereport.component";
+import { WhareHouseUpdatesComponent } from "./inventory/wharehouse/wharehouse-updates/wharehouse-updates.component";
 
 export const PeerPharmRputs: Routes = [
   {
@@ -278,6 +279,14 @@ export const PeerPharmRputs: Routes = [
       title: "Inventory Reports",
     },
     component: InventoryReportsComponent,
+  },
+  {
+    path: "inventory/updates",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "updates",
+    },
+    component: WhareHouseUpdatesComponent,
   },
   {
     path: "inventory/storages",

@@ -180,6 +180,7 @@ import { PlanningDetailsComponent } from "./production/planning/planning-details
 import { OrderItemBatchStatusPipe } from "../pipes/order-item-batch-status.pipe";
 import { OrderItemBatchStatusColorPipe } from "../pipes/order-item-batch-status-color.pipe";
 import { FreeBatchesComponent } from "./allorders/free-batches/free-batches.component";
+import { WhareHouseUpdatesComponent } from "./inventory/wharehouse/wharehouse-updates/wharehouse-updates.component";
 
 @NgModule({
   exports: [
@@ -335,7 +336,8 @@ import { FreeBatchesComponent } from "./allorders/free-batches/free-batches.comp
     AllItemsComponent,
     PlanningDetailsComponent,
     FinanceReportComponent,
-    FreeBatchesComponent
+    FreeBatchesComponent,
+    WhareHouseUpdatesComponent
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [
