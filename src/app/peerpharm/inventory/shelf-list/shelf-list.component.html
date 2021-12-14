@@ -52,18 +52,21 @@
     <div class="col-2" *ngIf="showFile && !fetchingPrices && !fetchingShelfs">
       <label>טען נתונים למלאי זמני</label><br>
       <button class="btn btn-primary" (click)="sendDataToDB()">
-        שלח נתונים
+        העבר נתונים למסד הנתונים
       </button>
 
     </div>
+    <ng-container *ngIf="loadingDataToDB">
+      <div class="bigLoader"></div>
+    </ng-container>
   </div>
   <div class="row mt-4" dir="rtl">
     <div class="col-3" *ngIf="!fetchingPrices">
-      <label>טען קובץ ספירה קודם</label>
+      <label>טען נתוני ספירה קודמת מהמערכת לפי מחסן</label>
       <select (change)="getFileNameByWh($event)" #selectWhFile class="form-control">
-        <option selected="true" disabled="disabled">בחר קובץ למחסן</option>
+        <option selected="true" disabled="disabled">בחר מחסן לצפייה</option>
         <option value="KASEM-component">Kasem</option>
-        <option value="Rosh HaAyin-Material">Rosh HaAyin - Materials</option>
+        <option value="Rosh HaAyin-material">Rosh HaAyin - Materials</option>
         <option value="Rosh HaAyin-component">Rosh HaAyin - Components</option>
         <option value="Rosh HaAyin-product">Rosh HaAyin - Products</option>
         <option value="NEW KASEM-component">New Kasem</option>
@@ -77,13 +80,13 @@
     <div class="col-3" *ngIf="!fetchingPrices">
       <label>בחר קובץ ספירה קודם</label>
       <select (change)="getFileName($event)" #selectFile class="form-control">
-        <option selected="true" disabled="disabled">בחר קובץ לצפייה</option>
+        <option selected="true" disabled="false">בחר קובץ לצפייה</option>
         <option *ngFor="let file of fileNames" [value]="file.fileDate">{{file.fileName}}</option>
 
       </select>
     </div>
   </div>
-  <div class="row mt-4" *ngIf="showFile && alloedYearUpdate">
+  <div class="row mt-4" *ngIf="showFile && allowedYearUpdate">
     <div class="col-4"></div>
     <div class="col-4">
       <label> עדכון מלאי על פי ספירה</label><br>
