@@ -19,6 +19,10 @@ button, input {
   display: block;
 }
 
+.show-free-batches-btn {
+  background: aquamarine;
+}
+
 .read-only {
   pointer-events: none;
 }
@@ -187,13 +191,13 @@ td {
 }
 
 ::-webkit-scrollbar {
-    width: 10px;
+    width: 20px;
   }
   
   /* Track */
   ::-webkit-scrollbar-track {
     box-shadow: inset 0 0 5px grey; 
-    border-radius: 10px;
+    border-radius: 20px;
   }
    
   /* Handle */

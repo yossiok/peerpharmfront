@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { OrdersService } from "src/app/services/orders.service";
-import { FreeBatches } from "./FreeBatch";
+import { FreeBatchesFile } from "./FreeBatch";
 
 @Component({
     selector: "app-free-batches",
@@ -8,23 +8,38 @@ import { FreeBatches } from "./FreeBatch";
     styleUrls: ["./free-batches.component.scss"],
 })
 export class FreeBatchesComponent implements OnInit {
-
-    @Input() freeBatches: FreeBatches[]
+    
+    @Input() freeBatches: FreeBatchesFile
     @Input() orders: any[]
     @Output() closed: EventEmitter<any> = new EventEmitter<any>()
+    orderItemsAndOrders: any[] = []
+    loadingData: boolean = false
 
     constructor(
         private ordersService: OrdersService
     ) { }
 
     ngOnInit() {
-
+        console.log(this.freeBatches)
     }
 
     getAllOpenOrderITems() {
+        this.loadingData = true
         this.ordersService.getAllOpenOrderItems().subscribe(data => {
             let filtered = data.filter(i => i.orderItem.batch == "")
-            console.log('All Open order Iems: ', filtered)
+            this.orderItemsAndOrders = filtered.map(oi => ({
+                itemNumber: oi.orderItem.itemNumber,
+                orderNumber: oi.orderNumber
+            }))
+            console.log('All Open order Iems: ', this.orderItemsAndOrders)
+            for (let batch of this.freeBatches.batches) {
+                for (let oiao of this.orderItemsAndOrders) {
+                    if (oiao.itemNumber == batch.itemNumber && oiao.orderNumber == batch.orderNumber) {
+                        batch.color = 'aquamarine'
+                    }
+                }
+            }
+            this.loadingData = false
         })
     }
 

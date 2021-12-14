@@ -5,7 +5,8 @@
     <h1>אצוות חופשיות</h1>
 
     <div class="float-left">
-        <button (click)="getAllOpenOrderITems()">dfkjhsdkjfsdlkjfsh;</button>
+        <button *ngIf="!loadingData" class="cross-data-btn" (click)="getAllOpenOrderITems()">מצא פריטי אצוות בהזמנות פתוחות</button>
+        <div *ngIf="loadingData" class="smallerLoader"></div>
     </div>
     
     <div class="row mt-5 d-flex flex-row justify-content-around">
@@ -27,14 +28,16 @@
                 <th>כמות מקורית</th>
                 <th>כמות נוכחית</th>
             </thead>
-            <tbody *ngFor="let batch of freeBatches.batches">
-                <td>{{batch.position}}</td>
-                <td>{{batch.itemNumber}}</td>
-                <td>{{batch.itemName}}</td>
-                <td>{{batch.batchNumber}}</td>
-                <td>{{batch.orderNumber}}</td>
-                <td>{{batch.originalQnt}}</td>
-                <td>{{batch.updatedQnt}}</td>
+            <tbody>
+                <tr *ngFor="let batch of freeBatches.batches" [style.background]="batch.color">
+                    <td>{{batch.position}}</td>
+                    <td>{{batch.itemNumber}}</td>
+                    <td>{{batch.itemName}}</td>
+                    <td>{{batch.batchNumber}}</td>
+                    <td>{{batch.orderNumber}}</td>
+                    <td>{{batch.originalQnt}}</td>
+                    <td>{{batch.updatedQnt}}</td>
+                </tr>
             </tbody>
         </table>
     </div>

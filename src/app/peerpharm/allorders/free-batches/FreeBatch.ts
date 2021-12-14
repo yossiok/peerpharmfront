@@ -6,9 +6,10 @@ export interface FreeBatch {
     position: string,
     itemNumber: string,
     itemName: string,
+    color?: string
 }
 
-export interface FreeBatches {
+export interface FreeBatchesFile {
     batches: Array<FreeBatch>,
     date: Date,
     fileName: string,

@@ -7,7 +7,7 @@ import { ChatService } from 'src/app/shared/chat.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import * as XLSX from "xlsx";
-import { FreeBatches } from '../free-batches/FreeBatch';
+import { FreeBatchesFile } from '../free-batches/FreeBatch';
 
 
 
@@ -53,6 +53,7 @@ export class OrdersComponent implements OnInit {
   newOrderModal: boolean = false;
   loadingUri: boolean = false
   freeBatchesModal: boolean = false
+  PPCPermission: boolean = false
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -80,6 +81,7 @@ export class OrdersComponent implements OnInit {
 
   ngOnInit() {
 
+    this.PPCPermission = this.authService.loggedInUser.authorization.includes('PPCPermission')
     this.today = new Date();
     this.today = moment(this.today).format("DD/MM/YYYY");
     this.getOrders();
@@ -153,7 +155,7 @@ export class OrdersComponent implements OnInit {
         }))
 
 
-        let freeBatches: FreeBatches = {
+        let freeBatches: FreeBatchesFile = {
           batches,
           date: fileDate,
           fileName,

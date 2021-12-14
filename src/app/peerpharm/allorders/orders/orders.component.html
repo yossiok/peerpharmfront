@@ -59,7 +59,7 @@
     <div class="col-2">
       <button (click)="loadOrdersItems()" class='btn btn-info form-control'> Show Items </button>
     </div>
-    <div class="col-2 border border-dark p-2">
+    <div *ngIf="PPCPermission" class="col-2 border border-dark p-2">
       <label class="h4 text-primary">אצוות מוכנות</label><br>
       <div class="d-flex flex-row justify-content-between">
         <div>
@@ -68,7 +68,7 @@
         </div>
         <div>
           <label class="h5">הצגת נתונים</label><br>
-          <button (click)="downloadFreeBatches()">הצג אצוות</button>
+          <button class="show-free-batches-btn" (click)="downloadFreeBatches()">הצג אצוות</button>
         </div>
       </div>
     </div>
