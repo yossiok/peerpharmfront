@@ -904,69 +904,72 @@ export class ShelfListComponent implements OnInit {
             } else if (data) {
               let itemShells = data.itemShells;
               console.log(this.allCountShelves);
+              try {
+                for (let item of this.allCountShelves) {
+                  let indCS = -1;
+                  let indP = -1;
+                  let indMS = -1;
 
-              for (let item of this.allCountShelves) {
-                let indCS = -1;
-                let indP = -1;
-                let indMS = -1;
-
-                if (this.itemType == "component") {
-                  indCS = itemShells.findIndex((shelf) => {
-                    return (
-                      shelf._id.item.trim() == item.itemNumber &&
-                      shelf._id.position.trim().toUpperCase() ==
-                        item.itemPosition
+                  if (this.itemType == "component") {
+                    indCS = itemShells.findIndex((shelf) => {
+                      return (
+                        shelf._id.item.trim() == item.itemNumber &&
+                        shelf._id.position.trim().toUpperCase() ==
+                          item.itemPosition
+                      );
+                    });
+                    indP = this.componentsPrices.findIndex(
+                      (cp) => cp.itemNumber == item.itemNumber
                     );
-                  });
-                  indP = this.componentsPrices.findIndex(
-                    (cp) => cp.itemNumber == item.itemNumber
-                  );
-                } else if (this.itemType == "material") {
-                  indCS = itemShells.findIndex((shelf) => {
-                    return (
-                      shelf._id.item == item.itemNumber &&
-                      shelf._id.position.trim().toUpperCase() ==
-                        item.itemPosition &&
-                      shelf._id.supplierBatchNumber.trim().toUpperCase() ==
-                        item.itemBatch
+                  } else if (this.itemType == "material") {
+                    indCS = itemShells.findIndex((shelf) => {
+                      return (
+                        shelf._id.item == item.itemNumber &&
+                        shelf._id.position.trim().toUpperCase() ==
+                          item.itemPosition &&
+                        shelf._id.supplierBatchNumber.trim().toUpperCase() ==
+                          item.itemBatch
+                      );
+                    });
+                    indMS = this.materialsPrices.findIndex(
+                      (mp) => mp.itemNumber == item.itemNumber
                     );
-                  });
-                  indMS = this.materialsPrices.findIndex(
-                    (mp) => mp.itemNumber == item.itemNumber
-                  );
-                }
+                  }
 
-                console.log(indCS);
-                if (indCS > -1) {
-                  console.log(itemShells[indCS].total);
-                  item.prevQty = parseInt(itemShells[indCS].total).toFixed(2);
-                  item.diffQty = item.itemQty - item.prevQty;
-                  indCS = -1;
+                  console.log(indCS);
+                  if (indCS > -1) {
+                    console.log(itemShells[indCS].total);
+                    item.prevQty = parseInt(itemShells[indCS].total);
+                    item.diffQty = item.itemQty - item.prevQty;
+                    indCS = -1;
+                  }
+                  console.log(indP);
+                  if (indP > -1) {
+                    console.log(this.componentsPrices[indP].actualPrice);
+                    item.itemPrice =
+                      0 || null
+                        ? null
+                        : parseFloat(
+                            this.componentsPrices[indP].actualPrice
+                          ).toFixed(2);
+                    item.itemCoin = this.componentsPrices[indP].actualCoin;
+                    indP = -1;
+                  }
+                  console.log(indMS);
+                  if (indMS > -1) {
+                    console.log(this.materialsPrices[indMS].actualPrice);
+                    item.itemPrice =
+                      0 || null || ""
+                        ? null
+                        : parseFloat(
+                            this.materialsPrices[indMS].actualPrice
+                          ).toFixed(2);
+                    item.itemCoin = this.materialsPrices[indMS].actualCoin;
+                    indMS = -1;
+                  }
                 }
-                console.log(indP);
-                if (indP > -1) {
-                  console.log(this.componentsPrices[indP].actualPrice);
-                  item.itemPrice =
-                    0 || null
-                      ? null
-                      : parseFloat(
-                          this.componentsPrices[indP].actualPrice
-                        ).toFixed(2);
-                  item.itemCoin = this.componentsPrices[indP].actualCoin;
-                  indP = -1;
-                }
-                console.log(indMS);
-                if (indMS > -1) {
-                  console.log(this.materialsPrices[indMS].actualPrice);
-                  item.itemPrice =
-                    0 || null
-                      ? null
-                      : parseFloat(
-                          this.materialsPrices[indMS].actualPrice
-                        ).toFixed(2);
-                  item.itemCoin = this.materialsPrices[indMS].actualCoin;
-                  indMS = -1;
-                }
+              } catch (error) {
+                console.log("Error message: ", error);
               }
 
               console.log(this.allCountShelves);
@@ -1001,6 +1004,13 @@ export class ShelfListComponent implements OnInit {
       .loadCounts({ counts: this.allCountShelves, wh })
       .subscribe((data) => {
         console.log(data);
+        if (data.msg) {
+          this.toastSrv.error(data.msg);
+        } else if (data.length > 0) {
+          this.toastSrv.success("הנתונים נשמרו במערכת והם זמינים לצפייה.");
+        } else if (data) {
+          this.toastSrv.error("No data returned");
+        }
       });
 
     this.loadingDataToDB = false;
