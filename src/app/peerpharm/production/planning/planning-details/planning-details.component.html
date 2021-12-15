@@ -113,13 +113,13 @@
           <td>
             <img *ngIf="edit == i && authorized" ngbTooltip="שמור שינויים" (click)="saveChanges(i)" class="img click"
               src="../../../../../assets/images/aprroved.png" alt="">
-            <button *ngIf="edit != i && authorized" (click)="edit = i" class="btn btn-secondary rounded">
+            <button [disabled]="orderItem.hasFormule" *ngIf="edit != i && authorized" (click)="edit = i" class="btn btn-secondary rounded">
               עריכה
               <i class="fas fa-pencil-alt"></i>
             </button>
           </td>
           <td *ngIf="authorized">
-            <button (click)="deleteLine(i)" class="btn btn-danger">
+            <button [disabled]="orderItem.hasFormule" (click)="deleteLine(i)" class="btn btn-danger">
               מחיקה
               <i class="far fa-trash-alt"></i>
             </button>

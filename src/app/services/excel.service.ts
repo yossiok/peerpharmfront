@@ -15,9 +15,6 @@ export class ExcelService {
     multiple?: boolean
   ): void {
     if (multiple) {
-      console.log("Entered multiple");
-      console.log(sheetNames);
-      console.log(json);
       const workbook = XLSX.utils.book_new();
       let list: XLSX.WorkSheet = [];
 
@@ -38,7 +35,7 @@ export class ExcelService {
         header: order,
       });
 
-      let sName = sheetNames[0] ? sheetNames[0] : "data";
+      let sName = sheetNames ? sheetNames[0] : excelFileName;
       const workbook: XLSX.WorkBook = {
         Sheets: { [sName]: worksheet },
         SheetNames: [sName],

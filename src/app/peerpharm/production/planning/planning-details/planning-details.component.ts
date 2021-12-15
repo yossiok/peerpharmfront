@@ -203,7 +203,7 @@ export class PlanningDetailsComponent implements OnInit {
   //   .catch(errorMessage => this.toastr.error(errorMessage))
   // }
 
-  saveChanges(): Promise<string> {
+  saveChanges(oderItemToDelete?): Promise<string> {
     return new Promise((resolve, reject) => {
       this.productionService.editWorkPlan(this.workPlan).subscribe((data) => {
         if (data.status) {
@@ -220,9 +220,10 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   deleteLine(i: number) {
+    let orderITemToDelete = this.workPlan.orderItems[i]
     if (confirm("השורה תימחק והכמויות יחושבו מחדש. האם אתה בטוח?")) {
       this.workPlan.orderItems.splice(i, 1);
-      this.saveChanges()
+      this.saveChanges(orderITemToDelete)
         .then((succesMessage) => this.toastr.success(succesMessage, 'השורה נמחקה בהצלחה'))
         .catch((errorMessage) => this.toastr.error(errorMessage));
     } else this.toastr.warning("לא בוצעו שינויים");
