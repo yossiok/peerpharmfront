@@ -51,10 +51,9 @@
     </div>
     <div class="col-2" *ngIf="showFile && !fetchingPrices && !fetchingShelfs">
       <label>טען נתונים למלאי זמני</label><br>
-      <button class="btn btn-primary" (click)="sendDataToDB()">
+      <button class="btn btn-secondary" (click)="sendDataToDB()">
         העבר נתונים למסד הנתונים
       </button>
-
     </div>
     <ng-container *ngIf="loadingDataToDB">
       <div class="bigLoader"></div>

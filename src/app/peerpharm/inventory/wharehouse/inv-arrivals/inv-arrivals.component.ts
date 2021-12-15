@@ -268,7 +268,11 @@ export class InvArrivalsComponent implements OnInit {
     );
     this.componentArrival.controls.position.setValue(shellDoc.position);
     //push arrival to allArrivals
+    // convert item from number to string
+    let itemToPush = { ...this.componentArrival.value };
+    itemToPush.item = "" + itemToPush.item;
     this.allArrivals.push(this.componentArrival.value);
+    // this.allArrivals.push(itemToPush);
     //22/08/2021 Dani Morag:
     // reset the fields of the add component arrival except for the supplier and warehouse. Further to the request of Tomer
     this.componentArrival.get("itemType").reset();
@@ -292,7 +296,8 @@ export class InvArrivalsComponent implements OnInit {
       .addComponentsToStock(this.allArrivals)
       .subscribe((data) => {
         if (data.msg) this.toastr.error(data.msg, "שגיאה");
-        else {
+        else if (data) {
+          console.log(data);
           //set certificate data
           this.certificateReception =
             data.allResults[0].savedMovement.warehouseReception;

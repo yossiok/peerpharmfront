@@ -862,12 +862,12 @@ export class ShelfListComponent implements OnInit {
 
         for (let i = 0; i < wsJson.length; i++) {
           let shelf = {
-            itemNumber: wsJson[i]["C"] ? wsJson[i]["C"].toString().trim() : "",
+            itemNumber: wsJson[i]["C"] ? wsJson[i]["C"].toString() : "",
             itemName: wsJson[i]["D"] ? wsJson[i]["D"].trim() : "",
             itemPosition: wsJson[i]["B"]
               ? wsJson[i]["B"].trim().toUpperCase()
               : "",
-            itemUnit: wsJson[i]["E"] ? wsJson[i]["E"].trim().toUpperCase() : "",
+            itemUnit: wsJson[i]["E"] ? wsJson[i]["E"] : "",
             prevQty: 0,
             repeatCount: null,
             diffQty: 0,
@@ -878,9 +878,7 @@ export class ShelfListComponent implements OnInit {
               ? wsJson[i]["G"].trim().toUpperCase()
               : "",
             itemRemark: wsJson[i]["H"],
-            itemBatch: wsJson[i]["I"]
-              ? wsJson[i]["I"].trim().toUpperCase()
-              : "",
+            itemBatch: wsJson[i]["I"] ? wsJson[i]["I"].toUpperCase() : "",
             countedBy: wsJson[i].countedBy,
             supervisedBy: wsJson[i].supervisedBy,
             typedBy: wsJson[i].typedBy,
@@ -927,7 +925,7 @@ export class ShelfListComponent implements OnInit {
                         shelf._id.item == item.itemNumber &&
                         shelf._id.position.trim().toUpperCase() ==
                           item.itemPosition &&
-                        shelf._id.supplierBatchNumber.trim().toUpperCase() ==
+                        shelf._id.supplierBatchNumber.toUpperCase() ==
                           item.itemBatch
                       );
                     });
@@ -1006,13 +1004,14 @@ export class ShelfListComponent implements OnInit {
         console.log(data);
         if (data.msg) {
           this.toastSrv.error(data.msg);
+          this.loadingDataToDB = false;
         } else if (data.length > 0) {
           this.toastSrv.success("הנתונים נשמרו במערכת והם זמינים לצפייה.");
+          this.loadingDataToDB = false;
         } else if (data) {
           this.toastSrv.error("No data returned");
+          this.loadingDataToDB = false;
         }
       });
-
-    this.loadingDataToDB = false;
   }
 }
