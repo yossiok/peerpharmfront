@@ -40,7 +40,7 @@ export class InvArrivalsComponent implements OnInit {
   componentArrival: FormGroup = new FormGroup({
     itemType: new FormControl("component", Validators.required),
     item: new FormControl(null, Validators.required),
-    amount: new FormControl(null, Validators.required),
+    amount: new FormControl(null, Validators.min(0.001)),
     shell_id_in_whareHouse: new FormControl(null, Validators.required),
     position: new FormControl(""),
     whareHouseID: new FormControl(null, Validators.required),

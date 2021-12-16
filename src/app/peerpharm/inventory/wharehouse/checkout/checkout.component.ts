@@ -29,7 +29,7 @@ export class CheckoutComponent implements OnInit {
   componentCheckout: FormGroup = new FormGroup({
     itemType: new FormControl("component", Validators.required),
     item: new FormControl(null, Validators.required),
-    amount: new FormControl(null, Validators.required),
+    amount: new FormControl(null, Validators.min(0.001)),
     shell_id_in_whareHouse: new FormControl(null, Validators.required),
     position: new FormControl(""),
     whareHouseID: new FormControl(null, Validators.required),
@@ -168,12 +168,12 @@ export class CheckoutComponent implements OnInit {
     this.inventoryService
       .checkoutComponents(this.outGoing)
       .subscribe((data) => {
-        if (data.msg) { 
+        console.log(data);
+        if (data.msg) {
           // this.toastr.error("ייתכן שהפעולה בוצעה. אנא פנה לצוות הפיתוח.","היתה בעיה");
           this.toastr.error(data.msg, "שגיאה:");
-          console.log(data.msg)
-          }
-        else {
+          console.log(data.msg);
+        } else {
           //set certificate data
           this.certificateReception =
             data.allResults[0].savedMovement.warehouseReception;

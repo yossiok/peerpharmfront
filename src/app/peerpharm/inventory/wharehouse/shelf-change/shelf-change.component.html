@@ -58,6 +58,10 @@
       <div class="col-2">
         <label>כמות *</label>
         <input type="number" formControlName="amount" class="form-control">
+        <div style="color:red; font-size: 1.2rem;font-weight: bold;" *ngIf="shelfChange.controls.amount.errors?.min">*
+          הכמות חייבת
+          להיות גדולה מאפס
+        </div>
       </div>
 
       <div class="col-2 d-flex flex-column justify-content-around">

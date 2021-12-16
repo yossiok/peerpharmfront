@@ -27,7 +27,7 @@ export class BetweenWHComponent implements OnInit {
   itemNames: any[];
   allMovements: any[] = [];
   movementForm: FormGroup = new FormGroup({
-    amount: new FormControl(null, Validators.required),
+    amount: new FormControl(null, Validators.min(0.001)),
     item: new FormControl(null, [Validators.required, Validators.minLength(1)]),
     itemName: new FormControl(""),
     itemType: new FormControl("component"),
