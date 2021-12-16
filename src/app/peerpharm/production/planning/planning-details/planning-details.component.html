@@ -1,5 +1,5 @@
-<div *ngIf="!showMaterialsForFormules" class="m-5 p-5">
-  <i (click)="closeWorkPlan(-1)" class="fa fa-times float-right h3 close"></i>
+<i (click)="closeWorkPlan(-1)" class="fa fa-times float-right h1 close"></i>
+<div [style.pointer-events]="workPlan.status == 8 ? 'none' : ''" *ngIf="!showMaterialsForFormules" class="m-5 p-5">
   <h1 [style.color]="workPlan.status | orderItemBatchStatusColor" class="text-center status">Work Plan
     {{workPlan.serialNumber}}</h1>
   <div class="row mt-4"></div>

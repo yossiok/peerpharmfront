@@ -332,6 +332,11 @@ export class OrdersService {
       .pipe(map((reponse) => reponse.json()));
   }
 
+  deleteItemFromPAKALIST(orderITemId) {
+    let url = this.baseUrl + "orderitem/deleteItemFromPAKALIST?_id="+orderITemId;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
   uploadFreeBatches(freeBatches) {
     let url = this.baseUrl + "order/freebatches";
     return this.http.post(url, JSON.stringify(freeBatches), this.options).pipe(map((reponse) => reponse.json()));

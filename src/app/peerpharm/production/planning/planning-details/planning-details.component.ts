@@ -205,7 +205,7 @@ export class PlanningDetailsComponent implements OnInit {
 
   saveChanges(oderItemToDelete?): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.productionService.editWorkPlan(this.workPlan).subscribe((data) => {
+      this.productionService.editWorkPlan(this.workPlan, oderItemToDelete).subscribe((data) => {
         if (data.status) {
           this.edit = -1;
           this.editF = -1
@@ -221,11 +221,15 @@ export class PlanningDetailsComponent implements OnInit {
 
   deleteLine(i: number) {
     let orderITemToDelete = this.workPlan.orderItems[i]
-    if (confirm("השורה תימחק והכמויות יחושבו מחדש. האם אתה בטוח?")) {
+    if (confirm("השורה תימחק. האם אתה בטוח?")) {
       this.workPlan.orderItems.splice(i, 1);
       this.saveChanges(orderITemToDelete)
-        .then((succesMessage) => this.toastr.success(succesMessage, 'השורה נמחקה בהצלחה'))
-        .catch((errorMessage) => this.toastr.error(errorMessage));
+        .then((succesMessage) => {
+          this.toastr.success(succesMessage, 'השורה נמחקה בהצלחה')
+        }) 
+        .catch((errorMessage) => {
+          this.toastr.error(errorMessage);
+        }) 
     } else this.toastr.warning("לא בוצעו שינויים");
   }
 
