@@ -89,6 +89,9 @@ export class HistMovementsComponent implements OnInit, OnChanges {
 
     queryString = queryString.slice(0, -1);
     this.inventoryService.getHistMovements(queryString).subscribe((data) => {
+      console.log(data);
+
+      // check if the recption belongs to wh authorized for this user, and the movement type is one of the theree: in, out or between wh
       data.forEach((element) => {
         if (!element.itemType) {
           let type;
@@ -107,7 +110,6 @@ export class HistMovementsComponent implements OnInit, OnChanges {
         }
       });
       this.histMovements = data.filter((e) => !e.itemType);
-      console.log(this.histMovements);
     });
   }
 
