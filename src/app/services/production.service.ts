@@ -91,8 +91,8 @@ export class ProductionService {
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
-  editWorkPlan(workPlan) {
-    let url = this.baseUrl + `productionSchedule/workplan`;
+  editWorkPlan(workPlan, orderItemToDelete?) {
+    let url = this.baseUrl + `productionSchedule/workplan?itemId=${orderItemToDelete ? orderItemToDelete._id : null}`;
     return this.http
       .post(url, JSON.stringify(workPlan), this.options)
       .pipe(map((res) => res.json()));

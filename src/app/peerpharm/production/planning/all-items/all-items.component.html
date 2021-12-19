@@ -128,6 +128,7 @@
             </th>
             <th><i class="ti-exchange-vertical" (click)="sortItemsOne('workPlanId');"
                 style="cursor:pointer"></i>Workplan</th>
+                <th></th>
           </tr>
 
         </thead>
@@ -159,6 +160,7 @@
             <td [style.background]="item.WPstatus | orderItemBatchStatusColor"
               style="text-decoration: underline; cursor:pointer" (click)="openWorkPlan(item.workPlanId)">
               {{item.workPlanId}}</td>
+              <td><button [disabled]="item.pakaStatus != 1" class="btn btn-danger" (click)="deleteItem(item, i)">Delete</button></td>
 
           </tr>
         </tbody>

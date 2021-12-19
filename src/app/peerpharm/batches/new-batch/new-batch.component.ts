@@ -266,7 +266,7 @@ export class NewBatchComponent implements OnInit {
               if (con) {
                 // add batch to batches list
                 this.batchService.addBatch(this.newBatchForm.value).subscribe(data => {
-                  if (data.msg == 'succsess') {
+                  if (data.msg == 'success') {
                     this.printBtn.nativeElement.click();
                     this.toastSrv.success('באטצ נוסף בהצלחה !')
                     let productionFormuleIndex = this.workPlan.productionFormules.findIndex(f => f.formule == this.workPlanFormule)

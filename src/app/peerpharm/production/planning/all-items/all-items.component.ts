@@ -502,6 +502,15 @@ export class AllItemsComponent implements OnInit {
     }
   }
 
+  deleteItem(item, i) {
+    if(confirm(`למחוק פריט ${item.itemNumber} מהרשימה?`)) {
+      this.ordersService.deleteItemFromPAKALIST(item._id).subscribe(data => {
+        console.log(data)
+        this.filteredOrderItems.splice(i, 1)
+      })
+    }
+  }
+
   sortItemsTwo(field, sub) {
     let i = this.sortToggle;
     this.filteredOrderItems.sort((a, b) =>
