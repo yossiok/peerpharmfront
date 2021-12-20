@@ -164,6 +164,7 @@ export class CheckoutComponent implements OnInit {
 
   checkout() {
     this.sending = true;
+    console.log(this.outGoing);
     setTimeout(() => (this.sending = false), 7000); //if something goes wrong
     this.inventoryService
       .checkoutComponents(this.outGoing)
@@ -173,6 +174,42 @@ export class CheckoutComponent implements OnInit {
           // this.toastr.error("ייתכן שהפעולה בוצעה. אנא פנה לצוות הפיתוח.","היתה בעיה");
           this.toastr.error(data.msg, "שגיאה:");
           console.log(data.msg);
+        } else if (data.actionLogs == 0) {
+          this.toastr.error(" הפעולה נכשלה, לא בוצעו עדכוני מלאי");
+          this.sending = false;
+          alert("הפעולה נכשלה, לא נעשה שינוי למלאי");
+          setTimeout(() => {
+            this.componentCheckout.reset();
+            this.outGoing = [];
+            this.first.nativeElement.focus();
+          }, 1500);
+          this.componentCheckout.controls.valid.setValue(false);
+        } else if (data.actionLogs.length < this.outGoing.length) {
+          let realData = [];
+          for (let move of this.outGoing) {
+            let index = data.actionLogs.findIndex((al) => {
+              return al.item == move.item;
+            });
+            if (index > -1) {
+              move.itemName = data.allResults[index].componentName;
+              realData.push(move);
+            }
+            this.outGoing = realData;
+          }
+          this.certificateReception = data.actionLogs[0].warehouseReception;
+          console.log(this.outGoing);
+          this.toastr.warning(" הפעולה בוצעה חלקית, ");
+          this.sending = false;
+          alert(" הפעולה בוצעה חלקית, ");
+          setTimeout(() => {
+            this.printBtn2.nativeElement.click();
+            setTimeout(() => (this.outGoing = []), 1000);
+          }, 500);
+          setTimeout(() => {
+            this.componentCheckout.reset();
+            this.first.nativeElement.focus();
+          }, 1500);
+          this.componentCheckout.controls.valid.setValue(false);
         } else {
           //set certificate data
           this.certificateReception =

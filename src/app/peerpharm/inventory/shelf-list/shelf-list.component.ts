@@ -918,9 +918,9 @@ export class ShelfListComponent implements OnInit {
               console.log(this.allCountShelves);
               try {
                 for (let item of this.allCountShelves) {
-                  let indCS = -1;
-                  let indP = -1;
-                  let indMS = -1;
+                  let indCS = -1; //shelf position in stock
+                  let indP = -1; // component price
+                  let indMS = -1; // material price
 
                   if (this.itemType == "component") {
                     indCS = itemShells.findIndex((shelf) => {
@@ -946,6 +946,14 @@ export class ShelfListComponent implements OnInit {
                     indMS = this.materialsPrices.findIndex(
                       (mp) => mp.itemNumber == item.itemNumber
                     );
+                  } else if (this.itemType == "product") {
+                    indCS = itemShells.findIndex((shelf) => {
+                      return (
+                        shelf._id.item == item.itemNumber &&
+                        shelf._id.position.trim().toUpperCase() ==
+                          item.itemPosition
+                      );
+                    });
                   }
 
                   console.log(indCS);

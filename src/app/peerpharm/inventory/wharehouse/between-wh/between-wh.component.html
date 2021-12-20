@@ -13,8 +13,8 @@
         <label>
           מק"ט *
         </label>
-        <input type="number" #first [disabled]="disabled" formControlName="item" class="form-control"
-          (blur)="checkComponentNumber()">
+        <input type="tesxt" #first [disabled]="disabled" formControlName="item" class="form-control"
+          (change)="checkComponentNumber()">
       </div>
       <div *ngIf="!disabled" class="col-2">
         <label class="d-block">
@@ -133,7 +133,7 @@
           <th></th>
         </tr>
       </thead>
-      <ng-container *ngIf="allMovements.length>0">
+      <div *ngIf="allMovements.length>0">
         <tbody style="background-color: rgb(228, 225, 225);">
           <tr *ngFor="let move of allMovements; let i = index">
             <td class="text-center">{{i+1}}</td>
@@ -145,7 +145,7 @@
             <td class="text-center"><i (click)="removeFromAllMovements(i)" class="fa fa-times text-danger"></i></td>
           </tr>
         </tbody>
-      </ng-container>
+      </div>
 
     </table>
   </div>

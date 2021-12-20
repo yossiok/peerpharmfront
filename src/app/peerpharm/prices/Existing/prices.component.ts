@@ -69,6 +69,7 @@ export class PricesComponent implements OnInit {
     else {
       this.calculating = true;
       this.itemService.getItemData(itemNumber.value).subscribe((data) => {
+        console.log(data);
         if (data.length == 0) {
           this.toastr.error("Item Not Found.");
           this.calculating = false;
@@ -108,17 +109,17 @@ export class PricesComponent implements OnInit {
 
   // Get formule price for item
   async getFormulePrice() {
-    this.partialFormulePrice = false
+    this.partialFormulePrice = false;
     return new Promise((resolve, reject) => {
       this.formuleService
         .getFormulePriceByNumber(this.item.itemNumber)
         .subscribe((response) => {
           if (response.msg) this.toastr.error(response.msg);
-          for(let item of response.formulePrices) {
-            if(!item.price) {
-              this.partialFormulePrice = true
-              this.itemsMissingPrice.push(item.itemNumber)
-            } 
+          for (let item of response.formulePrices) {
+            if (!item.price) {
+              this.partialFormulePrice = true;
+              this.itemsMissingPrice.push(item.itemNumber);
+            }
           }
           this.item.formulePrice = response.formulePrice
             ? response.formulePrice * (this.item.netWeightK / 1000)

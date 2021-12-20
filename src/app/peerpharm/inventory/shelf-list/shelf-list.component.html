@@ -366,6 +366,7 @@
                 <td *ngIf="itemType == 'material'">{{shelf.itemBatch}}</td>
                 <td *ngIf="itemType=='component'">Unit</td>
                 <td *ngIf="itemType=='material'">Kg.</td>
+                <td *ngIf="itemType=='product'">{{shelf.itemUnit}}</td>
                 <td> {{shelf.prevQty}}</td>
                 <td>{{shelf.itemQty}}</td>
                 <td *ngIf="i == EditRow && !readOnly"><input type="number" id="repeatCount" name="repeatCount"
