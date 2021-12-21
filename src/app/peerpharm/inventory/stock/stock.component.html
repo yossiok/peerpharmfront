@@ -459,11 +459,10 @@
     <div style="top:20px;" class="container bg-light rounded fixed-top shadow mx-auto my-auto border border-success"
       *ngIf="openModal == true && stockType=='component'">
       <mat-tab-group selectedIndex="2" mat-align-tabs="center">
-        <mat-tab disabled label="Component Details">
+        <!-- <mat-tab disabled label="Component Details">
           <div class="container modal-inner">
             <div class="row text-center fixNoaStupidStuff">
               <div class="col-4 fixNoaStupidStuff text-right">
-                <!-- <button class="btn btn-success form-control" (click)="switchModalView()">{{itemmoveBtnTitle}}</button> -->
               </div>
               <div class="col-4 fixNoaStupidStuff">
                 <h2 class="text-success" id='div_h3'>{{openModalHeader}}</h2><br>
@@ -507,7 +506,6 @@
                 <label class="form-control">שם קומקס</label>
                 <label class="form-control">פריט חלופי</label>
                 <label class="form-control">מחיר אחרון (שקלים)</label>
-                <!-- <label class="form-control">מחיר העמסה (שקלים)</label> -->
               </div>
               <div class="col-2 fixNoaStupidStuff">
                 <input (change)="checkIfItemExist($event)" class="form-control" type='text'
@@ -515,8 +513,6 @@
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.comaxName">
                 <input class="form-control" type="text" [(ngModel)]="resCmpt.alternativeComponent">
                 <input class="form-control" type="number" disabled [(ngModel)]="resCmpt.price" maxlength="6" max="6">
-                <!-- <input class="form-control" type="text" [(ngModel)]="resCmpt.price">
-                <input class="form-control" type="number" [(ngModel)]="resCmpt.shippingPrice"> -->
 
               </div>
               <div class="col-1 fixNoaStupidStuff">
@@ -550,12 +546,6 @@
                 <input class="form-control" type='number' [(ngModel)]="resCmpt.minimumPurchaseAmount">
               </div>
             </div>
-            <!-- <div dir="rtl" class="row text-center fixNoaStupidStuff">
-              <div class="col-2 fixNoaStupidStuff">
-              </div>
-              <div class="col-2 fixNoaStupidStuff">
-              </div>
-            </div> -->
 
             <div dir="rtl" class="row text-center fixNoaStupidStuff">
               <div class="col-4 fixNoaStupidStuff">
@@ -577,7 +567,6 @@
                 <label class="form-control">יח' מידה</label>
                 <label class="form-control">כמות מל'</label>
                 <label class="form-control">על חשבון</label>
-                <!-- <label class="form-control">רשימת לקוחות</label> -->
               </div>
               <div class="col-2 fixNoaStupidStuff">
                 <select class="form-control" [(ngModel)]="resCmpt.componentType">
@@ -610,7 +599,6 @@
                 </select>
 
                 <select class="form-control" [(ngModel)]="resCmpt.componentCategory">
-                  <!-- <select #filterByCategory class="form-control" (change)="filterRowsByCmptTypeanCategory($event , 'category')"> -->
                   <option value=""></option>
                   <option *ngFor="let cmptCategory of cmptCategoryList">{{cmptCategory}}</option>
                 </select>
@@ -650,9 +638,6 @@
                   <option value="peerpharm">פארפארם</option>
                   <option value="customers">לקוח/לקוחות</option>
                 </select><i (click)="customersModal = true" class="form-control fa fa-plus text-success "></i>
-                <!-- <select class="form-control">
-                        <option *ngFor="let customer of resCmpt.payingCustomersList" value="customer">{{customer}}</option>
-                  </select> -->
               </div>
               <div class="col-2 fixNoaStupidStuff">
                 <label class="form-control">הערה</label>
@@ -704,8 +689,8 @@
               </div>
             </div>
           </div>
-        </mat-tab>
-        <mat-tab disabled label="Component Suppliers Details">
+        </mat-tab> -->
+        <!-- <mat-tab disabled label="Component Suppliers Details">
           <div class="container modal-inner">
 
             <div style="padding: 0rem;" class="row text-center fixNoaStupidStuff">
@@ -824,20 +809,7 @@
                             class="btn btn-success">הגדר כספק ראשי</button>
                         </td>
                         <td>{{supplier.supplierName}}</td>
-                        <!-- <td *ngIf="rowNumber == i">
-                          <input [value]="supplier.supplierName" list="suppliers" class="form-control" #supplierName>
-                          <datalist id="suppliers">
-                            <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
-                              {{supplier.suplierName}}</option>
-                          </datalist>
-                        </td> -->
-
-                        <!-- <td *ngIf="rowNumber != supplier.supplierName" >
-                          {{supplier.supplierName}}</td>
-                        <td *ngIf="rowNumber == supplier.supplierName">
-                          <input type="text" [value]="supplier.supplierName" class="form-control" #supplierName>
-                        </td> -->
-
+        
                         <td *ngIf="rowNumber != i">
                           {{supplier.manufacturer}}</td>
                         <td *ngIf="rowNumber == i">
@@ -900,18 +872,7 @@
               </div>
             </div>
 
-            <!-- <div *ngIf="updateSupplier == true" class="row text-center fixNoaStupidStuff">
-              <div class="col-5 fixNoaStupidStuff">
 
-              </div>
-              <div class="col-2 fixNoaStupidStuff">
-                <button (click)="updateSupplierDetails(true)" class="btn btn-success form-control">שמור</button>
-              </div>
-              <div class="col-5 fixNoaStupidStuff">
-
-              </div>
-
-            </div> -->
 
             <div class="row text-center fixNoaStupidStuff">
               <div class="col-3 fixNoaStupidStuff"></div>
@@ -929,7 +890,7 @@
             </div>
 
           </div>
-        </mat-tab>
+        </mat-tab> -->
         <mat-tab selected label="תנועות במלאי">
           <div class="container modal-inner">
 
@@ -1085,7 +1046,7 @@
           </div>
         </mat-tab>
 
-        <mat-tab disabled *ngIf="isSuperAdmin" label="Pricing">
+        <!-- <mat-tab disabled *ngIf="isSuperAdmin" label="Pricing">
 
           <span class="close text-success" id="closeId2"
             (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;
@@ -1146,9 +1107,9 @@
 
           </div>
 
-        </mat-tab>
+        </mat-tab> -->
 
-        <mat-tab disabled label="Version History">
+        <!-- <mat-tab disabled label="Version History">
 
           <span class="close text-success" id="closeId2"
             (click)="openModal=false;newItem='';lastOrdersOfItem = []">&times;
@@ -1184,7 +1145,7 @@
 
           </div>
 
-        </mat-tab>
+        </mat-tab> -->
 
 
       </mat-tab-group>
@@ -1586,11 +1547,10 @@
   <div class="container bg-light rounded shadow fixed-top mx-auto my-auto border border-success"
     *ngIf="openModal == true && stockType=='material'">
     <mat-tab-group selectedIndex="4" mat-align-tabs="center">
-      <mat-tab disabled label="Material Details">
+      <!-- <mat-tab disabled label="Material Details">
         <div class="container fixNoaStupidStuff p-2 modal-inner">
           <div style="padding: 0rem;" class="row text-center fixNoaStupidStuff">
             <div style="padding: 0rem;" class="col-1 fixNoaStupidStuff text-right">
-              <!-- <button class="btn btn-success form-control" (click)="switchModalView()">{{itemmoveBtnTitle}}</button> -->
             </div>
             <div style="padding: 0rem;" class="col-10 fixNoaStupidStuff">
               <h2 style="padding: 0rem;" class="text-success" id='div_h3'>{{openModalHeader}}</h2><br>
@@ -1605,9 +1565,6 @@
             <div style="padding: 0rem;" class="col-12 fixNoaStupidStuff">
               <h5 style="padding: 0rem;" class="text-success">פרטים כלליים</h5>
             </div>
-            <!-- <div class="col-8 fixNoaStupidStuff">
-            <h5 class="text-success">מחסן/מחלקת בישול</h5>
-          </div> -->
 
           </div>
           <div style="padding: 0rem;" class="row text-center fixNoaStupidStuff">
@@ -1619,14 +1576,7 @@
             <div class="col-2 fixNoaStupidStuff">
               <input class="form-control" (change)="checkIfExist($event)" [(ngModel)]="resMaterial.componentName">
             </div>
-            <!-- <div class="col-2 fixNoaStupidStuff"><label class="form-control">Last Price (NIS)</label></div>
-            <div class="col-2 fixNoaStupidStuff">
-              <input class="form-control" [(ngModel)]="resMaterial.price">
-            </div>
-            <div class="col-2 fixNoaStupidStuff"><label class="form-control">Shipping (NIS)</label></div>
-            <div class="col-2 fixNoaStupidStuff">
-              <input type="number" class="form-control" [(ngModel)]="resMaterial.shippingPrice">
-            </div> -->
+        
             <div class="col-2 fixNoaStupidStuff"><label class="form-control">Last Price (NIS)</label></div>
             <div class="col-2 fixNoaStupidStuff">
               <input type="number" class="form-control" disabled [(ngModel)]="resMaterial.price">
@@ -1774,8 +1724,8 @@
             </div>
           </div>
         </div>
-      </mat-tab>
-      <mat-tab disabled label="Storage/Cooking">
+      </mat-tab> -->
+      <!-- <mat-tab disabled label="Storage/Cooking">
         <div class="container-fluid modal-inner">
           <div dir="rtl" style="padding: 0rem;" class="row text-center fixNoaStupidStuff">
 
@@ -1872,13 +1822,12 @@
           </div>
 
         </div>
-      </mat-tab>
-      <mat-tab disabled label="Material Suppliers Details">
+      </mat-tab> -->
+      <!-- <mat-tab disabled label="Material Suppliers Details">
         <div class="container modal-inner">
 
           <div style="padding: 0rem;" class="row text-center fixNoaStupidStuff">
             <div class="col-1 fixNoaStupidStuff text-right">
-              <!-- <button class="btn btn-success form-control" (click)="switchModalView()">{{itemmoveBtnTitle}}</button> -->
             </div>
             <div class="col-10 fixNoaStupidStuff">
               <h4 class="text-success">ספקים</h4>
@@ -1901,13 +1850,6 @@
 
             </div>
             <div class="col-3 fixNoaStupidStuff">
-
-              <!-- <input list="suppliers" class="form-control" [(ngModel)]="supplier.supplierName">
-              <datalist id="suppliers">
-                <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
-                  {{supplier.suplierNumber}}
-                </option>
-              </datalist> -->
 
               <input list="suppliers" class="form-control" [(ngModel)]="supplier.supplierName">
               <datalist id="suppliers">
@@ -1986,13 +1928,10 @@
                     <th>שם פריט ספק</th>
                     <th>מק"ט ספק</th>
                     <th>מחיר</th>
-                    <!-- <th></th> -->
                     <th>מטבע</th>
                     <th>משקל</th>
                     <th>סוג אריזה</th>
-                    <!-- <th>זמן הגעה משוער</th> -->
                     <th>מחיר העמסה</th>
-                    <!--  <th>מחיר לפני טעינה</th> -->
                     <th></th>
                     <th></th>
                   </tr>
@@ -2014,14 +1953,6 @@
 
                       <td>
                         {{supplier.supplierName}}</td>
-                      <!-- <td *ngIf="rowNumber == i">
-
-                        <input [value]="supplier.supplierName" list="suppliers" class="form-control" #supplierName>
-                        <datalist id="suppliers">
-                          <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierName}}">
-                            {{supplier.suplierName}}</option>
-                        </datalist>
-                      </td> -->
 
                       <td *ngIf="rowNumber != i">
                         {{supplier.manufacturer}}</td>
@@ -2048,9 +1979,6 @@
                         <input type="text" [(ngModel)]="supplier.price" class="form-control" #price>
                       </td>
 
-                      <!-- <td><button (click)="getSupplierPriceHistory(i)" (click)="open(supplierPriceHistory)">היסטוריית
-                          מחירים</button></td> -->
-
                       <td *ngIf="rowNumber != i">
                         {{supplier.coin}}</td>
                       <td *ngIf="rowNumber == i">
@@ -2061,7 +1989,6 @@
                           <option value="GBP">GBP</option>
                           <option value="JPY">JPY</option>
                         </select>
-                        <!-- <input type="text" > -->
                       </td>
 
                       <td *ngIf="rowNumber != i">
@@ -2075,12 +2002,6 @@
                       <td *ngIf="rowNumber == i">
                         <input type="text" [(ngModel)]="supplier.subGroup" class="form-control" #subGroup>
                       </td>
-                      <!-- 
-                      <td *ngIf="rowNumber != i">
-                        {{supplier.expectedArrival}}</td>
-                      <td *ngIf="rowNumber == i">
-                        <input type="text" [(ngModel)]="supplier.expectedArrival" class="form-control" #expectedArrival>
-                      </td> -->
 
                       <td *ngIf="rowNumber != i">
                         {{supplier.shippingPrice | currency: 'ILS'}}</td>
@@ -2088,11 +2009,6 @@
                         <input type="number" [(ngModel)]="supplier.shippingPrice" class="form-control" #priceLoading>
                       </td>
 
-                      <!-- <td *ngIf="rowNumber != i">
-                        {{supplier.coinLoading}}</td>
-                      <td *ngIf="rowNumber == i">
-                        <input type="text" [value]="supplier.coinLoading" class="form-control" #coinLoading>
-                      </td> -->
                       <td *ngIf="rowNumber == i"><i placement="bottom" ngbTooltip="שמירה" class="fa fa-save"
                           (click)="rowNumber = -1"></i></td>
                       <td><i placement="bottom" ngbTooltip="מחק מרשימת הספקים"
@@ -2141,12 +2057,9 @@
           </div>
 
         </div>
-      </mat-tab>
+      </mat-tab> -->
 
-
-
-
-
+<!-- 
       <mat-tab disabled *ngIf="isSuperAdmin" label="Pricing">
 
         <span class="close text-success" id="closeId2"
@@ -2205,7 +2118,7 @@
 
         </div>
 
-      </mat-tab>
+      </mat-tab> -->
 
 
 
@@ -2317,7 +2230,7 @@
       </mat-tab>
 
 
-      <mat-tab disabled label="Purchase Details">
+      <!-- <mat-tab disabled label="Purchase Details">
         <div class="row fixNoaStupidStuff text-center modal-inner">
           <div class="col-1 fixNoaStupidStuff ">
 
@@ -2362,7 +2275,7 @@
             </table>
           </div>
         </div>
-      </mat-tab>
+      </mat-tab> -->
 
 
 
