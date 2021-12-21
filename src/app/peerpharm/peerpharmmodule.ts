@@ -57,7 +57,7 @@ import { PricesComponent } from "./prices/Existing/prices.component";
 import { AllPricingComponent } from "./prices/all-pricing/all-pricing.component";
 
 import { WharehouseComponent } from "./inventory/wharehouse/wharehouse.component";
-import { InventoryRequestsComponent } from "./inventory/inventory-requests/inventory-requests.component";
+import { InventoryRequestsComponent } from "./inventory/wharehouse/inventory-requests/inventory-requests.component";
 import { HistMovementsComponent } from "./inventory/wharehouse/hist-movements/hist-movements.component";
 import { ItemDocumentsComponent } from "./items/item-documents/item-documents.component";
 import { NotificationComponent } from "./notification/notification.component";
@@ -106,7 +106,7 @@ import { DndModule } from "ng2-dnd";
 import { DatepickerModule } from "angular2-material-datepicker";
 import { Ng2FilterPipeModule } from "ng2-filter-pipe";
 import { AuthService } from "../services/auth.service";
-import { InventoryNewRequestComponent } from "./inventory/inventory-new-request/inventory-new-request.component";
+import { InventoryNewRequestComponent } from "./inventory/wharehouse/inventory-requests/inventory-new-request/inventory-new-request.component";
 import { SpinnerComponent } from "../shared/spinner.component";
 import { HeadingsWHPipe } from "../pipes/headings-wh.pipe";
 import { OrderStagePipe } from "../pipes/order-stage.pipe";

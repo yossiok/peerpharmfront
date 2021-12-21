@@ -26,7 +26,7 @@ import { ItemDetailsTabComponent } from "./items/item-details-tab/item-details-t
 import { MakeupComponent } from "./schedule/makeup/makeup.component";
 import { WharehouseComponent } from "./inventory/wharehouse/wharehouse.component";
 import { ItemDocumentsComponent } from "./items/item-documents/item-documents.component";
-import { InventoryNewRequestComponent } from "./inventory/inventory-new-request/inventory-new-request.component";
+import { InventoryNewRequestComponent } from "./inventory/wharehouse/inventory-requests/inventory-new-request/inventory-new-request.component";
 import { PackingComponent } from "./schedule/packing/packing.component";
 import { BarcodePrintComponent } from "./schedule/barcode-print/barcode-print.component";
 import { NotificationComponent } from "./notification/notification.component";

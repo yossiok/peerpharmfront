@@ -5,7 +5,7 @@ import { InventoryRequestService } from 'src/app/services/inventory-request.serv
 import * as moment from 'moment';
 //import { DISABLED } from '@angular/forms/src/model';
 import { ToastrService } from 'ngx-toastr';
-import { inventoryReqItem } from "../models/inventoryReqItem"
+import { inventoryReqItem } from "../../../models/inventoryReqItem"
 import { Http, Response } from "@angular/http";
 import { AuthService } from 'src/app/services/auth.service';
 

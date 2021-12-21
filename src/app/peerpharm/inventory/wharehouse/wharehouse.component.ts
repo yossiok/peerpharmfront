@@ -95,6 +95,7 @@ export class WharehouseComponent implements OnInit {
   loadShelfs: boolean = false;
   isJew: boolean = true
   allowNewRequest: boolean = false
+  showNewReq: boolean = false
 
   constructor(
     private procurementSrv: Procurementservice,
