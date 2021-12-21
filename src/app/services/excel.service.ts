@@ -35,7 +35,7 @@ export class ExcelService {
         header: order,
       });
 
-      let sName = sheetNames ? sheetNames[0] : excelFileName;
+      let sName = sheetNames ? sheetNames[0] : "data";
       const workbook: XLSX.WorkBook = {
         Sheets: { [sName]: worksheet },
         SheetNames: [sName],
@@ -50,7 +50,7 @@ export class ExcelService {
         range.e["c"] = order.length - 1;
         worksheet["!ref"] = XLSX.utils.encode_range(range);
       }
-      this.saveAsExcelFile(excelBuffer, excelFileName);
+      this.saveAsExcelFile(excelBuffer, sName);
     }
   }
 

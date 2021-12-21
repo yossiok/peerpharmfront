@@ -330,7 +330,6 @@ export class OrderdetailsComponent implements OnInit {
       delete orderItem.impRemarks;
       return orderItem;
     });
-
     let orderItemsExplosionToExcel = orderItemsExplosion.map((o) =>
       Object.assign(
         {},
@@ -341,7 +340,6 @@ export class OrderdetailsComponent implements OnInit {
           })
       )
     );
-
     this.excelService.exportAsExcelFile(
       orderItemsExplosionToExcel,
       "Order " + this.number + " Explode",
@@ -511,7 +509,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   openPAKA(content) {
-    this.modalService.open(content)
+    this.modalService.open(content);
   }
 
   calculateKG(netWeightGr, quantity) {
@@ -1818,7 +1816,7 @@ export class OrderdetailsComponent implements OnInit {
 
     this.printSchedule.cmptN = cmpt.number;
     this.printSchedule.itemN = item.itemNumber;
-    this.printSchedule.itemName = item.discription
+    this.printSchedule.itemName = item.discription;
     this.printSchedule.cmptName = cmpt.discription;
     this.modalService.open(content).result.then((result) => {
       if (result == "Saved") {

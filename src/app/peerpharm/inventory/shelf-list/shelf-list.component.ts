@@ -52,6 +52,16 @@ export class ShelfListComponent implements OnInit {
   shelvesArr: any[] = [];
   user: string;
   allowedYearUpdate: boolean = false;
+  exportEmptyFile: boolean = false;
+  importExcelFile: boolean = false;
+  saveTheExcelToDb: boolean = false;
+  viewSavedExcel: boolean = false;
+  stockUpdateByFile: boolean = false;
+  readOnly: boolean = false;
+  countedBy: string = "";
+  supervisedBy: string = "";
+  typedBy: string = "";
+  countDate: Date;
 
   @ViewChild("shelfPosition") shelfPosition: ElementRef;
   @ViewChild("shelfAmount") shelfAmount: ElementRef;
@@ -828,14 +838,18 @@ export class ShelfListComponent implements OnInit {
             let names = workSheetName.split("-");
             this.whareHouse = names[0];
             this.itemType = names[1];
-
-            this.selectWh.nativeElement.value = this.whareHouse;
+            console.log(this.whareHouse);
+            // this.selectWh.nativeElement.value = this.whareHouse;
             this.fileName = target.files[0].name;
             this.fileDate = ev.target.files[0].lastModified;
             let countedBy = currentJson[2]["C"];
+            this.countedBy = countedBy;
             let supervisedBy = currentJson[4]["C"];
+            this.supervisedBy = supervisedBy;
             let typedBy = currentJson[5]["D"];
+            this.typedBy = typedBy;
             let countDate = currentJson[2]["F"];
+            this.countDate = countDate;
 
             console.log(countedBy, supervisedBy, typedBy);
 
@@ -904,9 +918,9 @@ export class ShelfListComponent implements OnInit {
               console.log(this.allCountShelves);
               try {
                 for (let item of this.allCountShelves) {
-                  let indCS = -1;
-                  let indP = -1;
-                  let indMS = -1;
+                  let indCS = -1; //shelf position in stock
+                  let indP = -1; // component price
+                  let indMS = -1; // material price
 
                   if (this.itemType == "component") {
                     indCS = itemShells.findIndex((shelf) => {
@@ -932,6 +946,14 @@ export class ShelfListComponent implements OnInit {
                     indMS = this.materialsPrices.findIndex(
                       (mp) => mp.itemNumber == item.itemNumber
                     );
+                  } else if (this.itemType == "product") {
+                    indCS = itemShells.findIndex((shelf) => {
+                      return (
+                        shelf._id.item == item.itemNumber &&
+                        shelf._id.position.trim().toUpperCase() ==
+                          item.itemPosition
+                      );
+                    });
                   }
 
                   console.log(indCS);
@@ -1013,5 +1035,73 @@ export class ShelfListComponent implements OnInit {
           this.loadingDataToDB = false;
         }
       });
+  }
+
+  updateYearCount() {
+    //*** Backup the current wharehouse */
+    console.log(this.whareHouse);
+    console.log(this.itemType);
+    this.inventorySrv
+      .updateYearCount(this.whareHouse, this.itemType)
+      .subscribe((data) => {
+        console.log(data);
+      });
+  }
+  exportEmptyFileView() {
+    if (!this.exportEmptyFile) {
+      this.whareHouse = null;
+      this.allShelfs = [];
+    }
+    this.exportEmptyFile = true;
+    this.importExcelFile = false;
+    this.saveTheExcelToDb = false;
+    this.viewSavedExcel = false;
+    this.stockUpdateByFile = false;
+    this.showFile = false;
+  }
+  importExcelFileView() {
+    if (!this.importExcelFile) {
+      this.whareHouse = null;
+      this.allShelfs = [];
+      this.allCountShelves = [];
+    }
+    this.showFile = true;
+    this.exportEmptyFile = false;
+    this.importExcelFile = true;
+    this.saveTheExcelToDb = false;
+    this.viewSavedExcel = false;
+    this.stockUpdateByFile = false;
+    this.readOnly = false;
+  }
+  saveTheExcelToDbView() {
+    this.exportEmptyFile = false;
+    this.importExcelFile = false;
+    this.saveTheExcelToDb = true;
+    this.viewSavedExcel = false;
+    this.stockUpdateByFile = false;
+    this.readOnly = false;
+  }
+
+  viewSavedExcelView() {
+    if (!this.viewSavedExcel) {
+      this.whareHouse = null;
+      this.allShelfs = [];
+      this.allCountShelves = [];
+    }
+    this.exportEmptyFile = false;
+    this.importExcelFile = false;
+    this.saveTheExcelToDb = false;
+    this.viewSavedExcel = true;
+    this.stockUpdateByFile = false;
+    this.readOnly = true;
+  }
+
+  stockUpdateByFileView() {
+    this.exportEmptyFile = false;
+    this.importExcelFile = false;
+    this.saveTheExcelToDb = false;
+    this.viewSavedExcel = false;
+    this.stockUpdateByFile = true;
+    this.readOnly = true;
   }
 }

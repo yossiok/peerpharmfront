@@ -299,6 +299,16 @@ export class InventoryService {
       .post(url, JSON.stringify(shelf), this.options)
       .pipe(map((res) => res.json()));
   }
+  // ספירת מלאי,גיבוי לארכיון ומחיקה
+  updateYearCount(whName, type) {
+    let url =
+      this.baseUrl +
+      "mongoArchives/itemshell2021?whName=" +
+      whName +
+      "&type=" +
+      type;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
   // ספירת מלאי, קבלת שמות קבצי אקסל שנטענו
   getFilesListByWh(whName, type) {
     let url =

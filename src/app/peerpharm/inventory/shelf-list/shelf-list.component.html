@@ -1,439 +1,426 @@
-<div class="text-center shadow bg-white w-75 mx-auto rounded p-5">
-  <div class="row mt-4">
-    <div class="col-12">
-      <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info ">רשימת מדפים</h1>
-    </div>
-  </div>
-
-  <div dir="rtl" class="row mt-4">
-    <div *ngIf="whareHouse" class="col-1">
-      <button [printStyle]="{tr : {'border': 'solid 1px black'}}" style="visibility: hidden;"
-        printSectionId="print-section" #printStocktake ngxPrint><img src="../../../../assets/images/print.png"
-          alt="Print" style="width: 55px;"></button>
-      <img style="width: 50px; height: 50px; cursor: pointer;" (click)="exportShelfListToXl()"
-        src="../../../../assets/images/excel.png" alt="">
-    </div>
-    <ng-container *ngIf="fetchingPrices">
-      <div class="bigLoader"></div>
-    </ng-container>
-
-    <div class="col-3" *ngIf="!fetchingPrices">
-
-      <label>מחסן</label>
-      <select (change)="getShelfsByWH($event)" #selectWh class="form-control">
-        <option selected="true" disabled="disabled">בחר מחסן</option>
-        <option value="Kasem">Kasem</option>
-        <option value="material">Rosh HaAyin - Materials</option>
-        <option value="component">Rosh HaAyin - Components</option>
-        <option value="Rosh HaAyin products">Rosh HaAyin - Products</option>
-        <option value="NEW KASEM">New Kasem</option>
-        <option value="Labels">Labels</option>
-        <option value="ARIEL 1">ARIEL 1</option>
-        <option value="ARIEL 2">ARIEL 2</option>
-        <option value="ARIEL 3">ARIEL 3</option>
-        <option value="ARIEL 4">ARIEL 4</option>
-      </select>
-    </div>
-    <div *ngIf="whareHouse && !showFile" class="col-3">
-      <label>סנן לפי איתור</label>
-      <input class="form-control" (keyup)="filterByShelf($event)">
-    </div>
-    <div *ngIf="whareHouse && !showFile" class="col-3">
-      <label>סנן לפי פריט</label>
-      <input list="itemNumbers" class="form-control" type="text" (change)="filterByIetmNumber($event)">
-      <datalist id="itemNumbers">
-        <option *ngFor="let shelf of allShelfsCopy" [value]="shelf._id.item">{{shelf._id.item}}</option>
-      </datalist>
-    </div>
-    <div class="col-2" *ngIf="allowedCountYear && !fetchingPrices &&!fetchingShelfs">
-      <label>העלה קובץ ספירת מלאי</label>
-      <input type="file" multiple="false" id="excelFile" (change)="sendExcelToData($event)" #uploadExFile>
-    </div>
-    <div class="col-2" *ngIf="showFile && !fetchingPrices && !fetchingShelfs">
-      <label>טען נתונים למלאי זמני</label><br>
-      <button class="btn btn-secondary" (click)="sendDataToDB()">
-        העבר נתונים למסד הנתונים
-      </button>
-    </div>
-    <ng-container *ngIf="loadingDataToDB">
-      <div class="bigLoader"></div>
-    </ng-container>
-  </div>
-  <div class="row mt-4" dir="rtl">
-    <div class="col-3" *ngIf="!fetchingPrices">
-      <label>טען נתוני ספירה קודמת מהמערכת לפי מחסן</label>
-      <select (change)="getFileNameByWh($event)" #selectWhFile class="form-control">
-        <option selected="true" disabled="disabled">בחר מחסן לצפייה</option>
-        <option value="KASEM-component">Kasem</option>
-        <option value="Rosh HaAyin-material">Rosh HaAyin - Materials</option>
-        <option value="Rosh HaAyin-component">Rosh HaAyin - Components</option>
-        <option value="Rosh HaAyin-product">Rosh HaAyin - Products</option>
-        <option value="NEW KASEM-component">New Kasem</option>
-        <option value="Labels-component">Labels</option>
-        <option value="ARIEL 1-component">ARIEL 1</option>
-        <option value="ARIEL 2-component">ARIEL 2</option>
-        <option value="ARIEL 3-component">ARIEL 3</option>
-        <option value="ARIEL 4-component">ARIEL 4</option>
-      </select>
-    </div>
-    <div class="col-3" *ngIf="!fetchingPrices">
-      <label>בחר קובץ ספירה קודם</label>
-      <select (change)="getFileName($event)" #selectFile class="form-control">
-        <option selected="true" disabled="false">בחר קובץ לצפייה</option>
-        <option *ngFor="let file of fileNames" [value]="file.fileDate">{{file.fileName}}</option>
-
-      </select>
-    </div>
-  </div>
-  <div class="row mt-4" *ngIf="showFile && allowedYearUpdate">
-    <div class="col-4"></div>
-    <div class="col-4">
-      <label> עדכון מלאי על פי ספירה</label><br>
-      <button class="btn btn-secondary">עדכן מלאי לסוף 2021</button>
-    </div>
-    <div class="col-4"></div>
-
-
-
-  </div>
-
-  <!-- <div dir="rtl" *ngIf="allowedCountYear && allShelfs && allShelfs.length > 0"
-    class="new-shelf d-flex flex-row justify-content-around p-5 mt-5 mb-5">
-    <form [formGroup]="newShelfForm" (ngSubmit)="addNewItemShelf()">
-      <h3>הכנס מלאי שלא נמצא ברשימה (יש לוודא שהמדף אכן קיים במחסן)</h3>
-      <div class="row">
-        <div class="col-3">
-          <input type="number" class="form-control" (change)="validateItem()" formControlName="item" placeholder='מק"ט'>
-        </div>
-        <div class="col-3">
-          <select class="form-control" formControlName="position">
-            <option value="">איתור</option>
-            <option *ngFor="let shelf of shellNums" [value]="shelf._id">{{shelf.position}}</option>
-          </select>
-        </div>
-        <div class="col-3">
-          <input type="number" class="form-control" formControlName="amount" placeholder="כמות">
-        </div>
-        <div class="col-3"><button [disabled]="!newShelfForm.valid"
-            [style.cursor]="whareHouse ? 'pointer' : 'not-allowed'" type="submit" class="btn btn-primary">הכנס</button>
-        </div>
+<a href="javascript:void(0)" class="btn btn-success show-left-part d-block d-md-none ti-menu "></a>
+<div class="main-part" dir="rtl">
+  <div class="left-part bg-white fixed-left-part">
+    <div class="position-relative">
+      <div class="px-3 py-3 d-flex align-items-center border-bottom">
+        <p class="mb-0  mt-5 py-1 text-center font-18 font-bold heb">תפריט</p>
       </div>
-    </form>
+      <ul class="tasklist list-style-none ">
 
-  </div> -->
-  <div *ngIf="allowedCountYear" class="row mt-4">
-    <div class="col-3"></div>
-    <!-- <div class="col-6" >
-      <button *ngIf="whareHouse && !showFile" ngxPrint printSectionId="print-section"
-        styleSheetFile="../../../../assets/stylesheets/year-count.css" class="btn save-form w-50">הדפס דף סופר</button>
-    </div> -->
-    <div class="col-3"></div>
-  </div>
-
-  <div dir="rtl" *ngIf="whareHouse && !showFile" id="print-section" class="row mt-4">
-    <table dir="rtl" class="table table-bordered table-hover">
-      <thead>
-        <tr>
-          <td class="header" colspan="3">
-            דף ספירת מלאי לשנת הכספים 2021
-          </td>
-          <td class="header" colspan="5">
-            Peerpharm Ltd - עמל 17 אזור תעשיה ,אפק ראש העין 4809256.
-          </td>
-        </tr>
-        <tr>
-          <td class="header" colspan="3">
-            מלאי {{whareHouse}} - {{itemType}}s
-          </td>
-          <td class="header" colspan="5">
-            טופס מספר {{lastYearCount.serialNumber + 1}}
-          </td>
-        </tr>
-        <tr>
-          <th class="runner">#</th>
-          <th>איתור</th>
-          <!-- <th class="sortable position" (click)="sortByPosition()"><i class="fas fa-filter"></i> איתור</th> -->
-          <th class="sortable item" (click)="sortByItem()"><i class="fas fa-filter"></i> מק"ט</th>
-          <th class="sortable desc" (click)="sortByItem()"><i class="fas fa-filter"></i> תיאור</th>
-          <th class="batch" *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i> באטץ'
-          </th>
-          <th class="measure"> יחידת מידה</th>
-          <!-- <th class="sortable" (click)="sortByAmount()"><i class="fas fa-filter"></i> כמות</th> -->
-          <!-- <th>Last Count Date</th> -->
-          <!-- <th>Last Counted Amount</th> -->
-          <th class="count">כמות</th>
-          <th class="owner">פריט חברה?</th>
-          <th class="remarks">הערות</th>
-          <!-- <th>פער</th> -->
-          <!-- <th *ngIf="allowedCountYear && !printing"></th> -->
-        </tr>
-      </thead>
-      <ng-container *ngIf="fetchingShelfs">
-        <div class="bigLoader"></div>
-      </ng-container>
-      <tbody *ngIf="!fetchingShelfs">
-        <tr *ngFor="let shelf of allShelfs;let i = index">
-          <td>{{i+1}}</td>
-          <td>{{shelf._id.position}}</td>
-          <td class="item-td">{{shelf._id.item}}</td>
-          <td>{{shelf._id.name}}</td>
-          <td *ngIf="itemType == 'material'">{{shelf._id.supplierBatchNumber}}</td>
-          <!-- <td>{{shelf._id.position}}</td> -->
-          <td *ngIf="itemType=='component'">Unit</td>
-          <td *ngIf="itemType=='material'">Kg.</td>
-          <!-- <td>{{shelf.total}}</td> -->
-          <!-- <td>{{shelf.lastCount.date}}</td> -->
-          <!-- <td>{{shelf.lastCount.amount}}</td> -->
-
-          <td *ngIf="shelfId != shelf._id">{{shelf.countedAmount}}</td>
-          <td *ngIf="shelfId != shelf._id"> כן / לא </td>
-          <td *ngIf="shelfId != shelf._id"></td>
-          <td *ngIf="shelfId == shelf._id">
-            <input #countInput type="number" class="form-control" (keyup)="calculateDifference(shelf)"
-              [(ngModel)]="shelf.countedAmount">
-          </td>
-
-          <!-- <td><span *ngIf="shelf.difference">{{shelf.difference}}</span></td> -->
-
-          <!-- <td *ngIf="allowedCountYear && shelfId != shelf._id && !printing">
-            <button (click)="editShelfAmount(shelf)" class="btn btn-primary">
-              <i class="click fa fa-pencil-alt"></i> הכנס ספירה
-            </button>
-          </td> -->
-
-          <!-- <td *ngIf="allowedCountYear && shelfId == shelf._id && !printing">
-            <button [disabled]="updatingAmount" [style.cursor]="updatingAmount ? 'progress' : 'pointer'"
-              (click)="setShelfs()" class="btn btn-danger">שמור לטופס
-            </button>
-          </td> -->
-
-        </tr>
-      </tbody>
-      <!-- <tfoot>
-        <tr>
-          <td colspan="3">שם הסופר/ת: __________________</td>
-          <td colspan="2">תאריך ספירה: ____________________</td>
-          <td colspan="2">חתימת הסופר/ת: _______________</td>
-        </tr>
-        <tr>
-          <td colspan="3">שם הבקר/ית: __________________</td>
-          <td colspan="2">תאריך הבדיקה: ____________________</td>
-          <td colspan="2">חתימת הבקר/ית: _______________</td>
-        </tr>
-        <tr>
-          <td colspan="2">שם המקליד/ה: __________________</td>
-          <td colspan="2">תאריך הקלדה: ____________________</td>
-          <td>שעה: _______________</td>
-          <td colspan="2">חתימת המקליד/ה: _______________</td>
-        </tr>
-      </tfoot> -->
-    </table>
-  </div>
-
-  <div dir="rtl" *ngIf="showFile" class="row mt-4">
-    <table dir="rtl" class="table table-bordered table-hover">
-      <thead>
-        <tr>
-          <td class="header" colspan="3">
-            קובץ ספירת מלאי לשנת הכספים 2021
-          </td>
-          <td class="header" colspan="5">
-            Peerpharm Ltd - עמל 17 אזור תעשיה ,אפק ראש העין 4809256.
-          </td>
-        </tr>
-        <td colspan="2">מחסן: {{whareHouse}} - {{itemType}}s</td>
-        <td colspan="2">שם הקובץ: {{fileName}}</td>
-        <td colspan="2">תאריך עריכת הקובץ: {{fileDate| date: 'dd/MM/YYYY ' }}</td>
-        <td colspan="2">שעת עריכת הקובץ: {{fileDate| date: 'HH:mm' }}</td>
-        <tr>
-          <th class="runner">#</th>
-          <th class="sortable position" (click)="sortByPosition()"><i class="fas fa-filter"></i> איתור</th>
-          <th class="sortable item" (click)="sortByItem()"><i class="fas fa-filter"></i> מק"ט</th>
-          <th class="sortable desc" (click)="sortByItem()"><i class="fas fa-filter"></i> תיאור</th>
-          <th class="batch" *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i> באטץ'
-          </th>
-          <th class="measure"> יחידת מידה</th>
-          <th>מלאי נוכחי</th>
-          <th class="count">ספירה נוכחית</th>
-          <th class="count">ספירה חוזרת</th>
-          <th class="count">הפרש בכמות</th>
-          <th class="count">הפרש במחיר</th>
-          <th class="count">מטבע</th>
-          <th class="owner">פריט חברה?</th>
-          <th class="remarks">הערות</th>
-
-        </tr>
-      </thead>
-      <ng-container *ngIf="fetchingShelfs">
-        <div class="bigLoader"></div>
-      </ng-container>
-      <tbody *ngIf="!fetchingShelfs">
-        <tr *ngFor="let shelf of allCountShelves;let i = index">
-          <td>{{i+1}}</td>
-          <td>{{shelf.itemPosition}}</td>
-          <td class="item-td">{{shelf.itemNumber}}</td>
-          <td>{{shelf.itemName}}</td>
-          <td *ngIf="itemType == 'material'">{{shelf.itemBatch}}</td>
-          <td *ngIf="itemType=='component'">Unit</td>
-          <td *ngIf="itemType=='material'">Kg.</td>
-          <td> {{shelf.prevQty}}</td>
-          <td>{{shelf.itemQty}}</td>
-          <td *ngIf="i == EditRow"><input type="number" id="repeatCount" name="repeatCount" #repeatCount
-              [value]="shelf.repeatCount"><i class="ti-save text-success m-r-10"
-              (click)="saveEdit(i, shelf.repeatCount)" style="cursor:pointer"></i></td>
-          <td *ngIf="i != EditRow" (click)="edit(i)">{{shelf.repeatCount}}</td>
-          <td [ngClass]="shelf.diffQty> 50||shelf.diffQty<-50? 'minus': 'plus'">
-            {{shelf.diffQty}}
-          </td>
-          <td [ngClass]="(shelf.diffQty)*shelf.itemPrice> 500||(shelf.diffQty)*shelf.itemPrice<-500? 'minus': 'plus'">
-            {{(shelf.diffQty)*shelf.itemPrice}}
-          </td>
-          <td>{{shelf.itemCoin}}</td>
-          <td>{{shelf.companyOwned}}</td>
-          <td> {{shelf.itemRemark}} </td>
-        </tr>
-      </tbody>
-      <tfoot *ngIf="!showFile">
-        <tr>
-          <td colspan="3">שם הסופר/ת: __________________</td>
-          <td colspan="2">תאריך ספירה: ____________________</td>
-          <td colspan="2">חתימת הסופר/ת: _______________</td>
-        </tr>
-        <tr>
-          <td colspan="3">שם הבקר/ית: __________________</td>
-          <td colspan="2">תאריך הבדיקה: ____________________</td>
-          <td colspan="2">חתימת הבקר/ית: _______________</td>
-        </tr>
-        <tr>
-          <td colspan="2">שם המקליד/ה: __________________</td>
-          <td colspan="2">תאריך הקלדה: ____________________</td>
-          <td>שעה: _______________</td>
-          <td colspan="2">חתימת המקליד/ה: _______________</td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-
-  <div *ngIf="allowedCountYear && !showFile" class="row mt-4">
-    <div class="col-3"></div>
-    <!-- <div class="col-6">
-      <button *ngIf="whareHouse &&!showFile" ngxPrint printSectionId="print-section"
-        styleSheetFile="../../../../assets/stylesheets/year-count.css" class="btn save-form w-50">הדפס דף סופר</button>
-    </div> -->
-    <div class="col-3"></div>
-  </div>
-
-
-</div>
-
-
-<ng-template #updatesModal let-modal>
-
-  <div dir="rtl" class="modal-content">
-    <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">אתה עומד לעדכן את הפריטים הבאים:</h4>
+        <li style="cursor: pointer" class="task-item pr-2 py-1 d-flex incomplete border-bottom heb-menu"
+          (click)="exportEmptyFileView();">
+          יצוא
+          של קובץ ספירה ריק לפי שם מחסן
+          <span class="badge badge-danger ml-auto pr-2 pt-1" [style.background]="1|orderItemBatchStatusColor">1</span>
+        </li>
+        <li style="cursor: pointer" class=" task-item d-flex complete pr-2 border-bottom heb-menu"
+          (click)="importExcelFileView() ">
+          יבוא קובץ אקסל לאחר ספירה<span class="badge badge-success ml-auto pt-1"
+            [style.background]="2|orderItemBatchStatusColor">2</span>
+        </li>
+        <li style="cursor: pointer" class="task-item d-flex complete pr-2 border-bottom heb-menu"
+          (click)="saveTheExcelToDbView()">
+          שמור את נתוני האקסל במערכת<span class="badge badge-success ml-auto pt-1"
+            [style.background]="3|orderItemBatchStatusColor">3</span>
+        </li>
+        <li style="cursor: pointer" class="task-item d-flex complete pr-2 border-bottom heb-menu"
+          (click)="viewSavedExcelView()">
+          צפיה בקבצים קודמים שנטענו למערכת<span class="badge badge-success ml-auto pt-1"
+            [style.background]="4|orderItemBatchStatusColor">4</span>
+        </li>
+        <li style="cursor: pointer" class="task-item d-flex complete border-bottom heb-menu pr-2"
+          (click)="stockUpdateByFileView()">
+          עדכון מלאי סופי לפי שם מחסן<span class="badge badge-success ml-auto pt-1"
+            [style.background]="5|orderItemBatchStatusColor">5</span>
+        </li>
+      </ul>
     </div>
-    <div class="modal-body">
-      <table class='table'>
-        <thead class='tableHeader'>
+  </div>
+  <div *ngIf="allowedCountYear">
+    <h1 class="text-center"><span class="heading1">
+        ספירת מלאי 2021</span>
+    </h1>
+    <div class="right-part bg-white">
+      <!-- <div class="px-3 py-3 d-flex align-items-center border-bottom bg-light">
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-primary my-2 my-sm-0" type="button">Clear</button>
+        </form>
+        <form novalidate="" class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"><button
+            type="button" id="btnCreateWP" class="btn btn-primary flex-shrink-0">Create Workplan</button>
+        </form>
+      </div> -->
 
-          <tr>
-            <th>פריט</th>
-            <th>מיקום</th>
-            <th *ngIf="itemType == 'material'">באטץ'</th>
-            <th>כמות ישנה</th>
-            <th>כמות חדשה</th>
-          </tr>
-        </thead>
-        <tbody id="table_body">
-          <tr *ngFor="let update of updates">
-            <td>{{update._id.item}}</td>
-            <td>{{update._id.position}}</td>
-            <td *ngIf="itemType == 'material'">{{update._id.supplierBatchNumber}}</td>
-            <td>{{update.total}}</td>
-            <td [style.background]="'lightcoral'">{{update.countedAmount}}</td>
-          </tr>
-        </tbody>
-      </table>
-      <br>
-      <div class="row mt-4">
-        <h4>האם ברצונך להמשיך?</h4>
-        <div class="m-4 d-flex flex-row justify-content-around w-75">
-          <button class="btn btn-danger" (click)="update()">כן</button>
-          <button class="btn btn-secondary" (click)="modalService.dismissAll()">ביטול</button>
+      <div class="text-center shadow bg-white w-75 mx-auto rounded p-5">
+        <div class="row mt-4" *ngIf="exportEmptyFile">
+          <div class="col-12">
+            <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info "> ייצוא קבצים ריקים לפי מחסן</h1>
+          </div>
         </div>
+        <div class="row mt-4" *ngIf="importExcelFile">
+          <div class="col-12">
+            <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info "> טעינת קובץ ספירה מלא</h1>
+          </div>
+        </div>
+        <div class="row mt-4" *ngIf="saveTheExcelToDb">
+          <div class="col-12">
+            <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info "> שמירת נתוני קובץ למערכת (לא מעדכן מלאי)
+            </h1>
+          </div>
+        </div>
+        <div class="row mt-4" *ngIf="viewSavedExcel">
+          <div class="col-12">
+            <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info "> צפיה בקבצי ספירה שנטענו</h1>
+          </div>
+        </div>
+        <div class="row mt-4" *ngIf="stockUpdateByFile">
+          <div class="col-12">
+            <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info "> עדכון מלאי לשנת 2021 לפי מחסן</h1>
+          </div>
+        </div>
+
+        <div dir="rtl" class="row mt-4">
+          <ng-container *ngIf="exportEmptyFile">
+
+
+            <div *ngIf="whareHouse" class="col-1">
+              <!-- <button [printStyle]="{tr : {'border': 'solid 1px black'}}" style="visibility: hidden;"
+              printSectionId="print-section" #printStocktake ngxPrint><img src="../../../../assets/images/print.png"
+                alt="Print" style="width: 55px;"></button> -->
+              <img style="width: 50px; height: 50px; cursor: pointer;" (click)="exportShelfListToXl()"
+                src="../../../../assets/images/excel.png" alt="">
+            </div>
+          </ng-container>
+          <ng-container *ngIf="fetchingPrices">
+            <div class="bigLoader"></div>
+          </ng-container>
+          <ng-container *ngIf="exportEmptyFile">
+            <div class="col-3" *ngIf="!fetchingPrices && exportEmptyFile">
+              <label>מחסן</label>
+              <select (change)="getShelfsByWH($event)" #selectWh class="form-control">
+                <option selected="true" disabled="disabled">בחר מחסן</option>
+                <option value="Kasem">Kasem</option>
+                <option value="material">Rosh HaAyin - Materials</option>
+                <option value="component">Rosh HaAyin - Components</option>
+                <option value="Rosh HaAyin products">Rosh HaAyin - Products</option>
+                <option value="NEW KASEM">New Kasem</option>
+                <option value="Labels">Labels</option>
+                <option value="ARIEL 1">ARIEL 1</option>
+                <option value="ARIEL 2">ARIEL 2</option>
+                <option value="ARIEL 3">ARIEL 3</option>
+                <option value="ARIEL 4">ARIEL 4</option>
+              </select>
+            </div>
+            <div *ngIf="whareHouse && !showFile" class="col-3">
+              <label>סנן לפי איתור</label>
+              <input class="form-control" (keyup)="filterByShelf($event)">
+            </div>
+            <div *ngIf="whareHouse && !showFile" class="col-3">
+              <label>סנן לפי פריט</label>
+              <input list="itemNumbers" class="form-control" type="text" (change)="filterByIetmNumber($event)">
+              <datalist id="itemNumbers">
+                <option *ngFor="let shelf of allShelfsCopy" [value]="shelf._id.item">{{shelf._id.item}}</option>
+              </datalist>
+            </div>
+          </ng-container>
+          <div class="col-2" *ngIf="allowedCountYear && !fetchingPrices &&!fetchingShelfs && importExcelFile">
+            <label>העלה קובץ ספירת מלאי</label>
+            <input type="file" multiple="false" id="excelFile" (change)="sendExcelToData($event)" #uploadExFile>
+          </div>
+          <div class="col-2" *ngIf="showFile && !fetchingPrices && !fetchingShelfs &&saveTheExcelToDb">
+            <label>טען נתונים למלאי זמני</label><br>
+            <button class="btn btn-secondary" (click)="sendDataToDB()">
+              העבר נתונים למסד הנתונים
+            </button>
+          </div>
+          <ng-container *ngIf="loadingDataToDB">
+            <div class="bigLoader"></div>
+          </ng-container>
+        </div>
+        <div class="row mt-4" dir="rtl" *ngIf="viewSavedExcel">
+          <div class="col-3" *ngIf="!fetchingPrices">
+            <label>טען נתוני ספירה קודמת מהמערכת לפי מחסן</label>
+            <select (change)="getFileNameByWh($event)" #selectWhFile class="form-control">
+              <option selected="true" disabled="disabled">בחר מחסן לצפייה</option>
+              <option value="KASEM-component">Kasem</option>
+              <option value="Rosh HaAyin-material">Rosh HaAyin - Materials</option>
+              <option value="Rosh HaAyin-component">Rosh HaAyin - Components</option>
+              <option value="Rosh HaAyin-product">Rosh HaAyin - Products</option>
+              <option value="NEW KASEM-component">New Kasem</option>
+              <option value="Labels-component">Labels</option>
+              <option value="ARIEL 1-component">ARIEL 1</option>
+              <option value="ARIEL 2-component">ARIEL 2</option>
+              <option value="ARIEL 3-component">ARIEL 3</option>
+              <option value="ARIEL 4-component">ARIEL 4</option>
+            </select>
+          </div>
+          <div class="col-3" *ngIf="!fetchingPrices">
+            <label>בחר קובץ ספירה קודם</label>
+            <select (change)="getFileName($event)" #selectFile class="form-control">
+              <option selected="true" disabled="false">בחר קובץ לצפייה</option>
+              <option *ngFor="let file of fileNames" [value]="file.fileDate">{{file.fileName}}</option>
+
+            </select>
+          </div>
+        </div>
+        <div class="row mt-4" *ngIf="showFile && allowedYearUpdate &&stockUpdateByFile">
+          <div class="col-4"></div>
+          <div class="col-4">
+            <label> עדכון מלאי על פי ספירה</label><br>
+            <button class="btn btn-secondary" (click)="updateYearCount()">עדכן מלאי לסוף 2021</button>
+          </div>
+          <div class="col-4"></div>
+
+
+
+        </div>
+
+        <!-- <div dir="rtl" *ngIf="allowedCountYear && allShelfs && allShelfs.length > 0"
+          class="new-shelf d-flex flex-row justify-content-around p-5 mt-5 mb-5">
+          <form [formGroup]="newShelfForm" (ngSubmit)="addNewItemShelf()">
+            <h3>הכנס מלאי שלא נמצא ברשימה (יש לוודא שהמדף אכן קיים במחסן)</h3>
+            <div class="row">
+              <div class="col-3">
+                <input type="number" class="form-control" (change)="validateItem()" formControlName="item" placeholder='מק"ט'>
+              </div>
+              <div class="col-3">
+                <select class="form-control" formControlName="position">
+                  <option value="">איתור</option>
+                  <option *ngFor="let shelf of shellNums" [value]="shelf._id">{{shelf.position}}</option>
+                </select>
+              </div>
+              <div class="col-3">
+                <input type="number" class="form-control" formControlName="amount" placeholder="כמות">
+              </div>
+              <div class="col-3"><button [disabled]="!newShelfForm.valid"
+                  [style.cursor]="whareHouse ? 'pointer' : 'not-allowed'" type="submit" class="btn btn-primary">הכנס</button>
+              </div>
+            </div>
+          </form>
+      
+        </div> -->
+        <div *ngIf="allowedCountYear" class="row mt-4">
+          <div class="col-3"></div>
+          <!-- <div class="col-6" >
+            <button *ngIf="whareHouse && !showFile" ngxPrint printSectionId="print-section"
+              styleSheetFile="../../../../assets/stylesheets/year-count.css" class="btn save-form w-50">הדפס דף סופר</button>
+          </div> -->
+          <div class="col-3"></div>
+        </div>
+
+        <div dir="rtl" *ngIf="whareHouse && !showFile" id="print-section" class="row mt-4">
+          <table dir="rtl" class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <td class="header" colspan="3">
+                  דף ספירת מלאי לשנת הכספים 2021
+                </td>
+                <td class="header" colspan="5">
+                  Peerpharm Ltd - עמל 17 אזור תעשיה ,אפק ראש העין 4809256.
+                </td>
+
+              </tr>
+              <tr>
+                <td class="header" colspan="3">
+                  מלאי {{whareHouse}} - {{itemType}}s
+                </td>
+                <td class="header" colspan="5">
+                  טופס מספר {{lastYearCount.serialNumber + 1}}
+                </td>
+
+              </tr>
+              <tr>
+                <th class="runner">#</th>
+                <th>איתור</th>
+                <!-- <th class="sortable position" (click)="sortByPosition()"><i class="fas fa-filter"></i> איתור</th> -->
+                <th class="sortable item" (click)="sortByItem()"><i class="fas fa-filter"></i> מק"ט</th>
+                <th class="sortable desc" (click)="sortByItem()"><i class="fas fa-filter"></i> תיאור</th>
+                <th class="batch" *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i>
+                  באטץ'
+                </th>
+                <th class="measure"> יחידת מידה</th>
+                <!-- <th class="sortable" (click)="sortByAmount()"><i class="fas fa-filter"></i> כמות</th> -->
+                <!-- <th>Last Count Date</th> -->
+                <!-- <th>Last Counted Amount</th> -->
+                <th class="count">כמות</th>
+                <th class="owner">פריט חברה?</th>
+                <th class="remarks">הערות</th>
+                <!-- <th>פער</th> -->
+                <!-- <th *ngIf="allowedCountYear && !printing"></th> -->
+              </tr>
+            </thead>
+            <ng-container *ngIf="fetchingShelfs">
+              <div class="bigLoader"></div>
+            </ng-container>
+            <tbody *ngIf="!fetchingShelfs">
+              <tr *ngFor="let shelf of allShelfs;let i = index">
+                <td>{{i+1}}</td>
+                <td>{{shelf._id.position}}</td>
+                <td class="item-td">{{shelf._id.item}}</td>
+                <td>{{shelf._id.name}}</td>
+                <td *ngIf="itemType == 'material'">{{shelf._id.supplierBatchNumber}}</td>
+                <!-- <td>{{shelf._id.position}}</td> -->
+                <td *ngIf="itemType=='component'">Unit</td>
+                <td *ngIf="itemType=='material'">Kg.</td>
+                <!-- <td>{{shelf.total}}</td> -->
+                <!-- <td>{{shelf.lastCount.date}}</td> -->
+                <!-- <td>{{shelf.lastCount.amount}}</td> -->
+
+                <td *ngIf="shelfId != shelf._id">{{shelf.countedAmount}}</td>
+                <td *ngIf="shelfId != shelf._id"> כן / לא </td>
+                <td *ngIf="shelfId != shelf._id"></td>
+                <td *ngIf="shelfId == shelf._id">
+                  <input #countInput type="number" class="form-control" (keyup)="calculateDifference(shelf)"
+                    [(ngModel)]="shelf.countedAmount">
+                </td>
+
+                <!-- <td><span *ngIf="shelf.difference">{{shelf.difference}}</span></td> -->
+
+                <!-- <td *ngIf="allowedCountYear && shelfId != shelf._id && !printing">
+                  <button (click)="editShelfAmount(shelf)" class="btn btn-primary">
+                    <i class="click fa fa-pencil-alt"></i> הכנס ספירה
+                  </button>
+                </td> -->
+
+                <!-- <td *ngIf="allowedCountYear && shelfId == shelf._id && !printing">
+                  <button [disabled]="updatingAmount" [style.cursor]="updatingAmount ? 'progress' : 'pointer'"
+                    (click)="setShelfs()" class="btn btn-danger">שמור לטופס
+                  </button>
+                </td> -->
+
+              </tr>
+            </tbody>
+            <!-- <tfoot>
+              <tr>
+                <td colspan="3">שם הסופר/ת: __________________</td>
+                <td colspan="2">תאריך ספירה: ____________________</td>
+                <td colspan="2">חתימת הסופר/ת: _______________</td>
+              </tr>
+              <tr>
+                <td colspan="3">שם הבקר/ית: __________________</td>
+                <td colspan="2">תאריך הבדיקה: ____________________</td>
+                <td colspan="2">חתימת הבקר/ית: _______________</td>
+              </tr>
+              <tr>
+                <td colspan="2">שם המקליד/ה: __________________</td>
+                <td colspan="2">תאריך הקלדה: ____________________</td>
+                <td>שעה: _______________</td>
+                <td colspan="2">חתימת המקליד/ה: _______________</td>
+              </tr>
+            </tfoot> -->
+          </table>
+        </div>
+
+        <div dir="rtl" *ngIf="showFile" class="row mt-4">
+          <table dir="rtl" class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <td class="header" colspan="3">
+                  קובץ ספירת מלאי לשנת הכספים 2021
+                </td>
+                <td class="header" colspan="5">
+                  Peerpharm Ltd - עמל 17 אזור תעשיה ,אפק ראש העין 4809256.
+                </td>
+                <td class="header">שם הסופר:</td>
+                <td class="header">{{countedBy}}</td>
+                <td class="header" colspan="1"> מקליד/ה:</td>
+                <td class="header" colspan="2">{{typedBy}}</td>
+              </tr>
+              <td colspan="2">מחסן: {{whareHouse}} - {{itemType}}s</td>
+              <td colspan="2">שם הקובץ: {{fileName}}</td>
+              <td colspan="2">תאריך עריכת הקובץ: {{fileDate| date: 'dd/MM/YYYY ' }}</td>
+              <td colspan="2">שעת עריכת הקובץ: {{fileDate| date: 'HH:mm' }}</td>
+              <td class="header"> שם הבודק:</td>
+              <td class="header">{{supervisedBy}}</td>
+              <td class="header" colspan="1">תאריך:</td>
+              <td class="header" colspan="2">{{countDate}}</td>
+              <tr>
+                <th class="runner">#</th>
+                <th class="sortable position" (click)="sortByPosition()"><i class="fas fa-filter"></i> איתור</th>
+                <th class="sortable item" (click)="sortByItem()"><i class="fas fa-filter"></i> מק"ט</th>
+                <th class="sortable desc" (click)="sortByItem()"><i class="fas fa-filter"></i> תיאור</th>
+                <th class="batch" *ngIf="itemType == 'material'" (click)="sortByBatch()"><i class="fas fa-filter"></i>
+                  באטץ'
+                </th>
+                <th class="measure"> יחידת מידה</th>
+                <th>מלאי נוכחי</th>
+                <th class="count">ספירה נוכחית</th>
+                <th class="count">ספירה חוזרת</th>
+                <th class="count">הפרש בכמות</th>
+                <th class="count">הפרש במחיר</th>
+                <th class="count">מטבע</th>
+                <th class="owner">פריט חברה?</th>
+                <th class="remarks">הערות</th>
+
+              </tr>
+            </thead>
+            <ng-container *ngIf="fetchingShelfs">
+              <div class="bigLoader"></div>
+            </ng-container>
+            <tbody *ngIf="!fetchingShelfs">
+              <tr *ngFor="let shelf of allCountShelves;let i = index">
+                <td>{{i+1}}</td>
+                <td>{{shelf.itemPosition}}</td>
+                <td class="item-td">{{shelf.itemNumber}}</td>
+                <td>{{shelf.itemName}}</td>
+                <td *ngIf="itemType == 'material'">{{shelf.itemBatch}}</td>
+                <td *ngIf="itemType=='component'">Unit</td>
+                <td *ngIf="itemType=='material'">Kg.</td>
+                <td *ngIf="itemType=='product'">{{shelf.itemUnit}}</td>
+                <td> {{shelf.prevQty}}</td>
+                <td>{{shelf.itemQty}}</td>
+                <td *ngIf="i == EditRow && !readOnly"><input type="number" id="repeatCount" name="repeatCount"
+                    #repeatCount [value]="shelf.repeatCount"><i class="ti-save text-success m-r-10"
+                    (click)="saveEdit(i, shelf.repeatCount)" style="cursor:pointer"></i></td>
+                <td *ngIf="i != EditRow && !readOnly" (click)="edit(i) ">{{shelf.repeatCount}}</td>
+                <td *ngIf="readOnly">{{shelf.repeatCount}}</td>
+                <td [ngClass]="shelf.diffQty> 50||shelf.diffQty<-50? 'minus': 'plus'">
+                  {{shelf.diffQty}}
+                </td>
+                <td
+                  [ngClass]="(shelf.diffQty)*shelf.itemPrice> 500||(shelf.diffQty)*shelf.itemPrice<-500? 'minus': 'plus'">
+                  {{(shelf.diffQty)*shelf.itemPrice}}
+                </td>
+                <td>{{shelf.itemCoin}}</td>
+                <td>{{shelf.companyOwned}}</td>
+                <td> {{shelf.itemRemark}} </td>
+              </tr>
+            </tbody>
+            <tfoot *ngIf="!showFile">
+              <tr>
+                <td colspan="3">שם הסופר/ת: __________________</td>
+                <td colspan="2">תאריך ספירה: ____________________</td>
+                <td colspan="2">חתימת הסופר/ת: _______________</td>
+              </tr>
+              <tr>
+                <td colspan="3">שם הבקר/ית: __________________</td>
+                <td colspan="2">תאריך הבדיקה: ____________________</td>
+                <td colspan="2">חתימת הבקר/ית: _______________</td>
+              </tr>
+              <tr>
+                <td colspan="2">שם המקליד/ה: __________________</td>
+                <td colspan="2">תאריך הקלדה: ____________________</td>
+                <td>שעה: _______________</td>
+                <td colspan="2">חתימת המקליד/ה: _______________</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+        <div *ngIf="allowedCountYear && !showFile" class="row mt-4">
+          <div class="col-3"></div>
+          <!-- <div class="col-6">
+            <button *ngIf="whareHouse &&!showFile" ngxPrint printSectionId="print-section"
+              styleSheetFile="../../../../assets/stylesheets/year-count.css" class="btn save-form w-50">הדפס דף סופר</button>
+          </div> -->
+          <div class="col-3"></div>
+        </div>
+
+
       </div>
-    </div>
-    <div class="modal-footer">
+
+
+
     </div>
   </div>
-
-</ng-template>
-<!-- <div style="display:none">
-  <button ngxPrint printSectionId="pages-ptrint-section" #printPages
-    styleSheetFile="../../../../assets/stylesheets/year-count.css" class="btn"></button>
 </div>
-
-<div dir="rtl" id="pages-ptrint-section" class="row mt-4">
-
-  <table dir="rtl" class="table table-bordered table-hover">
-    <thead>
-    <tr>
-        <th class="header" colspan="3">
-          דף ספירת מלאי לשנת הכספים 2021
-        </th>
-        <th class="header" colspan="5">
-          Peerpharm Ltd - עמל 17 אזור תעשיה ,אפק ראש העין 4809256.
-        </th>
-      </tr>
-      <tr>
-        <td class="header" colspan="3"></td>
-        <td *ngIf="formNum" class="header" colspan="5">{{formNum}}</td>
-      </tr> 
-      <tr>
-        <th class="runner">#</th>
-        <th>איתור</th>
-        <th> מק"ט</th>
-        <th>תיאור</th>
-        <th>יחידה</th>
-        <th class="count">כמות</th>
-        <th class="owner"> פריט חברה?</th>
-        <th class="remarks">הערות</th>
-        <th> באטץ'</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let shelf of pageForm;let i = index">
-        <td>{{shelf.A}}</td>
-        <td>{{shelf.B}}</td>
-        <td class="item-td">{{shelf.C}}</td>
-        <td>{{shelf.D}}</td>
-        <td>{{shelf.E}}</td>
-        <td>{{shelf.F}}</td>
-        <td>{{shelf.G}}</td>
-        <td>{{shelf.H}}</td>
-        <td>{{shelf.I}}</td>
-      </tr>
-
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="3">שם הסופר/ת: __________________</td>
-        <td colspan="2">תאריך ספירה: ____________________</td>
-        <td colspan="2">חתימת הסופר/ת: _______________</td>
-      </tr>
-      <tr>
-        <td colspan="3">שם הבקר/ית: __________________</td>
-        <td colspan="2">תאריך הבדיקה: ____________________</td>
-        <td colspan="2">חתימת הבקר/ית: _______________</td>
-      </tr>
-      <tr>
-        <td colspan="2">שם המקליד/ה: __________________</td>
-        <td colspan="2">תאריך הקלדה: ____________________</td>
-        <td>שעה: _______________</td>
-        <td colspan="2">חתימת המקליד/ה: _______________</td>
-      </tr>
-    </tfoot>
-  </table>
-
-</div> -->

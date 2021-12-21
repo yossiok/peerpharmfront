@@ -553,13 +553,13 @@ export class AllFormulesComponent implements OnInit {
     }
   }
 
-  //TODO: route to item index and present item 
+  //TODO: route to item index and present item
   openIndex(itemNumber) {
     // this.router...
   }
 
   getFormulePrice(formule) {
-    this.partialPrice = false
+    this.partialPrice = false;
     this.spinnerLoader = true;
     setTimeout(() => {
       if (this.spinnerLoader) {
@@ -575,7 +575,7 @@ export class AllFormulesComponent implements OnInit {
         data.forEach((material) => {
           if (material.price == null || material.price == undefined) {
             material.price = "צריך לעדכן מחיר ספק";
-            this.partialPrice = true
+            this.partialPrice = true;
           } else {
             if (
               material.price != "צריך לעדכן מחיר ספק" &&
@@ -813,8 +813,8 @@ export class AllFormulesComponent implements OnInit {
       percentage: Number(this.percentageUpdate.nativeElement.value),
       itemRemarks: this.itemRemarksUpdate.nativeElement.value,
       phaseRemarks: this.phaseRemarksUpdate.nativeElement.value,
-      updateFather: "",
-      updateChildren: "",
+      updateFather: [],
+      updateChildren: [],
     };
     this.updateBaseToAll = formuleData;
     if (this.currentFormuleNumber)
@@ -893,7 +893,12 @@ export class AllFormulesComponent implements OnInit {
     }
 
     this.updateBaseToAll.updateChildren = this.allChosenChildsToUpdate;
-    this.updateBaseToAll.updateFather = this.allChosenFathersToUpdate;
+    let fatherObj = { formuleNumber: this.currentFormuleNumber };
+    this.updateBaseToAll.updateFather = this.updateBaseToAll.updateFather
+      ? this.updateBaseToAll.updateFather
+      : [];
+    this.updateBaseToAll.updateFather.push(fatherObj);
+
     if (this.updateBaseToAll.newPhases) {
       this.formuleService
         .addItemToFormule(this.updateBaseToAll)
@@ -973,8 +978,8 @@ export class AllFormulesComponent implements OnInit {
           item.percentage = Number(this.percentageUpdate.nativeElement.value);
 
           this.chooseFathersToUpdate = false;
-          this.updateBaseToAll.updateChildren = "";
-          this.updateBaseToAll.updateFather = "";
+          this.updateBaseToAll.updateChildren = [];
+          this.updateBaseToAll.updateFather = [];
           this.toastSrv.success("פריט עודכן בהצלחה!");
           this.EditRowId = "";
           this.updatePercentage = "";

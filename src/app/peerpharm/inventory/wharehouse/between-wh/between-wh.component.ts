@@ -60,6 +60,7 @@ export class BetweenWHComponent implements OnInit {
     private toastr: ToastrService,
     private wareHouseService: WarehouseService
   ) {}
+  actionLogs: any[] = [];
 
   ngOnInit(): void {
     setTimeout(() => this.first.nativeElement.focus(), 500);
@@ -348,6 +349,7 @@ export class BetweenWHComponent implements OnInit {
   move() {
     this.sending = true;
     this.historic = false;
+    let self = this;
     console.log(this.allMovements);
     this.inventoryService.moveWareHouse(this.allMovements).subscribe((data) => {
       console.log(data);
@@ -355,7 +357,50 @@ export class BetweenWHComponent implements OnInit {
         this.sending = false;
         alert(data.msg);
         this.toastr.error("Operation Falied", data.msg);
-      } else {
+      } else if (data.actionLogs.length == 0) {
+        this.toastr.error("הפעולה נכשלה, לא נעשה שינוי למלאי");
+        alert("הפעולה נכשלה, לא נעשה שינוי למלאי");
+        setTimeout(() => {
+          this.movementForm.reset();
+          this.allMovements = [];
+          this.originWHShelfs = [];
+          this.reception = null;
+          this.movementForm.controls.isNewItemShell.setValue(false);
+          this.movementForm.controls.itemType.setValue("component");
+          this.first.nativeElement.focus();
+        }, 1500);
+        this.sending = false;
+        this.movementForm.controls.valid.setValue(false);
+      } else if (data.actionLogs.length < this.allMovements.length) {
+        let realData = [];
+        for (let move of this.allMovements) {
+          let index = data.actionLogs.findIndex((al) => {
+            return al.item == move.item;
+          });
+          if (index > -1) {
+            realData.push(move);
+          }
+        }
+        self.allMovements = [...realData];
+        console.log(realData);
+        console.log(this.allMovements);
+        this.toastr.warning("שינויים בוצעו בחלק מההעברות בלבד", "נשמר");
+        alert(
+          "שינויים בוצעו בחלק מההעברות בלבד, הדפס תעודה דרך שחזור תעודות היסטוריות. מספר תעודה:" +
+            data.actionLogs[0].warehouseReception
+        );
+        setTimeout(() => {
+          this.allMovements = [];
+          this.movementForm.reset();
+          this.originWHShelfs = [];
+          this.reception = null;
+          this.movementForm.controls.isNewItemShell.setValue(false);
+          this.movementForm.controls.itemType.setValue("component");
+          this.movementForm.controls.valid.setValue(false);
+          this.first.nativeElement.focus();
+        }, 1500);
+        this.sending = false;
+      } else if (data.actionLogs.length == this.allMovements.length) {
         setTimeout(() => {
           this.printBtn2.nativeElement.click();
         }, 500);
@@ -373,7 +418,7 @@ export class BetweenWHComponent implements OnInit {
         this.movementForm.controls.valid.setValue(false);
       }
     });
-    this.historic = true;
+    this.historic = false;
   }
 
   justPrint() {
