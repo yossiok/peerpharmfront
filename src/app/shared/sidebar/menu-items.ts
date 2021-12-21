@@ -87,7 +87,7 @@ export const ROUTES: RouteInfo[] = [
 
   {
     path: "",
-    title: "Items (Products)",
+    title: "Products",
     icon: " fas fa-sitemap",
     class: "has-arrow",
     extralink: false,

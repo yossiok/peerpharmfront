@@ -165,14 +165,14 @@ export class ItemsService {
     let itemResultObservable: Observable<any[]> = new Observable(observer => {
       let self = this;
       let skip = 0;
-      let limit = 500;
+      let limit = 1000;
       startNewCall(skip, limit);
       function startNewCall(skip, limit) {
         let url = "/item?skip=" + skip + "&limit=" + limit;
         console.log("new call=> " + url);
         self.http.get(url).subscribe(response => {
           let items = <any[]>response.json();
-          skip = skip + 500;
+          skip += 1000;
           if (items.length > 0) {
             console.log("got items bigger than 0");
             observer.next(items);

@@ -187,7 +187,7 @@ export const PeerPharmRputs: Routes = [
     path: "items/itemslist",
     canActivate: [ScreenGuard],
     data: {
-      title: "Items List",
+      title: "Products List",
     },
     component: ItemslistComponent,
   },

@@ -5,22 +5,23 @@
     </div>
   </div>
 
-  <div *ngIf="!hasMoreItemsToload" class="row">
+  <div *ngIf="complete" class="row">
     <div class="col-2">
-      <input (change)="filterByNumber($event)" type="text" class="form-control" placeholder="Search By Number">
+      <input (keyup)="filterByNumber($event)" type="text" class="form-control" placeholder="Search By Name / Number">
     </div>
     <div class="col-2">
-      <input (change)="filterByComponent($event)" type="text" class="form-control" placeholder="Search By Component">
+      <input (keyup)="filterByComponent($event)" type="text" class="form-control" placeholder="Search By Component">
     </div>
-    <div class="col-2">
+    <!-- <div class="col-2">
       <input matInput class="form-control" (change)="changeText($event)" placeholder="Search By Name">
-    </div>
+    </div> -->
     <div class="col-2">
       <select class="form-control" (change)="filterByStatus($event)">
         <option value="">Filter By Status</option>
         <option value="active">פעיל</option>
         <option value="notActive">לא פעיל</option>
         <option value="perfect">מושלם</option>
+        <option value="all">הכל</option>
       </select>
     </div>
     <div class="col-2">
@@ -28,16 +29,23 @@
         <option value="">Filter By Language</option>
         <option value="Hebrew">Hebrew</option>
         <option value="English">English</option>
+        <option value="all">All</option>
       </select>
     </div>
-    <div class="col-3"></div>
+    <div [class.read-only]="checkPermission()" class="col-3">
+      <button style="float: right; background: none;" (click)="getCurrListToExcel()" data-toggle="tooltip"
+        title="get cuurent item list">
+        <label style="float: right; line-height: 30px; margin-left: 5px"><b>Export List</b></label>
+        <img src="../../../assets/images/excel.png" alt="excel export" style="width: 35px; float: right;" />
+      </button>
+    </div>
   </div>
 
 
 
-  <div *ngIf="hasMoreItemsToload" class="row">
+  <div *ngIf="!complete" class="row">
     <div class="col-12">
-      <span class="text-danger h5"><b>Loading Items , Please Wait..</b></span> <img style="width:50px"
+      <span class="text-info h5"><b>Loading Products , Please Wait..</b></span> <img style="width:50px"
         src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
     </div>
   </div>
@@ -45,19 +53,13 @@
   <div class="row mt-3">
     <div class="col-12">
 
-      <span class="text-danger h5"><b>Showing {{ items.length }} Items</b></span>
-      <div [class.read-only]="checkPermission()" class="col-1">
-        <button style="float: right; background: none;" (click)="getCurrListToExcel()" data-toggle="tooltip"
-          title="get cuurent item list">
-          <label style="float: right; line-height: 30px; margin-left: 5px"><b>Export List</b></label>
-          <img src="../../../assets/images/excel.png" alt="excel export" style="width: 35px; float: right;" />
-        </button>
-      </div>
+      <span class="text-info h5"><b>Showing {{ items.length }} Products</b></span>
+
       <table class="table table-hover table-striped table-fixed mt-2">
         <thead style="box-shadow: inset 0px 0px 4px 1px black;" class="bg-info text-white">
           <tr>
             <th>#</th>
-            <th>Item number</th>
+            <th>Product number</th>
             <th>Name</th>
             <th>Volume/Net Weight</th>
             <th>Sticker</th>
@@ -71,12 +73,15 @@
             <th></th>
           </tr>
         </thead>
-        <tbody id="table_body">
+        <img *ngIf="filtering" style="width:50px"
+        src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
+        <tbody *ngIf="!filtering" id="table_body">
           <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black; margin-top: 1px;"
             *ngFor="let item of items; let i = index">
             <td style="color:black">{{ i + 1 }}</td>
             <td style="color:black">
-              <a style="color:black;text-decoration: underline;" target="_blank" routerLink="/peerpharm/items/itemDetails/{{ item.itemNumber }}">
+              <a style="color:black;text-decoration: underline;" target="_blank"
+                routerLink="/peerpharm/items/itemDetails/{{ item.itemNumber }}">
                 {{ item.itemNumber }}
               </a>
             </td>
@@ -87,14 +92,14 @@
                 {{ item.netWeightK }} gr
               </div>
             </td>
-            <td  style="word-wrap:normal;color:black">
+            <td style="word-wrap:normal;color:black">
               {{ item.stickerNumber }}<br /><span style="word-break: break-word;">{{
-          item.StickerLanguageK
-        }}</span>
+                item.StickerLanguageK
+                }}</span>
             </td>
             <td style="word-wrap: break-word;color:black">{{ item.barcodeK }}</td>
             <td>
-           
+
 
             </td>
             <td style="color:black" (click)="edit(item._id)" *ngIf="item._id != EditRowId">{{ item.licsensNumber }}</td>
@@ -134,6 +139,3 @@
     <br />this can take some time
   </h1>
 </div>
-
-
-
