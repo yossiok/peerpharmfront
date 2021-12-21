@@ -376,7 +376,10 @@
 
     <div class="col-4">
       <div style='display: inline-block; vertical-align: top;'>
-        <i class="fas fa-plus bg-success p-2 h2 click"  *ngIf="allowNewRequest" ngbTooltip="Add new Request" (click)="showNewReq = true"></i>
+        <button class="btn btn-success" *ngIf="allowNewRequest" (click)="showNewReq = true"> &nbsp;
+          <i class="fas fa-plus"></i>
+           <span class="h4 "> Add new request</span>
+        </button>
         <app-inventory-requests *ngIf="screen!='whManagment'" (outPutItemsArray)="getChildArr($event)">
         </app-inventory-requests>
       </div>
