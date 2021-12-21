@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { InventoryRequestService } from 'src/app/services/inventory-request.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { ExcelService } from 'src/app/services/excel.service';
 
 @Component({
   selector: 'app-inventory-requests',
@@ -10,8 +11,13 @@ import { NotificationService } from 'src/app/services/notification.service';
 })
 export class InventoryRequestsComponent implements OnInit {
 
-  constructor(private inventoryService:InventoryService, private inventoryReqService: InventoryRequestService, 
-    private notificationService: NotificationService) { }
+  constructor(
+    private inventoryService:InventoryService, 
+    private inventoryReqService: InventoryRequestService, 
+    private notificationService: NotificationService,
+    private excelService: ExcelService
+    ) { }
+
   ordersDemands:any=[];
   EditRowId2nd: any = "";
   expand: boolean = false;
@@ -22,17 +28,10 @@ export class InventoryRequestsComponent implements OnInit {
 
   ngOnInit() {
     this.getAllHistoryRequests();
-    ;
     this.notificationService.newInventoryReqEventEmitter.subscribe(data=>{
-      
-      if(data=='newInventoryReq'){
-        this.newReqIncoming=true;
-      }else{
-        this.getAllGeneralDemands();
-      }
+      if (data=='newInventoryReq') this.newReqIncoming=true;
+       else this.getAllGeneralDemands();
     });
-    
-
     this.getAllGeneralDemands();
 }
 
@@ -67,6 +66,30 @@ export class InventoryRequestsComponent implements OnInit {
         this.newReqIncoming=false;
     });
   
+  }
+
+  //export to excel
+  export(){
+    console.log(this.ordersDemands)
+    let excel = []
+    for(let demand of this.ordersDemands) {
+      for(let req of demand.reqList) {
+        excel.push({
+          "Request Number": demand.reqNum,
+          Date: demand.currDate,
+          "From Warehouse": demand.fromWH,
+          "To Warehouse": demand.toWH,
+          Department: demand.toDepartment,
+          User: demand.userName,
+          "Item Number": req.itemNumber,
+          "Delivery Date": demand.deliveryDate,
+          amount: req.amount,
+          Supplied: req.qntSupplied,
+          Remarks: req.remarks
+        })
+      }
+    }
+    this.excelService.exportAsExcelFile(excel, "Inventory Requests"+new Date().toString().slice(0,10))
   }
 
   getDetails(reqId, orderNumber): void {

@@ -3,13 +3,13 @@
 
     <div class="row">
       <div class="col-12">
-        <div class="card">
+        <div>
           <div class="card-body">
             <h3 class="text-info mt-3">New Request From Inventory</h3>
           </div>
           <hr>
           <form class="form-horizontal" [formGroup]="inventoryReqForm"
-            (ngSubmit)='addNewRequest(inventoryReqForm.value)'>
+            (ngSubmit)='addNewRequest()'>
             <div class="card-body">
 
               <div class="form-group row">
@@ -59,12 +59,34 @@
                   </select>
                 </div>
               </div>
+              <div class="form-group row">
+                <label class="col-sm-5 text-right control-label col-form-label"><strong>To Department:</strong></label>
+                <div class="col-sm-3">
+                  <select class="form-control" formControlName="toDepartment">
+                    <option *ngFor="let department of departments" [value]="department">{{department}}</option>
+                  </select>
+                </div>
+                <div class="col-sm-3">
+                  <input class="form-control" placeholder="Enter new department" #addDep type="text">
+                  <button [disabled]="addDep.value == ''" class="btn btn-default" (click)="departments.push(addDep.value); addDep.value = ''">הוסף מחלקה</button>
+                </div>
+              </div>
+              <div class="form-group row">
+                <h3 
+                class="ergent"
+                [style.color]="inventoryReqForm.value.ergent ? 'red' : 'forestgreen'">
+                <strong>URGENT<span *ngIf="!inventoryReqForm.value.ergent">?</span><span *ngIf="inventoryReqForm.value.ergent">!!!!!!!</span></strong></h3>
+              </div>
+              <div class="form-group row">
+                <input type="checkbox" style="width: 618px; height: 37px;" formControlName="ergent">
+              </div>
 
 
 
               <div class="card-body">
                 <div class="form-group m-b-0 text-right">
-                  <button type="submit" class="btn btn-info waves-effect waves-light">Save</button>
+                  <button *ngIf="!sendingForm" type="submit" class="btn btn-info waves-effect waves-light">Save</button>
+                  <div *ngIf="sendingForm" class="smallerLoader"></div>
                   <button type="reset" class="btn btn-dark waves-effect waves-light">Clear</button>
                 </div>
               </div>

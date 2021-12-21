@@ -94,6 +94,7 @@ export class WharehouseComponent implements OnInit {
   editWharehouses: Boolean = false;
   loadShelfs: boolean = false;
   isJew: boolean = true
+  allowNewRequest: boolean = false
 
   constructor(
     private procurementSrv: Procurementservice,
@@ -126,6 +127,7 @@ export class WharehouseComponent implements OnInit {
     this.getUserWhs();
     this.getAllWhs();
     if (this.authService.loggedInUser.screenPermission == '6') this.isJew = false
+    this.allowNewRequest = Number(this.authService.loggedInUser.screenPermission) < 4
   }
 
   getAllWhs() {

@@ -1,4 +1,9 @@
-<div class="container-fluid bg-white text-center p-2">
+<div *ngIf="showNewReq" class="new-req-div" >
+  <i class="fa fa-times float-right p-2 h3 click" (click)="showNewReq = false"></i>
+  <app-inventory-new-request></app-inventory-new-request>
+</div>
+
+<div style="z-index: 0;" class="container-fluid bg-white text-center p-2">
   <div class="row">
     <div class="col-8">
 
@@ -240,73 +245,6 @@
 
             <div *ngIf="dir!='' && dir!='managment' && dir != 'inCertif'  && dir!='watchShelfs'">
 
-              <!-- 
-            <ng-container *ngIf="!multiInputLines">
-              <form class="form-horizontal itemsList" [formGroup]="itemLine">
-                <div class="form-group row">
-                  <div class="col-sm-2">
-                    <img class="compImgInWh" [src]="currImageComp" />
-                  </div>
-                  <div class="col-sm-1">
-                    <label>מספר פריט</label>
-                    <input type="text" class="form-control" placeholder="Item Number" formControlName="itemNumber"
-                      (blur)="searchItemShelfs($event)">
-                  </div>
-                  <div *ngIf="dir == 'in'" class="col-sm-1">
-                    <label>הזמנת רכש</label>
-                    <select type="text" class="form-control" formControlName="purchaseNumber">
-                      <option *ngFor="let order of itemPurchaseOrders" [value]="order.orderNumber">{{order.orderNumber}}
-                      </option>
-                    </select>
-
-                  </div>
-                  <div *ngIf="dir == 'out'" class="col-sm-1">
-                    <label>מספר הזמנה</label>
-                    <input type="number" class="form-control" placeholder="Order Number" formControlName="relatedOrder">
-                  </div>
-                  <div class="col-sm-1">
-                    <label>מדף</label>
-                    <input type="text" class="form-control" placeholder="Position" formControlName="position">
-                  </div>
-                  <div class="col-sm-1">
-                    <label>כמות</label>
-                    <input type="number" class="form-control" placeholder="Amount" formControlName="amount" min="0">
-                  </div>
-
-
-                  <div class="col-sm-1" *ngIf="dir=='in'">
-                    <label>הגעת משלוח</label>
-                    <input type="date" class="form-control" placeholder="Arrival Date" formControlName="arrivalDate">
-                  </div>
-                  <div class="col-sm-1" *ngIf="dir=='in'">
-                    <label>תעודת משלוח</label>
-                    <input type="text" class="form-control" placeholder="Delivery Note" formControlName="deliveryNote">
-                  </div>
-                  <div class="col-sm-1" *ngIf="dir=='shelfChange'">
-                    <label>מדף חדש</label>
-                    <input type="text" class="form-control" placeholder="New Position" formControlName="destShelf">
-                  </div>
-                  <div class="col-sm-1" style="position: relative;">
-                    <button class="btn btn-success h-100 w-75" [disabled]="addingItem"
-                      [style.cursor]="addingItem ? 'not-allowed' : 'pointer'"
-                      (click)="checkLineValidation(itemLine.value, $event.value)">
-                      Add
-                    </button>
-                  </div>
-                </div>
-                <div>
-                  <label class="text-danger">{{curentWhareHouseName}} Wharehouse Shelf List:</label>&nbsp;
-                  <ng-container *ngFor="let shelf of currItemShelfs">
-                    <span (click)="loadShelfToInput(shelf.position, $event)"
-                      class="rounded border border-info shadow p-2 m-2 text-center" style="cursor: pointer;">
-                      <b>{{shelf.position}}</b>: {{shelf.amount}} units
-                    </span>
-                  </ng-container>
-                </div>
-              </form>
-
-            </ng-container> -->
-
               <!-- multiLines for inventory requests load -->
               <ng-container *ngIf="multiInputLines">
                 <div *ngFor="let itemFromInvReq of multiLinesArr ; let i = index">
@@ -438,6 +376,7 @@
 
     <div class="col-4">
       <div style='display: inline-block; vertical-align: top;'>
+        <i class="fas fa-plus bg-success p-2 h2 click"  *ngIf="allowNewRequest" ngbTooltip="Add new Request" (click)="showNewReq = true"></i>
         <app-inventory-requests *ngIf="screen!='whManagment'" (outPutItemsArray)="getChildArr($event)">
         </app-inventory-requests>
       </div>
