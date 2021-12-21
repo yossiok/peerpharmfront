@@ -385,20 +385,20 @@ export class BetweenWHComponent implements OnInit {
         console.log(realData);
         console.log(this.allMovements);
         this.toastr.warning("שינויים בוצעו בחלק מההעברות בלבד", "נשמר");
-        alert("שינויים בוצעו בחלק מההעברות בלבד");
-        // setTimeout(() => {
-        //   this.printBtn2.nativeElement.click();
-        // }, 5000);
-        // setTimeout(() => {
-        //   this.movementForm.reset();
-        //   this.allMovements = [];
-        //   this.originWHShelfs = [];
-        //   this.reception = null;
-        //   this.movementForm.controls.isNewItemShell.setValue(false);
-        //   this.movementForm.controls.itemType.setValue("component");
-        //   this.movementForm.controls.valid.setValue(false);
-        //   this.first.nativeElement.focus();
-        // }, 2500);
+        alert(
+          "שינויים בוצעו בחלק מההעברות בלבד, הדפס תעודה דרך שחזור תעודות היסטוריות. מספר תעודה:" +
+            data.actionLogs[0].warehouseReception
+        );
+        setTimeout(() => {
+          this.allMovements = [];
+          this.movementForm.reset();
+          this.originWHShelfs = [];
+          this.reception = null;
+          this.movementForm.controls.isNewItemShell.setValue(false);
+          this.movementForm.controls.itemType.setValue("component");
+          this.movementForm.controls.valid.setValue(false);
+          this.first.nativeElement.focus();
+        }, 1500);
         this.sending = false;
       } else if (data.actionLogs.length == this.allMovements.length) {
         setTimeout(() => {

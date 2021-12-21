@@ -133,8 +133,8 @@
           <th></th>
         </tr>
       </thead>
-      <div *ngIf="allMovements.length>0">
-        <tbody style="background-color: rgb(228, 225, 225);">
+      <tbody style="background-color: rgb(228, 225, 225);">
+        <ng-container *ngIf="allMovements.length>0">
           <tr *ngFor="let move of allMovements; let i = index">
             <td class="text-center">{{i+1}}</td>
             <td class="text-center">{{move.item}}</td>
@@ -144,8 +144,8 @@
             <td class="text-center">{{move.WH_destName}}/{{move.shell_position_in_whareHouse_Dest}}</td>
             <td class="text-center"><i (click)="removeFromAllMovements(i)" class="fa fa-times text-danger"></i></td>
           </tr>
-        </tbody>
-      </div>
+        </ng-container>
+      </tbody>
 
     </table>
   </div>
@@ -175,10 +175,9 @@
             <span>דואר אלקטרוני peerpharm@barak.net.il</span>&nbsp;&nbsp;
             <span>ח.פ: 511899023</span>
           </p>
-          <p *ngIf="allMovements[0].WH_originName == 'ARIEL 1' || allMovements[0].WH_originName == 'ARIEL 2' || allMovements[0].WH_originName == 'ARIEL 3' || allMovements[0].WH_originName == 'ARIEL 4' ||
-          allMovements[0].WH_destName == 'ARIEL 1' || allMovements[0].WH_destName == 'ARIEL 2' || allMovements[0].WH_destName == 'ARIEL 3' || allMovements[0].WH_destName == 'ARIEL 4'       
-          
-          ">
+          <p
+            *ngIf="allMovements[0].WH_originName == 'ARIEL 1' || allMovements[0].WH_originName == 'ARIEL 2' || allMovements[0].WH_originName == 'ARIEL 3' || allMovements[0].WH_originName == 'ARIEL 4' ||
+          allMovements[0].WH_destName == 'ARIEL 1' || allMovements[0].WH_destName == 'ARIEL 2' || allMovements[0].WH_destName == 'ARIEL 3' || allMovements[0].WH_destName == 'ARIEL 4'">
 
           </p>
         </header>
@@ -210,9 +209,8 @@
               <td style="border:1px solid black">{{allMovements[0].WH_originName | warehousesNames}}
                 <br><span
                   *ngIf=" allMovements.length>0 &&
-            allMovements[0].WH_originName == 'ARIEL 1' || allMovements[0].WH_originName == 'ARIEL 2' || allMovements[0].WH_originName == 'ARIEL 3' || allMovements[0].WH_originName == 'ARIEL 4' ">
-
-                  מוחמד עלי מוסטפה אבי סלימה <br>עוסק מורשה מספר: 853143675 <br></span>
+            allMovements[0].WH_originName == 'ARIEL 1' || allMovements[0].WH_originName == 'ARIEL 2' || allMovements[0].WH_originName == 'ARIEL 3' || allMovements[0].WH_originName == 'ARIEL 4' ">מוחמד
+                  עלי מוסטפה אבי סלימה <br>עוסק מורשה מספר: 853143675 <br></span>
 
 
               </td>
