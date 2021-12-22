@@ -15,6 +15,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
   providedIn: 'root'
 })
 export class AuthService {
+
   public loggedInUser:UserInfo;
   public userEventEmitter:EventEmitter<UserInfo>= new EventEmitter<UserInfo>();
 
@@ -62,6 +63,17 @@ export class AuthService {
   {
 
     return     this.httpClient.get(this.baseUrl+"auth/2way/"+onetime);
+  }
+
+  loginWithSMSKey(sms:string):Observable<any>
+  {
+
+    return     this.httpClient.get(this.baseUrl+"auth/sms/"+sms);
+  }
+
+  sendSms():Observable<any>
+  { 
+    return     this.httpClient.get(this.baseUrl+"auth/sms/generate");
   }
 
 

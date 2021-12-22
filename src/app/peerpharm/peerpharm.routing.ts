@@ -84,6 +84,7 @@ import { AllPlanningComponent } from "./production/planning/all-planning/all-pla
 import { AllItemsComponent } from "./production/planning/all-items/all-items.component";
 import { FinanceReportComponent } from "./finance-reports/financereport.component";
 import { WhareHouseUpdatesComponent } from "./inventory/wharehouse/wharehouse-updates/wharehouse-updates.component";
+import { TwoFactorSms } from "../guards/twofactorsms.guard";
 
 export const PeerPharmRputs: Routes = [
   {
@@ -358,7 +359,7 @@ export const PeerPharmRputs: Routes = [
       title: "Formule Table",
     },
     component: AllFormulesComponent,
-    canActivate: [TwoFactor],
+    canActivate: [TwoFactorSms],
   },
   {
     path: "production/all-items",
