@@ -15,8 +15,7 @@
           <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
           </option>
         </select>
-        <label>לאן יוצא? *</label>
-        <input type="text" class="form-control" formControlName="destination">
+   
       </div>
 
       <div *ngIf="!disabled" class="col-2">
@@ -45,6 +44,8 @@
             {{shellNum.position}} - {{shellNum.amount}} pcs
           </option>
         </select>
+        <input type="checkbox" (change)="shaylyShutUp()" class="return">
+        <h3 class="return-label">החזרת סחורה</h3>
       </div>
       <div class="col-2">
         <label>כמות *</label>
@@ -53,6 +54,8 @@
           *ngIf="componentCheckout.controls.amount.errors?.min">* הכמות חייבת
           להיות גדולה מאפס
         </div>
+        <label>סיבת <span *ngIf="!isReturn">יציאה</span><span *ngIf="isReturn">החזרה</span> *</label>
+        <input type="text" class="form-control" formControlName="destination">
       </div>
       <div class="col-2 d-flex flex-column justify-content-around">
         <button type="submit" [disabled]="!componentCheckout.valid"
@@ -119,7 +122,7 @@
         </p>
       </header>
       <main>
-        <h2>תעודת יציאה מס' {{certificateReception}}</h2>
+        <h2>תעודת <span *ngIf="!isReturn">יציאה</span><span *ngIf="isReturn">החזרה</span>  מס' {{certificateReception}}</h2>
         <p class='originDestWh'>
           <span><u>תאריך:</u></span>&nbsp;&nbsp;
           <span>{{today | date :'dd-MM-yyyy' }}</span>&nbsp;&nbsp;
@@ -135,7 +138,7 @@
               <th>מיקום</th>
               <th>כמות</th>
               <th class='itemNamePrint'>שם פריט</th>
-              <th>לאן יוצא?</th>
+              <th>סיבת יציאה / החזרה</th>
 
             </tr>
             <ng-container *ngFor="let arrival of outGoing; let i =index">

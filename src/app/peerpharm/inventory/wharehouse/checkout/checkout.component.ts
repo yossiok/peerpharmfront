@@ -25,6 +25,7 @@ export class CheckoutComponent implements OnInit {
   today = new Date();
   sending: boolean = false;
   disabled: boolean = false;
+  isReturn: boolean = false
 
   componentCheckout: FormGroup = new FormGroup({
     itemType: new FormControl("component", Validators.required),
@@ -243,5 +244,9 @@ export class CheckoutComponent implements OnInit {
 
   clearArrivals() {
     this.outGoing = [];
+  }
+
+  shaylyShutUp() {
+    this.isReturn = !this.isReturn
   }
 }
