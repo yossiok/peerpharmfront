@@ -52,6 +52,7 @@ import { OrdersService } from './services/orders.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandlerService } from './services/error-handler.service';
+import { ConfirmModalSMSComponent } from './services/confirmsms.modal.service';
 
 
 // import { OrderStagePipe } from './pipes/order-stage.pipe';
@@ -78,9 +79,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     BreadcrumbComponent,
     SidebarComponent,
     LoginComponent,
-    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe, ConfirmModalComponent, AlertModalComponent,
+    SignupComponent, ScheduleCardComponent, MyiframeComponent, TestPipePipe, ConfirmModalComponent, AlertModalComponent,ConfirmModalSMSComponent
   ],
-  entryComponents: [ConfirmModalComponent],
+  entryComponents: [ConfirmModalComponent, ConfirmModalSMSComponent],
   imports: [
     ReactiveFormsModule,
     TranslateModule.forRoot({
