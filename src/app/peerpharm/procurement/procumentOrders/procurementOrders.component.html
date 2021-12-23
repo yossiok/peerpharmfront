@@ -710,11 +710,14 @@
                 <button (click)="deletePurchaseRequest(purchaseRecommendation.recommendNumber)"
                   class="btn btn-danger form-control rounded-pill">Delete Request
                 </button>
+                <!-- <button (click)="approveRequest(purchaseRecommendation.recommendNumber)"
+                  class="btn btn-danger form-control rounded-pill">Approve Request
+                </button> -->
               </td>
               <td>
                 <button (click)="printPurchaseRequest(purchaseRecommendation.recommendNumber)"
-                  class="btn btn-secondary rounded-pill"><img style="width: 30px;" src="../../../../assets/images/print.png"
-                    alt="">Print Request
+                  class="btn btn-secondary rounded-pill"><img style="width: 30px;"
+                    src="../../../../assets/images/print.png" alt="">Print Request
                 </button>
               </td>
             </tr>
@@ -866,8 +869,7 @@
   td : {'border': '1px solid black'},
   tr : {'border': 'solid 2px black'},
   th : {'border': 'solid 2px black'},
-  button:{'display':'none'}}" style="visibility: hidden;"
-    printSectionId="purchase-request" ngxPrint></button>
+  button:{'display':'none'}}" style="visibility: hidden;" printSectionId="purchase-request" ngxPrint></button>
   <div class="col-12">
     <h1 dir="rtl">בקשת רכש מספר {{purchaseRecommendationToPrint.recommendNumber}}</h1>
     <h2 dir="rtl">נפתחה ע"י {{purchaseRecommendationToPrint.user}}</h2>

@@ -300,13 +300,15 @@ export class InventoryService {
       .pipe(map((res) => res.json()));
   }
   // ספירת מלאי,גיבוי לארכיון ומחיקה
-  updateYearCount(whName, type) {
+  updateYearCount(whName, type, fileDate) {
     let url =
       this.baseUrl +
       "mongoArchives/itemshell2021?whName=" +
       whName +
       "&type=" +
-      type;
+      type +
+      "&fileDate=" +
+      fileDate;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
   // ספירת מלאי, קבלת שמות קבצי אקסל שנטענו
