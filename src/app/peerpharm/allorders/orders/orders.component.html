@@ -7,7 +7,9 @@
     <div class="col-4 bg-white">
       <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info">Open Orders</h1>
     </div>
-    <div class="col-2"></div>
+    <div class="col-2">
+      <!-- <button (click)="getLatesReport()" class="btn btn-info">F8 - דו"ח איחורים</button> -->
+    </div>
     <div class="col-2">
       <div *ngIf="loadingUri" class="smallerLoader"></div>
       <button *ngIf="!loadingUri" (click)="getUriReport()" class="btn btn-info">F4 - דו"ח אורי</button>
@@ -137,7 +139,7 @@
         <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black;"
           *ngFor="let order of orders; let i = index" [style.background-color]="order.color"
           (blur)="saveEdit(false, '')">
-          <td style="width:3%;">{{i+1}}</td>
+          <td [style.background]="order.batchStatus | orderItemBatchStatusColor" style="width:3%;">{{i+1}}</td>
           <td style="width:3%;" (click)="edit('')">
             <input type="checkbox" [(ngModel)]="order.isSelected" name="orderSelect">
           </td>

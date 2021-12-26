@@ -555,6 +555,21 @@ export class OrdersComponent implements OnInit {
 
   }
 
+  getLatesReport() {
+    let excel = this.orders
+    .map(o => {
+      o.deliveryDate = new Date(`${o.deliveryDate.slice(6,9)}-${o.deliveryDate.slice(3,4)}-${o.deliveryDate.slice(0,1)}`)
+      return o
+    }) 
+      .filter(o => {
+        return o.deliveryDate < new Date()
+      })
+      .sort((a, b) => {
+        return a.getTime() - b.getTime() 
+      }) 
+    console.log(excel)
+  }
+
   getUriReport() {
     this.toastSrv.info('זה ייקח מספר דקות..', 'מכין דו"ח הזמנות.')
     this.loadingUri = true
