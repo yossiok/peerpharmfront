@@ -136,7 +136,7 @@ export class ProcurementOrdersComponent implements OnInit {
     itemNumber: new FormControl(null),
     origin: new FormControl(null),
   });
-  purchaseRecommendationToPrint: any = {}
+  purchaseRecommendationToPrint: any = {};
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
     event: KeyboardEvent
@@ -404,10 +404,18 @@ export class ProcurementOrdersComponent implements OnInit {
         });
     }
   }
+  approveRequest(recommendationNumber) {
+    if (confirm(`האם אתה מאשר את בקשה מספר ${recommendationNumber}?`)) {
+      this.purchaseRecommendations = [];
+      console.log("approve");
+    }
+  }
 
   printPurchaseRequest(recommendationNumber) {
-      this.purchaseRecommendationToPrint = this.purchaseRecommendations.find(pr=> pr.recommendNumber == recommendationNumber)
-      setTimeout(()=> this.printRequest.nativeElement.click(), 500)
+    this.purchaseRecommendationToPrint = this.purchaseRecommendations.find(
+      (pr) => pr.recommendNumber == recommendationNumber
+    );
+    setTimeout(() => this.printRequest.nativeElement.click(), 500);
   }
 
   //open in excel
@@ -862,7 +870,7 @@ export class ProcurementOrdersComponent implements OnInit {
 
     this.procurementservice.getAllPurchaseRecommends().subscribe((data) => {
       this.loadingRecommendations = false;
-
+      // console.log(data);
       this.purchaseRecommendations = data;
       this.purchaseRecommendations.forEach((pr) => {
         pr.stockitems.forEach((si) => {
@@ -963,9 +971,7 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   exportAsXLSX(expression): void {
-
     switch (expression) {
-
       case "purchaseData":
         let exelData = [];
         for (let purchase of this.procurementData) {
@@ -973,16 +979,23 @@ export class ProcurementOrdersComponent implements OnInit {
             Order: purchase.orderNumber,
             Supplier: purchase.supplierNumber,
             "": purchase.supplierName,
-            Status: this.hebStat(purchase.status) ,
-            ET: purchase.status == 'ETA' || purchase.status == 'ETD' ? purchase.statusChange ? purchase.statusChange.slice(0,10) : "" : "",
+            Status: this.hebStat(purchase.status),
+            ET:
+              purchase.status == "ETA" || purchase.status == "ETD"
+                ? purchase.statusChange
+                  ? purchase.statusChange.slice(0, 10)
+                  : ""
+                : "",
             "Item Type": purchase.orderType,
-            "Opened At": purchase.creationDate ? purchase.creationDate.slice(0,10) : "",
+            "Opened At": purchase.creationDate
+              ? purchase.creationDate.slice(0, 10)
+              : "",
             User: purchase.user,
             Remarks: purchase.remarks,
             Origin: purchase.origin,
-          })
+          });
         }
-     
+
         this.excelService.exportAsExcelFile(exelData, "purchase orders");
         break;
 
@@ -1039,7 +1052,7 @@ export class ProcurementOrdersComponent implements OnInit {
         }
         this.excelService.exportAsExcelFile(allItems, "purchase items");
         break;
-        
+
       default:
     }
   }

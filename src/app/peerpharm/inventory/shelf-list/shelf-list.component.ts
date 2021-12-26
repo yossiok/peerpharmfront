@@ -212,6 +212,7 @@ export class ShelfListComponent implements OnInit {
   getFileName(ev) {
     let fileDate = ev.target ? ev.target.value : ev;
     console.log(fileDate);
+    this.fileDate = fileDate;
     // let fileDate = new Date(fileName);
     this.allCountShelves = [];
     this.inventorySrv.getYearCountFile(fileDate).subscribe((data) => {
@@ -228,6 +229,7 @@ export class ShelfListComponent implements OnInit {
 
         for (let doc of data) {
           console.log(doc);
+          let prevQty = doc.counts.prevQty ? doc.counts.prevQty : 0;
           let shelf = {
             companyOwned: doc.companyOwned,
             countDate: doc.counts.countDate,
@@ -242,13 +244,13 @@ export class ShelfListComponent implements OnInit {
             itemQty: doc.counts.countQty,
             itemRemark: doc.counts.itemRemark,
             itemUnit: doc.counts.itemUnit,
-            prevQty: doc.counts.prevQty,
+            prevQty,
             repeatCount: doc.counts.repeatCount,
             supervisedBy: doc.counts.supervisedBy,
             typedBy: doc.counts.typedBy,
             diffQty: doc.counts.repeatCount
-              ? doc.counts.prevQty - doc.counts.repeatCount
-              : doc.counts.prevQty - doc.counts.countQty,
+              ? doc.counts.repeatCount - prevQty
+              : doc.counts.countQty - prevQty,
           };
           console.log(shelf);
           this.allCountShelves.push(shelf);
@@ -536,6 +538,21 @@ export class ShelfListComponent implements OnInit {
     let whName = "data";
     let whNames = [];
     let formNum = 1;
+    let emptyRows = 400;
+
+    let emptyObj = {
+      total: 0,
+      whareHouse: this.whareHouse,
+      _id: {
+        item: "",
+        name: "",
+        newPosition: "",
+        position: "",
+      },
+    };
+    for (let e = 0; e < emptyRows; e++) {
+      this.allShelfs.push(emptyObj);
+    }
     let totalForms = Math.ceil(this.allShelfs.length / 20);
     let i = 0;
     let page = 20;
@@ -960,7 +977,9 @@ export class ShelfListComponent implements OnInit {
                   if (indCS > -1) {
                     console.log(itemShells[indCS].total);
                     item.prevQty = parseInt(itemShells[indCS].total);
-                    item.diffQty = item.itemQty - item.prevQty;
+                    item.diffQty = item.prevQty
+                      ? item.itemQty - item.prevQty
+                      : item.itemQty;
                     indCS = -1;
                   }
                   console.log(indP);
@@ -1041,11 +1060,24 @@ export class ShelfListComponent implements OnInit {
     //*** Backup the current wharehouse */
     console.log(this.whareHouse);
     console.log(this.itemType);
-    this.inventorySrv
-      .updateYearCount(this.whareHouse, this.itemType)
-      .subscribe((data) => {
-        console.log(data);
-      });
+    console.log(this.fileDate);
+    let confirmUpdate = confirm(
+      "אתה עומד לעדכן את המערכת בספירת המלאי למחסן זה, האם להמשיך? "
+    );
+    if (confirmUpdate && this.allowedYearUpdate) {
+      this.loadingDataToDB = true;
+      this.inventorySrv
+        .updateYearCount(this.whareHouse, this.itemType, this.fileDate)
+        .subscribe((data) => {
+          console.log(data);
+          this.loadingDataToDB = false;
+          if (data.msg) {
+            this.toastSrv.error(data.msg);
+          } else if (data) {
+            this.toastSrv.success("עדכון מלאי בוצע בהצלחה");
+          }
+        });
+    }
   }
   exportEmptyFileView() {
     if (!this.exportEmptyFile) {
@@ -1097,11 +1129,15 @@ export class ShelfListComponent implements OnInit {
   }
 
   stockUpdateByFileView() {
-    this.exportEmptyFile = false;
-    this.importExcelFile = false;
-    this.saveTheExcelToDb = false;
-    this.viewSavedExcel = false;
-    this.stockUpdateByFile = true;
-    this.readOnly = true;
+    if (this.allowedYearUpdate) {
+      this.exportEmptyFile = false;
+      this.importExcelFile = false;
+      this.saveTheExcelToDb = false;
+      this.viewSavedExcel = false;
+      this.stockUpdateByFile = true;
+      this.readOnly = true;
+    } else {
+      alert("אין לך הרשאה מתאימה לביצוע הפעולה");
+    }
   }
 }
