@@ -59,7 +59,7 @@
           <div class="col-3">
             <input type="number" class="form-control" formControlName="amount" placeholder="Amount">
           </div>
-          <div class="col-3"><button [disabled]="!whareHouse" [style.cursor]="whareHouse ? 'pointer' : 'not-allowed'"
+          <div class="col-3"><button [disabled]="!whareHouse || !validItem" [style.cursor]="whareHouse ? 'pointer' : 'not-allowed'"
               type="button" (click)="addNewItemShelf()" class="btn btn-outline-success">הכנס</button></div>
         </div>
       </form>

@@ -54,6 +54,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
     });
     shellNums: any;
     printing: boolean = false
+    validItem: boolean = false
 
     @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
         event: KeyboardEvent
@@ -339,7 +340,11 @@ export class WhareHouseUpdatesComponent implements OnInit {
             this.inventorySrv
                 .getCmptByNumber(this.newShelfForm.value.item, this.itemType)
                 .subscribe((data) => {
-                    if (data.length == 0) this.toastSrv.error("", "!פריט לא קיים");
+                    if (data.length == 0) {
+                        this.toastSrv.error("", "!פריט לא קיים");
+                        this.validItem = false    
+                    } 
+                    else this.validItem = true
                 });
         }
     }
@@ -350,6 +355,8 @@ export class WhareHouseUpdatesComponent implements OnInit {
             .subscribe((data) => {
                 if (data._id) {
                     this.toastSrv.success("מדף הוקם בהצלחה");
+                    this.newShelfForm.reset()
+                    this.validItem = false
                     this.inventorySrv
                     .shelfListByWH(this.whareHouse, this.itemType)
                     .subscribe((data) => {
