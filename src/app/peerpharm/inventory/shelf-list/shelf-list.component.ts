@@ -273,7 +273,7 @@ export class ShelfListComponent implements OnInit {
         break;
       case "component":
         this.itemType = whareHouse;
-        this.whareHouse = "Rosh HaAyin";
+        this.whareHouse = "Rosh HaAyin C";
         break;
       case "Rosh HaAyin products":
         this.itemType = "product";
