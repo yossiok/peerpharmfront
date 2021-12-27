@@ -1027,7 +1027,7 @@ export class StockComponent implements OnInit {
       if (res) {
         this.reallyAllWhareHouses = res.filter(wh => wh.name != 'Rosh HaAyin');
         let displayAllowedWH = [];
-        for (const wh of res) {
+        for (const wh of this.reallyAllWhareHouses) {
           if (this.authService.loggedInUser.allowedWH.includes(wh._id)) {
             displayAllowedWH.push(wh);
           }
@@ -2520,8 +2520,14 @@ export class StockComponent implements OnInit {
       .subscribe(async (res) => {
         this.callingForCmptAmounts = false;
 
-        this.itemAmountsData = res.data;
-        this.itemAmountsWh = res.whList;
+        // remove these 2 filters after "Rosh HaAyin" components are all removed from db ("Rosh HaAyin C" = new warehouse for components)
+        this.itemAmountsData = this.stockType == 'material' ? res.data 
+        : 
+        res.data.filter(is => is.wh != "5c1124ef2db99c4434914a0e"); // remove
+        this.itemAmountsWh = this.stockType == 'material' ? res.whList
+        :
+        res.whList.filter(wh => wh != "Rosh HaAyin"); // remove
+
         this.currItemShelfs = [];
         this.newItemShelfWH = "";
 
