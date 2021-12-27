@@ -132,9 +132,12 @@ export class WharehouseComponent implements OnInit {
   }
 
   getAllWhs() {
+    debugger
     this.inventoryService
       .getWhareHousesList()
-      .subscribe((whs) => (this.allWhareHouses = whs));
+      .subscribe(whs => {
+        this.allWhareHouses = whs.filter(wh => wh.name != 'Rosh HaAyin')
+      });
   }
 
   getUserWhs() {
@@ -146,7 +149,7 @@ export class WharehouseComponent implements OnInit {
           displayAllowedWH.push(wh);
         }
       });
-      this.whareHouses = displayAllowedWH;
+      this.whareHouses = displayAllowedWH.filter(wh => wh.name != 'Rosh HaAyin');
 
       this.curentWhareHouseId = displayAllowedWH[0]._id;
       this.curentWhareHouseName = displayAllowedWH[0].name;

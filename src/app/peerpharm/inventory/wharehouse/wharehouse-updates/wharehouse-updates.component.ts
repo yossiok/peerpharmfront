@@ -54,6 +54,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
     });
     shellNums: any;
     printing: boolean = false
+    validItem: boolean = false
 
     @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
         event: KeyboardEvent
@@ -98,6 +99,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
     getShelfsByWH(ev) {
         this.fetchingShelfs = true;
         let whareHouse = ev.target ? ev.target.value : ev;
+        this.newShelfForm.controls.whareHouse = whareHouse
         // this.whareHouse = ev.target.value;
         this.getAllWhShelfs();
         switch (whareHouse) {
@@ -111,6 +113,10 @@ export class WhareHouseUpdatesComponent implements OnInit {
                 break;
             case "Rosh HaAyin products":
                 this.itemType = "product";
+                this.whareHouse = whareHouse
+                break;
+            case "Rosh HaAyin C":
+                this.itemType = "component";
                 this.whareHouse = whareHouse
                 break;
             case "NEW KASEM":
@@ -135,16 +141,15 @@ export class WhareHouseUpdatesComponent implements OnInit {
             .subscribe((data) => {
                 this.fetchingShelfs = false;
                 if (data) {
-                    let allShelfsWithOrWithoutItems = data.emptyShells.concat(data.itemShells)
-                    allShelfsWithOrWithoutItems.sort((a, b) => (a._id.position > b._id.position ? 1 : -1));
-                    let emptyLines = []
-                    for (let i = 0; i < 50; i++) {
-                        emptyLines.push({ _id: {} })
-                    }
-                    allShelfsWithOrWithoutItems = allShelfsWithOrWithoutItems.concat(emptyLines)
-                    this.allShelfs = allShelfsWithOrWithoutItems;
-                    this.allShelfsCopy = allShelfsWithOrWithoutItems;
-                    console.log(data);
+                    // let allShelfsWithOrWithoutItems = data.emptyShells.concat(data.itemShells)
+                    // allShelfsWithOrWithoutItems.sort((a, b) => (a._id.position > b._id.position ? 1 : -1));
+                    // let emptyLines = []
+                    // for (let i = 0; i < 50; i++) {
+                    //     emptyLines.push({ _id: {} })
+                    // }
+                    // allShelfsWithOrWithoutItems = allShelfsWithOrWithoutItems.concat(emptyLines)
+                    this.allShelfs = data.itemShells;
+                    this.allShelfsCopy = data.itemShells;
                 } else this.toastSrv.error("No Shelfs in Wharehouse");
             });
     }
@@ -335,7 +340,11 @@ export class WhareHouseUpdatesComponent implements OnInit {
             this.inventorySrv
                 .getCmptByNumber(this.newShelfForm.value.item, this.itemType)
                 .subscribe((data) => {
-                    if (data.length == 0) this.toastSrv.error("", "!פריט לא קיים");
+                    if (data.length == 0) {
+                        this.toastSrv.error("", "!פריט לא קיים");
+                        this.validItem = false    
+                    } 
+                    else this.validItem = true
                 });
         }
     }
@@ -344,10 +353,26 @@ export class WhareHouseUpdatesComponent implements OnInit {
         this.inventorySrv
             .newShelfYearCount(this.newShelfForm.value, this.whareHouse)
             .subscribe((data) => {
-                if (data.length > 0) {
-                    this.allShelfs = data;
-                    this.allShelfsCopy = data;
+                if (data._id) {
                     this.toastSrv.success("מדף הוקם בהצלחה");
+                    this.newShelfForm.reset()
+                    this.validItem = false
+                    this.inventorySrv
+                    .shelfListByWH(this.whareHouse, this.itemType)
+                    .subscribe((data) => {
+                        this.fetchingShelfs = false;
+                        if (data) {
+                            // let allShelfsWithOrWithoutItems = data.emptyShells.concat(data.itemShells)
+                            // allShelfsWithOrWithoutItems.sort((a, b) => (a._id.position > b._id.position ? 1 : -1));
+                            // let emptyLines = []
+                            // for (let i = 0; i < 50; i++) {
+                            //     emptyLines.push({ _id: {} })
+                            // }
+                            // allShelfsWithOrWithoutItems = allShelfsWithOrWithoutItems.concat(emptyLines)
+                            this.allShelfs = data.itemShells;
+                            this.allShelfsCopy = data.itemShells;
+                        } else this.toastSrv.error("No Shelfs in Wharehouse");
+                    });
                 } else this.toastSrv.error("משהו השתבש");
             });
     }

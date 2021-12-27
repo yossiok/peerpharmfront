@@ -17,7 +17,7 @@ import { FreeBatchesFile } from '../free-batches/FreeBatch';
   styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent implements OnInit {
-  
+
   @ViewChild('orderRemarks') orderRemarks: ElementRef;
   @ViewChild('orderType') orderType: ElementRef;
   @ViewChild('deliveryDate') deliveryDate: ElementRef;
@@ -164,7 +164,7 @@ export class OrdersComponent implements OnInit {
         }
 
         this.ordersService.uploadFreeBatches(freeBatches).subscribe(data => {
-          if(data.msg == 'success') this.toastSrv.success('File Uploaded successfully')
+          if (data.msg == 'success') this.toastSrv.success('File Uploaded successfully')
           else this.toastSrv.error(data.msg)
         })
       }
@@ -174,7 +174,7 @@ export class OrdersComponent implements OnInit {
   downloadFreeBatches() {
     this.ordersService.downloadFreeBatches().subscribe(data => {
       console.log(data)
-      if(data.msg == 'success') {
+      if (data.msg == 'success') {
         this.freeBatches = data.freeBatches
         this.freeBatchesModal = true
       }
@@ -553,6 +553,39 @@ export class OrdersComponent implements OnInit {
     }
     this.sortCurrType = "orderNumber"
 
+  }
+
+  getLatesReport() {
+    let excel = [...this.orders]
+
+    excel = excel.map(o => {
+      o.formatedDate = new Date(`${o.deliveryDate.slice(6, 10)}-${o.deliveryDate.slice(3, 5)}-${o.deliveryDate.slice(0, 2)}`)
+      return o
+    })
+      .filter(o => {
+        return o.formatedDate.getTime() < new Date().getTime()
+      })
+      .sort((a, b) => {
+        return a.formatedDate.getTime() - b.formatedDate.getTime()
+      })
+
+    let fom = []
+    for (let order of excel) {
+      fom.push({
+        // "הזמנה+לקוח": order.NumberCostumer,
+        "מס' הזמנה": order.orderNumber,
+        "לקוח": order.costumer,
+        // 'מק"ט לקוח (פנימי)': order.costumerInternalId,
+        "תאריך הזמנה": order.orderDate,
+        "תאריך אספקה (משוער)": order.formatedDate,
+        // "סוג הזמנה": order.type,
+        // "משתמש": order.user,
+        // "הערות": order.orderRemarks,
+      })
+    }
+
+
+    this.excelService.exportAsExcelFile(fom, `דו"ח איחורים ${new Date().toString().slice(0, 10)}`)
   }
 
   getUriReport() {

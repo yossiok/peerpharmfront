@@ -885,6 +885,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     this.sendingPurchase = true;
     if (action == "add") {
       if (this.newPurchase.controls.stockitems.value) {
+        this.newPurchase.controls.stockitems.value.map(si => si.number = si.number.trim())
         if (confirm("האם להקים הזמנה זו ?")) {
           // Ensure that send button won't be blocked
           setTimeout(() => {
@@ -894,54 +895,54 @@ export class NewProcurementComponent implements OnInit, OnChanges {
               this.toastr.error("Something went wrong. Try again.");
             }
           }, 1000 * 10);
-
+          
           this.newPurchase.controls["user"].setValue(
             this.authService.loggedInUser.userName
-          );
-          this.newPurchase.controls.userEmail.setValue(
-            this.authService.loggedInUser.userEmail
-          );
-
-          // set order arrival date as the latest item arrival date
-          let latestArrivalItem = this.newPurchase.value.stockitems.reduce(
-            (latestItem, item) => {
-              return item.itemArrival > latestItem.itemArrival
-                ? item
-                : latestItem;
-            },
-            this.newPurchase.value.stockitems[0]
-          );
-
-          if (this.newPurchase.value.requestedDate) {
-            this.newPurchase.value.stockitems.map((si) => {
-              si.itemRequested = this.newPurchase.value.requestedDate;
-              return si;
-            });
-          }
-
-          let tempPurchase = this.newPurchase.value;
-          if (latestArrivalItem.itemArrival) {
-            tempPurchase.arrivalDate = latestArrivalItem.itemArrival;
-          } else {
-            tempPurchase.arrivalDate = null;
-          }
-
-          this.procurementService
-            .addNewProcurement(tempPurchase)
-            .subscribe((data) => {
-              this.sendingPurchase = false;
-              if (data) {
-                if (data.message)
-                  this.toastr.warning(data.message + ". Order Saved");
-                this.toastr.success(
-                  "הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!"
+            );
+            this.newPurchase.controls.userEmail.setValue(
+              this.authService.loggedInUser.userEmail
+              );
+              
+              // set order arrival date as the latest item arrival date
+              let latestArrivalItem = this.newPurchase.value.stockitems.reduce(
+                (latestItem, item) => {
+                  return item.itemArrival > latestItem.itemArrival
+                  ? item
+                  : latestItem;
+                },
+                this.newPurchase.value.stockitems[0]
                 );
-                this.newPurchase.reset();
-                this.newProcurementSaved.emit(data);
-                this.closeOrderModal.emit(false);
-                // location.reload();
-              } else this.toastr.error("משהו השתבש...");
-            });
+                
+                if (this.newPurchase.value.requestedDate) {
+                  this.newPurchase.value.stockitems.map((si) => {
+                    si.itemRequested = this.newPurchase.value.requestedDate;
+                    return si;
+                  });
+                }
+                
+                let tempPurchase = this.newPurchase.value;
+                if (latestArrivalItem.itemArrival) {
+                  tempPurchase.arrivalDate = latestArrivalItem.itemArrival;
+                } else {
+                  tempPurchase.arrivalDate = null;
+                }
+                
+                this.procurementService
+                .addNewProcurement(tempPurchase)
+                .subscribe((data) => {
+                  this.sendingPurchase = false;
+                  if (data) {
+                    if (data.message)
+                    this.toastr.warning(data.message + ". Order Saved");
+                    this.toastr.success(
+                      "הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!"
+                      );
+                      this.newPurchase.reset();
+                      this.newProcurementSaved.emit(data);
+                      this.closeOrderModal.emit(false);
+                      // location.reload();
+                    } else this.toastr.error("משהו השתבש...");
+                  });
         }
       } else {
         this.toastr.error("אין אפשרות להקים הזמנה ללא פריטים");
@@ -949,6 +950,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
     if (action == "update") {
       if (confirm("האם לעדכן הזמנה זו ?")) {
+        this.newPurchase.controls.stockitems.value.map(si => si.number = si.number.trim())
         // Ensure that send button won't be blocked
         setTimeout(() => {
           if (this.sendingPurchase) {
@@ -956,39 +958,39 @@ export class NewProcurementComponent implements OnInit, OnChanges {
             this.toastr.error("Something went wrong. Try again.");
           }
         }, 1000 * 10);
-
+        
         // set order arrival date as the latest item arrival date
         let latestArrivalItem = this.newPurchase.value.stockitems.reduce(
           (latestItem, item) => {
             return item.itemArrival > latestItem.itemArrival
-              ? item
-              : latestItem;
+            ? item
+            : latestItem;
           },
           this.newPurchase.value.stockitems[0]
-        );
-
-        if (latestArrivalItem.itemArrival != "")
+          );
+          
+          if (latestArrivalItem.itemArrival != "")
           this.newPurchase.controls.arrivalDate.setValue(
             latestArrivalItem.itemArrival
-          );
-        if (
-          !latestArrivalItem.itemArrival ||
-          latestArrivalItem.itemArrival == ""
-        ) {
-          this.newPurchase.controls.arrivalDate.setValue(null);
-        }
-
-        this.procurementService
-          .updatePurchaseOrder(this.newPurchase.value)
-          .subscribe((data) => {
-            this.sendingPurchase = false;
-            if (data) {
-              this.toastr.success("הזמנה עודכנה בהצלחה !");
-              this.closeOrderModal.emit(false);
-              this.newProcurementSaved.emit(data);
-              // location.reload()
-            } else this.toastr.error("משהו השתבש...");
-          });
+            );
+            if (
+              !latestArrivalItem.itemArrival ||
+              latestArrivalItem.itemArrival == ""
+              ) {
+                this.newPurchase.controls.arrivalDate.setValue(null);
+              }
+              
+              this.procurementService
+              .updatePurchaseOrder(this.newPurchase.value)
+              .subscribe((data) => {
+                this.sendingPurchase = false;
+                if (data) {
+                  this.toastr.success("הזמנה עודכנה בהצלחה !");
+                  this.closeOrderModal.emit(false);
+                  this.newProcurementSaved.emit(data);
+                  // location.reload()
+                } else this.toastr.error("משהו השתבש...");
+              });
       }
     }
   }
