@@ -1025,7 +1025,7 @@ export class StockComponent implements OnInit {
   getUserAllowedWH() {
     this.inventoryService.getWhareHousesList().subscribe((res) => {
       if (res) {
-        this.reallyAllWhareHouses = res;
+        this.reallyAllWhareHouses = res.filter(wh => wh.name != 'Rosh HaAyin');
         let displayAllowedWH = [];
         for (const wh of res) {
           if (this.authService.loggedInUser.allowedWH.includes(wh._id)) {
