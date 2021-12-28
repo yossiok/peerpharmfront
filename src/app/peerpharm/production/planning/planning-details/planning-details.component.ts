@@ -226,15 +226,15 @@ export class PlanningDetailsComponent implements OnInit {
       this.saveChanges(orderITemToDelete)
         .then((succesMessage) => {
           this.toastr.success(succesMessage, 'השורה נמחקה בהצלחה')
-        }) 
+        })
         .catch((errorMessage) => {
           this.toastr.error(errorMessage);
-        }) 
+        })
     } else this.toastr.warning("לא בוצעו שינויים");
   }
 
   deleteProductionFormules() {
-    if(confirm('כל הפורמולות יימחקו ותצטרך ליצור אותן מחדש. להמשיך?')){
+    if (confirm('כל הפורמולות יימחקו ותצטרך ליצור אותן מחדש. להמשיך?')) {
       this.workPlan.productionFormules = []
       // TODO: update status
       this.workPlan.orderItems.map(oi => {
@@ -243,18 +243,18 @@ export class PlanningDetailsComponent implements OnInit {
         return oi
       })
       this.saveChanges()
-      .then((succesMessage) => this.toastr.success(succesMessage, 'פורמולות נמחקו'))
-      .catch((errorMessage) => this.toastr.error(errorMessage));
+        .then((succesMessage) => this.toastr.success(succesMessage, 'פורמולות נמחקו'))
+        .catch((errorMessage) => this.toastr.error(errorMessage));
     }
   }
 
   cancelWorkPlan() {
-    if(confirm(' הפריטים יוחזרו למצב Waiting. האם לבטל פק"ע?')) {
+    if (confirm(' הפריטים יוחזרו למצב Waiting. האם לבטל פק"ע?')) {
       this.workPlan.status = 8
       this.workPlan.productionFormules.map(f => f.status = 8)
       this.saveChanges()
-      .then((succesMessage) => this.toastr.success(succesMessage, 'פק"ע בוטלה, פריטים הוחזרו'))
-      .catch((errorMessage) => this.toastr.error(errorMessage));
+        .then((succesMessage) => this.toastr.success(succesMessage, 'פק"ע בוטלה, פריטים הוחזרו'))
+        .catch((errorMessage) => this.toastr.error(errorMessage));
     }
   }
 
@@ -282,6 +282,27 @@ export class PlanningDetailsComponent implements OnInit {
 
   export(data, title) {
     this.excelService.exportAsExcelFile(data, title);
+  }
+
+  exportBatches() {
+    let excel = []
+    for (let batch of this.workPlan.productionFormules) {
+      for (let oai of batch.ordersAndItems) {
+        excel.push({
+          Formule: batch.formule,
+          Order: oai.orderNumber,
+          Item: oai.itemNumber,
+          'Item Name': oai.itemName,
+          'Order KG':oai.weightKg,
+          'Batch KG': batch.totalKG,
+          'חו"ג קיים?': batch.enoughMaterials,
+          Status: batch.status,
+          'Due date': batch.dueDate,
+          batch: batch.batchNumber
+        })
+      }
+    }
+    this.excelService.exportAsExcelFile(excel, `PAKA ${this.workPlan.serialNumber} batches`)
   }
 
   exportExplosion(data, title) {

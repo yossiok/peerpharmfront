@@ -1088,7 +1088,7 @@ export class StockComponent implements OnInit {
         .subscribe((data) => {
           if (data) {
             this.recommendStockItem.name = data[0].componentName;
-            if ((data[0].itemType = "material")) {
+            if ((data[0].itemType == "material")) {
               if (data[0].threatment)
                 this.recommendStockItem.threatment = data[0].threatment;
             }
