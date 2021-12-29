@@ -178,6 +178,14 @@ export class BetweenWHComponent implements OnInit {
   // get chunks with item
   // it was better to split it to 2 different functions - one for origin and one for destination...
   getChunks(whType) {
+    console.log(this.movementForm.controls.WH_originId.value);
+    if (
+      !this.movementForm.controls.WH_originId.value ||
+      !this.movementForm.controls.item.value
+    ) {
+      return;
+    }
+
     console.log(whType);
     if (whType == "o") this.originWHShelfs = [];
     if (whType == "d") this.destWHShelfs = [];

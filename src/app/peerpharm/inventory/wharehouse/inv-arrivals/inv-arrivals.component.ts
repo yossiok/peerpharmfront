@@ -201,6 +201,7 @@ export class InvArrivalsComponent implements OnInit {
               this.componentArrival.value.whareHouseID
             )
             .subscribe((res) => {
+              console.log(res);
               if (res.msg) this.toastr.error("בעיה בהזנת הנתונים.");
               else if (res.length == 0) {
                 let noShellsForItem = confirm(

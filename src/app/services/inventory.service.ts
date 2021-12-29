@@ -311,6 +311,14 @@ export class InventoryService {
       fileDate;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+
+  updateActionlogs(values): Observable<any> {
+    let url = this.baseUrl + "mongoArchives/updateActionlogs";
+    return this.http
+      .post(url, JSON.stringify(values), this.options)
+      .pipe(map((res) => res.json()));
+  }
+
   // ספירת מלאי, קבלת שמות קבצי אקסל שנטענו
   getFilesListByWh(whName, type) {
     let url =

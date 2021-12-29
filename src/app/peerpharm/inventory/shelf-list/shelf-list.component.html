@@ -11,27 +11,33 @@
           (click)="exportEmptyFileView();">
           יצוא
           של קובץ ספירה ריק לפי שם מחסן
-          <span class="badge badge-danger ml-auto pr-2 pt-1" [style.background]="1|orderItemBatchStatusColor">1</span>
+          <span class="badge badge-danger ml-auto pr-2 pt-1" [style.background]="1|orderItemBatchStatusColor">&nbsp;
+            1 &nbsp; </span>
         </li>
         <li style="cursor: pointer" class=" task-item d-flex complete pr-2 border-bottom heb-menu"
           (click)="importExcelFileView() ">
           יבוא קובץ אקסל לאחר ספירה<span class="badge badge-success ml-auto pt-1"
-            [style.background]="2|orderItemBatchStatusColor">2</span>
+            [style.background]="2|orderItemBatchStatusColor"> &nbsp; 2 &nbsp; </span>
         </li>
         <li style="cursor: pointer" class="task-item d-flex complete pr-2 border-bottom heb-menu"
           (click)="saveTheExcelToDbView()">
           שמור את נתוני האקסל במערכת<span class="badge badge-success ml-auto pt-1"
-            [style.background]="3|orderItemBatchStatusColor">3</span>
+            [style.background]="3|orderItemBatchStatusColor"> &nbsp; 3 &nbsp;</span>
         </li>
         <li style="cursor: pointer" class="task-item d-flex complete pr-2 border-bottom heb-menu"
           (click)="viewSavedExcelView()">
           צפיה בקבצים קודמים שנטענו למערכת<span class="badge badge-success ml-auto pt-1"
-            [style.background]="4|orderItemBatchStatusColor">4</span>
+            [style.background]="4|orderItemBatchStatusColor">&nbsp; 4 &nbsp; </span>
         </li>
         <li style="cursor: pointer" class="task-item d-flex complete border-bottom heb-menu pr-2"
           (click)="stockUpdateByFileView()">
           עדכון מלאי סופי לפי שם מחסן<span class="badge badge-success ml-auto pt-1"
-            [style.background]="5|orderItemBatchStatusColor">5</span>
+            [style.background]="5|orderItemBatchStatusColor">&nbsp; 5 &nbsp; </span>
+        </li>
+        <li style="cursor: pointer" class="task-item d-flex complete border-bottom heb-menu pr-2"
+          (click)="actionLogsUpdateView()">
+          עדכון פעולות רטרואקטיבי לפי שם מחסן<span class="badge badge-success ml-auto pt-1"
+            [style.background]="6|orderItemBatchStatusColor">&nbsp; 6 &nbsp; </span>
         </li>
       </ul>
     </div>
@@ -78,6 +84,12 @@
             <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info "> עדכון מלאי לשנת 2021 לפי מחסן</h1>
           </div>
         </div>
+        <div class="row mt-4" *ngIf="actionLogsUpdate">
+          <div class="col-12">
+            <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info "> עדכון תנועות רטרואקטיבי שבוצעו אחרי ספירת
+              מלאי</h1>
+          </div>
+        </div>
 
         <div dir="rtl" class="row mt-4">
           <ng-container *ngIf="exportEmptyFile">
@@ -104,6 +116,7 @@
                 <option value="component">Rosh HaAyin - Components</option>
                 <option value="Rosh HaAyin products">Rosh HaAyin - Products</option>
                 <option value="NEW KASEM">New Kasem</option>
+                <option value="NEW KASEM-2">New Kasem-2</option>
                 <option value="Labels">Labels</option>
                 <option value="ARIEL 1">ARIEL 1</option>
                 <option value="ARIEL 2">ARIEL 2</option>
@@ -419,7 +432,44 @@
 
       </div>
 
-
+      <div *ngIf="actionLogsUpdate" clasee="row mt-4">
+        <form [formGroup]="retroactiveUpdate" (ngSubmit)="updateItemshells()">
+          <div class="row mt-2">
+            <div class="col-2 mx-5">
+              <label for=""> שם המחסן-שדה חובה</label>
+              <select class="form-control" formControlName="warehouseName" #first>
+                <option *ngFor="let wh of allWarehouses" [value]="wh._id">{{wh.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-2 mx-5">
+              <label for="">מתאריך - שדה חובה</label>
+              <input type="date" class="form-control" formControlName="fromDate">
+            </div>
+            <div class="col-2">
+              <label for="">משעה</label>
+              <input type="time" class="form-control" formControlName="fromHour">
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-2 mx-5">
+              <label for="">עד תאריך</label>
+              <input type="date" class="form-control" formControlName="toDate">
+            </div>
+            <div class="col-2">
+              <label for="">עד שעה</label>
+              <input type="time" class="form-control" formControlName="toHour">
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-2 mx-5">
+              <button type="submit" class="btn btn-secondary" [disabled]="!retroactiveUpdate.valid">עדכן מלאי על פי
+                תנועות עבר</button>
+            </div>
+          </div>
+        </form>
+      </div>
 
     </div>
   </div>

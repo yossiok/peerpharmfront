@@ -57,11 +57,13 @@ export class ShelfListComponent implements OnInit {
   saveTheExcelToDb: boolean = false;
   viewSavedExcel: boolean = false;
   stockUpdateByFile: boolean = false;
+  actionLogsUpdate: boolean = false;
   readOnly: boolean = false;
   countedBy: string = "";
   supervisedBy: string = "";
   typedBy: string = "";
   countDate: Date;
+  allWarehouses: any[] = [];
 
   @ViewChild("shelfPosition") shelfPosition: ElementRef;
   @ViewChild("shelfAmount") shelfAmount: ElementRef;
@@ -96,6 +98,14 @@ export class ShelfListComponent implements OnInit {
     this.editShelfAmount("");
   }
 
+  retroactiveUpdate: FormGroup = new FormGroup({
+    warehouseName: new FormControl("", Validators.required),
+    fromDate: new FormControl(null, Validators.required),
+    toDate: new FormControl(null),
+    fromHour: new FormControl(""),
+    toHour: new FormControl(""),
+  });
+
   constructor(
     private costumerSrv: CostumersService,
     private toastSrv: ToastrService,
@@ -109,6 +119,7 @@ export class ShelfListComponent implements OnInit {
   ngOnInit() {
     this.getLastYearCount();
     this.getAllCostumers();
+    this.getAllWH();
     this.getInvRepCosts();
     this.user = this.authService.loggedInUser.userName;
     console.log(this.user);
@@ -117,6 +128,12 @@ export class ShelfListComponent implements OnInit {
       this.authService.loggedInUser.authorization.includes("allowedCountYear");
     this.allowedYearUpdate =
       this.authService.loggedInUser.authorization.includes("updateYearStock");
+  }
+  getAllWH() {
+    this.inventorySrv.getWhareHousesList().subscribe((whs) => {
+      console.log(whs);
+      this.allWarehouses = whs;
+    });
   }
 
   getInvRepCosts() {
@@ -283,6 +300,10 @@ export class ShelfListComponent implements OnInit {
         this.itemType = "component";
         this.whareHouse = whareHouse;
         break;
+      case "NEW KASEM-2":
+        this.itemType = "component";
+        this.whareHouse = whareHouse;
+        break;
       case "Kasem":
         this.itemType = "component";
         this.whareHouse = whareHouse;
@@ -311,8 +332,16 @@ export class ShelfListComponent implements OnInit {
           this.fetchingShelfs = false;
         } else if (data) {
           console.log(data);
-          let allShelfsWithOrWithoutItems = data.emptyShells.concat(
-            data.itemShells
+          let allShelfsWithOrWithoutItems = [];
+          if (this.whareHouse != "NEW KASEM-2") {
+            allShelfsWithOrWithoutItems = data.emptyShells.concat(
+              data.itemShells
+            );
+          } else if (this.whareHouse == "NEW KASEM-2") {
+            allShelfsWithOrWithoutItems = data.itemShells;
+          }
+          allShelfsWithOrWithoutItems = allShelfsWithOrWithoutItems.sort(
+            (a, b) => (a._id.position > b._id.position ? 1 : -1)
           );
           allShelfsWithOrWithoutItems.forEach((shelf) => {
             console.log(shelf);
@@ -538,7 +567,8 @@ export class ShelfListComponent implements OnInit {
     let whName = "data";
     let whNames = [];
     let formNum = 1;
-    let emptyRows = 400;
+    // let emptyRows = 400;
+    let emptyRows = 40;
 
     let emptyObj = {
       total: 0,
@@ -1084,6 +1114,7 @@ export class ShelfListComponent implements OnInit {
       this.whareHouse = null;
       this.allShelfs = [];
     }
+    this.actionLogsUpdate = false;
     this.exportEmptyFile = true;
     this.importExcelFile = false;
     this.saveTheExcelToDb = false;
@@ -1097,6 +1128,7 @@ export class ShelfListComponent implements OnInit {
       this.allShelfs = [];
       this.allCountShelves = [];
     }
+    this.actionLogsUpdate = false;
     this.showFile = true;
     this.exportEmptyFile = false;
     this.importExcelFile = true;
@@ -1106,6 +1138,7 @@ export class ShelfListComponent implements OnInit {
     this.readOnly = false;
   }
   saveTheExcelToDbView() {
+    this.actionLogsUpdate = false;
     this.exportEmptyFile = false;
     this.importExcelFile = false;
     this.saveTheExcelToDb = true;
@@ -1120,6 +1153,7 @@ export class ShelfListComponent implements OnInit {
       this.allShelfs = [];
       this.allCountShelves = [];
     }
+    this.actionLogsUpdate = false;
     this.exportEmptyFile = false;
     this.importExcelFile = false;
     this.saveTheExcelToDb = false;
@@ -1130,6 +1164,7 @@ export class ShelfListComponent implements OnInit {
 
   stockUpdateByFileView() {
     if (this.allowedYearUpdate) {
+      this.actionLogsUpdate = false;
       this.exportEmptyFile = false;
       this.importExcelFile = false;
       this.saveTheExcelToDb = false;
@@ -1139,5 +1174,45 @@ export class ShelfListComponent implements OnInit {
     } else {
       alert("אין לך הרשאה מתאימה לביצוע הפעולה");
     }
+  }
+  actionLogsUpdateView() {
+    if (this.allowedYearUpdate) {
+      this.actionLogsUpdate = true;
+      this.exportEmptyFile = false;
+      this.importExcelFile = false;
+      this.saveTheExcelToDb = false;
+      this.viewSavedExcel = false;
+      this.stockUpdateByFile = false;
+      this.readOnly = true;
+      this.showFile = false;
+    } else {
+      alert("אין לך הרשאה מתאימה לביצוע הפעולה");
+    }
+  }
+  updateItemshells() {
+    let confRetro = confirm("אתה עומד לשנות מלאי קיים, האם להמשיך?");
+    console.log(this.retroactiveUpdate.controls);
+    let formValue = this.retroactiveUpdate.controls;
+    let updateValues = {
+      fromTime: formValue.fromDate.value + " " + formValue.fromHour.value,
+      toTime: formValue.toDate.value + " " + formValue.toHour.value,
+      warehouseId: formValue.warehouseName.value,
+    };
+    console.log(updateValues);
+    if (confRetro)
+      this.inventorySrv.updateActionlogs(updateValues).subscribe((data) => {
+        console.log(data);
+        if (data.msg) {
+          this.toastSrv.error(data.msg);
+          return;
+        } else if (data.savedResults.length == data.whActions.length) {
+          let filtered = data.savedResults.filter((item) => {
+            return item.ok == 1 && item.nModified == 1 && item.n == 1;
+          });
+          if (filtered.length == data.savedResults.length) {
+            this.toastSrv.success("עדכון המלאי עבר בהצלה", "הצלחה");
+          }
+        }
+      });
   }
 }
