@@ -206,7 +206,8 @@ export class FormdetailsComponent implements OnInit {
     });
   }
 
-  async addNewTest(newTest) {
+  async addNewTest(test) {
+    let newTest = {...test}
     this.form.checkTime.push(newTest.checkTime);
     this.form.checkBox_clean.push(newTest.checkBox_clean);
     this.form.checkNetoWeight.push(newTest.checkNetoWeight);
@@ -244,7 +245,7 @@ export class FormdetailsComponent implements OnInit {
     if (this.newQAPallet.qaStatus == 'עובר לאריזה אישית') this.newQAPallet.isPersonalPackage = true
 
     this.formsService.createNewQaPallet(this.newQAPallet).subscribe(result => {
-
+      debugger
       if (result) {
 
         result = this.calculateSumAmount(result)
