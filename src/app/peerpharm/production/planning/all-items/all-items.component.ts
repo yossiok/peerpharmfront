@@ -127,11 +127,9 @@ export class AllItemsComponent implements OnInit {
           : item.order.orderDate;
         item.itemOrderDate = new Date(item.itemOrderDate);
         console.log(item.itemNumber)
-        debugger
         if (item.workPlans) {
           if (item.wpSplit && item.maxQty > 0) {
             if (this.orderItems.findIndex((oi) => oi._id == item._id) == -1) {
-              
               // newItem1 = remained qty
               let newItem1 = { ...item };
               newItem1.pakaStatus = 1;
@@ -154,9 +152,10 @@ export class AllItemsComponent implements OnInit {
             item.workPlanId = item.workPlans.workPlanId;
             item.quantity = item.workPlans.quantity;
             item.WPstatus = item.workPlans.WPstatus;
+            this.orderItems.push(item);
           }
         }
-        this.orderItems.push(item);
+        else this.orderItems.push(item);
       }
       console.log(this.orderItems);
       for (let i = 1; i <= 8; i++) {

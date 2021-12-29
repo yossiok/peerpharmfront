@@ -1235,3 +1235,25 @@
     </div>
   </div>
 </ng-template>
+
+<ng-template #similarFormulesEref>
+  <div class="p-5">
+    <h1 class="border border-black bg-info text-white rounded">Similar Formule:</h1>
+    <div class="mt-5">
+      <table class="table table-hover">
+        <thead class="bg-dark text-white">
+          <th class="text-center">Order</th>
+          <th class="text-center">item</th>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of similarFormules">
+            <tr>
+              <td>{{item.orderNumber}}</td>
+              <td>{{item.itemNumber}}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>

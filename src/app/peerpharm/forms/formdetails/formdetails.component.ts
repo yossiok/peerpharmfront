@@ -269,7 +269,7 @@ export class FormdetailsComponent implements OnInit {
   updateFormDetails() {
 
     try {
-
+      debugger
       this.formsService.updateFormDetails(this.form).subscribe(result => {
 
         if (result.ok == 1) {

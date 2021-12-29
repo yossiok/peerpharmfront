@@ -84,6 +84,14 @@ export class FormulesService {
     return this.http
       .post(url, JSON.stringify(childNumbers), this.options)
       .pipe(map((reponse) => reponse.json()));
+    }
+    
+    getOpenItemWithSimilarFormulePArent(formuleNumbers) {
+    let url = this.baseUrl + "formules/getSimilarFathersInOrderITems";
+    return this.http
+      .post(url, JSON.stringify({ formuleNumbers }), this.options)
+      .pipe(map((reponse) => reponse.json()));
+
   }
 
   getFormuleByParent(parent) {
