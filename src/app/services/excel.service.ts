@@ -50,7 +50,7 @@ export class ExcelService {
         range.e["c"] = order.length - 1;
         worksheet["!ref"] = XLSX.utils.encode_range(range);
       }
-      this.saveAsExcelFile(excelBuffer, sName);
+      this.saveAsExcelFile(excelBuffer, excelFileName);
     }
   }
 
