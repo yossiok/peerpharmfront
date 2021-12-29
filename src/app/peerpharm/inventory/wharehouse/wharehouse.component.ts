@@ -93,9 +93,9 @@ export class WharehouseComponent implements OnInit {
   loadingToTable: boolean = false;
   editWharehouses: Boolean = false;
   loadShelfs: boolean = false;
-  isJew: boolean = true
-  allowNewRequest: boolean = false
-  showNewReq: boolean = false
+  isJew: boolean = true;
+  allowNewRequest: boolean = false;
+  showNewReq: boolean = false;
 
   constructor(
     private procurementSrv: Procurementservice,
@@ -127,17 +127,16 @@ export class WharehouseComponent implements OnInit {
     // this.itemLine.controls.arrivalDate.setValue(todayStr);
     this.getUserWhs();
     this.getAllWhs();
-    if (this.authService.loggedInUser.screenPermission == '6') this.isJew = false
-    this.allowNewRequest = Number(this.authService.loggedInUser.screenPermission) < 4
+    if (this.authService.loggedInUser.screenPermission == "6")
+      this.isJew = false;
+    this.allowNewRequest =
+      Number(this.authService.loggedInUser.screenPermission) < 4;
   }
 
   getAllWhs() {
-    debugger
-    this.inventoryService
-      .getWhareHousesList()
-      .subscribe(whs => {
-        this.allWhareHouses = whs.filter(wh => wh.name != 'Rosh HaAyin')
-      });
+    this.inventoryService.getWhareHousesList().subscribe((whs) => {
+      this.allWhareHouses = whs.filter((wh) => wh.name != "Rosh HaAyin");
+    });
   }
 
   getUserWhs() {
@@ -149,7 +148,9 @@ export class WharehouseComponent implements OnInit {
           displayAllowedWH.push(wh);
         }
       });
-      this.whareHouses = displayAllowedWH.filter(wh => wh.name != 'Rosh HaAyin');
+      this.whareHouses = displayAllowedWH.filter(
+        (wh) => wh.name != "Rosh HaAyin"
+      );
 
       this.curentWhareHouseId = displayAllowedWH[0]._id;
       this.curentWhareHouseName = displayAllowedWH[0].name;
@@ -182,7 +183,6 @@ export class WharehouseComponent implements OnInit {
       this.StkMngNavBtnColor = "";
 
       this.dir = "managment";
-      
     } else if (action == "stkManagment") {
       //change active navbar colors
       this.WhMngNavBtnColor = "";
@@ -705,7 +705,7 @@ export class WharehouseComponent implements OnInit {
                               } else {
                                 this.toastSrv.error(
                                   "אין מדף כזה במחסן: " +
-                                  this.curentWhareHouseName
+                                    this.curentWhareHouseName
                                 );
                                 this.loadingToTable = false;
                               }
@@ -722,16 +722,16 @@ export class WharehouseComponent implements OnInit {
                       } else {
                         this.toastSrv.error(
                           "אין מספיק כמות על המדף!\n  כמות נוכחית על המדף: " +
-                          shelfRes.stock[0].amount
+                            shelfRes.stock[0].amount
                         );
                         this.loadingToTable = false;
                       }
                     } else {
                       this.toastSrv.error(
                         "פריט: " +
-                        itemLineToAdd.itemNumber +
-                        "\n לא נמצא על מדף: " +
-                        position
+                          itemLineToAdd.itemNumber +
+                          "\n לא נמצא על מדף: " +
+                          position
                       );
                       this.loadingToTable = false;
                     }
@@ -858,10 +858,10 @@ export class WharehouseComponent implements OnInit {
       } else {
         alert(
           " מספר פריט " +
-          itemLine.itemNumber +
-          " במדף " +
-          itemLine.position +
-          "\nכבר קיים ברשימה"
+            itemLine.itemNumber +
+            " במדף " +
+            itemLine.position +
+            "\nכבר קיים ברשימה"
         );
       }
     } else {
