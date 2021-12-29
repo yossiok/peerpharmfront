@@ -343,10 +343,13 @@
       <tr *ngIf="allowUpdateForm">
         <td></td>
         <td colspan="2">
-          <button *ngIf="!newForm" [style.cursor]="disabledValue || !form.directorFrontSignature ? 'not-allowed' : 'pointer'" [disabled]="disabledValue || !form.directorFrontSignature" (click)="updateFormDetails()"
+          <button *ngIf="!newForm"
+            [style.cursor]="disabledValue || !form.directorFrontSignature ? 'not-allowed' : 'pointer'"
+            [disabled]="disabledValue || !form.directorFrontSignature" (click)="updateFormDetails()"
             class="btn btn-success form-control">עדכן טופס</button>
-          <button *ngIf="newForm" [disabled]="disabledValue || !form.directorFrontSignature" [style.cursor]="disabledValue || !form.directorFrontSignature ? 'not-allowed' : 'pointer'" (click)="createFormDetails()"
-            class="btn btn-success form-control">צור טופס</button>
+          <button *ngIf="newForm" [disabled]="disabledValue || !form.directorFrontSignature"
+            [style.cursor]="disabledValue || !form.directorFrontSignature ? 'not-allowed' : 'pointer'"
+            (click)="createFormDetails()" class="btn btn-success form-control">צור טופס</button>
         </td>
         <td></td>
       </tr>
@@ -526,7 +529,7 @@
 
 
 <div *ngIf="showQAPalletsModal == true" style="top:150px;"
-  class="bg-white fixed-top mx-auto w-75 p-5 my-auto text-center rounded shadow-lg border border-info">
+  class="bg-white fixed-top mx-auto w-100 p-5 my-auto text-center rounded shadow-lg border border-info">
   <div class="row mt-4">
     <div class="col-4"> </div>
     <div class="col-4">
@@ -541,7 +544,45 @@
 
   <div class="row mt-4">
     <div class="col-12">
+      <table dir="rtl" class="float-right">
+        <tr>
+          <td>
+            <h3 class="text-info"><u>הוסף משטח:</u> &nbsp;</h3>
+          </td>
+          <td><input [(ngModel)]="newQAPallet.floorNumber" type="number" style="font-weight: bold;font-size: medium;"
+              placeholder="מספר קומות" class="form-control"></td>
+          <td><input [(ngModel)]="newQAPallet.kartonQuantity" type="number" style="font-weight: bold;font-size: medium;"
+              placeholder="כמות קרטונים" class="form-control"></td>
+          <td><input [(ngModel)]="newQAPallet.unitsInKarton" type="number" style="font-weight: bold;font-size: medium;"
+              placeholder="כמות בקרטון" class="form-control"></td>
+          <td><input [(ngModel)]="newQAPallet.lastFloorQuantity" type="number"
+              style="font-weight: bold;font-size: medium;" placeholder="קומה אחרונה" class="form-control"></td>
+          <td><input [(ngModel)]="newQAPallet.unitsQuantityPartKarton" type="number"
+              style="font-weight: bold;font-size: medium;" placeholder="קרטון חלקי" class="form-control"></td>
+          <td></td>
+          <td>
+            <select [(ngModel)]="newQAPallet.qaStatus" style="font-weight: bold;font-size: medium;"
+              class="form-control">
+              <option value="">סטטוס</option>
+              <option value="מוכן לשליחה">מוכן לשליחה</option>
+              <option value="חסר מדבקות">חסר מדבקות</option>
+              <option value="חסר קומפוננטים">חסר קומפוננטים</option>
+              <option value="עובר לאריזה אישית">עובר לאריזה אישית</option>
+              <option value="חסר לייזר">חסר לייזר</option>
+              <option value="נשלח להדפסה">נשלח להדפסה</option>
+              <option value="חסר קרטונים">חסר קרטונים</option>
+              <option value="חסר קרטוני מאסטר">חסר קרטוני מאסטר</option>
+              <option value="חסר עלונים לצרכן">חסר עלונים לצרכן</option>
+              <option value="למלאי">למלאי</option>
+            </select>
+          </td>
+          <td></td>
+          <td><button *ngIf="allowUpdateForm" (click)="addNewQAPallet()" style="font-weight: bold;font-size: medium;"
+              class="btn btn-success">+</button></td>
+        </tr>
+      </table>
       <table dir="rtl" class="table table-striped table-hover">
+
         <thead class="text-white bg-info">
           <tr>
             <th class="pallets-th">#</th>
@@ -565,8 +606,7 @@
             <td class="pallets-td">{{QAPallet.lastFloorQuantity}}</td>
             <td class="pallets-td">{{QAPallet.unitsQuantityPartKarton}}</td>
             <td class="pallets-th">{{QAPallet.sumAmount}}</td>
-            <td class="pallets-td"
-              [ngClass]="{ green:QAPallet.qaStatus == 'מוכן לשליחה',
+            <td class="pallets-td" [ngClass]="{ green:QAPallet.qaStatus == 'מוכן לשליחה',
                            red:QAPallet.qaStatus != 'מוכן לשליחה'
                           }">
               {{QAPallet.qaStatus}}</td>
@@ -577,39 +617,7 @@
                   class="fa fa-times"></i></button></td>
           </tr>
 
-          <tr>
-            <td></td>
-            <td><input [(ngModel)]="newQAPallet.floorNumber" type="number" style="font-weight: bold;font-size: medium;"
-                placeholder="מספר קומות" class="form-control"></td>
-            <td><input [(ngModel)]="newQAPallet.kartonQuantity" type="number"
-                style="font-weight: bold;font-size: medium;" placeholder="כמות קרטונים" class="form-control"></td>
-            <td><input [(ngModel)]="newQAPallet.unitsInKarton" type="number"
-                style="font-weight: bold;font-size: medium;" placeholder="כמות בקרטון" class="form-control"></td>
-            <td><input [(ngModel)]="newQAPallet.lastFloorQuantity" type="number"
-                style="font-weight: bold;font-size: medium;" placeholder="קומה אחרונה" class="form-control"></td>
-            <td><input [(ngModel)]="newQAPallet.unitsQuantityPartKarton" type="number"
-                style="font-weight: bold;font-size: medium;" placeholder="קרטון חלקי" class="form-control"></td>
-            <td></td>
-            <td>
-              <select [(ngModel)]="newQAPallet.qaStatus" style="font-weight: bold;font-size: medium;"
-                class="form-control">
-                <option value="">סטטוס</option>
-                <option value="מוכן לשליחה">מוכן לשליחה</option>
-                <option value="חסר מדבקות">חסר מדבקות</option>
-                <option value="חסר קומפוננטים">חסר קומפוננטים</option>
-                <option value="עובר לאריזה אישית">עובר לאריזה אישית</option>
-                <option value="חסר לייזר">חסר לייזר</option>
-                <option value="נשלח להדפסה">נשלח להדפסה</option>
-                <option value="חסר קרטונים">חסר קרטונים</option>
-                <option value="חסר קרטוני מאסטר">חסר קרטוני מאסטר</option>
-                <option value="חסר עלונים לצרכן">חסר עלונים לצרכן</option>
-                <option value="למלאי">למלאי</option>
-              </select>
-            </td>
-            <td></td>
-            <td><button *ngIf="allowUpdateForm" (click)="addNewQAPallet()" style="font-weight: bold;font-size: medium;"
-                class="btn btn-success">+</button></td>
-          </tr>
+
         </tbody>
       </table>
     </div>
