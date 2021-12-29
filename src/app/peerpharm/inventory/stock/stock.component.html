@@ -2361,7 +2361,7 @@
 
 
   <div *ngIf="newPurchaseRecommendModal"
-    class="m-5 border border-info bg-white shadow-lg rounded mx-auto my-auto text-center fixed-top p-5">
+    class="m-5 border border-info bg-warning shadow-lg rounded mx-auto my-auto text-center fixed-top p-5">
     <form [formGroup]="newPurchaseRecommendation" class="modal-inner">
       <div class="row mt-2 fixNoaStupidStuff">
         <div class="col-1 fixNoaStupidStuff"></div>
@@ -2416,6 +2416,11 @@
           </select>
         </div>
 
+        <div class="col-1 fixNoaStupidStuff">
+          <label dir="rtl" [ngClass]="recommendStockItem.urgent ? 'text-danger' : 'text-info'">בהול <span *ngIf="!recommendStockItem.urgent">?</span> <span *ngIf="recommendStockItem.urgent">!!!</span></label> <br><br>
+          <input type="checkbox" [ngModelOptions]="{standalone: true}"
+            [(ngModel)]="recommendStockItem.urgent">
+        </div>
         <div class="col-1 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
           <label class="text-info">Item Number</label>
@@ -2501,6 +2506,7 @@
                 <th class="text-info">Quantity</th>
                 <th class="text-info">Measurement</th>
                 <th class="text-info">Customer Order</th>
+                <th></th>
                 <th class="text-info"></th>
               </tr>
             </thead>
@@ -2511,6 +2517,7 @@
                 <td>{{stockitem.quantity}}</td>
                 <td>{{stockitem.measurement}}</td>
                 <td>{{stockitem.customerOrder}}</td>
+                <td><span *ngIf="stockitem.urgent" class="text-danger p-2"><h4 dir="rtl">בהול!</h4></span></td>
                 <td><i placement="bottom" ngbTooltip="Delete Item" (click)="deleteFromRecommendation(i)"
                     class="fa fa-times text-danger"></i></td>
               </tr>

@@ -376,6 +376,7 @@ export class StockComponent implements OnInit {
     threatment: "",
     measurement: "",
     customerOrder: "",
+    urgent: false
   };
   lastOrdersOfItem = [];
   fetchingOrders: boolean = false;
@@ -562,6 +563,7 @@ export class StockComponent implements OnInit {
       this.recommendStockItem.number = "";
       this.recommendStockItem.measurement = "";
       this.recommendStockItem.customerOrder = "";
+      this.recommendStockItem.urgent = false;
       this.itemAmountsData = [];
     }
   }

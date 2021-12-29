@@ -188,6 +188,7 @@ export class FormdetailsComponent implements OnInit {
     this.formid = formID
     await this.formsService.getFormData(this.formid).subscribe(res => {
       this.form = res[0];
+      this.loadQAPallets(this.form._id)
       this.formDetailsItemNum = this.form.itemN
       if (this.form.productionEndDate) {
         let days = this.form.productionEndDate.slice(8, 10)
@@ -206,7 +207,8 @@ export class FormdetailsComponent implements OnInit {
     });
   }
 
-  async addNewTest(newTest) {
+  async addNewTest(test) {
+    let newTest = {...test}
     this.form.checkTime.push(newTest.checkTime);
     this.form.checkBox_clean.push(newTest.checkBox_clean);
     this.form.checkNetoWeight.push(newTest.checkNetoWeight);
@@ -244,19 +246,16 @@ export class FormdetailsComponent implements OnInit {
     if (this.newQAPallet.qaStatus == 'עובר לאריזה אישית') this.newQAPallet.isPersonalPackage = true
 
     this.formsService.createNewQaPallet(this.newQAPallet).subscribe(result => {
-
+      debugger
       if (result) {
-
-        result = this.calculateSumAmount(result)
-        let tempObj = { ...this.newQAPallet }
-
-        this.formQAPalletsData.push(tempObj)
+        this.formQAPalletsData.push(result)
+        this.calculateSumAmount(this.formQAPalletsData)
         this.toastService.success('משטח חדש נוסף בהצלחה')
-        this.newQAPallet.floorNumber = 0
-        this.newQAPallet.kartonQuantity = 0
-        this.newQAPallet.lastFloorQuantity = 0
-        this.newQAPallet.unitsInKarton = 0
-        this.newQAPallet.unitsQuantityPartKarton = 0
+        this.newQAPallet.floorNumber = null
+        this.newQAPallet.kartonQuantity = null
+        this.newQAPallet.lastFloorQuantity = null
+        this.newQAPallet.unitsInKarton = null
+        this.newQAPallet.unitsQuantityPartKarton = null
       } else {
         this.toastService.success('אירעה שגיאה , אנא פנה למנהל מערכת')
       }
@@ -322,15 +321,10 @@ export class FormdetailsComponent implements OnInit {
 
   async loadQAPallets(formId) {
     this.formsService.getQAPalletsByFormId(formId).subscribe(QAPallets => {
-
       if (QAPallets) {
-
-        this.showQAPalletsModal = true;
-
-        QAPallets = this.calculateSumAmount(QAPallets);
-
-        this.formQAPalletsData = QAPallets;
+        this.formQAPalletsData = this.calculateSumAmount(QAPallets);
       }
+      else this.formQAPalletsData = []
     })
 
 
@@ -353,6 +347,8 @@ export class FormdetailsComponent implements OnInit {
 
       QAPallets[i].sumAmount = count;
     }
+    this.form.quantity_Produced =  0;
+    for (let pallet of QAPallets) this.form.quantity_Produced += pallet.sumAmount
 
     return QAPallets
 
