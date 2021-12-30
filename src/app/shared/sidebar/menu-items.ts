@@ -592,7 +592,7 @@ export const ROUTES: RouteInfo[] = [
     submenu: [
       {
         path: "/peerpharm/itemindex",
-        title: "Items (all)",
+        title: "Items",
         icon: "fas fa-list-ol",
         class: "",
         extralink: false,

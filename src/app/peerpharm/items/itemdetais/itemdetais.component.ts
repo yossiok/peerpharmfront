@@ -270,19 +270,31 @@ export class ItemdetaisComponent implements OnInit {
     bottlePurchases: [],
     bottleOrderedAmount: 0,
     bottleAllocations: 0,
+    bottleExpected: 0,
     capAmount: 0,
     capPurchases: [],
     capOrderedAmount: 0,
     capAllocations: 0,
+    capExpected: 0,
     pumpAmount: 0,
     pumpPurchases: [],
     pumpOrderedAmount: 0,
     pumpAllocations: 0,
+    pumpExpected: 0,
     sealAmount: 0,
     sealPurchases: [],
     sealOrderedAmount: 0,
     sealAllocations: 0,
+    sealExpected: 0,
     bottleVersion: null,
+
+    cartonImage: "",
+    cartonAllocations: [], 
+    cartonAmount: 0,
+    cartonPurchases: [],
+    cartonOrderedAmount: 0,
+    cartonExpected: 0,
+    cartonTube: "",
 
     bottleTube: "",
     capTube: "",
@@ -575,35 +587,17 @@ export class ItemdetaisComponent implements OnInit {
   fillBottle(bottleNumber) {
     bottleNumber = this.itemShown.bottleNumber;
     if (bottleNumber != "---" && bottleNumber != "") {
-      this.invtSer
-        .getCmptByNumber(bottleNumber, "component")
-        .subscribe((data) => {
-          this.itemShown.bottleTube = data[0].componentName;
-          this.itemShown.bottleImage = data[0].img;
-          this.itemShown.bottleVersion = data[0].versionNumber;
-          this.itemShown.componentType = data[0].componentType;
-          this.itemShown.bottleAllocations = data[0].alloAmount;
-          this.invtSer
-            .getComponentAmount(bottleNumber)
-            .subscribe((bottleAmount) => {
-              this.itemShown.bottleAmount = bottleAmount[0]
-                ? bottleAmount[0].amount
-                : 0;
-            });
-          this.purchaseService
-            .getPurchasesForComponent(bottleNumber)
-            .subscribe((data) => {
-              this.itemShown.bottlePurchases = data;
-              this.itemShown.bottleOrderedAmount = 0;
-              data.forEach((purchOrder) => {
-                let addAmount = purchOrder.stockitems.find(
-                  (item) => item.number == bottleNumber
-                ).quantity;
-                purchOrder.itemAmount = addAmount;
-                this.itemShown.bottleOrderedAmount += Number(addAmount);
-              });
-            });
-        });
+      this.invtSer.getCmptPPCDetails(bottleNumber).subscribe((data) => {
+        this.itemShown.bottleTube = data.stock[0].componentName;
+        this.itemShown.bottleImage = data.stock[0].img;
+        this.itemShown.bottleVersion = data.stock[0].versionNumber;
+        this.itemShown.componentType = data.stock[0].componentType;
+        this.itemShown.bottleAllocations = data.allocationsAmount;
+        this.itemShown.bottleAmount = data.stock[0].stock
+        this.itemShown.bottlePurchases = data.purchases;
+        this.itemShown.bottleOrderedAmount = data.purchaseAmount;
+        this.itemShown.bottleExpected = data.realAmount;
+      });
     } else if (bottleNumber == "---") {
       this.itemShown.bottleTube = "";
       this.itemShown.bottleImage = "";
@@ -611,29 +605,18 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   fillCap(capNumber) {
+    debugger
     capNumber = this.itemShown.capNumber;
     if (capNumber != "---" && capNumber != "") {
-      this.invtSer.getCmptByNumber(capNumber, "component").subscribe((data) => {
-        this.itemShown.capTube = data[0].componentName;
-        this.itemShown.capImage = data[0].img;
-        this.itemShown.componentTwoType = data[0].componentType;
-        this.itemShown.capAllocations = data[0].alloAmount;
-        this.invtSer.getComponentAmount(capNumber).subscribe((capAmount) => {
-          this.itemShown.capAmount = capAmount[0] ? capAmount[0].amount : 0;
-        });
-        this.purchaseService
-          .getPurchasesForComponent(capNumber)
-          .subscribe((data) => {
-            this.itemShown.capPurchases = data;
-            this.itemShown.capOrderedAmount = 0;
-            data.forEach((purchOrder) => {
-              let addAmount = purchOrder.stockitems.find(
-                (item) => item.number == capNumber
-              ).quantity;
-              purchOrder.itemAmount = addAmount;
-              this.itemShown.capOrderedAmount += Number(addAmount);
-            });
-          });
+      this.invtSer.getCmptPPCDetails(capNumber).subscribe((data) => {
+        this.itemShown.capTube = data.stock[0].componentName;
+        this.itemShown.capImage = data.stock[0].img;
+        this.itemShown.componentTwoType = data.stock[0].componentType;
+        this.itemShown.capAllocations = data.allocationsAmount;
+        this.itemShown.capAmount = data.stock[0].stock
+        this.itemShown.capPurchases = data.purchases;
+        this.itemShown.capOrderedAmount = data.purchaseAmount;
+        this.itemShown.capExpected = data.realAmount;
       });
     } else if (capNumber == "---") {
       this.itemShown.capTube = "";
@@ -644,34 +627,16 @@ export class ItemdetaisComponent implements OnInit {
   fillPump(pumpNumber) {
     pumpNumber = this.itemShown.pumpNumber;
     if (pumpNumber != "---" && pumpNumber != "") {
-      this.invtSer
-        .getCmptByNumber(pumpNumber, "component")
-        .subscribe((data) => {
-          this.itemShown.pumpTube = data[0].componentName;
-          this.itemShown.pumpImage = data[0].img;
-          this.itemShown.componentThreeType = data[0].componentType;
-          this.itemShown.pumpAllocations = data[0].alloAmount;
-          this.invtSer
-            .getComponentAmount(pumpNumber)
-            .subscribe((pumpAmount) => {
-              this.itemShown.pumpAmount = pumpAmount[0]
-                ? pumpAmount[0].amount
-                : 0;
-            });
-          this.purchaseService
-            .getPurchasesForComponent(pumpNumber)
-            .subscribe((data) => {
-              this.itemShown.pumpPurchases = data;
-              this.itemShown.pumpOrderedAmount = 0;
-              data.forEach((purchOrder) => {
-                let addAmount = purchOrder.stockitems.find(
-                  (item) => item.number == pumpNumber
-                ).quantity;
-                purchOrder.itemAmount = addAmount;
-                this.itemShown.pumpOrderedAmount += Number(addAmount);
-              });
-            });
-        });
+      this.invtSer.getCmptPPCDetails(pumpNumber).subscribe((data) => {
+        this.itemShown.pumpTube = data.stock[0].componentName;
+        this.itemShown.pumpImage = data.stock[0].img;
+        this.itemShown.componentThreeType = data.stock[0].componentType;
+        this.itemShown.pumpAllocations = data.allocationsAmount;
+        this.itemShown.pumpAmount = data.stock[0].stock
+        this.itemShown.pumpPurchases = data.purchases;
+        this.itemShown.pumpOrderedAmount = data.purchaseAmount;
+        this.itemShown.pumpExpected = data.realAmount;
+      })
     } else if (pumpNumber == "---") {
       this.itemShown.pumpTube = "";
       this.itemShown.pumpImage = "";
@@ -681,37 +646,37 @@ export class ItemdetaisComponent implements OnInit {
   fillSeal(sealNumber) {
     sealNumber = this.itemShown.sealNumber;
     if (sealNumber != "---" && sealNumber != "") {
-      this.invtSer
-        .getCmptByNumber(sealNumber, "component")
-        .subscribe((data) => {
-          this.itemShown.sealTube = data[0].componentName;
-          this.item.sealImage = data[0].img;
-          this.itemShown.componentFourType = data[0].componentType;
-          this.itemShown.sealAllocations = data[0].alloAmount;
-          this.invtSer
-            .getComponentAmount(sealNumber)
-            .subscribe((sealAmount) => {
-              this.itemShown.sealAmount = sealAmount[0]
-                ? sealAmount[0].amount
-                : 0;
-            });
-          this.purchaseService
-            .getPurchasesForComponent(sealNumber)
-            .subscribe((data) => {
-              this.itemShown.sealPurchases = data;
-              this.itemShown.sealOrderedAmount = 0;
-              data.forEach((purchOrder) => {
-                let addAmount = purchOrder.stockitems.find(
-                  (item) => item.number == sealNumber
-                ).quantity;
-                purchOrder.itemAmount = addAmount;
-                this.itemShown.sealOrderedAmount += Number(addAmount);
-              });
-            });
-        });
+      this.invtSer.getCmptPPCDetails(sealNumber).subscribe((data) => {
+        this.itemShown.sealTube = data.stock[0].componentName;
+        this.itemShown.sealImage = data.stock[0].img;
+        this.itemShown.componentFourType = data.stock[0].componentType;
+        this.itemShown.sealAllocations = data.allocationsAmount;
+        this.itemShown.sealAmount = data.stock[0].stock
+        this.itemShown.sealPurchases = data.purchases;
+        this.itemShown.sealOrderedAmount = data.purchaseAmount;
+        this.itemShown.sealExpected = data.realAmount;
+      });
     } else if (sealNumber == "---") {
       this.itemShown.sealTube = "";
       this.item.sealImage = "";
+    }
+  }
+
+  fillCarton(cartonNumber) {
+    cartonNumber = this.itemShown.cartonNumber;
+    if (cartonNumber != "---" && cartonNumber != "") {
+      this.invtSer.getCmptPPCDetails(cartonNumber).subscribe((data) => {
+        this.itemShown.cartonTube = data.stock[0].componentName;
+        this.itemShown.cartonImage = data.stock[0].img;
+        this.itemShown.cartonAllocations = data.allocationsAmount;
+        this.itemShown.cartonAmount = data.stock[0].stock
+        this.itemShown.cartonPurchases = data.purchases;
+        this.itemShown.cartonOrderedAmount = data.purchaseAmount;
+        this.itemShown.cartonExpected = data.realAmount;
+      });
+    } else if (cartonNumber == "---") {
+      this.itemShown.cartonTube = "";
+      this.item.cartonImage = "";
     }
   }
 
@@ -871,7 +836,7 @@ export class ItemdetaisComponent implements OnInit {
   findInInventory(componentN) {
     window.open(
       "http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN=" +
-        componentN
+      componentN
     );
   }
 
@@ -1281,6 +1246,19 @@ export class ItemdetaisComponent implements OnInit {
           this.itemShown.sealImage = "";
           this.itemShown.sealNumber = "";
           this.itemShown.sealTube = "";
+          this.itemShown.componentFourType = "";
+        }
+
+        if (this.itemShown.cartonNumber != "") {
+          this.fillCarton(this.itemShown.cartonNumber);
+          this.searchCompNumberByComp(
+            this.itemShown.cartonNumber,
+            "productionFourInput"
+          );
+        } else {
+          this.itemShown.cartonImage = "";
+          this.itemShown.cartonNumber = "";
+          this.itemShown.cartonTube = "";
           this.itemShown.componentFourType = "";
         }
 

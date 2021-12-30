@@ -1190,6 +1190,32 @@
                                 <div class="col-3">
                                     <input [(ngModel)]="itemShown.cartonName" class="form-control"
                                         placeholder="Carton Name">
+                                        <!--FILL CARTON-->
+                                        <div class="stock-bg p-2">
+                                            <h4>Stock details</h4>
+                                            <label>Stock Amount: {{itemShown.cartonAmount | number}} pcs</label><br>
+                                            <label>Allocated Amount: {{itemShown.cartonAllocations | number}} pcs</label><br>
+                                            <label [style.color]="itemShown.cartonExpected <= 0 ? 'red' : 'lightgreen'">Expected Stock (before arrivals): {{itemShown.cartonExpected | number}}</label><br>
+                                            <label>Expected Arrivals: {{itemShown.cartonOrderedAmount | number}} pcs</label>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Order</th>
+                                                        <!-- <th>Created</th> -->
+                                                        <!-- <th>Arrival</th> -->
+                                                        <th>Amount</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let purchase of itemShown.bottlePurchases">
+                                                        <td>{{purchase.orderNumber}}</td>
+                                                        <!-- <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td> -->
+                                                        <!-- <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td> -->
+                                                        <td>{{purchase.quantity | number}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                 </div>
                                 <div class="col-1"></div>
                                 <div class="col-2">
@@ -1528,24 +1554,25 @@
                                 </div>
                                 <div class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
-                                    <label>Stock Amount: {{itemShown.bottleAmount}}</label><br>
-                                    <label>Allocated Amount: {{itemShown.bottleAllocations}}</label><br>
-                                    <label>Ordered Amounts: {{itemShown.bottleOrderedAmount}}</label>
+                                    <label>Stock Amount: {{itemShown.bottleAmount | number}} pcs</label><br>
+                                    <label>Allocated Amount: {{itemShown.bottleAllocations}} pcs</label><br>
+                                    <label [style.color]="itemShown.bottleExpected <= 0 ? 'red' : 'lightgreen'">Expected Stock (before arrivals): {{itemShown.bottleExpected | number}}</label><br>
+                                    <label>Expected Arrivals: {{itemShown.bottleOrderedAmount | number}} pcs</label>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Order</th>
-                                                <th>Created</th>
-                                                <th>Arrival</th>
+                                                <!-- <th>Created</th> -->
+                                                <!-- <th>Arrival</th> -->
                                                 <th>Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let purchase of itemShown.bottlePurchases">
                                                 <td>{{purchase.orderNumber}}</td>
-                                                <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
-                                                <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
-                                                <td>{{purchase.itemAmount}}</td>
+                                                <!-- <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td> -->
+                                                <!-- <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td> -->
+                                                <td>{{purchase.quantity | number}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1616,24 +1643,25 @@
                                 </div>
                                 <div class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
-                                    <label>Stock Amount: {{itemShown.capAmount}}</label><br>
-                                    <label>Allocated Amount: {{itemShown.capAllocations}}</label><br>
-                                    <label>Ordered Amounts: {{itemShown.capOrderedAmount}}</label>
+                                    <label>Stock Amount: {{itemShown.capAmount | number}}</label><br>
+                                    <label>Allocated Amount: {{itemShown.capAllocations | number}}</label><br>
+                                    <label [style.color]="itemShown.capExpected <= 0 ? 'red' : 'lightgreen'">Expected Stock (before arrivals): {{itemShown.capExpected | number}}</label><br>
+                                    <label>Expected Arrivals: {{itemShown.capOrderedAmount | number}}</label>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Order</th>
-                                                <th>Created</th>
-                                                <th>Arrival</th>
+                                                <!-- <th>Created</th> -->
+                                                <!-- <th>Arrival</th> -->
                                                 <th>Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let purchase of itemShown.capPurchases">
                                                 <td>{{purchase.orderNumber}}</td>
-                                                <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
-                                                <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
-                                                <td>{{purchase.itemAmount}}</td>
+                                                <!-- <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td> -->
+                                                <!-- <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td> -->
+                                                <td>{{purchase.quantity | number}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1652,24 +1680,25 @@
                                 </div>
                                 <div class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
-                                    <label>Stock Amount: {{itemShown.pumpAmount}}</label><br>
-                                    <label>Allocated Amount: {{itemShown.pumpAllocations}}</label><br>
-                                    <label>Ordered Amounts: {{itemShown.pumpOrderedAmount}}</label>
+                                    <label>Stock Amount: {{itemShown.pumpAmount | number}}</label><br>
+                                    <label>Allocated Amount: {{itemShown.pumpAllocations | number}}</label><br>
+                                    <label [style.color]="itemShown.pumpExpected <= 0 ? 'red' : 'lightgreen'">Expected Stock (before arrivals): {{itemShown.pumpExpected | number}}</label><br>
+                                    <label>Expected Arrivals: {{itemShown.pumpOrderedAmount | number}}</label>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Order</th>
-                                                <th>Created</th>
-                                                <th>Arrival</th>
+                                                <!-- <th>Created</th> -->
+                                                <!-- <th>Arrival</th> -->
                                                 <th>Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let purchase of itemShown.pumpPurchases">
                                                 <td>{{purchase.orderNumber}}</td>
-                                                <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
-                                                <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
-                                                <td>{{purchase.itemAmount}}</td>
+                                                <!-- <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td> -->
+                                                <!-- <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td> -->
+                                                <td>{{purchase.quantity | number}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1725,24 +1754,25 @@
                                 </div>
                                 <div class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
-                                    <label>Stock Amount: {{itemShown.sealAmount}}</label><br>
-                                    <label>Allocated Amount: {{itemShown.sealAllocations}}</label><br>
-                                    <label>Ordered Amounts: {{itemShown.sealOrderedAmount}}</label>
+                                    <label>Stock Amount: {{itemShown.sealAmount | number}}</label><br>
+                                    <label>Allocated Amount: {{itemShown.sealAllocations | number}}</label><br>
+                                    <label [style.color]="itemShown.sealExpected <= 0 ? 'red' : 'lightgreen'">Expected Stock (before arrivals): {{itemShown.sealExpected | number | number}}</label><br>
+                                    <label>Expected Arrivals: {{itemShown.sealOrderedAmount | number}}</label>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Order</th>
-                                                <th>Created</th>
-                                                <th>Arrival</th>
+                                                <!-- <th>Created</th> -->
+                                                <!-- <th>Arrival</th> -->
                                                 <th>Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let purchase of itemShown.sealPurchases">
                                                 <td>{{purchase.orderNumber}}</td>
-                                                <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
-                                                <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
-                                                <td>{{purchase.itemAmount}}</td>
+                                                <!-- <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
+                                                <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td> -->
+                                                <td>{{purchase.quantity | number}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
