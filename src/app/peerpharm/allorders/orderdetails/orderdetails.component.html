@@ -134,7 +134,7 @@
   
       <tr *ngIf="!showingAllOrders" class='inputTr' (click)="edit('')">
         <td>#</td>
-        <td><input disabled type="checkbox" (change)="checkboxAllOrders($event)"></td>
+        <td><input type="checkbox" (change)="checkboxAllOrders($event)"></td>
         <td></td>
         <td></td>
         <td *ngIf="!showingAllOrders && multi"><input style="box-shadow:1px 1px 2px black;"

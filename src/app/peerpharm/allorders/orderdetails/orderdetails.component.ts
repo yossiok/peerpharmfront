@@ -889,7 +889,7 @@ export class OrderdetailsComponent implements OnInit {
   // check with Akiva if still needed because Weight Production is the SAME
 
   checkboxAllOrders(ev) {
-    this.ordersItems.filter((e) => (e.isSelected = ev.target.checked));
+    this.ordersItems.map((e) => (e.isSelected = ev.target.checked));
   }
 
   // check with Akiva if still necessery , in html it's Production Requirements
