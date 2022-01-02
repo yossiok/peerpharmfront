@@ -128,7 +128,7 @@ export class AllItemsComponent implements OnInit {
         item.itemOrderDate = new Date(item.itemOrderDate);
         console.log(item.itemNumber)
         if (item.workPlans) {
-          if (item.wpSplit && item.maxQty > 0) {
+          if (item.wpSplit && (item.maxQty > 0)) {
             if (this.orderItems.findIndex((oi) => oi._id == item._id) == -1) {
               // newItem1 = remained qty
               let newItem1 = { ...item };

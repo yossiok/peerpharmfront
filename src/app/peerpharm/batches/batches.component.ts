@@ -112,7 +112,7 @@ export class BatchesComponent implements OnInit {
 
   ngOnInit() {
     this.getAllBatchesYear("thisYear");
-    this.startInterval();
+    if(confirm('האם אתה רוצה שהאצוות יתרעננו אוטומטית כל 3 דקות?')) this.startInterval();
     this.lastValueUpdate = this.formatDate(new Date());
     this.getUserInfo();
   }

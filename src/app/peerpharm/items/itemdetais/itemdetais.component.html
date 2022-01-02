@@ -1085,7 +1085,7 @@
                                         *ngIf="itemShown.laserImage2">
                                 </div>
                             </div>
-                        
+
                         </div>
 
                     </ng-template>
@@ -1141,7 +1141,7 @@
                                 </div>
                                 <div class="col-3">
                                     <label>למילוי בלבד</label>
-                                  <input class="form-control" type="checkbox" [(ngModel)]="itemShown.fillOnly">
+                                    <input class="form-control" type="checkbox" [(ngModel)]="itemShown.fillOnly">
                                 </div>
                             </div>
 
@@ -1190,32 +1190,43 @@
                                 <div class="col-3">
                                     <input [(ngModel)]="itemShown.cartonName" class="form-control"
                                         placeholder="Carton Name">
-                                        <!--FILL CARTON-->
-                                        <div class="stock-bg p-2">
-                                            <h4>Stock details</h4>
-                                            <label>Stock Amount: {{itemShown.cartonAmount | number}} pcs</label><br>
-                                            <label>Allocated Amount: {{itemShown.cartonAllocations | number}} pcs</label><br>
-                                            <label [style.color]="itemShown.cartonExpected <= 0 ? 'red' : 'lightgreen'">Expected Stock (before arrivals): {{itemShown.cartonExpected | number}}</label><br>
-                                            <label>Expected Arrivals: {{itemShown.cartonOrderedAmount | number}} pcs</label>
-                                            <table class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>Order</th>
-                                                        <!-- <th>Created</th> -->
-                                                        <!-- <th>Arrival</th> -->
-                                                        <th>Amount</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr *ngFor="let purchase of itemShown.bottlePurchases">
-                                                        <td>{{purchase.orderNumber}}</td>
-                                                        <!-- <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td> -->
-                                                        <!-- <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td> -->
-                                                        <td>{{purchase.quantity | number}}</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                    <!--FILL CARTON-->
+                                    <div *ngIf="itemShown.cartonNumber && !itemShown.cartonAmount">
+                                        <div class="smallerLoader"></div>
+                                        <p>טוען נתוני מלאי....</p>
+                                    </div>
+                                    <div *ngIf="itemShown.cartonAmount" class="stock-bg p-2">
+                                        <h4>Stock details</h4>
+                                        <label>Stock Amount: {{itemShown.cartonAmount | number}} pcs</label><br>
+                                        <label>Allocated Amount: {{itemShown.cartonAllocations | number}}
+                                            pcs</label><br>
+                                        <label>Expected
+                                            Stock (before arrivals): <span class="p-1"
+                                                [ngClass]="itemShown.cartonExpected <= 0 ? 'h3' : ''"
+                                                [style.background]="itemShown.cartonExpected <= 0 ? '' : 'lightgreen'"
+                                                [style.color]="itemShown.cartonExpected <= 0 ? 'red' : 'black'">{{itemShown.cartonExpected
+                                                | number}}</span></label><br>
+                                        <label>Expected Arrivals: {{itemShown.cartonOrderedAmount | number}} pcs</label>
+                                        <h3>Future Arrivals:</h3>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order</th>
+                                                    <!-- <th>Created</th> -->
+                                                    <!-- <th>Arrival</th> -->
+                                                    <th>Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let purchase of itemShown.cartonPurchases">
+                                                    <td>{{purchase.orderNumber}}</td>
+                                                    <!-- <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td> -->
+                                                    <!-- <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td> -->
+                                                    <td>{{purchase.quantity | number}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                                 <div class="col-1"></div>
                                 <div class="col-2">
@@ -1268,7 +1279,7 @@
                                 <div class="col-2">
 
                                     <input class="form-control" type=t ext id="id_cartonNo"
-                                        (focusout)="loadCartonName(itemShown.cartonNumber2)"
+                                        (focusout)="loadCartonName2(itemShown.cartonNumber2)"
                                         [(ngModel)]=itemShown.cartonNumber2>
 
                                     <input class="form-control" type="text" ext id="id_pcsCarton"
@@ -1278,7 +1289,43 @@
                                 <div class="col-3">
                                     <input [(ngModel)]="itemShown.cartonName2" class="form-control"
                                         placeholder="Carton Name 2">
+                                        <div *ngIf="itemShown. cartonNumber2 && !itemShown.carton2Amount">
+                                            <div class="smallerLoader"></div>
+                                            <p>טוען נתוני מלאי. אנא המתיני....</p>
+                                        </div>
+                                    <div *ngIf="itemShown.carton2Amount" class="stock-bg p-2">
+                                        <h4>Stock details</h4>
+                                        <label>Stock Amount: {{itemShown.carton2Amount | number}} pcs</label><br>
+                                        <label>Allocated Amount: {{itemShown.carton2Allocations | number}}
+                                            pcs</label><br>
+                                        <label class="p-1" [ngClass]="itemShown.carton2Expected <= 0 ? 'h3' : ''"
+                                            [style.background]="itemShown.carton2Expected <= 0 ? '' : 'lightgreen'"
+                                            [style.color]="itemShown.carton2Expected <= 0 ? 'red' : 'black'">Expected
+                                            Stock (before arrivals): {{itemShown.carton2Expected | number}}</label><br>
+                                        <label>Expected Arrivals: {{itemShown.carton2OrderedAmount | number}}
+                                            pcs</label>
+                                        <h3>Future Arrivals:</h3>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order</th>
+                                                    <!-- <th>Created</th> -->
+                                                    <!-- <th>Arrival</th> -->
+                                                    <th>Amount</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let purchase of itemShown.carton2Purchases">
+                                                    <td>{{purchase.orderNumber}}</td>
+                                                    <!-- <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td> -->
+                                                    <!-- <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td> -->
+                                                    <td>{{purchase.quantity | number}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
+
                             </div>
                             <!--Finish Addition MAria Request--------------------------------------------------------------------------------------------------------------------->
 
@@ -1552,12 +1599,24 @@
                                         *ngIf='bottleFile'>>></button> -->
                                     <img id="id_img1" [src]=itemShown.bottleImage>
                                 </div>
-                                <div class="col-4 stock-bg p-2">
+                                <div *ngIf="itemShown.bottleNumber && !itemShown.bottleAmount">
+                                    <div class="smallerLoader"></div>
+                                    <p>טוענת נתוני מלאי. אנא המתיני....</p>
+                                </div>
+                                <div *ngIf="itemShown.bottleAmount" class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
                                     <label>Stock Amount: {{itemShown.bottleAmount | number}} pcs</label><br>
                                     <label>Allocated Amount: {{itemShown.bottleAllocations}} pcs</label><br>
-                                    <label [style.color]="itemShown.bottleExpected <= 0 ? 'red' : 'lightgreen'">Expected Stock (before arrivals): {{itemShown.bottleExpected | number}}</label><br>
+                                    <label>Expected Stock (before arrivals):
+                                        <span class="p-1" [ngClass]="itemShown.bottleExpected <= 0 ? 'h3' : ''"
+                                            [style.background]="itemShown.bottleExpected <= 0 ? '' : 'lightgreen'"
+                                            [style.color]="itemShown.bottleExpected <= 0 ? 'red' : 'black'">
+                                            {{itemShown.bottleExpected | number}}
+                                        </span>
+                                    </label>
+                                    <br>
                                     <label>Expected Arrivals: {{itemShown.bottleOrderedAmount | number}} pcs</label>
+                                    <h3>Future Arrivals:</h3>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
@@ -1641,12 +1700,24 @@
                                         *ngIf='capFile'>>></button> -->
                                     <img id="id_img2" [src]=itemShown.capImage>
                                 </div>
-                                <div class="col-4 stock-bg p-2">
+                                <div *ngIf="itemShown.capNumber && !itemShown.capAmount">
+                                    <div class="smallerLoader"></div>
+                                    <p>טוענת נתוני מלאי. אנא המתיני....</p>
+                                </div>
+                                <div *ngIf="itemShown.capAmount" class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
                                     <label>Stock Amount: {{itemShown.capAmount | number}}</label><br>
                                     <label>Allocated Amount: {{itemShown.capAllocations | number}}</label><br>
-                                    <label [style.color]="itemShown.capExpected <= 0 ? 'red' : 'lightgreen'">Expected Stock (before arrivals): {{itemShown.capExpected | number}}</label><br>
+                                    <label>Expected Stock (before arrivals):
+                                        <span class="p-1" [ngClass]="itemShown.capExpected <= 0 ? 'h3' : ''"
+                                            [style.background]="itemShown.capExpected <= 0 ? '' : 'lightgreen'"
+                                            [style.color]="itemShown.capExpected <= 0 ? 'red' : 'black'">
+                                            {{itemShown.capExpected | number}}
+                                        </span>
+                                    </label>
+                                    <br>
                                     <label>Expected Arrivals: {{itemShown.capOrderedAmount | number}}</label>
+                                    <h3>Future Arrivals:</h3>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
@@ -1678,12 +1749,23 @@
                                         *ngIf='pumpFile'>>></button> -->
                                     <img id="id_img3" [src]=itemShown.pumpImage>
                                 </div>
-                                <div class="col-4 stock-bg p-2">
+                                <div *ngIf="itemShown.pumpNumber && !itemShown.pumpAmount">
+                                    <div class="text-center smallerLoader"></div>
+                                    <p>טוענת נתוני מלאי. אנא המתיני....</p>
+                                </div>
+                                <div *ngIf="itemShown.pumpAmount" class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
                                     <label>Stock Amount: {{itemShown.pumpAmount | number}}</label><br>
                                     <label>Allocated Amount: {{itemShown.pumpAllocations | number}}</label><br>
-                                    <label [style.color]="itemShown.pumpExpected <= 0 ? 'red' : 'lightgreen'">Expected Stock (before arrivals): {{itemShown.pumpExpected | number}}</label><br>
+                                    <label>Expected Stock (before arrivals):
+                                        <span class="p-1" [ngClass]="itemShown.pumpExpected <= 0 ? 'h3' : ''"
+                                            [style.background]="itemShown.pumpExpected <= 0 ? '' : 'lightgreen'"
+                                            [style.color]="itemShown.pumpExpected <= 0 ? 'red' : 'black'">
+                                            {{itemShown.pumpExpected | number}}
+                                        </span>
+                                    </label><br>
                                     <label>Expected Arrivals: {{itemShown.pumpOrderedAmount | number}}</label>
+                                    <h3>Future Arrivals:</h3>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
@@ -1752,12 +1834,22 @@
                                         *ngIf='extra1File'>>></button> -->
                                     <img id="id_img6" [src]=itemShown.extraImage1>
                                 </div>
-                                <div class="col-4 stock-bg p-2">
+                                <div *ngIf="itemShown.sealNumber && !itemShown.sealAmount">
+                                    <div class="smallerLoader"></div>
+                                    <p>טוען נתוני מלאי. אנא המתיני....</p>
+                                </div>
+                                <div *ngIf="itemShown.sealAmount" class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
                                     <label>Stock Amount: {{itemShown.sealAmount | number}}</label><br>
                                     <label>Allocated Amount: {{itemShown.sealAllocations | number}}</label><br>
-                                    <label [style.color]="itemShown.sealExpected <= 0 ? 'red' : 'lightgreen'">Expected Stock (before arrivals): {{itemShown.sealExpected | number | number}}</label><br>
+                                    <label>Expected Stock
+                                        (before arrivals): <span class="p-1"
+                                            [ngClass]="itemShown.sealExpected <= 0 ? 'h3' : ''"
+                                            [style.background]="itemShown.sealExpected <= 0 ? '' : 'lightgreen'"
+                                            [style.color]="itemShown.sealExpected <= 0 ? 'red' : 'black'">{{itemShown.sealExpected
+                                            | number}}</span></label><br>
                                     <label>Expected Arrivals: {{itemShown.sealOrderedAmount | number}}</label>
+                                    <h3>Future Arrivals:</h3>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>

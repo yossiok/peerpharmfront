@@ -191,7 +191,7 @@
           <td><input type="checkbox" [checked]="item.isSelected" (change)="isSelected($event,item)"></td>
   
           <td class="click paka-status" (click)="openPAKA(pakaStatus)" (click)="currentItem = item" [style.background]="item.workPlans.length > 1 ? '#de826a' : item.pakaStatus|orderItemBatchStatusColor">
-            {{item.workPlans.length > 1 ? 'MULTI PAKA (click to watch)' : item.pakaStatus | orderItemBatchStatus}} <br> <span class="font-weight-bold" *ngIf="item.workPlans[0] && item.workPlans[0].quantity < item.quantity">{{item.workPlans[0].quantity}}</span></td>
+            {{item.workPlans.length > 1 ? 'MULTI PAKA (click to watch)' : item.pakaStatus | orderItemBatchStatus}} {{item.workPlans.length == 1 ? item.workPlans[0].batch : ''}} <br> <span class="font-weight-bold" *ngIf="item.workPlans[0] && item.workPlans[0].quantity < item.quantity">{{item.workPlans[0].quantity}}</span></td>
           <td *ngIf="multi==true">{{item.orderNumber}}</td>
   
           <!--Formule exist?-->

@@ -187,7 +187,6 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   addBatch(formule) {
-    console.log(formule)
     this.router.navigate(["/peerpharm/batches/newBatch"], {
       queryParams: {
         formule: formule.formule,

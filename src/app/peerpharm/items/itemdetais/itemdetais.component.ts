@@ -223,6 +223,11 @@ export class ItemdetaisComponent implements OnInit {
     cartonNumber: "",
     cartonName: "",
     PcsCarton: "",
+
+    cartonNumber2: "",
+    cartonName2: "",
+    PcsCarton2: "",
+
     pumpDirection: "",
     paletteType: "",
     st1layerCarton: "",
@@ -271,22 +276,25 @@ export class ItemdetaisComponent implements OnInit {
     bottleOrderedAmount: 0,
     bottleAllocations: 0,
     bottleExpected: 0,
+    bottleVersion: null,
+
     capAmount: 0,
     capPurchases: [],
     capOrderedAmount: 0,
     capAllocations: 0,
     capExpected: 0,
+
     pumpAmount: 0,
     pumpPurchases: [],
     pumpOrderedAmount: 0,
     pumpAllocations: 0,
     pumpExpected: 0,
+
     sealAmount: 0,
     sealPurchases: [],
     sealOrderedAmount: 0,
     sealAllocations: 0,
     sealExpected: 0,
-    bottleVersion: null,
 
     cartonImage: "",
     cartonAllocations: [], 
@@ -294,7 +302,13 @@ export class ItemdetaisComponent implements OnInit {
     cartonPurchases: [],
     cartonOrderedAmount: 0,
     cartonExpected: 0,
-    cartonTube: "",
+
+    carton2Image: "",
+    carton2Allocations: [], 
+    carton2Amount: 0,
+    carton2Purchases: [],
+    carton2OrderedAmount: 0,
+    carton2Expected: 0,
 
     bottleTube: "",
     capTube: "",
@@ -309,7 +323,9 @@ export class ItemdetaisComponent implements OnInit {
     componentThreeType: "",
     componentFourType: "",
     componentFiveType: "",
-
+    componentSixType: "",
+    componentSevenType: "",
+    
     bottleImage: "",
     capImage: "",
     pumpImage: "",
@@ -666,7 +682,7 @@ export class ItemdetaisComponent implements OnInit {
     cartonNumber = this.itemShown.cartonNumber;
     if (cartonNumber != "---" && cartonNumber != "") {
       this.invtSer.getCmptPPCDetails(cartonNumber).subscribe((data) => {
-        this.itemShown.cartonTube = data.stock[0].componentName;
+        this.itemShown.cartonName = data.stock[0].componentName;
         this.itemShown.cartonImage = data.stock[0].img;
         this.itemShown.cartonAllocations = data.allocationsAmount;
         this.itemShown.cartonAmount = data.stock[0].stock
@@ -675,8 +691,26 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.cartonExpected = data.realAmount;
       });
     } else if (cartonNumber == "---") {
-      this.itemShown.cartonTube = "";
+      this.itemShown.cartonName = "";
       this.item.cartonImage = "";
+    }
+  }
+
+  fillCarton2(cartonNumber) {
+    cartonNumber = this.itemShown.cartonNumber2;
+    if (cartonNumber != "---" && cartonNumber != "") {
+      this.invtSer.getCmptPPCDetails(cartonNumber).subscribe((data) => {
+        this.itemShown.cartonName2 = data.stock[0].componentName;
+        this.itemShown.carton2Image = data.stock[0].img;
+        this.itemShown.carton2Allocations = data.allocationsAmount;
+        this.itemShown.carton2Amount = data.stock[0].stock
+        this.itemShown.carton2Purchases = data.purchases;
+        this.itemShown.carton2OrderedAmount = data.purchaseAmount;
+        this.itemShown.carton2Expected = data.realAmount;
+      });
+    } else if (cartonNumber == "---") {
+      this.itemShown.cartonName2 = "";
+      this.item.carton2Image = "";
     }
   }
 
@@ -1191,7 +1225,7 @@ export class ItemdetaisComponent implements OnInit {
         this.item = res[0];
         this.itemShown = res[0];
         if (this.itemShown.bottleNumber != "") {
-          this.fillBottle(this.itemShown.bottleNumber); //
+          this.fillBottle(this.itemShown.bottleNumber); 
           this.searchCompNumberByComp(
             this.itemShown.bottleNumber,
             "productionInput"
@@ -1253,13 +1287,26 @@ export class ItemdetaisComponent implements OnInit {
           this.fillCarton(this.itemShown.cartonNumber);
           this.searchCompNumberByComp(
             this.itemShown.cartonNumber,
-            "productionFourInput"
+            "productionFiveInput"
           );
         } else {
           this.itemShown.cartonImage = "";
           this.itemShown.cartonNumber = "";
-          this.itemShown.cartonTube = "";
+          this.itemShown.cartonName = "";
           this.itemShown.componentFiveType = "";
+        }
+
+        if (this.itemShown.cartonNumber2 != "") {
+          this.fillCarton2(this.itemShown.cartonNumber2);
+          this.searchCompNumberByComp(
+            this.itemShown.cartonNumber2,
+            "productionSixInput"
+          );
+        } else {
+          this.itemShown.carton2Image = "";
+          this.itemShown.cartonNumber2 = "";
+          this.itemShown.cartonName2 = "";
+          this.itemShown.componentSixType = "";
         }
 
         this.searchCompNumberByComp(this.itemShown.boxNumber, "box");
@@ -1856,6 +1903,14 @@ export class ItemdetaisComponent implements OnInit {
     this.invtSer.getCmptByitemNumber(cartonNumber).subscribe((data) => {
       if (data) {
         this.itemShown.cartonName = data[0].componentName;
+      }
+    });
+  }
+
+  loadCartonName2(cartonNumber) {
+    this.invtSer.getCmptByitemNumber(cartonNumber).subscribe((data) => {
+      if (data) {
+        this.itemShown.cartonName2 = data[0].componentName;
       }
     });
   }

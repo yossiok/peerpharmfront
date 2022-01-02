@@ -558,7 +558,14 @@ export class OrderdetailsComponent implements OnInit {
           this.toastSrv.error(
             `${oi.itemNumber} of order ${oi.orderNumber} already sent to workplan`
           );
-        } else {
+        } 
+        else if (!oi.formuleExist) {
+          nonValidOrders.push(oi);
+          this.toastSrv.error(
+            `${oi.itemNumber} of order ${oi.orderNumber} Does not have Formula`
+          );
+        }
+        else {
           validOrders.push(oi);
         }
       }
@@ -567,11 +574,8 @@ export class OrderdetailsComponent implements OnInit {
       if (validOrders.length > 0) {
         console.log(validOrders);
         this.orderService.updatePakaStatus(validOrders).subscribe((data) => {
-          console.log(data);
           if (data.msg) this.toastSrv.error(data.msg);
           else if (data.n == validOrders.length && data.ok == 1) {
-            console.log(data);
-
             // update UI
             for (let item of validOrders) {
               let index = this.ordersItems.findIndex(
@@ -724,10 +728,14 @@ export class OrderdetailsComponent implements OnInit {
   isSelected(ev, item) {
     if (ev.target.checked == true) {
       let cont = true;
-      if (!item.formuleExist)
-        cont = confirm(
-          "לפריט זה לא קיימת פורמולה. האם אתה בטוח שברצונך להוסיף אותו לרשימה?"
-        );
+      if (!item.formuleExist) {
+        alert('לפריט זה לא קיימת פורמולה.')
+        cont = false
+      } 
+        
+        // cont = confirm(
+        //   "לפריט זה לא קיימת פורמולה. האם אתה בטוח שברצונך להוסיף אותו לרשימה?"
+        // );
       if (cont) {
         var isSelected = this.selectedArr;
         item.isSelected = true;

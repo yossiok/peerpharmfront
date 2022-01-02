@@ -278,7 +278,6 @@ export class BetweenWHComponent implements OnInit {
   }
 
   getAllShelfsOfDest(e) {
-    debugger
     e = e.target ? e.target.value : e;
     this.inventoryService.getWhareHouseShelfList(e).subscribe((res) => {
       this.destWHShelfs = res.map((shell) => {
@@ -313,7 +312,6 @@ export class BetweenWHComponent implements OnInit {
   }
 
   setDestPosition() {
-    debugger
     this.destShelf = this.destWHShelfs.find(
       (shelf) =>
         shelf.shell_id_in_whareHouse ==
@@ -326,7 +324,6 @@ export class BetweenWHComponent implements OnInit {
   }
 
   addItem() {
-    debugger
    if(this.itemfound)
    {
 

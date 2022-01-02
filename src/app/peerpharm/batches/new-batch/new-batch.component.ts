@@ -25,7 +25,7 @@ export class NewBatchComponent implements OnInit {
   @ViewChild('itemName') itemName: ElementRef
 
   allStickers: any[] = [];
-  batchDefaultNumber: string = '21pp';
+  batchDefaultNumber: string = '22pp';
   lastBatch: any;
   today: Date = new Date();
   disableButton: boolean;
@@ -269,21 +269,10 @@ export class NewBatchComponent implements OnInit {
                   if (data.msg == 'success') {
                     this.printBtn.nativeElement.click();
                     this.toastSrv.success('באטצ נוסף בהצלחה !')
-                    let productionFormuleIndex = this.workPlan.productionFormules.findIndex(f => f.formule == this.workPlanFormule)
-                    this.workPlan.productionFormules[productionFormuleIndex].status = 6
-                    this.prodSchedServ.editWorkPlan(this.workPlan).subscribe(data => {
-                      console.log(data)
-                      if(data.serialNumber) this.toastSrv.success(`פק"ע ${this.workPlan.serialNumber} עודכנה בהצלחה`)
-                      else this.toastSrv.error('היתה בעיה בעדכון הפק"ע. אנא פנה לתמיכה')
                       setTimeout(() => {
-                        
-                        // this.newBatchForm.reset()
-                        // this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
-                        //this.newBatchForm.controls.itemsToCook.setValue([])
                         this.allStickers = [];
                         this.getLastBatch();
                       }, 2000)
-                    })
                   }
                   else if (data.msg == 'Batch Allready Exist') this.toastSrv.error('Please fill a different batch number.', 'Batch number allready exist.')
                   else this.toastSrv.error('Something went wrong.')

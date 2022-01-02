@@ -183,14 +183,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
       },
-      {
-        path: "/peerpharm/batches/newBatch",
-        title: "New Batch",
-        icon: "fas fa-list-ol",
-        class: "",
-        extralink: false,
-        submenu: [],
-      },
+      // {
+      //   path: "/peerpharm/batches/newBatch",
+      //   title: "New Batch",
+      //   icon: "fas fa-list-ol",
+      //   class: "",
+      //   extralink: false,
+      //   submenu: [],
+      // },
     ],
   },
 
@@ -418,22 +418,6 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
       },
-      // {
-      //   path: '/peerpharm/production/productionHall',
-      //   title: 'Production Hall',
-      //   icon: 'fas fa-tree',
-      //   class: '',
-      //   extralink: false,
-      //   submenu: []
-      // },
-      // {
-      //   path: '/peerpharm/production/scanMaterial',
-      //   title: 'Scan Barcode',
-      //   icon: 'fas fa-i-cursor',
-      //   class: '',
-      //   extralink: false,
-      //   submenu: []
-      // },
       {
         path: "/peerpharm/production/printBarcode",
         title: "Print Barcode",
@@ -450,97 +434,8 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
       },
-      // {
-      //   path: '/peerpharm/production/scanItem',
-      //   title: 'Scan Item',
-      //   icon: 'fas fa-i-cursor',
-      //   class: '',
-      //   extralink: false,
-      //   submenu: []
-      // },
-      // {
-      //   path: '/peerpharm/production/formule-production/formule-production',
-      //   title: 'Formule Production',
-      //   icon: 'fas fa-list-ol',
-      //   class: '',
-      //   extralink: false,
-      //   submenu: []
-      // },
-      // {
-      //   path: '/peerpharm/production/materials',
-      //   title: 'Ready Materials',
-      //   icon: 'fas fa-list-ol',
-      //   class: '',
-      //   extralink: false,
-      //   submenu: []
-      // },
     ],
   },
-
-  // {
-  //   path: '',
-  //   title: ' Suppliers',
-  //   icon: 'fas fa-address-book',
-  //   class: 'has-arrow',
-  //   extralink: false,
-  //   submenu: [
-
-  //     {
-  //       path: '/peerpharm/suppliers/suppliers',
-  //       title: 'All Suppliers',
-  //       icon: 'fas fa-address-book',
-  //       class: '',
-  //       extralink: false,
-  //       submenu: []
-  //     },
-  //   ]
-  // },
-
-  // {
-  //   path: '/peerpharm/costumers/costumers_list',
-  //   title: 'Customers',
-  //   icon: 'fas fa-users',
-  //   class: 'has-arrow',
-  //   extralink: false,
-  //   submenu: [
-  //     {
-  //       path: '/peerpharm/costumers/costumers_list',
-  //       title: 'All Customers',
-  //       icon: 'fas fa-address-book',
-  //       class: '',
-  //       extralink: false,
-  //       submenu: []
-  //     }
-  //   ]
-  // },
-
-  // {
-  //   path: '',
-  //   title: 'Services',
-  //   icon: 'fas fa-vials',
-  //   class: 'has-arrow',
-  //   extralink: false,
-  //   submenu:
-  //     [
-  //       {
-  //         path: '/peerpharm/services/ordered',
-  //         title: 'Ordered Services',
-  //         icon: 'fas fa-list-ol',
-  //         class: '',
-  //         extralink: false,
-  //         submenu: []
-  //       },
-  //       {
-  //         path: '/peerpharm/services/new',
-  //         title: 'Add Service',
-  //         icon: 'fas fa-list-ol',
-  //         class: '',
-  //         extralink: false,
-  //         submenu: []
-  //       },
-
-  //     ]
-  // },
 
   {
     path: "",
