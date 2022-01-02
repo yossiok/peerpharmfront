@@ -1259,7 +1259,7 @@ export class ItemdetaisComponent implements OnInit {
           this.itemShown.cartonImage = "";
           this.itemShown.cartonNumber = "";
           this.itemShown.cartonTube = "";
-          this.itemShown.componentFourType = "";
+          this.itemShown.componentFiveType = "";
         }
 
         this.searchCompNumberByComp(this.itemShown.boxNumber, "box");
