@@ -127,7 +127,7 @@
         </tr>
       </thead>
       <tbody style="background-color: rgb(228, 225, 225);">
-        <ng-container *ngIf="allMovements.length>0">
+        <!-- <ng-container *ngIf="allMovements.length>0"> -->
           <tr *ngFor="let move of allMovements; let i = index">
             <td class="text-center">{{i+1}}</td>
             <td class="text-center">{{move.item}}</td>
@@ -137,7 +137,7 @@
             <td class="text-center">{{move.WH_destName}}/{{move.shell_position_in_whareHouse_Dest}}</td>
             <td class="text-center"><i (click)="removeFromAllMovements(i)" class="fa fa-times text-danger"></i></td>
           </tr>
-        </ng-container>
+        <!-- </ng-container> -->
       </tbody>
 
     </table>

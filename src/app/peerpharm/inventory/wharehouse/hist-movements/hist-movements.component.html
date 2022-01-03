@@ -25,7 +25,7 @@
       </div>
       <div class="col-2">
         <label for="">מתאריך (שדה חובה)</label>
-        <input type="date" class="form-control" formControlName="fromDate">
+        <input type="date" class="form-control" (change)="consoleForm()" formControlName="fromDate">
       </div>
       <div class="col-2">
         <label for="">עד תאריך</label>
@@ -63,32 +63,38 @@
     </div>
   </form>
   <div class="row mt-2">
-    <table class="table border-collapse">
-      <thead>
+    <table class="table">
+      <thead class="bg-info text-white">
         <tr>
           <th>תאריך</th>
           <th>מס' תעודה</th>
           <th>סוג העברה</th>
-          <th>מחסן</th>
-          <!-- <th>מס' פריט</th>
-          <th>כמות</th> -->
+          <th>ממחסן</th>
+          <th>למחסן</th>
+          <th>פריט / כמות / מדף</th>
           <th>הדפסה</th>
         </tr>
       </thead>
-      <tbody *ngFor="let move of histMovements">
-        <!-- <tr *ngFor="let log of move.logs"> -->
-        <tr>
+      <div *ngIf="fetching" class="smallLoader"></div>
+      <tbody *ngIf="!fetching">
+        <tr *ngFor="let move of histMovements">
           <td>{{move.dateAndTime | date: 'dd/MM/yyyy'}}</td>
-          <td>{{move.logs[0].warehouseReception}}</td>
-          <td>{{move.movementName}}</td>
-          <td>{{move.logs[0].WH_originName}}</td>
-          <!-- <td>{{log.item}}</td>
-          <td>{{log.amount}}</td> -->
+          <td>{{move.logs[0] ? move.logs[0].warehouseReception : ''}}</td>
+          <td class="text-info">{{move.movementName}}</td>
+          <td>{{move.logs[0] ? move.logs[0].WH_originName : ''}}</td>
+          <td>{{move.logs[0] ? move.logs[0].WH_destName : ''}}</td>
+          <td>
+            <table class="table table-striped" style="background: rgb(170, 210, 235);">
+              <tr *ngFor="let log of move.logs">
+                <td><strong>פריט:</strong> {{log.item}}</td>
+                <td><strong>ממדף:</strong> {{log.shell_position_in_whareHouse_Origin}}</td>
+                <td><strong>למדף:</strong> {{log.shell_position_in_whareHouse_Dest}}</td>
+                <td><strong>כמות:</strong> {{log.amount}}</td>
+              </tr>
+            </table>
+          </td>
           <td><button (click)="printData(move)">Print</button></td>
-
         </tr>
-
-
       </tbody>
     </table>
   </div>

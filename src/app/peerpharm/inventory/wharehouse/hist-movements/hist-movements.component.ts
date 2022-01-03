@@ -26,16 +26,6 @@ export class HistMovementsComponent implements OnInit, OnChanges {
   @Input() allWhareHouses: any[];
   @Output() initTabByName = new EventEmitter<any>();
 
-  movementTypes = [
-    { value: "in", name: "כניסה" },
-    { value: "out", name: "יציאה" },
-    { value: "whareHouseChange", name: "העברה בין מחסנים" },
-    // { value: "shelfChange", name: "העברה בין מדפים" },
-    // { value: "production", name: "העברה לייצור" },
-  ];
-  allUsers: any = [];
-  queryObj: object = {};
-  histMovements: any = [];
   historicalMovements: FormGroup = new FormGroup({
     item: new FormControl(null),
     WH_originId: new FormControl(null),
@@ -46,6 +36,17 @@ export class HistMovementsComponent implements OnInit, OnChanges {
     warehouseReception: new FormControl(""),
     userName: new FormControl(""),
   });
+  queryObj: object = {};
+  movementTypes = [
+    { value: "in", name: "כניסה" },
+    { value: "out", name: "יציאה" },
+    { value: "whareHouseChange", name: "העברה בין מחסנים" },
+    // { value: "shelfChange", name: "העברה בין מדפים" },
+    // { value: "production", name: "העברה לייצור" },
+  ];
+  allUsers: any = [];
+  histMovements: any = [];
+  fetching: boolean = false
 
   constructor(
     private inventoryService: InventoryService,
@@ -59,6 +60,10 @@ export class HistMovementsComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.getAllUsers();
     console.log(this.historicalMovements.controls);
+  }
+
+  consoleForm(){
+    console.log(this.historicalMovements)
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -76,6 +81,7 @@ export class HistMovementsComponent implements OnInit, OnChanges {
   }
 
   getReceptions() {
+    this.fetching = true
     // build the query
     let formValues = this.historicalMovements.controls;
     this.histMovements = [];
@@ -91,7 +97,7 @@ export class HistMovementsComponent implements OnInit, OnChanges {
     this.inventoryService.getHistMovements(queryString).subscribe((data) => {
       console.log(data);
 
-      // check if the recption belongs to wh authorized for this user, and the movement type is one of the theree: in, out or between wh
+      // check if the recption belongs to wh authorized for this user, and the movement type is one of the three: in, out or between wh
       data.forEach((element) => {
         if (!element.itemType) {
           let type;
@@ -105,11 +111,12 @@ export class HistMovementsComponent implements OnInit, OnChanges {
             wh = this.allWhareHouses.find((obj) => {
               return obj._id == log.WH_originId;
             });
-            log.whareHouse = wh.name;
+            log.whareHouse = wh ? wh.name : '';
           });
         }
       });
       this.histMovements = data.filter((e) => !e.itemType);
+      this.fetching = false
     });
   }
 

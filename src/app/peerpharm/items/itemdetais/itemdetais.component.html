@@ -1147,18 +1147,20 @@
 
                             <div class="row mt-4">
 
+                                <div class="col-2"></div>
                                 <div class="col-4">
-                                    <label class="form-control">{{ 'Carton' | translate }}/{{ 'Pallet' | translate
-                                        }}</label>
+                                    <h2>{{ 'Cartons' | translate }} / {{ 'Pallets' | translate
+                                        }}</h2>
                                 </div>
-                                <div class="col-4"></div>
+                                <div class="col-2"></div>
                                 <div class="col-4">
-                                    <label class="form-control">{{ 'License' | translate }}</label>
+                                    <h2>{{ 'License' | translate }}</h2>
                                 </div>
 
                             </div>
-                            <div class="row">
+                            <div class="row mt-2">
                                 <div class="col-2">
+                                    <h3 for="">1</h3>
                                     <label class="labelGeneral">{{ 'Carton' | translate }}
                                         {{ 'Number' | translate }}</label>
 
@@ -1170,7 +1172,7 @@
                                         {{ 'Direction' | translate }}</label>
                                 </div>
                                 <div class="col-2">
-
+                                    <br><br>
                                     <input class="form-control" type=t ext id="id_cartonNo"
                                         (focusout)="loadCartonName(itemShown.cartonNumber)"
                                         [(ngModel)]=itemShown.cartonNumber>
@@ -1188,9 +1190,11 @@
                                     </select>
                                 </div>
                                 <div class="col-3">
+                                    <br><br>
                                     <input [(ngModel)]="itemShown.cartonName" class="form-control"
                                         placeholder="Carton Name">
                                     <!--FILL CARTON-->
+                                    <br>
                                     <div *ngIf="itemShown.cartonNumber && !itemShown.cartonAmount">
                                         <div class="smallerLoader"></div>
                                         <p>טוען נתוני מלאי....</p>
@@ -1266,8 +1270,9 @@
                             <!--Addition MAria Request---------------------------------------------------------------------------------------------------->
                             <div class="row mt-5">
                                 <div class="col-2">
+                                    <h3 for="">2</h3>
                                     <label class="labelGeneral">{{ 'Carton' | translate }}
-                                        {{ 'Number' | translate }} 2</label>
+                                        {{ 'Number' | translate }}</label>
 
                                     <label class="labelGeneral">{{ 'Pcs' | translate }}/{{ 'Carton' | translate
                                         }}</label>
@@ -1277,7 +1282,7 @@
                                         {{ 'Direction' | translate }}</label>
                                 </div>
                                 <div class="col-2">
-
+                                    <br><br>
                                     <input class="form-control" type=t ext id="id_cartonNo"
                                         (focusout)="loadCartonName2(itemShown.cartonNumber2)"
                                         [(ngModel)]=itemShown.cartonNumber2>
@@ -1287,8 +1292,10 @@
 
                                 </div>
                                 <div class="col-3">
+                                    <br><br>
                                     <input [(ngModel)]="itemShown.cartonName2" class="form-control"
-                                        placeholder="Carton Name 2">
+                                        placeholder="Carton Name">
+                                        <br>
                                         <div *ngIf="itemShown. cartonNumber2 && !itemShown.carton2Amount">
                                             <div class="smallerLoader"></div>
                                             <p>טוען נתוני מלאי. אנא המתיני....</p>
@@ -1336,13 +1343,13 @@
                                 <div class="col-1">
 
                                 </div>
+                                <div class="col-3"></div>
                                 <div class="col-2">
-                                    <label class="form-control">EU {{ 'Pallet' | translate }}</label>
+                                    <h2>EU {{ 'Pallet' | translate }}</h2>
                                 </div>
-                                <div class="col-1"></div>
-                                <div class="col-4"></div>
+                                <div class="col-2"></div>
                                 <div class="col-4">
-                                    <label class="form-control">{{ 'גלופות' | translate }}</label>
+                                    <h2>{{ 'גלופות' | translate }}</h2>
                                 </div>
 
                             </div>
@@ -1402,13 +1409,13 @@
                                 <div class="col-1">
 
                                 </div>
+                                <div class="col-3"></div>
                                 <div class="col-2">
-                                    <label class="form-control">US {{ 'Pallet' | translate }}</label>
+                                    <h2>US {{ 'Pallet' | translate }}</h2>
                                 </div>
-                                <div class="col-1"></div>
-                                <div class="col-4"></div>
+                                <div class="col-2"></div>
                                 <div class="col-4">
-                                    <label class="form-control">{{ 'Other' | translate }}</label>
+                                    <h2>{{ 'Other' | translate }}</h2>
                                 </div>
 
                             </div>
@@ -1528,8 +1535,8 @@
                             <div class="row">
                                 <div class="col-4"></div>
                                 <div class="col-4">
-                                    <label class="form-control">{{ 'Schedule' | translate }}
-                                        {{ 'Remarks' | translate }}</label>
+                                    <h2>{{ 'Schedule' | translate }}
+                                        {{ 'Remarks' | translate }}</h2>
                                 </div>
                                 <div class="col-4"></div>
 
