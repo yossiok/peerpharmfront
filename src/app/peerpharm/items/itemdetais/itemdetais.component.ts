@@ -173,6 +173,7 @@ export class ItemdetaisComponent implements OnInit {
     sticker2Version: null,
     sticker2TypeK: "",
     boxNumber: "",
+    boxName: "",
     boxVersion: null,
     boxTypeK: "",
     barcodeK: "",
@@ -295,6 +296,12 @@ export class ItemdetaisComponent implements OnInit {
     sealOrderedAmount: 0,
     sealAllocations: 0,
     sealExpected: 0,
+ 
+    boxAmount: 0,
+    boxPurchases: [],
+    boxOrderedAmount: 0,
+    boxAllocations: 0,
+    boxExpected: 0,
 
     cartonImage: "",
     cartonAllocations: [], 
@@ -711,6 +718,25 @@ export class ItemdetaisComponent implements OnInit {
     } else if (cartonNumber == "---") {
       this.itemShown.cartonName2 = "";
       this.item.carton2Image = "";
+    }
+  }
+
+
+  fillBox(boxNumber) {
+    boxNumber = this.itemShown.boxNumber;
+    if (boxNumber != "---" && boxNumber != "") {
+      this.invtSer.getCmptPPCDetails(boxNumber).subscribe((data) => {
+        this.itemShown.boxName = data.stock[0].componentName;
+        this.itemShown.boxImage = data.stock[0].img;
+        this.itemShown.boxAllocations = data.allocationsAmount;
+        this.itemShown.boxAmount = data.stock[0].stock
+        this.itemShown.boxPurchases = data.purchases;
+        this.itemShown.boxOrderedAmount = data.purchaseAmount;
+        this.itemShown.boxExpected = data.realAmount;
+      });
+    } else if (boxNumber == "---") {
+      this.itemShown.boxName = "";
+      this.item.boxImage = "";
     }
   }
 
@@ -1307,6 +1333,19 @@ export class ItemdetaisComponent implements OnInit {
           this.itemShown.cartonNumber2 = "";
           this.itemShown.cartonName2 = "";
           this.itemShown.componentSixType = "";
+        }
+
+        if (this.itemShown.boxNumber != "") {
+          this.fillBox(this.itemShown.boxNumber);
+          this.searchCompNumberByComp(
+            this.itemShown.boxNumber,
+            "productionSevenInput"
+          );
+        } else {
+          this.itemShown.boxImage = "";
+          this.itemShown.boxNumber = "";
+          this.itemShown.boxName = "";
+          this.itemShown.componentFourType = "";
         }
 
         this.searchCompNumberByComp(this.itemShown.boxNumber, "box");
