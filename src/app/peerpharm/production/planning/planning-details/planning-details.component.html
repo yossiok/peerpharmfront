@@ -309,6 +309,8 @@
 
   <div *ngIf="printingFormules" class="row mt-3 d-flex flex-row">
 
+    <h1>PAKA {{workPlan.serialNumber}}</h1>
+
     <ng-container *ngFor="let formule of workPlan.productionFormules; let i = index">
       <!-- <h1 *ngIf="formule.numOfItems > 16">Page 1 of 2</h1>
             <h1 *ngIf="formule.numOfItems <= 16">Page 1 of 1</h1> -->
