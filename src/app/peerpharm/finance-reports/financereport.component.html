@@ -146,23 +146,30 @@
               </tr>
               <tr>
                 <th>#</th>
-                <td>Item Type</td>
-                <th>Item Number</th>
-                <th>Item Name</th>
-                <th>Item Cost</th>
-                <th>Item Coin</th>
-                <th>Item Amount</th>
+                <th>itme Number</th>
+                <th>Components Cost</th>
+                <th>Materials Cost</th>
+                <th>Shipping cost</th>
+                <th>Total cost per item</th>
+                <th>Total cost per amount supplied</th>
+                <th>Stock Amount</th>
+                <th>Count Date</th>
+
               </tr>
             </thead>
             <tbody *ngIf="getAllOrders">
               <tr *ngFor="let item of filteredOrders; let i = index">
                 <td>{{i+1}}</td>
-                <td>{{item.itemType}}</td>
                 <td>{{item.itemNumber}}</td>
-                <td>{{item.itemName}}</td>
-                <td>{{item.actualPrice}}</td>
-                <td>{{item.actualCoin}}</td>
-                <td>{{item.totalAmount}}</td>
+                <td>{{item.componentsTotalCost}}</td>
+                <td>{{item.materialsCost}}</td>
+                <td>{{item.shippingCost}}</td>
+                <td>{{item.componentsTotalCost + item.materialsCost + item.shippingCost}}</td>
+                <td>
+                  {{((item.componentsTotalCost + item.materialsCost + item.shippingCost)*item.quantitySupplied).toFixed(2)}}
+                </td>
+                <td>{{item.quantitySupplied}}</td>
+                <td>{{item.deliveryDate}}</td>
               </tr>
 
             </tbody>

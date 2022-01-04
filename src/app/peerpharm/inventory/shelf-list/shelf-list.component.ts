@@ -15,6 +15,8 @@ import { InventoryService } from "src/app/services/inventory.service";
 import { ItemsService } from "src/app/services/items.service";
 import { YearCount } from "./YearCount";
 import * as XLSX from "xlsx";
+import { differenceInBusinessDays } from "date-fns";
+import { runInNewContext } from "vm";
 
 @Component({
   selector: "app-shelf-list",
@@ -64,6 +66,7 @@ export class ShelfListComponent implements OnInit {
   typedBy: string = "";
   countDate: Date;
   allWarehouses: any[] = [];
+  diffReport: boolean = false;
 
   @ViewChild("shelfPosition") shelfPosition: ElementRef;
   @ViewChild("shelfAmount") shelfAmount: ElementRef;
@@ -168,6 +171,20 @@ export class ShelfListComponent implements OnInit {
         return;
       }
     });
+    this.inventorySrv.getInvRepCosts("product").subscribe((data) => {
+      console.log(data);
+      if (data.msg) {
+        this.toastSrv.error(data.msg);
+        this.fetchingShelfs = false;
+        return;
+      } else if (data) {
+        this.productsPrices = data;
+      } else {
+        this.toastSrv.error("Products were not found");
+        this.fetchingShelfs = false;
+        return;
+      }
+    });
   }
 
   getLastYearCount() {
@@ -216,6 +233,7 @@ export class ShelfListComponent implements OnInit {
     let type = names[1];
     this.itemType = type;
     this.whareHouse = whName;
+    console.log(whName);
     this.inventorySrv.getFilesListByWh(whName, type).subscribe((data) => {
       console.log(data);
       if (data.msg) {
@@ -245,7 +263,7 @@ export class ShelfListComponent implements OnInit {
         this.fileDate = data[0].counts.fileDate;
 
         for (let doc of data) {
-          console.log(doc);
+          // console.log(doc);
           let prevQty = doc.counts.prevQty ? doc.counts.prevQty : 0;
           let shelf = {
             companyOwned: doc.companyOwned,
@@ -269,7 +287,7 @@ export class ShelfListComponent implements OnInit {
               ? doc.counts.repeatCount - prevQty
               : doc.counts.countQty - prevQty,
           };
-          console.log(shelf);
+          // console.log(shelf);
           this.allCountShelves.push(shelf);
           this.showFile = true;
         }
@@ -285,11 +303,11 @@ export class ShelfListComponent implements OnInit {
     this.getAllWhShelfs();
     switch (whareHouse) {
       case "material":
-        this.itemType = whareHouse;
+        this.itemType = "material";
         this.whareHouse = "Rosh HaAyin";
         break;
       case "component":
-        this.itemType = whareHouse;
+        this.itemType = "component";
         this.whareHouse = "Rosh HaAyin C";
         break;
       case "Rosh HaAyin products":
@@ -298,15 +316,15 @@ export class ShelfListComponent implements OnInit {
         break;
       case "NEW KASEM":
         this.itemType = "component";
-        this.whareHouse = whareHouse;
+        this.whareHouse = "NEW KASEM";
         break;
       case "NEW KASEM-2":
         this.itemType = "component";
-        this.whareHouse = whareHouse;
+        this.whareHouse = "NEW KASEM-2";
         break;
       case "Kasem":
         this.itemType = "component";
-        this.whareHouse = whareHouse;
+        this.whareHouse = "Kasem";
         break;
       case "Labels":
         this.itemType = "component";
@@ -344,11 +362,11 @@ export class ShelfListComponent implements OnInit {
             (a, b) => (a._id.position > b._id.position ? 1 : -1)
           );
           allShelfsWithOrWithoutItems.forEach((shelf) => {
-            console.log(shelf);
+            // console.log(shelf);
             let firstPart = shelf._id.position.substring(0, 2);
-            console.log(firstPart);
+            // console.log(firstPart);
             let secondPart = shelf._id.position.substring(2);
-            console.log(secondPart);
+            // console.log(secondPart);
             if (
               (parseInt(firstPart) &&
                 parseInt(secondPart) &&
@@ -360,7 +378,7 @@ export class ShelfListComponent implements OnInit {
             shelf._id.newPosition = shelf._id.newPosition
               ? shelf._id.newPosition
               : shelf._id.position;
-            console.log(shelf);
+            // console.log(shelf);
             return shelf;
           });
           allShelfsWithOrWithoutItems.sort((a, b) =>
@@ -374,7 +392,7 @@ export class ShelfListComponent implements OnInit {
             allShelfsWithOrWithoutItems.concat(emptyLines);
           this.allShelfs = allShelfsWithOrWithoutItems;
           this.allShelfsCopy = allShelfsWithOrWithoutItems;
-          console.log(data);
+          // console.log(data);
           this.fetchingShelfs = false;
         } else this.toastSrv.error("No Shelfs in Wharehouse");
       });
@@ -568,7 +586,7 @@ export class ShelfListComponent implements OnInit {
     let whNames = [];
     let formNum = 1;
     // let emptyRows = 400;
-    let emptyRows = 40;
+    let emptyRows = 400;
 
     let emptyObj = {
       total: 0,
@@ -588,9 +606,9 @@ export class ShelfListComponent implements OnInit {
     let page = 20;
     let order = [];
     while (i < this.allShelfs.length) {
-      console.log(i);
-      console.log(this.allShelfs[i]);
-      console.log(this.allShelfs[i]._id);
+      // console.log(i);
+      // console.log(this.allShelfs[i]);
+      // console.log(this.allShelfs[i]._id);
 
       let headRow1 = {
         A: null,
@@ -635,7 +653,7 @@ export class ShelfListComponent implements OnInit {
         B: "חתימת הסופר:",
         C: null,
         D: null,
-        E: null,
+        E: "שעה:",
         F: null,
         G: null,
         H: null,
@@ -694,10 +712,10 @@ export class ShelfListComponent implements OnInit {
       shelfs.push(headRow8);
 
       for (let j = 0; j < page; j++) {
-        console.log("J: " + j);
-        console.log(this.allShelfs[i]._id.position);
-        console.log(this.allShelfs[i]._id.item);
-        console.log(this.allShelfs[i]._id.name);
+        // console.log("J: " + j);
+        // console.log(this.allShelfs[i]._id.position);
+        // console.log(this.allShelfs[i]._id.item);
+        // console.log(this.allShelfs[i]._id.name);
         shelfs.push({
           A: i + 1,
           B: this.allShelfs[i]._id.position,
@@ -713,10 +731,10 @@ export class ShelfListComponent implements OnInit {
       }
       whName = this.whareHouse + "-" + this.itemType + "-" + formNum;
       whNames.push(whName);
-      console.log("Form number: " + formNum);
+      // console.log("Form number: " + formNum);
       formNum++;
       page = formNum == totalForms ? this.allShelfs.length - i : page;
-      console.log(shelfs);
+      // console.log(shelfs);
       shelvesArr.push(shelfs);
       this.shelvesArr.push(shelfs);
       shelfs = [];
@@ -876,31 +894,46 @@ export class ShelfListComponent implements OnInit {
         // const workSheetName: string = workBook.SheetNames[0];
         this.allCountShelves = [];
         let wsJson = [];
+
+        //this loop is for readin the excel sheets one by one and push them into the wsJson array
+        let firstSheet = true;
         for (let workSheetName of sheetNames) {
           const workSheet: XLSX.WorkSheet = workBook.Sheets[workSheetName];
           let currentJson = XLSX.utils.sheet_to_json(workSheet);
           console.log(currentJson);
 
           if (currentJson) {
-            let names = workSheetName.split("-");
-            this.whareHouse = names[0];
-            this.itemType = names[1];
-            console.log(this.whareHouse);
-            // this.selectWh.nativeElement.value = this.whareHouse;
-            this.fileName = target.files[0].name;
-            this.fileDate = ev.target.files[0].lastModified;
-            let countedBy = currentJson[2]["C"];
-            this.countedBy = countedBy;
-            let supervisedBy = currentJson[4]["C"];
-            this.supervisedBy = supervisedBy;
-            let typedBy = currentJson[5]["D"];
-            this.typedBy = typedBy;
-            let countDate = currentJson[2]["F"];
-            this.countDate = countDate;
+            let countedBy;
+            let supervisedBy;
+            let typedBy;
 
-            console.log(countedBy, supervisedBy, typedBy);
+            if (firstSheet) {
+              let names = workSheetName.split("-");
+              this.whareHouse = names[0];
+              this.itemType = names[1];
+              console.log(this.whareHouse);
+              console.log(this.itemType);
+              // this.selectWh.nativeElement.value = this.whareHouse;
+              this.fileName = target.files[0].name;
+              this.fileDate = ev.target.files[0].lastModified;
+              countedBy = currentJson[2]["C"];
+              this.countedBy = countedBy;
+              supervisedBy = currentJson[4]["C"];
+              this.supervisedBy = supervisedBy;
+              typedBy = currentJson[5]["D"];
+              this.typedBy = typedBy;
+              let countDate = currentJson[2]["F"];
+              console.log(countDate);
+              let countHour = currentJson[3]["F"];
+              console.log(countHour);
+              countDate = countDate + " " + countHour;
+              this.countDate = new Date(countDate);
 
-            this.showFile = true;
+              console.log(countedBy, supervisedBy, typedBy, this.countDate);
+
+              this.showFile = true;
+              firstSheet = false;
+            }
             // for (let item of wsJson) {
             for (let i = 8; i < currentJson.length; i++) {
               currentJson[i]["countedBy"] = countedBy;
@@ -908,19 +941,19 @@ export class ShelfListComponent implements OnInit {
               currentJson[i]["typedBy"] = typedBy;
               currentJson[i]["fileName"] = this.fileName;
               currentJson[i]["fileDate"] = this.fileDate;
-              currentJson[i]["countDate"] = countDate;
+              currentJson[i]["countDate"] = this.countDate;
 
               console.log(currentJson[i]);
               wsJson.push(currentJson[i]);
             }
           } else {
-            this.showFile = false;
+            // this.showFile = false;
             this.fetchingShelfs = false;
             this.toastSrv.error("No Shelfs in Wharehouse");
           }
           console.log(wsJson);
         }
-
+        // this loop is for structuring the elements in the array
         for (let i = 0; i < wsJson.length; i++) {
           let shelf = {
             itemNumber: wsJson[i]["C"] ? wsJson[i]["C"].toString() : "",
@@ -929,7 +962,7 @@ export class ShelfListComponent implements OnInit {
               ? wsJson[i]["B"].trim().toUpperCase()
               : "",
             itemUnit: wsJson[i]["E"] ? wsJson[i]["E"] : "",
-            prevQty: 0,
+            prevQty: null,
             repeatCount: null,
             diffQty: 0,
             itemPrice: null,
@@ -939,7 +972,9 @@ export class ShelfListComponent implements OnInit {
               ? wsJson[i]["G"].trim().toUpperCase()
               : "",
             itemRemark: wsJson[i]["H"],
-            itemBatch: wsJson[i]["I"] ? wsJson[i]["I"].toUpperCase() : "",
+            itemBatch: wsJson[i]["I"]
+              ? wsJson[i]["I"].toString().toUpperCase()
+              : "",
             countedBy: wsJson[i].countedBy,
             supervisedBy: wsJson[i].supervisedBy,
             typedBy: wsJson[i].typedBy,
@@ -952,107 +987,454 @@ export class ShelfListComponent implements OnInit {
           this.allCountShelves.push(shelf);
         }
         console.log(this.allCountShelves);
+        console.log(this.whareHouse);
+        console.log(this.itemType);
+
+        //here we first need to create:
+        //1.  itemshells backup
+        //2. update whmovements by time of the count
+        //3. continue to get the shleflist by wh
         this.inventorySrv
-          .shelfListByWH(this.whareHouse, this.itemType)
+          .itemshellCopy(this.whareHouse, this.itemType)
           .subscribe((data) => {
             console.log(data);
-            console.log(data.itemShells);
             if (data.msg) {
               this.toastSrv.error(data.msg);
               return;
-            } else if (data) {
-              let itemShells = data.itemShells;
-              console.log(this.allCountShelves);
-              try {
-                for (let item of this.allCountShelves) {
-                  let indCS = -1; //shelf position in stock
-                  let indP = -1; // component price
-                  let indMS = -1; // material price
+              //this is step number 2, update the db copy with the movment
+            } else if (data.copyResult.length > 0) {
+              let updateValues = {
+                fromTime: this.countDate,
+                toTime: new Date(),
+                whName: this.whareHouse,
+                db: "copy",
+              };
 
-                  if (this.itemType == "component") {
-                    indCS = itemShells.findIndex((shelf) => {
-                      return (
-                        shelf._id.item.trim() == item.itemNumber &&
-                        shelf._id.position.trim().toUpperCase() ==
-                          item.itemPosition
-                      );
+              this.inventorySrv
+                .updateActionlogs(updateValues)
+                .subscribe((data) => {
+                  console.log(data);
+                  if (data.msg) {
+                    this.toastSrv.error(data.msg);
+                    return;
+                  } else if (
+                    data.savedResults.length == data.whActions.length
+                  ) {
+                    let filtered = data.savedResults.filter((item) => {
+                      return item.ok == 1 && item.nModified == 1 && item.n == 1;
                     });
-                    indP = this.componentsPrices.findIndex(
-                      (cp) => cp.itemNumber == item.itemNumber
-                    );
-                  } else if (this.itemType == "material") {
-                    indCS = itemShells.findIndex((shelf) => {
-                      return (
-                        shelf._id.item == item.itemNumber &&
-                        shelf._id.position.trim().toUpperCase() ==
-                          item.itemPosition &&
-                        shelf._id.supplierBatchNumber.toUpperCase() ==
-                          item.itemBatch
-                      );
-                    });
-                    indMS = this.materialsPrices.findIndex(
-                      (mp) => mp.itemNumber == item.itemNumber
-                    );
-                  } else if (this.itemType == "product") {
-                    indCS = itemShells.findIndex((shelf) => {
-                      return (
-                        shelf._id.item == item.itemNumber &&
-                        shelf._id.position.trim().toUpperCase() ==
-                          item.itemPosition
-                      );
-                    });
-                  }
+                    console.log("filtered length: ", filtered.length);
+                    console.log("saved length: ", data.savedResults.length);
+                    // if (filtered.length == data.savedResults.length) {
+                    if (true) {
+                      // step number 3, get the item selves from the copy collection
+                      let db = "copy";
+                      console.log("Step number 3");
+                      this.inventorySrv
+                        .shelfListByWH(this.whareHouse, this.itemType, db)
+                        .subscribe((data) => {
+                          console.log(data);
+                          console.log(data.itemShells);
+                          if (data.msg) {
+                            this.toastSrv.error(data.msg);
+                            return;
+                          } else if (data) {
+                            let itemShells = data.itemShells;
+                            console.log(this.allCountShelves);
+                            try {
+                              for (let item of this.allCountShelves) {
+                                let indCS = -1; //shelf position in stock
+                                let indP = -1; // component price
+                                let indMS = -1; // material price
+                                let indPr = -1; //product list
 
-                  console.log(indCS);
-                  if (indCS > -1) {
-                    console.log(itemShells[indCS].total);
-                    item.prevQty = parseInt(itemShells[indCS].total);
-                    item.diffQty = item.prevQty
-                      ? item.itemQty - item.prevQty
-                      : item.itemQty;
-                    indCS = -1;
-                  }
-                  console.log(indP);
-                  if (indP > -1) {
-                    console.log(this.componentsPrices[indP].actualPrice);
-                    item.itemPrice =
-                      0 || null
-                        ? null
-                        : parseFloat(
-                            this.componentsPrices[indP].actualPrice
-                          ).toFixed(2);
-                    item.itemCoin = this.componentsPrices[indP].actualCoin;
-                    indP = -1;
-                  }
-                  console.log(indMS);
-                  if (indMS > -1) {
-                    console.log(this.materialsPrices[indMS].actualPrice);
-                    item.itemPrice =
-                      0 || null || ""
-                        ? null
-                        : parseFloat(
-                            this.materialsPrices[indMS].actualPrice
-                          ).toFixed(2);
-                    item.itemCoin = this.materialsPrices[indMS].actualCoin;
-                    indMS = -1;
-                  }
-                }
-              } catch (error) {
-                console.log("Error message: ", error);
-              }
+                                if (this.itemType == "component") {
+                                  indCS = itemShells.findIndex((shelf) => {
+                                    return (
+                                      shelf._id.item.trim() ==
+                                        item.itemNumber &&
+                                      shelf._id.position.trim().toUpperCase() ==
+                                        item.itemPosition
+                                    );
+                                  });
+                                  indP = this.componentsPrices.findIndex(
+                                    (cp) => cp.itemNumber == item.itemNumber
+                                  );
+                                } else if (this.itemType == "material") {
+                                  indCS = itemShells.findIndex((shelf) => {
+                                    if (shelf._id.supplierBatchNumber) {
+                                      return (
+                                        shelf._id.item == item.itemNumber &&
+                                        shelf._id.position
+                                          .trim()
+                                          .toUpperCase() == item.itemPosition &&
+                                        shelf._id.supplierBatchNumber
+                                          .toString()
+                                          .toUpperCase() == item.itemBatch
+                                      );
+                                    } else {
+                                      return (
+                                        shelf._id.item == item.itemNumber &&
+                                        shelf._id.position
+                                          .trim()
+                                          .toUpperCase() == item.itemPosition
+                                      );
+                                    }
+                                  });
+                                  indMS = this.materialsPrices.findIndex(
+                                    (mp) => mp.itemNumber == item.itemNumber
+                                  );
+                                } else if (this.itemType == "product") {
+                                  indCS = itemShells.findIndex((shelf) => {
+                                    return (
+                                      shelf._id.item == item.itemNumber &&
+                                      shelf._id.position.trim().toUpperCase() ==
+                                        item.itemPosition
+                                    );
+                                  });
+                                  // indPr = this.productsPrices.findIndex(
+                                  //   (pp) => pp.itemNumber == item.itemNumber
+                                  // );
+                                }
 
-              console.log(this.allCountShelves);
-              this.fetchingShelfs = false;
-              this.uploadExFile.nativeElement.value = "";
-            } else {
-              this.toastSrv.error("No data found");
-              this.fetchingShelfs = false;
+                                // console.log(indCS)
+                                if (indCS > -1) {
+                                  // console.log(itemShells[indCS].total);
+                                  if (this.itemType == "material") {
+                                    item.prevQty = parseInt(
+                                      itemShells[indCS].total
+                                    );
+                                  } else {
+                                    item.prevQty = parseInt(
+                                      itemShells[indCS].total
+                                    );
+                                  }
+                                  if (item.itemQty && item.prevQty) {
+                                    item.diffQty = item.itemQty - item.prevQty;
+                                  } else if (
+                                    item.prevQty &&
+                                    (!item.itemQty || item.itemQty == 0)
+                                  ) {
+                                    item.diffQty = 0;
+                                  } else if (
+                                    item.itemQty &&
+                                    (!item.prevQty || item.prevQty === 0)
+                                  ) {
+                                    item.diffQty = item.itemQty;
+                                  }
+
+                                  // item.diffQty = item.prevQty
+                                  //   ? item.itemQty - item.prevQty
+                                  //   : item.itemQty;
+
+                                  indCS = -1;
+                                }
+                                // console.log(indP);
+                                if (indP > -1) {
+                                  console.log(
+                                    this.componentsPrices[indP].actualPrice
+                                  );
+                                  item.itemPrice =
+                                    +this.componentsPrices[indP].actualPrice;
+                                  // this.componentsPrices[indP].actualPrice ==
+                                  // (0 || null || "")
+                                  //   ? null
+
+                                  // : parseFloat(
+                                  //     this.componentsPrices[indP]
+                                  //       .actualPrice
+                                  //   ).toFixed(2);
+                                  item.itemCoin =
+                                    this.componentsPrices[indP].actualCoin;
+                                  indP = -1;
+                                }
+                                // console.log(indMS);
+                                if (indMS > -1) {
+                                  console.log(
+                                    this.materialsPrices[indMS].actualPrice
+                                  );
+                                  item.itemPrice =
+                                    this.materialsPrices[indMS].actualPrice ==
+                                    (0 || null || "")
+                                      ? null
+                                      : parseFloat(
+                                          this.materialsPrices[indMS]
+                                            .actualPrice
+                                        ).toFixed(2);
+                                  item.itemCoin =
+                                    this.materialsPrices[indMS].actualCoin;
+                                  indMS = -1;
+                                }
+                              }
+                              //* add itemshells that dont exist in the excel file */
+                              for (let stock of itemShells) {
+                                let ind = this.allCountShelves.findIndex(
+                                  (shelf) => {
+                                    if (this.itemType == "material") {
+                                      if (stock.supplierBatchNumber) {
+                                        return (
+                                          stock._id.item.trim() ==
+                                            shelf.itemNumber &&
+                                          stock._id.position
+                                            .trim()
+                                            .toUpperCase() ==
+                                            shelf.itemPosition &&
+                                          shelf.itemBatch.toUpperCase() ==
+                                            stock.supplierBatchNumber
+                                              .toString()
+                                              .toUpperCase()
+                                        );
+                                      } else {
+                                        return (
+                                          stock._id.item.trim() ==
+                                            shelf.itemNumber &&
+                                          stock._id.position
+                                            .trim()
+                                            .toUpperCase() == shelf.itemPosition
+                                        );
+                                      }
+                                    } else {
+                                      return (
+                                        stock._id.item.trim() ==
+                                          shelf.itemNumber &&
+                                        stock._id.position
+                                          .trim()
+                                          .toUpperCase() == shelf.itemPosition
+                                      );
+                                    }
+                                  }
+                                );
+                                if (ind == -1) {
+                                  let addedRow = {
+                                    itemNumber: stock._id.item,
+                                    itemName: stock._id.name,
+                                    itemPosition: stock._id.position,
+                                    prevQty: stock.total,
+                                    itemQty: 0,
+                                    diffQty: -stock.total,
+                                    itemPrice: null,
+                                    itemCoin: "",
+                                    diffPrice: 0,
+                                    itemRemark: "not found",
+                                    itemBatch: stock.supplierBatchNumber,
+                                  };
+                                  if (this.itemType == "component") {
+                                    let pIndex =
+                                      this.componentsPrices.findIndex((pr) => {
+                                        return pr.itemNumber == stock._id.item;
+                                      });
+                                    if (pIndex > -1) {
+                                      addedRow.itemPrice =
+                                        this.componentsPrices[pIndex].price;
+                                      addedRow.itemCoin =
+                                        this.componentsPrices[pIndex].coin;
+                                      addedRow.diffPrice =
+                                        addedRow.diffQty * addedRow.itemPrice;
+                                    }
+                                  } else if (this.itemType == "material") {
+                                    let mIndex = this.materialsPrices.findIndex(
+                                      (pr) => {
+                                        return (
+                                          pr.itemNumber == stock._id.item &&
+                                          pr.itemBatch ==
+                                            stock.supplierBatchNumber
+                                        );
+                                      }
+                                    );
+                                    if (mIndex > -1) {
+                                      addedRow.itemPrice =
+                                        this.materialsPrices[mIndex].price;
+                                      addedRow.itemCoin =
+                                        this.materialsPrices[mIndex].coin;
+                                      addedRow.diffPrice =
+                                        addedRow.diffQty * addedRow.itemPrice;
+                                    }
+                                    // } else if (this.itemType == "product") {
+                                    //   let mIndex = this.productsPrices.findIndex(
+                                    //     (pr) => {
+                                    //       return pr.itemNumber == stock._id.item;
+                                    //     }
+                                    //   );
+                                    //   if (mIndex > -1) {
+                                    //     addedRow.itemPrice =
+                                    //       this.productsPrices[mIndex].price;
+                                    //     addedRow.itemCoin =
+                                    //       this.materialsPrices[mIndex].coin;
+                                    //     addedRow.diffPrice =
+                                    //       addedRow.diffQty * addedRow.itemPrice;
+                                    //   }
+                                  }
+                                  this.allCountShelves.push(addedRow);
+                                }
+                                this.allCountShelves =
+                                  this.allCountShelves.filter((shelf) => {
+                                    return shelf.itemNumber != "";
+                                  });
+                              }
+                            } catch (error) {
+                              console.log("Error message: ", error);
+                            }
+
+                            console.log(this.allCountShelves);
+                            this.diffReport = true;
+                            this.diffReportToExcel();
+                            this.toastSrv.success(
+                              "טעינת הנתונים עברה בהצלחה",
+                              "הצלחה"
+                            );
+                            this.fetchingShelfs = false;
+                            this.uploadExFile.nativeElement.value = "";
+                          } else {
+                            this.toastSrv.error("No data found");
+                            this.fetchingShelfs = false;
+                          }
+                        });
+                    }
+                  }
+                });
             }
           });
+        return;
       };
     }
   }
+  diffReportToExcel() {
+    let countReport = [];
+    let headRow1 = {
+      A: null,
+      B: null,
+      C: null,
+      D: 'פארפארם בע"מ רחוב העמל 17 אזור התעשיה אפק, ראש העין, 4809256',
+      E: null,
+      F: null,
+      G: null,
+      H: null,
+      I: null,
+    };
+    countReport.push(headRow1);
+    let headRow2 = {
+      A: null,
+      B: null,
+      C: null,
+      D: "דף ספירת מלאי לסוף שנת הכספים 2021",
+      E: null,
+      F: null,
+      G: null,
+      H: null,
+      I: null,
+    };
 
+    countReport.push(headRow2);
+    let headRow3 = {
+      A: "",
+      B: "שם הסופר:",
+      C: this.allCountShelves[0].countedBy,
+      D: `דו"ח הפרשים`,
+      E: "תאריך:",
+      F: this.allCountShelves[0].countDate,
+      G: null,
+      H: null,
+      I: null,
+    };
+    countReport.push(headRow3);
+    let headRow4 = {
+      A: null,
+      B: null,
+      C: null,
+      D: null,
+      E: null,
+      F: null,
+      G: null,
+      H: null,
+      I: null,
+    };
+    countReport.push(headRow4);
+    let headRow5 = {
+      A: "",
+      B: "שם הבקר:",
+      C: this.allCountShelves[0].supervisedBy,
+      D: "שם המקליד/ה:",
+      E: null,
+      F: null,
+      G: null,
+      H: null,
+      I: null,
+    };
+    countReport.push(headRow5);
+    let headRow6 = {
+      A: null,
+      B: null,
+      C: null,
+      D: this.allCountShelves[0].typedBy,
+      E: null,
+      F: null,
+      G: null,
+      H: null,
+      I: null,
+    };
+
+    countReport.push(headRow6);
+    let headRow7 = {
+      A: "",
+      B: "שם המחסן:",
+      C: null,
+      D: this.whareHouse + "-" + this.itemType + "s",
+      E: null,
+      F: null,
+      G: null,
+      H: null,
+      I: null,
+    };
+    countReport.push(headRow7);
+
+    let headRow8 = {
+      A: "מס.",
+      B: "איתור",
+      C: 'מק"ט',
+      D: "תאור הפריט",
+      E: "'יח",
+      F: "מלאי נוכחי",
+      G: "ספירה נוכחית",
+      H: "ספירה חוזרת",
+      I: "הפרש בכמות",
+      J: "מחיר",
+      K: "מטבע",
+      L: "הפרש במחיר",
+      M: "פריט חברה",
+      N: "הערות",
+      O: "אצווה",
+    };
+    countReport.push(headRow8);
+    let counter = 1;
+    for (let row of this.allCountShelves) {
+      let bodyRow = {
+        A: counter,
+        B: row.itemPosition,
+        C: row.itemNumber,
+        D: row.itemName,
+        E: row.itemUnit,
+        F: row.prevQty,
+        G: row.itemQty,
+        H: row.repeatCount,
+        I: row.diffQty,
+        J: row.itemPrice,
+        K: row.itemCoin,
+        L: row.itemPrice * row.diffQty,
+        M: row.companyOwned,
+        N: row.itemRemark,
+        O: row.itemBatch,
+      };
+      countReport.push(bodyRow);
+      counter++;
+    }
+    this.xlSrv.exportAsExcelFile(
+      countReport,
+      `ספירת מלאי ${this.lastYearCount.serialNumber + 1}, ${
+        this.whareHouse
+      } - ${this.itemType}s, 2021`,
+      null
+    );
+  }
   saveEdit(i) {
     console.log(this.EditRow);
     console.log(i);
@@ -1066,6 +1448,7 @@ export class ShelfListComponent implements OnInit {
   sendDataToDB() {
     this.loadingDataToDB = true;
     console.log(this.allCountShelves);
+    console.log(this.whareHouse);
 
     let wh = { wh: this.whareHouse, type: this.itemType, userName: this.user };
 
@@ -1121,6 +1504,7 @@ export class ShelfListComponent implements OnInit {
     this.viewSavedExcel = false;
     this.stockUpdateByFile = false;
     this.showFile = false;
+    this.diffReport = false;
   }
   importExcelFileView() {
     if (!this.importExcelFile) {
@@ -1136,6 +1520,7 @@ export class ShelfListComponent implements OnInit {
     this.viewSavedExcel = false;
     this.stockUpdateByFile = false;
     this.readOnly = false;
+    this.diffReport = false;
   }
   saveTheExcelToDbView() {
     this.actionLogsUpdate = false;
@@ -1145,6 +1530,7 @@ export class ShelfListComponent implements OnInit {
     this.viewSavedExcel = false;
     this.stockUpdateByFile = false;
     this.readOnly = false;
+    this.diffReport = false;
   }
 
   viewSavedExcelView() {
@@ -1153,6 +1539,7 @@ export class ShelfListComponent implements OnInit {
       this.allShelfs = [];
       this.allCountShelves = [];
     }
+    this.diffReport = false;
     this.actionLogsUpdate = false;
     this.exportEmptyFile = false;
     this.importExcelFile = false;
@@ -1171,6 +1558,7 @@ export class ShelfListComponent implements OnInit {
       this.viewSavedExcel = false;
       this.stockUpdateByFile = true;
       this.readOnly = true;
+      this.diffReport = false;
     } else {
       alert("אין לך הרשאה מתאימה לביצוע הפעולה");
     }
@@ -1185,6 +1573,7 @@ export class ShelfListComponent implements OnInit {
       this.stockUpdateByFile = false;
       this.readOnly = true;
       this.showFile = false;
+      this.diffReport = false;
     } else {
       alert("אין לך הרשאה מתאימה לביצוע הפעולה");
     }

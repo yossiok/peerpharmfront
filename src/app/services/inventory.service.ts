@@ -24,10 +24,10 @@ export class InventoryService {
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
-  shelfListByWH(whareHouseId, type): Observable<any> {
+  shelfListByWH(whareHouseId, type, db = "real"): Observable<any> {
     let url =
       this.baseUrl +
-      `itemShell/shelfsByWareHouse?whareHouse=${whareHouseId}&type=${type}`;
+      `itemShell/shelfsByWareHouse?whareHouse=${whareHouseId}&type=${type}&db=${db}`;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
@@ -328,6 +328,17 @@ export class InventoryService {
   // ספירת מלאי, קבלת נתוני קובץ לפי תאריך הקובץ
   getYearCountFile(fileDate) {
     let url = this.baseUrl + "itemShell/getFile?fileDate=" + fileDate;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
+  // ספירת מלאי, יצירת עותק של קולקשן
+  itemshellCopy(whName, itemType) {
+    let url =
+      this.baseUrl +
+      "mongoArchives/itemshellCopy?whName=" +
+      whName +
+      "&itemType=" +
+      itemType;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 

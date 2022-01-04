@@ -313,6 +313,7 @@ export class FinanceReportComponent implements OnInit {
                   this.financeService
                     .addSalesCost(this.filteredOrders[i])
                     .subscribe((data) => {
+                      console.log(data);
                       if (data.msg) {
                         this.toastr.error(data.msg);
                       } else {
@@ -341,9 +342,9 @@ export class FinanceReportComponent implements OnInit {
                 .then(() => {
                   this.itemCounter++;
                   console.log("Counter no.: " + this.itemCounter);
-                  // if (this.itemCounter == this.filteredOrders.length - 1)
-                  // if (this.itemCounter == this.filteredOrders.length - 1)
-                  //   this.exportToExcel();
+                  if (this.itemCounter == this.filteredOrders.length - 1)
+                    // if (this.itemCounter == this.filteredOrders.length - 1)
+                    this.exportStockExcel(this.filteredOrders);
                   if (this.itemCounter == this.end - start - 1) {
                     this.toastr.success("Loading data to the DB started");
                   }
@@ -355,10 +356,10 @@ export class FinanceReportComponent implements OnInit {
             }
           );
         });
+      this.toastr.success("Loading data finished");
+      this.getAllOrders = true;
+      this.loader = false;
     }
-    this.toastr.success("Loading data finished");
-    this.getAllOrders = true;
-    this.loader = false;
   }
 
   exportToExcel() {
@@ -371,6 +372,7 @@ export class FinanceReportComponent implements OnInit {
         this.toastr.error(data.msg);
       } else {
         let reportData = data;
+        this.filteredOrders = data;
 
         for (let item of reportData) {
           num++;
@@ -663,12 +665,54 @@ export class FinanceReportComponent implements OnInit {
         console.log(data);
         this.end = data.length;
         for (let item of data) {
+          item.itemName = item.itemName[0];
           item.quantitySupplied = item.totalAmount;
         }
-        this.itemsList = data;
         this.filteredOrders = data;
+        setTimeout(() => {
+          this.getItemComponents();
+        }, 500);
+
+        this.itemsList = data;
+
         this.loader = false;
       }
     });
+  }
+
+  exportStockExcel(data) {
+    let createdAt = moment(this.today).format("DD/MM/YYYY");
+    let sortOrder;
+    this.excelData = [];
+    for (let item of data) {
+      let itemObj = {
+        "Item Type": item.itemType,
+        "Item Number": item.itemNumber,
+        "Item Name": item.itemName,
+        "Product cost(components)": item.componentsTotalCost,
+        "Product cost (materials)": item.materialsCost,
+        "Product cost (shipping)": item.shippingCost,
+        "Stock Amount": item.quantitySupplied,
+      };
+      this.excelData.push(itemObj);
+      // this.filteredOrders.push(item);
+    }
+
+    sortOrder = [
+      "Date",
+      "Item Type",
+      "Item Number",
+      "Item Name",
+      "Product cost(components)",
+      "Product cost (materials)",
+      "Product cost (shipping)",
+      "Stock Amount",
+    ];
+
+    this.excelService.exportAsExcelFile(
+      this.excelData,
+      "Inventory Report",
+      sortOrder
+    );
   }
 }
