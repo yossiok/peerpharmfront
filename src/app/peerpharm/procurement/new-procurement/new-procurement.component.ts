@@ -608,14 +608,14 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           let lastYear = 0;
           for (let order of orders) {
             if (this.lastSupplier == "") this.lastSupplier = order.supplierName;
-            if (order.orderDate.slice(0, 4) == "2021")
+            if (order.orderDate.slice(0, 4) == "2022")
               currentYear += Number(order.quantity);
-            else if (order.orderDate.slice(0, 4) == "2020")
+            else if (order.orderDate.slice(0, 4) == "2021")
               lastYear += Number(order.quantity);
           }
           this.itemForm.controls.historyAmounts.setValue([
-            { year: 2021, amount: currentYear },
-            { year: 2020, amount: lastYear },
+            { year: 2022, amount: currentYear },
+            { year: 2021, amount: lastYear },
           ]);
         } else this.itemForm.controls.historyAmounts.setValue([]);
       });

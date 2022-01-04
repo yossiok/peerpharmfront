@@ -1085,7 +1085,7 @@
                                         *ngIf="itemShown.laserImage2">
                                 </div>
                             </div>
-                        
+
                         </div>
 
                     </ng-template>
@@ -1141,24 +1141,26 @@
                                 </div>
                                 <div class="col-3">
                                     <label>למילוי בלבד</label>
-                                  <input class="form-control" type="checkbox" [(ngModel)]="itemShown.fillOnly">
+                                    <input class="form-control" type="checkbox" [(ngModel)]="itemShown.fillOnly">
                                 </div>
                             </div>
 
                             <div class="row mt-4">
 
+                                <div class="col-2"></div>
                                 <div class="col-4">
-                                    <label class="form-control">{{ 'Carton' | translate }}/{{ 'Pallet' | translate
-                                        }}</label>
+                                    <h2>{{ 'Cartons' | translate }} / {{ 'Pallets' | translate
+                                        }}</h2>
                                 </div>
-                                <div class="col-4"></div>
+                                <div class="col-2"></div>
                                 <div class="col-4">
-                                    <label class="form-control">{{ 'License' | translate }}</label>
+                                    <h2>{{ 'License' | translate }}</h2>
                                 </div>
 
                             </div>
-                            <div class="row">
+                            <div class="row mt-2">
                                 <div class="col-2">
+                                    <h3 for="">1</h3>
                                     <label class="labelGeneral">{{ 'Carton' | translate }}
                                         {{ 'Number' | translate }}</label>
 
@@ -1170,7 +1172,7 @@
                                         {{ 'Direction' | translate }}</label>
                                 </div>
                                 <div class="col-2">
-
+                                    <br><br>
                                     <input class="form-control" type=t ext id="id_cartonNo"
                                         (focusout)="loadCartonName(itemShown.cartonNumber)"
                                         [(ngModel)]=itemShown.cartonNumber>
@@ -1187,11 +1189,48 @@
                                         <option value="Left">{{ 'Left' | translate }}</option>
                                     </select>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-4">
+                                    <br><br>
                                     <input [(ngModel)]="itemShown.cartonName" class="form-control"
                                         placeholder="Carton Name">
+                                    <!--FILL CARTON-->
+                                    <br>
+                                    <div *ngIf="itemShown.cartonNumber && !itemShown.cartonAmount">
+                                        <div class="smallerLoader"></div>
+                                        <p>טוען נתוני מלאי....</p>
+                                    </div>
+                                    <div *ngIf="itemShown.cartonAmount" class="stock-bg p-2">
+                                        <h4>Stock details</h4>
+                                        <label>Stock Amount: {{itemShown.cartonAmount | number}} pcs</label><br>
+                                        <label>Allocated Amount: {{itemShown.cartonAllocations | number}}
+                                            pcs</label><br>
+                                        <label>Expected
+                                            Stock (before arrivals): <span class="p-1"
+                                                [ngClass]="itemShown.cartonExpected <= 0 ? 'h3' : ''"
+                                                [style.color]="itemShown.cartonExpected <= 0 ? 'red' : 'black'">{{itemShown.cartonExpected
+                                                | number}}</span></label><br>
+                                        <label>Expected Arrivals: {{itemShown.cartonOrderedAmount | number}} pcs</label>
+                                        <h3>Future Arrivals:</h3>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order</th>
+                                                    <th>Amount</th>
+                                                    <th>Status</th>
+                                                    <th>Arrival Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let purchase of itemShown.cartonPurchases">
+                                                    <td>{{purchase.orderNumber}}</td>
+                                                    <td>{{purchase.quantity | number}}</td>
+                                                    <td>{{purchase.status}}</td>
+                                                    <td>{{purchase.arrivalDate}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-                                <div class="col-1"></div>
                                 <div class="col-2">
                                     <label class="labelGeneral">{{ 'License' | translate }}
                                         {{ 'Number' | translate }}</label>
@@ -1229,8 +1268,9 @@
                             <!--Addition MAria Request---------------------------------------------------------------------------------------------------->
                             <div class="row mt-5">
                                 <div class="col-2">
+                                    <h3 for="">2</h3>
                                     <label class="labelGeneral">{{ 'Carton' | translate }}
-                                        {{ 'Number' | translate }} 2</label>
+                                        {{ 'Number' | translate }}</label>
 
                                     <label class="labelGeneral">{{ 'Pcs' | translate }}/{{ 'Carton' | translate
                                         }}</label>
@@ -1240,19 +1280,58 @@
                                         {{ 'Direction' | translate }}</label>
                                 </div>
                                 <div class="col-2">
-
+                                    <br><br>
                                     <input class="form-control" type=t ext id="id_cartonNo"
-                                        (focusout)="loadCartonName(itemShown.cartonNumber2)"
+                                        (focusout)="loadCartonName2(itemShown.cartonNumber2)"
                                         [(ngModel)]=itemShown.cartonNumber2>
 
                                     <input class="form-control" type="text" ext id="id_pcsCarton"
                                         [(ngModel)]=itemShown.PcsCarton2>
 
                                 </div>
-                                <div class="col-3">
+                                <div class="col-4">
+                                    <br><br>
                                     <input [(ngModel)]="itemShown.cartonName2" class="form-control"
-                                        placeholder="Carton Name 2">
+                                        placeholder="Carton Name">
+                                    <br>
+                                    <div *ngIf="itemShown. cartonNumber2 && !itemShown.carton2Amount">
+                                        <div class="smallerLoader"></div>
+                                        <p>טוען נתוני מלאי. אנא המתיני....</p>
+                                    </div>
+                                    <div *ngIf="itemShown.carton2Amount" class="stock-bg p-2">
+                                        <h4>Stock details</h4>
+                                        <label>Stock Amount: {{itemShown.carton2Amount | number}} pcs</label><br>
+                                        <label>Allocated Amount: {{itemShown.carton2Allocations | number}}
+                                            pcs</label><br>
+                                        <label>Expected
+                                            Stock (before arrivals): <span  class="p-1"
+                                                [ngClass]="itemShown.carton2Expected <= 0 ? 'h3' : ''"
+                                                [style.color]="itemShown.carton2Expected <= 0 ? 'red' : 'black'">{{itemShown.carton2Expected
+                                                | number}}</span></label><br>
+                                        <label>Expected Arrivals: {{itemShown.carton2OrderedAmount | number}}
+                                            pcs</label>
+                                        <h3>Future Arrivals:</h3>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order</th>
+                                                    <th>Amount</th>
+                                                    <th>Status</th>
+                                                    <th>ArrivalDate</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let purchase of itemShown.carton2Purchases">
+                                                    <td>{{purchase.orderNumber}}</td>
+                                                    <td>{{purchase.quantity | number}}</td>
+                                                    <td>{{purchase.status}}</td>
+                                                    <td>{{purchase.arrivalDate}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
+
                             </div>
                             <!--Finish Addition MAria Request--------------------------------------------------------------------------------------------------------------------->
 
@@ -1263,13 +1342,13 @@
                                 <div class="col-1">
 
                                 </div>
+                                <div class="col-3"></div>
                                 <div class="col-2">
-                                    <label class="form-control">EU {{ 'Pallet' | translate }}</label>
+                                    <h2>EU {{ 'Pallet' | translate }}</h2>
                                 </div>
-                                <div class="col-1"></div>
-                                <div class="col-4"></div>
+                                <div class="col-2"></div>
                                 <div class="col-4">
-                                    <label class="form-control">{{ 'גלופות' | translate }}</label>
+                                    <h2>{{ 'גלופות' | translate }}</h2>
                                 </div>
 
                             </div>
@@ -1329,13 +1408,13 @@
                                 <div class="col-1">
 
                                 </div>
+                                <div class="col-3"></div>
                                 <div class="col-2">
-                                    <label class="form-control">US {{ 'Pallet' | translate }}</label>
+                                    <h2>US {{ 'Pallet' | translate }}</h2>
                                 </div>
-                                <div class="col-1"></div>
-                                <div class="col-4"></div>
+                                <div class="col-2"></div>
                                 <div class="col-4">
-                                    <label class="form-control">{{ 'Other' | translate }}</label>
+                                    <h2>{{ 'Other' | translate }}</h2>
                                 </div>
 
                             </div>
@@ -1455,8 +1534,8 @@
                             <div class="row">
                                 <div class="col-4"></div>
                                 <div class="col-4">
-                                    <label class="form-control">{{ 'Schedule' | translate }}
-                                        {{ 'Remarks' | translate }}</label>
+                                    <h2>{{ 'Schedule' | translate }}
+                                        {{ 'Remarks' | translate }}</h2>
                                 </div>
                                 <div class="col-4"></div>
 
@@ -1526,26 +1605,38 @@
                                         *ngIf='bottleFile'>>></button> -->
                                     <img id="id_img1" [src]=itemShown.bottleImage>
                                 </div>
-                                <div class="col-4 stock-bg p-2">
+                                <div *ngIf="itemShown.bottleNumber && !itemShown.bottleAmount">
+                                    <div class="smallerLoader"></div>
+                                    <p>טוענת נתוני מלאי. אנא המתיני....</p>
+                                </div>
+                                <div *ngIf="itemShown.bottleAmount" class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
-                                    <label>Stock Amount: {{itemShown.bottleAmount}}</label><br>
-                                    <label>Allocated Amount: {{itemShown.bottleAllocations}}</label><br>
-                                    <label>Ordered Amounts: {{itemShown.bottleOrderedAmount}}</label>
+                                    <label>Stock Amount: {{itemShown.bottleAmount | number}} pcs</label><br>
+                                    <label>Allocated Amount: {{itemShown.bottleAllocations}} pcs</label><br>
+                                    <label>Expected Stock (before arrivals):
+                                        <span class="p-1" [ngClass]="itemShown.bottleExpected <= 0 ? 'h3' : ''"
+                                            [style.color]="itemShown.bottleExpected <= 0 ? 'red' : 'black'">
+                                            {{itemShown.bottleExpected | number}}
+                                        </span>
+                                    </label>
+                                    <br>
+                                    <label>Expected Arrivals: {{itemShown.bottleOrderedAmount | number}} pcs</label>
+                                    <h3>Future Arrivals:</h3>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Order</th>
-                                                <th>Created</th>
-                                                <th>Arrival</th>
                                                 <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>Arrival Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let purchase of itemShown.bottlePurchases">
                                                 <td>{{purchase.orderNumber}}</td>
-                                                <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
-                                                <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
-                                                <td>{{purchase.itemAmount}}</td>
+                                                <td>{{purchase.quantity | number}}</td>
+                                                <td>{{purchase.status}}</td>
+                                                <td>{{purchase.arrivalDate}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1614,26 +1705,38 @@
                                         *ngIf='capFile'>>></button> -->
                                     <img id="id_img2" [src]=itemShown.capImage>
                                 </div>
-                                <div class="col-4 stock-bg p-2">
+                                <div *ngIf="itemShown.capNumber && !itemShown.capAmount">
+                                    <div class="smallerLoader"></div>
+                                    <p>טוענת נתוני מלאי. אנא המתיני....</p>
+                                </div>
+                                <div *ngIf="itemShown.capAmount" class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
-                                    <label>Stock Amount: {{itemShown.capAmount}}</label><br>
-                                    <label>Allocated Amount: {{itemShown.capAllocations}}</label><br>
-                                    <label>Ordered Amounts: {{itemShown.capOrderedAmount}}</label>
+                                    <label>Stock Amount: {{itemShown.capAmount | number}}</label><br>
+                                    <label>Allocated Amount: {{itemShown.capAllocations | number}}</label><br>
+                                    <label>Expected Stock (before arrivals):
+                                        <span class="p-1" [ngClass]="itemShown.capExpected <= 0 ? 'h3' : ''"
+                                            [style.color]="itemShown.capExpected <= 0 ? 'red' : 'black'">
+                                            {{itemShown.capExpected | number}}
+                                        </span>
+                                    </label>
+                                    <br>
+                                    <label>Expected Arrivals: {{itemShown.capOrderedAmount | number}}</label>
+                                    <h3>Future Arrivals:</h3>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Order</th>
-                                                <th>Created</th>
-                                                <th>Arrival</th>
                                                 <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>Arrival Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let purchase of itemShown.capPurchases">
                                                 <td>{{purchase.orderNumber}}</td>
-                                                <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
-                                                <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
-                                                <td>{{purchase.itemAmount}}</td>
+                                                <td>{{purchase.quantity | number}}</td>
+                                                <td>{{purchase.status}}</td>
+                                                <td>{{purchase.arrivalDate}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1650,26 +1753,37 @@
                                         *ngIf='pumpFile'>>></button> -->
                                     <img id="id_img3" [src]=itemShown.pumpImage>
                                 </div>
-                                <div class="col-4 stock-bg p-2">
+                                <div *ngIf="itemShown.pumpNumber && !itemShown.pumpAmount">
+                                    <div class="text-center smallerLoader"></div>
+                                    <p>טוענת נתוני מלאי. אנא המתיני....</p>
+                                </div>
+                                <div *ngIf="itemShown.pumpAmount" class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
-                                    <label>Stock Amount: {{itemShown.pumpAmount}}</label><br>
-                                    <label>Allocated Amount: {{itemShown.pumpAllocations}}</label><br>
-                                    <label>Ordered Amounts: {{itemShown.pumpOrderedAmount}}</label>
+                                    <label>Stock Amount: {{itemShown.pumpAmount | number}}</label><br>
+                                    <label>Allocated Amount: {{itemShown.pumpAllocations | number}}</label><br>
+                                    <label>Expected Stock (before arrivals):
+                                        <span class="p-1" [ngClass]="itemShown.pumpExpected <= 0 ? 'h3' : ''"
+                                            [style.color]="itemShown.pumpExpected <= 0 ? 'red' : 'black'">
+                                            {{itemShown.pumpExpected | number}}
+                                        </span>
+                                    </label><br>
+                                    <label>Expected Arrivals: {{itemShown.pumpOrderedAmount | number}}</label>
+                                    <h3>Future Arrivals:</h3>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Order</th>
-                                                <th>Created</th>
-                                                <th>Arrival</th>
                                                 <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>Arrival Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let purchase of itemShown.pumpPurchases">
                                                 <td>{{purchase.orderNumber}}</td>
-                                                <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
-                                                <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
-                                                <td>{{purchase.itemAmount}}</td>
+                                                <td>{{purchase.quantity | number}}</td>
+                                                <td>{{purchase.status}}</td>
+                                                <td>{{purchase.arrivalDate}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1723,26 +1837,36 @@
                                         *ngIf='extra1File'>>></button> -->
                                     <img id="id_img6" [src]=itemShown.extraImage1>
                                 </div>
-                                <div class="col-4 stock-bg p-2">
+                                <div *ngIf="itemShown.sealNumber && !itemShown.sealAmount">
+                                    <div class="smallerLoader"></div>
+                                    <p>טוען נתוני מלאי. אנא המתיני....</p>
+                                </div>
+                                <div *ngIf="itemShown.sealAmount" class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
-                                    <label>Stock Amount: {{itemShown.sealAmount}}</label><br>
-                                    <label>Allocated Amount: {{itemShown.sealAllocations}}</label><br>
-                                    <label>Ordered Amounts: {{itemShown.sealOrderedAmount}}</label>
+                                    <label>Stock Amount: {{itemShown.sealAmount | number}}</label><br>
+                                    <label>Allocated Amount: {{itemShown.sealAllocations | number}}</label><br>
+                                    <label>Expected Stock
+                                        (before arrivals): <span class="p-1"
+                                            [ngClass]="itemShown.sealExpected <= 0 ? 'h3' : ''"
+                                            [style.color]="itemShown.sealExpected <= 0 ? 'red' : 'black'">{{itemShown.sealExpected
+                                            | number}}</span></label><br>
+                                    <label>Expected Arrivals: {{itemShown.sealOrderedAmount | number}}</label>
+                                    <h3>Future Arrivals:</h3>
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
                                                 <th>Order</th>
-                                                <th>Created</th>
-                                                <th>Arrival</th>
                                                 <th>Amount</th>
+                                                <th>Status</th>
+                                                <th>Arrival Date</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let purchase of itemShown.sealPurchases">
                                                 <td>{{purchase.orderNumber}}</td>
-                                                <td>{{purchase.creationDate | date: 'dd-MM-yy'}}</td>
-                                                <td>{{purchase.arrivalDate | date: 'dd-MM-yy'}}</td>
-                                                <td>{{purchase.itemAmount}}</td>
+                                                <td>{{purchase.quantity | number}}</td>
+                                                <td>{{purchase.status}}</td>
+                                                <td>{{purchase.arrivalDate}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1852,13 +1976,50 @@
                             </div>
 
                             <div class="row mt-2">
-                                <div class="col-2">
-                                    <label class="form-control">Box</label>
-                                </div>
-                                <div class="col-2 d-flex">
-                                    <input [(ngModel)]="itemShown.boxNumber" type="text" class="form-control">
-                                    <input type="number" class="small-input" style="height: 35px" placeholder="v."
-                                        disabled [(ngModel)]="itemShown.boxVersion">
+                                <div class="col-4">
+                                    <div class="d-flex">
+                                        <label class="form-control">Box</label>
+                                        <input [(ngModel)]="itemShown.boxNumber" type="text" class="form-control">
+                                        <input type="number" class="small-input" style="height: 35px" placeholder="v."
+                                            disabled [(ngModel)]="itemShown.boxVersion">
+                                    </div>
+                                    <!--UZUZUZU-->
+                                    <br>
+                                    <div *ngIf="itemShown.boxNumber && !itemShown.boxAmount">
+                                        <div class="smallerLoader"></div>
+                                        <p>טוען נתוני מלאי....</p>
+                                    </div>
+                                    <div *ngIf="itemShown.boxAmount" class="stock-bg p-2">
+                                        <h4>Stock details</h4>
+                                        <label>Stock Amount: {{itemShown.boxAmount | number}} pcs</label><br>
+                                        <label>Allocated Amount: {{itemShown.boxAllocations | number}}
+                                            pcs</label><br>
+                                        <label>Expected
+                                            Stock (before arrivals): <span class="p-1"
+                                                [ngClass]="itemShown.boxExpected <= 0 ? 'h3' : ''"
+                                                [style.color]="itemShown.boxExpected <= 0 ? 'red' : 'black'">{{itemShown.boxExpected
+                                                | number}}</span></label><br>
+                                        <label>Expected Arrivals: {{itemShown.boxOrderedAmount | number}} pcs</label>
+                                        <h3>Future Arrivals:</h3>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Order</th>
+                                                    <th>Amount</th>
+                                                    <th>Status</th>
+                                                    <th>Arrival Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let purchase of itemShown.boxPurchases">
+                                                    <td>{{purchase.orderNumber}}</td>
+                                                    <td>{{purchase.quantity | number}}</td>
+                                                    <td>{{purchase.status}}</td>
+                                                    <td>{{purchase.arrivalDate}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                                 <div class="col-2">
                                     <img class="w-50 imageClass" [src]="itemShown.boxImage" alt="Box">

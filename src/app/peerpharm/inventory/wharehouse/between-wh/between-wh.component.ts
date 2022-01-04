@@ -22,6 +22,7 @@ export class BetweenWHComponent implements OnInit {
   today = new Date();
   noItem: boolean = false;
   disabled: boolean = false;
+  itemfound:boolean=false;
   originShelf: any;
   destShelf: any;
   itemNames: any[];
@@ -178,6 +179,7 @@ export class BetweenWHComponent implements OnInit {
   // get chunks with item
   // it was better to split it to 2 different functions - one for origin and one for destination...
   getChunks(whType) {
+    this.itemfound=false;
     console.log(this.movementForm.controls.WH_originId.value);
     if (
       !this.movementForm.controls.WH_originId.value ||
@@ -204,6 +206,7 @@ export class BetweenWHComponent implements OnInit {
       .then((result) => {
         if (!result) {
           this.toastr.error("מספר פריט לא תקין");
+          this.itemfound=false;
           return;
         }
 
@@ -250,6 +253,7 @@ export class BetweenWHComponent implements OnInit {
                   (wh) => wh._id == this.movementForm.value.WH_originId
                 ).name;
                 this.movementForm.controls.WH_originName.setValue(whName);
+                this.itemfound=true;
               }
               if (whType == "d") {
                 this.destWHShelfs = chunks;
@@ -261,6 +265,7 @@ export class BetweenWHComponent implements OnInit {
                   (wh) => wh._id == this.movementForm.value.WH_destId
                 ).name;
                 this.movementForm.controls.WH_destName.setValue(whName);
+                this.itemfound=true;
               }
             }
           });
@@ -268,6 +273,7 @@ export class BetweenWHComponent implements OnInit {
       .catch((e) => {
         console.log("error: ", e);
         this.toastr.error("", e);
+        
       });
   }
 
@@ -314,9 +320,14 @@ export class BetweenWHComponent implements OnInit {
     this.movementForm.controls.shell_position_in_whareHouse_Dest.setValue(
       this.destShelf.position
     );
+    this.itemfound=true;
   }
 
   addItem() {
+   if(this.itemfound)
+   {
+
+   
     console.log(this.movementForm.value);
     if (this.allMovements.length == 0) {
       this.originWHName = this.movementForm.value.WH_originName;
@@ -344,6 +355,10 @@ export class BetweenWHComponent implements OnInit {
       this.originWHShelfs = [];
       this.first.nativeElement.focus();
     }, 500);
+  }
+  else{
+    alert('פריט לא נמצא אנא נסה שנית')
+  }
   }
 
   removeFromAllMovements(i) {

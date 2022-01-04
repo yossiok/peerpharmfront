@@ -13,6 +13,7 @@ export interface OrderItem{
     remarks: string,
     enoughComponents: boolean,
     status: number,
+    batchNumber?: string,
     checked?: boolean,
     hasFormule?: boolean
 }

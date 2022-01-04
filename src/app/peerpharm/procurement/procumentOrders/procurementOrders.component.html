@@ -684,7 +684,7 @@
                       <td><input type="checkbox" title={{purchaseRecommendation.recommendNumber}}
                           (change)="isSelected($event,stockitem)">
                       </td>
-                      <td>
+                      <td [style.background]="stockitem.urgent ? 'red' : ''" [ngbTooltip]="stockitem.urgent ? 'בהול!!!' : ''">
                         {{stockitem.number}}
                       </td>
                       <td [style.background]="stockitem.color">
@@ -708,7 +708,8 @@
               <td>{{purchaseRecommendation.remarks}}</td>
               <td>
                 <button (click)="deletePurchaseRequest(purchaseRecommendation.recommendNumber)"
-                  class="btn btn-danger form-control rounded-pill">Delete Request
+                  class="btn btn-danger">
+                  <i class="fas fa-trash"></i> Delete
                 </button>
                 <!-- <button (click)="approveRequest(purchaseRecommendation.recommendNumber)"
                   class="btn btn-danger form-control rounded-pill">Approve Request
@@ -716,8 +717,8 @@
               </td>
               <td>
                 <button (click)="printPurchaseRequest(purchaseRecommendation.recommendNumber)"
-                  class="btn btn-secondary rounded-pill"><img style="width: 30px;"
-                    src="../../../../assets/images/print.png" alt="">Print Request
+                  class="btn btn-secondary"><img style="width: 30px;"
+                    src="../../../../assets/images/print.png" alt="">Print
                 </button>
               </td>
             </tr>
