@@ -461,7 +461,7 @@
               </td>
               <td class="hideInTablet" *ngIf="line._id === EditRowId">
                 <i class="ti-save text-info m-r-10 click" [class.read-only]="checkPermission()"
-                  (click)="updateSchedule()"></i>
+                  (click)="updateSchedule(line)"></i>
               </td>
             </ng-container>
           </tr>

@@ -467,7 +467,7 @@ export class OrderdetailsComponent implements OnInit {
 
 
   getAllFormsDetails() {
-    this.formService.getAllForms("2021").subscribe((data) => {
+    this.formService.getAllForms("2022").subscribe((data) => {
       this.allForms = data;
     });
   }
@@ -558,7 +558,7 @@ export class OrderdetailsComponent implements OnInit {
           this.toastSrv.error(
             `${oi.itemNumber} of order ${oi.orderNumber} already sent to workplan`
           );
-        } 
+        }
         else if (!oi.formuleExist) {
           nonValidOrders.push(oi);
           this.toastSrv.error(
@@ -591,8 +591,8 @@ export class OrderdetailsComponent implements OnInit {
             //check for similar items / formuleFathers
             let itemNumbers = this.selectedArr.map(i => i.itemNumber)
             this.formuleService.getOpenItemWithSimilarFormulePArent(itemNumbers).subscribe(data => {
-              console.log('similar formule: ',data)
-              if(data.length > 0) {
+              console.log('similar formule: ', data)
+              if (data.length > 0) {
                 this.similarFormules = data
                 this.modalService.open(this.similarFormulesEref)
               }
@@ -726,33 +726,19 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   isSelected(ev, item) {
-    if (ev.target.checked == true) {
-      let cont = true;
-      if (!item.formuleExist) {
-        alert('לפריט זה לא קיימת פורמולה.')
-        cont = false
-      } 
-        
-        // cont = confirm(
-        //   "לפריט זה לא קיימת פורמולה. האם אתה בטוח שברצונך להוסיף אותו לרשימה?"
-        // );
-      if (cont) {
-        var isSelected = this.selectedArr;
-        item.isSelected = true;
-        isSelected.push({ ...item });
-        this.selectedArr = isSelected;
-      } else {
-        ev.target.checked = false;
-      }
+    if (ev.target.checked) {
+      if (!item.formuleExist) alert('שימי לב! לפריט זה לא קיימת פורמולה.')
+      var isSelected = this.selectedArr;
+      item.isSelected = true;
+      isSelected.push({ ...item });
+      this.selectedArr = isSelected;
     }
-
-    if (ev.target.checked == false) {
+    else {
       item.iseSelected = false;
       var isSelected = this.selectedArr;
       var tempArr = isSelected.filter((x) => x.itemNumber != item.itemNumber);
       this.selectedArr = tempArr;
     }
-    console.log(this.selectedArr);
   }
 
   private getDismissReason(reason: any): string {
@@ -897,7 +883,9 @@ export class OrderdetailsComponent implements OnInit {
   // check with Akiva if still needed because Weight Production is the SAME
 
   checkboxAllOrders(ev) {
-    this.ordersItems.map((e) => (e.isSelected = ev.target.checked));
+    this.ordersItems.map(e => e.isSelected = ev.target.checked);
+    if (ev.target.checked) this.selectedArr = [...this.ordersItems]
+    else this.selectedArr = []
   }
 
   // check with Akiva if still necessery , in html it's Production Requirements

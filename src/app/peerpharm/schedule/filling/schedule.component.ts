@@ -640,7 +640,8 @@ export class ScheduleComponent implements OnInit {
     }
   }
 
-  async updateSchedule() {
+  async updateSchedule(line) {
+    console.log(line)
     if (this.orderN.nativeElement.value != '') {
 
       let scdLneInfo = await this.scheduleData.filter(sced => sced._id == this.EditRowId);
@@ -648,7 +649,7 @@ export class ScheduleComponent implements OnInit {
       let updateOrderItemDate = (scdLneInfo[0].date == this.date.nativeElement.value);
 
       let scheduleToUpdate: any = {
-        scheduleId: this.id.nativeElement.value,
+        _id: line._id,
         positionN: this.positionN.nativeElement.value,
         orderN: this.orderN.nativeElement.value,
         item: this.item.nativeElement.value,
@@ -678,7 +679,7 @@ export class ScheduleComponent implements OnInit {
         );
         this.scheduleData[
           this.scheduleData.findIndex(
-            sced => sced._id == scheduleToUpdate.scheduleId
+            sced => sced._id == scheduleToUpdate._id
           )
         ] = scheduleToUpdate;
         this.editRadioBtnType = '';

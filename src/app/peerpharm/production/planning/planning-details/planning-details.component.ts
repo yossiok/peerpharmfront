@@ -153,26 +153,6 @@ export class PlanningDetailsComponent implements OnInit {
     }
   }
 
-  // setStatus(event) {
-  //   let currentStatus = this.workPlan.status;
-  //   if (confirm("האם אתה בטוח שברצונך לשנות סטטוס?")) {
-  //     this.workPlan.status = event.target.value;
-
-  //     this.saveChanges()
-  //     .then((succesMessage) => this.toastr.success(succesMessage, 'פורמולות מאושרות'))
-  //     .catch((errorMessage) => this.toastr.error(errorMessage));
-
-  //     this.saveChanges()
-  //       .then((success) => {
-  //         this.toastr.success("סטטוס עודכן בהצלחה");
-  //       })
-  //       .catch((error) => {
-  //         this.toastr.error(error);
-  //         this.workPlan.status = currentStatus;
-  //       });
-  //   }
-  // }
-
   scheduleBatch(i, event) {
     let date = new Date()
     date.setDate(date.getDate() + Number(event.target.value))
@@ -195,12 +175,16 @@ export class PlanningDetailsComponent implements OnInit {
     });
   }
 
-  // changeStatus(i) {
-  //   this.workPlan.orderItems[i].status = 3
-  //   this.saveChanges()
-  //   .then(succesMessage => this.toastr.success(succesMessage))
-  //   .catch(errorMessage => this.toastr.error(errorMessage))
-  // }
+  WorkPlanDone(){
+    if(confirm('התכנית וכל הפריטים שבה יעברו למצב "Done". להמשיך?')) {
+      this.workPlan.status = 7
+      this.saveChanges()
+      .then(succesMessage => {
+        this.toastr.success(succesMessage)
+      })
+      .catch(errorMessage => this.toastr.error(errorMessage))
+    }
+  }
 
   saveChanges(oderItemToDelete?): Promise<string> {
     return new Promise((resolve, reject) => {

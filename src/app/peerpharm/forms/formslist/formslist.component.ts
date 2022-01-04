@@ -15,7 +15,7 @@ export class FormslistComponent implements OnInit {
   formsCopy: any[];
   sortByFillingDate: Boolean = false;
   showLoader: Boolean = true;
-  year: string = '2021'
+  year: string = '2022'
   constructor(private formsService: FormsService, private excelService: ExcelService, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
@@ -31,7 +31,7 @@ export class FormslistComponent implements OnInit {
 
     this.showLoader = true
 
-    if (this.year == '2020' || this.year == '2021') {
+    if (this.year == '2021' || this.year == '2022') {
       this.formsService.getAllForms(this.year).subscribe(forms => {
         if (forms) {
           forms.map(form => {
@@ -51,7 +51,7 @@ export class FormslistComponent implements OnInit {
       });
     }
 
-    else if (this.year == '2018' || this.year == '2019') {
+    else if (this.year == '2019' || this.year == '2020') {
       this.formsService.getFormsFromArchive(this.year).subscribe(forms => {
         if (forms) {
           forms.map(form => {

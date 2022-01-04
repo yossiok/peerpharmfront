@@ -51,7 +51,7 @@ export class AllPlanningComponent implements OnInit {
   getWorkPlans() {
     return new Promise((resolve, reject) => {
       this.productionService.getAllWorkPlans().subscribe(workPlans => {
-        this.workPlans = workPlans
+        this.workPlans = workPlans.filter(wp => wp.status != 8 && wp.status != 7)
         this.workPlansCopy = [...workPlans]
         resolve(true)
       })
@@ -83,7 +83,7 @@ export class AllPlanningComponent implements OnInit {
 
   filterByStatus(event) {
     let status = event.target.value
-    if (status == 0) this.workPlans = this.workPlansCopy
+    if (status == 0) this.workPlans = this.workPlansCopy.filter(wp => wp.status != 8 && wp.status != 7)
     else this.workPlans = this.workPlansCopy.filter(wp => wp.status == status)
   }
 
