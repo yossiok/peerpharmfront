@@ -140,6 +140,14 @@
             <label>העלה קובץ ספירת מלאי</label>
             <input type="file" multiple="false" id="excelFile" (change)="sendExcelToData($event)" #uploadExFile>
           </div>
+
+          <div class="col-1"></div>
+
+          <div class="col-1" *ngIf="allowedCountYear && showFile &&diffReport">
+            <img style="width: 50px; height: 50px; cursor: pointer;" (click)="diffReportToExcel()"
+              src="../../../../assets/images/excel.png" alt="">
+          </div>
+
           <div class="col-2" *ngIf="showFile && !fetchingPrices && !fetchingShelfs &&saveTheExcelToDb">
             <label>טען נתונים למלאי זמני</label><br>
             <button class="btn btn-secondary" (click)="sendDataToDB()">
@@ -360,6 +368,7 @@
                 <th class="count">ספירה נוכחית</th>
                 <th class="count">ספירה חוזרת</th>
                 <th class="count">הפרש בכמות</th>
+                <th class="count">מחיר</th>
                 <th class="count">הפרש במחיר</th>
                 <th class="count">מטבע</th>
                 <th class="owner">פריט חברה?</th>
@@ -381,7 +390,9 @@
                 <td *ngIf="itemType=='material'">Kg.</td>
                 <td *ngIf="itemType=='product'">{{shelf.itemUnit}}</td>
                 <td> {{shelf.prevQty}}</td>
-                <td>{{shelf.itemQty}}</td>
+                <td *ngIf="shelf.itemQty">{{shelf.itemQty}}</td>
+                <td *ngIf="!shelf.itemQty" style="color:red; background-color: yellow; text-decoration: line-through;">
+                  {{shelf.prevQty}}</td>
                 <td *ngIf="i == EditRow && !readOnly"><input type="number" id="repeatCount" name="repeatCount"
                     #repeatCount [value]="shelf.repeatCount"><i class="ti-save text-success m-r-10"
                     (click)="saveEdit(i, shelf.repeatCount)" style="cursor:pointer"></i></td>
@@ -390,11 +401,12 @@
                 <td [ngClass]="shelf.diffQty> 50||shelf.diffQty<-50? 'minus': 'plus'">
                   {{shelf.diffQty}}
                 </td>
+                <td>{{shelf.itemPrice}}</td>
+                <td>{{shelf.itemCoin}}</td>
                 <td
                   [ngClass]="(shelf.diffQty)*shelf.itemPrice> 500||(shelf.diffQty)*shelf.itemPrice<-500? 'minus': 'plus'">
                   {{(shelf.diffQty)*shelf.itemPrice}}
                 </td>
-                <td>{{shelf.itemCoin}}</td>
                 <td>{{shelf.companyOwned}}</td>
                 <td> {{shelf.itemRemark}} </td>
               </tr>
