@@ -710,6 +710,10 @@
             <label>Number: {{plate.palletNumber}}</label> &nbsp;&nbsp;
           </div>
         </div>
+        <div class="ml-5 text-center">
+          <img src="../../../assets/images/excel.png" alt="excel export"
+          (click)="exportAsXLSX(orderItemsComponents)" style="width: 200px; float: left; cursor: pointer;">
+        </div>
       </div>
 
       <br><br>
@@ -726,8 +730,7 @@
                   </tr> -->
             <tr scope="row">
               <th scope="col">
-                <img src="../../../assets/images/excel.png" alt="excel export"
-                  (click)="exportAsXLSX(orderItemsComponents)" style="width: 35px; float: left; cursor: pointer;">
+              
               </th>
               <!--0-->
               <th scope="col"><b>Order Number</b></th>
