@@ -2287,6 +2287,31 @@ export class OrderdetailsComponent implements OnInit {
               }
             }
 
+            if (item.cartonNumber2 != "" && item.cartonNumber2 != "---") {
+              let newCmpt = true;
+              if (
+                this.cartonList
+                  .map((el) => el.cartonNumber2)
+                  .includes(item.cartonNumber2)
+              ) {
+                this.cartonList.map((i) => {
+                  if (i.cartonNumber2 == item.cartonNumber2) {
+                    newCmpt = false;
+                    i.qnt = i.qnt + item.quantity / parseInt(item.PcsCarton2);
+                  }
+                });
+              } else {
+                if (newCmpt) {
+                  this.cartonList.push({
+                    cartonNumber: item.cartonNumber2,
+                    qnt: item.quantity / parseInt(item.PcsCarton2),
+                    amount: item.carton2Amount,
+                  });
+                  newCmpt = false;
+                }
+              }
+            }
+
             if (item.pallet != "" && item.pallet != "---") {
               let newCmpt = true;
               if (

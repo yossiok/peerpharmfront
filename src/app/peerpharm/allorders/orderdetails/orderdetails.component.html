@@ -697,7 +697,7 @@
           </div>
         </div>
         <div *ngIf="cartonList.length>0" class="cmptListDiv">
-          <h5>Master Catons</h5>
+          <h5>Cartons</h5>
           <div *ngFor="let carton of cartonList" class="cmptListData">
             <label>Number: {{carton.cartonNumber}}</label> &nbsp;&nbsp;
             <label>Quantity: {{carton.qnt}}</label> &nbsp;&nbsp;
@@ -759,6 +759,10 @@
               <th scope="col"><b>Carton</b></th>
               <!--14-->
               <th scope="col"><b>Carton Amount</b></th>
+              <!--13-->
+              <th scope="col"><b>Mid-Carton</b></th>
+              <!--14-->
+              <th scope="col"><b>Mid-Carton Amount</b></th>
               <!--15-->
               <th scope="col"><b>PcsCaton</b></th>
               <!--16-->
@@ -813,6 +817,10 @@
               <td scope="col">{{itemCmpts.cartonNumber}}</td>
               <!--14-->
               <td scope="col">{{itemCmpts.cartonAmount}}</td>
+              <!--13-->
+              <td scope="col">{{itemCmpts.cartonNumber2}}</td>
+              <!--14-->
+              <td scope="col">{{itemCmpts.carton2Amount}}</td>
               <!--15-->
               <td scope="col">{{itemCmpts.PcsCarton}}</td>
               <!--16-->

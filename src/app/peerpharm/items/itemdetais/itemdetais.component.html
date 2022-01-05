@@ -1195,11 +1195,11 @@
                                         placeholder="Carton Name">
                                     <!--FILL CARTON-->
                                     <br>
-                                    <div *ngIf="itemShown.cartonNumber && !itemShown.cartonAmount">
+                                    <div *ngIf="itemShown.cartonNumber && itemShown.cartonNumber != '---' && !itemShown.cartonExpected">
                                         <div class="smallerLoader"></div>
                                         <p>טוען נתוני מלאי....</p>
                                     </div>
-                                    <div *ngIf="itemShown.cartonAmount" class="stock-bg p-2">
+                                    <div *ngIf="itemShown.cartonExpected" class="stock-bg p-2">
                                         <h4>Stock details</h4>
                                         <label>Stock Amount: {{itemShown.cartonAmount | number}} pcs</label><br>
                                         <label>Allocated Amount: {{itemShown.cartonAllocations | number}}
@@ -1294,11 +1294,12 @@
                                     <input [(ngModel)]="itemShown.cartonName2" class="form-control"
                                         placeholder="Carton Name">
                                     <br>
-                                    <div *ngIf="itemShown. cartonNumber2 && !itemShown.carton2Amount">
+
+                                    <div *ngIf="itemShown.cartonNumber2 && itemShown.cartonNumber2 != '---' && !itemShown.carton2Expected">
                                         <div class="smallerLoader"></div>
                                         <p>טוען נתוני מלאי. אנא המתיני....</p>
                                     </div>
-                                    <div *ngIf="itemShown.carton2Amount" class="stock-bg p-2">
+                                    <div *ngIf="itemShown.carton2Expected" class="stock-bg p-2">
                                         <h4>Stock details</h4>
                                         <label>Stock Amount: {{itemShown.carton2Amount | number}} pcs</label><br>
                                         <label>Allocated Amount: {{itemShown.carton2Allocations | number}}
@@ -1605,11 +1606,12 @@
                                         *ngIf='bottleFile'>>></button> -->
                                     <img id="id_img1" [src]=itemShown.bottleImage>
                                 </div>
-                                <div *ngIf="itemShown.bottleNumber && !itemShown.bottleAmount">
+
+                                <div *ngIf="itemShown.bottleNumber && itemShown.bottleNumber != '---' && !itemShown.bottleExpected">
                                     <div class="smallerLoader"></div>
                                     <p>טוענת נתוני מלאי. אנא המתיני....</p>
                                 </div>
-                                <div *ngIf="itemShown.bottleAmount" class="col-4 stock-bg p-2">
+                                <div *ngIf="itemShown.bottleExpected" class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
                                     <label>Stock Amount: {{itemShown.bottleAmount | number}} pcs</label><br>
                                     <label>Allocated Amount: {{itemShown.bottleAllocations}} pcs</label><br>
@@ -1705,11 +1707,12 @@
                                         *ngIf='capFile'>>></button> -->
                                     <img id="id_img2" [src]=itemShown.capImage>
                                 </div>
-                                <div *ngIf="itemShown.capNumber && !itemShown.capAmount">
+
+                                <div *ngIf="itemShown.capNumber && itemShown.capNumber !='---' && !itemShown.capExpected">
                                     <div class="smallerLoader"></div>
                                     <p>טוענת נתוני מלאי. אנא המתיני....</p>
                                 </div>
-                                <div *ngIf="itemShown.capAmount" class="col-4 stock-bg p-2">
+                                <div *ngIf="itemShown.capExpected" class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
                                     <label>Stock Amount: {{itemShown.capAmount | number}}</label><br>
                                     <label>Allocated Amount: {{itemShown.capAllocations | number}}</label><br>
@@ -1753,11 +1756,12 @@
                                         *ngIf='pumpFile'>>></button> -->
                                     <img id="id_img3" [src]=itemShown.pumpImage>
                                 </div>
-                                <div *ngIf="itemShown.pumpNumber && !itemShown.pumpAmount">
+
+                                <div *ngIf="itemShown.pumpNumber && itemShown.pumpNumber !='---' && !itemShown.pumpExpected">
                                     <div class="text-center smallerLoader"></div>
                                     <p>טוענת נתוני מלאי. אנא המתיני....</p>
                                 </div>
-                                <div *ngIf="itemShown.pumpAmount" class="col-4 stock-bg p-2">
+                                <div *ngIf="itemShown.pumpExpected" class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
                                     <label>Stock Amount: {{itemShown.pumpAmount | number}}</label><br>
                                     <label>Allocated Amount: {{itemShown.pumpAllocations | number}}</label><br>
@@ -1837,11 +1841,12 @@
                                         *ngIf='extra1File'>>></button> -->
                                     <img id="id_img6" [src]=itemShown.extraImage1>
                                 </div>
-                                <div *ngIf="itemShown.sealNumber && !itemShown.sealAmount">
+
+                                <div *ngIf="itemShown.sealNumber && itemShown.sealNumber != '---' && !itemShown.sealExpected">
                                     <div class="smallerLoader"></div>
                                     <p>טוען נתוני מלאי. אנא המתיני....</p>
                                 </div>
-                                <div *ngIf="itemShown.sealAmount" class="col-4 stock-bg p-2">
+                                <div *ngIf="itemShown.sealExpected" class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
                                     <label>Stock Amount: {{itemShown.sealAmount | number}}</label><br>
                                     <label>Allocated Amount: {{itemShown.sealAllocations | number}}</label><br>
@@ -1985,11 +1990,11 @@
                                     </div>
                                     <!--UZUZUZU-->
                                     <br>
-                                    <div *ngIf="itemShown.boxNumber && !itemShown.boxAmount">
+                                    <div *ngIf="itemShown.boxNumber && itemShown.boxNumber !='---' && !itemShown.boxExpected">
                                         <div class="smallerLoader"></div>
                                         <p>טוען נתוני מלאי....</p>
                                     </div>
-                                    <div *ngIf="itemShown.boxAmount" class="stock-bg p-2">
+                                    <div *ngIf="itemShown.boxExpected" class="stock-bg p-2">
                                         <h4>Stock details</h4>
                                         <label>Stock Amount: {{itemShown.boxAmount | number}} pcs</label><br>
                                         <label>Allocated Amount: {{itemShown.boxAllocations | number}}
