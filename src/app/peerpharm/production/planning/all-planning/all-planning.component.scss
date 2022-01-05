@@ -12,6 +12,10 @@
   color: white
 }
 
+.disabled {
+  pointer-events: none;
+}
+
 .wrapper {
     display: grid;
     grid-template-columns: 100px 100px 100px 100px 100px;
@@ -91,6 +95,18 @@
 .img2 {
     width: 50px;
     cursor: pointer;
+  }
+
+  .smallLoader {
+    margin: auto;
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #0d10b8;
+    width: 150px;
+    height: 150px;
+    -webkit-animation: spin 2s linear infinite;
+    /* Safari */
+    animation: spin 2s linear infinite;
   }
 
     /******************Scroll Bar********************************************/

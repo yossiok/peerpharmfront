@@ -262,6 +262,12 @@
           </table>
         </td>
       </tr>
+      <tr>
+        <td>----</td>
+        <td>-----</td>
+        <td>-----</td>
+        <td>---</td>
+      </tr>
 
       <tr style="background-color:50D7FF">
         <td colspan="4" class="subHeader"></td>
@@ -281,30 +287,31 @@
         </td>
       </tr>
       <tr>
-        <td>באטצ' נוצל במלואו</td>
+        <td>----</td>
+        <td>-----</td>
+        <td>-----</td>
+        <td>---</td>
+      </tr>
+      <h3 class="text-info">שאריות</h3>
+      <tr>
         <td>
-          <input class="form-control" *ngIf="form.batchStatus =='full'" style="width:5%" type="checkbox"
-            [disabled]="disabledValue" [checked]='true' />
+        <input class="form-control" type="radio" id="no-leftOvers" (change)="consoleLogLeftOvers()" name="leftOvers" [value]="false" [(ngModel)]="form.leftOvers" />
+        <!-- <input class="form-control" *ngIf="form.batchStatus =='full'" style="width:5%" type="checkbox"
+          [disabled]="disabledValue" [checked]='true' />
           <input class="form-control" *ngIf="form.batchStatus !='full'" style="width:5%" type="checkbox"
-            [disabled]="disabledValue" [checked]='false' />
+          [disabled]="disabledValue" [checked]='false' /> -->
         </td>
-        <td>שאריות באטצ' קיימות</td>
-        <td>
-          <input class="form-control" *ngIf="form.batchStatus =='part'" style="width:12%" type="checkbox" id="ccc"
+        <td>באטצ' נוצל במלואו</td>
+          <td>
+          <input type="radio" class="form-control" id="yes-leftOvers" (change)="consoleLogLeftOvers()" name="leftOvers" [value]="true" [(ngModel)]="form.leftOvers" />
+          <!-- <input class="form-control" *ngIf="form.batchStatus =='part'" style="width:12%" type="checkbox" id="ccc"
             [disabled]="disabledValue" [checked]='true' />
           <input class="form-control" *ngIf="form.batchStatus !='part'" style="width:12%" type="checkbox" id="ccc"
-            [disabled]="disabledValue" [checked]='false' />
+            [disabled]="disabledValue" [checked]='false' /> -->
         </td>
+          <td>שאריות באטצ' קיימות</td>
       </tr>
-      <tr>
-        <hr>
-      </tr>
-      <tr *ngIf="form.leftBatchWeight != null">
-        <td>
-          <h4>באטצ'ים שלא נוצלו במלואם:</h4>
-        </td>
-      </tr>
-      <tr *ngIf="form.leftBatchWeight != null">
+      <tr *ngIf="form.leftOvers">
         <td>אצווה</td>
         <td>
           <input class="form-control" type="text" [disabled]="disabledValue" [(ngModel)]="form.leftBatchNumber"
@@ -317,7 +324,10 @@
         </td>
       </tr>
       <tr>
-        <hr>
+        <td>----</td>
+        <td>-----</td>
+        <td>-----</td>
+        <td>---</td>
       </tr>
       <tr>
         <td>רשיון לפריט</td>
@@ -331,6 +341,12 @@
             [disabled]="disabledValue" />
         </td>
       </tr>
+      <tr>
+        <td>----</td>
+        <td>-----</td>
+        <td>-----</td>
+        <td>---</td>
+      </tr>
 
       <tr>
         <td>הערות</td>
@@ -338,6 +354,12 @@
           <input id="div_qualityRemarks" class="inputDiv form-control" style="width:571px" [disabled]="disabledValue"
             [(ngModel)]="form.frontRemarks" />
         </td>
+      </tr>
+      <tr>
+        <td>----</td>
+        <td>-----</td>
+        <td>-----</td>
+        <td>---</td>
       </tr>
 
       <tr *ngIf="allowUpdateForm">

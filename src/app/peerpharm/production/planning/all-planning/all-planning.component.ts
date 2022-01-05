@@ -21,12 +21,14 @@ export class AllPlanningComponent implements OnInit {
   workPlansInterval: any = null
   currentWorkPlan: WorkPlan;
   materialsForFormules: Array<any>
+  fetchingWorkPlans: boolean = false
   disableCheckBox: boolean = false
   showMaterialsForFormules: boolean = false
   showWorkPlan: boolean = false
   loadData: boolean = false;
   showCheckbox: boolean = false
   authorized: boolean = false
+
 
   constructor(
     private productionService: ProductionService,
@@ -49,10 +51,12 @@ export class AllPlanningComponent implements OnInit {
   }
 
   getWorkPlans() {
+    this.fetchingWorkPlans = true
     return new Promise((resolve, reject) => {
       this.productionService.getAllWorkPlans().subscribe(workPlans => {
         this.workPlans = workPlans.filter(wp => wp.status != 8 && wp.status != 7)
         this.workPlansCopy = [...workPlans]
+        this.fetchingWorkPlans = false
         resolve(true)
       })
     })
@@ -140,8 +144,9 @@ export class AllPlanningComponent implements OnInit {
     for (let workPlan of this.workPlans) {
       for (let orderItem of workPlan.orderItems) {
         excel.push({
-          "Work Plan": workPlan.serialNumber,
-          status: this.workPlanStatusPipe.transform(workPlan.status),
+          "PAKA No.": workPlan.serialNumber,
+          "PAKA Status": this.workPlanStatusPipe.transform(workPlan.status),
+          "Items Status": this.workPlanStatusPipe.transform(orderItem.status),
           ...orderItem
         })
       }

@@ -3,7 +3,7 @@
     <i class="fas fa-check-double"></i>
     <div class="row mt-4">
         <!--side bar-->
-        <div class="col-1 d-flex flex-column m-2 p-3 index" style="height: fit-content;">
+        <div [ngClass]="fetchingWorkPlans ? 'disabled' : ''" class="col-1 d-flex flex-column m-2 p-3 index" style="height: fit-content;">
             <div>
                 <img class="click" ngbTooltip="רענן תכניות" (click)="getWorkPlans()" style="width: 50px"
                     src="../../../../../assets/images/update2.png" alt=""> - רענן
@@ -31,7 +31,7 @@
         <!--work plans-->
         <div *ngIf="showWorkPlan || showMaterialsForFormules" class="col-10"></div>
         <div *ngIf="!showWorkPlan && !showMaterialsForFormules" class=" col-9">
-            <div class="row mt-4">
+            <div [ngClass]="fetchingWorkPlans ? 'disabled' : ''" class="row mt-4">
                 <div class="col-2">
                     <input type="text" placeholder="PAKA Name / Num." (keyup)="filterWorkPlans($event)">
                 </div>
@@ -54,7 +54,18 @@
                     <button class="btn btn-outline-primary" (click)="clearFilter()">All</button>
                 </div>
             </div>
-            <div class="wrapper mt-5">
+            <div class="mt-5 d-flex flex-column" *ngIf="fetchingWorkPlans">
+                <div class="row">
+                    <div class="col-3"></div>
+                    <div class="col-3">
+                        <h2 class="text-info">Getting All PAKA, Please wait...</h2>
+                        <br><br>
+                        <div class="smallLoader"></div>
+                    </div>
+                    <div class="col-3"></div>
+                </div>
+            </div>
+            <div *ngIf="!fetchingWorkPlans" class="wrapper mt-5">
                 <ng-container *ngFor="let workPlan of workPlans; let i = index">
 
                     <div class="box click" [style.background]="workPlan.status | orderItemBatchStatusColor"

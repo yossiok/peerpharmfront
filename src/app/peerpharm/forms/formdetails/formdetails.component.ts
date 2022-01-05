@@ -117,6 +117,10 @@ export class FormdetailsComponent implements OnInit {
 
   }
 
+  consoleLogLeftOvers() {
+    console.log(this.form.leftOvers)
+  }
+
   async getScheduleDetails(scheduleId) {
     this.scheduleService.getScheduleById(scheduleId).subscribe(data => {
       if (data) {
