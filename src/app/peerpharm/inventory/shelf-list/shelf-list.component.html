@@ -166,7 +166,7 @@
               <option value="KASEM-component">Kasem</option>
               <option value="Rosh HaAyin-material">Rosh HaAyin - Materials</option>
               <option value="Rosh HaAyin-component">Rosh HaAyin - Components</option>
-              <option value="Rosh HaAyin-product">Rosh HaAyin - Products</option>
+              <option value="Rosh HaAyin products-product">Rosh HaAyin - Products</option>
               <option value="NEW KASEM-component">New Kasem</option>
               <option value="Labels-component">Labels</option>
               <option value="ARIEL 1-component">ARIEL 1</option>
@@ -392,7 +392,7 @@
                 <td> {{shelf.prevQty}}</td>
                 <td *ngIf="shelf.itemQty">{{shelf.itemQty}}</td>
                 <td *ngIf="!shelf.itemQty" style="color:red; background-color: yellow; text-decoration: line-through;">
-                  {{shelf.prevQty}}</td>
+                  {{shelf.itemQty}}</td>
                 <td *ngIf="i == EditRow && !readOnly"><input type="number" id="repeatCount" name="repeatCount"
                     #repeatCount [value]="shelf.repeatCount"><i class="ti-save text-success m-r-10"
                     (click)="saveEdit(i, shelf.repeatCount)" style="cursor:pointer"></i></td>

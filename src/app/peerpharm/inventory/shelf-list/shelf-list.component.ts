@@ -229,7 +229,13 @@ export class ShelfListComponent implements OnInit {
     let whFile = ev.target ? ev.target.value : ev;
     console.log(whFile);
     let names = whFile.split("-");
-    let whName = names[0];
+    let whName = "";
+    // whName = "KASEM" ? "Kasem" : names[0];
+    if (names[0] == "KASEM") {
+      whName = "Kasem";
+    } else {
+      whName = names[0];
+    }
     let type = names[1];
     this.itemType = type;
     this.whareHouse = whName;
@@ -1027,7 +1033,7 @@ export class ShelfListComponent implements OnInit {
                     console.log("saved length: ", data.savedResults.length);
                     // if (filtered.length == data.savedResults.length) {
                     if (true) {
-                      // step number 3, get the item selves from the copy collection
+                      // step number 3, get the item shelves from the copy collection
                       let db = "copy";
                       console.log("Step number 3");
                       this.inventorySrv
@@ -1051,10 +1057,8 @@ export class ShelfListComponent implements OnInit {
                                 if (this.itemType == "component") {
                                   indCS = itemShells.findIndex((shelf) => {
                                     return (
-                                      shelf._id.item.trim() ==
-                                        item.itemNumber &&
-                                      shelf._id.position.trim().toUpperCase() ==
-                                        item.itemPosition
+                                      shelf._id.item == item.itemNumber &&
+                                      shelf._id.position == item.itemPosition
                                     );
                                   });
                                   indP = this.componentsPrices.findIndex(
@@ -1109,23 +1113,23 @@ export class ShelfListComponent implements OnInit {
                                       itemShells[indCS].total
                                     );
                                   }
-                                  if (item.itemQty && item.prevQty) {
-                                    item.diffQty = item.itemQty - item.prevQty;
-                                  } else if (
-                                    item.prevQty &&
-                                    (!item.itemQty || item.itemQty == 0)
-                                  ) {
-                                    item.diffQty = 0;
-                                  } else if (
-                                    item.itemQty &&
-                                    (!item.prevQty || item.prevQty === 0)
-                                  ) {
-                                    item.diffQty = item.itemQty;
-                                  }
+                                  // if (item.itemQty && item.prevQty) {
+                                  //   item.diffQty = item.itemQty - item.prevQty;
+                                  // } else if (
+                                  //   item.prevQty &&
+                                  //   (!item.itemQty || item.itemQty == 0)
+                                  // ) {
+                                  //   item.diffQty = 0;
+                                  // } else if (
+                                  //   item.itemQty &&
+                                  //   (!item.prevQty || item.prevQty === 0)
+                                  // ) {
+                                  //   item.diffQty = item.itemQty;
+                                  // }
 
-                                  // item.diffQty = item.prevQty
-                                  //   ? item.itemQty - item.prevQty
-                                  //   : item.itemQty;
+                                  item.diffQty = item.prevQty
+                                    ? item.itemQty - item.prevQty
+                                    : item.itemQty;
 
                                   indCS = -1;
                                 }
@@ -1173,8 +1177,7 @@ export class ShelfListComponent implements OnInit {
                                     if (this.itemType == "material") {
                                       if (stock.supplierBatchNumber) {
                                         return (
-                                          stock._id.item.trim() ==
-                                            shelf.itemNumber &&
+                                          stock._id.item == shelf.itemNumber &&
                                           stock._id.position
                                             .trim()
                                             .toUpperCase() ==
@@ -1186,20 +1189,16 @@ export class ShelfListComponent implements OnInit {
                                         );
                                       } else {
                                         return (
-                                          stock._id.item.trim() ==
-                                            shelf.itemNumber &&
-                                          stock._id.position
-                                            .trim()
-                                            .toUpperCase() == shelf.itemPosition
+                                          stock._id.item == shelf.itemNumber &&
+                                          stock._id.position.toUpperCase() ==
+                                            shelf.itemPosition
                                         );
                                       }
                                     } else {
                                       return (
-                                        stock._id.item.trim() ==
-                                          shelf.itemNumber &&
-                                        stock._id.position
-                                          .trim()
-                                          .toUpperCase() == shelf.itemPosition
+                                        stock._id.item == shelf.itemNumber &&
+                                        stock._id.position.toUpperCase() ==
+                                          shelf.itemPosition
                                       );
                                     }
                                   }
@@ -1586,6 +1585,7 @@ export class ShelfListComponent implements OnInit {
       fromTime: formValue.fromDate.value + " " + formValue.fromHour.value,
       toTime: formValue.toDate.value + " " + formValue.toHour.value,
       warehouseId: formValue.warehouseName.value,
+      db: "real",
     };
     console.log(updateValues);
     if (confRetro)
