@@ -121,10 +121,12 @@ export class ShelfChangeComponent implements OnInit {
 
   changeShelf() {
     this.sending = true;
+    console.log(this.shelfChange.value);
     setTimeout(() => (this.sending = false), 7000); //if something goes wrong
     this.inventoryService
       .changeItemPosition(this.shelfChange.value)
       .subscribe((data) => {
+        console.log(data);
         if (data.msg) {
           this.toastr.error(data.msg, "שגיאה");
           this.shelfsWithItem = [];

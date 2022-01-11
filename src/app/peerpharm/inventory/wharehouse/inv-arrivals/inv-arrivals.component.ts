@@ -91,7 +91,10 @@ export class InvArrivalsComponent implements OnInit {
 
   getHistoricalReceptions() {
     this.warehouseService.inPrintCalled$.subscribe((data) => {
-      this.certificateReception = data.logs[0].warehouseReception;
+      this.certificateReception = data.deliveryNote
+        ? data.deliveryNote
+        : data.logs[0].warehouseReception;
+
       this.today = data.dateAndTime;
       data.logs.forEach((element) => {
         element.position = element.shell_position_in_whareHouse_Origin;
@@ -300,8 +303,8 @@ export class InvArrivalsComponent implements OnInit {
         else if (data) {
           console.log(data);
           //set certificate data
-          this.certificateReception =
-            data.allResults[0].savedMovement.warehouseReception;
+          this.certificateReception = data.savedWhActionlog.deliveryNote;
+
           // for (let arrival of this.allArrivals) {
           //   arrival.suplierN = data.allResults.find(
           //     (a) => a.item == arrival.item

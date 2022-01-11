@@ -22,7 +22,7 @@ export class BetweenWHComponent implements OnInit {
   today = new Date();
   noItem: boolean = false;
   disabled: boolean = false;
-  itemfound:boolean=false;
+  itemfound: boolean = false;
   originShelf: any;
   destShelf: any;
   itemNames: any[];
@@ -39,14 +39,14 @@ export class BetweenWHComponent implements OnInit {
     ),
     WH_originId: new FormControl(null, Validators.required),
     WH_originName: new FormControl(null, Validators.required),
-    shell_id_in_whareHouse_Dest: new FormControl(null, Validators.required),
-    shell_position_in_whareHouse_Dest: new FormControl(
-      null,
-      Validators.required
-    ),
+    // shell_id_in_whareHouse_Dest: new FormControl(null, Validators.required),
+    // shell_position_in_whareHouse_Dest: new FormControl(
+    //   null,
+    //   Validators.required
+    // ),
     WH_destId: new FormControl(null, Validators.required),
     WH_destName: new FormControl(null, Validators.required),
-    isNewItemShell: new FormControl(false, Validators.required),
+    // isNewItemShell: new FormControl(false, Validators.required),
   });
   sending: boolean = false;
   certificateReception: any;
@@ -56,6 +56,7 @@ export class BetweenWHComponent implements OnInit {
   destinationWHName: any;
   destinationWHId: any;
   historic: boolean;
+  destWhList: any[] = [];
   constructor(
     private inventoryService: InventoryService,
     private toastr: ToastrService,
@@ -179,8 +180,12 @@ export class BetweenWHComponent implements OnInit {
   // get chunks with item
   // it was better to split it to 2 different functions - one for origin and one for destination...
   getChunks(whType) {
-    this.itemfound=false;
+    this.itemfound = false;
     console.log(this.movementForm.controls.WH_originId.value);
+    this.destWhList = this.reallyAllWhareHouses.filter((wh) => {
+      return wh._id != this.movementForm.controls.WH_originId.value;
+    });
+    console.log(this.destWhList);
     if (
       !this.movementForm.controls.WH_originId.value ||
       !this.movementForm.controls.item.value
@@ -201,13 +206,33 @@ export class BetweenWHComponent implements OnInit {
       whType == "o"
         ? this.movementForm.value.WH_originId
         : this.movementForm.value.WH_destId;
+    // this.inventoryService
+    //   .getCmptByitemNumber(this.movementForm.value.item)
+    //   .subscribe((data) => {
+    //     console.log(data);
+    //     console.log(data[0].componentName);
+    //     let itemName = data[0].componentName;
+    //     if (data.msg) {
+    //       this.toastr.error(data.msg);
+    //     } else if (data) {
+    //       this.movementForm.controls.itemName.setValue(itemName);
+    //     }
+
+    //     console.log(this.movementForm.value.itemName);
+    //     console.log(this.movementForm.value);
+    //   });
 
     this.checkComponentN()
       .then((result) => {
         if (!result) {
           this.toastr.error("מספר פריט לא תקין");
-          this.itemfound=false;
+          this.itemfound = false;
           return;
+        } else if (result) {
+          console.log(result);
+          this.movementForm.controls.itemName.setValue(
+            this.itemNames[0].componentName
+          );
         }
 
         if (!WHID) this.toastr.error("אנא בחר מחסן.");
@@ -253,7 +278,7 @@ export class BetweenWHComponent implements OnInit {
                   (wh) => wh._id == this.movementForm.value.WH_originId
                 ).name;
                 this.movementForm.controls.WH_originName.setValue(whName);
-                this.itemfound=true;
+                this.itemfound = true;
               }
               if (whType == "d") {
                 this.destWHShelfs = chunks;
@@ -265,7 +290,7 @@ export class BetweenWHComponent implements OnInit {
                   (wh) => wh._id == this.movementForm.value.WH_destId
                 ).name;
                 this.movementForm.controls.WH_destName.setValue(whName);
-                this.itemfound=true;
+                this.itemfound = true;
               }
             }
           });
@@ -273,8 +298,16 @@ export class BetweenWHComponent implements OnInit {
       .catch((e) => {
         console.log("error: ", e);
         this.toastr.error("", e);
-        
       });
+  }
+
+  getDestWh() {
+    let whName = this.reallyAllWhareHouses.filter((wh) => {
+      return wh._id == this.movementForm.controls.WH_destId.value;
+    });
+    this.movementForm.controls.WH_destName.setValue(whName[0].name);
+    console.log(this.movementForm.controls.WH_destName.value);
+    console.log(this.movementForm.controls.WH_destId.value);
   }
 
   getAllShelfsOfDest(e) {
@@ -320,45 +353,41 @@ export class BetweenWHComponent implements OnInit {
     this.movementForm.controls.shell_position_in_whareHouse_Dest.setValue(
       this.destShelf.position
     );
-    this.itemfound=true;
+    this.itemfound = true;
   }
 
   addItem() {
-   if(this.itemfound)
-   {
+    if (this.itemfound) {
+      console.log(this.movementForm.value);
+      if (this.allMovements.length == 0) {
+        this.originWHName = this.movementForm.value.WH_originName;
+        this.originWHId = this.movementForm.value.WH_originId;
+        this.destinationWHName = this.movementForm.value.WH_destName;
+        this.destinationWHId = this.movementForm.value.WH_destId;
+        this.allMovements.push(this.movementForm.value);
+      } else {
+        this.allMovements.push(this.movementForm.value);
+      }
 
-   
-    console.log(this.movementForm.value);
-    if (this.allMovements.length == 0) {
-      this.originWHName = this.movementForm.value.WH_originName;
-      this.originWHId = this.movementForm.value.WH_originId;
-      this.destinationWHName = this.movementForm.value.WH_destName;
-      this.destinationWHId = this.movementForm.value.WH_destId;
-      this.allMovements.push(this.movementForm.value);
+      //push arrival to allArrivals
+
+      console.log(this.allMovements);
+
+      setTimeout(() => {
+        this.movementForm.reset();
+        this.movementForm.controls.WH_originName.setValue(this.originWHName);
+        this.movementForm.controls.WH_originId.setValue(this.originWHId);
+        this.movementForm.controls.WH_destName.setValue(this.destinationWHName);
+        this.movementForm.controls.WH_destId.setValue(this.destinationWHId);
+        this.movementForm.controls.isNewItemShell.setValue(false);
+        this.movementForm.controls.itemType.setValue("component");
+        this.itemNames = [];
+        this.originWHShelfs = [];
+        this.first.nativeElement.focus();
+      }, 500);
     } else {
-      this.allMovements.push(this.movementForm.value);
+      alert("פריט לא נמצא אנא נסה שנית");
     }
-
-    //push arrival to allArrivals
-
-    console.log(this.allMovements);
-
-    setTimeout(() => {
-      this.movementForm.reset();
-      this.movementForm.controls.WH_originName.setValue(this.originWHName);
-      this.movementForm.controls.WH_originId.setValue(this.originWHId);
-      this.movementForm.controls.WH_destName.setValue(this.destinationWHName);
-      this.movementForm.controls.WH_destId.setValue(this.destinationWHId);
-      this.movementForm.controls.isNewItemShell.setValue(false);
-      this.movementForm.controls.itemType.setValue("component");
-      this.itemNames = [];
-      this.originWHShelfs = [];
-      this.first.nativeElement.focus();
-    }, 500);
-  }
-  else{
-    alert('פריט לא נמצא אנא נסה שנית')
-  }
   }
 
   removeFromAllMovements(i) {

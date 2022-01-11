@@ -20,16 +20,17 @@
           *ngIf="movementForm.controls.WH_originId.touched && movementForm.controls.WH_originId.errors?.required">
           **בחר מחסן</div>
       </div>
+      <div class="col-4"></div>
       <div class="col-2">
-        <label>ממדף *</label>
-        <select class="form-control" (change)="setOriginPosition()" formControlName="shell_id_in_whareHouse_Origin">
-          <option disabled value="">בחר מדף</option>
-          <option *ngFor="let shelf of originWHShelfs" [disabled]="shelf.position == 'MINUS'"
-            [value]="shelf.shell_id_in_whareHouse" [ngStyle]="{'color': shelf.amount >=0 ? 'black' : 'red' }">
-            {{shelf.position}} - {{shelf.amount}} pcs
+        <label>למחסן *</label>
+        <select class="form-control" formControlName="WH_destId" #whid (change)="getDestWh()">
+          <option disabled value="">בחר מחסן</option>
+          <option [disabled]="allMovements.length > 0" *ngFor="let whareHouse of destWhList" [value]="whareHouse._id">
+            {{whareHouse.name}}
           </option>
         </select>
       </div>
+
     </div>
     <div class="row mt-4">
       <div *ngIf="!disabled" class="col-2">
@@ -52,7 +53,16 @@
           </option>
         </select>
       </div>
-
+      <div class="col-2">
+        <label>ממדף *</label>
+        <select class="form-control" (change)="setOriginPosition()" formControlName="shell_id_in_whareHouse_Origin">
+          <option disabled value="">בחר מדף</option>
+          <option *ngFor="let shelf of originWHShelfs" [disabled]="shelf.position == 'MINUS'"
+            [value]="shelf.shell_id_in_whareHouse" [ngStyle]="{'color': shelf.amount >=0 ? 'black' : 'red' }">
+            {{shelf.position}} - {{shelf.amount}} pcs
+          </option>
+        </select>
+      </div>
 
 
       <div class="col-2">
@@ -70,17 +80,8 @@
     </div>
     <div class="row mt-4">
 
-      <div class="col-2">
-        <label>למחסן *</label>
-        <select class="form-control" formControlName="WH_destId" #whid (change)="getChunks('d')"
-          (change)="getAllShelfsOfDest($event)">
-          <option disabled value="">בחר מחסן</option>
-          <option [disabled]="allMovements.length > 0" *ngFor="let whareHouse of reallyAllWhareHouses"
-            [value]="whareHouse._id">{{whareHouse.name}}
-          </option>
-        </select>
-      </div>
-      <div class="col-2">
+
+      <!-- <div class="col-2">
 
         <label>למדף *</label>
         <select class="form-control" (change)="setDestPosition()" formControlName="shell_id_in_whareHouse_Dest">
@@ -94,7 +95,7 @@
           <button type="button" [disabled]="noItem" [style.cursor]="noItem ? 'not-allowed' : 'pointer'"
             (click)="getAllShelfsOfDest(whid.value)" class="btn btn-warning">הכנס למדף חדש</button>
         </span>
-      </div>
+      </div> -->
       <div *ngIf="itemNames" class="col-2">
         <img [src]=itemNames[0].img alt=" חסרה תמונה ראשית" class="pictureTabImg">
       </div>
@@ -102,8 +103,9 @@
     <div class="row mt-4">
       <div class="col-2 d-flex flex-column justify-content-around">
         <div *ngIf="sending" class="smallerLoader"></div>
-        <button type="submit" [disabled]="!movementForm.valid"
-          [style.cursor]="movementForm.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">הוסף למשלוח</button>
+        <!--[disabled]="!movementForm.valid"-->
+        <button type="submit" [style.cursor]="movementForm.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">הוסף
+          למשלוח</button>
 
       </div>
       <div class="col-2 d-flex flex-column justify-content-between">
@@ -128,15 +130,15 @@
       </thead>
       <tbody style="background-color: rgb(228, 225, 225);">
         <!-- <ng-container *ngIf="allMovements.length>0"> -->
-          <tr *ngFor="let move of allMovements; let i = index">
-            <td class="text-center">{{i+1}}</td>
-            <td class="text-center">{{move.item}}</td>
-            <td class="text-center">{{move.itemName}}</td>
-            <td class="text-center">{{move.amount}}</td>
-            <td class="text-center">{{move.WH_originName}}/{{move.shell_position_in_whareHouse_Origin}}</td>
-            <td class="text-center">{{move.WH_destName}}/{{move.shell_position_in_whareHouse_Dest}}</td>
-            <td class="text-center"><i (click)="removeFromAllMovements(i)" class="fa fa-times text-danger"></i></td>
-          </tr>
+        <tr *ngFor="let move of allMovements; let i = index">
+          <td class="text-center">{{i+1}}</td>
+          <td class="text-center">{{move.item}}</td>
+          <td class="text-center">{{move.itemName}}</td>
+          <td class="text-center">{{move.amount}}</td>
+          <td class="text-center">{{move.WH_originName}}/{{move.shell_position_in_whareHouse_Origin}}</td>
+          <td class="text-center">{{move.WH_destName}}/{{move.shell_position_in_whareHouse_Dest}}</td>
+          <td class="text-center"><i (click)="removeFromAllMovements(i)" class="fa fa-times text-danger"></i></td>
+        </tr>
         <!-- </ng-container> -->
       </tbody>
 
@@ -218,7 +220,7 @@
                 <th>שם פריט</th>
                 <th>כמות</th>
                 <th>ממחסן/מדף</th>
-                <th>למחסן/מדף</th>
+                <th>למחסן</th>
 
               </tr>
               <ng-container *ngIf="allMovements.length>0">
@@ -229,7 +231,7 @@
                   <td>{{move.itemName}}</td>
                   <td>{{move.amount}}</td>
                   <td>{{move.WH_originName}}/{{move.shell_position_in_whareHouse_Origin}}</td>
-                  <td>{{move.WH_destName}}/{{move.shell_position_in_whareHouse_Dest}}</td>
+                  <td>{{move.WH_destName}}</td>
 
                 </tr>
               </ng-container>
