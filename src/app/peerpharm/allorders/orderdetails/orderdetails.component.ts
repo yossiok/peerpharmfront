@@ -467,7 +467,7 @@ export class OrderdetailsComponent implements OnInit {
 
 
   getAllFormsDetails() {
-    this.formService.getAllForms("2022").subscribe((data) => {
+    this.formService.getAllForms(""+new Date().getFullYear() ).subscribe((data) => {
       this.allForms = data;
     });
   }

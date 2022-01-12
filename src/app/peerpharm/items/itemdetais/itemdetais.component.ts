@@ -90,6 +90,7 @@ export class ItemdetaisComponent implements OnInit {
   editSpecTable: Boolean = false;
   productPriceModal: Boolean = false;
 
+  itemLockedForEdit: Boolean = false;
   productionType: "";
   productionTwoType: "";
   productionThreeType: "";
@@ -296,7 +297,7 @@ export class ItemdetaisComponent implements OnInit {
     sealOrderedAmount: 0,
     sealAllocations: 0,
     sealExpected: 0,
- 
+
     boxAmount: 0,
     boxPurchases: [],
     boxOrderedAmount: 0,
@@ -304,14 +305,14 @@ export class ItemdetaisComponent implements OnInit {
     boxExpected: 0,
 
     cartonImage: "",
-    cartonAllocations: [], 
+    cartonAllocations: [],
     cartonAmount: 0,
     cartonPurchases: [],
     cartonOrderedAmount: 0,
     cartonExpected: 0,
 
     carton2Image: "",
-    carton2Allocations: [], 
+    carton2Allocations: [],
     carton2Amount: 0,
     carton2Purchases: [],
     carton2OrderedAmount: 0,
@@ -332,7 +333,7 @@ export class ItemdetaisComponent implements OnInit {
     componentFiveType: "",
     componentSixType: "",
     componentSevenType: "",
-    
+
     bottleImage: "",
     capImage: "",
     pumpImage: "",
@@ -610,7 +611,9 @@ export class ItemdetaisComponent implements OnInit {
   fillBottle(bottleNumber) {
     bottleNumber = this.itemShown.bottleNumber;
     if (bottleNumber != "---" && bottleNumber != "") {
+      debugger;
       this.invtSer.getCmptPPCDetails(bottleNumber).subscribe((data) => {
+        debugger;
         this.itemShown.bottleTube = data.stock[0].componentName;
         this.itemShown.bottleImage = data.stock[0].img;
         this.itemShown.bottleVersion = data.stock[0].versionNumber;
@@ -1236,6 +1239,16 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   searchForItem(item) {
+    //check if open orders exist for item
+    //getAllOpenOrdersByItemNumber
+    this.itemsService.getOpenOrdersForItem({ itemNumber: item }).subscribe(data => {
+      //if open orders exist lock item update or edit!
+      if (data.length > 0) {
+        this.itemLockedForEdit = true;
+      }
+    });
+
+
     this.loadingItem = true;
     this.editOrAdd = "Edit";
     this.itemsService.getItemData(item).subscribe((res) => {
@@ -1251,7 +1264,7 @@ export class ItemdetaisComponent implements OnInit {
         this.item = res[0];
         this.itemShown = res[0];
         if (this.itemShown.bottleNumber != "") {
-          this.fillBottle(this.itemShown.bottleNumber); 
+          this.fillBottle(this.itemShown.bottleNumber);
           this.searchCompNumberByComp(
             this.itemShown.bottleNumber,
             "productionInput"
@@ -1589,6 +1602,12 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   updateItem() {
+    debugger;
+    if(this.itemLockedForEdit)
+    {
+      alert('item is used in open ordres! cant edit. contact system admin!');
+      return;
+    }
     this.lookingForItem = true;
     if (this.itemShown.itemNumber != "") {
       this.itemShown.nameOfupdating = this.user.userName;

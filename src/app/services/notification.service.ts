@@ -22,8 +22,9 @@ export class NotificationService {
   private options = new RequestOptions({ headers: this.headers });
 
   constructor(private http: Http) {
+  
   //  this.socket = io(`http://127.0.0.1:8200`);// Localhost
-     this.socket = io(`http://18.221.58.99:8200`);
+    /* this.socket = io(`http://18.221.58.99:8200`);
      this.socket.on("connect", () => {
       console.log('notification service socket connected');
        this.socket.on("message", data => {
@@ -40,13 +41,13 @@ export class NotificationService {
       this.socket.on("newInventoryReq", data => {
       this.newInventoryReqEventEmitter.emit(data);
        });
-     });
+     });*/
   }
 
   // Our simplified interface for sending
   // messages back to our socket.io server
   sendMsg(msg) {
-    this.socket.emit("message", JSON.stringify(msg));
+  //  this.socket.emit("message", JSON.stringify(msg));
   }
 
       // let titleObj = {};

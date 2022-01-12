@@ -1,4 +1,4 @@
-<div class="container-fluid text-center bg-white">
+<div class="container-fluid text-center bg-white" style="transform: scale(0.99);">
   <div class="row mt-3 p-1">
     <div class="col-2">
       <button (click)="newOrderModal = true" class="btn btn-info">F2 - הזמנה חדשה</button>
@@ -98,7 +98,7 @@
   </div>
   <h4 class="text-center text-success">Showing {{orders.length}} orders <span *ngIf="filterValue != ''">Filtered by <span class="text-primary font-weight-bold">{{filterValue}}</span></span></h4>
   <div class="row mt-4">
-    <table class='table table-hover table-fixed'>
+    <table class='table table-hover table-fixed' style="overflow-x: scroll;">
       <thead class='bg-info text-white'>
         <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black;">
           <th style="width:3%;"></th>
@@ -131,7 +131,7 @@
             <i class="ti-exchange-vertical" (click)="sortOrdersByStage()" style="cursor:pointer"></i>
           </th>
           <th style="padding:5px ; width:11%">User's Order</th>
-          <th style="width:4%;"></th>
+          <th style="width:4%;"> </th>
           <th style="width:5%;"></th>
         </tr>
       </thead>
@@ -146,7 +146,8 @@
           <td (click)="edit('')">
             <a target="_blank" routerLink='/peerpharm/allorders/orderitems/{{order.orderNumber}}'>
               {{order.orderNumber}}
-
+              <img *ngIf="order.hasSpecialOrderItems"  title="order has problematic items or materials" style="width: 20px;" class="reportImg" src="../../../../assets/images/alert3.gif" alt="">
+            
             </a>
           </td>
           <td style="width:18%;" *ngIf="order._id===EditRowId">
@@ -198,10 +199,11 @@
               <option value="done">הזמנה סגורה</option>
             </select>
           </td>
-
+       
           <td *ngIf="order._id!==EditRowId">{{order.user}}</td>
+ 
           <td *ngIf="order._id===EditRowId" style="width:11%">
-
+        
           </td>
           <td style="width: 4%"></td>
           <td style="width: 5%">

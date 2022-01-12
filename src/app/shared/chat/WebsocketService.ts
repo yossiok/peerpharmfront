@@ -14,6 +14,7 @@ export class WebsocketService {
 
   constructor() { }
 
+  /*
   connect(): Rx.Subject<MessageEvent> {
     try{
     // If you aren't familiar with environment variables then
@@ -69,5 +70,5 @@ export class WebsocketService {
   joinroom(taskid: string): any {
    this.socket.emit('room', taskid)
   }
-
+*/
 }

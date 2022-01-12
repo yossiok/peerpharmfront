@@ -143,6 +143,7 @@ export class NeworderComponent implements OnInit {
     }
 
     if (this.orderForm.valid) {
+
       let newOrderObj = {
         area: this.choosedCostumer.area,
         costumer: post.costumer,
@@ -206,6 +207,8 @@ export class NeworderComponent implements OnInit {
   // }
 
   addNewItemOrder(post) {
+ 
+
     if (
       this.shippingDetails.shippingWay == "" ||
       this.orderItemForm.controls.itemN.value == "" ||
@@ -213,6 +216,25 @@ export class NeworderComponent implements OnInit {
     ) {
       this.toastSrv.error("Please fill all the details");
     } else {
+//update order has problematic items
+debugger;
+      let hasSpecialOrderItems=false;
+      if(this.problematicMaterials&& this.problematicMaterials.length>0)
+      {
+        hasSpecialOrderItems=true;
+      }
+      if(this.problematicComponents && this.problematicComponents.length>0)
+      {
+        hasSpecialOrderItems=true;
+      }
+this.orderSer.editOrder({ orderId: this.orderId, 
+  hasSpecialOrderItems:hasSpecialOrderItems}).subscribe(data=>
+    {
+      debugger;
+      console.log('order problematic items updated');
+    })
+
+
       console.log(post);
       var shippingQuantitySum = 0;
 

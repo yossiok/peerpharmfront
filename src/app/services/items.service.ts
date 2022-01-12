@@ -12,6 +12,7 @@ export interface Response {
   providedIn: 'root'
 })
 export class ItemsService {
+ 
 
   constructor(private http: Http) { }
 
@@ -20,7 +21,11 @@ export class ItemsService {
   private options = new RequestOptions({ headers: this.headers });
   private baseUrl = '/';
 
+  getOpenOrdersForItem(item: any) : Observable<any> {
+    let url = this.baseUrl + "orderitem/getAllOpenOrdersByItemNumber";
 
+    return this.http.get(url, JSON.stringify(item)).pipe(map(res => res.json()))
+  }
 
 
   setNewProductionSchedule(schedule): Observable<any> {

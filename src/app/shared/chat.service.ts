@@ -14,6 +14,7 @@ export class ChatService {
   
   // Our constructor calls our wsService connect method
   constructor(private wsService: WebsocketService, private http:Http) {
+    /*
     try{
     this.messages = <Subject<any>>wsService
       .connect()
@@ -26,6 +27,7 @@ export class ChatService {
     {
       console.log('socket crashed');
     }
+    */
    }
   
   // Our simplified interface for sending
@@ -36,7 +38,7 @@ export class ChatService {
   }
   
   joinroom(taskid: string): any {
-    this.wsService.joinroom(taskid);
+    //this.wsService.joinroom(taskid);
   }
   
   private headers = new Headers({ 'Content-Type': 'application/json' });

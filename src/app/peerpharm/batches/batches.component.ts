@@ -111,8 +111,9 @@ export class BatchesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.stopInterval();
     this.getAllBatchesYear("thisYear");
-    if(confirm('האם אתה רוצה שהאצוות יתרעננו אוטומטית כל 3 דקות?')) this.startInterval();
+    if(confirm('האם אתה רוצה שהאצוות יתרעננו אוטומטית כל 5 דקות?')) this.startInterval();
     this.lastValueUpdate = this.formatDate(new Date());
     this.getUserInfo();
   }
@@ -198,13 +199,17 @@ export class BatchesComponent implements OnInit {
   }
 
   stopInterval() {
+    try{
     clearInterval(this.myRefresh);
+    }catch(err){
+      console.log(err);
+    }
   }
 
   startInterval() {
     this.myRefresh = setInterval(() => {
       this.getAllBatchesYear("thisYear");
-    }, 1000 * 60 * 5);
+    }, 1000 * 60 * 10);
   }
 
   getAllBatchesYear(year) {
