@@ -22,9 +22,9 @@ export class ItemsService {
   private baseUrl = '/';
 
   getOpenOrdersForItem(item: any) : Observable<any> {
-    let url = this.baseUrl + "orderitem/getAllOpenOrdersByItemNumber";
+    let url = this.baseUrl + "orderitem/getAllOpenOrdersByItemNumber?item="+item;
 
-    return this.http.get(url, JSON.stringify(item)).pipe(map(res => res.json()))
+    return this.http.get(url).pipe(map(res => res.json()))
   }
 
 

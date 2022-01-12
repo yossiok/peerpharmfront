@@ -83,10 +83,10 @@
         </div>
         <div class="col-3">
             <div>
-                <input [ngClass]="itemBackgroundByStatus()" (change)="checkIfItemExist(itemShown.itemNumber)"
+                <input  disabled="disabled"  [ngClass]="itemBackgroundByStatus()" (change)="checkIfItemExist(itemShown.itemNumber)"
                     (keyup)="checkIfItemExist(itemShown.itemNumber)" type="text" [(ngModel)]="itemShown.itemNumber"
                     #itemNum id="id_item" autocomplete="off">
-                <button class="btn btn-warning ml-2" (click)='searchForItem(itemNum.value)'>
+                <button class="btn btn-warning ml-2" (click)='searchForItem()'>
                     Find Tree
                 </button>
             </div>

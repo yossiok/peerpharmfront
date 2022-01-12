@@ -1239,9 +1239,23 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   searchForItem(item) {
+    let itemtosearch=item;
+    if(!item)
+    {
+      itemtosearch= prompt('enter item number');
+      if(itemtosearch)
+      {
+    location.href="/#/peerpharm/items/itemDetails/"+itemtosearch;
+    return;
+      }
+    return;
+    }
+ 
+    this.itemShown.itemNumber=itemtosearch;
+
     //check if open orders exist for item
     //getAllOpenOrdersByItemNumber
-    this.itemsService.getOpenOrdersForItem({ itemNumber: item }).subscribe(data => {
+    this.itemsService.getOpenOrdersForItem( itemtosearch ).subscribe(data => {
       //if open orders exist lock item update or edit!
       if (data.length > 0) {
         this.itemLockedForEdit = true;
