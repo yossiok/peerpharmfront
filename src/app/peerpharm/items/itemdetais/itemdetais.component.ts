@@ -1261,12 +1261,14 @@ export class ItemdetaisComponent implements OnInit {
 
     //check if open orders exist for item
     //getAllOpenOrdersByItemNumber
+    //Yossi 16.01.22- cancelled by haviv's request
+    /*
     this.itemsService.getOpenOrdersForItem( itemtosearch ).subscribe(data => {
       //if open orders exist lock item update or edit!
-      if (data.length > 0) {
+   if (data.length > 0) {
         this.itemLockedForEdit = true;
-      }
-    });
+      } 
+    });*/
 
 
     this.loadingItem = true;
