@@ -18,6 +18,7 @@ import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
 import { InventoryService } from "src/app/services/inventory.service";
 import { ItemsService } from "src/app/services/items.service";
+import { Location } from '@angular/common'
 
 @Component({
   selector: "app-neworder",
@@ -69,7 +70,8 @@ export class NeworderComponent implements OnInit {
     private toastSrv: ToastrService,
     private authService: AuthService,
     private inventoryService: InventoryService,
-    private itemsService: ItemsService
+    private itemsService: ItemsService,
+    private location: Location
 
   ) {
     this.orderForm = fb.group({
@@ -132,6 +134,9 @@ export class NeworderComponent implements OnInit {
         this.orderForm.controls.user.setValue(this.user);
       });
     }
+  }
+  back(): void {
+    this.location.back()
   }
 
 
