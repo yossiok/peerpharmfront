@@ -83,7 +83,7 @@
         </div>
         <div class="col-3">
             <div>
-                <input  disabled="disabled"  [ngClass]="itemBackgroundByStatus()" (change)="checkIfItemExist(itemShown.itemNumber)"
+                <input  [disabled]="isDisabled"  [ngClass]="itemBackgroundByStatus()" (change)="checkIfItemExist(itemShown.itemNumber)"
                     (keyup)="checkIfItemExist(itemShown.itemNumber)" type="text" [(ngModel)]="itemShown.itemNumber"
                     #itemNum id="id_item" autocomplete="off">
                 <button class="btn btn-warning ml-2" (click)='searchForItem()'>

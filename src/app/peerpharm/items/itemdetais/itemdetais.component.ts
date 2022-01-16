@@ -41,7 +41,7 @@ export class ItemdetaisComponent implements OnInit {
   @Input() formDetailsItemNum: string;
 
   loadingItem: boolean = false;
-
+  isDisabled=true;
   // New Item Tree //
   itemBatches: any[];
   itemPrice: any[] = [];
@@ -537,6 +537,12 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(location.href.endsWith('itemDetails'))
+    {
+      //no item selected
+     // textbox not disabled for new
+     this.isDisabled=false;
+    }
     if (this.formDetailsItemNum) this.searchForItem(this.formDetailsItemNum);
 
     this.getAllCostumers();
