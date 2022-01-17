@@ -393,7 +393,7 @@ export class PlanningDetailsComponent implements OnInit {
   async approveFormules() {
     if (confirm("לאשר לייצור?")) {
       // change status
-      this.workPlan.productionFormules.map((f) => (f.status = 3));
+      this.workPlan.productionFormules.map(f => f.status < 3 ? f.status = 3 : f.status = f.status);
 
       this.saveChanges()
         .then((succesMessage) => {
