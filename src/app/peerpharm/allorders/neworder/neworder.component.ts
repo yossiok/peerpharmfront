@@ -18,6 +18,7 @@ import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
 import { InventoryService } from "src/app/services/inventory.service";
 import { ItemsService } from "src/app/services/items.service";
+import { Location } from '@angular/common'
 
 @Component({
   selector: "app-neworder",
@@ -69,7 +70,8 @@ export class NeworderComponent implements OnInit {
     private toastSrv: ToastrService,
     private authService: AuthService,
     private inventoryService: InventoryService,
-    private itemsService: ItemsService
+    private itemsService: ItemsService,
+    private location: Location
 
   ) {
     this.orderForm = fb.group({
@@ -133,6 +135,9 @@ export class NeworderComponent implements OnInit {
       });
     }
   }
+  back(): void {
+    this.location.back()
+  }
 
 
   addNewOrder(post) {
@@ -143,6 +148,7 @@ export class NeworderComponent implements OnInit {
     }
 
     if (this.orderForm.valid) {
+
       let newOrderObj = {
         area: this.choosedCostumer.area,
         costumer: post.costumer,
@@ -206,6 +212,8 @@ export class NeworderComponent implements OnInit {
   // }
 
   addNewItemOrder(post) {
+ 
+
     if (
       this.shippingDetails.shippingWay == "" ||
       this.orderItemForm.controls.itemN.value == "" ||
@@ -213,6 +221,25 @@ export class NeworderComponent implements OnInit {
     ) {
       this.toastSrv.error("Please fill all the details");
     } else {
+//update order has problematic items
+debugger;
+      let hasSpecialOrderItems=false;
+      if(this.problematicMaterials&& this.problematicMaterials.length>0)
+      {
+        hasSpecialOrderItems=true;
+      }
+      if(this.problematicComponents && this.problematicComponents.length>0)
+      {
+        hasSpecialOrderItems=true;
+      }
+this.orderSer.editOrder({ orderId: this.orderId, 
+  hasSpecialOrderItems:hasSpecialOrderItems}).subscribe(data=>
+    {
+      debugger;
+      console.log('order problematic items updated');
+    })
+
+
       console.log(post);
       var shippingQuantitySum = 0;
 

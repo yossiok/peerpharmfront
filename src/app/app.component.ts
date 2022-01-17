@@ -40,6 +40,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     // INIT ALERT SERVICE \\
+    /*
     this.socket = io(`http://18.221.58.99:8200`);
     this.socket.on("connect", () => {
 
@@ -85,6 +86,7 @@ export class AppComponent implements OnInit {
 
       });
     });
+    */
     // END INIT ALERT SERVICE \\
   }
 

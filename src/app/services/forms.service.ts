@@ -234,6 +234,7 @@ export class FormsService {
   }
 
   getAllForms(year?: string) {
+    debugger;
     let url = this.baseUrl + 'formDetails';
     if(year) url = this.baseUrl + 'formDetails?year='+year
     return this.http.get(url).pipe(map(reponse => reponse.json()));

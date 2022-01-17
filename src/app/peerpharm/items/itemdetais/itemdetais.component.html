@@ -83,10 +83,10 @@
         </div>
         <div class="col-3">
             <div>
-                <input [ngClass]="itemBackgroundByStatus()" (change)="checkIfItemExist(itemShown.itemNumber)"
+                <input  [disabled]="isDisabled"  [ngClass]="itemBackgroundByStatus()" (change)="checkIfItemExist(itemShown.itemNumber)"
                     (keyup)="checkIfItemExist(itemShown.itemNumber)" type="text" [(ngModel)]="itemShown.itemNumber"
                     #itemNum id="id_item" autocomplete="off">
-                <button class="btn btn-warning ml-2" (click)='searchForItem(itemNum.value)'>
+                <button class="btn btn-warning ml-2" (click)='searchForItem()'>
                     Find Tree
                 </button>
             </div>
@@ -1297,7 +1297,7 @@
 
                                     <div *ngIf="itemShown.cartonNumber2 && itemShown.cartonNumber2 != '---' && !itemShown.carton2Expected">
                                         <div class="smallerLoader"></div>
-                                        <p>טוען נתוני מלאי. אנא המתיני....</p>
+                                        <p>טוען נתוני מלאי. אנא המתן....</p>
                                     </div>
                                     <div *ngIf="itemShown.carton2Expected" class="stock-bg p-2">
                                         <h4>Stock details</h4>
@@ -1609,7 +1609,7 @@
 
                                 <div *ngIf="itemShown.bottleNumber && itemShown.bottleNumber != '---' && !itemShown.bottleExpected">
                                     <div class="smallerLoader"></div>
-                                    <p>טוענת נתוני מלאי. אנא המתיני....</p>
+                                    <p>טוען נתוני מלאי. אנא המתן....</p>
                                 </div>
                                 <div *ngIf="itemShown.bottleExpected" class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
@@ -1710,7 +1710,7 @@
 
                                 <div *ngIf="itemShown.capNumber && itemShown.capNumber !='---' && !itemShown.capExpected">
                                     <div class="smallerLoader"></div>
-                                    <p>טוענת נתוני מלאי. אנא המתיני....</p>
+                                    <p>טוען נתוני מלאי. אנא המתן....</p>
                                 </div>
                                 <div *ngIf="itemShown.capExpected" class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
@@ -1759,7 +1759,7 @@
 
                                 <div *ngIf="itemShown.pumpNumber && itemShown.pumpNumber !='---' && !itemShown.pumpExpected">
                                     <div class="text-center smallerLoader"></div>
-                                    <p>טוענת נתוני מלאי. אנא המתיני....</p>
+                                    <p>טוען נתוני מלאי. אנא המתן....</p>
                                 </div>
                                 <div *ngIf="itemShown.pumpExpected" class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>
@@ -1844,7 +1844,7 @@
 
                                 <div *ngIf="itemShown.sealNumber && itemShown.sealNumber != '---' && !itemShown.sealExpected">
                                     <div class="smallerLoader"></div>
-                                    <p>טוען נתוני מלאי. אנא המתיני....</p>
+                                    <p>טוען נתוני מלאי. אנא המתן....</p>
                                 </div>
                                 <div *ngIf="itemShown.sealExpected" class="col-4 stock-bg p-2">
                                     <h4>Stock details</h4>

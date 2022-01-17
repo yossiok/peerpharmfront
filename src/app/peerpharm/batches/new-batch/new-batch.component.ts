@@ -33,6 +33,7 @@ export class NewBatchComponent implements OnInit {
   currentItems: any[] = []
   workPlan: WorkPlan
   workPlanFormule: string;
+  finalWeight: number
 
   newBatchForm: FormGroup = new FormGroup({
     chosenFormule: new FormControl('', Validators.required),
@@ -67,15 +68,20 @@ export class NewBatchComponent implements OnInit {
 
   getWorkPlan() {
     this.route.queryParamMap.subscribe(params => {
-      if(params["params"].workPlanId) {
+      if (params["params"].workPlanId) {
         this.prodSchedServ.getWorkPlan(params['params'].workPlanId).subscribe(workPlan => {
           console.log(workPlan)
           this.workPlan = workPlan
           this.workPlanFormule = params['params'].formule
           let formule = this.workPlan.productionFormules.find(f => f.formule == params['params'].formule)
-          for(let item of formule.ordersAndItems) {
+          for (let item of formule.ordersAndItems) {
             this.newBatchForm.value.itemsToCook.push(item)
           }
+
+          let finalWeight;
+          while (isNaN(finalWeight)) finalWeight = prompt('הכנס משקל')
+          this.finalWeight = finalWeight
+          this.newBatchForm.controls.weightKg.setValue(finalWeight)
           // this.newBatchForm.value.itemsToCook = formule.ordersAndItems
         })
       }
@@ -83,11 +89,14 @@ export class NewBatchComponent implements OnInit {
   }
 
   ngDoCheck() {
-    let finalWeight = 0
-    for (let item of this.newBatchForm.value.itemsToCook) {
-      finalWeight += Number(item.weightKg)
+    if (this.finalWeight) this.newBatchForm.controls.weightKg.setValue(this.finalWeight)
+    else {
+      let finalWeight = 0
+      for (let item of this.newBatchForm.value.itemsToCook) {
+        finalWeight += Number(item.weightKg)
+      }
+      this.newBatchForm.controls.weightKg.setValue(finalWeight)
     }
-    this.newBatchForm.controls.weightKg.setValue(finalWeight)
   }
 
   getLastBatch() {
@@ -269,10 +278,15 @@ export class NewBatchComponent implements OnInit {
                   if (data.msg == 'success') {
                     this.printBtn.nativeElement.click();
                     this.toastSrv.success('באטצ נוסף בהצלחה !')
-                      setTimeout(() => {
-                        this.allStickers = [];
-                        this.getLastBatch();
-                      }, 2000)
+                    setTimeout(() => {
+                      this.allStickers = [];
+                      this.getLastBatch();
+                      if(confirm('האם יש עוד חומר לייצר?')) {
+                        let finalWeight
+                        while(isNaN(finalWeight)) finalWeight = prompt('הכנס משקל')
+                        this.finalWeight = finalWeight
+                      }
+                    }, 2000)
                   }
                   else if (data.msg == 'Batch Allready Exist') this.toastSrv.error('Please fill a different batch number.', 'Batch number allready exist.')
                   else this.toastSrv.error('Something went wrong.')

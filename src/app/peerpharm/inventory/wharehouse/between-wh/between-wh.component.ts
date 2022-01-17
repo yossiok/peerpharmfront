@@ -426,6 +426,7 @@ export class BetweenWHComponent implements OnInit {
       } else if (data.actionLogs.length == this.allMovements.length) {
         setTimeout(() => {
           this.printBtn2.nativeElement.click();
+        location.reload();
         }, 500);
         setTimeout(() => {
           this.movementForm.reset();
