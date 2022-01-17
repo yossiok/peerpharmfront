@@ -2,7 +2,8 @@
     <div class="col-12" *ngIf="!submited">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Order Assigning</h4>
+                <h4 class="card-title" style="width: 95%;float:left">Order Assigning</h4>
+                <h4 class="card-title"  (click)="back()" style="width:1%;float:right">X</h4>
             </div>
             <hr>
             <form class="form-horizontal" [formGroup]="orderForm" (ngSubmit)='addNewOrder(orderForm.value)'>
@@ -73,7 +74,7 @@
                         <div class="form-group m-b-0 text-right">
                             <button style="box-shadow: 2px 2px 2px black;" type="submit"
                                 class="btn btn-info waves-effect waves-light">Save</button>
-                            <button style="box-shadow: 2px 2px 2px black;" type="button" (click)="closed.emit()"
+                            <button style="box-shadow: 2px 2px 2px black;" type="button" (click)="back()"
                                 class="btn btn-dark waves-effect waves-light">Cancel</button>
                         </div>
                     </div>
@@ -214,7 +215,7 @@
             </tbody>
         </table>
     </div>
-    <button class="btn btn-primary" (click)="this.closed.emit()">Close</button>
+    <button class="btn btn-primary" (click)="back()">Close</button>
 </div>
 
 
