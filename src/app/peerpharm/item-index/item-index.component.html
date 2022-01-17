@@ -407,6 +407,25 @@
 
     </div>
 
+    <div dir="rtl" class="p-3 row mt-4 d-flex flex-row justify-content-around float-right w-50 border border-dark">
+      <div class="d-flex flex-row justify-content-around">
+        <div>
+          <input type="checkbox" class="problematic" [disabled]="!allowedProblematicEdit"
+            [(ngModel)]="item.isProblematic" [ngModelOptions]="{standalone: true}">
+        </div>
+        <label>רכיב בעייתי?</label>
+      </div>
+      <div>
+        <label>בעייתיות:</label>
+        <select [disabled]="!item.isProblematic" class="form-control" [(ngModel)]="item.problem">
+          <!-- <option value="פג תוקף קצר">פג תוקף קצר</option> -->
+          <option value="פריט ייבוא / זמן אספקה">פריט ייבוא / זמן אספקה</option>
+          <option value="כמויות מינימום">כמויות מינימום</option>
+          <option value="אחר">אחר</option>
+        </select>
+      </div>
+    </div>
+
     <div class="row mt-4 d-flex flex-row justify-content-around">
       <div class="col-4 fixNoaStupidStuff">
         <img *ngIf="item.img!=''" [src]="item.img" style="max-height: 250px;"
@@ -417,6 +436,8 @@
           style='display:none'>
       </div>
     </div>
+
+ 
 
   </div>
 

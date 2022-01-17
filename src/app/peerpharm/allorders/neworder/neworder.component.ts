@@ -212,7 +212,7 @@ export class NeworderComponent implements OnInit {
   // }
 
   addNewItemOrder(post) {
- 
+
 
     if (
       this.shippingDetails.shippingWay == "" ||
@@ -221,40 +221,29 @@ export class NeworderComponent implements OnInit {
     ) {
       this.toastSrv.error("Please fill all the details");
     } else {
-//update order has problematic items
-debugger;
-      let hasSpecialOrderItems=false;
-      if(this.problematicMaterials&& this.problematicMaterials.length>0)
-      {
-        hasSpecialOrderItems=true;
+      //update order has problematic items
+      let hasSpecialOrderItems = false;
+      if (this.problematicMaterials && this.problematicMaterials.length > 0) {
+        hasSpecialOrderItems = true;
       }
-      if(this.problematicComponents && this.problematicComponents.length>0)
-      {
-        hasSpecialOrderItems=true;
+      if (this.problematicComponents && this.problematicComponents.length > 0) {
+        hasSpecialOrderItems = true;
       }
-this.orderSer.editOrder({ orderId: this.orderId, 
-  hasSpecialOrderItems:hasSpecialOrderItems}).subscribe(data=>
-    {
-      debugger;
-      console.log('order problematic items updated');
-    })
+      this.orderSer.editOrder({
+        orderId: this.orderId,
+        hasSpecialOrderItems: hasSpecialOrderItems
+      }).subscribe(data => {
+        console.log('order problematic items updated');
+      })
 
-
-      console.log(post);
       var shippingQuantitySum = 0;
 
       this.shippingMethod.forEach(function (details) {
         shippingQuantitySum += parseInt(details.shippingQuantity);
-
         return shippingQuantitySum;
       });
 
-      console.log(shippingQuantitySum);
-
       if (post.quantity) {
-        // cause this 2 firleds has [value] also, it won't read them if it's not data what was insert
-        //if(this.itemName!="" && this.itemName!=null) post.discription = this.itemName;
-        // if(this.netWeightK!=0 && this.netWeightK!=null) post.netWeightK = this.netWeightK;
         let newOrderItemObj = {
           itemNumber: post.itemN,
           discription: post.discription,
@@ -277,7 +266,6 @@ this.orderSer.editOrder({ orderId: this.orderId,
           orderId: this.orderId,
           orderNumber: this.orderNumber,
         };
-        console.log(newOrderItemObj);
         this.orderItemForm.reset();
         this.orderItemForm.controls.hasLicense.setValue(false)
         this.orderItemForm.controls.exploded.setValue(false)
@@ -287,31 +275,20 @@ this.orderSer.editOrder({ orderId: this.orderId,
             this.toastSrv.error("שים לב פריט זה אינו פעיל");
           } else if (res != "error") {
             this.items.push(res);
-            console.log(this.items);
             this.itemName = "";
             this.netWeightK = 0;
             this.toastSrv.success("item " + res.itemNumber + " added");
-
-            // IMPORTANT WARNING FOR DANGEROUS MATERIALS!!!
-            // if(post.itemN == '15341' || post.itemN == '13629' || post.itemN == '10627') {
-            //   this.toastSrv.error(`PAY ATTENTION! material ${post.itemN} should be treated carefully!!`)
-            // TODO: add notification to shmuel / martha
-            // }
           } else {
             this.toastSrv.error("Adding item faild");
           }
-
           this.shippingMethod = [];
         });
-
-        //  orderId:this.orderId
       }
     }
   }
 
   addShipping() {
     let DetailsToPush = { ...this.shippingDetails };
-
     this.shippingMethod.push(DetailsToPush);
   }
 
@@ -319,15 +296,13 @@ this.orderSer.editOrder({ orderId: this.orderId,
     this.noNeto = false
     this.itemName = "";
     this.existOrderItem = [];
-    //console.log(itemNumber);
     if (itemNumber != "") {
       this.orderSer.getItemByNumber(itemNumber).subscribe((res) => {
-        // console.log(res[0]);
         this.orderItemForm.controls.discription.setValue(
           res[0].name + " " + res[0].subName + " " + res[0].discriptionK
         );
         this.orderItemForm.controls.netWeightK.setValue(res[0].netWeightK);
-        if(!res[0].netWeightK) {
+        if (!res[0].netWeightK) {
           this.noNeto = true
           this.orderItemForm.controls.netWeightK.setValue(res[0].volumeKey);
         }
