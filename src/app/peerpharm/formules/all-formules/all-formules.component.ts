@@ -238,7 +238,7 @@ export class AllFormulesComponent implements OnInit {
 
   approveFormule(formule) {
     this.user = this.authService.loggedInUser.userName;
-    if (this.user == "martha" || this.user == "sima") {
+    if (this.user == "martha" || this.user == "sima" || this.user == "dani") {
       if (confirm("האם לאשר פורמולה מספר: " + formule.formuleNumber)) {
         if (prompt("הזיני סיסמא") == this.password) {
           this.formuleService.approveFormule(formule._id).subscribe((data) => {

@@ -53,11 +53,43 @@ export class PlanningDetailsComponent implements OnInit {
   showMaterialsForFormules: boolean = false;
   printingFormules: boolean = false;
   formulePrinting: any;
-  statusTest: number = 1
-  notAndrey: boolean = true
-  editDueDate: number = -1
-  checkedFormules: ProductionFormule[]
-  andreyisalazyworkersowehavetoworkharderfrohim: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, , 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+  statusTest: number = 1;
+  notAndrey: boolean = true;
+  editDueDate: number = -1;
+  checkedFormules: ProductionFormule[];
+  andreyisalazyworkersowehavetoworkharderfrohim: number[] = [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    ,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+  ];
 
   constructor(
     private authService: AuthService,
@@ -68,17 +100,24 @@ export class PlanningDetailsComponent implements OnInit {
     private inventoryService: InventoryService,
     private modalService: ConfirmService,
     public router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.authorized = this.authService.loggedInUser.authorization.includes("creamProductionManager");
-    this.notAndrey = !this.authService.loggedInUser.authorization.includes('andrey')
-    this.workPlan.orderItems.sort((a, b) => <any>a.parentFormule - <any>b.parentFormule)
+    this.authorized = this.authService.loggedInUser.authorization.includes(
+      "creamProductionManager"
+    );
+    this.notAndrey =
+      !this.authService.loggedInUser.authorization.includes("andrey");
+    this.workPlan.orderItems.sort(
+      (a, b) => <any>a.parentFormule - <any>b.parentFormule
+    );
   }
 
   checkItemsFormules() {
-    let allItemsHaveFormules = this.workPlan.orderItems.find(oi => !oi.hasFormule)
-    return allItemsHaveFormules
+    let allItemsHaveFormules = this.workPlan.orderItems.find(
+      (oi) => !oi.hasFormule
+    );
+    return allItemsHaveFormules;
   }
 
   authenticate(): Promise<boolean> {
@@ -98,53 +137,73 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   checkAllItems(event) {
-    for (let oi of this.workPlan.orderItems) oi.checked = event.target.checked
+    for (let oi of this.workPlan.orderItems) oi.checked = event.target.checked;
   }
 
   checkAllFormules(event) {
-    for (let oi of this.workPlan.productionFormules) oi.checked = event.target.checked
+    for (let oi of this.workPlan.productionFormules)
+      oi.checked = event.target.checked;
   }
 
   checkForItemsInFormule(formule: ProductionFormule, orderItem: OrderItem) {
-    return formule.ordersAndItems.find(oi => oi.itemNumber == orderItem.itemNumber && oi.orderNumber == oi.orderNumber)
+    return formule.ordersAndItems.find(
+      (oi) =>
+        oi.itemNumber == orderItem.itemNumber &&
+        oi.orderNumber == oi.orderNumber
+    );
   }
 
   // create formules from items
   createPAKA() {
-    if (confirm('ברגע שתיצור פורמולות שינויים במשקלי הפריטים לא ישפיעו יותר. להמשיך?')) {
-
-      let orderItemsChecked = this.workPlan.orderItems.filter(oi => oi.checked == true)
+    if (
+      confirm(
+        "ברגע שתיצור פורמולות שינויים במשקלי הפריטים לא ישפיעו יותר. להמשיך?"
+      )
+    ) {
+      let orderItemsChecked = this.workPlan.orderItems.filter(
+        (oi) => oi.checked == true
+      );
 
       for (let element of orderItemsChecked) {
-        if (element.formule.parentNumber) element.parentFormule = element.formule.parentNumber
-        else element.parentFormule = element.formule.formuleNumber
-        let allreadyExist = this.workPlan.productionFormules.findIndex(pf => pf.formule == element.parentFormule)
+        if (element.formule.parentNumber)
+          element.parentFormule = element.formule.parentNumber;
+        else element.parentFormule = element.formule.formuleNumber;
+        let allreadyExist = this.workPlan.productionFormules.findIndex(
+          (pf) => pf.formule == element.parentFormule
+        );
         if (allreadyExist != -1) {
-          this.workPlan.productionFormules[allreadyExist].totalKG += element.totalKG
-          this.workPlan.productionFormules[allreadyExist].enoughMaterials = !this.workPlan.productionFormules[allreadyExist].enoughMaterials || element.enoughMaterials === false ? false : true
+          this.workPlan.productionFormules[allreadyExist].totalKG +=
+            element.totalKG;
+          this.workPlan.productionFormules[allreadyExist].enoughMaterials =
+            !this.workPlan.productionFormules[allreadyExist].enoughMaterials ||
+            element.enoughMaterials === false
+              ? false
+              : true;
           this.workPlan.productionFormules[allreadyExist].ordersAndItems.push({
             orderNumber: element.orderNumber,
             itemNumber: element.itemNumber,
             itemName: element.description,
-            weightKg: element.totalKG
-          })
-          element.hasFormule = true
-        }
-        else this.workPlan.productionFormules.push({
-          ordersAndItems: [{
-            orderNumber: element.orderNumber,
-            itemNumber: element.itemNumber,
-            itemName: element.description,
-            weightKg: element.totalKG
-          }],
-          status: element.status,
-          formuleData: element.formule,
-          formule: element.parentFormule,
-          totalKG: element.totalKG,
-          enoughMaterials: element.enoughMaterials,
-          batchNumber: '',
-        })
-        element.hasFormule = true
+            weightKg: element.totalKG,
+          });
+          element.hasFormule = true;
+        } else
+          this.workPlan.productionFormules.push({
+            ordersAndItems: [
+              {
+                orderNumber: element.orderNumber,
+                itemNumber: element.itemNumber,
+                itemName: element.description,
+                weightKg: element.totalKG,
+              },
+            ],
+            status: element.status,
+            formuleData: element.formule,
+            formule: element.parentFormule,
+            totalKG: element.totalKG,
+            enoughMaterials: element.enoughMaterials,
+            batchNumber: "",
+          });
+        element.hasFormule = true;
       }
 
       this.saveChanges()
@@ -154,89 +213,95 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   scheduleBatch(i, event) {
-    let date = new Date()
-    date.setDate(date.getDate() + Number(event.target.value))
-    this.workPlan.productionFormules[i].dueDate = date
-    this.workPlan.productionFormules[i].status = 4
+    let date = new Date();
+    date.setDate(date.getDate() + Number(event.target.value));
+    this.workPlan.productionFormules[i].dueDate = date;
+    this.workPlan.productionFormules[i].status = 4;
     this.saveChanges()
-      .then(succesMessage => {
-        this.toastr.success(succesMessage)
-        this.editDueDate = -1
+      .then((succesMessage) => {
+        this.toastr.success(succesMessage);
+        this.editDueDate = -1;
       })
-      .catch(errorMessage => this.toastr.error(errorMessage))
+      .catch((errorMessage) => this.toastr.error(errorMessage));
   }
 
   addBatch(formule) {
     this.router.navigate(["/peerpharm/batches/newBatch"], {
       queryParams: {
         formule: formule.formule,
-        workPlanId: this.workPlan.serialNumber
+        workPlanId: this.workPlan.serialNumber,
       },
     });
   }
 
-  WorkPlanDone(){
-    if(confirm('התכנית וכל הפריטים שבה יעברו למצב "Done". להמשיך?')) {
-      this.workPlan.status = 7
+  WorkPlanDone() {
+    if (confirm('התכנית וכל הפריטים שבה יעברו למצב "Done". להמשיך?')) {
+      this.workPlan.status = 7;
       this.saveChanges()
-      .then(succesMessage => {
-        this.toastr.success(succesMessage)
-      })
-      .catch(errorMessage => this.toastr.error(errorMessage))
+        .then((succesMessage) => {
+          this.toastr.success(succesMessage);
+        })
+        .catch((errorMessage) => this.toastr.error(errorMessage));
     }
   }
 
   saveChanges(oderItemToDelete?): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.productionService.editWorkPlan(this.workPlan, oderItemToDelete).subscribe((data) => {
-        if (data.status) {
-          this.edit = -1;
-          this.editF = -1
-          this.workPlan = data;
-          this.updateWorkPlans.emit();
-          resolve("הפרטים נשמרו בהצלחה");
-        } else if (data.error) {
-          reject(data.error);
-        }
-      });
+      this.productionService
+        .editWorkPlan(this.workPlan, oderItemToDelete)
+        .subscribe((data) => {
+          if (data.status) {
+            this.edit = -1;
+            this.editF = -1;
+            this.workPlan = data;
+            this.updateWorkPlans.emit();
+            resolve("הפרטים נשמרו בהצלחה");
+          } else if (data.error) {
+            reject(data.error);
+          }
+        });
     });
   }
 
   deleteLine(i: number) {
-    let orderITemToDelete = this.workPlan.orderItems[i]
+    let orderITemToDelete = this.workPlan.orderItems[i];
     if (confirm("השורה תימחק. האם אתה בטוח?")) {
       this.workPlan.orderItems.splice(i, 1);
       this.saveChanges(orderITemToDelete)
         .then((succesMessage) => {
-          this.toastr.success(succesMessage, 'השורה נמחקה בהצלחה')
+          this.toastr.success(succesMessage, "השורה נמחקה בהצלחה");
         })
         .catch((errorMessage) => {
           this.toastr.error(errorMessage);
-        })
+        });
     } else this.toastr.warning("לא בוצעו שינויים");
   }
 
   deleteProductionFormules() {
-    if (confirm('כל הפורמולות יימחקו ותצטרך ליצור אותן מחדש. להמשיך?')) {
-      this.workPlan.productionFormules = []
+    if (confirm("כל הפורמולות יימחקו ותצטרך ליצור אותן מחדש. להמשיך?")) {
+      this.workPlan.productionFormules = [];
       // TODO: update status
-      this.workPlan.orderItems.map(oi => {
-        oi.hasFormule = false
-        oi.status = 2
-        return oi
-      })
+      this.workPlan.orderItems.map((oi) => {
+        oi.hasFormule = false;
+        oi.status = 2;
+        return oi;
+      });
       this.saveChanges()
-        .then((succesMessage) => this.toastr.success(succesMessage, 'פורמולות נמחקו'))
+        .then((succesMessage) =>
+          this.toastr.success(succesMessage, "פורמולות נמחקו")
+        )
         .catch((errorMessage) => this.toastr.error(errorMessage));
     }
   }
 
   cancelWorkPlan() {
     if (confirm(' הפריטים יוחזרו למצב Waiting. האם לבטל פק"ע?')) {
-      this.workPlan.status = 8
-      this.workPlan.productionFormules.map(f => f.status = 8)
+      this.workPlan.status = 8;
+      this.workPlan.productionFormules.map((f) => (f.status = 8));
       this.saveChanges()
-        .then((succesMessage) => this.toastr.success(succesMessage, 'פק"ע בוטלה, פריטים הוחזרו'))
+        .then((succesMessage) =>
+          this.toastr.success(succesMessage, 'פק"ע בוטלה, פריטים הוחזרו')
+        )
         .catch((errorMessage) => this.toastr.error(errorMessage));
     }
   }
@@ -255,11 +320,16 @@ export class PlanningDetailsComponent implements OnInit {
 
   setColor(status) {
     switch (status) {
-      case 1: return "#FFC000";
-      case 2: return "#68e37d";
-      case 3: return "#5B9BD5";
-      case 3: return "#ED7D31";
-      case 3: return "#C48170";
+      case 1:
+        return "#FFC000";
+      case 2:
+        return "#68e37d";
+      case 3:
+        return "#5B9BD5";
+      case 3:
+        return "#ED7D31";
+      case 3:
+        return "#C48170";
     }
   }
 
@@ -268,24 +338,27 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   exportBatches() {
-    let excel = []
+    let excel = [];
     for (let batch of this.workPlan.productionFormules) {
       for (let oai of batch.ordersAndItems) {
         excel.push({
           Formule: batch.formule,
           Order: oai.orderNumber,
           Item: oai.itemNumber,
-          'Item Name': oai.itemName,
-          'Order KG':oai.weightKg,
-          'Batch KG': batch.totalKG,
+          "Item Name": oai.itemName,
+          "Order KG": oai.weightKg,
+          "Batch KG": batch.totalKG,
           'חו"ג קיים?': batch.enoughMaterials,
           Status: batch.status,
-          'Due date': batch.dueDate,
-          batch: batch.batchNumber
-        })
+          "Due date": batch.dueDate,
+          batch: batch.batchNumber,
+        });
       }
     }
-    this.excelService.exportAsExcelFile(excel, `PAKA ${this.workPlan.serialNumber} batches`)
+    this.excelService.exportAsExcelFile(
+      excel,
+      `PAKA ${this.workPlan.serialNumber} batches`
+    );
   }
 
   exportExplosion(data, title) {
@@ -309,33 +382,35 @@ export class PlanningDetailsComponent implements OnInit {
     console.log(this.workPlan.productionFormules);
     this.router.navigate(["/peerpharm/formules/weight-production"], {
       queryParams: {
-        formuleNumbers: this.workPlan.productionFormules.filter(f => f.checked).map(f => f.formule),
-        workPlanId: this.workPlan.serialNumber
+        formuleNumbers: this.workPlan.productionFormules
+          .filter((f) => f.checked)
+          .map((f) => f.formule),
+        workPlanId: this.workPlan.serialNumber,
       },
     });
   }
 
   async approveFormules() {
-    if (confirm('לאשר לייצור?')) {
-
+    if (confirm("לאשר לייצור?")) {
       // change status
-      this.workPlan.productionFormules.map(f => f.status = 3)
+      this.workPlan.productionFormules.map((f) => (f.status = 3));
 
       this.saveChanges()
         .then((succesMessage) => {
-          this.toastr.success(succesMessage, 'פורמולות מאושרות')
+          this.toastr.success(succesMessage, "פורמולות מאושרות");
           this.authenticate()
-            .then(async approved => {
+            .then(async (approved) => {
               if (approved) {
                 let amountsLoaded = await this.loadMaterialsForFormule(true);
                 let formulesPrinted = await this.printFormules();
               } else this.toastr.error("אימות נכשל");
-            }).catch(authFailedMsg => {
-              this.toastr.error('אימות נכשל!')
             })
+            .catch((authFailedMsg) => {
+              this.toastr.error("אימות נכשל!");
+            });
         })
         .catch((errorMessage) => {
-          this.toastr.error(errorMessage)
+          this.toastr.error(errorMessage);
         });
     }
   }
@@ -368,7 +443,10 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   async loadMaterialsForFormule(authenticated) {
-    if (!this.checkedFormules) this.checkedFormules = this.workPlan.productionFormules.filter(f => f.checked)
+    if (!this.checkedFormules)
+      this.checkedFormules = this.workPlan.productionFormules.filter(
+        (f) => f.checked
+      );
     if (!authenticated) authenticated = await this.authenticate();
     if (authenticated) {
       return new Promise((resolve, reject) => {
@@ -384,12 +462,14 @@ export class PlanningDetailsComponent implements OnInit {
             );
           }
           this.loadData = true;
-          this.inventoryService.getBomMulti(this.workPlan.productionFormules).subscribe((data) => {
-            this.materialsForFormules = data;
-            this.showMaterialsForFormules = true;
-            this.loadData = false;
-            resolve(true);
-          });
+          this.inventoryService
+            .getBomMulti(this.workPlan.productionFormules)
+            .subscribe((data) => {
+              this.materialsForFormules = data;
+              this.showMaterialsForFormules = true;
+              this.loadData = false;
+              resolve(true);
+            });
         }
       });
     } else this.toastr.error("אימות נכשל");

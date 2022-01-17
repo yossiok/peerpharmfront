@@ -33,8 +33,9 @@
         <li style="cursor: pointer" class="task-item d-flex complete border-bottom" (click)="viewOrders(7)">
           {{7|orderItemBatchStatus}}<span class="badge badge-success ml-auto pt-1"
             [style.background]="7|orderItemBatchStatusColor">{{producedCount}}</span></li>
-        <li style="cursor: pointer" class="task-item d-flex all border-bottom active" (click)="viewOrders(8)"> {{8|orderItemBatchStatus}} <span
-          [style.background]="8|orderItemBatchStatusColor" class="badge badge-primary ml-auto pt-1">{{canceledCount}}</span></li>
+        <li style="cursor: pointer" class="task-item d-flex all border-bottom active" (click)="viewOrders(8)">
+          {{8|orderItemBatchStatus}} <span [style.background]="8|orderItemBatchStatusColor"
+            class="badge badge-primary ml-auto pt-1">{{canceledCount}}</span></li>
         <li style="cursor: pointer" class="task-item d-flex all border-bottom active" (click)="viewOrders(9)"> All <span
             class="badge badge-primary ml-auto pt-1">{{orderItems.length}}</span></li>
       </ul>
@@ -83,7 +84,7 @@
     <h1 class="text-center"><span class="heading1" [style.backgroundColor]="currentView|orderItemBatchStatusColor">
         {{currentView|orderItemBatchStatus}} Order Items List
 
-        
+
       </span>
     </h1>
     <div class="right-part bg-white">
@@ -96,6 +97,10 @@
         <form novalidate="" class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"><button
             type="button" id="btnCreateWP" class="btn btn-primary flex-shrink-0" (click)="makePlan()"
             [disabled]="selectedArr.length==0">Create Workplan</button>
+        </form>
+        <form novalidate="" class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"><button
+            type="button" id="btnCreateWP" class="btn btn-success flex-shrink-0" (click)="openModal(wpList)"
+            [disabled]="selectedArr.length==0">Add to Workplan</button>
         </form>
       </div>
 
@@ -128,14 +133,15 @@
             </th>
             <th><i class="ti-exchange-vertical" (click)="sortItemsOne('workPlanId');"
                 style="cursor:pointer"></i>Workplan</th>
-                <th></th>
+            <th></th>
           </tr>
 
         </thead>
         <tbody *ngFor="let item of filteredOrderItems ; let i = index">
           <tr [style.backgroundColor]="item.isSelectedColor" class=" border-bottom border-dark">
             <td>
-              <input [disabled]="item.pakaStatus != 1 && item.pakaStatus != 8" class="check-box" type="checkbox" (checked)="item.isSelected" (change)="isSelected($event,item)">
+              <input [disabled]="item.pakaStatus != 1 && item.pakaStatus != 8" class="check-box" type="checkbox"
+                (checked)="item.isSelected" (change)="isSelected($event,item)">
             </td>
             <td>{{item.formule.parentNumber? item.formule.parentNumber: item.formule.formuleNumber}}</td>
             <td>{{item.orderNumber}}</td>
@@ -160,7 +166,8 @@
             <td [style.background]="item.WPstatus | orderItemBatchStatusColor"
               style="text-decoration: underline; cursor:pointer" (click)="openWorkPlan(item.workPlanId)">
               {{item.workPlanId}}</td>
-              <td><button [disabled]="item.pakaStatus != 1" class="btn btn-danger" (click)="deleteItem(item, i)">Delete</button></td>
+            <td><button [disabled]="item.pakaStatus != 1" class="btn btn-danger"
+                (click)="deleteItem(item, i)">Delete</button></td>
 
           </tr>
         </tbody>
@@ -219,6 +226,55 @@
 <!--Work Plan modal-->
 <div class="position-fixed work-plan" *ngIf="showWorkPlan">
   <app-planning-details (updateWorkPlans)="getWorkPlans()" (closeWorkPlanEmitter)="closeWorkPlan($event)"
-    [workPlan]="currentWorkPlan">
+    [workPlan]="currentWorkPlan" [orderItemsList]="orderItems">
   </app-planning-details>
 </div>
+
+<ng-template #wpList let-modal>
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Choose Workplan</h4>
+        <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body ">
+        <table class="table table-striped">
+          <thead class="bg-secondary text-white">
+            <tr>
+              <th>Select</th>
+              <th class="ti-exchange-vertical" (click)="sortWpOne('serialNumber')" style="cursor:pointer">WP Number</th>
+
+              <th class='orders'>Orders</th>
+              <th class='orders'>Items</th>
+
+              <th>Status</th>
+
+            </tr>
+          </thead>
+          <tbody class="border border-light" *ngFor="let workplan of filteredWorkPlans; let i = index">
+            <tr>
+              <td>
+                <button class="btn btn-success" (click)="addToPlan(workplan)">Select Wp</button>
+
+              </td>
+              <td>
+                {{workplan.serialNumber}}</td>
+
+              <td class='orders'><span *ngFor="let order of workplan.orderItems">{{order.itemNumber}},&nbsp;</span></td>
+              <td class='orders'><span *ngFor="let order of workplan.orderItems">{{order.itemNumber}},&nbsp;</span></td>
+              <td [style.backgroundColor]="workplan.status|orderItemBatchStatusColor">
+                {{workplan.status | orderItemBatchStatus}}
+              </td>
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</ng-template>

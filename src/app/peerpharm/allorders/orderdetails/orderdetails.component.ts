@@ -287,7 +287,7 @@ export class OrderdetailsComponent implements OnInit {
     private authService: AuthService,
     private notificationService: NotificationService,
     private formuleService: FormulesService
-  ) { }
+  ) {}
 
   async ngOnInit() {
     // this.getAllFormsDetails()
@@ -321,7 +321,7 @@ export class OrderdetailsComponent implements OnInit {
             item.colorBtn = "#33FFE0";
           });
           this.ordersData = orders.ordersData;
-          await this.colorOrderItemsLines(orders.orderItems).then((data) => { });
+          await this.colorOrderItemsLines(orders.orderItems).then((data) => {});
           this.ordersItems = orders.orderItems;
           this.productionRequirements = orders.orderItems;
 
@@ -369,7 +369,7 @@ export class OrderdetailsComponent implements OnInit {
                       });
 
                       await this.colorOrderItemsLines(orderItems).then(
-                        (data) => { }
+                        (data) => {}
                       );
                       this.ordersItems = orderItems;
                       this.productionRequirements = orderItems;
@@ -464,8 +464,6 @@ export class OrderdetailsComponent implements OnInit {
     );
   }
 
-
-
   getAllFormsDetails() {
     this.formService.getAllForms("2022").subscribe((data) => {
       this.allForms = data;
@@ -541,13 +539,11 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   updatePakaStatus() {
-
     //check array length
     console.log(this.selectedArr);
     if (this.selectedArr.length == 0)
       this.toastSrv.error("יש לבחור לפחות פריט אחד");
     else {
-
       let validOrders = [];
       let nonValidOrders = [];
 
@@ -558,14 +554,12 @@ export class OrderdetailsComponent implements OnInit {
           this.toastSrv.error(
             `${oi.itemNumber} of order ${oi.orderNumber} already sent to workplan`
           );
-        }
-        else if (!oi.formuleExist) {
+        } else if (!oi.formuleExist) {
           nonValidOrders.push(oi);
           this.toastSrv.error(
             `${oi.itemNumber} of order ${oi.orderNumber} Does not have Formula`
           );
-        }
-        else {
+        } else {
           validOrders.push(oi);
         }
       }
@@ -589,17 +583,18 @@ export class OrderdetailsComponent implements OnInit {
             }
 
             //check for similar items / formuleFathers
-            let itemNumbers = this.selectedArr.map(i => i.itemNumber)
-            this.formuleService.getOpenItemWithSimilarFormulePArent(itemNumbers).subscribe(data => {
-              console.log('similar formule: ', data)
-              if (data.length > 0) {
-                this.similarFormules = data
-                this.modalService.open(this.similarFormulesEref)
-              }
-              this.selectedArr = [];
-              this.toastSrv.success(" הפריטים נשלחו בהצלחה למסך פקעות ");
-            })
-
+            let itemNumbers = this.selectedArr.map((i) => i.itemNumber);
+            this.formuleService
+              .getOpenItemWithSimilarFormulePArent(itemNumbers)
+              .subscribe((data) => {
+                console.log("similar formule: ", data);
+                if (data.length > 0) {
+                  this.similarFormules = data;
+                  this.modalService.open(this.similarFormulesEref);
+                }
+                this.selectedArr = [];
+                this.toastSrv.success(" הפריטים נשלחו בהצלחה למסך פקעות ");
+              });
           } else
             this.toastSrv.warning(
               "חלק מהנתונים לא התעדכנו, בדוק את סטטוס הפריטים"
@@ -727,13 +722,12 @@ export class OrderdetailsComponent implements OnInit {
 
   isSelected(ev, item) {
     if (ev.target.checked) {
-      if (!item.formuleExist) alert('שימי לב! לפריט זה לא קיימת פורמולה.')
+      if (!item.formuleExist) alert("שימי לב! לפריט זה לא קיימת פורמולה.");
       var isSelected = this.selectedArr;
       item.isSelected = true;
       isSelected.push({ ...item });
       this.selectedArr = isSelected;
-    }
-    else {
+    } else {
       item.iseSelected = false;
       var isSelected = this.selectedArr;
       var tempArr = isSelected.filter((x) => x.itemNumber != item.itemNumber);
@@ -883,9 +877,9 @@ export class OrderdetailsComponent implements OnInit {
   // check with Akiva if still needed because Weight Production is the SAME
 
   checkboxAllOrders(ev) {
-    this.ordersItems.map(e => e.isSelected = ev.target.checked);
-    if (ev.target.checked) this.selectedArr = [...this.ordersItems]
-    else this.selectedArr = []
+    this.ordersItems.map((e) => (e.isSelected = ev.target.checked));
+    if (ev.target.checked) this.selectedArr = [...this.ordersItems];
+    else this.selectedArr = [];
   }
 
   // check with Akiva if still necessery , in html it's Production Requirements
@@ -1358,8 +1352,8 @@ export class OrderdetailsComponent implements OnInit {
         } else if (res == "No netWeightK") {
           alert(
             "לפריט מספר " +
-            obj.itemNumber +
-            '\nאין משקל נטו בעץ פריט.\nלא ניתן לפתוח פק"ע לפריט'
+              obj.itemNumber +
+              '\nאין משקל נטו בעץ פריט.\nלא ניתן לפתוח פק"ע לפריט'
           );
         } else {
           this.toastSrv.error(
@@ -1687,7 +1681,7 @@ export class OrderdetailsComponent implements OnInit {
           } else if (batches.length > 1)
             reject(
               "More than one batch exist with Number " +
-              this.inputBatch.nativeElement.value
+                this.inputBatch.nativeElement.value
             );
           else if (batches.length == 0) reject(`Batch ${batch} Not Found.`);
         });
@@ -1768,10 +1762,10 @@ export class OrderdetailsComponent implements OnInit {
     if (
       confirm(
         "Item " +
-        item.itemNumber +
-        "\n From order " +
-        item.orderNumber +
-        "\n Is ready?"
+          item.itemNumber +
+          "\n From order " +
+          item.orderNumber +
+          "\n Is ready?"
       )
     ) {
       this.orderService.editItemOrderStatus(item).subscribe((res) => {
@@ -1953,10 +1947,10 @@ export class OrderdetailsComponent implements OnInit {
     ev.dataTransfer.setData(
       "Text/html",
       ev.target.dataset.ordernumber +
-      ";" +
-      ev.target.dataset.alloamount +
-      ";" +
-      ev.target.dataset.index
+        ";" +
+        ev.target.dataset.alloamount +
+        ";" +
+        ev.target.dataset.index
     );
   }
 

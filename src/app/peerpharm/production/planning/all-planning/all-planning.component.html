@@ -1,165 +1,165 @@
 <div>
-    <h1>Work Plans</h1>
-    <i class="fas fa-check-double"></i>
-    <div class="row mt-4">
-        <!--side bar-->
-        <div [ngClass]="fetchingWorkPlans ? 'disabled' : ''" class="col-1 d-flex flex-column m-2 p-3 index" style="height: fit-content;">
-            <div>
-                <img class="click" ngbTooltip="רענן תכניות" (click)="getWorkPlans()" style="width: 50px"
-                    src="../../../../../assets/images/update2.png" alt=""> - רענן
-            </div>
-            <div class="row mt-4"></div>
-            <div>
-                <img class="click" (click)="exportAll()" ngbTooltip="ייצוא לאקסל"
-                    src="../../../../../assets/images/excel.png" style="width: 50px;" alt=""> - ייצא לאקסל
-            </div>
-            <div class="row mt-4"></div>
-            <div>
-                <button ngbTooltip="בחירת תכניות" (click)="showHideCheckBox()" class="btn btn-secondary"
-                    style="width: 52px;">
-                    <i class="fas fa-check-circle"></i>
-                </button>- בחירה מרובה
-            </div>
-            <div class="row mt-4"></div>
-            <div *ngIf="!loadData && authorized">
-                <img class="click" (click)="loadMaterialsForFormule()" ngbTooltip="כתב כמויות" style="width: 50px"
-                    src="../../../../../assets/images/allOrder.png" alt=""> -
-                כתב כמויות
-            </div>
-            <div *ngIf="loadData" class="smallerLoader"></div>
-        </div>
-        <!--work plans-->
-        <div *ngIf="showWorkPlan || showMaterialsForFormules" class="col-10"></div>
-        <div *ngIf="!showWorkPlan && !showMaterialsForFormules" class=" col-9">
-            <div [ngClass]="fetchingWorkPlans ? 'disabled' : ''" class="row mt-4">
-                <div class="col-2">
-                    <input type="text" placeholder="PAKA Name / Num." (keyup)="filterWorkPlans($event)">
-                </div>
-                <div class="col-2">
-                    <input type="text" (keyup)="filterByItemOrOrder($event)" placeholder="Item / Order">
-                </div>
-                <div class="col-2">
-                    <label>Status: &nbsp;&nbsp;</label>
-                    <select class="form-control" (change)="filterByStatus($event)">
-                        <option value="0">All</option>
-                        <option value="2">PP&C</option>
-                        <option value="3">Formula</option>
-                        <option value="4">Scheduled</option>
-                        <option value="6">Produced</option>
-                        <option value="7">Done</option>
-                        <option value="8">Canceled</option>
-                    </select>
-                </div>
-                <div class="col-2">
-                    <button class="btn btn-outline-primary" (click)="clearFilter()">All</button>
-                </div>
-            </div>
-            <div class="mt-5 d-flex flex-column" *ngIf="fetchingWorkPlans">
-                <div class="row">
-                    <div class="col-3"></div>
-                    <div class="col-3">
-                        <h2 class="text-info">Getting All PAKA, Please wait...</h2>
-                        <br><br>
-                        <div class="smallLoader"></div>
-                    </div>
-                    <div class="col-3"></div>
-                </div>
-            </div>
-            <div *ngIf="!fetchingWorkPlans" class="wrapper mt-5">
-                <ng-container *ngFor="let workPlan of workPlans; let i = index">
-
-                    <div class="box click" [style.background]="workPlan.status | orderItemBatchStatusColor"
-                        *ngIf="filterByRole(workPlan.status)">
-                        <input *ngIf="showCheckbox" [disabled]="disableCheckBox" class="checkbox" type="checkbox"
-                            (change)="addOrRemove($event, i)">
-                        <div (click)="openWorkPlan(workPlan.serialNumber)">
-                            <div class="service-line mt-4">
-                                <h3>{{workPlan.serialNumber}}</h3>
-                            </div>
-                            <div class="service-line">
-                                <h4>{{workPlan.date | date: 'dd/MM/yy'}}</h4>
-                            </div>
-                            <div class="service-line remark">
-                                <h4>{{workPlan.remark}}</h4>
-                            </div>
-                            <div class="service-line status">
-                                <!-- <h4>{{workPlan.status | orderItemBatchStatus}}</h4> -->
-                                <i *ngIf="workPlan.status == 3" class="fas fa-check"></i>
-                                <span *ngIf="workPlan.status == 4">
-                                    <i class="fas fa-check"></i>
-                                    <i class="fas fa-check"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </ng-container>
-
-            </div>
-        </div>
-        <div class="col-1 d-flex flex-column justify-content-between index p-3" style="height: 530px;">
-            <div class="status-index-item">Index:</div>
-            <div class="status-index-item" [style.background]="'#68e37d'">PP&C <i class="fa fa-pencil-alt"></i>
-            </div>
-            <div class="status-index-item" [style.background]="'#5B9BD5'">Formula <i class="fas fa-check"></i></div>
-            <div class="status-index-item" [style.background]="'#ED7D31'">Scheduled <i class="far fa-calendar-alt"></i>
-            </div>
-            <div class="status-index-item" [style.background]="'#C48170'">Materials <i class="fas fa-tint"></i>
-            </div>
-            <div class="status-index-item" [style.background]="'#A5A5A5'">Produced <i class="fas fa-archive"></i>
-            </div>
-            <div class="status-index-item" [style.background]="'#c93682'">Canceled <i class="fas fa-times"></i>
-            </div>
-        </div>
+  <h1>Work Plans</h1>
+  <i class="fas fa-check-double"></i>
+  <div class="row mt-4">
+    <!--side bar-->
+    <div [ngClass]="fetchingWorkPlans ? 'disabled' : ''" class="col-1 d-flex flex-column m-2 p-3 index"
+      style="height: fit-content;">
+      <div>
+        <img class="click" ngbTooltip="רענן תכניות" (click)="getWorkPlans()" style="width: 50px"
+          src="../../../../../assets/images/update2.png" alt=""> - רענן
+      </div>
+      <div class="row mt-4"></div>
+      <div>
+        <img class="click" (click)="exportAll()" ngbTooltip="ייצוא לאקסל" src="../../../../../assets/images/excel.png"
+          style="width: 50px;" alt=""> - ייצא לאקסל
+      </div>
+      <div class="row mt-4"></div>
+      <div>
+        <button ngbTooltip="בחירת תכניות" (click)="showHideCheckBox()" class="btn btn-secondary" style="width: 52px;">
+          <i class="fas fa-check-circle"></i>
+        </button>- בחירה מרובה
+      </div>
+      <div class="row mt-4"></div>
+      <div *ngIf="!loadData && authorized">
+        <img class="click" (click)="loadMaterialsForFormule()" ngbTooltip="כתב כמויות" style="width: 50px"
+          src="../../../../../assets/images/allOrder.png" alt=""> -
+        כתב כמויות
+      </div>
+      <div *ngIf="loadData" class="smallerLoader"></div>
     </div>
+    <!--work plans-->
+    <div *ngIf="showWorkPlan || showMaterialsForFormules" class="col-10"></div>
+    <div *ngIf="!showWorkPlan && !showMaterialsForFormules" class=" col-9">
+      <div [ngClass]="fetchingWorkPlans ? 'disabled' : ''" class="row mt-4">
+        <div class="col-2">
+          <input type="text" placeholder="PAKA Name / Num." (keyup)="filterWorkPlans($event)">
+        </div>
+        <div class="col-2">
+          <input type="text" (keyup)="filterByItemOrOrder($event)" placeholder="Item / Order">
+        </div>
+        <div class="col-2">
+          <label>Status: &nbsp;&nbsp;</label>
+          <select class="form-control" (change)="filterByStatus($event)">
+            <option value="0">All</option>
+            <option value="2">PP&C</option>
+            <option value="3">Formula</option>
+            <option value="4">Scheduled</option>
+            <option value="6">Produced</option>
+            <option value="7">Done</option>
+            <option value="8">Canceled</option>
+          </select>
+        </div>
+        <div class="col-2">
+          <button class="btn btn-outline-primary" (click)="clearFilter()">All</button>
+        </div>
+      </div>
+      <div class="mt-5 d-flex flex-column" *ngIf="fetchingWorkPlans">
+        <div class="row">
+          <div class="col-3"></div>
+          <div class="col-3">
+            <h2 class="text-info">Getting All PAKA, Please wait...</h2>
+            <br><br>
+            <div class="smallLoader"></div>
+          </div>
+          <div class="col-3"></div>
+        </div>
+      </div>
+      <div *ngIf="!fetchingWorkPlans" class="wrapper mt-5">
+        <ng-container *ngFor="let workPlan of workPlans; let i = index">
+
+          <div class="box click" [style.background]="workPlan.status | orderItemBatchStatusColor"
+            *ngIf="filterByRole(workPlan.status)">
+            <input *ngIf="showCheckbox" [disabled]="disableCheckBox" class="checkbox" type="checkbox"
+              (change)="addOrRemove($event, i)">
+            <div (click)="openWorkPlan(workPlan.serialNumber)">
+              <div class="service-line mt-4">
+                <h3>{{workPlan.serialNumber}}</h3>
+              </div>
+              <div class="service-line">
+                <h4>{{workPlan.date | date: 'dd/MM/yy'}}</h4>
+              </div>
+              <div class="service-line remark">
+                <h4>{{workPlan.remark}}</h4>
+              </div>
+              <div class="service-line status">
+                <!-- <h4>{{workPlan.status | orderItemBatchStatus}}</h4> -->
+                <i *ngIf="workPlan.status == 3" class="fas fa-check"></i>
+                <span *ngIf="workPlan.status == 4">
+                  <i class="fas fa-check"></i>
+                  <i class="fas fa-check"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+    <div class="col-1 d-flex flex-column justify-content-between index p-3" style="height: 530px;">
+      <div class="status-index-item">Index:</div>
+      <div class="status-index-item" [style.background]="'#68e37d'">PP&C <i class="fa fa-pencil-alt"></i>
+      </div>
+      <div class="status-index-item" [style.background]="'#5B9BD5'">Formula <i class="fas fa-check"></i></div>
+      <div class="status-index-item" [style.background]="'#ED7D31'">Scheduled <i class="far fa-calendar-alt"></i>
+      </div>
+      <div class="status-index-item" [style.background]="'#C48170'">Materials <i class="fas fa-tint"></i>
+      </div>
+      <div class="status-index-item" [style.background]="'#A5A5A5'">Produced <i class="fas fa-archive"></i>
+      </div>
+      <div class="status-index-item" [style.background]="'#c93682'">Canceled <i class="fas fa-times"></i>
+      </div>
+    </div>
+  </div>
 
 </div>
 
 <!--Work Plan modal-->
 <div class="position-fixed work-plan" *ngIf="showWorkPlan">
-    <app-planning-details (updateWorkPlans)="getWorkPlans()" (closeWorkPlanEmitter)="closeWorkPlan($event)"
-        [workPlan]="currentWorkPlan">
-    </app-planning-details>
+  <app-planning-details (updateWorkPlans)="getWorkPlans()" (closeWorkPlanEmitter)="closeWorkPlan($event)"
+    [workPlan]="currentWorkPlan">
+  </app-planning-details>
 </div>
 
 <!--כתבי כמויות-->
 <div *ngIf="showMaterialsForFormules" class="position-fixed work-plan w-75 p-5 rounded">
-    <button style="visibility: hidden" #printAmounts ngxPrint printSectionId="print-amounts"></button>
-    <i (click)="showMaterialsForFormules = false" class="fa fa-times float-right h3 close"></i>
-    <h1 class="text-center">כתב כמויות</h1>
-    <h2 dir="rtl">
-        <img (click)="exportExplosion(materialsForFormules, 'כתב כמויות')" src="../../../../../assets/images/excel.png"
-            class="img" alt="">
-        <img (click)="printAmounts.click()" src="../../../../../assets/images/print.png" class="img2" alt="">
-    </h2>
-    <div id="print-amounts">
+  <button style="visibility: hidden" #printAmounts ngxPrint printSectionId="print-amounts"></button>
+  <i (click)="showMaterialsForFormules = false" class="fa fa-times float-right h3 close"></i>
+  <h1 class="text-center">כתב כמויות</h1>
+  <h2 dir="rtl">
+    <img (click)="exportExplosion(materialsForFormules, 'כתב כמויות')" src="../../../../../assets/images/excel.png"
+      class="img" alt="">
+    <img (click)="printAmounts.click()" src="../../../../../assets/images/print.png" class="img2" alt="">
+  </h2>
+  <div id="print-amounts">
 
-        <h2 dir="rtl"> כתב כמויות לתכניות עבודה: <span
-                *ngFor="let workPlan of checkedWorkPlans">{{workPlan.serialNumber}}, </span></h2>
-        <br>
-        <table class="table table-striped mt-4">
-            <thead class="bg-success text-white">
-                <tr>
+    <h2 dir="rtl"> כתב כמויות לתכניות עבודה: <span *ngFor="let workPlan of checkedWorkPlans">{{workPlan.serialNumber}},
+      </span></h2>
+    <br>
+    <table class="table table-striped mt-4">
+      <thead class="bg-success text-white">
+        <tr>
 
-                    <th>Material Number</th>
-                    <th>Material Name</th>
-                    <th>Required</th>
-                    <th>In Stock</th>
+          <th>Material Number</th>
+          <th>Material Name</th>
+          <th>Required</th>
+          <th>In Stock</th>
 
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let material of materialsForFormules">
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let material of materialsForFormules">
 
-                    <td>{{material.itemNumber}}</td>
-                    <td>{{material.itemName}}</td>
-                    <td>{{material.kgProduction}}</td>
-                    <td
-                        [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
-                        {{material.materialArrivals[0].amount | number}}</td>
+          <td>{{material.itemNumber}}</td>
+          <td>{{material.itemName}}</td>
+          <td>{{material.kgProduction}}</td>
+          <td
+            [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
+            {{material.materialArrivals[0].amount | number}}</td>
 
-                </tr>
-            </tbody>
-        </table>
-    </div>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
 </div>

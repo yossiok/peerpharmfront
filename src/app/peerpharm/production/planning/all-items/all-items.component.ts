@@ -7,10 +7,11 @@ import { InventoryService } from "src/app/services/inventory.service";
 import { ProductionService } from "src/app/services/production.service";
 import { WorkPlan } from "../WorkPlan";
 import { OrdersService } from "../../../../services/orders.service";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { NextPartNumberMarker } from "@aws-amplify/core/node_modules/aws-sdk/clients/s3";
 import { isNgContent, isNgTemplate } from "@angular/compiler";
 import { ActivatedRoute } from "@angular/router";
-
+import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
 @Component({
   selector: "app-all-items",
   templateUrl: "./all-items.component.html",
@@ -41,7 +42,7 @@ export class AllItemsComponent implements OnInit {
   ProducedWPCount: number;
   DoneWPCount: number;
   CancelledWPCount: number;
-
+  selectedWorkplan: any;
   selectedArr: any[] = [];
 
   // items
@@ -67,6 +68,7 @@ export class AllItemsComponent implements OnInit {
 
   @ViewChild("oiFilter") oiFilter: ElementRef;
   @ViewChild("wpFilter") wpFilter: ElementRef;
+  @ViewChild("wpList") invstck: ElementRef;
 
   constructor(
     private productionService: ProductionService,
@@ -76,8 +78,9 @@ export class AllItemsComponent implements OnInit {
     private toastr: ToastrService,
     private authService: AuthService,
     private ordersService: OrdersService,
+    private modalService: NgbModal,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getWorkPlans();
@@ -92,6 +95,16 @@ export class AllItemsComponent implements OnInit {
     });
 
     this.getAllOrderItems();
+  }
+
+  openModal(modal) {
+    this.filteredWorkPlans = [];
+    //filter out the cancelled and done workplans
+    this.filteredWorkPlans = this.workPlans.filter((wp) => {
+      return wp.status < 6;
+    });
+    this.filteredWorkPlansCopy = [...this.filteredWorkPlans];
+    this.modalService.open(modal);
   }
 
   getAllOrderItems() {
@@ -110,9 +123,10 @@ export class AllItemsComponent implements OnInit {
       // this.orderItems = data;
       for (let item of data) {
         item.origQty = Number(item.quantity);
-        item.maxQty = item.wpRemainQty || item.wpRemainQty == 0
-          ? item.wpRemainQty
-          : item.quantity;
+        item.maxQty =
+          item.wpRemainQty || item.wpRemainQty == 0
+            ? item.wpRemainQty
+            : item.quantity;
         item.maxQty = Number(item.maxQty);
         item.quantity = Number(item.quantity);
         item.isSelected = false;
@@ -126,36 +140,32 @@ export class AllItemsComponent implements OnInit {
           ? item.itemOrderDate
           : item.order.orderDate;
         item.itemOrderDate = new Date(item.itemOrderDate);
-        console.log(item.itemNumber)
         if (item.workPlans) {
-          if (item.wpSplit && (item.maxQty > 0)) {
+          if (item.wpSplit && item.maxQty > 0) {
             if (this.orderItems.findIndex((oi) => oi._id == item._id) == -1) {
               // newItem1 = remained qty
               let newItem1 = { ...item };
               newItem1.pakaStatus = 1;
               newItem1.quantity = item.wpRemainQty;
-              newItem1.workPlanId = null
+              newItem1.workPlanId = null;
               this.orderItems.push(newItem1);
-              
+
               // newItem2 = Prod qty (workPlan)
-              let newItem2 = {...item}
+              let newItem2 = { ...item };
               newItem2.pakaStatus = item.workPlans.itemStatus;
               newItem2.quantity = item.wpProdQty;
-              newItem2.workPlanId = item.workPlans.workPlanId
+              newItem2.workPlanId = item.workPlans.workPlanId;
               this.orderItems.push(newItem2);
             }
           } else {
             item.pakaStatus = item.workPlans.itemStatus;
-            console.log(item.workPlans.workPlanId);
-            console.log(item.workPlans.itemStatus);
             // item.dueDate = item.workPlans.dueDate ? item.workPlans.dueDate : null;
             item.workPlanId = item.workPlans.workPlanId;
             item.quantity = item.workPlans.quantity;
             item.WPstatus = item.workPlans.WPstatus;
             this.orderItems.push(item);
           }
-        }
-        else this.orderItems.push(item);
+        } else this.orderItems.push(item);
       }
       console.log(this.orderItems);
       for (let i = 1; i <= 8; i++) {
@@ -166,6 +176,7 @@ export class AllItemsComponent implements OnInit {
         switch (i) {
           case 1:
             this.waitingCount = 0 + this.filteredOrderItems.length;
+
             break;
           case 2:
             this.plannedCount = 0 + this.filteredOrderItems.length;
@@ -205,6 +216,7 @@ export class AllItemsComponent implements OnInit {
     this.productionService.getAllWorkPlans().subscribe((workPlans) => {
       this.workPlans = workPlans;
       console.log(this.workPlans);
+
       for (let i = 1; i <= 8; i++) {
         this.filteredWorkPlans = [];
         this.filteredWorkPlans = this.workPlans.filter((wp) => {
@@ -427,6 +439,118 @@ export class AllItemsComponent implements OnInit {
     }
     console.log(this.selectedArr);
   }
+  addToPlan(wp) {
+    let ok = confirm(`אתה מאשר להוסיף את הפריט/ים לפק"ע ${wp.serialNumber}`);
+    if (ok) {
+      console.log(wp);
+      console.log(this.selectedArr);
+      this.selectedWorkplan = wp;
+      this.modalService.dismissAll();
+      for (let item of this.selectedArr) {
+        if (Number(item.quantity) < Number(item.origQty)) {
+          item.wpSplit = true;
+          item.wpProdQty = item.wpProdQty
+            ? item.wpProdQty + item.quantity
+            : item.quantity;
+          item.wpRemainQty = item.wpRemainQty
+            ? item.wpRemainQty - item.quantity
+            : item.qantity - item.wpProdQty;
+        }
+        if (item.remainQty <= 0) {
+          alert(
+            "כמות היחידות שהוזנו לפקודת העבודה חורגת מהכמות שהוזמנה על ידי הלקוח"
+          );
+          return;
+        }
+      }
+
+      this.addWorkPlan(this.selectedArr, "WP updated!!!", wp.serialNumber);
+      // this.ordersService
+      //   .makePlan(this.selectedArr, "WP updated!!!", wp.serialNumber)
+      //   .subscribe((data) => {
+      //     console.log(data);
+      //   });
+    }
+  }
+  addWorkPlan(orderItems, remark, wp) {
+    this.ordersService.makePlan(orderItems, remark, wp).subscribe((data) => {
+      console.log(data);
+      console.log(data.workPlan);
+      console.log(data.result);
+      if (!data) {
+        this.toastr.error("Work plan creation failed");
+        return;
+      }
+
+      if (data.error && data.error == "No formules for all products")
+        this.toastr.error(
+          `יש לעדכן פורמולות עבור הפריטים הבאים: ${data.missingFormules}`,
+          "פורמולות חסרות"
+        );
+      else if (data.msg == "duplicate formules")
+        this.toastr.error(
+          "יש למחוק את אחד המופעים על מנת להמשיך",
+          `פורמולה מס. ${data.formule} מופיעה פעמיים במערכת`
+        );
+      else if (data.msg) {
+        this.toastr.error(data.msg);
+      } else if (data.workPlan.orderItems.length > 0) {
+        console.log(data.workPlan);
+        // this.deleteProductionFormules(data.workPlan);
+
+        // let idx = this.workPlans.findIndex(
+        //   (wp) => wp.serialNumber == data.workPlan.serialNumber
+        // );
+        // if (idx == -1) {
+        //   this.workPlans.unshift(data.workPlan);
+        // } else {
+        //   this.workPlans.splice(idx, 1, data.workPlan);
+        // }
+        // for (let item of this.orderItems) {
+        //   let index = data.workPlan.orderItems.findIndex(
+        //     (oi) => oi._id == item._id
+        //   );
+        //   if (index > -1) {
+        //     this.orderItems[index].pakaStatus = 2;
+        //     this.orderItems[index].workPlanId = data.workPlan.serialNumber;
+        //   }
+        // }
+        this.getAllOrderItems();
+        this.getWorkPlans();
+        this.toastr.success(
+          "נשמרה בהצלחה.",
+          `תכנית עבודה ${data.workPlan.serialNumber}`
+        );
+        this.selectedArr = [];
+      } else
+        this.toastr.warning(
+          'היתה בעיה. אנא בדוק את תכנית העבודה במסך "Planning"'
+        );
+    });
+  }
+
+  deleteProductionFormules(wp) {
+    let updatedWP = wp;
+    if (confirm("כל הפורמולות יימחקו ותצטרך ליצור אותן מחדש. להמשיך?")) {
+      updatedWP.productionFormules = [];
+      // TODO: update status
+      updatedWP.orderItems.map((oi) => {
+        oi.hasFormule = false;
+        oi.status = 2;
+        return oi;
+      });
+      console.log(updatedWP);
+      this.productionService.editWorkPlan(updatedWP).subscribe((data) => {
+        console.log(data);
+        if (data.msg) {
+          console.log(data.msg);
+          this.toastr.error(data.msg);
+        } else if (data) {
+          this.toastr.success("הפרטים נשמרו בהצלחה");
+        }
+      });
+    }
+  }
 
   makePlan() {
     if (this.selectedArr.length == 0)
@@ -451,62 +575,16 @@ export class AllItemsComponent implements OnInit {
           return;
         }
       }
-
-      this.ordersService
-        .makePlan(this.selectedArr, remark)
-        .subscribe((data) => {
-          console.log(data);
-          console.log(data.workPlan);
-          console.log(data.result);
-          if (!data) {
-            this.toastr.error("Work plan creation failed");
-            return;
-          }
-
-          if (data.error && data.error == "No formules for all products")
-            this.toastr.error(
-              `יש לעדכן פורמולות עבור הפריטים הבאים: ${data.missingFormules}`,
-              "פורמולות חסרות"
-            );
-          else if (data.msg == "duplicate formules")
-            this.toastr.error(
-              "יש למחוק את אחד המופעים על מנת להמשיך",
-              `פורמולה מס. ${data.formule} מופיעה פעמיים במערכת`
-            );
-          else if (data.msg) {
-            this.toastr.error(data.msg);
-          } else if (data.workPlan.orderItems.length > 0) {
-            console.log(data.workPlan);
-            this.workPlans.unshift(data.workPlan);
-            for (let item of this.orderItems) {
-              let index = data.workPlan.orderItems.findIndex(
-                (oi) => oi._id == item._id
-              );
-              if (index > -1) {
-                this.orderItems[index].pakaStatus = 2;
-                this.orderItems[index].workPlanId = data.workPlan.serialNumber;
-              }
-            }
-            this.getAllOrderItems();
-            this.toastr.success(
-              "נשמרה בהצלחה.",
-              `תכנית עבודה ${data.workPlan.serialNumber}`
-            );
-            this.selectedArr = [];
-          } else
-            this.toastr.warning(
-              'היתה בעיה. אנא בדוק את תכנית העבודה במסך "Planning"'
-            );
-        });
+      this.addWorkPlan(this.selectedArr, remark, null);
     }
   }
 
   deleteItem(item, i) {
-    if(confirm(`למחוק פריט ${item.itemNumber} מהרשימה?`)) {
-      this.ordersService.deleteItemFromPAKALIST(item._id).subscribe(data => {
-        console.log(data)
-        this.filteredOrderItems.splice(i, 1)
-      })
+    if (confirm(`למחוק פריט ${item.itemNumber} מהרשימה?`)) {
+      this.ordersService.deleteItemFromPAKALIST(item._id).subscribe((data) => {
+        console.log(data);
+        this.filteredOrderItems.splice(i, 1);
+      });
     }
   }
 
@@ -581,7 +659,7 @@ export class AllItemsComponent implements OnInit {
     this.viewOrders(this.currentView);
     this.oiFilter.nativeElement.value = "";
   }
-  
+
   filterWorkPlans() {
     let value = this.wpFilter.nativeElement.value;
     console.log(value);

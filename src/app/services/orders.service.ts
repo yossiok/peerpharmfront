@@ -23,7 +23,7 @@ export class OrdersService {
 
   refreshOrders: EventEmitter<any> = new EventEmitter();
 
-  constructor(private http: Http) { }
+  constructor(private http: Http) {}
 
   getOrders(): Observable<any> {
     let url = this.baseUrl + "order";
@@ -325,25 +325,28 @@ export class OrdersService {
       .pipe(map((res) => res.json()));
   }
 
-  makePlan(orderItems, remark) {
+  makePlan(orderItems, remark, wp = null) {
     let url = this.baseUrl + "orderitem/makePlan?remark=" + remark;
     return this.http
-      .post(url, JSON.stringify({ orderItems }), this.options)
+      .post(url, JSON.stringify({ orderItems, wp }), this.options)
       .pipe(map((reponse) => reponse.json()));
   }
 
   deleteItemFromPAKALIST(orderITemId) {
-    let url = this.baseUrl + "orderitem/deleteItemFromPAKALIST?_id="+orderITemId;
+    let url =
+      this.baseUrl + "orderitem/deleteItemFromPAKALIST?_id=" + orderITemId;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
   uploadFreeBatches(freeBatches) {
     let url = this.baseUrl + "order/freebatches";
-    return this.http.post(url, JSON.stringify(freeBatches), this.options).pipe(map((reponse) => reponse.json()));
+    return this.http
+      .post(url, JSON.stringify(freeBatches), this.options)
+      .pipe(map((reponse) => reponse.json()));
   }
 
   downloadFreeBatches() {
-    let url = this.baseUrl + "order/freebatches"
+    let url = this.baseUrl + "order/freebatches";
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
