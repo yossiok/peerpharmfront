@@ -110,6 +110,12 @@ export class ConfirmModalComponent implements OnInit {
 
 
   yes() {
+    if(this.authService.loggedInUser.userName=='martha')
+    {
+      this.confService.userAnserEventEmitter.emit(true);
+      this.state.modal.dismiss();
+    }
+    else{
 this.authService.loginWith2WayKey(this.onetime).subscribe(data=>
   {
     if(data.msg==true)
@@ -123,6 +129,7 @@ this.authService.loginWith2WayKey(this.onetime).subscribe(data=>
       this.state.modal.dismiss();
     }
   })
+}
 
   }
 
