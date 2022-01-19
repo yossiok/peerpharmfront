@@ -476,9 +476,10 @@
 
             <div class="form-row w-100 d-flex justify-content-around">
               <div class="col-sm-4">
-                <button [disabled]="submittingForm" [style.cursor]="submittingForm ? 'not-allowed' : 'pointer'"
+                <div *ngIf="submittingForm" class="smallLoader"></div>
+                <button *ngIf="!submittingForm" [style.cursor]="submittingForm ? 'not-allowed' : 'pointer'"
                   (click)="submitForm()" class="btn btn-success">אישור</button>
-                <button [disabled]="submittingForm" [style.cursor]="submittingForm ? 'not-allowed' : 'pointer'"
+                <button *ngIf="!submittingForm" [style.cursor]="submittingForm ? 'not-allowed' : 'pointer'"
                   (click)="resetForm()" class="btn btn-danger">איפוס</button>
               </div>
             </div>

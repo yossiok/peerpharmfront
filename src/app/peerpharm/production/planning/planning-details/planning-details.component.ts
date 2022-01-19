@@ -255,9 +255,13 @@ export class PlanningDetailsComponent implements OnInit {
             this.editF = -1;
             this.workPlan = data;
             this.updateWorkPlans.emit();
+            if(data.status == -1) {
+              this.closeWorkPlan(-1)
+              this.toastr.info('פק"ע ריקה מפריטים', 'פק"ע נמחקה.')
+            } 
             resolve("הפרטים נשמרו בהצלחה");
-          } else if (data.error) {
-            reject(data.error);
+          } else if (data.msg) {
+            reject(data.msg);
           }
         });
     });

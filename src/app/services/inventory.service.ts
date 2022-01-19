@@ -147,6 +147,11 @@ export class InventoryService {
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
+  getCasNumbersByRegex(fewLetters): Observable<any> {
+    let url = this.baseUrl + "component/regexCAS?fewLetters=" + fewLetters;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
   getComponentNumberByName(componentName) {
     let url =
       this.baseUrl + "component/numberByName?componentName=" + componentName;
