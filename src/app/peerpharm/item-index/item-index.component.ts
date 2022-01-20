@@ -94,6 +94,7 @@ const defaultMaterial = {
 export class ItemIndexComponent implements OnInit {
   @ViewChild("nameSelect") nameSelect: ElementRef;
   @ViewChild("itemNumber") itemNumber: ElementRef;
+  @ViewChild("problem") problem: ElementRef;
 
   item: any;
   newItem: any = { componentN: null };
@@ -619,6 +620,15 @@ export class ItemIndexComponent implements OnInit {
   //pricing
 
   test() {
+  }
+
+  addProblem() {
+    this.item.problems.push(this.problem.nativeElement.value)
+    this.problem.nativeElement.value = ""
+  }
+
+  removeProblem(i) {
+    this.item.problems.splice(i, 1)
   }
 
   addToPriceHistory() {

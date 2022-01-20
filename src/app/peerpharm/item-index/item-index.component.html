@@ -431,13 +431,29 @@
         <label>רכיב בעייתי?</label>
       </div>
       <div>
-        <label>בעייתיות:</label>
-        <select [disabled]="!item.isProblematic" class="form-control" [(ngModel)]="item.problem">
-          <!-- <option value="פג תוקף קצר">פג תוקף קצר</option> -->
+        <label>הוסף בעיה</label>
+        <br>
+        <input [disabled]="!item.isProblematic" type="text" #problem>
+        <button (click)="addProblem()">הוסף</button>
+        <br>
+        <label>בעיות:</label>
+        <br>
+        <ul *ngIf="item.isProblematic">
+          <li *ngFor="let problem of item.problems; let i = index">{{problem}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <i class="fas fa-times text-danger" [ngbTooltip]="'הסר את '+problem" (click)="removeProblem(i)"></i></li>
+        </ul>
+        <div *ngIf="allowUserEditItem">
+          <button class="btn btn-info form-control h3" ngbTooltip="שמור שינויים" id="updateDataBtn"
+            (click)="editItemDetails()">
+            שמור
+          </button>
+        </div>
+        <!-- <select [disabled]="!item.isProblematic" class="form-control" [(ngModel)]="item.problem" multiple>
+          <option value="פג תוקף קצר">פג תוקף קצר</option>
           <option value="פריט ייבוא / זמן אספקה">פריט ייבוא / זמן אספקה</option>
           <option value="כמויות מינימום">כמויות מינימום</option>
           <option value="אחר">אחר</option>
-        </select>
+        </select> -->
       </div>
     </div>
 
@@ -595,7 +611,44 @@
         <textarea [(ngModel)]="item.remarks" cols="30" rows="4"></textarea>
       </div>
     </div>
+
     <div dir="rtl" class="p-3 row mt-4 d-flex flex-row justify-content-around float-right w-50 border border-dark">
+      <div class="d-flex flex-row justify-content-around">
+        <div>
+          <input type="checkbox" class="problematic" [disabled]="!allowedProblematicEdit"
+            [(ngModel)]="item.isProblematic" [ngModelOptions]="{standalone: true}">
+        </div>
+        <label>רכיב בעייתי?</label>
+      </div>
+      <div>
+        <label>הוסף בעיה</label>
+        <br>
+        <input [disabled]="!item.isProblematic" type="text" #problem>
+        <button (click)="addProblem()">הוסף</button>
+        <br>
+        <label>בעיות:</label>
+        <br>
+        <ul *ngIf="item.isProblematic">
+          <li *ngFor="let problem of item.problems; let i = index">{{problem}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <i class="fas fa-times text-danger" [ngbTooltip]="'הסר את '+problem" (click)="removeProblem(i)"></i></li>
+        </ul>
+        <div *ngIf="allowUserEditItem">
+          <button class="btn btn-info form-control h3" ngbTooltip="שמור שינויים" id="updateDataBtn"
+            (click)="editItemDetails()">
+            שמור
+          </button>
+        </div>
+        <!-- <select [disabled]="!item.isProblematic" class="form-control" [(ngModel)]="item.problem" multiple>
+          <option value="פג תוקף קצר">פג תוקף קצר</option>
+          <option value="פריט ייבוא / זמן אספקה">פריט ייבוא / זמן אספקה</option>
+          <option value="כמויות מינימום">כמויות מינימום</option>
+          <option value="אחר">אחר</option>
+        </select> -->
+      </div>
+    </div>
+
+
+    <!-- <div dir="rtl" class="p-3 row mt-4 d-flex flex-row justify-content-around float-right w-50 border border-dark">
       <div class="d-flex flex-row justify-content-around">
         <div>
           <input type="checkbox" class="problematic" [disabled]="!allowedProblematicEdit"
@@ -612,7 +665,7 @@
           <option value="אחר">אחר</option>
         </select>
       </div>
-    </div>
+    </div> -->
   </div>
 
   <!--Purchase History-->
@@ -703,7 +756,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let update of item.priceUpdates let i=index">
+          <tr *ngFor="let update of item.priceUpdates.reverse(); let i=index">
             <td [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">{{i+1}}</td>
             <td>{{update.date | date:'dd/MM/yy'}}</td>
             <td>{{update.price}} {{update.coin | currencySymbol}}</td>
