@@ -623,8 +623,15 @@ export class ItemIndexComponent implements OnInit {
   }
 
   addProblem() {
-    this.item.problems.push(this.problem.nativeElement.value)
-    this.problem.nativeElement.value = ""
+    if(this.problem.nativeElement.value == "") this.toastSrv.warning('יש להזין סיבה או לבחור מתוך הרשימה')
+    else {
+      this.item.problems.push(this.problem.nativeElement.value)
+      this.problem.nativeElement.value = ""
+    }
+  }
+
+  chooseProblem(event) {
+    this.problem.nativeElement.value = event.target.value
   }
 
   removeProblem(i) {

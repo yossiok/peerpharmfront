@@ -427,17 +427,28 @@
         <div>
           <input type="checkbox" class="problematic" [disabled]="!allowedProblematicEdit"
             [(ngModel)]="item.isProblematic" [ngModelOptions]="{standalone: true}">
-        </div>
+        </div>&nbsp;&nbsp;
         <label>רכיב בעייתי?</label>
       </div>
-      <div>
-        <label>הוסף בעיה</label>
+      <div *ngIf="item.isProblematic">
+        <h4>הוסיפי בעיה</h4>
         <br>
-        <input [disabled]="!item.isProblematic" type="text" #problem>
-        <button (click)="addProblem()">הוסף</button>
+        <select [disabled]="!item.isProblematic" class="form-control" (click)="chooseProblem($event)">
+          <option disabled value="">בחרי מתוך רשימה</option>
+          <option value="פריט ייבוא / זמן אספקה">פריט ייבוא / זמן אספקה</option>
+          <option value="כמויות מינימום">כמויות מינימום</option>
+        </select>
+        <label>או</label>
         <br>
-        <label>בעיות:</label>
+        <input [disabled]="!item.isProblematic" placeholder="הזיני טקסט חופשי" type="text" #problem>
+        <br><br>
+        <button class="problem-btn" (click)="addProblem()">הוסיפי</button>
+        <br><br>
+        <h5>בעיות:</h5>
         <br>
+        <ul *ngIf="item.problems && item.problems.length == 0">
+          <li>כללי</li>
+        </ul>
         <ul *ngIf="item.isProblematic">
           <li *ngFor="let problem of item.problems; let i = index">{{problem}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <i class="fas fa-times text-danger" [ngbTooltip]="'הסר את '+problem" (click)="removeProblem(i)"></i></li>
@@ -448,12 +459,7 @@
             שמור
           </button>
         </div>
-        <!-- <select [disabled]="!item.isProblematic" class="form-control" [(ngModel)]="item.problem" multiple>
-          <option value="פג תוקף קצר">פג תוקף קצר</option>
-          <option value="פריט ייבוא / זמן אספקה">פריט ייבוא / זמן אספקה</option>
-          <option value="כמויות מינימום">כמויות מינימום</option>
-          <option value="אחר">אחר</option>
-        </select> -->
+  
       </div>
     </div>
 
@@ -611,23 +617,36 @@
         <textarea [(ngModel)]="item.remarks" cols="30" rows="4"></textarea>
       </div>
     </div>
-
+    
     <div dir="rtl" class="p-3 row mt-4 d-flex flex-row justify-content-around float-right w-50 border border-dark">
       <div class="d-flex flex-row justify-content-around">
         <div>
           <input type="checkbox" class="problematic" [disabled]="!allowedProblematicEdit"
             [(ngModel)]="item.isProblematic" [ngModelOptions]="{standalone: true}">
-        </div>
+        </div>&nbsp;&nbsp;
         <label>רכיב בעייתי?</label>
       </div>
-      <div>
-        <label>הוסף בעיה</label>
+      <div *ngIf="item.isProblematic">
+        <h4>הוסיפי בעיה</h4>
         <br>
-        <input [disabled]="!item.isProblematic" type="text" #problem>
-        <button (click)="addProblem()">הוסף</button>
+        <select [disabled]="!item.isProblematic" class="form-control" (click)="chooseProblem($event)">
+          <option disabled value="">בחרי מתוך רשימה</option>
+          <option value="מסוכן">מסוכן</option>
+          <option value="פג תוקף קצר">פג תוקף קצר</option>
+          <option value="פריט ייבוא / זמן אספקה">פריט ייבוא / זמן אספקה</option>
+          <option value="כמויות מינימום">כמויות מינימום</option>
+        </select>
+        <label>או</label>
         <br>
-        <label>בעיות:</label>
+        <input [disabled]="!item.isProblematic" placeholder="הזיני טקסט חופשי" type="text" #problem>
+        <br><br>
+        <button class="problem-btn" (click)="addProblem()">הוסיפי</button>
+        <br><br>
+        <h5>בעיות:</h5>
         <br>
+        <ul *ngIf="item.problems && item.problems.length == 0">
+          <li>כללי</li>
+        </ul>
         <ul *ngIf="item.isProblematic">
           <li *ngFor="let problem of item.problems; let i = index">{{problem}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <i class="fas fa-times text-danger" [ngbTooltip]="'הסר את '+problem" (click)="removeProblem(i)"></i></li>
@@ -638,34 +657,9 @@
             שמור
           </button>
         </div>
-        <!-- <select [disabled]="!item.isProblematic" class="form-control" [(ngModel)]="item.problem" multiple>
-          <option value="פג תוקף קצר">פג תוקף קצר</option>
-          <option value="פריט ייבוא / זמן אספקה">פריט ייבוא / זמן אספקה</option>
-          <option value="כמויות מינימום">כמויות מינימום</option>
-          <option value="אחר">אחר</option>
-        </select> -->
+  
       </div>
     </div>
-
-
-    <!-- <div dir="rtl" class="p-3 row mt-4 d-flex flex-row justify-content-around float-right w-50 border border-dark">
-      <div class="d-flex flex-row justify-content-around">
-        <div>
-          <input type="checkbox" class="problematic" [disabled]="!allowedProblematicEdit"
-            [(ngModel)]="item.isProblematic" [ngModelOptions]="{standalone: true}">
-        </div>
-        <label>חומר בעייתי?</label>
-      </div>
-      <div>
-        <label>בעייתיות:</label>
-        <select [disabled]="!item.isProblematic" class="form-control" [(ngModel)]="item.problem">
-          <option value="פג תוקף קצר">פג תוקף קצר</option>
-          <option value="פריט ייבוא / זמן אספקה">פריט ייבוא / זמן אספקה</option>
-          <option value="כמויות מינימום">כמויות מינימום</option>
-          <option value="אחר">אחר</option>
-        </select>
-      </div>
-    </div> -->
   </div>
 
   <!--Purchase History-->
