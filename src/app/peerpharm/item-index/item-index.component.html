@@ -1,5 +1,11 @@
 <div class="row mt-4">
-  <div class="col-3"></div>
+  <div class="col-2"></div>
+  <div class="col-1">
+    <button (click)="downloadProblematicItemsReport()" class="btn btn-info">
+      <img src="../../../assets/images/excel.png" style="width: 20px;" alt="">
+      Problematic Items
+    </button>
+  </div>
   <div class="col-2 text-center">
     <h3 [ngClass]="setColors('title1')" (click)="setFormView('itemDetails')" class="text-center mx-auto p-2">
       Item
@@ -63,7 +69,7 @@
     <div class="col-1">
       <button type="button" class="btn btn-light" (click)="resetItemDetailsForm()">Clear</button>
     </div>
-    <div class="col-4"></div>
+    <div class="col-2"></div>
     <div class="col-2">
       <button type="button" class="btn btn-success form-control" (click)="open(itemType)">Create New Item</button>
     </div>
@@ -1361,9 +1367,10 @@
 </ng-template> -->
 
 <ng-template #itemType let-modal>
-  <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
+  <i type="button" class="float-left fas fa-times h1 m-2" aria-label="Close" (click)="modal.dismiss('Cross click')"></i>
+  <!-- <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
-  </button>
+  </button> -->
   <div dir="rtl" class="d-flex flex-column justify-content-around">
     <div>
       <h1>פתיחת פריט</h1>
@@ -1448,4 +1455,42 @@
   <div class="modal-footer">
   </div>
 
+</ng-template>
+
+<ng-template #problematicItemsER let-modal>
+    <i type="button" class="float-left fas fa-times h1 m-2" aria-label="Close" (click)="modal.dismiss('Cross click')"></i>
+    <div dir="rtl" class="d-flex flex-column justify-content-around m-2">
+      <div>
+        <h1>פריטים בעייתיים</h1>
+      </div>
+    </div>
+    <div dir="rtl" class=" modal-body">
+  
+      <div class="row mt-4 m-2">
+        <table class="table table-bordered">
+          <thead>
+            <th>פריט</th>
+            <th>שם</th>
+            <th>בעיות</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of problematicItems">
+              <td>{{item.componentN}}</td>
+              <td>{{item.componentName}}</td>
+              <td>
+                <table>
+                  <tbody>
+                    <tr *ngFor="let problem of item.problems">
+                      <td>{{problem}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+    </div>
 </ng-template>

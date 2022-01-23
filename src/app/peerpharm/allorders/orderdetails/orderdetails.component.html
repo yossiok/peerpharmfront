@@ -86,7 +86,7 @@
               src="../../../assets/images/excel.png" /></button></th>
         <th>
           <img src="../../../../assets/images/allOrder.png" class="reportImg click" alt="Problematics Report"
-            ngbTooltip="Problems Report" (click)="exportProblems()">
+            ngbTooltip="Problematic ingredients" (click)="exportProblems()">
         </th>
         <th *ngIf="openFormule"></th>
         <th>Batch Status</th>
@@ -186,8 +186,12 @@
           <td *ngIf="item._id===EditRowId">
             <input #id type='hidden' [value]="item._id" style='width:370px'>
             <input #itemNumber type='hidden' [value]="item.itemNumber">{{i+1}}
+            <!-- <span>{{item.problematicComponents[0].componentN}}</span> -->
           </td>        
-          <td *ngIf="item._id!==EditRowId"><b>{{i+1}}</b></td>
+          <td *ngIf="item._id!==EditRowId">
+            <b>{{i+1}}</b>&nbsp;&nbsp;&nbsp;
+            <img title="Problematic ingredients. Download report above" *ngIf="item.problematicComponents.length > 0 || item.problematicMaterials.length > 0" style="width: 20px;" src="../../../../assets/images/alert3.gif" alt="">
+          </td>
           <td><input type="checkbox" [checked]="item.isSelected" (change)="isSelected($event,item)"></td>
   
           <td class="click paka-status" (click)="openPAKA(pakaStatus)" (click)="currentItem = item" [style.background]="item.workPlans.length > 1 ? '#de826a' : item.pakaStatus|orderItemBatchStatusColor">

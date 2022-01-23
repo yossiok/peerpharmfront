@@ -95,6 +95,7 @@ export class ItemIndexComponent implements OnInit {
   @ViewChild("nameSelect") nameSelect: ElementRef;
   @ViewChild("itemNumber") itemNumber: ElementRef;
   @ViewChild("problem") problem: ElementRef;
+  @ViewChild("problematicItemsER") problematicItemsER: ElementRef;
 
   item: any;
   newItem: any = { componentN: null };
@@ -133,6 +134,7 @@ export class ItemIndexComponent implements OnInit {
   compositionCAS: any;
   compEdit: number = -1;
 
+  problematicItems: Array<any>;
   cmptCategoryList: Array<any> = [
     "Sacara",
     "Mineralium",
@@ -617,9 +619,28 @@ export class ItemIndexComponent implements OnInit {
     }
   }
 
-  //pricing
+  //problematic item stuff
 
-  test() {
+  downloadProblematicItemsReport() {
+    this.inventoryService.getAllProblematicItems().subscribe(problematicItems => {
+      this.problematicItems = problematicItems
+      this.modalService.open(this.problematicItemsER)
+      let excel = []
+      for(let item of problematicItems) {
+        excel.push({
+          item: item.componentN,
+          name: item.componentName
+        })
+        for(let problem of item.problems) {
+          excel.push({
+            item: item.componentN,
+            name: item.componentName,
+            problem
+          })
+        }
+      }
+      this.excelService.exportAsExcelFile(excel, `Problematic items ${new Date().toString().slice(0, 10)}`)
+    })
   }
 
   addProblem() {
