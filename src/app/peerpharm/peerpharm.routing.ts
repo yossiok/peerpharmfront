@@ -431,7 +431,7 @@ export const PeerPharmRputs: Routes = [
       title: "Weight Production",
     },
     component: WeightProductionComponent,
-    canActivate: [TwoFactorSms],
+    canActivate: [TwoFactor],
   },
   {
     path: "production/scanMaterial",
