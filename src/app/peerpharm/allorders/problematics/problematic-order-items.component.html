@@ -1,0 +1,89 @@
+<div class="row mt-5 d-flex flex-row justify-content-between">
+    <button (click)="closeModal()">סגור</button>
+    <!-- <button ngxPrint printSectionId="print" styleSheetFile="../../../assets/stylesheets/problematics.css" class="btn btn-success">הדפס</button> -->
+</div>
+
+<h1>Problematic Order Items</h1>
+
+<div class="row mt-5" id="print">
+
+    <table class="table table-bordered">
+        <thead>
+            <th>Order</th>
+            <th>Item</th>
+            <th>Materials</th>
+            <th>Components</th>
+        </thead>
+        <tbody>
+        <tr *ngFor="let orderItem of problematicorderItems">
+            <td>{{orderItem.orderNumber}}</td>
+            <td><span *ngIf="orderItem.orderItem">{{orderItem.orderItem.itemNumber}}</span></td>
+            <td>
+                <table *ngIf="orderItem.orderItem">
+                    <thead>
+                        <th>מק"ט</th>
+                        <th>שם</th>
+                        <th>בעיות</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let material of orderItem.orderItem.problematicMaterials">
+                            <td>
+                                {{material.componentN}}
+                                <img src="../../../../assets/images/alert3.gif" style="width: 20px;" alt="">
+                            </td>
+                            <td>{{material.componentName}}</td>
+                            <td>
+                                <table *ngIf="material.problems">
+                                    <thead>
+                                        <th>Problem</th>
+                                        <th>User</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let problem of material.problems">
+                                            <td>{{problem}}</td>
+                                            <td>(coming soon..)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+            <td>
+                <table *ngIf="orderItem.orderItem">
+                    <thead>
+                        <th>מק"ט</th>
+                        <th>שם</th>
+                        <th>בעיות</th>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let component of orderItem.orderItem.problematicComponents">
+                            <td>
+                                {{component.componentN}}
+                                <img src="../../../../assets/images/alert3.gif" style="width: 20px;" alt="">
+                            </td>
+                            <td>{{component.componentName}}</td>
+                            <td>
+                                <table *ngIf="component.problems">
+                                    <thead>
+                                        <th>Problem</th>
+                                        <th>User</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let problem of component.problems">
+                                            <td>{{problem}}</td>
+                                            <td>(coming soon..)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>
+
