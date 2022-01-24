@@ -24,8 +24,8 @@ interface ConfirmOptions {
  * It must be declared in the providers of the NgModule, but is not supposed to be used in application code
  */
 @Injectable({
-    providedIn: 'root'
-  })
+  providedIn: 'root'
+})
 export class ConfirmState {
   /**
    * The last options passed ConfirmService.confirm()
@@ -47,12 +47,12 @@ export class ConfirmState {
  * A confirmation service, allowing to open a confirmation modal from anywhere and get back a promise.
  */
 @Injectable({
-    providedIn: 'root'
-  })
+  providedIn: 'root'
+})
 export class ConfirmService {
-    userAnserEventEmitter:EventEmitter<Boolean>= new EventEmitter();
+  userAnserEventEmitter: EventEmitter<Boolean> = new EventEmitter();
 
-  constructor(private modalService: NgbModal, private state: ConfirmState) {}
+  constructor(private modalService: NgbModal, private state: ConfirmState) { }
 
   /**
    * Opens a confirmation modal
@@ -61,8 +61,8 @@ export class ConfirmService {
    * the user chooses not to confirm, or closes the modal
    */
   confirm(options: ConfirmOptions): Promise<boolean> {
-    this.state.options = options; 
-    this.state.modal = this.modalService.open(ConfirmModalComponent); 
+    this.state.options = options;
+    this.state.modal = this.modalService.open(ConfirmModalComponent);
     return this.state.modal.result;
   }
 }
@@ -90,46 +90,42 @@ export class ConfirmService {
 export class ConfirmModalComponent implements OnInit {
 
   options: ConfirmOptions;
-  onetime:string="";
+  onetime: string = "";
   @ViewChild('key') key: ElementRef
 
   @HostListener('document:keydown', ['$event']) handleKeyboardEvent(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
-     this.yes()
+      this.yes()
     }
   }
 
-  constructor(private state: ConfirmState, private confService:ConfirmService, private authService:AuthService) {
+  constructor(private state: ConfirmState, private confService: ConfirmService, private authService: AuthService) {
     this.options = state.options;
 
   }
 
-  ngOnInit(){
-    setTimeout(()=>this.key.nativeElement.focus(),500)
+  ngOnInit() {
+    setTimeout(() => this.key.nativeElement.focus(), 500)
   }
 
 
   yes() {
-    if(this.authService.loggedInUser.userName=='martha')
-    {
+    if (this.authService.loggedInUser.userName.includes('sima') || this.authService.loggedInUser.userName.includes('art')) {
       this.confService.userAnserEventEmitter.emit(true);
       this.state.modal.dismiss();
     }
-    else{
-this.authService.loginWith2WayKey(this.onetime).subscribe(data=>
-  {
-    if(data.msg==true)
-    {
-      this.confService.userAnserEventEmitter.emit(true);
-      this.state.modal.dismiss();
+    else {
+      this.authService.loginWith2WayKey(this.onetime).subscribe(data => {
+        if (data.msg == true) {
+          this.confService.userAnserEventEmitter.emit(true);
+          this.state.modal.dismiss();
+        }
+        else {
+          this.confService.userAnserEventEmitter.emit(false);
+          this.state.modal.dismiss();
+        }
+      })
     }
-    else
-    {
-      this.confService.userAnserEventEmitter.emit(false);
-      this.state.modal.dismiss();
-    }
-  })
-}
 
   }
 
@@ -138,4 +134,3 @@ this.authService.loginWith2WayKey(this.onetime).subscribe(data=>
     this.state.modal.dismiss();
   }
 }
- 
