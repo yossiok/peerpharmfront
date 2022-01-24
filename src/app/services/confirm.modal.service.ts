@@ -129,6 +129,7 @@ export class ConfirmModalComponent implements OnInit {
 
   }
 
+  
   no() {
     this.confService.userAnserEventEmitter.emit(false);
     this.state.modal.dismiss();
