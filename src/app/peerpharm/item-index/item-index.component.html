@@ -1,5 +1,11 @@
 <div class="row mt-4">
-  <div class="col-3"></div>
+  <div class="col-2"></div>
+  <div class="col-1">
+    <button (click)="downloadProblematicItemsReport()" class="btn btn-info">
+      <img src="../../../assets/images/excel.png" style="width: 20px;" alt="">
+      Problematic Items
+    </button>
+  </div>
   <div class="col-2 text-center">
     <h3 [ngClass]="setColors('title1')" (click)="setFormView('itemDetails')" class="text-center mx-auto p-2">
       Item
@@ -31,7 +37,7 @@
     </div>
     <div class="col-2">
       <label class="d-block">
-        or find by name.
+        or find by name,
       </label>
       <input class="d-inline form-control" type="text" #name formControlName="itemName">
       <div *ngIf="itemName.touched && itemName.invalid" class="alert alert-danger">
@@ -42,13 +48,28 @@
           {{itemname.componentName}}</option>
       </select>
     </div>
+
+    <div class="col-2">
+      <label class="d-block">
+        or find by CAS number.
+      </label>
+      <input class="d-inline form-control" type="text" #casSearch formControlName="cas">
+      <!-- <div *ngIf="cas.touched && cas.invalid" class="alert alert-danger">
+        Enter 3 or more characters</div> -->
+      <button class="d-inline" type="button" (click)="getCasNumbers(casSearch)">Find</button>
+      <select class="form-control" (change)="setItemDetailsNumber($event)">
+        <option *ngFor="let cas of itemCasNumbers" [value]="cas.componentN">Item: {{cas.componentN}}, 
+          CAS: {{cas.casNumber}}, Name: {{cas.componentName}}</option>
+      </select>
+    </div>
+
     <div class="col-1">
       <button type="submit" class="btn btn-info">Go.</button>
     </div>
     <div class="col-1">
       <button type="button" class="btn btn-light" (click)="resetItemDetailsForm()">Clear</button>
     </div>
-    <div class="col-4"></div>
+    <div class="col-2"></div>
     <div class="col-2">
       <button type="button" class="btn btn-success form-control" (click)="open(itemType)">Create New Item</button>
     </div>
@@ -412,17 +433,39 @@
         <div>
           <input type="checkbox" class="problematic" [disabled]="!allowedProblematicEdit"
             [(ngModel)]="item.isProblematic" [ngModelOptions]="{standalone: true}">
-        </div>
+        </div>&nbsp;&nbsp;
         <label>רכיב בעייתי?</label>
       </div>
-      <div>
-        <label>בעייתיות:</label>
-        <select [disabled]="!item.isProblematic" class="form-control" [(ngModel)]="item.problem">
-          <!-- <option value="פג תוקף קצר">פג תוקף קצר</option> -->
+      <div *ngIf="item.isProblematic">
+        <h4>הוסיפי בעיה</h4>
+        <br>
+        <select [disabled]="!item.isProblematic" class="form-control" (click)="chooseProblem($event)">
+          <option disabled value="">בחרי מתוך רשימה</option>
           <option value="פריט ייבוא / זמן אספקה">פריט ייבוא / זמן אספקה</option>
           <option value="כמויות מינימום">כמויות מינימום</option>
-          <option value="אחר">אחר</option>
         </select>
+        <label>או</label>
+        <br>
+        <input [disabled]="!item.isProblematic" placeholder="הזיני טקסט חופשי" type="text" #problem>
+        <br><br>
+        <button class="problem-btn" (click)="addProblem()">הוסיפי</button>
+        <br><br>
+        <h5>בעיות:</h5>
+        <br>
+        <ul *ngIf="item.problems && item.problems.length == 0">
+          <li>כללי</li>
+        </ul>
+        <ul *ngIf="item.isProblematic">
+          <li *ngFor="let problem of item.problems; let i = index">{{problem}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <i class="fas fa-times text-danger" [ngbTooltip]="'הסר את '+problem" (click)="removeProblem(i)"></i></li>
+        </ul>
+        <div *ngIf="allowUserEditItem">
+          <button class="btn btn-info form-control h3" ngbTooltip="שמור שינויים" id="updateDataBtn"
+            (click)="editItemDetails()">
+            שמור
+          </button>
+        </div>
+  
       </div>
     </div>
 
@@ -580,22 +623,47 @@
         <textarea [(ngModel)]="item.remarks" cols="30" rows="4"></textarea>
       </div>
     </div>
+    
     <div dir="rtl" class="p-3 row mt-4 d-flex flex-row justify-content-around float-right w-50 border border-dark">
       <div class="d-flex flex-row justify-content-around">
         <div>
           <input type="checkbox" class="problematic" [disabled]="!allowedProblematicEdit"
             [(ngModel)]="item.isProblematic" [ngModelOptions]="{standalone: true}">
-        </div>
-        <label>חומר בעייתי?</label>
+        </div>&nbsp;&nbsp;
+        <label>רכיב בעייתי?</label>
       </div>
-      <div>
-        <label>בעייתיות:</label>
-        <select [disabled]="!item.isProblematic" class="form-control" [(ngModel)]="item.problem">
+      <div *ngIf="item.isProblematic">
+        <h4>הוסיפי בעיה</h4>
+        <br>
+        <select [disabled]="!item.isProblematic" class="form-control" (click)="chooseProblem($event)">
+          <option disabled value="">בחרי מתוך רשימה</option>
+          <option value="מסוכן">מסוכן</option>
           <option value="פג תוקף קצר">פג תוקף קצר</option>
           <option value="פריט ייבוא / זמן אספקה">פריט ייבוא / זמן אספקה</option>
           <option value="כמויות מינימום">כמויות מינימום</option>
-          <option value="אחר">אחר</option>
         </select>
+        <label>או</label>
+        <br>
+        <input [disabled]="!item.isProblematic" placeholder="הזיני טקסט חופשי" type="text" #problem>
+        <br><br>
+        <button class="problem-btn" (click)="addProblem()">הוסיפי</button>
+        <br><br>
+        <h5>בעיות:</h5>
+        <br>
+        <ul *ngIf="item.problems && item.problems.length == 0">
+          <li>כללי</li>
+        </ul>
+        <ul *ngIf="item.isProblematic">
+          <li *ngFor="let problem of item.problems; let i = index">{{problem}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <i class="fas fa-times text-danger" [ngbTooltip]="'הסר את '+problem" (click)="removeProblem(i)"></i></li>
+        </ul>
+        <div *ngIf="allowUserEditItem">
+          <button class="btn btn-info form-control h3" ngbTooltip="שמור שינויים" id="updateDataBtn"
+            (click)="editItemDetails()">
+            שמור
+          </button>
+        </div>
+  
       </div>
     </div>
   </div>
@@ -688,7 +756,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let update of item.priceUpdates let i=index">
+          <tr *ngFor="let update of item.priceUpdates.reverse(); let i=index">
             <td [style.background]="update.type == 'manual' ? 'yellow' : 'cornflowerblue'">{{i+1}}</td>
             <td>{{update.date | date:'dd/MM/yy'}}</td>
             <td>{{update.price}} {{update.coin | currencySymbol}}</td>
@@ -1299,9 +1367,10 @@
 </ng-template> -->
 
 <ng-template #itemType let-modal>
-  <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
+  <i type="button" class="float-left fas fa-times h1 m-2" aria-label="Close" (click)="modal.dismiss('Cross click')"></i>
+  <!-- <button type="button" class="float-left" aria-label="Close" (click)="modal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
-  </button>
+  </button> -->
   <div dir="rtl" class="d-flex flex-column justify-content-around">
     <div>
       <h1>פתיחת פריט</h1>
@@ -1386,4 +1455,42 @@
   <div class="modal-footer">
   </div>
 
+</ng-template>
+
+<ng-template #problematicItemsER let-modal>
+    <i type="button" class="float-left fas fa-times h1 m-2" aria-label="Close" (click)="modal.dismiss('Cross click')"></i>
+    <div dir="rtl" class="d-flex flex-column justify-content-around m-2">
+      <div>
+        <h1>פריטים בעייתיים</h1>
+      </div>
+    </div>
+    <div dir="rtl" class=" modal-body">
+  
+      <div class="row mt-4 m-2">
+        <table class="table table-bordered">
+          <thead>
+            <th>פריט</th>
+            <th>שם</th>
+            <th>בעיות</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of problematicItems">
+              <td>{{item.componentN}}</td>
+              <td>{{item.componentName}}</td>
+              <td>
+                <table>
+                  <tbody>
+                    <tr *ngFor="let problem of item.problems">
+                      <td>{{problem}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+    </div>
 </ng-template>

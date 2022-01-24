@@ -94,10 +94,13 @@ const defaultMaterial = {
 export class ItemIndexComponent implements OnInit {
   @ViewChild("nameSelect") nameSelect: ElementRef;
   @ViewChild("itemNumber") itemNumber: ElementRef;
+  @ViewChild("problem") problem: ElementRef;
+  @ViewChild("problematicItemsER") problematicItemsER: ElementRef;
 
   item: any;
   newItem: any = { componentN: null };
   itemNames: any[];
+  itemCasNumbers: any[];
   items: any[];
   itemMovements: any[];
   itemMovementsCopy: any[];
@@ -131,6 +134,7 @@ export class ItemIndexComponent implements OnInit {
   compositionCAS: any;
   compEdit: number = -1;
 
+  problematicItems: Array<any>;
   cmptCategoryList: Array<any> = [
     "Sacara",
     "Mineralium",
@@ -218,6 +222,7 @@ export class ItemIndexComponent implements OnInit {
     itemType: new FormControl("all", Validators.required),
     itemNumber: new FormControl("", Validators.required),
     itemName: new FormControl("", Validators.minLength(3)),
+    cas: new FormControl("", Validators.minLength(3))
   });
 
   get itemName() {
@@ -386,8 +391,24 @@ export class ItemIndexComponent implements OnInit {
   getNames(event) {
     if (event.value.length > 2) {
       this.inventoryService.getNamesByRegex(event.value).subscribe((names) => {
-        this.itemNames = names;
-        this.itemDetailsForm.controls.itemNumber.setValue(names[0].componentN);
+        if(names.length == 0) this.toastSrv.error('לא נמצאו פריטים תואמים')
+        else {
+          this.itemNames = names;
+          this.itemDetailsForm.controls.itemNumber.setValue(names[0].componentN);
+        }
+      });
+    }
+  }
+  
+  // Get CAS numbers of all items for search
+  getCasNumbers(event) {
+    if (event.value.length > 1) {
+      this.inventoryService.getCasNumbersByRegex(event.value).subscribe((casNumbers) => {
+        if(casNumbers.length == 0) this.toastSrv.error('לא נמצאו פריטים תואמים')
+        else {
+          this.itemCasNumbers = casNumbers;
+          this.itemDetailsForm.controls.itemNumber.setValue(casNumbers[0].componentN);
+        }
       });
     }
   }
@@ -598,9 +619,44 @@ export class ItemIndexComponent implements OnInit {
     }
   }
 
-  //pricing
+  //problematic item stuff
 
-  test() {
+  downloadProblematicItemsReport() {
+    this.inventoryService.getAllProblematicItems().subscribe(problematicItems => {
+      this.problematicItems = problematicItems
+      this.modalService.open(this.problematicItemsER)
+      let excel = []
+      for(let item of problematicItems) {
+        excel.push({
+          item: item.componentN,
+          name: item.componentName
+        })
+        for(let problem of item.problems) {
+          excel.push({
+            item: item.componentN,
+            name: item.componentName,
+            problem
+          })
+        }
+      }
+      this.excelService.exportAsExcelFile(excel, `Problematic items ${new Date().toString().slice(0, 10)}`)
+    })
+  }
+
+  addProblem() {
+    if(this.problem.nativeElement.value == "") this.toastSrv.warning('יש להזין סיבה או לבחור מתוך הרשימה')
+    else {
+      this.item.problems.push(this.problem.nativeElement.value)
+      this.problem.nativeElement.value = ""
+    }
+  }
+
+  chooseProblem(event) {
+    this.problem.nativeElement.value = event.target.value
+  }
+
+  removeProblem(i) {
+    this.item.problems.splice(i, 1)
   }
 
   addToPriceHistory() {
@@ -797,6 +853,7 @@ export class ItemIndexComponent implements OnInit {
     this.itemDetailsForm.reset();
     this.item = undefined;
     this.itemNames = [];
+    this.itemCasNumbers = [];
   }
   // EXCEL EXPORT ---------------------------------------------------------------
   getCurrListToExcel() {
