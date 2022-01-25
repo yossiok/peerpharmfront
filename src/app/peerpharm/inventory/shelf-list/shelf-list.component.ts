@@ -347,6 +347,9 @@ export class ShelfListComponent implements OnInit {
       case "ARIEL 4":
         this.itemType = "component";
         this.whareHouse = whareHouse;
+      case "Rosh HaAyin-component":
+        this.itemType = "component";
+        this.whareHouse = "Rosh HaAyin";
     }
     this.inventorySrv
       .shelfListByWH(this.whareHouse, this.itemType)
