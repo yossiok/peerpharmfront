@@ -12,7 +12,7 @@
             <th>{{ type == 'all' ? 'component / material' : type}}</th>
             <th>Name</th>
             <th *ngIf="type == 'all'">Item Type</th>
-            <th>Problems</th>
+            <!-- <th>Problems</th> -->
             <th colspan="3">Customer Orders</th>
         </thead>
         <tbody>
@@ -20,11 +20,11 @@
                 <td>{{component.componentN}}</td>
                 <td>{{component.componentName}}</td>
                 <td *ngIf="type == 'all'">{{component.itemType}}</td>
-                <td>
+                <!-- <td>
                     <table>
                         <tr *ngFor="let problem of component.problems">{{problem}}</tr>
                     </table>
-                </td>
+                </td> -->
                 <td colspan="3" style="cursor: pointer;" (click)="showProblematicOrders(i)">
                     {{component.orders.length}} Ordered Items &nbsp;&nbsp;
                     <i class="fas fa-sort-down"></i>

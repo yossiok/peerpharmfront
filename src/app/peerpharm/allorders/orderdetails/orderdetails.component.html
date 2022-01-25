@@ -210,7 +210,7 @@
               {{item.itemNumber}}
             </a>
           </td>
-          <td class="noLicense" *ngIf="item.licsensNumber==''">
+          <td class="noLicense" *ngIf="item.licsensNumber == ''">
             <button class='expendBtn' [style.background-color]="item.colorBtn"
               (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
             <a style="font-weight: bolder" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
