@@ -1,0 +1,49 @@
+<div class="row mt-5 d-flex flex-row justify-content-between">
+    <button (click)="closeModal()">סגור</button>
+    <!-- <button ngxPrint printSectionId="print" styleSheetFile="../../../assets/stylesheets/problematics.css" class="btn btn-success">הדפס</button> -->
+</div>
+
+<h1>Problematic {{type ? type+'s' : 'items'}} In Customer Orders</h1>
+
+<div class="row mt-5" id="print">
+
+    <table class="table table-bordered table-hover">
+        <thead>
+            <th>{{ type == 'all' ? 'component / material' : type}}</th>
+            <th>Name</th>
+            <th *ngIf="type == 'all'">Item Type</th>
+            <th>Problems</th>
+            <th colspan="3">Customer Orders</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let component of problematicItems; let i = index">
+                <td>{{component.componentN}}</td>
+                <td>{{component.componentName}}</td>
+                <td *ngIf="type == 'all'">{{component.itemType}}</td>
+                <td>
+                    <table>
+                        <tr *ngFor="let problem of component.problems">{{problem}}</tr>
+                    </table>
+                </td>
+                <td colspan="3" style="cursor: pointer;" (click)="showProblematicOrders(i)">
+                    {{component.orders.length}} Ordered Items &nbsp;&nbsp;
+                    <i class="fas fa-sort-down"></i>
+                    <table *ngIf="showProblematicOrdersIndex == i">
+                        <thead>
+                            <th>Order</th>
+                            <th>Item</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of component.orders">
+                                <td>{{item.order}}</td>
+                                <td>{{item.item}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+   
+</div>
+

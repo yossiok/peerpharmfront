@@ -195,6 +195,13 @@ export class OrdersService {
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
+  getProblematicsReportForPurchase(itemType) {
+    let url;
+    if (itemType == 'all') url = this.baseUrl + "order/allOpenProblematicOrderItemsForPurchase";
+    else url = this.baseUrl + "order/allOpenProblematicOrderItemsForPurchase?itemType="+itemType;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
   //get item details (can move it to item service)
   getItemByNumber(itemNumber): Observable<any> {
     let url = this.baseUrl + "item?getLicsens=yes&itemNumber=" + itemNumber;

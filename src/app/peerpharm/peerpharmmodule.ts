@@ -182,6 +182,7 @@ import { OrderItemBatchStatusColorPipe } from "../pipes/order-item-batch-status-
 import { FreeBatchesComponent } from "./allorders/free-batches/free-batches.component";
 import { WhareHouseUpdatesComponent } from "./inventory/wharehouse/wharehouse-updates/wharehouse-updates.component";
 import { ProblematicOrderItemsComponent } from "./allorders/problematics/problematic-order-items.component";
+import { ProblematicItemsComponent } from "./procurement/procumentOrders/problematic-items/problematic-items.component";
 
 @NgModule({
   exports: [
@@ -339,7 +340,8 @@ import { ProblematicOrderItemsComponent } from "./allorders/problematics/problem
     FinanceReportComponent,
     FreeBatchesComponent,
     WhareHouseUpdatesComponent,
-    ProblematicOrderItemsComponent
+    ProblematicOrderItemsComponent,
+    ProblematicItemsComponent,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [

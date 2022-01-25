@@ -24,7 +24,8 @@
               th : {'border': 'solid 2px black'},
               button:{'display':'none'}}" style="padding:0px 35px" printSectionId="print-section" ngxPrint
               printTitle="Purchase Orders"><img src="../../../../assets/images/print.png" alt="Print" width="60px"
-                style="padding:0 20px 0 0">Print-F10</button></div>
+                style="padding:0 20px 0 0">Print-F10</button>
+          </div>
           <div class="col-3">
             <button *ngIf="newPurchaseAllowed" (click)="orderDetailsModal = true"
               class="btn btn-warning rounded-pill top_pilled">New Purchase -
@@ -34,7 +35,12 @@
             <button class="btn btn-warning rounded-pill top_pilled" (click)="open(updateCurrencies)">Update Currencies -
               F8</button>
           </div>
-          <div class="col-2"></div>
+          <div class="col-2">
+            <button [disabled]="loadingProblematics" (click)="problematicsModalSelect = true" class="btn btn-warning rounded-pill top_pilled">
+              {{loadingProblematics ? '...אנא המתן' : 'פריטים בעייתיים בהזמנות לקוח'}}
+              <img style="width: 20px;" src="../../../../assets/images/alert3.gif" alt="">
+            </button>
+          </div>
           <div class="col-3">
             <button (click)="purchaseRecommendationsModal = true"
               class="btn btn-warning rounded-pill top_pilled">Purchase Requests
@@ -684,7 +690,8 @@
                       <td><input type="checkbox" title={{purchaseRecommendation.recommendNumber}}
                           (change)="isSelected($event,stockitem)">
                       </td>
-                      <td [style.background]="stockitem.urgent ? 'red' : ''" [ngbTooltip]="stockitem.urgent ? 'בהול!!!' : ''">
+                      <td [style.background]="stockitem.urgent ? 'red' : ''"
+                        [ngbTooltip]="stockitem.urgent ? 'בהול!!!' : ''">
                         {{stockitem.number}}
                       </td>
                       <td [style.background]="stockitem.color">
@@ -707,8 +714,7 @@
               </td>
               <td>{{purchaseRecommendation.remarks}}</td>
               <td>
-                <button (click)="deletePurchaseRequest(purchaseRecommendation.recommendNumber)"
-                  class="btn btn-danger">
+                <button (click)="deletePurchaseRequest(purchaseRecommendation.recommendNumber)" class="btn btn-danger">
                   <i class="fas fa-trash"></i> Delete
                 </button>
                 <!-- <button (click)="approveRequest(purchaseRecommendation.recommendNumber)"
@@ -717,8 +723,8 @@
               </td>
               <td>
                 <button (click)="printPurchaseRequest(purchaseRecommendation.recommendNumber)"
-                  class="btn btn-secondary"><img style="width: 30px;"
-                    src="../../../../assets/images/print.png" alt="">Print
+                  class="btn btn-secondary"><img style="width: 30px;" src="../../../../assets/images/print.png"
+                    alt="">Print
                 </button>
               </td>
             </tr>
@@ -953,3 +959,26 @@
     </ng-container>
   </div>
 </ng-template>
+
+<div *ngIf="problematicsModal"
+  class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal batches-modal p-5">
+  <app-problematic-items [problematicItems]="problematicItems" [type]="problematicsType" (closed)="problematicsModal = false">
+  </app-problematic-items>
+</div>
+
+<div *ngIf="problematicsModalSelect"
+  class="border border-info bg-white container fixed-top mx-auto my-auto text-center p-5">
+
+  <h3>Please select item type</h3>
+
+  <select class="form-control" #problemType>
+    <option value="material">Materials</option>
+    <option value="component">Components</option>
+    <option value="all">All</option>
+  </select>
+
+  <br><br><br>
+
+  <button (click)="getProblematicsReport(problemType)" class="btn btn-primary">Go</button>
+
+</div>
