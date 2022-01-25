@@ -41,6 +41,7 @@ export class OrdersComponent implements OnInit {
   orders: any[];
   ordersCopy: any[];
   freeBatches: any[];
+  problematicorderItems: any[]
   today: any;
   EditRowId: any = "";
   onHoldStrDate: String;
@@ -53,7 +54,9 @@ export class OrdersComponent implements OnInit {
   newOrderModal: boolean = false;
   loadingUri: boolean = false
   freeBatchesModal: boolean = false
+  problematicsModal: boolean = false
   PPCPermission: boolean = false
+  loadingProblematics: boolean = false
 
   @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     console.log(event);
@@ -586,6 +589,21 @@ export class OrdersComponent implements OnInit {
 
 
     this.excelService.exportAsExcelFile(fom, `דו"ח איחורים ${new Date().toString().slice(0, 10)}`)
+  }
+
+  getProblematicsReport() {
+    this.loadingProblematics = true
+    this.ordersService.getProblematicsReport().subscribe(orderItems => {
+      this.problematicsModal = true
+
+      //filter orderItems without problems:
+      this.problematicorderItems = orderItems.filter(oi => {
+        if((oi.orderItem.problematicMaterials && oi.orderItem.problematicMaterials.length > 0) || (oi.orderItem.problematicComponents && oi.orderItem.problematicComponents.length > 0)) return true
+      }).reverse()
+      //
+      this.loadingProblematics = false
+
+    })
   }
 
   getUriReport() {

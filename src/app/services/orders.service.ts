@@ -194,6 +194,11 @@ export class OrdersService {
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
+  getProblematicsReport() {
+    let url = this.baseUrl + "order/allOpenProblematicOrderItems";
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
   //get item details (can move it to item service)
   getItemByNumber(itemNumber): Observable<any> {
     let url = this.baseUrl + "item?getLicsens=yes&itemNumber=" + itemNumber;

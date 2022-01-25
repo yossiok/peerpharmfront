@@ -174,19 +174,22 @@ export class MaterialArrivalTableComponent implements OnInit {
   }
 
   edit(id) {
-    if (id != '') {
-      this.EditRowId = id;
-      this.currentDoc = this.materialsArrivals.filter(i => {
-        if (i._id == id) {
-          return i;
-        }
-      })[0];
+    let pos = confirm('מה המצב שלומי?')
+    if(pos) alert('שיהיה לך יום טוב!')
+    else alert('למה ליהיות שלילי?')
+    // if (id != '') {
+    //   this.EditRowId = id;
+    //   this.currentDoc = this.materialsArrivals.filter(i => {
+    //     if (i._id == id) {
+    //       return i;
+    //     }
+    //   })[0];
 
-      this.dateString = this.currentDoc.expiryDate.slice(0, 10);
-      this.dateString2 = this.currentDoc.arrivalDate.slice(0, 10);
-    } else {
-      this.EditRowId = '';
-    }
+    //   this.dateString = this.currentDoc.expiryDate.slice(0, 10);
+    //   this.dateString2 = this.currentDoc.arrivalDate.slice(0, 10);
+    // } else {
+    //   this.EditRowId = '';
+    // }
   }
 
   exportAsXLSX():void {

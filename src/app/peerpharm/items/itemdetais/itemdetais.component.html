@@ -1061,6 +1061,28 @@
                                 </div>
 
                             </div>
+                            <div *ngIf="itemShown.daysOfManufacture" class="row">
+                                <label>Days of Manufacture (range): </label> &nbsp;&nbsp;
+                                <select [(ngModel)]="itemShown.daysOfManufacture.from">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                </select>
+                                &nbsp;&nbsp; - &nbsp;&nbsp;
+                                <select [(ngModel)]="itemShown.daysOfManufacture.to">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                </select>
+                            </div>
                             <div class="row">
                                 <div class="col-6">
                                     <input type="file" name="fileee" id="id_itemImg2"
@@ -1075,7 +1097,7 @@
                                         *ngIf='laser2File'>>></button>
                                 </div>
                             </div>
-                            <div class="row">
+                            <div class="row mt-4">
                                 <div class="col-6">
                                     <img *ngIf="itemShown.laserImage1" class="laserImg" id="id_img4"
                                         [src]=itemShown.laserImage1>

@@ -35,35 +35,35 @@ export class InventoryRequestsComponent implements OnInit {
     this.getAllGeneralDemands();
 }
 
+// שבועיים אחרונים
   getAllHistoryRequests() { 
-
     this.inventoryReqService.getInventoryRequestsListWeek().subscribe(data =>{
-      ;
       this.allRequests = data;
-      ;
       console.log(this.allRequests)
   });
 
   }
-  getNewIncomingInventoryReq(){
-    this.getAllGeneralDemands();        
-  }
 
+  // getNewIncomingInventoryReq(){
+  //   this.getAllGeneralDemands();        
+  // }
+
+  // { reqStatus:"open" }
   getAllGeneralDemands(){
     this.inventoryReqService.getOpenInventoryRequestsList().subscribe(res=>{
-      ;
         console.log(res);
+
         res.forEach(InvRequest => {
-          if(InvRequest.reqList!=null && InvRequest.reqList!=undefined){
+          if(InvRequest.reqList != null && InvRequest.reqList != undefined){
             InvRequest.reqList.map(item => {
-              item.isSelected=false;
+              item.isSelected = false;
               if(item.amount <= item.qntSupplied) item.cmptLineColor= 'lightgreen';
               if(item.amount > item.qntSupplied && item.qntSupplied>0) item.cmptLineColor= 'LemonChiffon';
             });
           }
         });
-        this.ordersDemands=res;
-        this.newReqIncoming=false;
+        this.ordersDemands = res;
+        this.newReqIncoming = false;
     });
   
   }

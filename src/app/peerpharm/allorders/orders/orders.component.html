@@ -3,7 +3,12 @@
     <div class="col-2">
       <button (click)="newOrderModal = true" class="btn btn-info">F2 - הזמנה חדשה</button>
     </div>
-    <div class="col-2"></div>
+    <div class="col-2">
+      <button [disabled]="loadingProblematics" (click)="getProblematicsReport()" class="btn btn-info">
+        {{loadingProblematics ? '...אנא המתן' : 'דו"ח פריטים בעייתיים'}}
+        <img style="width: 20px;" src="../../../../assets/images/alert3.gif" alt="">
+      </button>
+    </div>
     <div class="col-4 bg-white">
       <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info">Open Orders</h1>
     </div>
@@ -221,12 +226,17 @@
 
 </div>
 
-<div *ngIf="newOrderModal == true"
+<div *ngIf="newOrderModal"
   class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal">
   <app-neworder (closed)="newOrderModal = false"></app-neworder>
 </div>
 
-<div *ngIf="freeBatchesModal == true"
+<div *ngIf="freeBatchesModal"
   class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal batches-modal p-5">
   <app-free-batches [orders]="orders" [freeBatches]="freeBatches" (closed)="freeBatchesModal = false"></app-free-batches>
+</div>
+
+<div *ngIf="problematicsModal"
+  class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal batches-modal p-5">
+  <app-problematic-order-items [problematicorderItems]="problematicorderItems" (closed)="problematicsModal = false"></app-problematic-order-items>
 </div>
