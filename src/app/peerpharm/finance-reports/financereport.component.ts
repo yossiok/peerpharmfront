@@ -254,6 +254,20 @@ export class FinanceReportComponent implements OnInit {
         this.loader = false;
       });
   }
+  getAllItems() {
+    console.log("Started loading items");
+    this.loader = true;
+    this.filteredOrders = [];
+    this.ordersService
+      .getAllItems()
+      .pipe(finalize(() => this.getItemComponents()))
+      .subscribe((data) => {
+        this.end = data.length;
+        this.itemsList = [...data];
+        this.filteredOrders = [...data];
+        this.loader = false;
+      });
+  }
 
   // Get all item's components
   getItemComponents() {
@@ -264,7 +278,8 @@ export class FinanceReportComponent implements OnInit {
       "This task may take more than an hour, are you sure you want to preceed?"
     );
     // let start = this.end - 500;
-    let start = this.end < 500 ? 0 : this.end - 500;
+    // let start = this.end < 500 ? 0 : this.end - 500;
+    let start = 0;
     console.log("start: ", start);
     console.log("End: ", this.end);
 

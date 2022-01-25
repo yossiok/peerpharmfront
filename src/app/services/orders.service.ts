@@ -42,6 +42,10 @@ export class OrdersService {
     let url = this.baseUrl + "order/allsalesbycmx";
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+  getAllItems(): Observable<any> {
+    let url = this.baseUrl + "order/allItems";
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
 
   getAllOpenOrderItemsNew(): Observable<any> {
     let url = this.baseUrl + "order/allOpenOrderItemsNew";
