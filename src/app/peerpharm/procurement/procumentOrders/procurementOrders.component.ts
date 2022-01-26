@@ -18,6 +18,7 @@ import { ActivatedRoute } from "@angular/router";
 import { Currencies } from "../Currencies";
 import { UsersService } from "src/app/services/users.service";
 import { FormControl, FormGroup } from "@angular/forms";
+import { OrdersService } from "src/app/services/orders.service";
 
 @Component({
   selector: "app-procurement-orders",
@@ -137,6 +138,11 @@ export class ProcurementOrdersComponent implements OnInit {
     origin: new FormControl(null),
   });
   purchaseRecommendationToPrint: any = {};
+  loadingProblematics: boolean =false
+  problematicsModal: boolean = false
+  problematicsModalSelect: boolean = false
+  problematicItems: any[]
+  problematicsType: string;
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
     event: KeyboardEvent
@@ -189,7 +195,8 @@ export class ProcurementOrdersComponent implements OnInit {
     private arrayService: ArrayServiceService,
     private route: ActivatedRoute,
     private modalService: NgbModal,
-    private userService: UsersService
+    private userService: UsersService,
+    private ordersService: OrdersService,
   ) {}
 
   ngOnInit() {
@@ -863,6 +870,23 @@ export class ProcurementOrdersComponent implements OnInit {
       x1 = x1.replace(rgx, "$1" + "," + "$2");
     }
     return x1 + x2;
+  }
+
+  getProblematicsReport(type) {
+    this.problematicsModalSelect = false
+    this.problematicsType = type.value
+    this.loadingProblematics = true
+    this.ordersService.getProblematicsReportForPurchase(this.problematicsType).subscribe(problematicItems => {
+      this.problematicItems = problematicItems
+      this.problematicsModal = true
+      
+
+      console.log(problematicItems)
+
+      //
+      this.loadingProblematics = false
+
+    })
   }
 
   getAllPurchaseRecommends() {

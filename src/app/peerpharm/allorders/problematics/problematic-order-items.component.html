@@ -23,7 +23,7 @@
                     <thead>
                         <th>מק"ט</th>
                         <th>שם</th>
-                        <th>בעיות</th>
+                        <!-- <th>בעיות</th> -->
                     </thead>
                     <tbody>
                         <tr *ngFor="let material of orderItem.orderItem.problematicMaterials">
@@ -32,7 +32,7 @@
                                 <img src="../../../../assets/images/alert3.gif" style="width: 20px;" alt="">
                             </td>
                             <td>{{material.componentName}}</td>
-                            <td>
+                            <!-- <td>
                                 <table *ngIf="material.problems">
                                     <thead>
                                         <th>Problem</th>
@@ -45,7 +45,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </td>
+                            </td> -->
                         </tr>
                     </tbody>
                 </table>
@@ -55,7 +55,7 @@
                     <thead>
                         <th>מק"ט</th>
                         <th>שם</th>
-                        <th>בעיות</th>
+                        <!-- <th>בעיות</th> -->
                     </thead>
                     <tbody>
                         <tr *ngFor="let component of orderItem.orderItem.problematicComponents">
@@ -64,7 +64,7 @@
                                 <img src="../../../../assets/images/alert3.gif" style="width: 20px;" alt="">
                             </td>
                             <td>{{component.componentName}}</td>
-                            <td>
+                            <!-- <td>
                                 <table *ngIf="component.problems">
                                     <thead>
                                         <th>Problem</th>
@@ -77,7 +77,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </td>
+                            </td> -->
                         </tr>
                     </tbody>
                 </table>

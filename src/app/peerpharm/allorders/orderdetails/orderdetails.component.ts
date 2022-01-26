@@ -262,6 +262,7 @@ export class OrderdetailsComponent implements OnInit {
   productionItemStatusIndex: any;
   tempItem: any;
   similarFormules: any[];
+  hasSpecialOrderItems: boolean = false
   // @ViewChild('type') type:ElementRef;
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
     event: KeyboardEvent
@@ -287,7 +288,7 @@ export class OrderdetailsComponent implements OnInit {
     private authService: AuthService,
     private notificationService: NotificationService,
     private formuleService: FormulesService
-  ) {}
+  ) { }
 
   async ngOnInit() {
     // this.getAllFormsDetails()
@@ -321,7 +322,7 @@ export class OrderdetailsComponent implements OnInit {
             item.colorBtn = "#33FFE0";
           });
           this.ordersData = orders.ordersData;
-          await this.colorOrderItemsLines(orders.orderItems).then((data) => {});
+          await this.colorOrderItemsLines(orders.orderItems).then((data) => { });
           this.ordersItems = orders.orderItems;
           this.productionRequirements = orders.orderItems;
 
@@ -369,7 +370,7 @@ export class OrderdetailsComponent implements OnInit {
                       });
 
                       await this.colorOrderItemsLines(orderItems).then(
-                        (data) => {}
+                        (data) => { }
                       );
                       this.ordersItems = orderItems;
                       this.productionRequirements = orderItems;
@@ -465,7 +466,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   getAllFormsDetails() {
-    this.formService.getAllForms(""+new Date().getFullYear() ).subscribe((data) => {
+    this.formService.getAllForms("" + new Date().getFullYear()).subscribe((data) => {
       this.allForms = data;
     });
   }
@@ -852,6 +853,7 @@ export class OrderdetailsComponent implements OnInit {
       this.deliveryDate = res[0].deliveryDate;
       this.remarks = res[0].orderRemarks;
       this.orderId = res[0]._id;
+      this.hasSpecialOrderItems = res[0].hasSpecialOrderItems
       this.documentationBeforeSend.costumerNumber = res[0].costumerInternalId;
       this.documentationBeforeSend.costumerName = res[0].costumer;
       this.costumerImpRemark = res[0].costumerImpRemark;
@@ -1352,8 +1354,8 @@ export class OrderdetailsComponent implements OnInit {
         } else if (res == "No netWeightK") {
           alert(
             "לפריט מספר " +
-              obj.itemNumber +
-              '\nאין משקל נטו בעץ פריט.\nלא ניתן לפתוח פק"ע לפריט'
+            obj.itemNumber +
+            '\nאין משקל נטו בעץ פריט.\nלא ניתן לפתוח פק"ע לפריט'
           );
         } else {
           this.toastSrv.error(
@@ -1681,7 +1683,7 @@ export class OrderdetailsComponent implements OnInit {
           } else if (batches.length > 1)
             reject(
               "More than one batch exist with Number " +
-                this.inputBatch.nativeElement.value
+              this.inputBatch.nativeElement.value
             );
           else if (batches.length == 0) reject(`Batch ${batch} Not Found.`);
         });
@@ -1762,10 +1764,10 @@ export class OrderdetailsComponent implements OnInit {
     if (
       confirm(
         "Item " +
-          item.itemNumber +
-          "\n From order " +
-          item.orderNumber +
-          "\n Is ready?"
+        item.itemNumber +
+        "\n From order " +
+        item.orderNumber +
+        "\n Is ready?"
       )
     ) {
       this.orderService.editItemOrderStatus(item).subscribe((res) => {
@@ -1924,22 +1926,44 @@ export class OrderdetailsComponent implements OnInit {
     let problematicItems = this.ordersItems.filter((item) => item.problematic);
     let unwinded = [];
     for (let item of problematicItems) {
-      unwinded.push(item);
-      for (let c of item.problematicComponents) {
-        unwinded.push(c);
+      unwinded.push({
+        item: item.itemNumber,
+        order: item.orderNumber,
+        formuleExist: item.formuleExist,
+        "תאריך רישיון": item.licsensDate
+      });
+      if (item.problematicComponents) {
+        for (let c of item.problematicComponents) {
+          unwinded.push({
+            component: c.componentN,
+            "שם": c.componentName
+          });
+          if (c.problems) {
+            for (let problem of c.problems) {
+              unwinded.push({
+                problem
+              })
+            }
+          }
+        }
       }
-      for (let m of item.problematicMaterials) {
-        unwinded.push(m);
+      if (item.problematicMaterials) {
+        for (let c of item.problematicMaterials) {
+          unwinded.push({
+            material: c.componentN,
+            "שם": c.componentName
+          });
+          if (c.problems) {
+            for (let problem of c.problems) {
+              unwinded.push({
+                problem
+              })
+            }
+          }
+        }
       }
     }
-    let sort = [
-      "orderNumber",
-      "itemNumber",
-      "formuleExist",
-      "componentN",
-      "componentName",
-    ];
-    this.excelService.exportAsExcelFile(unwinded, 'דו"ח פריטים בעייתיים', sort);
+    this.excelService.exportAsExcelFile(unwinded, `דו"ח פריטים בעייתיים בהזמנה ${this.number}`);
   }
 
   /****************DRAG DROP FUNCS************/
@@ -1947,10 +1971,10 @@ export class OrderdetailsComponent implements OnInit {
     ev.dataTransfer.setData(
       "Text/html",
       ev.target.dataset.ordernumber +
-        ";" +
-        ev.target.dataset.alloamount +
-        ";" +
-        ev.target.dataset.index
+      ";" +
+      ev.target.dataset.alloamount +
+      ";" +
+      ev.target.dataset.index
     );
   }
 
