@@ -773,6 +773,10 @@ export class AllFormulesComponent implements OnInit {
       (formule) => formule.formuleNumber == formuleNum
     );
     this.updateFormule = formuleToUpdate;
+
+    let user = this.authService.loggedInUser.userName;
+    this.updateFormule.user = user;
+
     for (let i = 0; i < this.updateFormule.phases.length; i++) {
       for (let j = 0; j < this.updateFormule.phases[i].items.length; j++) {
         if (this.updateFormule.phases[i].items[j].itemNumber == "12550") {
@@ -1151,10 +1155,12 @@ export class AllFormulesComponent implements OnInit {
 
   updateFormuleWhenPrint() {
     let user = this.authService.loggedInUser.userName;
+    this.updateFormule.user = user;
     let updatedFormule = {
       _id: this.updateFormule._id,
       client: user,
     };
+    // console.log(updatedFormule);
     this.formuleService
       .updateFormuleWhenPrint(updatedFormule)
       .subscribe((data) => {
