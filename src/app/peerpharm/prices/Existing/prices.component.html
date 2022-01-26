@@ -40,7 +40,7 @@
                                     <td class="click" (click)="changeView(component)">
                                         {{component.componentNumber}}</td>
                                     <td>{{component.componentName}}</td>
-                                    <td>{{component.price}} <span *ngIf="component.price == NaN">Update Price</span>
+                                    <td>{{component.price | number}} <span *ngIf="component.price == NaN">Update Price</span>
                                     </td>
                                     <td>{{component.shippingPrice}}</td>
                                     <td><span
@@ -49,10 +49,10 @@
                                     <td>{{component.stockAmount}}</td>
                                 </tr>
                                 <tr *ngIf="allowed">
-                                    <td>FormulePrice:</td>
+                                    <td>Formule Cost:</td>
                                     <td>
                                     </td>
-                                    <td [style.background]="partialFormulePrice ? 'red' : ''">{{item.formulePrice}}</td>
+                                    <td [style.background]="partialFormulePrice ? 'red' : ''">{{item.formulePrice | number}}</td>
                                     <td class="h4" colspan="3">
                                         <span *ngIf="partialFormulePrice" class="text-danger">
                                             <i class="fas fa-exclamation-triangle"></i> Missing Price: 
@@ -61,11 +61,11 @@
                                     </td>
                                 </tr>
                                 <tr *ngIf="allowed">
-                                    <td>Total Item Price:</td>
+                                    <td>Total Item Cost:</td>
                                     <td></td>
-                                    <td>{{totalItemPrice}}</td>
-                                    <td>{{totalShippingPrice}}</td>
-                                    <td></td>
+                                    <td>{{totalItemPrice | number}}</td>
+                                    <td>{{totalShippingPrice | number}}</td>
+                                    <td class="bg-warning"><strong>Total:</strong> <h4>{{totalItemPrice + totalShippingPrice | number}}</h4></td>
                                     <td></td>
                                 </tr>
                             </tbody>
