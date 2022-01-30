@@ -732,7 +732,7 @@ export class QaPalletsComponent implements OnInit {
       this.formService.updatePLStatus(packlist).subscribe((data) => {
         console.log(data);
         if (data.msg) {
-          this.toastr.error(data.msg.message);
+          this.toastr.error(data.msg);
           return;
         } else if (data) {
           this.allPackedLists = data.allPackedLists;
@@ -781,10 +781,12 @@ export class QaPalletsComponent implements OnInit {
     // });
     this.currCustomer = packlist.costumerName;
     this.currCustomerNumber = packlist.costumerNumber;
-    if(this.currCustomerNumber == "") {
-      this.customerService.getCostumerByName(this.currCustomer).subscribe(data => {
-        this.currCustomerNumber = data[0].costumerId
-      })
+    if (this.currCustomerNumber == "") {
+      this.customerService
+        .getCostumerByName(this.currCustomer)
+        .subscribe((data) => {
+          this.currCustomerNumber = data[0].costumerId;
+        });
     }
     this.packedList.costumerName = this.currCustomer;
     this.packedList.costumerNumber = this.currCustomerNumber;

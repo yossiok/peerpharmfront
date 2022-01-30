@@ -222,7 +222,7 @@ export class ItemIndexComponent implements OnInit {
     itemType: new FormControl("all", Validators.required),
     itemNumber: new FormControl("", Validators.required),
     itemName: new FormControl("", Validators.minLength(3)),
-    cas: new FormControl("", Validators.minLength(3))
+    cas: new FormControl("", Validators.minLength(3)),
   });
 
   get itemName() {
@@ -391,25 +391,32 @@ export class ItemIndexComponent implements OnInit {
   getNames(event) {
     if (event.value.length > 2) {
       this.inventoryService.getNamesByRegex(event.value).subscribe((names) => {
-        if(names.length == 0) this.toastSrv.error('לא נמצאו פריטים תואמים')
+        if (names.length == 0) this.toastSrv.error("לא נמצאו פריטים תואמים");
         else {
           this.itemNames = names;
-          this.itemDetailsForm.controls.itemNumber.setValue(names[0].componentN);
+          this.itemDetailsForm.controls.itemNumber.setValue(
+            names[0].componentN
+          );
         }
       });
     }
   }
-  
+
   // Get CAS numbers of all items for search
   getCasNumbers(event) {
     if (event.value.length > 1) {
-      this.inventoryService.getCasNumbersByRegex(event.value).subscribe((casNumbers) => {
-        if(casNumbers.length == 0) this.toastSrv.error('לא נמצאו פריטים תואמים')
-        else {
-          this.itemCasNumbers = casNumbers;
-          this.itemDetailsForm.controls.itemNumber.setValue(casNumbers[0].componentN);
-        }
-      });
+      this.inventoryService
+        .getCasNumbersByRegex(event.value)
+        .subscribe((casNumbers) => {
+          if (casNumbers.length == 0)
+            this.toastSrv.error("לא נמצאו פריטים תואמים");
+          else {
+            this.itemCasNumbers = casNumbers;
+            this.itemDetailsForm.controls.itemNumber.setValue(
+              casNumbers[0].componentN
+            );
+          }
+        });
     }
   }
 
@@ -542,6 +549,7 @@ export class ItemIndexComponent implements OnInit {
   }
 
   editItemDetails() {
+    console.log(this.item);
     if (confirm("לעדכן פריט?")) {
       if (
         this.item.itemType == "component" ||
@@ -622,41 +630,49 @@ export class ItemIndexComponent implements OnInit {
   //problematic item stuff
 
   downloadProblematicItemsReport() {
-    this.inventoryService.getAllProblematicItems().subscribe(problematicItems => {
-      this.problematicItems = problematicItems
-      this.modalService.open(this.problematicItemsER)
-      let excel = []
-      for(let item of problematicItems) {
-        excel.push({
-          item: item.componentN,
-          name: item.componentName
-        })
-        for(let problem of item.problems) {
+    this.inventoryService
+      .getAllProblematicItems()
+      .subscribe((problematicItems) => {
+        this.problematicItems = problematicItems;
+        this.modalService.open(this.problematicItemsER);
+        let excel = [];
+        for (let item of problematicItems) {
           excel.push({
             item: item.componentN,
             name: item.componentName,
-            problem
-          })
+          });
+          for (let problem of item.problems) {
+            excel.push({
+              item: item.componentN,
+              name: item.componentName,
+              problem,
+            });
+          }
         }
-      }
-      this.excelService.exportAsExcelFile(excel, `Problematic items ${new Date().toString().slice(0, 10)}`)
-    })
+        this.excelService.exportAsExcelFile(
+          excel,
+          `Problematic items ${new Date().toString().slice(0, 10)}`
+        );
+      });
   }
 
   addProblem() {
-    if(this.problem.nativeElement.value == "") this.toastSrv.warning('יש להזין סיבה או לבחור מתוך הרשימה')
+    if (this.problem.nativeElement.value == "")
+      this.toastSrv.warning("יש להזין סיבה או לבחור מתוך הרשימה");
     else {
-      this.item.problems.push(this.problem.nativeElement.value)
-      this.problem.nativeElement.value = ""
+      this.item.problems.push(this.problem.nativeElement.value);
+      this.problem.nativeElement.value = "";
     }
   }
 
-  chooseProblem(event) {
-    this.problem.nativeElement.value = event.target.value
+  chooseProblem(event, value) {
+    this.problem.nativeElement.value = event.target.value;
+    console.log(event);
+    console.log(value);
   }
 
   removeProblem(i) {
-    this.item.problems.splice(i, 1)
+    this.item.problems.splice(i, 1);
   }
 
   addToPriceHistory() {

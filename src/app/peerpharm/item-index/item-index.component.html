@@ -58,7 +58,7 @@
         Enter 3 or more characters</div> -->
       <button class="d-inline" type="button" (click)="getCasNumbers(casSearch)">Find</button>
       <select class="form-control" (change)="setItemDetailsNumber($event)">
-        <option *ngFor="let cas of itemCasNumbers" [value]="cas.componentN">Item: {{cas.componentN}}, 
+        <option *ngFor="let cas of itemCasNumbers" [value]="cas.componentN">Item: {{cas.componentN}},
           CAS: {{cas.casNumber}}, Name: {{cas.componentName}}</option>
       </select>
     </div>
@@ -456,7 +456,8 @@
           <li>כללי</li>
         </ul>
         <ul *ngIf="item.isProblematic">
-          <li *ngFor="let problem of item.problems; let i = index">{{problem}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <li *ngFor="let problem of item.problems; let i = index">
+            {{problem}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <i class="fas fa-times text-danger" [ngbTooltip]="'הסר את '+problem" (click)="removeProblem(i)"></i></li>
         </ul>
         <div *ngIf="allowUserEditItem">
@@ -465,7 +466,7 @@
             שמור
           </button>
         </div>
-  
+
       </div>
     </div>
 
@@ -480,7 +481,7 @@
       </div>
     </div>
 
- 
+
 
   </div>
 
@@ -623,7 +624,7 @@
         <textarea [(ngModel)]="item.remarks" cols="30" rows="4"></textarea>
       </div>
     </div>
-    
+
     <div dir="rtl" class="p-3 row mt-4 d-flex flex-row justify-content-around float-right w-50 border border-dark">
       <div class="d-flex flex-row justify-content-around">
         <div>
@@ -635,26 +636,28 @@
       <div *ngIf="item.isProblematic">
         <h4>הוסיפי בעיה</h4>
         <br>
-        <select [disabled]="!item.isProblematic" class="form-control" (click)="chooseProblem($event)">
+        <select [disabled]="!item.isProblematic" [(ngModel)]="item.problems" class="form-control" multiple
+          (change)="chooseProblem($event, item)" name="problems">
           <option disabled value="">בחרי מתוך רשימה</option>
-          <option value="מסוכן">מסוכן</option>
+          <option value="מסוכן">חומר מסוכן</option>
           <option value="פג תוקף קצר">פג תוקף קצר</option>
-          <option value="פריט ייבוא / זמן אספקה">פריט ייבוא / זמן אספקה</option>
-          <option value="כמויות מינימום">כמויות מינימום</option>
+          <option value="זמן אספקה בעייתי">זמן אספקה בעייתי</option>
+          <option value="רכש בעייתי">רכש בעייתי</option>
         </select>
-        <label>או</label>
+        <!-- <label>או</label>
         <br>
         <input [disabled]="!item.isProblematic" placeholder="הזיני טקסט חופשי" type="text" #problem>
         <br><br>
         <button class="problem-btn" (click)="addProblem()">הוסיפי</button>
         <br><br>
         <h5>בעיות:</h5>
-        <br>
-        <ul *ngIf="item.problems && item.problems.length == 0">
+        <br> -->
+        <!-- <ul *ngIf="item.problems && item.problems.length == 0">
           <li>כללי</li>
-        </ul>
+        </ul> -->
         <ul *ngIf="item.isProblematic">
-          <li *ngFor="let problem of item.problems; let i = index">{{problem}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <li *ngFor="let problem of item.problems; let i = index">
+            {{problem}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <i class="fas fa-times text-danger" [ngbTooltip]="'הסר את '+problem" (click)="removeProblem(i)"></i></li>
         </ul>
         <div *ngIf="allowUserEditItem">
@@ -663,7 +666,7 @@
             שמור
           </button>
         </div>
-  
+
       </div>
     </div>
   </div>
@@ -1458,39 +1461,39 @@
 </ng-template>
 
 <ng-template #problematicItemsER let-modal>
-    <i type="button" class="float-left fas fa-times h1 m-2" aria-label="Close" (click)="modal.dismiss('Cross click')"></i>
-    <div dir="rtl" class="d-flex flex-column justify-content-around m-2">
-      <div>
-        <h1>פריטים בעייתיים</h1>
-      </div>
+  <i type="button" class="float-left fas fa-times h1 m-2" aria-label="Close" (click)="modal.dismiss('Cross click')"></i>
+  <div dir="rtl" class="d-flex flex-column justify-content-around m-2">
+    <div>
+      <h1>פריטים בעייתיים</h1>
     </div>
-    <div dir="rtl" class=" modal-body">
-  
-      <div class="row mt-4 m-2">
-        <table class="table table-bordered">
-          <thead>
-            <th>פריט</th>
-            <th>שם</th>
-            <th>בעיות</th>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of problematicItems">
-              <td>{{item.componentN}}</td>
-              <td>{{item.componentName}}</td>
-              <td>
-                <table>
-                  <tbody>
-                    <tr *ngFor="let problem of item.problems">
-                      <td>{{problem}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  </div>
+  <div dir="rtl" class=" modal-body">
+
+    <div class="row mt-4 m-2">
+      <table class="table table-bordered">
+        <thead>
+          <th>פריט</th>
+          <th>שם</th>
+          <th>בעיות</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of problematicItems">
+            <td>{{item.componentN}}</td>
+            <td>{{item.componentName}}</td>
+            <td>
+              <table>
+                <tbody>
+                  <tr *ngFor="let problem of item.problems">
+                    <td>{{problem}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div class="modal-footer">
-    </div>
+  </div>
+  <div class="modal-footer">
+  </div>
 </ng-template>
