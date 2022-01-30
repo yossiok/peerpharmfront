@@ -9,8 +9,7 @@
     <button (click)="printFormule()" [disabled]="!finalFormule"
       [style.cursor]="finalFormule ? 'pointer' : 'not-allowed'" class="btn btn-success form-control rounded-pill">Print
       - F10</button>
-    <button #printFormuleBtn
-      styleSheetFile="../../../../assets/stylesheets/formule-weight-print.css"
+    <button #printFormuleBtn styleSheetFile="../../../../assets/stylesheets/formule-weight-print.css"
       [printStyle]="{ footer: {'page-break-after': 'always'},table:{ 'border-collapse':'collapse'},th : {'border': 'solid 1px black','font-size':'22px'}, tr : {'border': 'solid 2px black'}, td : {'border': 'solid 1px black', 'padding':'5px','font-size': '22px'}}"
       printTitle="Formules: Production Weighting" printSectionId="formuleSection" ngxPrint
       style="display: none;"></button>
@@ -25,7 +24,8 @@
     <button class="btn btn-primary rounded-pill" (click)="edit = !edit">Edit Percentage</button>
   </div>
   <div class="col-1">
-    <button class="btn btn-warning" *ngIf="workPlanId" (click)="backToWP()">Back to PAKA {{workPlanId}} <i class="fas fa-arrow-right"></i></button>
+    <button class="btn btn-warning" *ngIf="workPlanId" (click)="backToWP()">Back to PAKA {{workPlanId}} <i
+        class="fas fa-arrow-right"></i></button>
   </div>
 </div>
 <div class="row mt-4"></div>
@@ -145,6 +145,7 @@
   <div id="formuleSection" class="row mt-3 d-flex flex-row" *ngIf="finalFormule">
 
     <h1>PAKA {{workPlanId}}</h1>
+    <h4>Printed by: {{user}}</h4>
 
     <table class="table table-bordered">
       <thead class="text-info">

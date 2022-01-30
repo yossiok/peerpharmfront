@@ -530,6 +530,7 @@
         <h2>{{ updateFormule.formuleName }}</h2>
         <h3>{{ updateFormule.formuleNumber }}</h3>
         <br>
+        <p>Printed by: {{updateFormule.user}}</p>
         <p>Date_____________</p>
         <p>Batch____________</p>
         <p>{{updateFormule.approval}}</p>
@@ -706,7 +707,9 @@
       Date: {{ today | date: "dd/MM/yyyy" }}
     </div>
     <div class="col-1">
-      <i (click)="formulePriceModal = false" [ngClass]="partialPrice ? 'text-danger click-danger' : 'text-info click-info' " class="click h2 p-2 rounded fa fa-times"></i>
+      <i (click)="formulePriceModal = false"
+        [ngClass]="partialPrice ? 'text-danger click-danger' : 'text-info click-info' "
+        class="click h2 p-2 rounded fa fa-times"></i>
     </div>
   </div>
 
@@ -725,7 +728,8 @@
         </thead>
         <tbody>
           <tr *ngFor="let material of formuleMaterialPrices">
-            <td (click)="openIndex(material.itemNumber)" [style.background]="material.price == 'צריך לעדכן מחיר ספק' ? 'red' : ''">{{ material.itemNumber }}</td>
+            <td (click)="openIndex(material.itemNumber)"
+              [style.background]="material.price == 'צריך לעדכן מחיר ספק' ? 'red' : ''">{{ material.itemNumber }}</td>
             <td>{{ material.itemName }}</td>
             <td>{{ material.percentage }}</td>
             <td>{{ material.kgPrice}} {{material.coin | currencySymbol}}</td>

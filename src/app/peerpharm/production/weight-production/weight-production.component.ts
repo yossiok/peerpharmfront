@@ -16,6 +16,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { WorkPlan } from "../planning/WorkPlan";
 import { ProductionService } from "src/app/services/production.service";
 import { Location } from "@angular/common";
+import { AuthService } from "src/app/services/auth.service";
 
 interface FormuleWeight {
   formuleNumber: any;
@@ -61,6 +62,7 @@ export class WeightProductionComponent implements OnInit {
   showBOM: boolean = false;
   billOfMaterials: any[] = [];
   openModal: boolean = false;
+  user: string;
 
   barcode = {
     materialId: "",
@@ -98,17 +100,20 @@ export class WeightProductionComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private productionService: ProductionService,
-    private location: Location
-  ) { }
+    private location: Location,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
+    console.log(this.authService.loggedInUser);
+    this.user = this.authService.loggedInUser.userName;
     setTimeout(() => {
       this.formuleNumber.nativeElement.focus();
     }, 500);
     this.importedFormule = this.route.queryParamMap.subscribe((params) => {
-      console.log('params: ', params);
+      console.log("params: ", params);
       let workPlanId = params["params"].workPlanId || null;
-      let formuleNumbers = params["params"].formuleNumbers || null
+      let formuleNumbers = params["params"].formuleNumbers || null;
 
       if (workPlanId && formuleNumbers) {
         this.workPlanId = workPlanId;
@@ -121,14 +126,11 @@ export class WeightProductionComponent implements OnInit {
   }
 
   backToWP() {
-    this.router.navigate(
-      ["/peerpharm/production/planning"],
-      {
-        queryParams: {
-          workPlanId: this.workPlanId
-        },
-      }
-    );
+    this.router.navigate(["/peerpharm/production/planning"], {
+      queryParams: {
+        workPlanId: this.workPlanId,
+      },
+    });
   }
 
   deleteFormule(i) {
@@ -214,7 +216,7 @@ export class WeightProductionComponent implements OnInit {
       } else if (data) {
         this.finalWeight = 0;
         for (let orderItem of data.orderItems) {
-          let exist = formuleNumbers.find(f => f == orderItem.itemNumber)
+          let exist = formuleNumbers.find((f) => f == orderItem.itemNumber);
           if (exist) {
             let formuleWeight: FormuleWeight = {
               formuleNumber: orderItem.itemNumber,
@@ -284,22 +286,37 @@ export class WeightProductionComponent implements OnInit {
 
     for (let formule = 0; formule < this.formules.length - 1; formule++) {
       if (this.formules[formule].data.phases.length == 0) {
-        this.toastSrv.error('לא קיימות פאזות באחת או יותר מהפורמולות...', 'חסר מידע!')
-        return
+        this.toastSrv.error(
+          "לא קיימות פאזות באחת או יותר מהפורמולות...",
+          "חסר מידע!"
+        );
+        return;
       }
       for (
         let phase = 0;
         phase < this.formules[formule].data.phases.length;
         phase++
       ) {
-        for (let item = 0; item < this.formules[formule].data.phases[phase].items.length; item++) {
-          let currentItem = this.formules[formule].data.phases[phase].items[item];
-          let itemsToCompare = this.formules[formule + 1].data.phases[phase].items;
-          let index = itemsToCompare.findIndex((item) => item.itemNumber == currentItem.itemNumber);
+        for (
+          let item = 0;
+          item < this.formules[formule].data.phases[phase].items.length;
+          item++
+        ) {
+          let currentItem =
+            this.formules[formule].data.phases[phase].items[item];
+          let itemsToCompare =
+            this.formules[formule + 1].data.phases[phase].items;
+          let index = itemsToCompare.findIndex(
+            (item) => item.itemNumber == currentItem.itemNumber
+          );
           if (index == -1) {
             identical = false;
-            this.formules[formule].data.phases[phase].items[item].color = "orange";
-          } else if (Number(currentItem.percentage) != Number(itemsToCompare[index].percentage)) {
+            this.formules[formule].data.phases[phase].items[item].color =
+              "orange";
+          } else if (
+            Number(currentItem.percentage) !=
+            Number(itemsToCompare[index].percentage)
+          ) {
             identical = false;
             currentItem.color = "orange";
             itemsToCompare[index].color = "orange";
@@ -348,7 +365,7 @@ export class WeightProductionComponent implements OnInit {
   }
 
   chooseFormule(formule) {
-    let formuleNumbers = this.formules.map(f => f.formuleNumber)
+    let formuleNumbers = this.formules.map((f) => f.formuleNumber);
     // this.productionService.setItemsSttatusTo3(this.workPlanId, formuleNumbers)
     this.showPill = false;
     this.finalFormule = { ...formule };
@@ -357,15 +374,16 @@ export class WeightProductionComponent implements OnInit {
       this.finalWeight
     );
     if (this.workPlanId) {
-      this.productionService.joinFormules(this.workPlanId, formuleNumbers, this.finalFormule).subscribe(data => {
-        this.inventorySrv.getBOM(this.finalFormule.data).subscribe((data) => {
-          console.log(data);
-          this.billOfMaterials = data;
-          this.showBOM = true;
+      this.productionService
+        .joinFormules(this.workPlanId, formuleNumbers, this.finalFormule)
+        .subscribe((data) => {
+          this.inventorySrv.getBOM(this.finalFormule.data).subscribe((data) => {
+            console.log(data);
+            this.billOfMaterials = data;
+            this.showBOM = true;
+          });
         });
-      })
-    }
-    else {
+    } else {
       this.inventorySrv.getBOM(this.finalFormule.data).subscribe((data) => {
         console.log(data);
         this.billOfMaterials = data;

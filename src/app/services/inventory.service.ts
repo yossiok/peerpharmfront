@@ -178,7 +178,8 @@ export class InventoryService {
   }
 
   getCmptPPCDetails(componentN): Observable<any> {
-    let url = this.baseUrl + "component/stockAndOrderAmounts?componentN=" + componentN;
+    let url =
+      this.baseUrl + "component/stockAndOrderAmounts?componentN=" + componentN;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
@@ -407,7 +408,7 @@ export class InventoryService {
   }
 
   getAllProblematicItems() {
-    let url = this.baseUrl + "component/problematicItemsReport"
+    let url = this.baseUrl + "component/problematicItemsReport";
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
@@ -486,6 +487,7 @@ export class InventoryService {
     batchNumber,
     formuleNumber,
     weightKG,
+    user,
     reduce
   ): Observable<any> {
     let url = this.baseUrl + "material/reduceMaterialAmounts";
@@ -496,6 +498,7 @@ export class InventoryService {
           batchNumber: batchNumber,
           formuleNumber: formuleNumber,
           weightKG: weightKG,
+          user: user,
           reduce: reduce,
         }),
         this.options

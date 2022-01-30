@@ -373,7 +373,45 @@ export class AllFormulesComponent implements OnInit {
       .getFormuleByNumber(this.currentFormuleNumber)
       .subscribe((data) => {
         formule = data;
-
+        // console.log(formule);
+        let phase = formule.phases.find(
+          (p) => p.phaseName == this.newItem.phaseName
+        );
+        // console.log(phase);
+        let idx = phase.items.findIndex(
+          (item) => item.itemNumber == this.newItem.itemNumber
+        );
+        if (idx > -1) {
+          this.toastSrv.error(
+            "הפריט הזה קיים כבר בפאזה שנבחרה, יש לבחור פריט חדש."
+          );
+          this.newItem.itemName = "";
+          this.newItem.itemNumber = "";
+          this.newItem.percentage = "";
+          this.newItem.remarks = "";
+          return;
+        } else {
+          let itemExists = false;
+          for (let phase of formule.phases) {
+            let itemNum = phase.items.find(
+              (item) => item.itemNumber == this.newItem.itemNumber
+            );
+            if (itemNum) itemExists = true;
+          }
+          if (itemExists) {
+            console.log("item exists in the formule");
+            let contFormule = confirm(
+              "הפריט קיים כבר בפורמולה הנוכחית, האם להמשיך?"
+            );
+            if (!contFormule) {
+              this.newItem.itemName = "";
+              this.newItem.itemNumber = "";
+              this.newItem.percentage = "";
+              this.newItem.remarks = "";
+              return;
+            }
+          }
+        }
         if (formule.formuleType == "father" && formule.children.length > 0) {
           formule.newItem = true;
           const newItem = {
@@ -383,9 +421,10 @@ export class AllFormulesComponent implements OnInit {
             remarks: this.newItem.remarks,
           };
 
-          let phase = formule.phases.find(
-            (p) => p.phaseName == this.newItem.phaseName
-          );
+          // let phase = formule.phases.find(
+          //   (p) => p.phaseName == this.newItem.phaseName
+          // );
+          // console.log(phase);
           if (phase) {
             phase.items.push(newItem);
           } else {
@@ -734,6 +773,10 @@ export class AllFormulesComponent implements OnInit {
       (formule) => formule.formuleNumber == formuleNum
     );
     this.updateFormule = formuleToUpdate;
+
+    let user = this.authService.loggedInUser.userName;
+    this.updateFormule.user = user;
+
     for (let i = 0; i < this.updateFormule.phases.length; i++) {
       for (let j = 0; j < this.updateFormule.phases[i].items.length; j++) {
         if (this.updateFormule.phases[i].items[j].itemNumber == "12550") {
@@ -776,6 +819,7 @@ export class AllFormulesComponent implements OnInit {
   saveFormuleFormation() {
     this.draggable = false;
     console.log(this.currentFormuleNumber);
+    console.log(this.updateFormule);
     this.formuleService
       .getFormuleByNumber(this.currentFormuleNumber)
       .subscribe((data) => {
@@ -1111,10 +1155,12 @@ export class AllFormulesComponent implements OnInit {
 
   updateFormuleWhenPrint() {
     let user = this.authService.loggedInUser.userName;
+    this.updateFormule.user = user;
     let updatedFormule = {
       _id: this.updateFormule._id,
       client: user,
     };
+    // console.log(updatedFormule);
     this.formuleService
       .updateFormuleWhenPrint(updatedFormule)
       .subscribe((data) => {
@@ -1216,9 +1262,30 @@ export class AllFormulesComponent implements OnInit {
     let dataArr = data.split(";");
     let droppedPhase = dataArr[0];
     let droppedItemNum = dataArr[1];
+    // console.log("droppedPhase: ");
+    // console.log(droppedPhase);
+
+    // console.log("droppedItemNum: ");
+    // console.log(droppedItemNum);
 
     let droppedIntoPhase = ev.target.parentElement.dataset.phase;
     let droppedIntoItemNum = ev.target.parentElement.dataset.itemnumber;
+    // console.log("droppedIntoPhase: ");
+    // console.log(droppedIntoPhase);
+    // console.log("droppedIntoItemNum:");
+    // console.log(droppedIntoItemNum);
+    let phase = this.updateFormule.phases.find(
+      (p) => p.phaseName == droppedIntoPhase
+    );
+    let idx = phase.items.findIndex(
+      (item) => item.itemNumber == droppedItemNum
+    );
+    if (idx > -1) {
+      this.toastSrv.error(
+        "הפריט שהועבר קיים כבר בפאזה אליה הועבר ולכן הפעולה בוטלה."
+      );
+      return;
+    }
     //remove from old phase
     let itemToaddToNewPhase = this.updateFormule.phases
       .find((x) => x.phaseName == droppedPhase)

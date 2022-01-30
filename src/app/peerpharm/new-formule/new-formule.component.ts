@@ -316,6 +316,14 @@ export class NewFormuleComponent implements OnInit {
     var material = this.allMaterials.find(
       (m) => m.componentName == materialName
     );
+    let idx = this.newPhase.items.findIndex(
+      (item) => item.itemNumber == material.componentN
+    );
+    if (idx > -1) {
+      alert("הפריט קיים כבר בפאזה זו, יש לבחור פריט אחר");
+      this.itemName.nativeElement.value = "";
+      return;
+    }
     this.newItem.itemNumber = material.componentN;
     if (material.mixedMaterial.length > 0) {
       this.hasMixedMaterial = true;
@@ -402,6 +410,33 @@ export class NewFormuleComponent implements OnInit {
   }
 
   addItemsToPhase() {
+    let idx = this.newPhase.items.findIndex(
+      (item) => item.itemNumber == this.itemNumber.nativeElement.value
+    );
+    if (idx > -1) {
+      alert("הפריט כבר קיים בפאזה זו, יש לבחור פריט אחר.");
+      this.resetItemForm();
+      return;
+    } else if (this.currentFormule) {
+      let itemExists = false;
+      console.log(this.currentFormule);
+      for (let phase of this.currentFormule.phases) {
+        let itemNum = phase.items.find(
+          (item) => item.itemNumber == this.itemNumber.nativeElement.value
+        );
+        if (itemNum) itemExists = true;
+      }
+      if (itemExists) {
+        console.log("item exists in the formule");
+        let contFormule = confirm(
+          "הפריט קיים כבר בפורמולה הנוכחית, האם להמשיך?"
+        );
+        if (!contFormule) {
+          this.resetItemForm();
+          return;
+        }
+      }
+    }
     var newItem = {
       itemName: this.itemName.nativeElement.value,
       itemNumber: this.itemNumber.nativeElement.value,
@@ -495,9 +530,9 @@ export class NewFormuleComponent implements OnInit {
     if (this.newPhase.items.length < Number(this.newPhase.amountOfItems)) {
       this.Toastr.error("מספר הפריטים שהוספת קטן יותר מאשר מצוין בפאזה");
     } else {
-      console.log(this.newPhase);
+      // console.log(this.newPhase);
       this.formuleService.addNewPhase(this.newPhase).subscribe((data) => {
-        console.log(data);
+        // console.log(data);
         if (data.msg) {
           this.Toastr.error(data.msg);
           console.log(data);
@@ -522,6 +557,14 @@ export class NewFormuleComponent implements OnInit {
 
   fillMaterialName(ev) {
     var itemNumber = ev.target.value;
+    let idx = this.newPhase.items.findIndex(
+      (item) => item.itemNumber == itemNumber
+    );
+    if (idx > -1) {
+      alert("הפריט קיים כבר בפאזה, יש לבחור פריט שונה.");
+      this.itemNumber.nativeElement.value = "";
+      return;
+    }
     if (itemNumber != "buffer" || itemNumber != "") {
       this.chooseFromBuffer = false;
       this.inventoryService
