@@ -652,7 +652,13 @@ export class OrdersComponent implements OnInit {
             "תאריך מילוי סופי": item.fillingDate ? `${new Date(item.fillingDate).getDate()}/${new Date(item.fillingDate).getMonth()}/${new Date(item.fillingDate).getFullYear()}` : '',
             "כמות שמילאו": isNaN(Number(item.quantity_Produced)) ? "" : Number(item.quantity_Produced),
             "סטטוס מילוי": item.fillingStatus,
-            "קומפוננטים חסרים": stringifiedMissingComponents,
+            // "קומפוננטים חסרים": stringifiedMissingComponents,
+            "Main Component": item.itemTree[0].bottleAmount[0]._id,
+            "Main Component Inventory": item.itemTree[0].bottleAmount[0].amount,
+            "Sticker 1": item.itemTree[0].stickerAmount[0]._id,
+            "Sticker 1 Inventory": item.itemTree[0].stickerAmount[0].amount,
+            "Sticker 2": item.itemTree[0].sticker2Amount[0]._id,
+            "Sticker 2 Inventory": item.itemTree[0].sticker2Amount[0].amount,
             "הערות": item.orderItem.itemRemarks,
             // "מדבקות": ""
           })
