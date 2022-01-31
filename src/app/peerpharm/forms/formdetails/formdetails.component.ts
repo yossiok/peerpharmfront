@@ -81,12 +81,6 @@ export class FormdetailsComponent implements OnInit {
 
     let formID = this.route.snapshot.paramMap.get('id');
     let scheduleID = this.route.snapshot.paramMap.get('id2');
-    // if (tempId.includes('scheduleId')) {
-    //   this.currentScheduleId = tempId.split('scheduleId').join('')
-    //   this.checkIfFormExist(this.currentScheduleId)
-    // } else {
-    //   this.getFormData(true);
-    // }
     this.getUserInfo();
     if (scheduleID && scheduleID != '0') {
       this.checkIfFormExist(scheduleID)
@@ -97,8 +91,6 @@ export class FormdetailsComponent implements OnInit {
         })
     }
     else this.getFormData(true, formID)
-    // this.UserDisableAuth();
-    // this.wrapAllChecks();
   }
 
   async checkIfFormExist(scheduleId) {
@@ -151,6 +143,7 @@ export class FormdetailsComponent implements OnInit {
               this.form = tempObj
               this.form.scheduleId = scheduleId
               this.newForm = true;
+
             }
   
           })
@@ -169,6 +162,12 @@ export class FormdetailsComponent implements OnInit {
           this.form = tempObj
           this.form.scheduleId = scheduleId
           this.newForm = true;
+          this.batchService.getBatchData(this.form.batchN).subscribe(data => {
+            console.log('batchData: ',data)
+            debugger
+            this.form.productaionDate = data[0].produced
+            this.form.expirationDate = data[0].expration
+          })
         }
 
         // check if there is another form with that batch
@@ -194,6 +193,12 @@ export class FormdetailsComponent implements OnInit {
       this.form = res[0];
       this.loadQAPallets(this.form._id)
       this.formDetailsItemNum = this.form.itemN
+      this.batchService.getBatchData(this.form.batchN).subscribe(data => {
+        console.log('batchData: ',data)
+        debugger
+        this.form.productaionDate = data[0].produced
+        this.form.expirationDate = data[0].expration
+      })
       if (this.form.productionEndDate) {
         let days = this.form.productionEndDate.slice(8, 10)
         let monthes = this.form.productionEndDate.slice(5, 7)
@@ -213,13 +218,13 @@ export class FormdetailsComponent implements OnInit {
 
   async addNewTest(test) {
     let newTest = {...test}
-    this.form.checkTime.push(newTest.checkTime);
-    this.form.checkBox_clean.push(newTest.checkBox_clean);
-    this.form.checkNetoWeight.push(newTest.checkNetoWeight);
-    this.form.checkBox_closedWaterProof.push(newTest.checkBox_closedWaterProof);
-    this.form.checkBox_stickerPrinting.push(newTest.checkBox_stickerPrinting);
-    this.form.checkBox_lotNumberPrinting.push(newTest.checkBox_lotNumberPrinting);
-    this.form.checkBox_correctFinalPacking.push(newTest.checkBox_correctFinalPacking);
+    this.form.checkTime ? this.form.checkTime.push(newTest.checkTime) : this.form.checkTime = [newTest.checkTime];
+    this.form.checkBox_clean ? this.form.checkBox_clean.push(newTest.checkBox_clean) : this.form.checkBox_clean = [newTest.checkBox_clean];
+    this.form.checkNetoWeight ? this.form.checkNetoWeight.push(newTest.checkNetoWeight) : this.form.checkNetoWeight = [newTest.checkNetoWeight];
+    this.form.checkBox_closedWaterProof ? this.form.checkBox_closedWaterProof.push(newTest.checkBox_closedWaterProof) : this.form.checkBox_closedWaterProof = [newTest.checkBox_closedWaterProof];
+    this.form.checkBox_stickerPrinting ? this.form.checkBox_stickerPrinting.push(newTest.checkBox_stickerPrinting) : this.form.checkBox_stickerPrinting = [newTest.checkBox_stickerPrinting];
+    this.form.checkBox_lotNumberPrinting ? this.form.checkBox_lotNumberPrinting.push(newTest.checkBox_lotNumberPrinting) : this.form.checkBox_lotNumberPrinting = [newTest.checkBox_lotNumberPrinting];
+    this.form.checkBox_correctFinalPacking ? this.form.checkBox_correctFinalPacking.push(newTest.checkBox_correctFinalPacking) : this.form.checkBox_correctFinalPacking = [newTest.checkBox_correctFinalPacking];
     this.updateFormDetails();
     this.allChecks.push(newTest)
   }
@@ -269,10 +274,10 @@ export class FormdetailsComponent implements OnInit {
   }
 
 
+
   updateFormDetails() {
 
     try {
-      debugger
       this.formsService.updateFormDetails(this.form).subscribe(result => {
 
         if (result.ok == 1) {

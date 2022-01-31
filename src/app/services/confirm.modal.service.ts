@@ -130,7 +130,8 @@ export class ConfirmModalComponent implements OnInit {
     if (
       this.authService.loggedInUser.userName.includes("sima") ||
       this.authService.loggedInUser.userName.includes("dani") ||
-      this.authService.loggedInUser.userName.includes("art")
+      this.authService.loggedInUser.userName.includes("martha") ||
+      this.authService.loggedInUser.userName.includes("haviv") 
     ) {
       this.confService.userAnserEventEmitter.emit(true);
       this.state.modal.dismiss();
