@@ -354,6 +354,7 @@ export class AllFormulesComponent implements OnInit {
   }
 
   addItemToFormule() {
+    console.log(this.currentFormuleNumber);
     var newPhase = {
       phaseName: "",
       remarks: "",
@@ -373,23 +374,25 @@ export class AllFormulesComponent implements OnInit {
       .getFormuleByNumber(this.currentFormuleNumber)
       .subscribe((data) => {
         formule = data;
-        // console.log(formule);
+        console.log(formule);
         let phase = formule.phases.find(
           (p) => p.phaseName == this.newItem.phaseName
         );
-        // console.log(phase);
-        let idx = phase.items.findIndex(
-          (item) => item.itemNumber == this.newItem.itemNumber
-        );
-        if (idx > -1) {
-          this.toastSrv.error(
-            "הפריט הזה קיים כבר בפאזה שנבחרה, יש לבחור פריט חדש."
+        console.log(phase);
+        if (phase) {
+          let idx = phase.items.findIndex(
+            (item) => item.itemNumber == this.newItem.itemNumber
           );
-          this.newItem.itemName = "";
-          this.newItem.itemNumber = "";
-          this.newItem.percentage = "";
-          this.newItem.remarks = "";
-          return;
+          if (idx > -1) {
+            this.toastSrv.error(
+              "הפריט הזה קיים כבר בפאזה שנבחרה, יש לבחור פריט חדש."
+            );
+            this.newItem.itemName = "";
+            this.newItem.itemNumber = "";
+            this.newItem.percentage = "";
+            this.newItem.remarks = "";
+            return;
+          }
         } else {
           let itemExists = false;
           for (let phase of formule.phases) {
