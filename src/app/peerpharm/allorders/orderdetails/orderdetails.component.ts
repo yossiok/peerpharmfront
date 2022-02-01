@@ -262,7 +262,7 @@ export class OrderdetailsComponent implements OnInit {
   productionItemStatusIndex: any;
   tempItem: any;
   similarFormules: any[];
-  hasSpecialOrderItems: boolean = false
+  hasSpecialOrderItems: boolean = false;
   // @ViewChild('type') type:ElementRef;
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
     event: KeyboardEvent
@@ -288,7 +288,7 @@ export class OrderdetailsComponent implements OnInit {
     private authService: AuthService,
     private notificationService: NotificationService,
     private formuleService: FormulesService
-  ) { }
+  ) {}
 
   async ngOnInit() {
     // this.getAllFormsDetails()
@@ -308,7 +308,7 @@ export class OrderdetailsComponent implements OnInit {
         this.showingAllOrders = true;
         this.loadData = true;
         this.orderService.getOpenOrdersItems().subscribe(async (orders) => {
-          console.log(orders);
+          // console.log(orders);
           this.loadData = false;
           this.multi = true;
           orders.orderItems.forEach((item) => {
@@ -317,12 +317,12 @@ export class OrderdetailsComponent implements OnInit {
               let i = item.workPlans.length - 1;
               item.pakaStatus = item.workPlans[i].itemStatus;
             }
-            console.log(item);
+            // console.log(item);
             item.isExpand = "+";
             item.colorBtn = "#33FFE0";
           });
           this.ordersData = orders.ordersData;
-          await this.colorOrderItemsLines(orders.orderItems).then((data) => { });
+          await this.colorOrderItemsLines(orders.orderItems).then((data) => {});
           this.ordersItems = orders.orderItems;
           this.productionRequirements = orders.orderItems;
 
@@ -344,6 +344,7 @@ export class OrderdetailsComponent implements OnInit {
             this.orderService
               .getOrdersIdsByNumbers(numArr)
               .subscribe(async (orders) => {
+                console.log(orders);
                 if (orders.ordersIds.length > 1) {
                   this.ordersData = orders.ordersData;
                   this.ordersData.map((order) => {
@@ -352,7 +353,7 @@ export class OrderdetailsComponent implements OnInit {
                       let i = order.workPlans.length - 1;
                       order.pakaStatus = order.workPlans[i].itemStatus;
                     }
-                    console.log(order);
+                    // console.log(order);
                     if (
                       order.costumerImpRemark != undefined &&
                       order.costumerImpRemark != ""
@@ -364,20 +365,48 @@ export class OrderdetailsComponent implements OnInit {
                   this.orderService
                     .getMultiOrdersIds(orders.ordersIds)
                     .subscribe(async (orderItems) => {
-                      orderItems.forEach((item) => {
-                        item.isExpand = "+";
-                        item.colorBtn = "#33FFE0";
-                      });
+                      console.log(orderItems);
+                      let itemNumbers = [];
+                      for (let oi of orderItems) {
+                        itemNumbers.push(oi.itemNumber);
+                      }
+                      // console.log(itemNumbers);
+                      this.itemSer
+                        .checkForProblematicItems(itemNumbers)
+                        .subscribe((data) => {
+                          // console.log(data);
+                          for (let item of data) {
+                            let idx = orderItems.findIndex(
+                              (oi) => oi.itemNumber == item.itemNumber
+                            );
+                            if (idx > -1) {
+                              orderItems[idx].formuleFound = item.formuleFound;
+                              orderItems[idx].problematicComponents =
+                                item.problematicComponents;
+                              orderItems[idx].problematicMaterials =
+                                item.problematicMaterials;
+                            }
+                          }
+                          console.log(orderItems);
 
+                          orderItems.forEach((item) => {
+                            // console.log(item);
+                            let problem = this.problematicAlerts(item);
+                            item.problematicArr = problem.problematicArr;
+                            item.alertsArr = problem.alertsArr;
+                            item.isExpand = "+";
+                            item.colorBtn = "#33FFE0";
+                          });
+                          this.ordersItems = orderItems;
+                          this.productionRequirements = orderItems;
+
+                          this.ordersItemsCopy = orderItems;
+
+                          this.multi = true;
+                        });
                       await this.colorOrderItemsLines(orderItems).then(
-                        (data) => { }
+                        (data) => {}
                       );
-                      this.ordersItems = orderItems;
-                      this.productionRequirements = orderItems;
-
-                      this.ordersItemsCopy = orderItems;
-
-                      this.multi = true;
                     });
                 } else {
                   //one order: but came through load button
@@ -401,6 +430,93 @@ export class OrderdetailsComponent implements OnInit {
     });
 
     this.ordersItems;
+  }
+
+  problematicAlerts(item) {
+    // console.log(item.problematicComponents);
+    // console.log(item.problematicMaterials);
+    let problematicArr = [];
+    let alertsArr = [];
+    let problematicItems = [];
+    problematicItems = item.problematicComponents.concat(
+      item.problematicMaterials
+    );
+    if (problematicItems.length > 0) {
+      for (let component of problematicItems) {
+        let alreadyExist = problematicArr.find(
+          (pi) => pi.itemNumber == component.componentN
+        );
+        if (!alreadyExist) {
+          if (component.problems && component.problems.length > 0) {
+            for (let problem of component.problems) {
+              // console.log(problem);
+              let alert;
+              switch (problem) {
+                case "מסוכן":
+                  alert = 1;
+                  break;
+                case "חומר מסוכן":
+                  alert = 1;
+                  break;
+                case "פג תוקף קצר":
+                  alert = 2;
+                  break;
+                case "רכש בעייתי":
+                  alert = 3;
+                  break;
+                case "זמן אספקה בעייתי":
+                  alert = 4;
+                  break;
+                default:
+                  alert = 6;
+              }
+              problematicArr.push({
+                itemNumber: component.componentN,
+                itemName: component.componentName,
+                problem: problem,
+              });
+              let idx = alertsArr.findIndex((al) => al.alert == alert);
+              // console.log(alert);
+              // console.log(idx);
+              if (idx == -1) {
+                alertsArr.push({
+                  alert,
+                  problem: problem,
+                  itemNumber: component.componentN,
+                });
+              } else {
+                alertsArr[idx].itemNumber =
+                  alertsArr[idx].itemNumber + ", " + component.componentN;
+              }
+            }
+          } else {
+            let idx = alertsArr.findIndex((al) => al.alert == 5);
+            if (idx == -1) {
+              alertsArr.push({
+                alert: 5,
+                problem: "general problem",
+                itemNumber: component.componentN,
+              });
+            } else {
+              let alreadyExistItems = [];
+              // console.log(alertsArr[idx]);
+              alreadyExistItems = alertsArr[idx].itemNumber.split(", ");
+              // console.log(alreadyExistItems);
+              let skipIt = alreadyExistItems.find(
+                (item) => item == component.componentN
+              );
+              if (!skipIt) {
+                alertsArr[idx].itemNumber =
+                  alertsArr[idx].itemNumber + ", " + component.componentN;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // console.log({ problematicArr, alertsArr });
+    return { problematicArr, alertsArr };
   }
 
   exportAsXLSXOrders() {
@@ -466,9 +582,11 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   getAllFormsDetails() {
-    this.formService.getAllForms("" + new Date().getFullYear()).subscribe((data) => {
-      this.allForms = data;
-    });
+    this.formService
+      .getAllForms("" + new Date().getFullYear())
+      .subscribe((data) => {
+        this.allForms = data;
+      });
   }
 
   open(contentTwo) {
@@ -541,7 +659,7 @@ export class OrderdetailsComponent implements OnInit {
 
   updatePakaStatus() {
     //check array length
-    console.log(this.selectedArr);
+    // console.log(this.selectedArr);
     if (this.selectedArr.length == 0)
       this.toastSrv.error("יש לבחור לפחות פריט אחד");
     else {
@@ -567,7 +685,7 @@ export class OrderdetailsComponent implements OnInit {
 
       //update paka status
       if (validOrders.length > 0) {
-        console.log(validOrders);
+        // console.log(validOrders);
         this.orderService.updatePakaStatus(validOrders).subscribe((data) => {
           if (data.msg) this.toastSrv.error(data.msg);
           else if (data.n == validOrders.length && data.ok == 1) {
@@ -577,7 +695,7 @@ export class OrderdetailsComponent implements OnInit {
                 (oi) => oi._id == item._id
               );
               if (index > -1) {
-                console.log(item);
+                // console.log(item);
                 this.ordersItems[index].pakaStatus = 1;
                 this.ordersItems[index].isSelected = false;
               }
@@ -853,7 +971,7 @@ export class OrderdetailsComponent implements OnInit {
       this.deliveryDate = res[0].deliveryDate;
       this.remarks = res[0].orderRemarks;
       this.orderId = res[0]._id;
-      this.hasSpecialOrderItems = res[0].hasSpecialOrderItems
+      this.hasSpecialOrderItems = res[0].hasSpecialOrderItems;
       this.documentationBeforeSend.costumerNumber = res[0].costumerInternalId;
       this.documentationBeforeSend.costumerName = res[0].costumer;
       this.costumerImpRemark = res[0].costumerImpRemark;
@@ -1026,97 +1144,127 @@ export class OrderdetailsComponent implements OnInit {
     this.orderService
       .getOrderItemsByNumber(orderNum)
       .subscribe((orderItems) => {
-        console.log(orderItems);
-        orderItems.map((item) => {
-          item.pakaStatus = item.pakaStatus ? item.pakaStatus : 0;
-          if (item.workPlans && item.workPlans.length > 0) {
-            let i = item.workPlans.length - 1;
-            console.log("Index is: " + i);
-            item.pakaStatus = item.workPlans[i].itemStatus;
+        // console.log(orderItems);
+        let itemNumbers = [];
+        for (let oi of orderItems) {
+          itemNumbers.push(oi.itemNumber);
+        }
+        // console.log(itemNumbers);
+        this.itemSer.checkForProblematicItems(itemNumbers).subscribe((data) => {
+          // console.log(data);
+          for (let item of data) {
+            let idx = orderItems.findIndex(
+              (oi) => oi.itemNumber == item.itemNumber
+            );
+            if (idx > -1) {
+              orderItems[idx].formuleFound = item.formuleFound;
+              orderItems[idx].problematicComponents =
+                item.problematicComponents;
+              orderItems[idx].problematicMaterials = item.problematicMaterials;
+            }
           }
+          // console.log(orderItems);
 
-          //check License
-          if (
-            item.licsensNumber != "" &&
-            new Date(item.licsensDate) > new Date()
-          )
-            item.hasLicense = true;
+          orderItems.map((item) => {
+            let problem = this.problematicAlerts(item);
+            item.problematicArr = problem.problematicArr;
+            item.alertsArr = problem.alertsArr;
+            item.pakaStatus = item.pakaStatus ? item.pakaStatus : 0;
+            if (item.workPlans && item.workPlans.length > 0) {
+              let i = item.workPlans.length - 1;
+              // console.log("Index is: " + i);
+              item.pakaStatus = item.workPlans[i].itemStatus;
+            }
 
-          // Check license date
-          const today = new Date();
-          const diffTime =
-            new Date(item.licsensDate).getTime() - today.getTime();
-          const diffSeconds = diffTime / 1000;
-          const diffMinutes = diffSeconds / 60;
-          const diffHours = diffMinutes / 60;
-          const diffDays = diffHours / 24;
-          item.licenseExpirationClose = diffDays < 30;
+            //check License
+            if (
+              item.licsensNumber != "" &&
+              new Date(item.licsensDate) > new Date()
+            )
+              item.hasLicense = true;
 
-          //set remained amount (total amount - amount that has allready been supplied)
-          let quantitySupplied = item.billing
-            .map((b) => b.billQty)
-            .reduce((a, b) => a + b, 0);
-          item.quantityRemained = Number(item.quantity) - quantitySupplied;
+            // Check license date
+            const today = new Date();
+            const diffTime =
+              new Date(item.licsensDate).getTime() - today.getTime();
+            const diffSeconds = diffTime / 1000;
+            const diffMinutes = diffSeconds / 60;
+            const diffHours = diffMinutes / 60;
+            const diffDays = diffHours / 24;
+            item.licenseExpirationClose = diffDays < 30;
 
-          this.totalOrderQty += Number(item.quantity);
-          if (item.fillingStatus != null) {
-            if (item.status != "done") {
-              if (
-                item.fillingStatus.toLowerCase() == "filled" ||
-                item.fillingStatus.toLowerCase() == "partfilled"
-              ) {
-                item.color = "#CE90FF";
-              } else if (
-                item.fillingStatus.toLowerCase() == "beingfilled" ||
-                item.fillingStatus.toLowerCase().includes("scheduled") ||
-                item.fillingStatus.toLowerCase().includes("formula porduced") ||
-                item.fillingStatus.toLowerCase().includes("batch exist")
-              ) {
-                item.color = "yellow";
-              } else if (item.fillingStatus.toLowerCase() == "problem")
-                item.color = "red";
-              else if (
-                item.quantityProduced != "" &&
-                item.quantityProduced != null &&
-                item.quantityProduced != undefined
-              ) {
+            //set remained amount (total amount - amount that has allready been supplied)
+            let quantitySupplied = item.billing
+              .map((b) => b.billQty)
+              .reduce((a, b) => a + b, 0);
+            item.quantityRemained = Number(item.quantity) - quantitySupplied;
+
+            this.totalOrderQty += Number(item.quantity);
+            if (item.fillingStatus != null) {
+              if (item.status != "done") {
                 if (
-                  parseInt(item.quantity) >= parseInt(item.quantityProduced)
+                  item.fillingStatus.toLowerCase() == "filled" ||
+                  item.fillingStatus.toLowerCase() == "partfilled"
                 ) {
-                  let lackAmount =
-                    parseInt(item.quantity) - parseInt(item.quantityProduced);
-                  item.fillingStatus += ", " + lackAmount + " lack";
-                  item.infoColor = "#ff7272";
-                } else item.color = "#CE90FF";
-              } else if (item.fillingStatus == "packed") item.color = "#FFC058";
-              else item.color = "none";
-            } else {
+                  item.color = "#CE90FF";
+                } else if (
+                  item.fillingStatus.toLowerCase() == "beingfilled" ||
+                  item.fillingStatus.toLowerCase().includes("scheduled") ||
+                  item.fillingStatus
+                    .toLowerCase()
+                    .includes("formula porduced") ||
+                  item.fillingStatus.toLowerCase().includes("batch exist")
+                ) {
+                  item.color = "yellow";
+                } else if (item.fillingStatus.toLowerCase() == "problem")
+                  item.color = "red";
+                else if (
+                  item.quantityProduced != "" &&
+                  item.quantityProduced != null &&
+                  item.quantityProduced != undefined
+                ) {
+                  if (
+                    parseInt(item.quantity) >= parseInt(item.quantityProduced)
+                  ) {
+                    let lackAmount =
+                      parseInt(item.quantity) - parseInt(item.quantityProduced);
+                    item.fillingStatus += ", " + lackAmount + " lack";
+                    item.infoColor = "#ff7272";
+                  } else item.color = "#CE90FF";
+                } else if (item.fillingStatus == "packed")
+                  item.color = "#FFC058";
+                else item.color = "none";
+              } else {
+                item.color = "aquamarine";
+              }
+            } else if (
+              item.fillingStatus == undefined &&
+              item.status == "done"
+            ) {
               item.color = "aquamarine";
             }
-          } else if (item.fillingStatus == undefined && item.status == "done") {
-            item.color = "aquamarine";
+
+            item.isExpand = "+";
+            item.colorBtn = "#33FFE0";
+          });
+
+          if (singleLine) {
+            this.ordersItems.filter((item) => {
+              if (item.itemNumber == orderItems[0].itemNumber) {
+                item = orderItems[0];
+              }
+            });
+            // console.log(this.ordersItems);
+          } else {
+            this.ordersItems = orderItems;
+            // console.log(this.ordersItems);
+            this.productionRequirements = orderItems;
+
+            this.ordersItemsCopy = orderItems;
           }
 
-          item.isExpand = "+";
-          item.colorBtn = "#33FFE0";
+          this.getComponents(this.ordersItems[0].orderNumber);
         });
-
-        if (singleLine) {
-          this.ordersItems.filter((item) => {
-            if (item.itemNumber == orderItems[0].itemNumber) {
-              item = orderItems[0];
-            }
-          });
-          console.log(this.ordersItems);
-        } else {
-          this.ordersItems = orderItems;
-          console.log(this.ordersItems);
-          this.productionRequirements = orderItems;
-
-          this.ordersItemsCopy = orderItems;
-        }
-
-        this.getComponents(this.ordersItems[0].orderNumber);
       });
   }
 
@@ -1354,8 +1502,8 @@ export class OrderdetailsComponent implements OnInit {
         } else if (res == "No netWeightK") {
           alert(
             "לפריט מספר " +
-            obj.itemNumber +
-            '\nאין משקל נטו בעץ פריט.\nלא ניתן לפתוח פק"ע לפריט'
+              obj.itemNumber +
+              '\nאין משקל נטו בעץ פריט.\nלא ניתן לפתוח פק"ע לפריט'
           );
         } else {
           this.toastSrv.error(
@@ -1683,7 +1831,7 @@ export class OrderdetailsComponent implements OnInit {
           } else if (batches.length > 1)
             reject(
               "More than one batch exist with Number " +
-              this.inputBatch.nativeElement.value
+                this.inputBatch.nativeElement.value
             );
           else if (batches.length == 0) reject(`Batch ${batch} Not Found.`);
         });
@@ -1764,10 +1912,10 @@ export class OrderdetailsComponent implements OnInit {
     if (
       confirm(
         "Item " +
-        item.itemNumber +
-        "\n From order " +
-        item.orderNumber +
-        "\n Is ready?"
+          item.itemNumber +
+          "\n From order " +
+          item.orderNumber +
+          "\n Is ready?"
       )
     ) {
       this.orderService.editItemOrderStatus(item).subscribe((res) => {
@@ -1930,19 +2078,19 @@ export class OrderdetailsComponent implements OnInit {
         item: item.itemNumber,
         order: item.orderNumber,
         formuleExist: item.formuleExist,
-        "תאריך רישיון": item.licsensDate
+        "תאריך רישיון": item.licsensDate,
       });
       if (item.problematicComponents) {
         for (let c of item.problematicComponents) {
           unwinded.push({
             component: c.componentN,
-            "שם": c.componentName
+            שם: c.componentName,
           });
           if (c.problems) {
             for (let problem of c.problems) {
               unwinded.push({
-                problem
-              })
+                problem,
+              });
             }
           }
         }
@@ -1951,19 +2099,22 @@ export class OrderdetailsComponent implements OnInit {
         for (let c of item.problematicMaterials) {
           unwinded.push({
             material: c.componentN,
-            "שם": c.componentName
+            שם: c.componentName,
           });
           if (c.problems) {
             for (let problem of c.problems) {
               unwinded.push({
-                problem
-              })
+                problem,
+              });
             }
           }
         }
       }
     }
-    this.excelService.exportAsExcelFile(unwinded, `דו"ח פריטים בעייתיים בהזמנה ${this.number}`);
+    this.excelService.exportAsExcelFile(
+      unwinded,
+      `דו"ח פריטים בעייתיים בהזמנה ${this.number}`
+    );
   }
 
   /****************DRAG DROP FUNCS************/
@@ -1971,10 +2122,10 @@ export class OrderdetailsComponent implements OnInit {
     ev.dataTransfer.setData(
       "Text/html",
       ev.target.dataset.ordernumber +
-      ";" +
-      ev.target.dataset.alloamount +
-      ";" +
-      ev.target.dataset.index
+        ";" +
+        ev.target.dataset.alloamount +
+        ";" +
+        ev.target.dataset.index
     );
   }
 
