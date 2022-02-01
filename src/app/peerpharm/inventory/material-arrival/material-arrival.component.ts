@@ -121,7 +121,6 @@ export class MaterialArrivalComponent implements OnInit {
   approvedPackgeRemarksInput: Boolean = false;
 
   materialArrivalCertif: MaterialArrivalCertif = {
-    certNum: 0,
     userName: this.authService.loggedInUser.userName,
     date: this.today,
     materialArrivalLines: [],
@@ -713,7 +712,6 @@ export class MaterialArrivalComponent implements OnInit {
 
   resetCertificate() {
     this.materialArrivalCertif = {
-      certNum: 0,
       userName: this.authService.loggedInUser.userName,
       date: this.today,
       materialArrivalLines: [],

@@ -163,3 +163,18 @@
   </div>
 
 </div>
+
+<ng-template #produced let-modal>
+  <div class="p-5 bg-info">
+    <i type="button" class="float-left fas fa-times h1 m-2 text-warning" aria-label="Close"
+      (click)="modal.dismiss('Cross click')"></i>
+      <br><br><br>
+    <h1 dir="rtl" class="text-warning">
+     שים לב! הפק"עות הבאות סיימו בישול. יש לבדוק ולהעבירן למצב <strong>"DONE"</strong> במידת הצורך
+    </h1>
+    <br><br><br>
+    <ul class="list-group">
+      <li class="list-group-item text-warning bg-info" *ngFor="let wp of producedWorkPlans"><h1>{{wp}}</h1></li>
+    </ul>
+  </div>
+</ng-template>
