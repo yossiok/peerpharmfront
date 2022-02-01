@@ -41,12 +41,14 @@ export class HistMovementsComponent implements OnInit, OnChanges {
     { value: "in", name: "כניסה" },
     { value: "out", name: "יציאה" },
     { value: "whareHouseChange", name: "העברה בין מחסנים" },
+    { value: "creamProduction", name: "בישול אצווה" },
+
     // { value: "shelfChange", name: "העברה בין מדפים" },
     // { value: "production", name: "העברה לייצור" },
   ];
   allUsers: any = [];
   histMovements: any = [];
-  fetching: boolean = false
+  fetching: boolean = false;
 
   constructor(
     private inventoryService: InventoryService,
@@ -62,8 +64,8 @@ export class HistMovementsComponent implements OnInit, OnChanges {
     console.log(this.historicalMovements.controls);
   }
 
-  consoleForm(){
-    console.log(this.historicalMovements)
+  consoleForm() {
+    console.log(this.historicalMovements);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -81,7 +83,7 @@ export class HistMovementsComponent implements OnInit, OnChanges {
   }
 
   getReceptions() {
-    this.fetching = true
+    this.fetching = true;
     // build the query
     let formValues = this.historicalMovements.controls;
     this.histMovements = [];
@@ -111,12 +113,12 @@ export class HistMovementsComponent implements OnInit, OnChanges {
             wh = this.allWhareHouses.find((obj) => {
               return obj._id == log.WH_originId;
             });
-            log.whareHouse = wh ? wh.name : '';
+            log.whareHouse = wh ? wh.name : "";
           });
         }
       });
       this.histMovements = data.filter((e) => !e.itemType);
-      this.fetching = false
+      this.fetching = false;
     });
   }
 
