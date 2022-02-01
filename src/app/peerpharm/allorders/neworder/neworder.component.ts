@@ -6,7 +6,15 @@ import {
   Output,
   ViewChild,
 } from "@angular/core";
-import { FormBuilder, FormGroup, NgForm, Validators, ReactiveFormsModule, FormControl, AbstractControl } from "@angular/forms";
+import {
+  FormBuilder,
+  FormGroup,
+  NgForm,
+  Validators,
+  ReactiveFormsModule,
+  FormControl,
+  AbstractControl,
+} from "@angular/forms";
 import { OrdersService } from "../../../services/orders.service";
 import { CostumersService } from "../../../services/costumers.service";
 import { Costumer } from "../../classes/costumer.class";
@@ -18,7 +26,7 @@ import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
 import { InventoryService } from "src/app/services/inventory.service";
 import { ItemsService } from "src/app/services/items.service";
-import { Location } from '@angular/common'
+import { Location } from "@angular/common";
 
 @Component({
   selector: "app-neworder",
@@ -28,7 +36,7 @@ import { Location } from '@angular/common'
 export class NeworderComponent implements OnInit {
   @Output() closed: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild("amounts") amounts;
-  @ViewChild("problematics") problematics: ElementRef
+  @ViewChild("problematics") problematics: ElementRef;
 
   orderItemForm: FormGroup;
   orderForm: FormGroup;
@@ -56,11 +64,11 @@ export class NeworderComponent implements OnInit {
   materialsNotEnoughAmount: [];
   waitForAmounts: boolean = false;
   newOrderAllowed: boolean = false;
-  problematicComponents: any[]
-  problematicMaterials: any[]
-  formuleExist: boolean = false
-  isTooOld: boolean = false
-  noNeto: boolean = false
+  problematicComponents: any[];
+  problematicMaterials: any[];
+  formuleExist: boolean = false;
+  isTooOld: boolean = false;
+  noNeto: boolean = false;
 
   constructor(
     private modalService: NgbModal,
@@ -72,7 +80,6 @@ export class NeworderComponent implements OnInit {
     private inventoryService: InventoryService,
     private itemsService: ItemsService,
     private location: Location
-
   ) {
     this.orderForm = fb.group({
       //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
@@ -124,7 +131,7 @@ export class NeworderComponent implements OnInit {
     this.getCostumers();
     if (this.authService.loggedInUser) {
       if (this.authService.loggedInUser.authorization.includes("newOrder")) {
-        this.newOrderAllowed = true
+        this.newOrderAllowed = true;
       }
       this.user = this.authService.loggedInUser.firstName;
       this.orderForm.controls.user.setValue(this.user);
@@ -136,9 +143,8 @@ export class NeworderComponent implements OnInit {
     }
   }
   back(): void {
-    this.location.back()
+    this.location.back();
   }
-
 
   addNewOrder(post) {
     if (this.orderForm.controls.costumerInternalId.value == null) {
@@ -148,7 +154,6 @@ export class NeworderComponent implements OnInit {
     }
 
     if (this.orderForm.valid) {
-
       let newOrderObj = {
         area: this.choosedCostumer.area,
         costumer: post.costumer,
@@ -164,6 +169,7 @@ export class NeworderComponent implements OnInit {
         user: post.user,
       };
       this.orderSer.addNewOrder(newOrderObj).subscribe((res) => {
+        console.log(res);
         this.orderId = res._id;
         this.orderNumber = res.orderNumber;
         this.submited = true;
@@ -212,8 +218,7 @@ export class NeworderComponent implements OnInit {
   // }
 
   addNewItemOrder(post) {
-
-
+    console.log(post);
     if (
       this.shippingDetails.shippingWay == "" ||
       this.orderItemForm.controls.itemN.value == "" ||
@@ -229,12 +234,14 @@ export class NeworderComponent implements OnInit {
       if (this.problematicComponents && this.problematicComponents.length > 0) {
         hasSpecialOrderItems = true;
       }
-      this.orderSer.editOrder({
-        orderId: this.orderId,
-        hasSpecialOrderItems: hasSpecialOrderItems
-      }).subscribe(data => {
-        console.log('order problematic items updated');
-      })
+      this.orderSer
+        .editOrder({
+          orderId: this.orderId,
+          hasSpecialOrderItems: hasSpecialOrderItems,
+        })
+        .subscribe((data) => {
+          console.log("order problematic items updated");
+        });
 
       var shippingQuantitySum = 0;
 
@@ -267,9 +274,9 @@ export class NeworderComponent implements OnInit {
           orderNumber: this.orderNumber,
         };
         this.orderItemForm.reset();
-        this.orderItemForm.controls.hasLicense.setValue(false)
-        this.orderItemForm.controls.exploded.setValue(false)
-        this.orderItemForm.controls.productionApproved.setValue(false)
+        this.orderItemForm.controls.hasLicense.setValue(false);
+        this.orderItemForm.controls.exploded.setValue(false);
+        this.orderItemForm.controls.productionApproved.setValue(false);
         this.orderSer.addNewOrderItem(newOrderItemObj).subscribe((res) => {
           if (res.msg == "notActive") {
             this.toastSrv.error("שים לב פריט זה אינו פעיל");
@@ -293,52 +300,73 @@ export class NeworderComponent implements OnInit {
   }
 
   searchItem(itemNumber) {
-    this.noNeto = false
+    this.noNeto = false;
     this.itemName = "";
     this.existOrderItem = [];
     if (itemNumber != "") {
       this.orderSer.getItemByNumber(itemNumber).subscribe((res) => {
+        console.log(res);
         this.orderItemForm.controls.discription.setValue(
           res[0].name + " " + res[0].subName + " " + res[0].discriptionK
         );
         this.orderItemForm.controls.netWeightK.setValue(res[0].netWeightK);
         if (!res[0].netWeightK) {
-          this.noNeto = true
+          this.noNeto = true;
           this.orderItemForm.controls.netWeightK.setValue(res[0].volumeKey);
         }
 
         //check license
         if (res[0].licsensNumber != "") {
-          if (new Date(res[0].licsensDate) > new Date()) this.orderItemForm.controls.hasLicense.setValue(true);
+          if (new Date(res[0].licsensDate) > new Date())
+            this.orderItemForm.controls.hasLicense.setValue(true);
         }
 
         //check for problematic ingredients
-        this.itemsService.checkForProblematicItems(itemNumber).subscribe(data => {
-          this.problematicMaterials = data.problematicMaterials
-          this.problematicComponents = data.problematicComponents
-          this.formuleExist = data.formuleFound
-          this.modalService.open(this.problematics)
-          if (!data.formuleFound || data.problematicMaterials.length > 0 || data.problematicComponents.length > 0) {
-            this.orderItemForm.controls.problematic.setValue(true)
-            this.orderItemForm.controls.formuleExist.setValue(data.formuleFound)
-            this.orderItemForm.controls.problematicMaterials.setValue(data.problematicMaterials)
-            this.orderItemForm.controls.problematicComponents.setValue(data.problematicComponents)
-          }
-        })
+        this.itemsService
+          .checkForProblematicItems(itemNumber)
+          .subscribe((data) => {
+            console.log(data);
+            this.problematicMaterials = data.problematicMaterials;
+            this.problematicComponents = data.problematicComponents;
+            this.formuleExist = data.formuleFound;
+            this.modalService.open(this.problematics);
+            if (
+              !data.formuleFound ||
+              data.problematicMaterials.length > 0 ||
+              data.problematicComponents.length > 0
+            ) {
+              this.orderItemForm.controls.problematic.setValue(true);
+              this.orderItemForm.controls.formuleExist.setValue(
+                data.formuleFound
+              );
+              this.orderItemForm.controls.problematicMaterials.setValue(
+                data.problematicMaterials
+              );
+              this.orderItemForm.controls.problematicComponents.setValue(
+                data.problematicComponents
+              );
+            }
+          });
 
         //check if this product was produced in the last 18 months (Haviv & Uri request 25/8/2021)
-        this.orderSer.checkForLastProduction(itemNumber).subscribe(data => {
-          if (data.err) this.toastSrv.error('אנא וודא כי המוצר יוצר בשנה האחרונה', 'בעיה בבדיקת ייצור של המוצר. ')
-          else this.isTooOld = data.isTooOld
-        })
-
-        this.orderSer.getAllOpenOrderItemsByItemNumber(itemNumber).subscribe((data) => {
-          if (data.length > 0) {
-            this.existOrderItem = data;
-          } else {
-            this.existOrderItem = undefined;
-          }
+        this.orderSer.checkForLastProduction(itemNumber).subscribe((data) => {
+          if (data.err)
+            this.toastSrv.error(
+              "אנא וודא כי המוצר יוצר בשנה האחרונה",
+              "בעיה בבדיקת ייצור של המוצר. "
+            );
+          else this.isTooOld = data.isTooOld;
         });
+
+        this.orderSer
+          .getAllOpenOrderItemsByItemNumber(itemNumber)
+          .subscribe((data) => {
+            if (data.length > 0) {
+              this.existOrderItem = data;
+            } else {
+              this.existOrderItem = undefined;
+            }
+          });
       });
     }
   }
