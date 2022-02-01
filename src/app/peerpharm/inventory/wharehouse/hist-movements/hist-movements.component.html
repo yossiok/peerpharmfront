@@ -88,7 +88,9 @@
               <tr *ngFor="let log of move.logs">
                 <td><strong>פריט:</strong> {{log.item}}</td>
                 <td><strong>ממדף:</strong> {{log.shell_position_in_whareHouse_Origin}}</td>
-                <td><strong>למדף:</strong> {{log.shell_position_in_whareHouse_Dest}}</td>
+                <td *ngIf="log.shell_position_in_whareHouse_Dest"><strong>למדף:</strong>
+                  {{log.shell_position_in_whareHouse_Dest}}</td>
+                <td *ngIf="!log.shell_position_in_whareHouse_Dest"><strong>יעד:</strong> {{log.destination}}</td>
                 <td><strong>כמות:</strong> {{log.amount}}</td>
               </tr>
             </table>
