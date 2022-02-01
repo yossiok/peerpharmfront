@@ -1,5 +1,5 @@
 export interface MaterialArrivalCertif {
-    certifNumber: number;
+    certNum: number;
     userName: string,
     date: Date;
     supplierCertifNumber: string;

@@ -121,7 +121,7 @@ export class MaterialArrivalComponent implements OnInit {
   approvedPackgeRemarksInput: Boolean = false;
 
   materialArrivalCertif: MaterialArrivalCertif = {
-    certifNumber: 0,
+    certNum: 0,
     userName: this.authService.loggedInUser.userName,
     date: this.today,
     materialArrivalLines: [],
@@ -703,7 +703,7 @@ export class MaterialArrivalComponent implements OnInit {
   saveCertif() {
     this.invtSer.arrivalsCertificate(this.materialArrivalCertif).subscribe(response => {
       if (response.materialArrivalCertifToSave) {
-        this.materialArrivalCertif.certifNumber = response.materialArrivalCertifToSave.certNum
+        this.materialArrivalCertif.certNum = response.materialArrivalCertifToSave.certNum
         this.toastSrv.success(response.msg)
         setTimeout(() => this.printBtn2.nativeElement.click(), 500)
       }
@@ -713,7 +713,7 @@ export class MaterialArrivalComponent implements OnInit {
 
   resetCertificate() {
     this.materialArrivalCertif = {
-      certifNumber: 0,
+      certNum: 0,
       userName: this.authService.loggedInUser.userName,
       date: this.today,
       materialArrivalLines: [],
