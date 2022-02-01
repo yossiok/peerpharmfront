@@ -622,9 +622,11 @@ export class OrdersComponent implements OnInit {
           }
           item.quantityRemained = Number(item.orderItem.quantity) - quantitySupplied;
           let missingComponents = []
-          for (let component of item.componentsExplosion) {
-            if (component.amount < 0)
+          if(item.componentsExplosion) {
+            for (let component of item.componentsExplosion) {
+              if (component.amount < 0)
               missingComponents.push(component._id)
+            }
           }
           let stringifiedMissingComponents = JSON.stringify(missingComponents)
           excel.push({
@@ -641,16 +643,27 @@ export class OrdersComponent implements OnInit {
             "סופק": Number(item.orderItem.quantity) - item.quantityRemained,
             "יתרה לאספקה": item.quantityRemained,
             "אצווה": item.batch,
-            "קו מילוי ראשי": item.itemTree.primaryLine,
-            "קו מילוי משני": item.itemTree.secondaryLine,
-            "תאריך מילוי": "",
+            "2אצווה": item.batch2,
+            "3אצווה": item.batch3,
+            "4אצווה": item.batch4,
+            "קו מילוי ראשי": item.itemTree[0].primaryLine,
+            "קו מילוי משני": item.itemTree[0].secondaryLine,
+            "תאריך מילוי צפוי": item.expectedFillingDate ? `${new Date(item.expectedFillingDate).getDate()}/${new Date(item.expectedFillingDate).getMonth()}/${new Date(item.expectedFillingDate).getFullYear()}` : '',
+            "תאריך מילוי סופי": item.fillingDate ? `${new Date(item.fillingDate).getDate()}/${new Date(item.fillingDate).getMonth()}/${new Date(item.fillingDate).getFullYear()}` : '',
             "כמות שמילאו": isNaN(Number(item.quantity_Produced)) ? "" : Number(item.quantity_Produced),
             "סטטוס מילוי": item.fillingStatus,
-            "קומפוננטים חסרים": stringifiedMissingComponents,
+            // "קומפוננטים חסרים": stringifiedMissingComponents,
+            "Main Component": item.itemTree[0].bottleAmount[0]._id,
+            "Main Component Inventory": item.itemTree[0].bottleAmount[0].amount,
+            "Sticker 1": item.itemTree[0].stickerAmount[0]._id,
+            "Sticker 1 Inventory": item.itemTree[0].stickerAmount[0].amount,
+            "Sticker 2": item.itemTree[0].sticker2Amount[0]._id,
+            "Sticker 2 Inventory": item.itemTree[0].sticker2Amount[0].amount,
+            "הערות": item.orderItem.itemRemarks,
             // "מדבקות": ""
           })
         } catch (e) {
-          console.log('error: ')
+          console.log('error: ',e)
         }
       }
       this.excelService.exportAsExcelFile(excel, 'דו"ח הזמנות ' + new Date())

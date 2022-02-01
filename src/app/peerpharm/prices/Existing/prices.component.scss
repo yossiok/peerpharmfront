@@ -51,3 +51,12 @@
   .small {
     width: 400px;
   }
+
+  .table-bordered td {
+    border: 1px solid rgb(102, 102, 35);
+    background: antiquewhite;
+  }
+
+  .table-bordered th {
+    border: 1px solid rgb(102, 102, 35);
+  }

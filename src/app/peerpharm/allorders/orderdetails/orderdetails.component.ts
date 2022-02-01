@@ -164,6 +164,7 @@ export class OrderdetailsComponent implements OnInit {
   orderId;
   orderStage;
   stageColor;
+  stage: string;
   chosenType: string;
   chosenMkpType: string;
   detailsArr: any[];
@@ -925,6 +926,7 @@ export class OrderdetailsComponent implements OnInit {
       ev.target.value = this.orderStage;
     }
   }
+
   async checkCostumersImportantRemarks(orders) {
     this.costumersNumbers = [];
     await orders.forEach((o, key) => {
@@ -971,6 +973,7 @@ export class OrderdetailsComponent implements OnInit {
       this.deliveryDate = res[0].deliveryDate;
       this.remarks = res[0].orderRemarks;
       this.orderId = res[0]._id;
+      this.stage = res[0].stage;
       this.hasSpecialOrderItems = res[0].hasSpecialOrderItems;
       this.documentationBeforeSend.costumerNumber = res[0].costumerInternalId;
       this.documentationBeforeSend.costumerName = res[0].costumer;
