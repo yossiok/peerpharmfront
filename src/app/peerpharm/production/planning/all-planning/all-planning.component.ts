@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { WorkPlanStatusPipe } from 'src/app/pipes/work-plan-status.pipe';
 import { AuthService } from 'src/app/services/auth.service';
@@ -15,9 +16,13 @@ import { WorkPlan } from '../WorkPlan';
   styleUrls: ['./all-planning.component.scss']
 })
 export class AllPlanningComponent implements OnInit {
+
+  @ViewChild('produced') producedWorkPlansER: ElementRef
+
   workPlans: WorkPlan[];
   workPlansCopy: WorkPlan[];
   checkedWorkPlans: WorkPlan[] = []
+  producedWorkPlans: number[]
   workPlansInterval: any = null
   currentWorkPlan: WorkPlan;
   materialsForFormules: Array<any>
@@ -37,7 +42,8 @@ export class AllPlanningComponent implements OnInit {
     private inventoryService: InventoryService,
     private toastr: ToastrService,
     private authService: AuthService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalService: NgbModal
   ) { }
 
   async ngOnInit() {
@@ -47,6 +53,7 @@ export class AllPlanningComponent implements OnInit {
       if (params["params"].workPlanId && bool) {
         this.openWorkPlan(Number(params["params"].workPlanId))
       }
+      else this.checkForProduced()
     })
   }
 
@@ -60,6 +67,11 @@ export class AllPlanningComponent implements OnInit {
         resolve(true)
       })
     })
+  }
+
+  checkForProduced() {
+    this.producedWorkPlans = this.workPlans.filter(wp => wp.status == 6).map(wp => wp.serialNumber)
+    this.modalService.open(this.producedWorkPlansER)
   }
 
   openWorkPlan(serialNum) {

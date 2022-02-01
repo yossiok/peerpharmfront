@@ -24,7 +24,7 @@ export class MatrialArrivalsCetificatesComponent implements OnInit {
 
     getAllCerts() {
         this.invServ.getAllArrivalsCertificates().subscribe(data => {
-            this.certificates = data
+            this.certificates = data.reverse()
             console.log('all certifs: ', data)
         })
     }

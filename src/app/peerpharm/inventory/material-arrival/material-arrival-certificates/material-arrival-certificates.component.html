@@ -18,7 +18,8 @@
             <tr *ngFor="let cert of certificates">
                 <td>
                     {{cert.certNum}}
-                    <br><button (click)="print(cert)" class="btn btn-info">הדפס תעודה</button>
+                    <br><br><br><br>
+                    <button (click)="print(cert)" class="btn btn-info">הדפס</button>
                 </td>
                 <td>{{cert.date | date: 'dd/MM/yy'}}</td>
                 <td>
