@@ -112,14 +112,16 @@ export class BatchesComponent implements OnInit {
 
   ngOnInit() {
     this.stopInterval();
-    this.getAllBatchesYear("thisYear");
-    if(confirm('האם אתה רוצה שהאצוות יתרעננו אוטומטית כל 5 דקות?')) this.startInterval();
+    // this.getAllBatchesYear("thisYear");
+    this.getLastBatches(1000);
+    if (confirm("האם אתה רוצה שהאצוות יתרעננו אוטומטית כל 5 דקות?"))
+      this.startInterval();
     this.lastValueUpdate = this.formatDate(new Date());
     this.getUserInfo();
   }
 
   ngOnDestroy() {
-    this.stopInterval()
+    this.stopInterval();
   }
 
   checkPermission() {
@@ -199,9 +201,9 @@ export class BatchesComponent implements OnInit {
   }
 
   stopInterval() {
-    try{
-    clearInterval(this.myRefresh);
-    }catch(err){
+    try {
+      clearInterval(this.myRefresh);
+    } catch (err) {
       console.log(err);
     }
   }
@@ -221,6 +223,41 @@ export class BatchesComponent implements OnInit {
     }
     console.log(d);
     this.batchService.getAllBatchesYear(d).subscribe((res) => {
+      console.log(res);
+      this.batches = res.filter((b) => b.type != "makeup");
+      this.mkpBatches = res.filter((b) => b.type == "makeup");
+      this.batchesCopy = res;
+      this.batches.map((batch) => {
+        if (batch.weightKg != null && batch.weightQtyLeft != null) {
+          if (batch.weightQtyLeft == 0) batch.color = "Aquamarine";
+          else if (batch.scheduled == "yes") batch.color = "yellow";
+          else if (batch.weightQtyLeft < batch.weightKg) batch.color = "orange";
+          else batch.color = "white";
+
+          if (res.length == res.length) {
+            this.hasMoreItemsToload = false;
+            this.showLoader = false;
+          }
+        }
+      });
+      this.mkpBatches.map((batch) => {
+        if (batch.weightKg != null && batch.weightQtyLeft != null) {
+          if (batch.weightQtyLeft == 0) batch.color = "Aquamarine";
+          else if (batch.scheduled == "yes") batch.color = "yellow";
+          else if (batch.weightQtyLeft < batch.weightKg) batch.color = "orange";
+          else batch.color = "white";
+
+          if (res.length == res.length) {
+            this.hasMoreItemsToload = false;
+            this.showLoader = false;
+          }
+        }
+      });
+    });
+  }
+  getLastBatches(limit) {
+    console.log(limit);
+    this.batchService.getLastBatches(limit).subscribe((res) => {
       console.log(res);
       this.batches = res.filter((b) => b.type != "makeup");
       this.mkpBatches = res.filter((b) => b.type == "makeup");
@@ -386,20 +423,31 @@ export class BatchesComponent implements OnInit {
           let obj = {
             "Batch no.": batch.batchNumber,
             PH: batch.ph,
-            "Production Date": batch.produced ? batch.produced.toString().slice(0,10) : 'Production Date not Supplied by User',
-            "Expiration Date": batch.expration ? batch.expration.toString().slice(0,10) : 'Expiration Date not Supplied by User',
-            "Item": batch.item,
+            "Production Date": batch.produced
+              ? batch.produced.toString().slice(0, 10)
+              : "Production Date not Supplied by User",
+            "Expiration Date": batch.expration
+              ? batch.expration.toString().slice(0, 10)
+              : "Expiration Date not Supplied by User",
+            Item: batch.item,
             "": batch.itemName,
-            "Order": batch.order,
+            Order: batch.order,
             "Quantity Required (Kg)": batch.weightKg,
             "Quantity Produced (Kg)": batch.weightKg - batch.weightQtyLeft,
             "Quantity Reamined (Kg)": batch.weightQtyLeft,
-            "Barrels Qty": batch.barrels
+            "Barrels Qty": batch.barrels,
           };
           excelTable.push(obj);
         }
       });
-      this.excelService.exportAsExcelFile(excelTable, `Batches from ${this.lastBatchToExport}, Exported on ${new Date().getDate()}/${new Date().getMonth() +1}/${new Date().getFullYear()}`);
+      this.excelService.exportAsExcelFile(
+        excelTable,
+        `Batches from ${
+          this.lastBatchToExport
+        }, Exported on ${new Date().getDate()}/${
+          new Date().getMonth() + 1
+        }/${new Date().getFullYear()}`
+      );
 
       this.lastBatchToExport = "";
     } else {

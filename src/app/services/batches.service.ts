@@ -23,7 +23,7 @@ export class BatchesService {
   }
 
   addNewMkpBatch(newMkpBatch, reduce) {
-    let url = this.baseUrl + "batch/addMkpBatch?reduce="+reduce;
+    let url = this.baseUrl + "batch/addMkpBatch?reduce=" + reduce;
     return this.http
       .post(url, JSON.stringify(newMkpBatch), this.options)
       .pipe(map((res) => res.json()));
@@ -32,6 +32,11 @@ export class BatchesService {
   // BATCHES OF GENERAL PHARMA
   getAllBatches(): Observable<any> {
     let url = this.baseUrl + "batch";
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  getLastBatches(limit): Observable<any> {
+    let url = this.baseUrl + "batch?limit=" + limit;
+
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
   getAllBatchesYear(year): Observable<any> {
