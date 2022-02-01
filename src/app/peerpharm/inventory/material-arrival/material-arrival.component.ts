@@ -612,8 +612,11 @@ export class MaterialArrivalComponent implements OnInit {
     let whareHouse = this.newMaterialArrival.controls.warehouse.value;
     if (whareHouse == 'Karantine') {
       whareHouseId = '5cf64e77e32883115c39dc56'
-    } else {
+    } else if (whareHouse == 'Rosh HaAyin') {
       whareHouseId = '5c1124ef2db99c4434914a0e'
+    }
+    else if(whareHouse == 'Rosh HaAyin C'){ // KOMA EFES
+      whareHouseId = '61c81a3619f8220e088a4649'
     }
     if (shelf != '') {
       ;
@@ -621,6 +624,7 @@ export class MaterialArrivalComponent implements OnInit {
         if (data == 'shelfMissing') {
           this.toastSrv.error('מדף אינו קיים , אנא הקם מדף בניהול מחסן')
           this.newMaterialArrival.controls.position.setValue('')
+          this.submittingForm = false
         } else {
 
           this.toastSrv.success('נבחר מדף')
@@ -720,6 +724,14 @@ export class MaterialArrivalComponent implements OnInit {
       sumAmount: 0,
       sumUnits: 0
     }
+  }
+
+  printHistoricalCertif(certif: MaterialArrivalCertif) {
+    this.materialArrivalCertif = certif
+    setTimeout(()=> {
+      this.printBtn2.nativeElement.click()
+    } 
+    , 500)
   }
 
   printBarcode(id, number) {

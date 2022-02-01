@@ -39,6 +39,12 @@
     </ng-template>
   </ng-container>
   <ng-container ngbNavItem>
+    <a ngbNavLink>שחזור תעודות</a>
+    <ng-template ngbNavContent>
+      <app-material-arrival-certificates (certToPrint)="printHistoricalCertif($event)"></app-material-arrival-certificates>
+    </ng-template>
+  </ng-container>
+  <ng-container ngbNavItem>
     <a ngbNavLink>חו"ג חדש</a>
     <ng-template ngbNavContent>
 
@@ -458,6 +464,7 @@
                 <label>מחסן</label>
                 <select type="text" class="form-control is-valid" formControlName="warehouse" name='warehouse'>
                   <option value="Rosh HaAyin" selected="true">Rosh HaAyin</option>
+                  <!-- <option value="Rosh HaAyin C">Rosh HaAyin 0</option> -->
                   <option value="Karantine">Karantine</option>
                 </select>
               </div>
@@ -674,7 +681,7 @@
       </p>
     </header>
     <main>
-      <h2>תעודת קליטה מס' {{materialArrivalCertif.certifNumber}}</h2>
+      <h2>תעודת קליטה מס' {{materialArrivalCertif.certNum}}</h2>
       <p>
         <span></span>
         <span><u>תאריך:</u></span>&nbsp;&nbsp;

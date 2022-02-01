@@ -1,0 +1,60 @@
+<h1 dir="rtl">שחזור תעודות Material Arrivals</h1>
+
+<div dir="rtl" class="row mt-5 tableFixHead">
+    <table class="table table-bordered table-striped">
+        <thead class="bg-info text-white fixed">
+            <th>מספר תעודה</th>
+            <th>תאריך</th>
+            <th>חומרים</th>
+            <th>סה"כ ק"ג</th>
+            <th>סה"כ יחידות</th>
+            <th>אצוות ספק</th>
+            <th>שם ספק</th>
+            <th>מספר ספק</th>
+            <th>מספר הזמנה ספק</th>
+            <th>מקבל (שם משתמש)</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let cert of certificates">
+                <td>
+                    {{cert.certNum}}
+                    <br><button (click)="print(cert)" class="btn btn-info">הדפס תעודה</button>
+                </td>
+                <td>{{cert.date | date: 'dd/MM/yy'}}</td>
+                <td>
+                    <table class="table table-hover">
+                        <thead>
+                            <th>מק"ט</th>
+                            <th>שם</th>
+                            <th>מספר ספק</th>
+                            <th>כמות (ק"ג / ליטר)</th>
+                            <th>יחידות</th>
+                            <th>מחסן</th>
+                            <th>איתור</th>
+                            <th>מס' הזמנה</th>
+                            <th>הערות</th>
+                        </thead>
+                        <tr *ngFor="let line of cert.materialArrivalLines">
+                            <td>{{line.itemInternalNumber}}</td>
+                            <td>{{line.itemName}}</td>
+                            <td>{{line.itemSupplierNumber}}</td>
+                            <td>{{line.amount}}</td>
+                            <td>{{line.unitsAmount}}</td>
+                            <td>{{line.wareHouse}}</td>
+                            <td>{{line.position}}</td>
+                            <td>{{line.purchaseOrderNumber}}</td>
+                            <td>{{line.remarks}}</td>
+                        </tr>
+                    </table>
+                </td>
+                <td>{{cert.sumAmount}}</td>
+                <td>{{cert.sumUnits}}</td>
+                <td>{{cert.supplierCertifNumber}}</td>
+                <td>{{cert.supplierName}}</td>
+                <td>{{cert.supplierNumber}}</td>
+                <td>{{cert.supplierOrderNumber}}</td>
+                <td>{{cert.userName}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

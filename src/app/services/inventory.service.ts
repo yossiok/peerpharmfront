@@ -849,11 +849,18 @@ export class InventoryService {
       .pipe(map((res) => res.json()));
   }
 
+  // save new certificate
   arrivalsCertificate(materialArrivalCertif): Observable<any> {
     let url = this.baseUrl + "material/arrivalsCertificate";
     return this.http
       .post(url, JSON.stringify(materialArrivalCertif), this.options)
       .pipe(map((reponse) => reponse.json()));
+  }
+
+  //get all certificates
+  getAllArrivalsCertificates(): Observable<any> {
+    let url = this.baseUrl + "material/arrivalsCertificate";
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
   getMaterialStockItemByNum(internalNumber): Observable<any> {

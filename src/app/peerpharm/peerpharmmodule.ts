@@ -116,7 +116,7 @@ import { PackingComponent } from "./schedule/packing/packing.component";
 import { AddFormulePhaseComponent } from "./formules/add-formule-phase/add-formule-phase.component";
 import { ExpectedArrivalsComponent } from "./procurement/expected-arrivals/expected-arrivals.component";
 import { MaterialArrivalComponent } from "./inventory/material-arrival/material-arrival.component";
-import { MaterialArrivalTableComponent } from "./inventory/material-arrival-table/material-arrival-table.component";
+import { MaterialArrivalTableComponent } from "./inventory/material-arrival/material-arrival-table/material-arrival-table.component";
 import { MaterialScanViewComponent } from "./inventory/material-scan-view/material-scan-view.component";
 import { WizardComponent } from "./production/wizard/wizard.component";
 import { ScanProductComponent } from "./production/scan-product/scan-product.component";
@@ -183,6 +183,7 @@ import { FreeBatchesComponent } from "./allorders/free-batches/free-batches.comp
 import { WhareHouseUpdatesComponent } from "./inventory/wharehouse/wharehouse-updates/wharehouse-updates.component";
 import { ProblematicOrderItemsComponent } from "./allorders/problematics/problematic-order-items.component";
 import { ProblematicItemsComponent } from "./procurement/procumentOrders/problematic-items/problematic-items.component";
+import { MatrialArrivalsCetificatesComponent } from "./inventory/material-arrival/material-arrival-certificates/material-arrival-certificates.component";
 
 @NgModule({
   exports: [
@@ -342,6 +343,7 @@ import { ProblematicItemsComponent } from "./procurement/procumentOrders/problem
     WhareHouseUpdatesComponent,
     ProblematicOrderItemsComponent,
     ProblematicItemsComponent,
+    MatrialArrivalsCetificatesComponent
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [
