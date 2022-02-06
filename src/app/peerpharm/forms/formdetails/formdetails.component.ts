@@ -78,19 +78,22 @@ export class FormdetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    let formID = this.route.snapshot.paramMap.get('id');
+    let formID1 = this.route.snapshot.paramMap.get('id');
     let scheduleID = this.route.snapshot.paramMap.get('id2');
     this.getUserInfo();
+
+    // הגענו מלו"ז עבודה
     if (scheduleID && scheduleID != '0') {
       this.checkIfFormExist(scheduleID)
-        .then(formID => {
-          this.getFormData(true, formID)
+        .then(formID2 => {
+          this.getFormData(true, formID2)
         }).catch(scheduleID => {
           this.getScheduleDetails(scheduleID)
         })
     }
-    else this.getFormData(true, formID)
+
+    // הגענו מהטאבלט (עמוד ראשי) או ממסך טפסים
+    else this.getFormData(true, formID1)
   }
 
   async checkIfFormExist(scheduleId) {
@@ -105,8 +108,36 @@ export class FormdetailsComponent implements OnInit {
         }
       })
     })
+  }
 
-
+  
+  async getFormData(allChecks, formID) {
+    this.formid = formID
+    await this.formsService.getFormData(this.formid).subscribe(res => {
+      this.form = res[0];
+      this.loadQAPallets(this.form._id)
+      this.formDetailsItemNum = this.form.itemN
+      this.batchService.getBatchData(this.form.batchN).subscribe(data => {
+        console.log('batchData: ',data)
+        debugger
+        this.form.productaionDate = data[0].produced
+        this.form.expirationDate = data[0].expration
+      })
+      if (this.form.productionEndDate) {
+        let days = this.form.productionEndDate.slice(8, 10)
+        let monthes = this.form.productionEndDate.slice(5, 7)
+        this.form.productionEndDate = this.form.productionEndDate.slice(0, 5);
+        this.form.productionEndDate = this.form.productionEndDate + days + '-' + monthes
+      }
+      this.form.checkNetoWeight.forEach(element => {
+        if (element) {
+          const netNumber = parseInt(element, 10);
+          this.netoWeightArr.push(netNumber);
+        }
+      });
+      this.CalcAvgWeight();
+      if (allChecks) this.wrapAllChecks();
+    });
   }
 
   consoleLogLeftOvers() {
@@ -187,34 +218,6 @@ export class FormdetailsComponent implements OnInit {
     })
   }
 
-  async getFormData(allChecks, formID) {
-    this.formid = formID
-    await this.formsService.getFormData(this.formid).subscribe(res => {
-      this.form = res[0];
-      this.loadQAPallets(this.form._id)
-      this.formDetailsItemNum = this.form.itemN
-      this.batchService.getBatchData(this.form.batchN).subscribe(data => {
-        console.log('batchData: ',data)
-        debugger
-        this.form.productaionDate = data[0].produced
-        this.form.expirationDate = data[0].expration
-      })
-      if (this.form.productionEndDate) {
-        let days = this.form.productionEndDate.slice(8, 10)
-        let monthes = this.form.productionEndDate.slice(5, 7)
-        this.form.productionEndDate = this.form.productionEndDate.slice(0, 5);
-        this.form.productionEndDate = this.form.productionEndDate + days + '-' + monthes
-      }
-      this.form.checkNetoWeight.forEach(element => {
-        if (element) {
-          const netNumber = parseInt(element, 10);
-          this.netoWeightArr.push(netNumber);
-        }
-      });
-      this.CalcAvgWeight();
-      if (allChecks) this.wrapAllChecks();
-    });
-  }
 
   async addNewTest(test) {
     let newTest = {...test}
