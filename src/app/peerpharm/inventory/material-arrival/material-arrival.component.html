@@ -1,5 +1,10 @@
 <nav dir="rtl" ngbNav #nav="ngbNav" class="nav-tabs">
+
+
+
+
   <ng-container ngbNavItem>
+
     <a ngbNavLink>חו"ג פג תוקף</a>
     <ng-template ngbNavContent>
       <div class="container-fluid text-center">
@@ -41,7 +46,8 @@
   <ng-container ngbNavItem>
     <a ngbNavLink>שחזור תעודות</a>
     <ng-template ngbNavContent>
-      <app-material-arrival-certificates (certToPrint)="printHistoricalCertif($event)"></app-material-arrival-certificates>
+      <app-material-arrival-certificates (certToPrint)="printHistoricalCertif($event)">
+      </app-material-arrival-certificates>
     </ng-template>
   </ng-container>
   <ng-container ngbNavItem>
@@ -53,21 +59,25 @@
         <div *ngIf="!requiresFromFull" class="mh-85 container" style="overflow: auto; height: 80vh;">
           <h2 style='text-align: center; font-weight: bold;'><u>בדיקת חו"ג</u></h2>
           <h4 style='text-align: center; font-weight: bold;'></h4>
-          <div dir="rtl" class="divStyle">
-            <span class="spanTDStyle">
-              <label style="padding-left:15px; ">מק"ט</label>
-              <input type="text" name="itemNumber" style="padding-right: 10px;" (change)="changeFields($event)">
-            </span>
-            <span>
-              <img src="../../../../assets/images/search.png" style="width:30px; cursor: pointer;"
-                (click)="findMaterialBtNumber()">
-            </span>
-            <span class="spanTDStyle">
-              <label style="padding-left:15px; ">שם החומר</label>
-              <input type="text" name="itemName" style="padding-right: 10px;" (change)="changeFields($event)">
-            </span>
-          </div>
           <form [formGroup]="requirementsForm">
+            <div dir="rtl" class="divStyle">
+              <span class="spanTDStyle">
+                <label style="padding-left:15px; ">מק"ט</label>
+                <input type="text" name="itemNumber" formControlName="itemNumber" style="padding-right: 10px;"
+                  (blur)="findMaterialBtNumber()">
+                <!-- <input type="text" name="itemNumber"  style="padding-right: 10px;" (change)="changeFields($event)"> -->
+              </span>
+              <span>
+                <img src="../../../../assets/images/search.png" style="width:30px; cursor: pointer;"
+                  (click)="findMaterialBtNumber()">
+              </span>
+              <span class="spanTDStyle">
+                <label style="padding-left:15px; ">שם החומר</label>
+                <input type="text" name="itemName" formControlName="itemName" style="padding-right: 10px;">
+                <!-- <input type="text" name="itemName" formControlName="itemName" style="padding-right: 10px;" (change)="changeFields($event)"> -->
+              </span>
+            </div>
+            <!-- <form [formGroup]="requirementsForm"> -->
             <table style="width:80%; background-color: white; margin-bottom:0;  " class="table table-bordered"
               dir="rtl">
               <thead>
@@ -89,8 +99,10 @@
                   <td>
                     <span class="spanTDStyle">
                       <label for="">זוהה</label>
-                      <input type="radio" name="orderItemNum" style="padding-right: 10px;" [checked]="true"
-                        (change)="checkRadio($event, true)">
+                      <input type="radio" formControlName="orderItemNum" name="orderItemNum"
+                        style="padding-right: 10px;" [checked]="true">
+                      <!-- <input type="radio"  formControlName="orderItemNum" name="orderItemNum" style="padding-right: 10px;" [checked]="true"
+                        (change)="checkRadio($event, true)"> -->
                     </span>
                     <span class="spanTDStyle">
                       <label for="">לא זוהה</label>
@@ -282,6 +294,7 @@
               <button class="brn btn-success mr-1" (click)="saveMaterialRequirementsForm()">אישור</button>
               <button class="brn btn-danger" (click)="resetMaterialRequirementsForm()">אפס טופס</button>
             </div>
+
           </form>
         </div>
 
@@ -464,14 +477,14 @@
                 <label>מחסן</label>
                 <select type="text" class="form-control is-valid" formControlName="warehouse" name='warehouse'>
                   <option value="Rosh HaAyin" selected="true">Rosh HaAyin</option>
-                  <!-- <option value="Rosh HaAyin C">Rosh HaAyin 0</option> -->
+                  <option value="Rosh HaAyin C">Rosh HaAyin 0</option>
                   <option value="Karantine">Karantine</option>
                 </select>
               </div>
               <div class="col-sm-2">
                 <label>מיקום הסחורה</label>
-                <input type="text" (focusout)="checkIfShelfExist($event)" class="form-control is-valid"
-                  formControlName="position" name='position'>
+                <input type="text" (blur)="checkIfShelfExist()" class="form-control is-valid" formControlName="position"
+                  name='position'>
               </div>
 
               <div class="col-sm-2">

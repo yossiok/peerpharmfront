@@ -109,6 +109,7 @@ export class OrderdetailsComponent implements OnInit {
   printOrder: boolean = false;
   plateImg = "";
   currentItem: any;
+  loadAlerts: boolean = false;
 
   componentsAmounts: any = {
     bottleQuantity: 0,
@@ -171,7 +172,7 @@ export class OrderdetailsComponent implements OnInit {
   components: any[];
   multi: boolean = false;
   orderExplodeLoader: boolean = false;
-  loadData: boolean = false;
+  loadData: boolean = true;
   itemData: any = {
     itemNumber: "",
     discription: "",
@@ -293,7 +294,7 @@ export class OrderdetailsComponent implements OnInit {
 
   async ngOnInit() {
     // this.getAllFormsDetails()
-
+    this.loadAlerts = true;
     this.iAmHaviv =
       this.authService.loggedInUser.screenPermission == "1" ||
       this.authService.loggedInUser.screenPermission == "2";
@@ -310,7 +311,7 @@ export class OrderdetailsComponent implements OnInit {
         this.loadData = true;
         this.orderService.getOpenOrdersItems().subscribe(async (orders) => {
           // console.log(orders);
-          this.loadData = false;
+
           this.multi = true;
           orders.orderItems.forEach((item) => {
             item.pakaStatus = item.pakaStatus ? item.pakaStatus : 0;
@@ -334,9 +335,11 @@ export class OrderdetailsComponent implements OnInit {
           //this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
           //this.getComponents(this.ordersItems[0].orderNumber);
           this.multi = true;
+          this.loadData = false;
         });
       } else {
         this.showingAllOrders = false;
+        this.loadData = true;
         this.orderService.ordersArr.subscribe(async (res) => {
           var numArr = this.number.split(",").filter((x) => x != "");
 
@@ -416,6 +419,7 @@ export class OrderdetailsComponent implements OnInit {
 
                   this.show = true;
                   this.multi = false;
+                  this.loadData = false;
                 }
               });
           } else {
@@ -425,6 +429,7 @@ export class OrderdetailsComponent implements OnInit {
 
             this.show = true;
             this.multi = false;
+            this.loadData = false;
           }
         });
       }
@@ -439,6 +444,8 @@ export class OrderdetailsComponent implements OnInit {
     let problematicArr = [];
     let alertsArr = [];
     let problematicItems = [];
+    this.loadData = true;
+    this.loadAlerts = true;
     problematicItems = item.problematicComponents.concat(
       item.problematicMaterials
     );
@@ -491,11 +498,11 @@ export class OrderdetailsComponent implements OnInit {
               }
             }
           } else {
-            let idx = alertsArr.findIndex((al) => al.alert == 5);
+            let idx = alertsArr.findIndex((al) => al.alert == 6);
             if (idx == -1) {
               alertsArr.push({
-                alert: 5,
-                problem: "general problem",
+                alert: 6,
+                problem: "סוג הבעיה לא הוגדר",
                 itemNumber: component.componentN,
               });
             } else {
@@ -517,6 +524,7 @@ export class OrderdetailsComponent implements OnInit {
     }
 
     // console.log({ problematicArr, alertsArr });
+    this.loadAlerts = false;
     return { problematicArr, alertsArr };
   }
 
@@ -1132,6 +1140,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   getOrderItems(singleLine): void {
+    this.loadData = true;
     var orderNum;
     this.number = this.route.snapshot.paramMap.get("id");
     if (this.number.includes(","))
@@ -1269,6 +1278,7 @@ export class OrderdetailsComponent implements OnInit {
           this.getComponents(this.ordersItems[0].orderNumber);
         });
       });
+    this.loadData = false;
   }
 
   colorOrderItemsLines(orderItems) {

@@ -74,7 +74,9 @@
   <option value="done">Closed</option>
 </select>
 <div class="text-center">
-  <button class="btn btn-primary" [disabled]="orderStage == 'waitingFinance'" [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''" (click)="updatePakaStatus()">Send to Work Plan Creation</button>
+  <button class="btn btn-primary" [disabled]="orderStage == 'waitingFinance'"
+    [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''" (click)="updatePakaStatus()">Send to Work
+    Plan Creation</button>
 </div>
 
 <div *ngIf="orderExplodeLoader" class="loading">Loading&#8230;</div>
@@ -119,9 +121,9 @@
             ngbTooltip="פיצוץ חומרים" (click)="loadMaterialsForFormule()" class="showCmptBtn"
             src="../../../../assets/images/what-happens-when-we-mix-liquids.jpg" alt="">
         </th>
-        <th *ngIf="loadData">
+        <!-- <th *ngIf="loadData">
           <div class="smallerLoader"></div>
-        </th>
+        </th> -->
 
         <th>
           <img class="showCmptBtn" ngbTooltip="פיצוץ קומפוננטים" src="../../../../assets/images/partsAssembly2.jpg"
@@ -180,6 +182,7 @@
       </tr>
 
       <ng-container *ngFor="let item of ordersItems; let i = index">
+
         <tr style="border: 2px solid black; box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
           [style.background-color]="item.color">
 
@@ -194,7 +197,7 @@
             <ul *ngFor="let alert of item.alertsArr">
               <li *ngIf="alert.alert == 1" style='list-style: none; color:red '
                 [ngbTooltip]="'פריט '+ alert.itemNumber +': '+ alert.problem">
-                <i class="fas fa-exclamation-triangle"></i>
+                <i class="fas fa-exclamation"></i>
               </li>
               <li *ngIf="alert.alert == 2" style="color:orange;list-style: none; "
                 [ngbTooltip]="'פריט '+ alert.itemNumber +': '+ alert.problem"><i class="fas fa-battery-half"></i>
@@ -356,7 +359,9 @@
                   <input *ngIf="editBatchN || item.batch == '' || item.batch == null || item.batch == undefined"
                     type='text' style="width:50%" #inputBatch>
                 </td>
-                <td><button [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''" class='btn btn-success' [disabled]="orderStage == 'waitingFinance'" (click)="setBatch(item, inputBatch.value, item.batch)">set</button>
+                <td><button [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''"
+                    class='btn btn-success' [disabled]="orderStage == 'waitingFinance'"
+                    (click)="setBatch(item, inputBatch.value, item.batch)">set</button>
                 </td>
                 <td><i class="ti-check text-success m-r-10" (click)="updateBatchExist(item , item.batch)"
                     style='cursor: pointer;'></i></td>
@@ -367,7 +372,9 @@
                 <td>
                   <h5>Set Printing Schedule: </h5>
                 </td>
-                <td>{{det.type}} &nbsp;&nbsp; {{det.number}} &nbsp;&nbsp;&nbsp;<button [disabled]="orderStage == 'waitingFinance'" [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''" class='btn btn-info'
+                <td>{{det.type}} &nbsp;&nbsp; {{det.number}} &nbsp;&nbsp;&nbsp;<button
+                    [disabled]="orderStage == 'waitingFinance'"
+                    [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''" class='btn btn-info'
                     (click)="setToPrintDetails(content, item, det)">print</button></td>
                 <td></td>
                 <td></td>
@@ -392,7 +399,8 @@
                   <input type="radio" name="type" #type value='mkp2' [(ngModel)]="chosenType">Mkp2<br>
                   <input type="radio" name="type" #type value='packaging' [(ngModel)]="chosenType">Packaging<br>
                 </td>
-                <td placement="top" [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''" [ngbTooltip]="item.productionApproved ? '' : 'Item Not Approved by PP&C'"><button
+                <td placement="top" [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''"
+                  [ngbTooltip]="item.productionApproved ? '' : 'Item Not Approved by PP&C'"><button
                     *ngIf="setScheduleAllowed" [disabled]="!item.productionApproved || orderStage == 'waitingFinance'"
                     [style.cursor]="item.productionApproved ? 'pointer' : 'not-allowed'"
                     (click)='setSchedule(item ,type.value)' class='btn btn-success'>Set</button></td>
@@ -404,7 +412,8 @@
                 </td>
                 <td><input #cookingDate type='date'></td>
                 <td><input #cookingMarks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
-                <td>&nbsp;&nbsp;&nbsp;<button [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''" [disabled]="orderStage == 'waitingFinance'" class='btn btn-info'
+                <td>&nbsp;&nbsp;&nbsp;<button [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''"
+                    [disabled]="orderStage == 'waitingFinance'" class='btn btn-info'
                     (click)="setCookingSchedule(item, cookingDate, cookingMarks)">Set</button></td>
                 <td></td>
                 <td></td>
@@ -421,7 +430,8 @@
                 <td><input #mkpProdInvoice placeholder="Invoice" type='text'></td>
                 <td>
                 </td>
-                <td><button [disabled]="orderStage == 'waitingFinance'" [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''"
+                <td><button [disabled]="orderStage == 'waitingFinance'"
+                    [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''"
                     (click)='setMkpSchedule(item , mkpProdDate.value, mkpProdRemarks.value , mkpProdInvoice.value)'
                     class='btn btn-success'>Set</button></td>
               </tr>
@@ -432,6 +442,7 @@
           </td>
         </tr>
 
+
       </ng-container>
 
     </tbody>
@@ -439,7 +450,17 @@
   </table>
   <!-- </mat-tab> -->
 </div>
+<ng-container *ngIf="loadAlerts">
 
+  <div class="row">
+    <div class="col-5"></div>
+    <div class="col-2">
+      <h3>Loading order items...</h3>
+      <div class="mediumLoader"></div>
+    </div>
+    <div class="col-5"></div>
+  </div>
+</ng-container>
 <!-- </mat-tab-group> -->
 
 

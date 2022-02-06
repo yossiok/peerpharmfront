@@ -63,7 +63,10 @@ export class InvArrivalsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    setTimeout(() => this.first.nativeElement.focus(), 500);
+    setTimeout(() => {
+      this.first.nativeElement.focus();
+      console.log(this.allWhareHouses);
+    }, 500);
     if (this.itemNumber) {
       this.disabled = true;
       this.componentArrival.controls.item.setValue(this.itemNumber);
