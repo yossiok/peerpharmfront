@@ -10,6 +10,7 @@ import { ScheduleService } from 'src/app/services/schedule.service';
 import { Costumer } from '../../classes/costumer.class';
 import { Observable } from 'rxjs';
 import { BatchesService } from 'src/app/services/batches.service';
+import { ItemsService } from 'src/app/services/items.service';
 
 @Component({
   selector: 'app-formdetails',
@@ -72,25 +73,29 @@ export class FormdetailsComponent implements OnInit {
     public translate: TranslateService,
     private toastService: ToastrService,
     private scheduleService: ScheduleService,
-    private batchService: BatchesService
+    private batchService: BatchesService,
+    private itemService: ItemsService
   ) {
 
   }
 
   ngOnInit() {
-
-    let formID = this.route.snapshot.paramMap.get('id');
+    let formID1 = this.route.snapshot.paramMap.get('id');
     let scheduleID = this.route.snapshot.paramMap.get('id2');
     this.getUserInfo();
+
+    // הגענו מלו"ז עבודה
     if (scheduleID && scheduleID != '0') {
       this.checkIfFormExist(scheduleID)
-        .then(formID => {
-          this.getFormData(true, formID)
+        .then(formID2 => {
+          this.getFormData(true, formID2)
         }).catch(scheduleID => {
           this.getScheduleDetails(scheduleID)
         })
     }
-    else this.getFormData(true, formID)
+
+    // הגענו מהטאבלט (עמוד ראשי) או ממסך טפסים
+    else this.getFormData(true, formID1)
   }
 
   async checkIfFormExist(scheduleId) {
@@ -105,87 +110,8 @@ export class FormdetailsComponent implements OnInit {
         }
       })
     })
-
-
   }
 
-  consoleLogLeftOvers() {
-    console.log(this.form.leftOvers)
-  }
-
-  async getScheduleDetails(scheduleId) {
-    this.scheduleService.getScheduleById(scheduleId).subscribe(data => {
-      if (data) {
-
-        // check batch QA status
-        let batches = data.batch.split('+') 
-
-        if (batches.length > 1) { // batches = ['21pp1892', '21pp1885', '21pp1899']
-          let notApprovedBatches = []
-          this.batchService.getSpecvalueMulti(batches).subscribe(response => {
-            for(let batch of response.batches) {
-              if (batch.specStatus.status != 1) notApprovedBatches.push(batch) 
-            }
-            if(notApprovedBatches.length > 0) {
-              for(let batch of notApprovedBatches) this.toastService.error(``, `באטצ' ${batch.batchNumber} לא מאושר ע"י QA`)
-              this.toastService.error('', 'לא ניתן לפתוח טופס ייצור')
-            } 
-            else {
-              let tempObj = {
-                batchN: batches.join('+'),
-                itemN: data.item,
-                costumerName: data.costumer,
-                productName: data.productName,
-                orderNumber: data.orderN,
-                orderQuantity: data.qty,
-              }
-              this.formDetailsItemNum = data.item
-              this.form = tempObj
-              this.form.scheduleId = scheduleId
-              this.newForm = true;
-
-            }
-  
-          })
-
-        }
-        else {
-          let tempObj = {
-            batchN: data.batch,
-            itemN: data.item,
-            costumerName: data.costumer,
-            productName: data.productName,
-            orderNumber: data.orderN,
-            orderQuantity: data.qty,
-          }
-          this.formDetailsItemNum = data.item
-          this.form = tempObj
-          this.form.scheduleId = scheduleId
-          this.newForm = true;
-          this.batchService.getBatchData(this.form.batchN).subscribe(data => {
-            console.log('batchData: ',data)
-            debugger
-            this.form.productaionDate = data[0].produced
-            this.form.expirationDate = data[0].expration
-          })
-        }
-
-        // check if there is another form with that batch
-        this.numberOfFormsWithSameBatch = 0
-        for(let batch of batches) {
-          this.formsService.getFormDetailsByBatch(batch).subscribe(forms => {
-            if (forms.length > 0) {
-              for (let form of forms) {
-                if (form.batchN && form.batchN != "") {
-                  this.numberOfFormsWithSameBatch++
-                }
-              }
-            }
-          })
-        }
-      }
-    })
-  }
 
   async getFormData(allChecks, formID) {
     this.formid = formID
@@ -194,7 +120,7 @@ export class FormdetailsComponent implements OnInit {
       this.loadQAPallets(this.form._id)
       this.formDetailsItemNum = this.form.itemN
       this.batchService.getBatchData(this.form.batchN).subscribe(data => {
-        console.log('batchData: ',data)
+        console.log('batchData: ', data)
         debugger
         this.form.productaionDate = data[0].produced
         this.form.expirationDate = data[0].expration
@@ -216,8 +142,101 @@ export class FormdetailsComponent implements OnInit {
     });
   }
 
+  consoleLogLeftOvers() {
+    console.log(this.form.leftOvers)
+  }
+
+  async getScheduleDetails(scheduleId) {
+
+    // new FORM! comes from schedule
+
+    // get schedule data
+    this.scheduleService.getScheduleById(scheduleId).subscribe(data => {
+      if (data) {
+
+        // get neto weight
+        this.itemService.getItemData(data.item).subscribe(itemData => {
+          debugger
+          let netWeight = itemData[0].netWeightK
+
+          // check batch QA status
+          let batches = data.batch.split('+')
+
+          // multiple batches:
+          if (batches.length > 1) {
+            let notApprovedBatches = []
+            this.batchService.getSpecvalueMulti(batches).subscribe(response => {
+              for (let batch of response.batches) {
+                if (batch.specStatus.status != 1) notApprovedBatches.push(batch)
+              }
+              if (notApprovedBatches.length > 0) {
+                for (let batch of notApprovedBatches) this.toastService.error(``, `באטצ' ${batch.batchNumber} לא מאושר ע"י QA`)
+                this.toastService.error('', 'לא ניתן לפתוח טופס ייצור')
+              }
+              else {
+                let tempObj = {
+                  batchN: batches.join('+'),
+                  itemN: data.item,
+                  costumerName: data.costumer,
+                  productName: data.productName,
+                  orderNumber: data.orderN,
+                  orderQuantity: data.qty,
+                  netWeight
+                }
+                this.formDetailsItemNum = data.item
+                this.form = tempObj
+                this.form.scheduleId = scheduleId
+                this.newForm = true;
+              }
+            })
+          }
+
+          // only one batch:
+          else {
+            let tempObj = {
+              batchN: data.batch,
+              itemN: data.item,
+              costumerName: data.costumer,
+              productName: data.productName,
+              orderNumber: data.orderN,
+              orderQuantity: data.qty,
+              netWeight
+            }
+            this.formDetailsItemNum = data.item
+            this.form = tempObj
+            this.form.scheduleId = scheduleId
+            this.newForm = true;
+            this.batchService.getBatchData(this.form.batchN).subscribe(data => {
+              console.log('batchData: ', data)
+              debugger
+              this.form.productaionDate = data[0].produced
+              this.form.expirationDate = data[0].expration
+            })
+          }
+
+          // check if there is another form with that batch
+          this.numberOfFormsWithSameBatch = 0
+          for (let batch of batches) {
+            this.formsService.getFormDetailsByBatch(batch).subscribe(forms => {
+              if (forms.length > 0) {
+                for (let form of forms) {
+                  if (form.batchN && form.batchN != "") {
+                    this.numberOfFormsWithSameBatch++
+                  }
+                }
+              }
+            })
+          }
+        })
+      }
+    })
+
+    // have fun.
+  }
+
+
   async addNewTest(test) {
-    let newTest = {...test}
+    let newTest = { ...test }
     this.form.checkTime ? this.form.checkTime.push(newTest.checkTime) : this.form.checkTime = [newTest.checkTime];
     this.form.checkBox_clean ? this.form.checkBox_clean.push(newTest.checkBox_clean) : this.form.checkBox_clean = [newTest.checkBox_clean];
     this.form.checkNetoWeight ? this.form.checkNetoWeight.push(newTest.checkNetoWeight) : this.form.checkNetoWeight = [newTest.checkNetoWeight];
@@ -356,7 +375,7 @@ export class FormdetailsComponent implements OnInit {
 
       QAPallets[i].sumAmount = count;
     }
-    this.form.quantity_Produced =  0;
+    this.form.quantity_Produced = 0;
     for (let pallet of QAPallets) this.form.quantity_Produced += pallet.sumAmount
 
     return QAPallets
