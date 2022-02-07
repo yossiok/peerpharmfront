@@ -337,13 +337,13 @@
                 <img src="../../../../assets/images/search.png" alt="search internal number"
                   style="width:28px; cursor: pointer;" (click)="searchInternalNumber()">
                 <label for="internalNumber">מק"ט פנימי</label>
-                <input type="text" class="form-control is-valid" placeholder="Internal number"
+                <input type="text" class="form-control is-valid" placeholder="Internal number" disabled
                   formControlName="internalNumber" (change)="getLatestOrders()" name='internalNumber'>
               </div>
               <div class="col-sm-6">
                 <label for="materialName">שם הפריט</label>
-                <input type="text" class="form-control is-valid" placeholder="item name" formControlName="materialName"
-                  name='materialName' required>
+                <input type="text" class="form-control is-valid" disabled placeholder="item name"
+                  formControlName="materialName" name='materialName' required>
               </div>
 
             </div>
@@ -483,10 +483,14 @@
               </div>
               <div class="col-sm-2">
                 <label>מיקום הסחורה</label>
-                <input type="text" (blur)="checkIfShelfExist()" class="form-control is-valid" formControlName="position"
-                  name='position'>
+                <input type="text" class="form-control is-valid" formControlName="position" name='position'>
               </div>
-
+              <div class="col-sm-1">
+                <label>מיקום הסחורה</label>
+                <button class="btn btn-info"
+                  [style.cursor]="newMaterialArrival.controls.position.valid? 'pointer':'not-allowed'"
+                  (click)="checkIfShelfExist()">אשר מדף </button>
+              </div>
               <div class="col-sm-2">
                 <label>הערות</label>
                 <input type="text" class="form-control is-valid" placeholder="remarks..." formControlName="remarks"
@@ -498,7 +502,7 @@
               <div class="col-sm-4">
                 <div *ngIf="submittingForm" class="smallLoader"></div>
                 <button *ngIf="!submittingForm" [style.cursor]="submittingForm ? 'not-allowed' : 'pointer'"
-                  (click)="submitForm()" class="btn btn-success">אישור</button>
+                  (click)="waitForShelf()" class="btn btn-success">אישור</button>
                 <button *ngIf="!submittingForm" [style.cursor]="submittingForm ? 'not-allowed' : 'pointer'"
                   (click)="resetForm()" class="btn btn-danger">איפוס</button>
               </div>

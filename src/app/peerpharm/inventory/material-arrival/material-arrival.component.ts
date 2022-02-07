@@ -579,11 +579,13 @@ export class MaterialArrivalComponent implements OnInit {
     }
   }
 
+  waitForShelf() {
+    setTimeout(() => {
+      this.submitForm();
+    }, 500);
+  }
+
   async submitForm() {
-    // shelf general position
-    // console.log(this.newMaterialArrival.valid);
-    // console.log(this.materialArrivalCertif);
-    // const invalid = [];
     const controls = this.newMaterialArrival.controls;
     for (let name in controls) {
       if (controls[name].invalid) {
@@ -594,8 +596,17 @@ export class MaterialArrivalComponent implements OnInit {
       }
     }
 
+    // setTimeout(() => {
+    //   this.checkIfShelfExist;
+    // }, 500);
+
     if (this.newMaterialArrival.value.position.includes(",")) {
       this.toastSrv.error("יש להזין מספר מדף תקין ללא רווחים וללא פסיקים");
+    } else if (!this.shelfValid) {
+      this.toastSrv.error(
+        "המדף שנבחר לא קיים במערכת, נא לבחור מדף חדש או להגדיר אותו במניהול המחסן."
+      );
+      return;
     } else if (this.newMaterialArrival.valid) {
       this.submittingForm = true;
 
@@ -721,9 +732,14 @@ export class MaterialArrivalComponent implements OnInit {
 
   checkIfShelfExist() {
     // let shelf = ev.target.value;
-    let shelf = this.newMaterialArrival.controls.position.value;
+    let shelf = this.newMaterialArrival.controls.position.value.trim();
+    console.log(shelf);
     let whareHouseId;
-    let whareHouse = this.newMaterialArrival.controls.warehouse.value;
+    let whareHouse = this.newMaterialArrival.controls.warehouse.value.trim();
+    if (shelf == "" || whareHouse == "") {
+      this.toastSrv.error("יש לבחור מחסן ומדף");
+      return;
+    }
     if (whareHouse == "Karantine") {
       whareHouseId = "5cf64e77e32883115c39dc56";
     } else if (whareHouse == "Rosh HaAyin") {
@@ -886,6 +902,9 @@ export class MaterialArrivalComponent implements OnInit {
     this.newMaterialArrival.reset();
     this.newMaterialArrival.controls.arrivalDate.setValue(new Date());
     this.newMaterialArrival.controls.user.setValue(this.user);
+    this.shelfValid = false;
+    this.requirementsForm.controls.itemNumber.setValue("");
+    this.requirementsForm.controls.itemName.setValue("");
   }
   adjustDate(formField) {
     formField.setValue(new Date(formField.value));
