@@ -75,6 +75,7 @@ export class NewBatchComponent implements OnInit {
 
   getWorkPlan() {
     this.route.queryParamMap.subscribe((params) => {
+      console.log(params);
       if (params["params"].workPlanId) {
         this.prodSchedServ
           .getWorkPlan(params["params"].workPlanId)
@@ -85,15 +86,16 @@ export class NewBatchComponent implements OnInit {
             let formule = this.workPlan.productionFormules.find(
               (f) => f.formule == params["params"].formule
             );
-            for (let item of formule.ordersAndItems) {
-              this.newBatchForm.value.itemsToCook.push(item);
-            }
 
             let finalWeight;
             while (isNaN(finalWeight)) finalWeight = prompt("הכנס משקל");
             this.finalWeight = finalWeight;
-            this.newBatchForm.controls.weightKg.setValue(finalWeight);
-            // this.newBatchForm.value.itemsToCook = formule.ordersAndItems
+            this.newBatchForm.controls.weightKg.setValue(this.finalWeight);
+            for (let item of formule.ordersAndItems) {
+              item.weightKg = this.finalWeight / formule.ordersAndItems.length;
+              this.newBatchForm.value.itemsToCook.push(item);
+            }
+            console.log(this.newBatchForm);
           });
       }
     });
@@ -200,6 +202,7 @@ export class NewBatchComponent implements OnInit {
   }
 
   addNewBatch(justStickers: boolean) {
+    console.log(this.newBatchForm.value);
     if (parseInt(this.newBatchForm.controls["barrels"].value) > 1) {
       for (
         let x = 1;
@@ -224,6 +227,7 @@ export class NewBatchComponent implements OnInit {
       this.allStickers.push(batchSticker);
     }
     // weightQtyLeft value doesn't exist in the form
+    console.log(this.newBatchForm.controls.weightKg.value);
     this.newBatchForm.controls.weightQtyLeft.setValue(
       this.newBatchForm.controls.weightKg.value
     );
@@ -313,9 +317,12 @@ export class NewBatchComponent implements OnInit {
                   this.toastSrv.success("Amounts reduced. Shelfs updated.");
                 if (con) {
                   // add batch to batches list
+                  console.log(this.newBatchForm);
+
                   this.batchService
                     .addBatch(this.newBatchForm.value)
                     .subscribe((data) => {
+                      console.log(data);
                       if (data.msg == "success") {
                         this.printBtn.nativeElement.click();
                         this.toastSrv.success("באטצ נוסף בהצלחה !");

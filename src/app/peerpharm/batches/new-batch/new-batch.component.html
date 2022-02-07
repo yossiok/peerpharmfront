@@ -6,7 +6,8 @@
     </div>
     <div class="col-3"></div>
     <div class="col-1">
-        <button class="btn btn-warning" *ngIf="workPlan" (click)="backToWP()">Back to PAKA {{workPlan.serialNumber}} <i class="fas fa-arrow-right"></i></button>
+      <button class="btn btn-warning" *ngIf="workPlan" (click)="backToWP()">Back to PAKA {{workPlan.serialNumber}} <i
+          class="fas fa-arrow-right"></i></button>
     </div>
   </div>
   <div class="row mt-4">
@@ -64,7 +65,7 @@
           <p class="font-italic">Order {{item.orderNumber}}</p>
           <p class="text-info smaller"><span class="font-weight-bold">item {{item.itemNumber}}</span> -
             {{item.itemName}}</p>
-          <p class="text-warning">{{item.weightKg}}KG</p>
+          <p class="text-warning">{{finalWeight}}KG</p>
         </div>
       </div>
     </div>
