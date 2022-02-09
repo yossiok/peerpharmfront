@@ -7,7 +7,7 @@ import {
   HostListener,
   Input,
 } from "@angular/core";
-import { ActivatedRoute, ChildrenOutletContexts } from "@angular/router";
+import { ActivatedRoute, ChildrenOutletContexts, Router } from "@angular/router";
 import { ItemsService } from "../../../services/items.service";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { UploadFileService } from "src/app/services/helpers/upload-file.service";
@@ -438,7 +438,7 @@ export class ItemdetaisComponent implements OnInit {
     private uploadService: UploadFileService,
     private toastr: ToastrService,
     private authService: AuthService,
-    private purchaseService: Procurementservice
+    private purchaseService: Procurementservice,private router:Router
   ) {
     this.itemCopy = Object.assign({}, this.itemShown);
     this.newItem = fb.group({
@@ -539,6 +539,7 @@ export class ItemdetaisComponent implements OnInit {
   ngOnInit() {
     if(location.href.endsWith('itemDetails'))
     {
+      debugger;
       //no item selected
      // textbox not disabled for new
      this.isDisabled=false;
@@ -1216,6 +1217,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   getItemData() {
+    debugger;
     this.route.params.subscribe((data) => {
       let number = data.itemNumber;
       if (number) {
@@ -1248,13 +1250,15 @@ export class ItemdetaisComponent implements OnInit {
     let itemtosearch=item;
     if(!item)
     {
-      itemtosearch= prompt('enter item number');
-      if(itemtosearch)
-      {
-    location.href="/#/peerpharm/items/itemDetails/"+itemtosearch;
-    return;
-      }
-    return;
+      alert('no item number');
+      return;
+    //  if(itemtosearch)
+   //   {
+    //location.href="/#/peerpharm/items/itemDetails/"+itemtosearch;
+ //   this.router.navigate([ "/peerpharm/items/itemDetails/"+itemtosearch ]); 
+// return;
+   //   }
+    //return;
     }
  
     this.itemShown.itemNumber=itemtosearch;
@@ -1273,7 +1277,10 @@ export class ItemdetaisComponent implements OnInit {
 
     this.loadingItem = true;
     this.editOrAdd = "Edit";
+    debugger;
     this.itemsService.getItemData(item).subscribe((res) => {
+    debugger;
+   
       this.loadingItem = false;
       if (res.length == 0) {
         this.toastr.error(item, "Item Not found");
