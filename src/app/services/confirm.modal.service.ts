@@ -127,7 +127,7 @@ export class ConfirmModalComponent implements OnInit {
   }
 
   yes() {
-    if (
+  if (
       this.authService.loggedInUser.userName.includes("sima") ||
       this.authService.loggedInUser.userName.includes("dani") ||
       this.authService.loggedInUser.userName.includes("martha") ||
@@ -146,6 +146,7 @@ export class ConfirmModalComponent implements OnInit {
         }
       });
     }
+
   }
 
   no() {

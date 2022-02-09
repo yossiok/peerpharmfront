@@ -83,10 +83,10 @@
         </div>
         <div class="col-3">
             <div>
-                <input  [disabled]="isDisabled"  [ngClass]="itemBackgroundByStatus()" (change)="checkIfItemExist(itemShown.itemNumber)"
+                <input     [ngClass]="itemBackgroundByStatus()" (change)="checkIfItemExist(itemShown.itemNumber)"
                     (keyup)="checkIfItemExist(itemShown.itemNumber)" type="text" [(ngModel)]="itemShown.itemNumber"
                     #itemNum id="id_item" autocomplete="off">
-                <button class="btn btn-warning ml-2" (click)='searchForItem()'>
+               <button class="btn btn-warning ml-2" (click)='searchForItem(itemNum.value)'>
                     Find Tree
                 </button>
             </div>
@@ -1933,7 +1933,7 @@
                                     <button class="btn" [disabled]="!selectedFiles" (click)="upload('main1')"
                                         *ngIf='main1File'>>></button>
                                     <br>
-                                    <img class="pictureTabImg" alt="תמונה ראשית" id="id_img1" [src]=itemShown.imgMain1>
+                                  <img class="pictureTabImg" alt="תמונה ראשית" id="id_img1" [src]=itemShown.imgMain1> 
                                 </div>
                                 <div style='display: inline-table'>
                                     <input class="form-control" type="file" id="id_itemImg2"
