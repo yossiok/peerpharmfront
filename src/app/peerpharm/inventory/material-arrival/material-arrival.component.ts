@@ -257,6 +257,7 @@ export class MaterialArrivalComponent implements OnInit {
     this.procuretServ
       .getLastOrdersForItem(this.newMaterialArrival.value.internalNumber, 10)
       .subscribe((orders) => {
+        console.log(orders);
         this.lastOrders = orders.filter(
           (o) => o.status != "closed" && o.status != "canceled"
         );
@@ -316,6 +317,7 @@ export class MaterialArrivalComponent implements OnInit {
             this.newMaterialArrival.controls.materialName.setValue(
               this.requirementsForm.value.itemName
             );
+            this.getLatestOrders();
             // this.newMaterialArrival.controls.deliveryNoteNumber.setValue(
             //   this.requirementsForm.value.orderItemNum
             // );
@@ -471,6 +473,15 @@ export class MaterialArrivalComponent implements OnInit {
     var supplier = this.suppliers.find((s) => s.suplierName == supplierName);
     this.newMaterialArrival.controls.supplierNumber.setValue(
       supplier.suplierNumber
+    );
+  }
+  getSupplierName() {
+    let supplier = this.suppliers.find(
+      (s) =>
+        s.suplierNumber == this.newMaterialArrival.controls.supplierNumber.value
+    );
+    this.newMaterialArrival.controls.supplierName.setValue(
+      supplier.suplierName
     );
   }
 

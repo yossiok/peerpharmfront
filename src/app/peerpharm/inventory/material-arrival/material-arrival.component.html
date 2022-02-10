@@ -342,8 +342,8 @@
               </div>
               <div class="col-sm-6">
                 <label for="materialName">שם הפריט</label>
-                <input type="text" class="form-control is-valid" disabled placeholder="item name"
-                  formControlName="materialName" name='materialName' required>
+                <input type="text" class="form-control is-valid" placeholder="item name" formControlName="materialName"
+                  name='materialName' required>
               </div>
 
             </div>
@@ -375,7 +375,7 @@
               <div class="col-sm-2">
                 <label>מספר ספק</label>
                 <input type="text" class="form-control is-valid" placeholder="supplier number"
-                  formControlName="supplierNumber" name='supplierNumber'>
+                  (change)="getSupplierName()" formControlName="supplierNumber" name='supplierNumber'>
               </div>
               <div class="col-sm-3">
                 <label>שם ספק</label>
