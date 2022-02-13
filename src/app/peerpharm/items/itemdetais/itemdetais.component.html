@@ -38,10 +38,6 @@
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Product' | translate }} {{ 'Number' |
                     translate}}</label>
       </div>
-      <div style="margin:3px;" ngbTooltip="חומר ללא פורמולה- למילוי בלבד">
-        <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Filling' | translate }} {{ 'Only' |
-                    translate}}</label>
-      </div>
       <div style="margin:3px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Barcode' | translate }}</label>
       </div>
@@ -82,6 +78,57 @@
       <div style="margin:3px;">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{ 'Jumping' | translate }}
           {{ 'Remarks' | translate }}</label>
+      </div>
+
+    </div>
+    <div class="col-3">
+      <div>
+        <input [ngClass]="itemBackgroundByStatus()" (change)="checkIfItemExist(itemShown.itemNumber)"
+          (keyup)="checkIfItemExist(itemShown.itemNumber)" type="text" [(ngModel)]="itemShown.itemNumber" #itemNum
+          id="id_item" autocomplete="off">
+        <button class="btn btn-warning ml-2" (click)='searchForItem(itemNum.value)'>
+          Find Tree
+        </button>
+      </div>
+
+      <div>
+        <input [ngClass]="itemBackgroundByStatus()" type="text" id="id_barcode" [(ngModel)]=itemShown.barcodeK>
+      </div>
+      <div>
+        <!--Sticker 1-->
+        <!--componentN-->
+        <input [ngClass]="itemBackgroundByStatus()" type="text" id="id_stickerNumber"
+          [(ngModel)]=itemShown.stickerNumber placeholder="Sticker Number"
+          onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')">
+        <!--version-->
+        <input type="number" class="small-input" placeholder="v." disabled [(ngModel)]=itemShown.stickerVersion>
+        <!--type-->
+        <input type="text" style='width: 150px' id="id_stickerType" placeholder="Sticker Type"
+          [(ngModel)]=itemShown.stickerTypeK>
+      </div>
+      <div>
+        <!--Sticker 2-->
+        <!--componentN-->
+        <input [ngClass]="itemBackgroundByStatus()" type="text" id="id_sticker2Number"
+          [(ngModel)]=itemShown.sticker2Number placeholder="Sticker 2 Number"
+          onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')">
+        <!--Version-->
+        <input type="number" class="small-input" placeholder="v." disabled [(ngModel)]=itemShown.sticker2Version>
+        <!--Sticker Type-->
+        <input type="text" placeholder="Sticker 2 Type" style='width: 150px' id="id_sticker2Type"
+          [(ngModel)]=itemShown.sticker2TypeK>
+      </div>
+      <div>
+        <!--Box Number-->
+        <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.boxNumber id="id_boxNumber"
+          onfocusout="loadOackagDetails(this.id, 'id_boxWeight','id_boxSelect')">
+        <input type="number" class="small-input" placeholder="v." disabled [(ngModel)]=itemShown.boxVersion>
+        <!--Box Type-->
+        <input type="text" style='width: 150px' [(ngModel)]=itemShown.boxTypeK id="id_boxType">
+      </div>
+      <div>
+        <input [ngClass]="itemBackgroundByStatus()" type="text" [(ngModel)]=itemShown.name id="id_productTitle"
+          style="width:480px">
       </div>
 
     </div>
@@ -2178,64 +2225,404 @@
   <div class="row">
     <div class="col-9">
 
+
     </div>
 
-    <div style="background:white;margin-left:81px;" class="col-2">
-      <div>
-        <table style="float:right" dir="rtl" border=0>
-          <tr>
-            <td>
-              <label style="color:rgb(16, 139, 16)">עדכון אחרון:</label>
-            </td>
-            <td>
-              <input type="date" style="width:163px" class="form-control" [(ngModel)]="itemShown.updateDate" disabled>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label style="color:rgb(16, 139, 16)">שם המעדכן:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td>
-              <input type="text" [(ngModel)]=itemShown.nameOfupdating disabled>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label style="color:rgb(16, 139, 16)">מספר גרסה:</label>
-            </td>
-            <td>
-              <input type="number " id="id_version" [(ngModel)]=itemShown.versionNumber disabled>
-            </td>
-          </tr>
-        </table>
+
+  </div>
+
+  </ng-template>
+  </ng-container>
+  <ng-container ngbNavItem>
+    <a ngbNavLink>{{ 'Pictures' | translate }}</a>
+    <ng-template ngbNavContent>
+
+      <div class="container-fluid">
+
+        <div class="imgContainer">
+          <div style='display: inline-table'>
+            <input class="form-control" type="file" id="id_itemImg1" (change)="selectFile($event, 'main1')"><br>
+            <button class="btn" [disabled]="!selectedFiles" (click)="upload('main1')" *ngIf='main1File'>>></button>
+            <br>
+            <img class="pictureTabImg" alt="תמונה ראשית" id="id_img1" [src]=itemShown.imgMain1>
+          </div>
+          <div style='display: inline-table'>
+            <input class="form-control" type="file" id="id_itemImg2" (change)="selectFile($event, 'main2')"><br>
+            <button class="btn" [disabled]="!selectedFiles" (click)="upload('main2')" *ngIf='main2File'>>></button>
+            <br>
+            <img class="pictureTabImg" alt="תמונה ראשית 2" id="id_img2" [src]=itemShown.imgMain2>
+          </div>
+          <div style='display: inline-table'>
+            <input class="form-control" type="file" id="id_itemImg3" (change)="selectFile($event, 'main3')"><br>
+            <button class="btn" [disabled]="!selectedFiles" (click)="upload('main3')" *ngIf='main3File'>>></button>
+            <br>
+            <img class="pictureTabImg" alt="אריזה אישית" id="id_img3" [src]=itemShown.imgMain3>
+
+
+          </div>
+
+          <div>
+            <hr>
+            <div class="mt-3" style='display: inline-table'>
+              <input class="form-control" type="file" id="id_itemImg4" (change)="selectFile($event, 'main4')"><br>
+              <button class="btn" [disabled]="!selectedFiles" (click)="upload('main4')" *ngIf='main4File'>>></button>
+              <br>
+              <img class="pictureTabImg" alt="קרטון לפני סגירה" id="id_img4" [src]=itemShown.imgMain4>
+
+
+            </div>
+            <div style="display: inline-table;">
+              <input type="text" [(ngModel)]="itemShown.stickerNumber" class="form-control">
+              <input type="number" class="small-input" placeholder="v." disabled [(ngModel)]="itemShown.stickerVersion">
+              <br>
+              <img class="w-50 imageClass" [src]="itemShown.stickerImage" alt="Sticker">
+            </div>
+          </div>
+        </div>
+
+
       </div>
-    </div>
-  </div>
-  <div style="padding:20px;" class="row">
-    <div style="margin-left: 30px;" class="col-4">
-      <img title="Batches" (click)="openBatchModal(batches)" style="width:50px;margin:5px;"
-        src="/assets/images/allOrder.png">
-      <img title="Orders" (click)="openOrderModal(orders)" style="width:50px;margin:5px;"
-        src="/assets/images/ordered.png">
-      <img src="../../../assets/images/excel.png" alt="excel export" (click)="exportAsXLSX()"
-        style="width: 50px;margin:5px;cursor: pointer;">
-      <img (click)="openProdctPriceModal()" title="Product Price" style="width:50px;margin:5px;" צפש
-        src="../../../../assets/images/price.png">
-      <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
-    </div>
-    <div class="col-4 d-flex justify-content-between">
 
-      <button *ngIf="alowUserEditItemTree" [disabled]="itemExist" [style.cursor]="itemExist ? 'not-allowed' : 'pointer'"
-        class="btn btn-success" (click)="addNewItem(); checkIfItemExist(itemShown.itemNumber)">New
-      </button>
-      <button *ngIf="alowUserEditItemTree" [disabled]="!itemExist"
-        [style.cursor]="itemExist ? 'pointer' : 'not-allowed'" class="btn btn-warning"
-        (click)="this.modalService.open(editItemModal)">Update
-      </button>
-      <button style="float: right" type='reset' class="btn btn-secondary">Reset</button>
-    </div>
-    <div class="col-4"></div>
+    </ng-template>
+  </ng-container>
+  <ng-container ngbNavItem>
+    <a ngbNavLink>{{ 'Print' | translate }}</a>
+    <ng-template ngbNavContent>
+      <div class="container-fluid">
+        <div class="row mt-4">
+          <div class="col-2">
+            <label class="form-control">Sticker</label>
+          </div>
+          <div class="col-2 d-flex">
+            <input type="text" [(ngModel)]="itemShown.stickerNumber" class="form-control">
+            <input type="number" style="height: 35px" disabled placeholder="v." [(ngModel)]=itemShown.stickerVersion
+              class="small-input">
+          </div>
+          <div class="col-2">
+            <img class="w-50 imageClass" [src]="itemShown.stickerImage" alt="Sticker">
+          </div>
+          <div class="col-6"></div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-4">
+            <div class="d-flex">
+              <label class="form-control">Box</label>
+              <input [(ngModel)]="itemShown.boxNumber" type="text" class="form-control">
+              <input type="number" class="small-input" style="height: 35px" placeholder="v." disabled
+                [(ngModel)]="itemShown.boxVersion">
+            </div>
+            <!--UZUZUZU-->
+            <br>
+            <div *ngIf="itemShown.boxNumber && itemShown.boxNumber !='---' && !itemShown.boxExpected">
+              <div class="smallerLoader"></div>
+              <p>טוען נתוני מלאי....</p>
+            </div>
+            <div *ngIf="itemShown.boxExpected" class="stock-bg p-2">
+              <h4>Stock details</h4>
+              <label>Stock Amount: {{itemShown.boxAmount | number}} pcs</label><br>
+              <label>Allocated Amount: {{itemShown.boxAllocations | number}}
+                pcs</label><br>
+              <label>Expected
+                Stock (before arrivals): <span class="p-1" [ngClass]="itemShown.boxExpected <= 0 ? 'h3' : ''"
+                  [style.color]="itemShown.boxExpected <= 0 ? 'red' : 'black'">{{itemShown.boxExpected
+                                                | number}}</span></label><br>
+              <label>Expected Arrivals: {{itemShown.boxOrderedAmount | number}} pcs</label>
+              <h3>Future Arrivals:</h3>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>Order</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Arrival Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let purchase of itemShown.boxPurchases">
+                    <td>{{purchase.orderNumber}}</td>
+                    <td>{{purchase.quantity | number}}</td>
+                    <td>{{purchase.status}}</td>
+                    <td>{{purchase.arrivalDate}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="col-2">
+            <img class="w-50 imageClass" [src]="itemShown.boxImage" alt="Box">
+          </div>
+          <div class="col-6"></div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-2">
+            <label class="form-control">Plate 1</label>
+          </div>
+          <div class="col-2">
+            <input type="text" [(ngModel)]="itemShown.pallet" class="form-control">
+          </div>
+          <div class="col-2">
+            <img class="w-50 imageClass" [src]="itemShown.palletImage" alt="Plate">
+          </div>
+          <div class="col-6"></div>
+        </div>
+
+        <div class="row mt-2">
+          <div class="col-2">
+            <label class="form-control">Plate 2</label>
+          </div>
+          <div class="col-2">
+            <input [(ngModel)]="itemShown.pallet2" type="text" class="form-control">
+          </div>
+          <div class="col-2">
+            <img src="" alt="Plate 2">
+          </div>
+          <div class="col-6"></div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-2">
+            <label class="form-control">Plate 3</label>
+          </div>
+          <div class="col-2">
+            <input [(ngModel)]="itemShown.pallet3" type="text" class="form-control">
+          </div>
+          <div class="col-2">
+            <img src="" alt="Plate 3">
+          </div>
+          <div class="col-6"></div>
+        </div>
+
+      </div>
+    </ng-template>
+  </ng-container>
+  <ng-container ngbNavItem>
+    <a ngbNavLink>Specification</a>
+    <ng-template ngbNavContent>
+      <div class="container">
+        <div class="row text-center">
+          <div class="col-12">
+            <h3 class="mt-3 p-2 bg-light text-warning rounded shadow-sm">Specification</h3>
+          </div>
+        </div>
+        <div class="row text-center">
+          <div class="col-12">
+            <table class="table table-hover table-bordered">
+              <thead class="bg-warning">
+                <tr>
+                  <th>הערות</th>
+                  <th>תחומי התוצאות תחתון - SPEC LIMITS MIN</th>
+                  <th>תחומי התוצאות עליון - SPEC LIMITS MAX</th>
+                  <th class="bg-warning">סוג בדיקה - TEST</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td *ngIf="editSpecTable==false">{{itemShown.phRemarks}}</td>
+                  <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.phRemarks" class="form-control"
+                      type="text"></td>
+                  <td *ngIf="editSpecTable==false">{{itemShown.phLimitsMin}}</td>
+                  <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.phLimitsMin" class="form-control"
+                      type="text"></td>
+                  <td *ngIf="editSpecTable==false">{{itemShown.phLimitsMax}}</td>
+                  <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.phLimitsMax" class="form-control"
+                      type="text"></td>
+                  <td class="bg-warning">PH</td>
+                </tr>
+                <tr>
+                  <td *ngIf="editSpecTable==false">{{itemShown.densityRemarks}}</td>
+                  <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.densityRemarks" class="form-control"
+                      type="text"></td>
+                  <td *ngIf="editSpecTable==false">{{itemShown.densityLimitsMin}}</td>
+                  <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.densityLimitsMin" class="form-control"
+                      type="text"></td>
+                  <td *ngIf="editSpecTable==false">{{itemShown.densityLimitsMax}}</td>
+                  <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.densityLimitsMax" class="form-control"
+                      type="text"></td>
+                  <td class="bg-warning">צפיפות
+                    <p>(gr/ml)</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td *ngIf="editSpecTable==false">{{itemShown.viscosityRemarks}}</td>
+                  <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.viscosityRemarks" class="form-control"
+                      type="text"></td>
+                  <td *ngIf="editSpecTable==false">{{itemShown.viscosityLimitsMin}}</td>
+                  <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.viscosityLimitsMin" class="form-control"
+                      type="text"></td>
+                  <td *ngIf="editSpecTable==false">{{itemShown.viscosityLimitsMax}}</td>
+                  <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.viscosityLimitsMax" class="form-control"
+                      type="text"></td>
+                  <td class="bg-warning">
+                    <table>
+                      <tbody>
+                        <tr style="padding: 0rem !important">
+                          <td style="padding: 0rem !important">(mPa*5) צמיגות</td>
+
+                        </tr>
+                        <tr style="padding: 0rem !important">
+                          <td *ngIf="editSpecTable==false">{{itemShown.modelType}}
+                          </td>
+                          <td *ngIf="editSpecTable==true" style="padding: 0rem !important">
+                            <select class="form-control" [(ngModel)]="itemShown.modelType">
+                              <option value="BROOKFIELD MODEL D220">BROOKFIELD
+                                MODEL D220</option>
+                              <option value="Myr VR300">Myr VR300</option>
+                            </select>
+                          </td>
+                          <td style="padding: 0rem !important">סוג מכשיר</td>
+                        </tr>
+                        <tr style="padding: 0rem !important">
+                          <td *ngIf="editSpecTable==false">
+                            {{itemShown.spinFieldNum}}</td>
+                          <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input
+                              [(ngModel)]="itemShown.spinFieldNum" class="form-control" type="number"></td>
+                          <td style="padding: 0rem !important">מס ספינדלר</td>
+                        </tr>
+                        <tr style="padding: 0rem !important">
+                          <td *ngIf="editSpecTable==false">{{itemShown.spinSpeed}}
+                          </td>
+                          <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input
+                              [(ngModel)]="itemShown.spinSpeed" class="form-control" type="text"></td>
+                          <td style="padding: 0rem !important;font-size: 11px;">
+                            מהירות סיבוב</td>
+                        </tr>
+                        <tr style="padding: 0rem !important">
+                          <td *ngIf="editSpecTable==false">
+                            {{itemShown.percentageResult}}</td>
+                          <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input
+                              [(ngModel)]="itemShown.percentageResult" class="form-control" type="text"></td>
+                          <td style="padding: 0rem !important;font-size: 11px;">%
+                          </td>
+                        </tr>
+                        <tr style="padding: 0rem !important">
+                          <td *ngIf="editSpecTable==false">{{itemShown.testTemp}}
+                          </td>
+                          <td *ngIf="editSpecTable==true" style="padding: 0rem !important"><input
+                              [(ngModel)]="itemShown.testTemp" class="form-control" type="number"></td>
+                          <td style="padding: 0rem !important">טמפ' בדיקה</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td *ngIf="editSpecTable==false">{{itemShown.colorRemarks}}</td>
+                  <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.colorRemarks" class="form-control"
+                      type="text"></td>
+                  <td colspan="2" *ngIf="editSpecTable==false">{{itemShown.color}}</td>
+                  <td colspan="2" *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.color" class="form-control"
+                      type="text">
+                  </td>
+                  <td class="bg-warning">צבע</td>
+                </tr>
+                <tr>
+                  <td *ngIf="editSpecTable==false">{{itemShown.textureRemarks}}</td>
+                  <td *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.textureRemarks" class="form-control"
+                      type="text"></td>
+                  <td colspan="2" *ngIf="editSpecTable==false">{{itemShown.textureSpec}}
+                  </td>
+                  <td colspan="2" *ngIf="editSpecTable==true"><input [(ngModel)]="itemShown.textureSpec"
+                      class="form-control" type="text"></td>
+                  <td class="bg-warning">מרקם</td>
+                </tr>
+                <tr>
+                  <td *ngIf="editSpecTable==false">{{itemShown.scentRemarks}}</td>
+                  <td *ngIf="editSpecTable==true"><input [ngModel]="itemShown.scentRemarks" class="form-control"
+                      type="text"></td>
+                  <td colspan="2" *ngIf="editSpecTable==false">{{itemShown.scentSpec}}
+                  </td>
+                  <td colspan="2" *ngIf="editSpecTable==true"><select [(ngModel)]="itemShown.scentSpec"
+                      class="form-control">
+                      <option value="normal">Normal</option>
+                      <option value="notNormal">Not Normal</option>
+                    </select></td>
+                  <td class="bg-warning">ריח</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row p-2 text-center">
+          <div *ngIf="editSpecTable == false && allowEditSpecTable == true" class="col-4">
+            <button (click)="editSpecTable = true" class="form-control btn btn-warning">Edit</button>
+          </div>
+          <div *ngIf="editSpecTable == true && allowEditSpecTable == true" class="col-4" class="col-4">
+
+            <button (click)="saveSpecTable()" class="form-control btn btn-warning">Save</button>
+
+          </div>
+          <div class="col-4"></div>
+
+        </div>
+      </div>
+    </ng-template>
+  </ng-container>
+  </nav>
+
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>
+</div>
+</div>
+<div class="row">
+  <div class="col-9">
+
   </div>
+
+  <div style="background:white;margin-left:81px;" class="col-2">
+    <div>
+      <table style="float:right" dir="rtl" border=0>
+        <tr>
+          <td>
+            <label style="color:rgb(16, 139, 16)">עדכון אחרון:</label>
+          </td>
+          <td>
+            <input type="date" style="width:163px" class="form-control" [(ngModel)]="itemShown.updateDate" disabled>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label style="color:rgb(16, 139, 16)">שם המעדכן:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </td>
+          <td>
+            <input type="text" [(ngModel)]=itemShown.nameOfupdating disabled>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label style="color:rgb(16, 139, 16)">מספר גרסה:</label>
+          </td>
+          <td>
+            <input type="number " id="id_version" [(ngModel)]=itemShown.versionNumber disabled>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div style="padding:20px;" class="row">
+  <div style="margin-left: 30px;" class="col-4">
+    <img title="Batches" (click)="openBatchModal(batches)" style="width:50px;margin:5px;"
+      src="/assets/images/allOrder.png">
+    <img title="Orders" (click)="openOrderModal(orders)" style="width:50px;margin:5px;"
+      src="/assets/images/ordered.png">
+    <img src="../../../assets/images/excel.png" alt="excel export" (click)="exportAsXLSX()"
+      style="width: 50px;margin:5px;cursor: pointer;">
+    <img (click)="openProdctPriceModal()" title="Product Price" style="width:50px;margin:5px;" צפש
+      src="../../../../assets/images/price.png">
+    <img style="width:50px;margin:5px;" src="../../../../assets/images/up.png">
+  </div>
+  <div class="col-4 d-flex justify-content-between">
+
+    <button *ngIf="alowUserEditItemTree" [disabled]="itemExist" [style.cursor]="itemExist ? 'not-allowed' : 'pointer'"
+      class="btn btn-success" (click)="addNewItem(); checkIfItemExist(itemShown.itemNumber)">New
+    </button>
+    <button *ngIf="alowUserEditItemTree" [disabled]="!itemExist" [style.cursor]="itemExist ? 'pointer' : 'not-allowed'"
+      class="btn btn-warning" (click)="this.modalService.open(editItemModal)">Update
+    </button>
+    <button style="float: right" type='reset' class="btn btn-secondary">Reset</button>
+  </div>
+  <div class="col-4"></div>
+</div>
 </div>
 
 <!------------- Batches Modal  --------------->

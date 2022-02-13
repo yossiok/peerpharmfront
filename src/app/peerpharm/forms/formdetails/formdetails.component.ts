@@ -234,6 +234,13 @@ export class FormdetailsComponent implements OnInit {
     // have fun.
   }
 
+  enlarge(event){
+    event.currentTarget.style.width = '300px'
+  }
+
+  return(event) {
+    event.currentTarget.style.width = ''
+  }
 
   async addNewTest(test) {
     let newTest = { ...test }
