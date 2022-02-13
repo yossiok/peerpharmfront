@@ -40,6 +40,7 @@ export class InvArrivalsComponent implements OnInit {
   componentArrival: FormGroup = new FormGroup({
     itemType: new FormControl("component", Validators.required),
     item: new FormControl(null, Validators.required),
+    itemName: new FormControl(""),
     amount: new FormControl(null, Validators.min(0.001)),
     shell_id_in_whareHouse: new FormControl(null, Validators.required),
     position: new FormControl(""),
@@ -246,9 +247,10 @@ export class InvArrivalsComponent implements OnInit {
   }
 
   // Get names of all items for search
-  getNames(event) {
-    if (event.value.length > 2) {
-      this.inventoryService.getNamesByRegex(event.value).subscribe((names) => {
+  getNames() {
+    let inputName = this.componentArrival.controls.itemName.value;
+    if (inputName.length > 2) {
+      this.inventoryService.getNamesByRegex(inputName).subscribe((names) => {
         this.itemNames = names;
         this.componentArrival.controls.item.setValue(names[0].componentN);
       });

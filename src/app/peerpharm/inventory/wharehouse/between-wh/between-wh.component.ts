@@ -22,7 +22,7 @@ export class BetweenWHComponent implements OnInit {
   today = new Date();
   noItem: boolean = false;
   disabled: boolean = false;
-  itemfound:boolean=false;
+  itemfound: boolean = false;
   originShelf: any;
   destShelf: any;
   itemNames: any[];
@@ -128,9 +128,10 @@ export class BetweenWHComponent implements OnInit {
   }
 
   // Get names of all items for search
-  getNames(event) {
-    if (event.value.length > 2) {
-      this.inventoryService.getNamesByRegex(event.value).subscribe((names) => {
+  getNames() {
+    let inputName = this.movementForm.controls.itemName.value;
+    if (inputName.length > 2) {
+      this.inventoryService.getNamesByRegex(inputName).subscribe((names) => {
         this.itemNames = names;
         this.movementForm.controls.item.setValue(names[0].componentN);
         this.movementForm.controls.itemName.setValue(names[0].componentName);
@@ -179,7 +180,7 @@ export class BetweenWHComponent implements OnInit {
   // get chunks with item
   // it was better to split it to 2 different functions - one for origin and one for destination...
   getChunks(whType) {
-    this.itemfound=false;
+    this.itemfound = false;
     console.log(this.movementForm.controls.WH_originId.value);
     if (
       !this.movementForm.controls.WH_originId.value ||
@@ -206,7 +207,7 @@ export class BetweenWHComponent implements OnInit {
       .then((result) => {
         if (!result) {
           this.toastr.error("מספר פריט לא תקין");
-          this.itemfound=false;
+          this.itemfound = false;
           return;
         }
 
@@ -253,7 +254,7 @@ export class BetweenWHComponent implements OnInit {
                   (wh) => wh._id == this.movementForm.value.WH_originId
                 ).name;
                 this.movementForm.controls.WH_originName.setValue(whName);
-                this.itemfound=true;
+                this.itemfound = true;
               }
               if (whType == "d") {
                 this.destWHShelfs = chunks;
@@ -265,7 +266,7 @@ export class BetweenWHComponent implements OnInit {
                   (wh) => wh._id == this.movementForm.value.WH_destId
                 ).name;
                 this.movementForm.controls.WH_destName.setValue(whName);
-                this.itemfound=true;
+                this.itemfound = true;
               }
             }
           });
@@ -273,7 +274,6 @@ export class BetweenWHComponent implements OnInit {
       .catch((e) => {
         console.log("error: ", e);
         this.toastr.error("", e);
-        
       });
   }
 
@@ -320,45 +320,41 @@ export class BetweenWHComponent implements OnInit {
     this.movementForm.controls.shell_position_in_whareHouse_Dest.setValue(
       this.destShelf.position
     );
-    this.itemfound=true;
+    this.itemfound = true;
   }
 
   addItem() {
-   if(this.itemfound)
-   {
+    if (this.itemfound) {
+      console.log(this.movementForm.value);
+      if (this.allMovements.length == 0) {
+        this.originWHName = this.movementForm.value.WH_originName;
+        this.originWHId = this.movementForm.value.WH_originId;
+        this.destinationWHName = this.movementForm.value.WH_destName;
+        this.destinationWHId = this.movementForm.value.WH_destId;
+        this.allMovements.push(this.movementForm.value);
+      } else {
+        this.allMovements.push(this.movementForm.value);
+      }
 
-   
-    console.log(this.movementForm.value);
-    if (this.allMovements.length == 0) {
-      this.originWHName = this.movementForm.value.WH_originName;
-      this.originWHId = this.movementForm.value.WH_originId;
-      this.destinationWHName = this.movementForm.value.WH_destName;
-      this.destinationWHId = this.movementForm.value.WH_destId;
-      this.allMovements.push(this.movementForm.value);
+      //push arrival to allArrivals
+
+      console.log(this.allMovements);
+
+      setTimeout(() => {
+        this.movementForm.reset();
+        this.movementForm.controls.WH_originName.setValue(this.originWHName);
+        this.movementForm.controls.WH_originId.setValue(this.originWHId);
+        this.movementForm.controls.WH_destName.setValue(this.destinationWHName);
+        this.movementForm.controls.WH_destId.setValue(this.destinationWHId);
+        this.movementForm.controls.isNewItemShell.setValue(false);
+        this.movementForm.controls.itemType.setValue("component");
+        this.itemNames = [];
+        this.originWHShelfs = [];
+        this.first.nativeElement.focus();
+      }, 500);
     } else {
-      this.allMovements.push(this.movementForm.value);
+      alert("פריט לא נמצא אנא נסה שנית");
     }
-
-    //push arrival to allArrivals
-
-    console.log(this.allMovements);
-
-    setTimeout(() => {
-      this.movementForm.reset();
-      this.movementForm.controls.WH_originName.setValue(this.originWHName);
-      this.movementForm.controls.WH_originId.setValue(this.originWHId);
-      this.movementForm.controls.WH_destName.setValue(this.destinationWHName);
-      this.movementForm.controls.WH_destId.setValue(this.destinationWHId);
-      this.movementForm.controls.isNewItemShell.setValue(false);
-      this.movementForm.controls.itemType.setValue("component");
-      this.itemNames = [];
-      this.originWHShelfs = [];
-      this.first.nativeElement.focus();
-    }, 500);
-  }
-  else{
-    alert('פריט לא נמצא אנא נסה שנית')
-  }
   }
 
   removeFromAllMovements(i) {
@@ -426,7 +422,7 @@ export class BetweenWHComponent implements OnInit {
       } else if (data.actionLogs.length == this.allMovements.length) {
         setTimeout(() => {
           this.printBtn2.nativeElement.click();
-        location.reload();
+          location.reload();
         }, 500);
         setTimeout(() => {
           this.movementForm.reset();
