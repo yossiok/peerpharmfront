@@ -395,7 +395,7 @@
               <div class="col-sm-4">
                 <label>מספר הזמנת רכש</label>
                 <select placeholder="Purchase Order Number" class="form-control is-valid" formControlName="cmxOrderN"
-                  name='cmxOrderN'>
+                  name='cmxOrderN' (click)="getLatestOrders()">
                   <option value="999">אחר</option>
                   <option *ngFor="let order of lastOrders" [value]="order.orderNumber">{{order.orderNumber}}</option>
                 </select>
@@ -409,7 +409,7 @@
               <div class="col-sm-2">
                 <label>יח' מדידה</label>
                 <select class="form-control is-valid" formControlName="mesureType" name='mesureType'>
-                  <option value="kg" selected="true">קילוגרם</option>
+                  <option value="kg" default="kg" selected="true">קילוגרם</option>
                   <option value="liter">ליטר</option>
                 </select>
               </div>
@@ -471,11 +471,12 @@
                 <input type="number" class="form-control is-valid" formControlName="unitsInPack" name='unitsInPack'>
               </div>
             </div>
-
+            <!-- (change)="fillLastArrivalPosition()" -->
             <div class="form-row w-100 flex-row-reverse">
               <div class="col-sm-2">
                 <label>מחסן</label>
-                <select type="text" class="form-control is-valid" formControlName="warehouse" name='warehouse'>
+                <select type="text" class="form-control is-valid" formControlName="warehouse" name='warehouse'
+                  (change)="getShelfs()">
                   <option value="Rosh HaAyin" selected="true">Rosh HaAyin</option>
                   <option value="Rosh HaAyin C">Rosh HaAyin 0</option>
                   <option value="Karantine">Karantine</option>
@@ -483,13 +484,23 @@
               </div>
               <div class="col-sm-2">
                 <label>מיקום הסחורה</label>
-                <input type="text" class="form-control is-valid" formControlName="position" name='position'>
+                <select list="positions" class="form-control is-valid" #supplierNameInput type="text"
+                  placeholder="בחר מדף" formControlName="position" name='position'>
+                  <option *ngFor="let shelf of lastPositions" [value]="shelf.position">{{shelf.position}}
+                  </option>
+                </select>
+
+                <!-- <input type="text" class="form-control is-valid" formControlName="position" name='position'> -->
               </div>
               <div class="col-sm-1">
                 <label>מיקום הסחורה</label>
                 <button class="btn btn-info"
                   [style.cursor]="newMaterialArrival.controls.position.valid? 'pointer':'not-allowed'"
                   (click)="checkIfShelfExist()">אשר מדף </button>
+                <br>
+                <button class="btn btn-warning"
+                  [style.cursor]="newMaterialArrival.controls.warehouse.valid? 'pointer':'not-allowed'"
+                  (click)="getShelvesList()">שנה מדף </button>
               </div>
               <div class="col-sm-2">
                 <label>הערות</label>
