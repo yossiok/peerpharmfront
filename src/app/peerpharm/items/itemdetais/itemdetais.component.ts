@@ -41,7 +41,7 @@ export class ItemdetaisComponent implements OnInit {
   @Input() formDetailsItemNum: string;
 
   loadingItem: boolean = false;
-  isDisabled=true;
+  isDisabled = true;
   // New Item Tree //
   itemBatches: any[];
   itemPrice: any[] = [];
@@ -537,11 +537,10 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   ngOnInit() {
-    if(location.href.endsWith('itemDetails'))
-    {
+    if (location.href.endsWith("itemDetails")) {
       //no item selected
-     // textbox not disabled for new
-     this.isDisabled=false;
+      // textbox not disabled for new
+      this.isDisabled = false;
     }
     if (this.formDetailsItemNum) this.searchForItem(this.formDetailsItemNum);
 
@@ -625,7 +624,7 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.bottleVersion = data.stock[0].versionNumber;
         this.itemShown.componentType = data.stock[0].componentType;
         this.itemShown.bottleAllocations = data.allocationsAmount;
-        this.itemShown.bottleAmount = data.stock[0].stock
+        this.itemShown.bottleAmount = data.stock[0].stock;
         this.itemShown.bottlePurchases = data.purchases;
         this.itemShown.bottleOrderedAmount = data.purchaseAmount;
         this.itemShown.bottleExpected = data.realAmount;
@@ -637,7 +636,6 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   fillCap(capNumber) {
-    debugger
     capNumber = this.itemShown.capNumber;
     if (capNumber != "---" && capNumber != "") {
       this.invtSer.getCmptPPCDetails(capNumber).subscribe((data) => {
@@ -645,7 +643,7 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.capImage = data.stock[0].img;
         this.itemShown.componentTwoType = data.stock[0].componentType;
         this.itemShown.capAllocations = data.allocationsAmount;
-        this.itemShown.capAmount = data.stock[0].stock
+        this.itemShown.capAmount = data.stock[0].stock;
         this.itemShown.capPurchases = data.purchases;
         this.itemShown.capOrderedAmount = data.purchaseAmount;
         this.itemShown.capExpected = data.realAmount;
@@ -664,11 +662,11 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.pumpImage = data.stock[0].img;
         this.itemShown.componentThreeType = data.stock[0].componentType;
         this.itemShown.pumpAllocations = data.allocationsAmount;
-        this.itemShown.pumpAmount = data.stock[0].stock
+        this.itemShown.pumpAmount = data.stock[0].stock;
         this.itemShown.pumpPurchases = data.purchases;
         this.itemShown.pumpOrderedAmount = data.purchaseAmount;
         this.itemShown.pumpExpected = data.realAmount;
-      })
+      });
     } else if (pumpNumber == "---") {
       this.itemShown.pumpTube = "";
       this.itemShown.pumpImage = "";
@@ -683,7 +681,7 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.sealImage = data.stock[0].img;
         this.itemShown.componentFourType = data.stock[0].componentType;
         this.itemShown.sealAllocations = data.allocationsAmount;
-        this.itemShown.sealAmount = data.stock[0].stock
+        this.itemShown.sealAmount = data.stock[0].stock;
         this.itemShown.sealPurchases = data.purchases;
         this.itemShown.sealOrderedAmount = data.purchaseAmount;
         this.itemShown.sealExpected = data.realAmount;
@@ -701,7 +699,7 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.cartonName = data.stock[0].componentName;
         this.itemShown.cartonImage = data.stock[0].img;
         this.itemShown.cartonAllocations = data.allocationsAmount;
-        this.itemShown.cartonAmount = data.stock[0].stock
+        this.itemShown.cartonAmount = data.stock[0].stock;
         this.itemShown.cartonPurchases = data.purchases;
         this.itemShown.cartonOrderedAmount = data.purchaseAmount;
         this.itemShown.cartonExpected = data.realAmount;
@@ -719,7 +717,7 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.cartonName2 = data.stock[0].componentName;
         this.itemShown.carton2Image = data.stock[0].img;
         this.itemShown.carton2Allocations = data.allocationsAmount;
-        this.itemShown.carton2Amount = data.stock[0].stock
+        this.itemShown.carton2Amount = data.stock[0].stock;
         this.itemShown.carton2Purchases = data.purchases;
         this.itemShown.carton2OrderedAmount = data.purchaseAmount;
         this.itemShown.carton2Expected = data.realAmount;
@@ -730,7 +728,6 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
 
-
   fillBox(boxNumber) {
     boxNumber = this.itemShown.boxNumber;
     if (boxNumber != "---" && boxNumber != "") {
@@ -738,7 +735,7 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.boxName = data.stock[0].componentName;
         this.itemShown.boxImage = data.stock[0].img;
         this.itemShown.boxAllocations = data.allocationsAmount;
-        this.itemShown.boxAmount = data.stock[0].stock
+        this.itemShown.boxAmount = data.stock[0].stock;
         this.itemShown.boxPurchases = data.purchases;
         this.itemShown.boxOrderedAmount = data.purchaseAmount;
         this.itemShown.boxExpected = data.realAmount;
@@ -905,7 +902,7 @@ export class ItemdetaisComponent implements OnInit {
   findInInventory(componentN) {
     window.open(
       "http://peerpharmsystem.com/#/peerpharm/inventory/stock?componentN=" +
-      componentN
+        componentN
     );
   }
 
@@ -1245,19 +1242,17 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   searchForItem(item) {
-    let itemtosearch=item;
-    if(!item)
-    {
-      itemtosearch= prompt('enter item number');
-      if(itemtosearch)
-      {
-    location.href="/#/peerpharm/items/itemDetails/"+itemtosearch;
-    return;
+    let itemtosearch = item;
+    if (!item) {
+      itemtosearch = prompt("enter item number");
+      if (itemtosearch) {
+        location.href = "/#/peerpharm/items/itemDetails/" + itemtosearch;
+        return;
       }
-    return;
+      return;
     }
- 
-    this.itemShown.itemNumber=itemtosearch;
+
+    this.itemShown.itemNumber = itemtosearch;
 
     //check if open orders exist for item
     //getAllOpenOrdersByItemNumber
@@ -1269,7 +1264,6 @@ export class ItemdetaisComponent implements OnInit {
         this.itemLockedForEdit = true;
       } 
     });*/
-
 
     this.loadingItem = true;
     this.editOrAdd = "Edit";
@@ -1624,15 +1618,14 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   updateItem() {
-    debugger;
-    if(this.itemLockedForEdit)
-    {
-      alert('item is used in open ordres! cant edit. contact system admin!');
+    if (this.itemLockedForEdit) {
+      alert("item is used in open ordres! cant edit. contact system admin!");
       return;
     }
     this.lookingForItem = true;
     if (this.itemShown.itemNumber != "") {
       this.itemShown.nameOfupdating = this.user.userName;
+      // console.log(this.itemShown);
       this.itemsService.updateItem(this.itemShown).subscribe((res) => {
         console.log(res);
 

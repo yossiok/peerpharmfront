@@ -88,6 +88,7 @@ export class MaterialArrivalComponent implements OnInit {
   supplierModal: Boolean = false;
   supplierModalHeader: String = "";
   supplierModalInfo: any;
+  lastPositions: any[] = [];
 
   // barcode vars //
   materialNum: String;
@@ -121,6 +122,7 @@ export class MaterialArrivalComponent implements OnInit {
   marginRight = 10;
   requirementsForm: FormGroup;
   requiresFromFull: Boolean = false;
+  shellNums: any[] = [];
 
   batchNumRemarksInput: Boolean = false;
   orderedQntRemarksInput: Boolean = false;
@@ -187,6 +189,7 @@ export class MaterialArrivalComponent implements OnInit {
         // this.materialArrivalCertif.supplierCertifNumber,
         Validators.required,
       ],
+      isNewItemShell: [Boolean, false],
     });
 
     this.requirementsForm = fb.group({
@@ -251,15 +254,22 @@ export class MaterialArrivalComponent implements OnInit {
     console.log("screenHeight: " + this.screenHeight);
     // two displays "tab-selectbyid1" OR "tab-selectbyid2"
     this.activeTabId = "tab-selectbyid1";
+    this.getUserWhs();
   }
 
   getLatestOrders() {
+    this.lastOrders = [];
+    let supplierName = this.supplierNameInput.nativeElement.value;
     this.procuretServ
       .getLastOrdersForItem(this.newMaterialArrival.value.internalNumber, 10)
       .subscribe((orders) => {
         console.log(orders);
+        console.log(supplierName);
         this.lastOrders = orders.filter(
-          (o) => o.status != "closed" && o.status != "canceled"
+          (o) =>
+            o.status != "closed" &&
+            o.status != "canceled" &&
+            o.supplierName == supplierName
         );
       });
   }
@@ -274,6 +284,7 @@ export class MaterialArrivalComponent implements OnInit {
         }
       });
       this.whareHouses = displayAllowedWH;
+      console.log(this.whareHouses);
       this.curentWhareHouseId = displayAllowedWH[0]._id;
       this.curentWhareHouseName = displayAllowedWH[0].name;
 
@@ -317,7 +328,8 @@ export class MaterialArrivalComponent implements OnInit {
             this.newMaterialArrival.controls.materialName.setValue(
               this.requirementsForm.value.itemName
             );
-            this.getLatestOrders();
+            // this.getLatestOrders();
+            this.searchInternalNumber();
             // this.newMaterialArrival.controls.deliveryNoteNumber.setValue(
             //   this.requirementsForm.value.orderItemNum
             // );
@@ -373,6 +385,7 @@ export class MaterialArrivalComponent implements OnInit {
   getAllMaterialsLocations() {
     this.invtSer.getAllMaterialLocations().subscribe((data) => {
       this.materialsLocations = data;
+      console.log(data);
     });
   }
 
@@ -474,6 +487,7 @@ export class MaterialArrivalComponent implements OnInit {
     this.newMaterialArrival.controls.supplierNumber.setValue(
       supplier.suplierNumber
     );
+    this.newMaterialArrival.controls.supplierName.setValue(supplierName);
   }
   getSupplierName() {
     let supplier = this.suppliers.find(
@@ -483,6 +497,7 @@ export class MaterialArrivalComponent implements OnInit {
     this.newMaterialArrival.controls.supplierName.setValue(
       supplier.suplierName
     );
+    this.getLatestOrders();
   }
 
   filterSupplierItems(input) {
@@ -538,14 +553,26 @@ export class MaterialArrivalComponent implements OnInit {
     }
   }
 
-  fillLastArrivalPosition(materialNumber) {
+  fillLastArrivalPosition() {
+    let materialNumber = this.newMaterialArrival.value.internalNumber;
     this.invtSer
       .getMaterialArrivalByNumber(materialNumber)
       .subscribe((data) => {
         if (data) {
-          this.newMaterialArrival.controls.position.setValue(
-            data[data.length - 1].position
-          );
+          console.log(data);
+          if (data.msg) {
+            this.toastSrv.error(data.msg);
+          } else if (data) {
+            this.lastPositions = data.filter(
+              (shelf) =>
+                shelf.warehouse ==
+                this.newMaterialArrival.controls.warehouse.value
+            );
+          }
+
+          // this.newMaterialArrival.controls.position.setValue(
+          //   data[data.length - 1].position
+          // );
         }
       });
   }
@@ -569,9 +596,9 @@ export class MaterialArrivalComponent implements OnInit {
             this.newMaterialArrival.controls.materialName.setValue(
               item[0].componentName
             );
-            this.fillLastArrivalPosition(
-              this.newMaterialArrival.value.internalNumber
-            );
+            // this.fillLastArrivalPosition(
+            //   this.newMaterialArrival.value.internalNumber
+            // );
             if (
               item[0].unit != "" &&
               item[0].unit != undefined &&
@@ -966,6 +993,56 @@ export class MaterialArrivalComponent implements OnInit {
           // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         }
       );
+  }
+  getShelfs() {
+    console.log("Get Shelf initiated");
+    if (!this.newMaterialArrival.value.warehouse)
+      this.toastSrv.error("אנא בחר מחסן.");
+    else if (!this.newMaterialArrival.value.internalNumber)
+      this.toastSrv.error("אנא הזן מספר פריט.");
+    else {
+      let warehouse = this.whareHouses.find(
+        (wh) => wh.name == this.newMaterialArrival.value.warehouse
+      );
+      let warehouseId = warehouse._id;
+      this.invtSer
+        .getShelfListForItemInWhareHouse2(
+          this.newMaterialArrival.value.internalNumber,
+          warehouseId
+        )
+        .subscribe((res) => {
+          console.log(res);
+          if (res.msg) {
+            console.log(res);
+            this.toastSrv.error("בעיה בהזנת הנתונים.");
+          } else if (res.length == 0) {
+            let noShellsForItem = confirm(
+              "הפריט לא נמצא על אף אחד מהמדפים במחסן זה. להכניס למדף חדש?"
+            );
+            if (noShellsForItem) {
+              this.newMaterialArrival.controls.isNewItemShell.setValue(true);
+              this.invtSer
+                .getWhareHouseShelfList(warehouseId)
+                .subscribe((data) => {
+                  this.lastPositions = data;
+                  // console.log(this.lastPositions);
+                });
+            }
+          } else {
+            this.lastPositions = res;
+          }
+        });
+    }
+  }
+  getShelvesList() {
+    let warehouse = this.whareHouses.find(
+      (wh) => wh.name == this.newMaterialArrival.value.warehouse
+    );
+    let warehouseId = warehouse._id;
+    this.invtSer.getWhareHouseShelfList(warehouseId).subscribe((data) => {
+      this.lastPositions = data;
+      // console.log(this.lastPositions);
+    });
   }
 }
 
