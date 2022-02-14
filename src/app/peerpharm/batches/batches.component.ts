@@ -301,6 +301,8 @@ export class BatchesComponent implements OnInit {
   openTableValues(itemNumber, batchNumber) {
     this.batchService.getBatchData(batchNumber).subscribe((data) => {
       this.currBatch = data[0];
+      this.currBatch.itemNumber = itemNumber;
+
       this.currBatch.kgProduced =
         Number(this.currBatch.weightKg) - Number(this.currBatch.weightQtyLeft);
     });
