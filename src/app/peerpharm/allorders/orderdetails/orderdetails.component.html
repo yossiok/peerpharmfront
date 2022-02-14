@@ -231,8 +231,12 @@
           <td *ngIf="multi==true">{{item.orderNumber}}</td>
 
           <!--Formule exist?-->
-          <td><button style="border-radius: 30px;"
-              [ngClass]="{'lightgreen': item.formuleExist == true,'lightred':item.formuleExist != true}">F</button></td>
+          <td *ngIf="!item.fillingOnly"><button style="border-radius: 30px;"
+              [ngClass]="{'lightgreen': item.formuleExist == true,'lightred':item.formuleExist != true}">F</button>
+          </td>
+          <td *ngIf="item.fillingOnly"><button style="border-radius: 30px;"
+              [ngClass]="{'white': item.fillingOnly==true}">Fill</button>
+          </td>
 
           <!--License exist & updated?-->
           <td class="license" *ngIf="item.licsensNumber!='' && !item.licenseExpirationClose">

@@ -130,6 +130,7 @@ export class ItemdetaisComponent implements OnInit {
     name: "",
     subName: "",
     discriptionK: "",
+    fillingOnly: false,
     proRemarks: "",
     batchN: "",
     impRemarks: "",
@@ -621,9 +622,9 @@ export class ItemdetaisComponent implements OnInit {
   fillBottle(bottleNumber) {
     bottleNumber = this.itemShown.bottleNumber;
     if (bottleNumber != "---" && bottleNumber != "") {
-      debugger;
+      // debugger;
       this.invtSer.getCmptPPCDetails(bottleNumber).subscribe((data) => {
-        debugger;
+        // debugger;
         this.itemShown.bottleTube = data.stock[0].componentName;
         this.itemShown.bottleImage = data.stock[0].img;
         this.itemShown.bottleVersion = data.stock[0].versionNumber;
@@ -1218,7 +1219,7 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   getItemData() {
-    debugger;
+    // debugger;
     this.route.params.subscribe((data) => {
       let number = data.itemNumber;
       if (number) {
@@ -1276,9 +1277,9 @@ export class ItemdetaisComponent implements OnInit {
 
     this.loadingItem = true;
     this.editOrAdd = "Edit";
-    debugger;
+    // debugger;
     this.itemsService.getItemData(item).subscribe((res) => {
-      debugger;
+      // debugger;
 
       this.loadingItem = false;
       if (res.length == 0) {

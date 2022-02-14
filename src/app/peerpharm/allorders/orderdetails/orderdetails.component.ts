@@ -373,6 +373,8 @@ export class OrderdetailsComponent implements OnInit {
                       let itemNumbers = [];
                       for (let oi of orderItems) {
                         itemNumbers.push(oi.itemNumber);
+                        // if the item has no formule and filling only, to prevent adding to cream production workplan
+                        oi.pakaStatus = oi.fillingOnly ? 10 : oi.pakaStatus;
                       }
                       // console.log(itemNumbers);
                       this.itemSer
@@ -677,7 +679,12 @@ export class OrderdetailsComponent implements OnInit {
 
       // check if the item already exists in the wp open items.//
       for (let oi of this.selectedArr) {
-        if (oi.pakaStatus && oi.pakaStatus > 0) {
+        if (oi.pakaStatus && oi.pakaStatus == 10) {
+          nonValidOrders.push(oi);
+          this.toastSrv.error(
+            `${oi.itemNumber} of order ${oi.orderNumber} is for filling only. No cooking is needed. פריט זה למילוי בלבד, אין לשלוח לבישול אלא רק למילוי.`
+          );
+        } else if (oi.pakaStatus && oi.pakaStatus > 0) {
           nonValidOrders.push(oi);
           this.toastSrv.error(
             `${oi.itemNumber} of order ${oi.orderNumber} already sent to workplan`
@@ -972,6 +979,7 @@ export class OrderdetailsComponent implements OnInit {
       this.number = this.number.split(",").filter((x) => x != "");
 
     await this.orderService.getOrderByNumber(this.number).subscribe((res) => {
+      console.log(res);
       this.number = res[0].orderNumber;
       this.costumer = res[0].costumer;
       this.costumerInternalId = res[0].costumerInternalId;
@@ -1156,9 +1164,11 @@ export class OrderdetailsComponent implements OnInit {
     this.orderService
       .getOrderItemsByNumber(orderNum)
       .subscribe((orderItems) => {
-        // console.log(orderItems);
+        console.log(orderItems);
         let itemNumbers = [];
         for (let oi of orderItems) {
+          // if the item has no formule and filling only, to prevent adding to cream production workplan
+          oi.pakaStatus = oi.fillingOnly ? 10 : oi.pakaStatus;
           itemNumbers.push(oi.itemNumber);
         }
         // console.log(itemNumbers);

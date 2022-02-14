@@ -34,6 +34,9 @@ export class WorkPlanStatusPipe implements PipeTransform {
       case 8:
         status = "All";
         break;
+      case 10:
+        status = "Filling Only";
+        break;
       default:
         status = "Unknown";
     }

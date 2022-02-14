@@ -37,6 +37,9 @@ export class OrderItemBatchStatusPipe implements PipeTransform {
       case 9:
         status = "Partial Produce";
         break;
+      case 10:
+        status = "Filling Only";
+        break;
       default:
         status = "Unknown";
     }
