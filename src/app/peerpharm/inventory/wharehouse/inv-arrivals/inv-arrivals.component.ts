@@ -7,6 +7,7 @@ import { Procurementservice } from "src/app/services/procurement.service";
 import { SuppliersService } from "src/app/services/suppliers.service";
 import { WarehouseService } from "src/app/services/warehouse.service";
 import { CostumersService } from "src/app/services/costumers.service";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-inv-arrivals",
@@ -50,6 +51,7 @@ export class InvArrivalsComponent implements OnInit {
     supplier: new FormControl(""),
     purchaseOrder: new FormControl(null),
     ownerId: new FormControl(""),
+    user: new FormControl(""),
   });
   stickerItem: any;
 
@@ -60,7 +62,8 @@ export class InvArrivalsComponent implements OnInit {
     private purchaseService: Procurementservice,
     private warehouseService: WarehouseService,
     private modalService: NgbModal,
-    private customersService: CostumersService
+    private customersService: CostumersService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -132,19 +135,38 @@ export class InvArrivalsComponent implements OnInit {
 
   getPurchaseOrders(e) {
     console.log(e.target.value);
+    this.purchaseOrders = [];
     this.purchaseService
       .getAllOrdersFromSupplier(e.target.value)
       .subscribe((data) => {
-        this.purchaseOrders = data
-          .filter((PO) => PO.status != "closed" && PO.status != "canceled")
-          .filter((PO) => {
-            for (let si of PO.stockitems) {
-              if (si.number == this.componentArrival.value.item) return true;
-              else return false;
+        if (data.length > 0) {
+          let filtered = data.filter(
+            (order) => order.status != "closed" && order.status != "canceled"
+          );
+          for (let po of filtered) {
+            let idx = po.stockitems.findIndex(
+              (si) => si.number == this.componentArrival.value.item
+            );
+            if (idx > -1) {
+              this.purchaseOrders.push(po);
             }
-          });
+          }
+        }
       });
   }
+
+  // if
+
+  //         this.purchaseOrders = data
+  //           .filter((PO) => PO.status != "closed" && PO.status != "canceled")
+  //           .filter((PO) => {
+  //             for (let si of PO.stockitems) {
+  //               if (si.number == this.componentArrival.value.item) return true;
+  //               else return false;
+  //             }
+  //           });
+  //       });
+  //   }
 
   async checkComponentN() {
     return new Promise((resolve, reject) => {
@@ -251,8 +273,12 @@ export class InvArrivalsComponent implements OnInit {
     let inputName = this.componentArrival.controls.itemName.value;
     if (inputName.length > 2) {
       this.inventoryService.getNamesByRegex(inputName).subscribe((names) => {
+        console.log(names);
         this.itemNames = names;
         this.componentArrival.controls.item.setValue(names[0].componentN);
+        this.componentArrival.controls.itemName.setValue(
+          names[0].componentName
+        );
       });
     }
   }
@@ -266,6 +292,9 @@ export class InvArrivalsComponent implements OnInit {
     let whareHouse = this.allWhareHouses.find(
       (wh) => wh._id == this.componentArrival.value.whareHouseID
     );
+    this.componentArrival.controls.user.setValue(
+      this.authService.loggedInUser.userName
+    );
     this.componentArrival.controls.whareHouse.setValue(whareHouse.name);
     let shellDoc = this.shellNums.find(
       (shell) =>
@@ -273,6 +302,7 @@ export class InvArrivalsComponent implements OnInit {
         this.componentArrival.value.shell_id_in_whareHouse
     );
     this.componentArrival.controls.position.setValue(shellDoc.position);
+
     //push arrival to allArrivals
     // convert item from number to string
     let itemToPush = { ...this.componentArrival.value };
@@ -296,12 +326,15 @@ export class InvArrivalsComponent implements OnInit {
 
   addToStock() {
     console.log(this.allArrivals);
+    console.log(this.authService.loggedInUser.userName);
+
     this.sending = true;
     setTimeout(() => (this.sending = false), 7000); //if something goes wrong
     this.inventoryService
       .addComponentsToStock(this.allArrivals)
       .subscribe((data) => {
-        if (data.msg) this.toastr.error(data.msg, "שגיאה");
+        console.log(data);
+        if (data && data.msg) this.toastr.error(data.msg, "שגיאה");
         else if (data) {
           console.log(data);
           //set certificate data

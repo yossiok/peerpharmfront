@@ -249,7 +249,7 @@ export class CheckoutComponent implements OnInit {
     this.outGoing = [];
   }
 
-  shaylyShutUp() {
+  shaulyShutUp() {
     this.isReturn = !this.isReturn;
   }
 }
