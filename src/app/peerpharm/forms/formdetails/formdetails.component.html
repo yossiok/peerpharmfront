@@ -231,7 +231,7 @@
                   </select>
                 </td>
 
-                <td><input type="number" step="any" [disabled]="disabledValue" [(ngModel)]="newTest.checkNetoWeight"
+                <td><input type="text" [disabled]="disabledValue" [(ngModel)]="newTest.checkNetoWeight"
                     class="form-control"></td>
 
                 <td>
@@ -424,7 +424,7 @@
       <tr>
         <td>תאריך פתיחת טופס</td>
         <td>
-          <input id="div_fillingDate2" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
+          <input type="date" id="div_fillingDate2" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
             [(ngModel)]="form.dateN" />
         </td>
         <td>מספר אצווה</td>
@@ -449,12 +449,12 @@
       <tr>
         <td>תחילת עבודה</td>
         <td>
-          <input id="div_packageStartDate" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
+          <input type="date" id="div_packageStartDate" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
             [(ngModel)]="form.packageStartTime" />
         </td>
         <td>סוף עבודה</td>
         <td>
-          <input id="div_packageEndDate" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
+          <input type="date" id="div_packageEndDate" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
             [(ngModel)]="form.packgeEndTime" />
         </td>
       </tr>
