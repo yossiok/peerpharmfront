@@ -180,7 +180,7 @@ export class InvArrivalsComponent implements OnInit {
             }
             this.noItem = false;
             this.itemNames = data;
-            resolve(true);
+            resolve(data);
           } else {
             this.noItem = true;
             reject("פריט לא קיים :(");
@@ -216,6 +216,10 @@ export class InvArrivalsComponent implements OnInit {
 
     this.checkComponentN()
       .then((result) => {
+        // console.log(result);
+        this.componentArrival.controls.itemName.setValue(
+          result[0].componentName
+        );
         if (!this.componentArrival.value.whareHouseID)
           this.toastr.error("אנא בחר מחסן.");
         else if (!this.componentArrival.value.item)
@@ -295,6 +299,7 @@ export class InvArrivalsComponent implements OnInit {
     this.componentArrival.controls.user.setValue(
       this.authService.loggedInUser.userName
     );
+    console.log(this.componentArrival.value.user);
     this.componentArrival.controls.whareHouse.setValue(whareHouse.name);
     let shellDoc = this.shellNums.find(
       (shell) =>
@@ -317,6 +322,8 @@ export class InvArrivalsComponent implements OnInit {
     this.componentArrival.get("shell_id_in_whareHouse").reset();
     this.componentArrival.get("position").reset();
     this.componentArrival.get("isNewItemShell").reset();
+    this.componentArrival.get("supplier").reset();
+    this.componentArrival.get("purchaseOrder").reset();
     this.shellNums = [];
 
     this.componentArrival.controls.isNewItemShell.setValue(false);
@@ -334,12 +341,11 @@ export class InvArrivalsComponent implements OnInit {
       .addComponentsToStock(this.allArrivals)
       .subscribe((data) => {
         console.log(data);
-        if (data && data.msg) this.toastr.error(data.msg, "שגיאה");
-        else if (data) {
+
+        if (data) {
           console.log(data);
           //set certificate data
-          this.certificateReception =
-            data.allResults[0].savedMovement.warehouseReception;
+          this.certificateReception = data.savedMovement[0].warehouseReception;
           // for (let arrival of this.allArrivals) {
           //   arrival.suplierN = data.allResults.find(
           //     (a) => a.item == arrival.item
@@ -348,15 +354,20 @@ export class InvArrivalsComponent implements OnInit {
           //     (a) => a.item == arrival.item
           //   ).componentName;
           // }
-          for (let i = 0; i < this.allArrivals.length; i++) {
-            this.allArrivals[i].item = data.allResults[i].savedMovement.item;
-            this.allArrivals[i].itemName =
-              data.allResults[i].savedMovement.itemName;
-            this.allArrivals[i].componentNs =
-              data.allResults[i].savedMovement.componentNs;
+
+          if (data.msg.length > 0) {
+            for (let message of data.msg) {
+              this.toastr.error(message);
+            }
+          }
+          if (data.warning.length > 0) {
+            for (let warning of data.warning) this.toastr.warning(warning);
+          }
+
+          if (data.msg.length == 0 && data.warning.length == 0) {
+            this.toastr.success("נשמר", "הנתונים נשלמרו בהצלחה");
           }
           this.sending = false;
-          this.toastr.success("שינויים נשמרו בהצלחה", "נשמר");
           this.componentArrival.reset();
           this.componentArrival.controls.isNewItemShell.setValue(false);
           this.componentArrival.controls.itemType.setValue("component");
@@ -368,6 +379,8 @@ export class InvArrivalsComponent implements OnInit {
               // this.printSticker = false
             }, 1000);
           }, 500);
+        } else {
+          this.toastr.error("לא נוצר קשר עם השרת, הפעולה לא הצליחה");
         }
       });
   }
@@ -384,5 +397,9 @@ export class InvArrivalsComponent implements OnInit {
 
   clearArrivals() {
     this.allArrivals = [];
+  }
+
+  getKeyByValue(object, value) {
+    return Object.keys(object).find((key) => object[key] === value);
   }
 }
