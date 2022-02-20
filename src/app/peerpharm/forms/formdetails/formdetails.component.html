@@ -213,57 +213,53 @@
             <tbody>
               <tr *ngFor="let check of allChecks">
                 <td>{{check.checkTime}}</td>
-                <td>{{check.checkBox_clean}}</td>
+                <td>
+                  <i *ngIf="check.checkBox_clean" class="fas fa-check text-success"></i>
+                  <i *ngIf="!check.checkBox_clean" class="fas fa-times text-danger"></i>
+                </td>
                 <td>{{check.checkNetoWeight}}</td>
-                <td>{{check.checkBox_closedWaterProof}}</td>
-                <td>{{check.checkBox_stickerPrinting}}</td>
-                <td>{{check.checkBox_lotNumberPrinting}}</td>
-                <td>{{check.checkBox_correctFinalPacking}}</td>
+                <td>
+                  <i *ngIf="check.checkBox_closedWaterProof" class="fas fa-check text-success"></i>
+                  <i *ngIf="!check.checkBox_closedWaterProof" class="fas fa-times text-danger"></i>
+                </td>
+                <td>
+                  <i *ngIf="check.checkBox_stickerPrinting" class="fas fa-check text-success"></i>
+                  <i *ngIf="!check.checkBox_stickerPrinting" class="fas fa-times text-danger"></i>
+                </td>
+                <td>
+                  <i *ngIf="check.checkBox_lotNumberPrinting" class="fas fa-check text-success"></i>
+                  <i *ngIf="!check.checkBox_lotNumberPrinting" class="fas fa-times text-danger"></i>
+                </td>
+                <td>
+                  <i *ngIf="check.checkBox_correctFinalPacking" class="fas fa-check text-success"></i>
+                  <i *ngIf="!check.checkBox_correctFinalPacking" class="fas fa-times text-danger"></i>
+                </td>
               </tr>
               <tr *ngIf="!disabledValue">
                 <td><input type="time" [disabled]="disabledValue" [(ngModel)]="newTest.checkTime" class="form-control">
                 </td>
 
                 <td>
-                  <select [disabled]="disabledValue" [(ngModel)]="newTest.checkBox_clean" class="form-control">
-                    <option [ngValue]=true>True</option>
-                    <option [ngValue]=false>False</option>
-                  </select>
+                  <input [disabled]="disabledValue" type="checkbox" [(ngModel)]="newTest.checkBox_clean">
                 </td>
 
                 <td><input type="text" [disabled]="disabledValue" [(ngModel)]="newTest.checkNetoWeight"
                     class="form-control"></td>
 
                 <td>
-                  <select [disabled]="disabledValue" [(ngModel)]="newTest.checkBox_closedWaterProof"
-                    class="form-control">
-                    <option [ngValue]=true>True</option>
-                    <option [ngValue]=false>False</option>
-                  </select>
+                  <input [disabled]="disabledValue" type="checkbox" [(ngModel)]="newTest.checkBox_closedWaterProof">
                 </td>
 
                 <td>
-                  <select [disabled]="disabledValue" [(ngModel)]="newTest.checkBox_stickerPrinting"
-                    class="form-control">
-                    <option [ngValue]=true>True</option>
-                    <option [ngValue]=false>False</option>
-                  </select>
+                  <input [disabled]="disabledValue" type="checkbox" [(ngModel)]="newTest.checkBox_stickerPrinting">
                 </td>
 
                 <td>
-                  <select [disabled]="disabledValue" [(ngModel)]="newTest.checkBox_lotNumberPrinting"
-                    class="form-control">
-                    <option [ngValue]=true>True</option>
-                    <option [ngValue]=false>False</option>
-                  </select>
+                  <input [disabled]="disabledValue" type="checkbox" [(ngModel)]="newTest.checkBox_lotNumberPrinting">
                 </td>
 
                 <td>
-                  <select [disabled]="disabledValue" [(ngModel)]="newTest.checkBox_correctFinalPacking"
-                    class="form-control">
-                    <option [ngValue]=true>True</option>
-                    <option [ngValue]=false>False</option>
-                  </select>
+                  <input [disabled]="disabledValue" type="checkbox" [(ngModel)]="newTest.checkBox_correctFinalPacking">
                 </td>
 
                 <td><button *ngIf="allowUpdateForm" [disabled]="disabledValue" (click)="addNewTest(newTest)"
