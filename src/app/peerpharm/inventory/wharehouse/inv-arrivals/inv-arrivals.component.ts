@@ -7,6 +7,7 @@ import { Procurementservice } from "src/app/services/procurement.service";
 import { SuppliersService } from "src/app/services/suppliers.service";
 import { WarehouseService } from "src/app/services/warehouse.service";
 import { CostumersService } from "src/app/services/costumers.service";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-inv-arrivals",
@@ -50,6 +51,7 @@ export class InvArrivalsComponent implements OnInit {
     supplier: new FormControl(""),
     purchaseOrder: new FormControl(null),
     ownerId: new FormControl(""),
+    user: new FormControl(""),
   });
   stickerItem: any;
 
@@ -60,7 +62,8 @@ export class InvArrivalsComponent implements OnInit {
     private purchaseService: Procurementservice,
     private warehouseService: WarehouseService,
     private modalService: NgbModal,
-    private customersService: CostumersService
+    private customersService: CostumersService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -132,19 +135,38 @@ export class InvArrivalsComponent implements OnInit {
 
   getPurchaseOrders(e) {
     console.log(e.target.value);
+    this.purchaseOrders = [];
     this.purchaseService
       .getAllOrdersFromSupplier(e.target.value)
       .subscribe((data) => {
-        this.purchaseOrders = data
-          .filter((PO) => PO.status != "closed" && PO.status != "canceled")
-          .filter((PO) => {
-            for (let si of PO.stockitems) {
-              if (si.number == this.componentArrival.value.item) return true;
-              else return false;
+        if (data.length > 0) {
+          let filtered = data.filter(
+            (order) => order.status != "closed" && order.status != "canceled"
+          );
+          for (let po of filtered) {
+            let idx = po.stockitems.findIndex(
+              (si) => si.number == this.componentArrival.value.item
+            );
+            if (idx > -1) {
+              this.purchaseOrders.push(po);
             }
-          });
+          }
+        }
       });
   }
+
+  // if
+
+  //         this.purchaseOrders = data
+  //           .filter((PO) => PO.status != "closed" && PO.status != "canceled")
+  //           .filter((PO) => {
+  //             for (let si of PO.stockitems) {
+  //               if (si.number == this.componentArrival.value.item) return true;
+  //               else return false;
+  //             }
+  //           });
+  //       });
+  //   }
 
   async checkComponentN() {
     return new Promise((resolve, reject) => {
@@ -158,7 +180,7 @@ export class InvArrivalsComponent implements OnInit {
             }
             this.noItem = false;
             this.itemNames = data;
-            resolve(true);
+            resolve(data);
           } else {
             this.noItem = true;
             reject("פריט לא קיים :(");
@@ -194,6 +216,10 @@ export class InvArrivalsComponent implements OnInit {
 
     this.checkComponentN()
       .then((result) => {
+        // console.log(result);
+        this.componentArrival.controls.itemName.setValue(
+          result[0].componentName
+        );
         if (!this.componentArrival.value.whareHouseID)
           this.toastr.error("אנא בחר מחסן.");
         else if (!this.componentArrival.value.item)
@@ -251,8 +277,12 @@ export class InvArrivalsComponent implements OnInit {
     let inputName = this.componentArrival.controls.itemName.value;
     if (inputName.length > 2) {
       this.inventoryService.getNamesByRegex(inputName).subscribe((names) => {
+        console.log(names);
         this.itemNames = names;
         this.componentArrival.controls.item.setValue(names[0].componentN);
+        this.componentArrival.controls.itemName.setValue(
+          names[0].componentName
+        );
       });
     }
   }
@@ -266,6 +296,10 @@ export class InvArrivalsComponent implements OnInit {
     let whareHouse = this.allWhareHouses.find(
       (wh) => wh._id == this.componentArrival.value.whareHouseID
     );
+    this.componentArrival.controls.user.setValue(
+      this.authService.loggedInUser.userName
+    );
+    console.log(this.componentArrival.value.user);
     this.componentArrival.controls.whareHouse.setValue(whareHouse.name);
     let shellDoc = this.shellNums.find(
       (shell) =>
@@ -273,6 +307,7 @@ export class InvArrivalsComponent implements OnInit {
         this.componentArrival.value.shell_id_in_whareHouse
     );
     this.componentArrival.controls.position.setValue(shellDoc.position);
+
     //push arrival to allArrivals
     // convert item from number to string
     let itemToPush = { ...this.componentArrival.value };
@@ -287,6 +322,8 @@ export class InvArrivalsComponent implements OnInit {
     this.componentArrival.get("shell_id_in_whareHouse").reset();
     this.componentArrival.get("position").reset();
     this.componentArrival.get("isNewItemShell").reset();
+    this.componentArrival.get("supplier").reset();
+    this.componentArrival.get("purchaseOrder").reset();
     this.shellNums = [];
 
     this.componentArrival.controls.isNewItemShell.setValue(false);
@@ -296,17 +333,19 @@ export class InvArrivalsComponent implements OnInit {
 
   addToStock() {
     console.log(this.allArrivals);
+    console.log(this.authService.loggedInUser.userName);
+
     this.sending = true;
     setTimeout(() => (this.sending = false), 7000); //if something goes wrong
     this.inventoryService
       .addComponentsToStock(this.allArrivals)
       .subscribe((data) => {
-        if (data.msg) this.toastr.error(data.msg, "שגיאה");
-        else if (data) {
+        console.log(data);
+
+        if (data) {
           console.log(data);
           //set certificate data
-          this.certificateReception =
-            data.allResults[0].savedMovement.warehouseReception;
+          this.certificateReception = data.savedMovement[0].warehouseReception;
           // for (let arrival of this.allArrivals) {
           //   arrival.suplierN = data.allResults.find(
           //     (a) => a.item == arrival.item
@@ -315,15 +354,20 @@ export class InvArrivalsComponent implements OnInit {
           //     (a) => a.item == arrival.item
           //   ).componentName;
           // }
-          for (let i = 0; i < this.allArrivals.length; i++) {
-            this.allArrivals[i].item = data.allResults[i].savedMovement.item;
-            this.allArrivals[i].itemName =
-              data.allResults[i].savedMovement.itemName;
-            this.allArrivals[i].componentNs =
-              data.allResults[i].savedMovement.componentNs;
+
+          if (data.msg.length > 0) {
+            for (let message of data.msg) {
+              this.toastr.error(message);
+            }
+          }
+          if (data.warning.length > 0) {
+            for (let warning of data.warning) this.toastr.warning(warning);
+          }
+
+          if (data.msg.length == 0 && data.warning.length == 0) {
+            this.toastr.success("נשמר", "הנתונים נשלמרו בהצלחה");
           }
           this.sending = false;
-          this.toastr.success("שינויים נשמרו בהצלחה", "נשמר");
           this.componentArrival.reset();
           this.componentArrival.controls.isNewItemShell.setValue(false);
           this.componentArrival.controls.itemType.setValue("component");
@@ -335,6 +379,8 @@ export class InvArrivalsComponent implements OnInit {
               // this.printSticker = false
             }, 1000);
           }, 500);
+        } else {
+          this.toastr.error("לא נוצר קשר עם השרת, הפעולה לא הצליחה");
         }
       });
   }
@@ -351,5 +397,9 @@ export class InvArrivalsComponent implements OnInit {
 
   clearArrivals() {
     this.allArrivals = [];
+  }
+
+  getKeyByValue(object, value) {
+    return Object.keys(object).find((key) => object[key] === value);
   }
 }

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { InventoryService } from "src/app/services/inventory.service";
 import { WarehouseService } from "src/app/services/warehouse.service";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-checkout",
@@ -26,6 +27,7 @@ export class CheckoutComponent implements OnInit {
   sending: boolean = false;
   disabled: boolean = false;
   isReturn: boolean = false;
+  user: string = null;
 
   componentCheckout: FormGroup = new FormGroup({
     itemType: new FormControl("component", Validators.required),
@@ -38,12 +40,14 @@ export class CheckoutComponent implements OnInit {
     whareHouse: new FormControl(""),
     isNewItemShell: new FormControl(false, Validators.required),
     destination: new FormControl("", Validators.required),
+    user: new FormControl(""),
   });
 
   constructor(
     private inventoryService: InventoryService,
     private toastr: ToastrService,
-    private warehouseService: WarehouseService
+    private warehouseService: WarehouseService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -53,6 +57,7 @@ export class CheckoutComponent implements OnInit {
       this.componentCheckout.controls.item.setValue(this.itemNumber);
     }
     this.getHistoricalCertificates();
+    this.user = this.authService.loggedInUser.userName;
   }
 
   getHistoricalCertificates() {
@@ -155,6 +160,8 @@ export class CheckoutComponent implements OnInit {
         shell.shell_id_in_whareHouse ==
         this.componentCheckout.value.shell_id_in_whareHouse
     );
+    this.componentCheckout.controls.user.setValue(this.user);
+
     this.componentCheckout.controls.position.setValue(shellDoc.position);
     //push arrival to outGoing
     this.outGoing.push(this.componentCheckout.value);
@@ -249,7 +256,7 @@ export class CheckoutComponent implements OnInit {
     this.outGoing = [];
   }
 
-  shaylyShutUp() {
+  shaulyShutUp() {
     this.isReturn = !this.isReturn;
   }
 }

@@ -83,7 +83,7 @@
       </div> -->
       <div class="col-2">
         <label>ספק</label>
-        <input list="suppliers" (change)="getPurchaseOrders($event)" class="form-control" formControlName="supplier">
+        <input list="suppliers" (blur)="getPurchaseOrders($event)" class="form-control" formControlName="supplier">
         <datalist id="suppliers">
           <option *ngFor="let supplier of allSuppliers" value="{{supplier.suplierNumber}}">
             {{supplier.suplierNumber}} - {{supplier.suplierName}}

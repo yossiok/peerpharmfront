@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { InventoryService } from "src/app/services/inventory.service";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-shelf-change",
@@ -32,11 +33,13 @@ export class ShelfChangeComponent implements OnInit {
     old_shell_id_in_whareHouse: new FormControl(null, Validators.required),
     new_shell_id_in_whareHouse: new FormControl(null, Validators.required),
     whareHouseID: new FormControl(null, Validators.required),
+    user: new FormControl(""),
   });
 
   constructor(
     private inventoryService: InventoryService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -120,11 +123,16 @@ export class ShelfChangeComponent implements OnInit {
   }
 
   changeShelf() {
+    this.shelfChange.controls.user.setValue(
+      this.authService.loggedInUser.userName
+    );
+    console.log(this.shelfChange.value);
     this.sending = true;
     setTimeout(() => (this.sending = false), 7000); //if something goes wrong
     this.inventoryService
       .changeItemPosition(this.shelfChange.value)
       .subscribe((data) => {
+        console.log(data);
         if (data.msg) {
           this.toastr.error(data.msg, "שגיאה");
           this.shelfsWithItem = [];

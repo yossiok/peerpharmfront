@@ -111,11 +111,13 @@ export class BetweenWHComponent implements OnInit {
           this.movementForm.value.itemType
         )
         .subscribe((data) => {
+          console.log(data);
           if (data.length > 0) {
             if (data[0].itemType == "material") {
               reject("לא ניתן להעביר חומרי גלם דרך טופס זה");
               return;
             }
+            this.movementForm.controls.itemName.setValue(data[0].componentName);
             this.noItem = false;
             this.itemNames = data;
             resolve(true);
@@ -132,11 +134,13 @@ export class BetweenWHComponent implements OnInit {
     let inputName = this.movementForm.controls.itemName.value;
     if (inputName.length > 2) {
       this.inventoryService.getNamesByRegex(inputName).subscribe((names) => {
+        console.log(names);
         this.itemNames = names;
         this.movementForm.controls.item.setValue(names[0].componentN);
         this.movementForm.controls.itemName.setValue(names[0].componentName);
       });
     }
+    console.log(this.movementForm.value.itemName);
   }
 
   setItemDetailsNumber(event) {
@@ -154,6 +158,7 @@ export class BetweenWHComponent implements OnInit {
       this.inventoryService
         .getCmptByitemNumber(this.movementForm.value.item)
         .subscribe((data) => {
+          console.log(data);
           if (data.length > 0) {
             this.noItem = false;
             this.itemNames = data;
