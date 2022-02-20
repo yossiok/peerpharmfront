@@ -4,6 +4,7 @@ import { ToastrService } from "ngx-toastr";
 import { InventoryService } from "src/app/services/inventory.service";
 import { WarehouseService } from "src/app/services/warehouse.service";
 import { WarehousesNamesPipe } from "src/app/pipes/warehouses-names.pipe";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-between-wh",
@@ -47,6 +48,7 @@ export class BetweenWHComponent implements OnInit {
     WH_destId: new FormControl(null, Validators.required),
     WH_destName: new FormControl(null, Validators.required),
     isNewItemShell: new FormControl(false, Validators.required),
+    user: new FormControl(""),
   });
   sending: boolean = false;
   certificateReception: any;
@@ -56,10 +58,12 @@ export class BetweenWHComponent implements OnInit {
   destinationWHName: any;
   destinationWHId: any;
   historic: boolean;
+  user: string = "";
   constructor(
     private inventoryService: InventoryService,
     private toastr: ToastrService,
-    private wareHouseService: WarehouseService
+    private wareHouseService: WarehouseService,
+    private authService: AuthService
   ) {}
   actionLogs: any[] = [];
 
@@ -71,6 +75,7 @@ export class BetweenWHComponent implements OnInit {
     }
     this.getHistoricalReceptions();
     this.getLastReception();
+    this.user = this.authService.loggedInUser.userName;
   }
 
   getLastReception() {
@@ -330,6 +335,7 @@ export class BetweenWHComponent implements OnInit {
 
   addItem() {
     if (this.itemfound) {
+      this.movementForm.controls.user.setValue(this.user);
       console.log(this.movementForm.value);
       if (this.allMovements.length == 0) {
         this.originWHName = this.movementForm.value.WH_originName;
