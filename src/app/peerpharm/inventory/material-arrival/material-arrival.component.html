@@ -486,6 +486,7 @@
                 <label>מיקום הסחורה</label>
                 <select list="positions" class="form-control is-valid" #supplierNameInput type="text"
                   placeholder="בחר מדף" formControlName="position" name='position'>
+                  <option>...בחר מדף</option>
                   <option *ngFor="let shelf of lastPositions" [value]="shelf.position">{{shelf.position}}
                   </option>
                 </select>
