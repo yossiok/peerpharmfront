@@ -159,31 +159,31 @@
       <tr>
         <td>בדיקה סנטורית של המוצר</td>
         <td>
-          <input style="width:5%" class="form-control" type="checkbox" id="sentoric" [disabled]="disabledValue"
+          <input type="checkbox" id="sentoric" [disabled]="disabledValue"
             [(ngModel)]="form.visualIndentCheck" />
         </td>
         <td>זיהוי וניקוי מיכלים</td>
         <td>
-          <input style="width:14%" class="form-control" type="checkbox" id="cleanContainer" [disabled]="disabledValue"
+          <input type="checkbox" id="cleanContainer" [disabled]="disabledValue"
             [(ngModel)]="form.containeMatchAndClean" />
         </td>
       </tr>
       <tr>
         <td>זיהוי תוויות</td>
         <td>
-          <input style="width:5%" class="form-control" type="checkbox" id="label" [disabled]="disabledValue"
+          <input type="checkbox" id="label" [disabled]="disabledValue"
             [(ngModel)]="form.presentOfTheLabels" />
         </td>
         <td>זיהוי קרטון<br />מכסה/משאבה</td>
         <td>
-          <input style="width:14%" class="form-control" type="checkbox" id="ccc" [disabled]="disabledValue"
+          <input type="checkbox" id="ccc" [disabled]="disabledValue"
             [(ngModel)]="form.presentOfPackageComponent" />
         </td>
       </tr>
       <tr>
         <td>אישור כיוון ונקיון מכונה</td>
         <td>
-          <input style="width:5%" class="form-control" type="checkbox" id="cleanMachine" [disabled]="disabledValue"
+          <input type="checkbox" id="cleanMachine" [disabled]="disabledValue"
             [(ngModel)]="form.confSetupeClean" />
         </td>
         <td>חתימת מנהל מאשר</td>
@@ -213,57 +213,53 @@
             <tbody>
               <tr *ngFor="let check of allChecks">
                 <td>{{check.checkTime}}</td>
-                <td>{{check.checkBox_clean}}</td>
+                <td>
+                  <i *ngIf="check.checkBox_clean" class="fas fa-check text-success"></i>
+                  <i *ngIf="!check.checkBox_clean" class="fas fa-times text-danger"></i>
+                </td>
                 <td>{{check.checkNetoWeight}}</td>
-                <td>{{check.checkBox_closedWaterProof}}</td>
-                <td>{{check.checkBox_stickerPrinting}}</td>
-                <td>{{check.checkBox_lotNumberPrinting}}</td>
-                <td>{{check.checkBox_correctFinalPacking}}</td>
+                <td>
+                  <i *ngIf="check.checkBox_closedWaterProof" class="fas fa-check text-success"></i>
+                  <i *ngIf="!check.checkBox_closedWaterProof" class="fas fa-times text-danger"></i>
+                </td>
+                <td>
+                  <i *ngIf="check.checkBox_stickerPrinting" class="fas fa-check text-success"></i>
+                  <i *ngIf="!check.checkBox_stickerPrinting" class="fas fa-times text-danger"></i>
+                </td>
+                <td>
+                  <i *ngIf="check.checkBox_lotNumberPrinting" class="fas fa-check text-success"></i>
+                  <i *ngIf="!check.checkBox_lotNumberPrinting" class="fas fa-times text-danger"></i>
+                </td>
+                <td>
+                  <i *ngIf="check.checkBox_correctFinalPacking" class="fas fa-check text-success"></i>
+                  <i *ngIf="!check.checkBox_correctFinalPacking" class="fas fa-times text-danger"></i>
+                </td>
               </tr>
               <tr *ngIf="!disabledValue">
                 <td><input type="time" [disabled]="disabledValue" [(ngModel)]="newTest.checkTime" class="form-control">
                 </td>
 
                 <td>
-                  <select [disabled]="disabledValue" [(ngModel)]="newTest.checkBox_clean" class="form-control">
-                    <option [ngValue]=true>True</option>
-                    <option [ngValue]=false>False</option>
-                  </select>
+                  <input [disabled]="disabledValue" type="checkbox" [(ngModel)]="newTest.checkBox_clean">
                 </td>
 
                 <td><input type="text" [disabled]="disabledValue" [(ngModel)]="newTest.checkNetoWeight"
                     class="form-control"></td>
 
                 <td>
-                  <select [disabled]="disabledValue" [(ngModel)]="newTest.checkBox_closedWaterProof"
-                    class="form-control">
-                    <option [ngValue]=true>True</option>
-                    <option [ngValue]=false>False</option>
-                  </select>
+                  <input [disabled]="disabledValue" type="checkbox" [(ngModel)]="newTest.checkBox_closedWaterProof">
                 </td>
 
                 <td>
-                  <select [disabled]="disabledValue" [(ngModel)]="newTest.checkBox_stickerPrinting"
-                    class="form-control">
-                    <option [ngValue]=true>True</option>
-                    <option [ngValue]=false>False</option>
-                  </select>
+                  <input [disabled]="disabledValue" type="checkbox" [(ngModel)]="newTest.checkBox_stickerPrinting">
                 </td>
 
                 <td>
-                  <select [disabled]="disabledValue" [(ngModel)]="newTest.checkBox_lotNumberPrinting"
-                    class="form-control">
-                    <option [ngValue]=true>True</option>
-                    <option [ngValue]=false>False</option>
-                  </select>
+                  <input [disabled]="disabledValue" type="checkbox" [(ngModel)]="newTest.checkBox_lotNumberPrinting">
                 </td>
 
                 <td>
-                  <select [disabled]="disabledValue" [(ngModel)]="newTest.checkBox_correctFinalPacking"
-                    class="form-control">
-                    <option [ngValue]=true>True</option>
-                    <option [ngValue]=false>False</option>
-                  </select>
+                  <input [disabled]="disabledValue" type="checkbox" [(ngModel)]="newTest.checkBox_correctFinalPacking">
                 </td>
 
                 <td><button *ngIf="allowUpdateForm" [disabled]="disabledValue" (click)="addNewTest(newTest)"
@@ -346,12 +342,11 @@
       <tr>
         <td>רשיון לפריט</td>
         <td>
-          <input type="checkbox" [checked]='form.itemHasLicense' style="width:5%" [disabled]="disabledValue"
-            class="form-control" />
+          <input type="checkbox" [checked]='form.itemHasLicense' [disabled]="disabledValue"/>
         </td>
         <td>אריזה אישית</td>
         <td>
-          <input type="checkbox" [(ngModel)]="form.personalPackage" class="inputDiv form-control" style="width:14%"
+          <input type="checkbox" [(ngModel)]="form.personalPackage" class="inputDiv"
             [disabled]="disabledValue" />
         </td>
       </tr>
