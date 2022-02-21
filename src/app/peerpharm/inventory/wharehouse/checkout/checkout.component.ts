@@ -82,6 +82,7 @@ export class CheckoutComponent implements OnInit {
     this.inventoryService
       .getCmptByitemNumber(this.componentCheckout.value.item)
       .subscribe((data) => {
+        console.log(data);
         if (data.length > 0) {
           this.itemNames = data;
         }
