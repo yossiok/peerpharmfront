@@ -339,7 +339,7 @@
             <td style="width:25%;">{{component.componentName}}</td>
             <!-- <td>{{component.componentType}}</td> -->
 
-            <td style="width:9%;border-right: 2px solid black;">{{component.productAlloAmount}} <img
+            <td style="width:9%;border-right: 2px solid black;">{{component.allocatedAmount}} <img
                 (click)="openAllocatedProducts(component.componentN)"
                 src="../../../../assets/images/search_plus_blue.png" alt="watch quantities"
                 style="width: 40px; margin-left: 15px; cursor: pointer; float: right;"></td>
@@ -348,7 +348,7 @@
                 [disabled]="callingForCmptAmounts" class="btn btn-info"
                 (click)="getCmptAmounts(component.componentN, component._id)">צפיה בכמויות</button></td>
             <td style="width:9%;">
-              <div *ngIf="component.allocAmount!=undefined || component.allocAmount!=null">{{component.allocAmount}}
+              <div *ngIf="component.allocAmount!=undefined || component.allocAmount!=null">{{component.allocatedAmount}}
               </div>
             </td>
             <td style="width:9%;"><img [src]=component.img style='width:50px ; cursor: pointer;'
@@ -2059,7 +2059,7 @@
         </div>
       </mat-tab> -->
 
-<!-- 
+      <!-- 
       <mat-tab disabled *ngIf="isSuperAdmin" label="Pricing">
 
         <span class="close text-success" id="closeId2"
@@ -2417,9 +2417,10 @@
         </div>
 
         <div class="col-1 fixNoaStupidStuff">
-          <label dir="rtl" [ngClass]="recommendStockItem.urgent ? 'text-danger' : 'text-info'">בהול <span *ngIf="!recommendStockItem.urgent">?</span> <span *ngIf="recommendStockItem.urgent">!!!</span></label> <br><br>
-          <input type="checkbox" [ngModelOptions]="{standalone: true}"
-            [(ngModel)]="recommendStockItem.urgent">
+          <label dir="rtl" [ngClass]="recommendStockItem.urgent ? 'text-danger' : 'text-info'">בהול <span
+              *ngIf="!recommendStockItem.urgent">?</span> <span *ngIf="recommendStockItem.urgent">!!!</span></label>
+          <br><br>
+          <input type="checkbox" [ngModelOptions]="{standalone: true}" [(ngModel)]="recommendStockItem.urgent">
         </div>
         <div class="col-1 fixNoaStupidStuff">
           <span class="hot-red float-left">*</span>
@@ -2517,7 +2518,9 @@
                 <td>{{stockitem.quantity}}</td>
                 <td>{{stockitem.measurement}}</td>
                 <td>{{stockitem.customerOrder}}</td>
-                <td><span *ngIf="stockitem.urgent" class="text-danger p-2"><h4 dir="rtl">בהול!</h4></span></td>
+                <td><span *ngIf="stockitem.urgent" class="text-danger p-2">
+                    <h4 dir="rtl">בהול!</h4>
+                  </span></td>
                 <td><i placement="bottom" ngbTooltip="Delete Item" (click)="deleteFromRecommendation(i)"
                     class="fa fa-times text-danger"></i></td>
               </tr>

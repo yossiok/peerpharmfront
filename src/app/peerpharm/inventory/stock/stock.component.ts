@@ -310,6 +310,7 @@ export class StockComponent implements OnInit {
   allSuppliers: any[];
   allPurchases: any[];
   totalComponentsValue: number = 0;
+  allocatedAmount: number = null;
 
   @ViewChild("filterByItem") filterByItem: ElementRef; //this.filterBySupplierN.nativeElement.value
   // @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
@@ -376,7 +377,7 @@ export class StockComponent implements OnInit {
     threatment: "",
     measurement: "",
     customerOrder: "",
-    urgent: false
+    urgent: false,
   };
   lastOrdersOfItem = [];
   fetchingOrders: boolean = false;
@@ -1027,7 +1028,9 @@ export class StockComponent implements OnInit {
   getUserAllowedWH() {
     this.inventoryService.getWhareHousesList().subscribe((res) => {
       if (res) {
-        this.reallyAllWhareHouses = res.filter(wh => wh.name != 'Rosh HaAyin');
+        this.reallyAllWhareHouses = res.filter(
+          (wh) => wh.name != "Rosh HaAyin"
+        );
         let displayAllowedWH = [];
         for (const wh of this.reallyAllWhareHouses) {
           if (this.authService.loggedInUser.allowedWH.includes(wh._id)) {
@@ -1090,7 +1093,7 @@ export class StockComponent implements OnInit {
         .subscribe((data) => {
           if (data) {
             this.recommendStockItem.name = data[0].componentName;
-            if ((data[0].itemType == "material")) {
+            if (data[0].itemType == "material") {
               if (data[0].threatment)
                 this.recommendStockItem.threatment = data[0].threatment;
             }
@@ -1757,6 +1760,7 @@ export class StockComponent implements OnInit {
     this.inventoryService
       .getFilteredComponents(query)
       .subscribe((filteredComponents) => {
+        console.log(filteredComponents);
         this.components = filteredComponents.filter(
           (s) => s.itemType == this.stockType
         );
@@ -1765,10 +1769,12 @@ export class StockComponent implements OnInit {
         );
         if (this.components.length > 0) {
           try {
+            console.log(this.components);
             this.loadingText = "(2/4) מחשב כמויות... ";
             this.getAmountsFromShelfs();
             this.getItemPurchases(false);
             this.getAllocations();
+            this.getAllocationsNew();
           } catch (e) {
             this.smallLoader = false;
             alert(e);
@@ -1780,6 +1786,29 @@ export class StockComponent implements OnInit {
           this.smallLoader = false;
         }
       });
+  }
+
+  getAllocationsNew() {
+    if (this.components.length > 0) {
+      for (let component of this.components) {
+        this.inventoryService
+          .getAllocatedOrdersByNumber(component.componentN)
+          .subscribe((data) => {
+            console.log(data);
+            let productAllocation = [];
+            let allocatedAmount = 0;
+            for (let orderItem of data) {
+              allocatedAmount += +orderItem.quantity;
+              productAllocation.push({
+                orderNumber: orderItem.orderNumber,
+                allocatedQuantity: orderItem.quantity,
+              });
+            }
+            component.productAllocation = productAllocation;
+            component.allocatedAmount = allocatedAmount;
+          });
+      }
+    }
   }
 
   searchItemShelfs() {
@@ -1975,7 +2004,7 @@ export class StockComponent implements OnInit {
   openAllocatedOrders(component) {
     this.openModalHeader = "הקצאות מלאי";
     this.openOrderAmountsModal = true;
-    this.allocatedOrders = component.openOrders;
+    this.allocatedOrders;
   }
 
   getAllocations() {
@@ -2001,9 +2030,18 @@ export class StockComponent implements OnInit {
     this.inventoryService
       .getAllocatedOrdersByNumber(componentN)
       .subscribe((data) => {
+        console.log(data);
         this.alloAmountsLoading = false;
-
-        this.allocatedProducts = data[0].productAllocation;
+        let productAllocation = [];
+        this.allocatedAmount = 0;
+        for (let orderItem of data) {
+          this.allocatedAmount += +orderItem.quantity;
+          productAllocation.push({
+            orderNumber: orderItem.orderNumber,
+            allocatedQuantity: orderItem.quantity,
+          });
+        }
+        this.allocatedProducts = productAllocation;
       });
   }
 
@@ -2523,12 +2561,14 @@ export class StockComponent implements OnInit {
         this.callingForCmptAmounts = false;
 
         // remove these 2 filters after "Rosh HaAyin" components are all removed from db ("Rosh HaAyin C" = new warehouse for components)
-        this.itemAmountsData = this.stockType == 'material' ? res.data 
-        : 
-        res.data.filter(is => is.wh != "5c1124ef2db99c4434914a0e"); // remove
-        this.itemAmountsWh = this.stockType == 'material' ? res.whList
-        :
-        res.whList.filter(wh => wh != "Rosh HaAyin"); // remove
+        this.itemAmountsData =
+          this.stockType == "material"
+            ? res.data
+            : res.data.filter((is) => is.wh != "5c1124ef2db99c4434914a0e"); // remove
+        this.itemAmountsWh =
+          this.stockType == "material"
+            ? res.whList
+            : res.whList.filter((wh) => wh != "Rosh HaAyin"); // remove
 
         this.currItemShelfs = [];
         this.newItemShelfWH = "";

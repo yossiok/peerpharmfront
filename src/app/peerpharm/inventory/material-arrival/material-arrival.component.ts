@@ -5,6 +5,7 @@ import { Procurementservice } from "src/app/services/procurement.service";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
 import { UserInfo } from "../../taskboard/models/UserInfo";
+
 import {
   NgbModal,
   NgbNav,
@@ -14,6 +15,7 @@ import {
   MaterialArrivalCertif,
   MaterialArrivalLine,
 } from "./MaterialArrivalCertif";
+import { fromEventPattern } from "rxjs";
 
 const defaultLine = {
   itemInternalNumber: "",
@@ -861,8 +863,9 @@ export class MaterialArrivalComponent implements OnInit {
 
         this.toastSrv.success("New material arrival saved!");
         this.requiresFromFull = !this.requiresFromFull;
-
-        this.bcValue = [res.newActionLogs.logs[0].reqNum];
+        console.log(res.newActionLogs.logs[0]);
+        // this.bcValue = res.newActionLogs.logs[0].reqNum;
+        this.bcValue = [res.newActionLogs.logs[0]];
         this.materialNum = res.newActionLogs.logs[0].internalNumber;
         this.materialName = res.newActionLogs.logs[0].materialName;
         this.lotNumber = res.newActionLogs.logs[0].lotNumber;
