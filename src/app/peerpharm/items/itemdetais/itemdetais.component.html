@@ -2229,8 +2229,8 @@
         class="btn btn-success" (click)="addNewItem(); checkIfItemExist(itemShown.itemNumber)">New
       </button>
       <button *ngIf="alowUserEditItemTree" [disabled]="!itemExist"
-        [style.cursor]="itemExist ? 'pointer' : 'not-allowed'" class="btn btn-warning"
-        (click)="this.modalService.open(editItemModal)">Update
+        [style.cursor]="itemExist ? 'pointer' : 'not-allowed'" class="btn btn-warning" (click)="updateBtn()">Update
+        <!-- (click)="this.modalService.open(editItemModal)">Update -->
       </button>
       <button style="float: right" type='reset' class="btn btn-secondary">Reset</button>
     </div>

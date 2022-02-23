@@ -36,6 +36,8 @@ export class PricesComponent implements OnInit {
   currencies: Currencies;
   partialFormulePrice: boolean;
   itemsMissingPrice: string[] = [];
+  notPricedComponents: any[] = [];
+  formulePriceProblem: string = "";
 
   constructor(
     private itemService: ItemsService,
@@ -91,6 +93,7 @@ export class PricesComponent implements OnInit {
         this.waitingText = "Getting components purchase data...";
         this.waitingText = "Getting Formule data...";
         this.getFormulePrice().then((formulePrice) => {
+          console.log(formulePrice);
           this.waitingText = "Calculating product price...";
           this.calculateProductPricing().then((result) => {
             this.totalItemPrice = this.item.formulePrice
@@ -114,6 +117,7 @@ export class PricesComponent implements OnInit {
       this.formuleService
         .getFormulePriceByNumber(this.item.itemNumber)
         .subscribe((response) => {
+          console.log(response);
           if (response.msg) this.toastr.error(response.msg);
           for (let item of response.formulePrices) {
             if (!item.price) {
@@ -121,14 +125,21 @@ export class PricesComponent implements OnInit {
               this.itemsMissingPrice.push(item.itemNumber);
             }
           }
-          this.item.formulePrice = response.formulePrice
-            ? response.formulePrice * (this.item.netWeightK / 1000)
-            : null;
+          if (this.item.netWeightK) {
+            this.item.formulePrice = response.formulePrice
+              ? response.formulePrice * (this.item.netWeightK / 1000)
+              : null;
+          } else {
+            this.formulePriceProblem =
+              "משקל המוצר לא מוגדר ולכן אין חישוב עלות. יש להכניס את המשקל בעץ המוצר.";
+            this.toastr.warning(
+              "The weight of the product is not defiened. Please update in the product tree."
+            );
+          }
           resolve(this.item.formulePrice);
         });
     });
   }
-
   // Calculate product price by components
   async calculateProductPricing() {
     return new Promise<any>((resolve, reject) => {
@@ -167,6 +178,7 @@ export class PricesComponent implements OnInit {
     return new Promise<any>((resolve, reject) => {
       let itemComponents = [];
       for (let component of components) {
+        console.log(component);
         let componentPricing = {
           price: 0,
           shippingPrice: "",
@@ -176,10 +188,10 @@ export class PricesComponent implements OnInit {
         };
         let coin;
         //Calculate component pricing
-        if (component.manualPrice) {
+        if (component.manualPrice && component.manualCoin) {
           componentPricing.price = Number(component.manualPrice);
           coin = component.manualCoin;
-        } else if (component.price) {
+        } else if (component.price && component.manualCoin) {
           componentPricing.price = Number(component.price);
           coin = component.coin;
         } else {
@@ -202,7 +214,12 @@ export class PricesComponent implements OnInit {
           }
         }
         // if(!coin) reject(`Item ${component.componentN}`) // crashing table, removed
-        if (!isNaN(componentPricing.price)) {
+        console.log(coin);
+        if (!coin || !componentPricing.price) {
+          console.log("Coin or Price is not defined", componentPricing);
+          this.notPricedComponents.push(componentPricing.componentNumber);
+        }
+        if (componentPricing.price && coin) {
           componentPricing.price =
             componentPricing.price * this.currencies[0][coin.toUpperCase()];
           if (component.componentType == "master_carton") {
@@ -219,6 +236,17 @@ export class PricesComponent implements OnInit {
           : "No shipping Price";
         componentPricing.imgUrl = component.img;
         itemComponents.push(componentPricing);
+      }
+      if (this.notPricedComponents.length > 0) {
+        let warnings =
+          "הפריטים הבאים ללא תמחור, יש להוסיף מחיר באינדקס פריטים: ";
+        for (let item of this.notPricedComponents) {
+          this.toastr.warning(
+            `Item number ${item} is not priced. Add the price in the index menu`
+          );
+          warnings = warnings + ", " + item;
+        }
+        alert(warnings);
       }
       resolve(itemComponents);
     });

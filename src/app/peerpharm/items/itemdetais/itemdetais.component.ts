@@ -42,6 +42,8 @@ export class ItemdetaisComponent implements OnInit {
   @ViewChild("container")
   private container: ElementRef;
   @ViewChild("itemNum") itemNum: ElementRef;
+  @ViewChild("editItemModal")
+  editItemModal: ElementRef;
   @Input() formDetailsItemNum: string;
 
   loadingItem: boolean = false;
@@ -1630,6 +1632,15 @@ export class ItemdetaisComponent implements OnInit {
     }
   }
 
+  updateBtn() {
+    if (!this.itemShown.netWeightK) {
+      alert("Net Weight Gr must have a value. Fill the unit net weight");
+
+      return;
+    }
+    this.modalService.open(this.editItemModal);
+  }
+
   updateItem() {
     if (this.itemLockedForEdit) {
       alert("item is used in open ordres! cant edit. contact system admin!");
@@ -1638,7 +1649,15 @@ export class ItemdetaisComponent implements OnInit {
     this.lookingForItem = true;
     if (this.itemShown.itemNumber != "") {
       this.itemShown.nameOfupdating = this.user.userName;
-      // console.log(this.itemShown);
+      console.log(this.itemShown);
+      if (!this.itemShown.netWeightK) {
+        this.toastr.error(
+          "Net Weight Gr must have a value. Fill the unit net weight"
+        );
+        alert("Net Weight Gr must have a value. Fill the unit net weight");
+
+        return;
+      }
       this.itemsService.updateItem(this.itemShown).subscribe((res) => {
         console.log(res);
 
