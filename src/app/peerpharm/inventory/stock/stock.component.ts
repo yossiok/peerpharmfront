@@ -2453,7 +2453,8 @@ export class StockComponent implements OnInit {
     if (
       this.authService.loggedInUser.userName == "SHARK" ||
       this.authService.loggedInUser.userName == "sima" ||
-      this.authService.loggedInUser.userName == "martha"
+      this.authService.loggedInUser.userName == "martha" ||
+      this.authService.loggedInUser.userName == "dani"
     ) {
       this.showDeleteBtn = true;
     }
