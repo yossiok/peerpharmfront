@@ -21,6 +21,7 @@ export class FormdetailsComponent implements OnInit {
   form: any = {};
   disabledValue = true;
   formQAPalletsData: any[];
+  formQAPersonalPalletsData: any[] = []
   user: any;
   currentScheduleId: any;
   averageNetoWeight = 0;
@@ -37,6 +38,7 @@ export class FormdetailsComponent implements OnInit {
   formid = "";
   formDetailsItemNum: any;
   showQAPalletsModal: boolean = false;
+  showQAPersonalPalletsModal: boolean = false;
   allowUpdateForm: boolean = false;
 
   newQAPallet = {
@@ -52,6 +54,21 @@ export class FormdetailsComponent implements OnInit {
     orderNumber: "",
     itemNumber: "",
     isPersonalPackage: false,
+  };
+
+  newQAPersonalPallet = {
+    floorNumber: null,
+    kartonQuantity: null,
+    unitsInKarton: null,
+    lastFloorQuantity: null,
+    unitsQuantityPartKarton: null,
+    qaStatus: "",
+    batchNumber: "",
+    customerName: "",
+    formDetailsId: "",
+    orderNumber: "",
+    itemNumber: "",
+    isPersonalPackage: true,
   };
 
   newTest = {
@@ -115,6 +132,7 @@ export class FormdetailsComponent implements OnInit {
     await this.formsService.getFormData(this.formid).subscribe((res) => {
       this.form = res[0];
       this.loadQAPallets(this.form._id);
+      this.loadQAPersonalPallets(this.form._id);
       this.formDetailsItemNum = this.form.itemN;
       this.batchService.getBatchData(this.form.batchN).subscribe((data) => {
         console.log("batchData: ", data);
@@ -299,10 +317,12 @@ export class FormdetailsComponent implements OnInit {
         this.toastService.success("אירעה שגיאה , אנא פנה למנהל מערכת");
       }
       this.loadQAPallets(this.form._id);
+      this.loadQAPersonalPallets(this.form._id);
     });
   }
 
   addNewQAPallet() {
+    debugger
     this.newQAPallet.batchNumber = this.form.batchN;
     this.newQAPallet.itemNumber = this.form.itemN;
     this.newQAPallet.orderNumber = this.form.orderNumber;
@@ -325,6 +345,33 @@ export class FormdetailsComponent implements OnInit {
           this.newQAPallet.lastFloorQuantity = null;
           this.newQAPallet.unitsInKarton = null;
           this.newQAPallet.unitsQuantityPartKarton = null;
+        } else {
+          this.toastService.success("אירעה שגיאה , אנא פנה למנהל מערכת");
+        }
+      });
+  }
+
+  addNewQAPersonalPallet() {
+    debugger
+    this.newQAPersonalPallet.batchNumber = this.form.batchN;
+    this.newQAPersonalPallet.itemNumber = this.form.itemN;
+    this.newQAPersonalPallet.orderNumber = this.form.orderNumber;
+    this.newQAPersonalPallet.formDetailsId = this.form._id;
+    this.newQAPersonalPallet.customerName = this.form.costumerName;
+
+
+    this.formsService
+      .createNewQaPallet(this.newQAPersonalPallet)
+      .subscribe((result) => {
+        if (result) {
+          this.formQAPersonalPalletsData.push(result);
+          this.calculateSumAmount(this.formQAPalletsData);
+          this.toastService.success("משטח אריזות אישיות חדש נוסף בהצלחה");
+          this.newQAPersonalPallet.floorNumber = null;
+          this.newQAPersonalPallet.kartonQuantity = null;
+          this.newQAPersonalPallet.lastFloorQuantity = null;
+          this.newQAPersonalPallet.unitsInKarton = null;
+          this.newQAPersonalPallet.unitsQuantityPartKarton = null;
         } else {
           this.toastService.success("אירעה שגיאה , אנא פנה למנהל מערכת");
         }
@@ -377,6 +424,14 @@ export class FormdetailsComponent implements OnInit {
       if (QAPallets) {
         this.formQAPalletsData = this.calculateSumAmount(QAPallets);
       } else this.formQAPalletsData = [];
+    });
+  }
+
+  async loadQAPersonalPallets(formId) {
+    this.formsService.getQAPersonalPalletsByFormId(formId).subscribe((QAPallets) => {
+      if (QAPallets) {
+        this.formQAPersonalPalletsData = this.calculateSumAmount(QAPallets);
+      } else this.formQAPersonalPalletsData = [];
     });
   }
 
