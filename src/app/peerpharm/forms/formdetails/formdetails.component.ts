@@ -91,7 +91,7 @@ export class FormdetailsComponent implements OnInit {
     private scheduleService: ScheduleService,
     private batchService: BatchesService,
     private itemService: ItemsService
-  ) {}
+  ) { }
 
   ngOnInit() {
     let formID1 = this.route.snapshot.paramMap.get("id");
@@ -136,7 +136,6 @@ export class FormdetailsComponent implements OnInit {
       this.formDetailsItemNum = this.form.itemN;
       this.batchService.getBatchData(this.form.batchN).subscribe((data) => {
         console.log("batchData: ", data);
-        debugger;
         this.form.productaionDate = data[0].produced;
         this.form.expirationDate = data[0].expration;
       });
@@ -170,7 +169,6 @@ export class FormdetailsComponent implements OnInit {
       if (data) {
         // get neto weight
         this.itemService.getItemData(data.item).subscribe((itemData) => {
-          debugger;
           let netWeight = itemData[0].netWeightK;
 
           // check batch QA status
@@ -230,7 +228,6 @@ export class FormdetailsComponent implements OnInit {
               .getBatchData(this.form.batchN)
               .subscribe((data) => {
                 console.log("batchData: ", data);
-                debugger;
                 this.form.productaionDate = data[0].produced;
                 this.form.expirationDate = data[0].expration;
               });
@@ -279,32 +276,32 @@ export class FormdetailsComponent implements OnInit {
       : (this.form.checkNetoWeight = [newTest.checkNetoWeight]);
     this.form.checkBox_closedWaterProof
       ? this.form.checkBox_closedWaterProof.push(
-          newTest.checkBox_closedWaterProof
-        )
+        newTest.checkBox_closedWaterProof
+      )
       : (this.form.checkBox_closedWaterProof = [
-          newTest.checkBox_closedWaterProof,
-        ]);
+        newTest.checkBox_closedWaterProof,
+      ]);
     this.form.checkBox_stickerPrinting
       ? this.form.checkBox_stickerPrinting.push(
-          newTest.checkBox_stickerPrinting
-        )
+        newTest.checkBox_stickerPrinting
+      )
       : (this.form.checkBox_stickerPrinting = [
-          newTest.checkBox_stickerPrinting,
-        ]);
+        newTest.checkBox_stickerPrinting,
+      ]);
     this.form.checkBox_lotNumberPrinting
       ? this.form.checkBox_lotNumberPrinting.push(
-          newTest.checkBox_lotNumberPrinting
-        )
+        newTest.checkBox_lotNumberPrinting
+      )
       : (this.form.checkBox_lotNumberPrinting = [
-          newTest.checkBox_lotNumberPrinting,
-        ]);
+        newTest.checkBox_lotNumberPrinting,
+      ]);
     this.form.checkBox_correctFinalPacking
       ? this.form.checkBox_correctFinalPacking.push(
-          newTest.checkBox_correctFinalPacking
-        )
+        newTest.checkBox_correctFinalPacking
+      )
       : (this.form.checkBox_correctFinalPacking = [
-          newTest.checkBox_correctFinalPacking,
-        ]);
+        newTest.checkBox_correctFinalPacking,
+      ]);
     this.updateFormDetails();
     this.allChecks.push(newTest);
   }
@@ -322,23 +319,21 @@ export class FormdetailsComponent implements OnInit {
   }
 
   addNewQAPallet() {
-    debugger
     this.newQAPallet.batchNumber = this.form.batchN;
     this.newQAPallet.itemNumber = this.form.itemN;
     this.newQAPallet.orderNumber = this.form.orderNumber;
     this.newQAPallet.formDetailsId = this.form._id;
     this.newQAPallet.customerName = this.form.costumerName;
 
-    if (this.newQAPallet.qaStatus == "עובר לאריזה אישית")
-      this.newQAPallet.isPersonalPackage = true;
+    // if (this.newQAPallet.qaStatus == "עובר לאריזה אישית")
+    //   this.newQAPallet.isPersonalPackage = true;
 
     this.formsService
       .createNewQaPallet(this.newQAPallet)
       .subscribe((result) => {
-        debugger;
         if (result) {
           this.formQAPalletsData.push(result);
-          this.calculateSumAmount(this.formQAPalletsData);
+          this.calculateSumAmount(this.formQAPalletsData, false);
           this.toastService.success("משטח חדש נוסף בהצלחה");
           this.newQAPallet.floorNumber = null;
           this.newQAPallet.kartonQuantity = null;
@@ -352,7 +347,6 @@ export class FormdetailsComponent implements OnInit {
   }
 
   addNewQAPersonalPallet() {
-    debugger
     this.newQAPersonalPallet.batchNumber = this.form.batchN;
     this.newQAPersonalPallet.itemNumber = this.form.itemN;
     this.newQAPersonalPallet.orderNumber = this.form.orderNumber;
@@ -365,7 +359,7 @@ export class FormdetailsComponent implements OnInit {
       .subscribe((result) => {
         if (result) {
           this.formQAPersonalPalletsData.push(result);
-          this.calculateSumAmount(this.formQAPalletsData);
+          this.calculateSumAmount(this.formQAPalletsData, true);
           this.toastService.success("משטח אריזות אישיות חדש נוסף בהצלחה");
           this.newQAPersonalPallet.floorNumber = null;
           this.newQAPersonalPallet.kartonQuantity = null;
@@ -422,7 +416,7 @@ export class FormdetailsComponent implements OnInit {
   async loadQAPallets(formId) {
     this.formsService.getQAPalletsByFormId(formId).subscribe((QAPallets) => {
       if (QAPallets) {
-        this.formQAPalletsData = this.calculateSumAmount(QAPallets);
+        this.formQAPalletsData = this.calculateSumAmount(QAPallets, false);
       } else this.formQAPalletsData = [];
     });
   }
@@ -430,36 +424,44 @@ export class FormdetailsComponent implements OnInit {
   async loadQAPersonalPallets(formId) {
     this.formsService.getQAPersonalPalletsByFormId(formId).subscribe((QAPallets) => {
       if (QAPallets) {
-        this.formQAPersonalPalletsData = this.calculateSumAmount(QAPallets);
+        this.formQAPersonalPalletsData = this.calculateSumAmount(QAPallets, true);
       } else this.formQAPersonalPalletsData = [];
     });
   }
 
-  calculateSumAmount(QAPallets) {
-    for (let i = 0; i < QAPallets.length; i++) {
+  calculateSumAmount(QAPallets, isPersonalPackage: boolean) {
+    for (let QAPallet of QAPallets) {
       let count = 0;
 
-      if (QAPallets[i].palletStatus == "done")
-        QAPallets[i].palletStatus = "הועלה על משטח";
-      if (QAPallets[i].palletStatus == "open")
-        QAPallets[i].palletStatus = "ממתין למשטח";
+      if (QAPallet.palletStatus == "done")
+        QAPallet.palletStatus = "הועלה על משטח";
+      if (QAPallet.palletStatus == "open")
+        QAPallet.palletStatus = "ממתין למשטח";
 
       count =
-        QAPallets[i].floorNumber *
-        QAPallets[i].kartonQuantity *
-        QAPallets[i].unitsInKarton;
+        QAPallet.floorNumber *
+        QAPallet.kartonQuantity *
+        QAPallet.unitsInKarton;
 
-      if (QAPallets[i].lastFloorQuantity > 0)
-        count += QAPallets[i].lastFloorQuantity * QAPallets[i].unitsInKarton;
+      if (QAPallet.lastFloorQuantity > 0)
+        count += QAPallet.lastFloorQuantity * QAPallet.unitsInKarton;
 
-      if (QAPallets[i].unitsQuantityPartKarton > 0)
-        count += QAPallets[i].unitsQuantityPartKarton;
+      if (QAPallet.unitsQuantityPartKarton > 0)
+        count += QAPallet.unitsQuantityPartKarton;
 
-      QAPallets[i].sumAmount = count;
+      QAPallet.sumAmount = count;
     }
-    this.form.quantity_Produced = 0;
-    for (let pallet of QAPallets)
-      this.form.quantity_Produced += pallet.sumAmount;
+
+    if (isPersonalPackage) {
+      this.form.totalUnits = 0;
+      for (let pallet of QAPallets)
+        this.form.totalUnits += pallet.sumAmount;
+    }
+    else {
+      this.form.quantity_Produced = 0;
+      for (let pallet of QAPallets)
+        this.form.quantity_Produced += pallet.sumAmount;
+    }
 
     return QAPallets;
   }
