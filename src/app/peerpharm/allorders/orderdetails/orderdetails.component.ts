@@ -36,6 +36,7 @@ import { FormsService } from "src/app/services/forms.service";
 import { BatchesService } from "src/app/services/batches.service";
 import { isValid } from "date-fns";
 import { NotificationService } from "src/app/services/notification.service";
+
 var _ = require("lodash");
 
 @Component({
@@ -191,6 +192,7 @@ export class OrderdetailsComponent implements OnInit {
     itemOrderDate: "",
     itemDeliveryDate: "",
     pakaStatus: 0,
+    oiStatus: "",
   };
   show: boolean;
   EditRowId: any = "";
@@ -311,7 +313,6 @@ export class OrderdetailsComponent implements OnInit {
         this.loadData = true;
         this.orderService.getOpenOrdersItems().subscribe(async (orders) => {
           // console.log(orders);
-
           this.multi = true;
           orders.orderItems.forEach((item) => {
             item.pakaStatus = item.pakaStatus ? item.pakaStatus : 0;
@@ -331,6 +332,7 @@ export class OrderdetailsComponent implements OnInit {
           this.ordersItemsCopy = orders.orderItems;
           this.ordersItems.map((item) => {
             item.itemFullName = item.itemNumber + " " + item.discription;
+            item.oiStatus = item.oiStatus ? item.oiStatus : "open";
           });
           //this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
           //this.getComponents(this.ordersItems[0].orderNumber);
@@ -402,6 +404,9 @@ export class OrderdetailsComponent implements OnInit {
                             item.alertsArr = problem.alertsArr;
                             item.isExpand = "+";
                             item.colorBtn = "#33FFE0";
+                            item.oiStatus = item.oiStatus
+                              ? item.oiStatus
+                              : "open";
                           });
                           this.ordersItems = orderItems;
                           this.productionRequirements = orderItems;
@@ -890,6 +895,7 @@ export class OrderdetailsComponent implements OnInit {
 
     if (!this.multi) this.itemData.orderNumber = this.number;
     let newItemImpRemark = this.itemData.itemImpRemark;
+    this.itemData.status = "open";
 
     this.orderService.addNewOrderItem(this.itemData).subscribe((item) => {
       if (item.msg == "notActive") {
@@ -1185,12 +1191,13 @@ export class OrderdetailsComponent implements OnInit {
               orderItems[idx].problematicMaterials = item.problematicMaterials;
             }
           }
-          // console.log(orderItems);
+          console.log(orderItems);
 
           orderItems.map((item) => {
             let problem = this.problematicAlerts(item);
             item.problematicArr = problem.problematicArr;
             item.alertsArr = problem.alertsArr;
+            item.oiStatus = item.oiStatus ? item.oiStatus : "open";
             item.pakaStatus = item.pakaStatus ? item.pakaStatus : 0;
             if (item.workPlans && item.workPlans.length > 0) {
               let i = item.workPlans.length - 1;
@@ -1903,6 +1910,7 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   searchItem(itemNumber) {
+    console.log(itemNumber);
     if (itemNumber != "") {
       this.orderService.getItemByNumber(itemNumber).subscribe((res) => {
         if (res.length == 1) {

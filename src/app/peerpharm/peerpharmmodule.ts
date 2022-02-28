@@ -179,6 +179,7 @@ import { AllItemsComponent } from "./production/planning/all-items/all-items.com
 import { PlanningDetailsComponent } from "./production/planning/planning-details/planning-details.component";
 import { OrderItemBatchStatusPipe } from "../pipes/order-item-batch-status.pipe";
 import { OrderItemBatchStatusColorPipe } from "../pipes/order-item-batch-status-color.pipe";
+import { OiStatusColorPipe } from "../pipes/oi-status-color.pipe";
 import { FreeBatchesComponent } from "./allorders/free-batches/free-batches.component";
 import { WhareHouseUpdatesComponent } from "./inventory/wharehouse/wharehouse-updates/wharehouse-updates.component";
 import { ProblematicOrderItemsComponent } from "./allorders/problematics/problematic-order-items.component";
@@ -335,6 +336,7 @@ import { MatrialArrivalsCetificatesComponent } from "./inventory/material-arriva
     WorkPlanStatusPipe,
     OrderItemBatchStatusPipe,
     OrderItemBatchStatusColorPipe,
+    OiStatusColorPipe,
     AllPlanningComponent,
     AllItemsComponent,
     PlanningDetailsComponent,
@@ -343,7 +345,7 @@ import { MatrialArrivalsCetificatesComponent } from "./inventory/material-arriva
     WhareHouseUpdatesComponent,
     ProblematicOrderItemsComponent,
     ProblematicItemsComponent,
-    MatrialArrivalsCetificatesComponent
+    MatrialArrivalsCetificatesComponent,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [

@@ -159,8 +159,7 @@
       <tr>
         <td>בדיקה סנטורית של המוצר</td>
         <td>
-          <input type="checkbox" id="sentoric" [disabled]="disabledValue"
-            [(ngModel)]="form.visualIndentCheck" />
+          <input type="checkbox" id="sentoric" [disabled]="disabledValue" [(ngModel)]="form.visualIndentCheck" />
         </td>
         <td>זיהוי וניקוי מיכלים</td>
         <td>
@@ -171,20 +170,17 @@
       <tr>
         <td>זיהוי תוויות</td>
         <td>
-          <input type="checkbox" id="label" [disabled]="disabledValue"
-            [(ngModel)]="form.presentOfTheLabels" />
+          <input type="checkbox" id="label" [disabled]="disabledValue" [(ngModel)]="form.presentOfTheLabels" />
         </td>
         <td>זיהוי קרטון<br />מכסה/משאבה</td>
         <td>
-          <input type="checkbox" id="ccc" [disabled]="disabledValue"
-            [(ngModel)]="form.presentOfPackageComponent" />
+          <input type="checkbox" id="ccc" [disabled]="disabledValue" [(ngModel)]="form.presentOfPackageComponent" />
         </td>
       </tr>
       <tr>
         <td>אישור כיוון ונקיון מכונה</td>
         <td>
-          <input type="checkbox" id="cleanMachine" [disabled]="disabledValue"
-            [(ngModel)]="form.confSetupeClean" />
+          <input type="checkbox" id="cleanMachine" [disabled]="disabledValue" [(ngModel)]="form.confSetupeClean" />
         </td>
         <td>חתימת מנהל מאשר</td>
         <td>
@@ -285,7 +281,7 @@
         <td>
           <input type="text" id="div_qty" [(ngModel)]="form.quantity_Produced" disabled />
           <!-- <button onClick="update()">עדכן</button> -->
-          <button (click)="showQAPalletsModal = true" class="btn btn-light">משטחים</button>
+          <button (click)="showQAPalletsModal = true" [disabled]="!formid" class="btn btn-light">משטחים</button>
         </td>
 
         <td>אישור נקיון מכונה לאחר מילוי</td>
@@ -342,12 +338,11 @@
       <tr>
         <td>רשיון לפריט</td>
         <td>
-          <input type="checkbox" [checked]='form.itemHasLicense' [disabled]="disabledValue"/>
+          <input type="checkbox" [checked]='form.itemHasLicense' [disabled]="disabledValue" />
         </td>
         <td>אריזה אישית</td>
         <td>
-          <input type="checkbox" [(ngModel)]="form.personalPackage" class="inputDiv"
-            [disabled]="disabledValue" />
+          <input type="checkbox" [(ngModel)]="form.personalPackage" class="inputDiv" [disabled]="disabledValue" />
         </td>
       </tr>
       <tr>
@@ -419,8 +414,8 @@
       <tr>
         <td>תאריך פתיחת טופס</td>
         <td>
-          <input type="date" id="div_fillingDate2" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
-            [(ngModel)]="form.dateN" />
+          <input type="date" id="div_fillingDate2" class="inputDiv form-control" style="width:100px"
+            [disabled]="disabledValue" [(ngModel)]="form.dateN" />
         </td>
         <td>מספר אצווה</td>
         <td>
@@ -444,13 +439,13 @@
       <tr>
         <td>תחילת עבודה</td>
         <td>
-          <input type="date" id="div_packageStartDate" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
-            [(ngModel)]="form.packageStartTime" />
+          <input type="date" id="div_packageStartDate" class="inputDiv form-control" style="width:100px"
+            [disabled]="disabledValue" [(ngModel)]="form.packageStartTime" />
         </td>
         <td>סוף עבודה</td>
         <td>
-          <input type="date" id="div_packageEndDate" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
-            [(ngModel)]="form.packgeEndTime" />
+          <input type="date" id="div_packageEndDate" class="inputDiv form-control" style="width:100px"
+            [disabled]="disabledValue" [(ngModel)]="form.packgeEndTime" />
         </td>
       </tr>
       <tr>

@@ -92,6 +92,7 @@
             alt="Problematics Report" ngbTooltip="Problematic ingredients" (click)="exportProblems()">
         </th>
         <th *ngIf="openFormule"></th>
+        <th>O.I. Status</th>
         <th>Batch Status</th>
         <th><img src="../../../../assets/images/print.png" ngbTooltip="Print Order Details" class="reportImg click"
             (click)="printOrder = true"></th>
@@ -140,11 +141,12 @@
         <td><input type="checkbox" (change)="checkboxAllOrders($event)"></td>
         <td></td>
         <td></td>
+        <td></td>
         <td *ngIf="!showingAllOrders && multi"><input style="box-shadow:1px 1px 2px black;"
             class="form-control form-control-sm" placeholder="Order Number" [(ngModel)]="itemData.orderNumber" #orderNum
             (focusout)="searchItem(orderNumber.value)"></td>
         <td><input style="box-shadow:1px 1px 2px black;" class="form-control form-control-sm" placeholder="Item Number"
-            [(ngModel)]="itemData.itemNumber" #itemNum (focusout)="searchItem(itemNum.value)"></td>
+            [(ngModel)]="itemData.itemNumber" #itemNum (blur)="searchItem(itemNum.value)"></td>
         <td><input style="box-shadow:1px 1px 2px black; color: red;" class="form-control form-control-sm"
             placeholder="Item Important Remark" [(ngModel)]="itemData.itemImpRemark" disabled>
         </td>
@@ -221,6 +223,10 @@
                 style="width: 20px;" src="../../../../assets/images/alert3.gif" alt=""> -->
           </td>
           <td><input type="checkbox" [checked]="item.isSelected" (change)="isSelected($event,item)"></td>
+          <td [style.background-color]="item.oiStatus|oiStatusColor"
+            [ngbTooltip]="item.quantitySupplied+ ' units packed out of: '+ item.quantity +' that were ordered'">
+            <span class="status">{{item.oiStatus}}</span>
+          </td>
 
           <td class="click paka-status" (click)="openPAKA(pakaStatus)" (click)="currentItem = item"
             [style.background]="item.workPlans.length > 1 ? '#de826a' : item.pakaStatus|orderItemBatchStatusColor">
@@ -242,24 +248,21 @@
           <td class="license" *ngIf="item.licsensNumber!='' && !item.licenseExpirationClose">
             <button class='expendBtn' [style.background-color]="item.colorBtn"
               (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
-            <a style="font-weight: bolder" target="_blank"
-              routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
+            <a class="item" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
               {{item.itemNumber}}
             </a>
           </td>
           <td class="noLicense" *ngIf="item.licsensNumber == ''">
             <button class='expendBtn' [style.background-color]="item.colorBtn"
               (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
-            <a style="font-weight: bolder" target="_blank"
-              routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
+            <a class="item" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
               {{item.itemNumber}}
             </a>
           </td>
           <td class="licenseExpirationClose" *ngIf="item.licsensNumber!='' && item.licenseExpirationClose">
             <button class='expendBtn' [style.background-color]="item.colorBtn"
               (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
-            <a style="font-weight: bolder" target="_blank"
-              routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
+            <a class="item" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
               {{item.itemNumber}}
             </a>
           </td>

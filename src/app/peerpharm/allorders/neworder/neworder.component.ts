@@ -272,6 +272,7 @@ export class NeworderComponent implements OnInit {
           itemRemarks: post.remarks,
           orderId: this.orderId,
           orderNumber: this.orderNumber,
+          status: "open",
         };
         this.orderItemForm.reset();
         this.orderItemForm.controls.hasLicense.setValue(false);

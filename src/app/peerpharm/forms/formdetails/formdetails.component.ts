@@ -118,7 +118,6 @@ export class FormdetailsComponent implements OnInit {
       this.formDetailsItemNum = this.form.itemN;
       this.batchService.getBatchData(this.form.batchN).subscribe((data) => {
         console.log("batchData: ", data);
-        debugger;
         this.form.productaionDate = data[0].produced;
         this.form.expirationDate = data[0].expration;
       });
@@ -152,7 +151,6 @@ export class FormdetailsComponent implements OnInit {
       if (data) {
         // get neto weight
         this.itemService.getItemData(data.item).subscribe((itemData) => {
-          debugger;
           let netWeight = itemData[0].netWeightK;
 
           // check batch QA status
@@ -212,7 +210,7 @@ export class FormdetailsComponent implements OnInit {
               .getBatchData(this.form.batchN)
               .subscribe((data) => {
                 console.log("batchData: ", data);
-                debugger;
+
                 this.form.productaionDate = data[0].produced;
                 this.form.expirationDate = data[0].expration;
               });
@@ -315,7 +313,6 @@ export class FormdetailsComponent implements OnInit {
     this.formsService
       .createNewQaPallet(this.newQAPallet)
       .subscribe((result) => {
-        debugger;
         if (result) {
           this.formQAPalletsData.push(result);
           this.calculateSumAmount(this.formQAPalletsData);
@@ -333,6 +330,7 @@ export class FormdetailsComponent implements OnInit {
 
   updateFormDetails() {
     try {
+      console.log(this.form);
       this.formsService.updateFormDetails(this.form).subscribe((result) => {
         if (result.ok == 1) {
           this.getFormData(this.formid, false);
@@ -357,8 +355,10 @@ export class FormdetailsComponent implements OnInit {
     this.form.quantity_Produced = 0;
     this.formsService.createFormDetails(this.form).subscribe((data) => {
       if (data) {
+        console.log(data);
         this.toastService.success("טופס נוצר בהצלחה")!;
         this.newForm = false;
+        this.formid = data._id;
       }
     });
   }
