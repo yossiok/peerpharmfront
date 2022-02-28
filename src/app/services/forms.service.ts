@@ -84,16 +84,22 @@ export class FormsService {
     let url = this.baseUrl + "forms/addNewSewerPHTest";
     return this.http.post(url, JSON.stringify(sewerPHTest), this.options).pipe(map(res => res.json()));
   }
+
   addNewPackedList(packedList){
-    ;
     let url = this.baseUrl + "formDetails/addNewPackedList";
     return this.http.post(url, JSON.stringify(packedList), this.options).pipe(map(res => res.json()));
   }
+
   createNewQaPallet(qaPallet){
-    ;
     let url = this.baseUrl + "formDetails/addNewQAPallet";
     return this.http.post(url, JSON.stringify(qaPallet), this.options).pipe(map(res => res.json()));
   }
+
+  // createNewQaPersonalPallet(qaPallet){
+  //   let url = this.baseUrl + "formDetails/addNewQAPallet";
+  //   return this.http.post(url, JSON.stringify(qaPallet), this.options).pipe(map(res => res.json()));
+  // }
+
   movePalletToPL(packedList){
     ;
     let url = this.baseUrl + "formDetails/movePalletToPL";
@@ -392,9 +398,14 @@ export class FormsService {
     let url = this.baseUrl + 'formDetails/getAllqaPallets';
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
+
   getQAPalletsByFormId(formId) {
-    
     let url = this.baseUrl + 'formDetails?formId='+formId;
+    return this.http.get(url).pipe(map(reponse => reponse.json()));
+  }
+
+  getQAPersonalPalletsByFormId(formId) {
+    let url = this.baseUrl + 'formDetails/personalPallets?formId='+formId;
     return this.http.get(url).pipe(map(reponse => reponse.json()));
   }
 
