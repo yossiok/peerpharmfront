@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormsService } from "../../../services/forms.service";
 import { ActivatedRoute } from "@angular/router";
 import { AuthService } from "../../../services/auth.service";
@@ -20,8 +20,8 @@ import { ItemsService } from "src/app/services/items.service";
 export class FormdetailsComponent implements OnInit {
   form: any = {};
   disabledValue = true;
-  formQAPalletsData: any[];
-  formQAPersonalPalletsData: any[] = []
+  formQAPalletsData: any[] = [];
+  formQAPersonalPalletsData: any[] = [];
   user: any;
   currentScheduleId: any;
   averageNetoWeight = 0;
@@ -40,6 +40,7 @@ export class FormdetailsComponent implements OnInit {
   showQAPalletsModal: boolean = false;
   showQAPersonalPalletsModal: boolean = false;
   allowUpdateForm: boolean = false;
+
 
   newQAPallet = {
     floorNumber: null,
@@ -319,6 +320,7 @@ export class FormdetailsComponent implements OnInit {
   }
 
   addNewQAPallet() {
+    // Init object
     this.newQAPallet.batchNumber = this.form.batchN;
     this.newQAPallet.itemNumber = this.form.itemN;
     this.newQAPallet.orderNumber = this.form.orderNumber;
@@ -328,6 +330,7 @@ export class FormdetailsComponent implements OnInit {
     // if (this.newQAPallet.qaStatus == "עובר לאריזה אישית")
     //   this.newQAPallet.isPersonalPackage = true;
 
+    // Add new pallet to database
     this.formsService
       .createNewQaPallet(this.newQAPallet)
       .subscribe((result) => {
@@ -555,4 +558,10 @@ export class FormdetailsComponent implements OnInit {
       }
     }
   }
+
+  
+
+
+
+
 }
