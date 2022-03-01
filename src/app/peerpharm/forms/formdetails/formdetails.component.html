@@ -370,8 +370,9 @@
         <td></td>
         <td colspan="2">
           <button *ngIf="!newForm" [disabled]="disabledValue" (click)="updateFormDetails()"
-            class="btn btn-success form-control">עדכן טופס</button>
-          <button *ngIf="newForm" [disabled]="disabledValue" (click)="createFormDetails()"
+            class="btn btn-success form-control">עדכן טופס</button><br>
+            
+          <button *ngIf="newForm"  [disabled]="disabledValue" (click)="createFormDetails()"
             class="btn btn-success form-control">צור טופס</button>
         </td>
         <td></td>
@@ -389,6 +390,121 @@
 
 
   </div>
+
+  <div id="srickerTablePersonal" class="sricker_table">
+
+    <table *ngFor="let QAPallet of formQAPersonalPalletsData; let i = index">
+
+      <tr>
+        <th>Order Number</th>
+        <td>{{form.orderNumber}}</td>
+        <th>Quantity per carton</th>
+        <td>{{QAPallet.unitsInKarton}}</td>
+      </tr>
+
+      <tr>
+        <th>Batch</th>
+        <td>{{form.batchN}}</td>
+        <th>Total Quantity of cartons</th>
+        <td>{{(QAPallet.kartonQuantity * QAPallet.floorNumber) + QAPallet.lastFloorQuantity}}</td>
+      </tr>
+
+      <tr>
+        <th>Item Number</th>
+        <td>{{form.itemN}}</td>
+        <th>Quantity in partial carton</th>
+        <td>{{QAPallet.unitsQuantityPartKarton}}</td>
+      </tr>
+      <tr>
+        <th>Carton Weight</th>
+        <td>{{QAPallet.unitsInKarton * form.netWeight }}</td>
+        <th>Total units</th>
+        <td>{{QAPallet.sumAmount}}</td>
+      </tr>
+
+      <tr>
+        <th>Pallet Number</th>
+        <td>{{i+1}}/{{(form.directorBackSignature && form.checkSignature) && formQAPersonalPalletsData.length  }}</td>
+        <th>Pallet EU/US</th>
+        <td></td>
+      </tr>
+
+      <tr>
+        <th>QA Approval</th>
+        <td></td>
+        <th></th>
+        <td></td>
+      </tr>
+
+      <br>
+    <br>
+
+      
+    </table>
+
+
+
+  </div>
+
+  <!-- Sticker Print Table -->
+  <div id="srickerTable" class="sricker_table" >
+
+    
+
+    <table *ngFor="let QAPallet of formQAPalletsData; let i = index">
+
+      <tr>
+        <th>Order Number</th>
+        <td>{{form.orderNumber}}</td>
+        <th>Quantity per carton</th>
+        <td>{{QAPallet.unitsInKarton}}</td>
+      </tr>
+
+      <tr>
+        <th>Batch</th>
+        <td>{{form.batchN}}</td>
+        <th>Total Quantity of cartons</th>
+        <td>{{(QAPallet.kartonQuantity * QAPallet.floorNumber) + QAPallet.lastFloorQuantity}}</td>
+      </tr>
+
+      <tr>
+        <th>Item Number</th>
+        <td>{{form.itemN}}</td>
+        <th>Quantity in partial carton</th>
+        <td>{{QAPallet.unitsQuantityPartKarton}}</td>
+      </tr>
+
+      <tr>
+        <th>Carton Weight</th>
+        <td>{{QAPallet.unitsInKarton * form.netWeight }}</td>
+        <th>Total units</th>
+        <td>{{QAPallet.sumAmount}}</td>
+      </tr>
+
+      <tr>
+        <th>Pallet Number</th>
+        <td>{{i+1}}/{{form.directorFrontSignature && formQAPalletsData.length}}</td>
+        <th>Pallet EU/US</th>
+        <td></td>
+      </tr>
+
+      <tr>
+        <th>QA Approval</th>
+        <td></td>
+        <th></th>
+        <td></td>
+      </tr>
+
+      <br>
+    <br>
+
+      
+    </table>
+
+    
+    
+  </div>
+  
 
   <div *ngIf="tabView == 'packingForm'">
     <table dir="rtl" style="width:100%;display: inline-table;font-size: 17px;font-weight: bold;" class="post"
@@ -567,6 +683,11 @@
       <i style="cursor: pointer;font-size: large;" (click)="showQAPalletsModal = false"
         class="fa fa-times text-info"></i>
     </div>
+    <div class="col-4">
+    <button printSectionId="srickerTable" styleSheetFile="../../../../assets/stylesheets/palletPrint.css"  style="width: 33%;" class="btn btn-success form-control" ngxPrint>הדפס משטחים <i class="fa fa-print"></i></button>
+        
+    </div>
+
   </div>
 
   <div class="row mt-4">
@@ -580,20 +701,20 @@
               type="number" style="font-weight: bold;font-size: medium; overflow-x: scroll;" placeholder="מספר קומות"
               title="מספר קומות" class="form-control"></td>
           <td><input [(ngModel)]="newQAPallet.kartonQuantity" type="number" (focusout)="return($event)"
-              (focus)="enlarge($event)" style="font-weight: bold;font-size: medium;" placeholder="כמות קרטונים"
-              title="כמות קרטונים" class="form-control"></td>
+              (focus)="enlarge($event)" style="font-weight: bold;font-size: medium;" placeholder="כמות קרטונים בקומה"
+              title="כמות קרטונים בקומה" class="form-control"></td>
           <td><input [(ngModel)]="newQAPallet.unitsInKarton" type="number" (focusout)="return($event)"
-              (focus)="enlarge($event)" style="font-weight: bold;font-size: medium;" placeholder="כמות בקרטון"
-              title="כמות בקרטון" class="form-control"></td>
+              (focus)="enlarge($event)" style="font-weight: bold;font-size: medium;" placeholder="כמות יחידות בקרטון"
+              title="כמות יחידות בקרטון" class="form-control"></td>
           <td><input [(ngModel)]="newQAPallet.lastFloorQuantity" type="number" (focusout)="return($event)"
-              (focus)="enlarge($event)" title="קומה אחרונה" style="font-weight: bold;font-size: medium;"
-              placeholder="קומה אחרונה" class="form-control"></td>
+              (focus)="enlarge($event)" title="קרטונים בקומה אחרונה" style="font-weight: bold;font-size: medium;"
+              placeholder="קרטונים בקומה אחרונה" class="form-control"></td>
           <td><input [(ngModel)]="newQAPallet.unitsQuantityPartKarton" (focusout)="return($event)"
-              (focus)="enlarge($event)" type="number" title="קרטון חלקי" style="font-weight: bold;font-size: medium;"
-              placeholder="קרטון חלקי" class="form-control"></td>
+              (focus)="enlarge($event)" type="number" title="יחידות בקרטון חלקי" style="font-weight: bold;font-size: medium;"
+              placeholder="יחידות בקרטון חלקי" class="form-control"></td>
           <td></td>
           <td>
-            <select [(ngModel)]="newQAPallet.qaStatus" (focusout)="return($event)" (focus)="enlarge($event)"
+            <select [(ngModel)]="newQAPallet.qaStatus" 
               [title]="newQAPallet.qaStatus" style="font-weight: bold;font-size: medium;" class="form-control">
               <option value="">סטטוס</option>
               <option value="מוכן לשליחה">מוכן לשליחה</option>
@@ -619,10 +740,11 @@
           <tr>
             <th class="pallets-th">#</th>
             <th class="pallets-th">מספר קומות</th>
-            <th class="pallets-th">כמות קרטונים</th>
-            <th class="pallets-th">כמות בקרטון</th>
-            <th class="pallets-th">קומה אחרונה</th>
-            <th class="pallets-th">קרטון חלקי</th>
+            <th class="pallets-th">כמות קרטונים בקומה</th>
+            <th class="pallets-th">כמות יחידות בקרטון</th>
+            <th class="pallets-th">משקל הקרטון</th>
+            <th class="pallets-th"> קרטונים בקומה אחרונה</th>
+            <th class="pallets-th">יחידות בקרטון חלקי</th>
             <th class="pallets-th">סה"כ</th>
             <th class="pallets-th">סטטוס בקרת איכות</th>
             <th class="pallets-th">סטטוס משטח</th>
@@ -635,6 +757,7 @@
             <td class="pallets-td">{{QAPallet.floorNumber}}</td>
             <td class="pallets-td">{{QAPallet.kartonQuantity}}</td>
             <td class="pallets-td">{{QAPallet.unitsInKarton}}</td>
+            <td [style.background]="QAPallet.unitsInKarton * form.netWeight <= 0 ? 'red' : '' " class="pallets-td">{{QAPallet.unitsInKarton * form.netWeight }}</td>
             <td class="pallets-td">{{QAPallet.lastFloorQuantity}}</td>
             <td class="pallets-td">{{QAPallet.unitsQuantityPartKarton}}</td>
             <td class="pallets-th">{{QAPallet.sumAmount}}</td>
@@ -681,6 +804,14 @@
       <i style="cursor: pointer;font-size: large;" (click)="showQAPersonalPalletsModal = false"
         class="fa fa-times text-info"></i>
     </div>
+    <div class="col-4">
+      <button 
+       printSectionId="srickerTablePersonal" 
+      styleSheetFile="../../../../assets/stylesheets/palletPrint.css" 
+      style="width: 33%;" class="btn btn-success form-control" 
+      ngxPrint>הדפס משטחים <i class="fa fa-print"></i></button>
+          
+      </div>
   </div>
 
   <div class="row mt-4">
@@ -691,34 +822,26 @@
             <h3 class="text-info"><u>הוסף משטח:</u> &nbsp;</h3>
           </td>
           <td><input [(ngModel)]="newQAPersonalPallet.floorNumber" (focusout)="return($event)" (focus)="enlarge($event)"
-              type="number" style="font-weight: bold;font-size: medium; overflow-x: scroll;" placeholder="מספר קומות"
-              title="מספר קומות" class="form-control"></td>
-          <td><input [(ngModel)]="newQAPersonalPallet.kartonQuantity" type="number" (focusout)="return($event)"
-              (focus)="enlarge($event)" style="font-weight: bold;font-size: medium;" placeholder="כמות קרטונים"
-              title="כמות קרטונים" class="form-control"></td>
-          <td><input [(ngModel)]="newQAPersonalPallet.unitsInKarton" type="number" (focusout)="return($event)"
-              (focus)="enlarge($event)" style="font-weight: bold;font-size: medium;" placeholder="כמות בקרטון"
-              title="כמות בקרטון" class="form-control"></td>
-          <td><input [(ngModel)]="newQAPersonalPallet.lastFloorQuantity" type="number" (focusout)="return($event)"
-              (focus)="enlarge($event)" title="קומה אחרונה" style="font-weight: bold;font-size: medium;"
-              placeholder="קומה אחרונה" class="form-control"></td>
-          <td><input [(ngModel)]="newQAPersonalPallet.unitsQuantityPartKarton" (focusout)="return($event)"
-              (focus)="enlarge($event)" type="number" title="קרטון חלקי" style="font-weight: bold;font-size: medium;"
-              placeholder="קרטון חלקי" class="form-control"></td>
-          <td></td>
+            type="number" style="font-weight: bold;font-size: medium; overflow-x: scroll;" placeholder="מספר קומות"
+            title="מספר קומות" class="form-control"></td>
+        <td><input [(ngModel)]="newQAPersonalPallet.kartonQuantity" type="number" (focusout)="return($event)"
+            (focus)="enlarge($event)" style="font-weight: bold;font-size: medium;" placeholder="כמות קרטונים בקומה"
+            title="כמות קרטונים בקומה" class="form-control"></td>
+        <td><input [(ngModel)]="newQAPersonalPallet.unitsInKarton" type="number" (focusout)="return($event)"
+            (focus)="enlarge($event)" style="font-weight: bold;font-size: medium;" placeholder="כמות יחידות בקרטון"
+            title="כמות יחידות בקרטון" class="form-control"></td>
+        <td><input [(ngModel)]="newQAPersonalPallet.lastFloorQuantity" type="number" (focusout)="return($event)"
+            (focus)="enlarge($event)" title="קרטונים בקומה אחרונה" style="font-weight: bold;font-size: medium;"
+            placeholder="קרטונים בקומה אחרונה" class="form-control"></td>
+        <td><input [(ngModel)]="newQAPersonalPallet.unitsQuantityPartKarton" (focusout)="return($event)"
+            (focus)="enlarge($event)" type="number" title="יחידות בקרטון חלקי" style="font-weight: bold;font-size: medium;"
+            placeholder="יחידות בקרטון חלקי" class="form-control"></td>
+        <td></td>
           <td>
             <select [(ngModel)]="newQAPersonalPallet.qaStatus" 
               [title]="newQAPersonalPallet.qaStatus" style="font-weight: bold;font-size: medium;" class="form-control">
               <option value="">סטטוס</option>
               <option value="מוכן לשליחה">מוכן לשליחה</option>
-              <option value="חסר מדבקות">חסר מדבקות</option>
-              <option value="חסר קומפוננטים">חסר קומפוננטים</option>
-              <option value="עובר לאריזה אישית">עובר לאריזה אישית</option>
-              <option value="חסר לייזר">חסר לייזר</option>
-              <option value="נשלח להדפסה">נשלח להדפסה</option>
-              <option value="חסר קרטונים">חסר קרטונים</option>
-              <option value="חסר קרטוני מאסטר">חסר קרטוני מאסטר</option>
-              <option value="חסר עלונים לצרכן">חסר עלונים לצרכן</option>
               <option value="למלאי">למלאי</option>
             </select>
           </td>
@@ -733,10 +856,11 @@
           <tr>
             <th class="pallets-th">#</th>
             <th class="pallets-th">מספר קומות</th>
-            <th class="pallets-th">כמות קרטונים</th>
-            <th class="pallets-th">כמות בקרטון</th>
-            <th class="pallets-th">קומה אחרונה</th>
-            <th class="pallets-th">קרטון חלקי</th>
+            <th class="pallets-th">כמות קרטונים בקומה</th>
+            <th class="pallets-th">כמות יחידות בקרטון</th>
+            <th class="pallets-th">משקל הקרטון</th>
+            <th class="pallets-th"> קרטונים בקומה אחרונה</th>
+            <th class="pallets-th">יחידות בקרטון חלקי</th>
             <th class="pallets-th">סה"כ</th>
             <th class="pallets-th">סטטוס בקרת איכות</th>
             <th class="pallets-th">סטטוס משטח</th>
@@ -749,6 +873,7 @@
             <td class="pallets-td">{{QAPallet.floorNumber}}</td>
             <td class="pallets-td">{{QAPallet.kartonQuantity}}</td>
             <td class="pallets-td">{{QAPallet.unitsInKarton}}</td>
+            <td [style.background]="QAPallet.unitsInKarton * form.netWeight <= 0 ? 'red' : '' " class="pallets-td">{{QAPallet.unitsInKarton * form.netWeight }}</td>
             <td class="pallets-td">{{QAPallet.lastFloorQuantity}}</td>
             <td class="pallets-td">{{QAPallet.unitsQuantityPartKarton}}</td>
             <td class="pallets-th">{{QAPallet.sumAmount}}</td>
@@ -773,7 +898,7 @@
 
     <div class="col-4"></div>
     <div class="col-4">
-      <button style="font-size: large;" (click)="showQAPalletsModal = false"
+      <button style="font-size: large;" (click)="showQAPersonalPalletsModal = false"
         class="form btn btn-danger form-control">סגירה</button>
     </div>
     <div class="col-4"></div>

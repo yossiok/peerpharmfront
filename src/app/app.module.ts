@@ -53,6 +53,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandlerService } from './services/error-handler.service';
 import { ConfirmModalSMSComponent } from './services/confirmsms.modal.service';
+// Ng-print Modal
+import {NgxPrintModule} from 'ngx-print'
 
 
 // import { OrderStagePipe } from './pipes/order-stage.pipe';
@@ -107,6 +109,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     BrowserAnimationsModule,
     RouterModule.forRoot(Approutes, { useHash: false }),
     PerfectScrollbarModule,
+    NgxPrintModule,
     NgxBarcodeModule.forRoot()
   ],
   providers: [
