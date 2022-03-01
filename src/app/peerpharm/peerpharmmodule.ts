@@ -142,6 +142,7 @@ import { RandomcolorModule } from "angular-randomcolor";
 import { AdminpanelComponent } from "./adminpanel/adminpanel.component";
 import { MaterialsComponent } from "./production/materials/materials.component";
 import { NewBatchComponent } from "./batches/new-batch/new-batch.component";
+import { BulksInventoryComponent } from "./batches/bulks-inventory/bulks-inventory.component";
 import { ProjectsComponent } from "./schedule/projects/projects.component";
 import { ReportBuilderComponent } from "./reports/report-builder/report-builder.component";
 import { UserSettingsComponent } from "./user/user-settings/user-settings.component";
@@ -239,6 +240,7 @@ import { MatrialArrivalsCetificatesComponent } from "./inventory/material-arriva
     NeworderComponent,
     NeworderComponent,
     NewBatchComponent,
+    BulksInventoryComponent,
     BatchesMkpComponent,
     LinesComponent,
     UserSettingsComponent,

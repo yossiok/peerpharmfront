@@ -60,6 +60,7 @@ import { AdminpanelComponent } from "./adminpanel/adminpanel.component";
 import { ScreenGuard } from "../guards/screen.guard";
 import { MaterialsComponent } from "./production/materials/materials.component";
 import { NewBatchComponent } from "./batches/new-batch/new-batch.component";
+import { BulksInventoryComponent } from "./batches/bulks-inventory/bulks-inventory.component";
 import { ProjectsComponent } from "./schedule/projects/projects.component";
 import { ActiveusersComponent } from "./reports/activeusers/activeusers.component";
 import { UnfinishedProductsComponent } from "./reports/unfinished-products/unfinished-products.component";
@@ -504,6 +505,14 @@ export const PeerPharmRputs: Routes = [
       title: "New Batch",
     },
     component: NewBatchComponent,
+  },
+  {
+    path: "batches/bulksInventory",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Bulks Inventory",
+    },
+    component: BulksInventoryComponent,
   },
   {
     path: "costumers/costumers_list",
