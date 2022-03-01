@@ -51,11 +51,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandlerService } from './services/error-handler.service';
 import { ConfirmModalSMSComponent } from './services/confirmsms.modal.service';
-// Ng-print Modal
-import {NgxPrintModule} from 'ngx-print'
-
-
-// import { OrderStagePipe } from './pipes/order-stage.pipe';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -107,20 +102,16 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     FormsModule,
     NgbModule,
     OverlayModule,
-    // AmplifyAngularModule   ,
     HttpModule,
     BrowserModule,
     BrowserAnimationsModule,
     RouterModule.forRoot(Approutes, { useHash: false }),
     PerfectScrollbarModule,
-    NgxPrintModule,
     NgxBarcodeModule.forRoot()
   ],
   providers: [
     OrdersService,
     MatSnackBar,
-    // AmplifyService,
-    // OVERLAY_PROVIDERS,
 
     AuthService,
     HttpClientModule,
