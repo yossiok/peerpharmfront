@@ -32,7 +32,7 @@ export class OrderItemBatchStatusPipe implements PipeTransform {
         status = "Done";
         break;
       case 8:
-        status = "Canceled";
+        status = "Cancelled";
         break;
       case 9:
         status = "Partial Produce";

@@ -727,6 +727,7 @@ export class QaPalletsComponent implements OnInit {
   }
 
   sendForBill(packlist) {
+    console.log(packlist);
     if (confirm("האם לשלוח להפקת חשבונית ?")) {
       packlist.readyForBill = true;
 

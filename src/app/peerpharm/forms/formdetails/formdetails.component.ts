@@ -92,7 +92,7 @@ export class FormdetailsComponent implements OnInit {
     private scheduleService: ScheduleService,
     private batchService: BatchesService,
     private itemService: ItemsService
-  ) { }
+  ) {}
 
   ngOnInit() {
     let formID1 = this.route.snapshot.paramMap.get("id");
@@ -277,32 +277,32 @@ export class FormdetailsComponent implements OnInit {
       : (this.form.checkNetoWeight = [newTest.checkNetoWeight]);
     this.form.checkBox_closedWaterProof
       ? this.form.checkBox_closedWaterProof.push(
-        newTest.checkBox_closedWaterProof
-      )
+          newTest.checkBox_closedWaterProof
+        )
       : (this.form.checkBox_closedWaterProof = [
-        newTest.checkBox_closedWaterProof,
-      ]);
+          newTest.checkBox_closedWaterProof,
+        ]);
     this.form.checkBox_stickerPrinting
       ? this.form.checkBox_stickerPrinting.push(
-        newTest.checkBox_stickerPrinting
-      )
+          newTest.checkBox_stickerPrinting
+        )
       : (this.form.checkBox_stickerPrinting = [
-        newTest.checkBox_stickerPrinting,
-      ]);
+          newTest.checkBox_stickerPrinting,
+        ]);
     this.form.checkBox_lotNumberPrinting
       ? this.form.checkBox_lotNumberPrinting.push(
-        newTest.checkBox_lotNumberPrinting
-      )
+          newTest.checkBox_lotNumberPrinting
+        )
       : (this.form.checkBox_lotNumberPrinting = [
-        newTest.checkBox_lotNumberPrinting,
-      ]);
+          newTest.checkBox_lotNumberPrinting,
+        ]);
     this.form.checkBox_correctFinalPacking
       ? this.form.checkBox_correctFinalPacking.push(
-        newTest.checkBox_correctFinalPacking
-      )
+          newTest.checkBox_correctFinalPacking
+        )
       : (this.form.checkBox_correctFinalPacking = [
-        newTest.checkBox_correctFinalPacking,
-      ]);
+          newTest.checkBox_correctFinalPacking,
+        ]);
     this.updateFormDetails();
     this.allChecks.push(newTest);
   }
@@ -356,7 +356,6 @@ export class FormdetailsComponent implements OnInit {
     this.newQAPersonalPallet.formDetailsId = this.form._id;
     this.newQAPersonalPallet.customerName = this.form.costumerName;
 
-
     this.formsService
       .createNewQaPallet(this.newQAPersonalPallet)
       .subscribe((result) => {
@@ -377,6 +376,7 @@ export class FormdetailsComponent implements OnInit {
 
   updateFormDetails() {
     try {
+      console.log(this.form);
       this.formsService.updateFormDetails(this.form).subscribe((result) => {
         if (result.ok == 1) {
           this.getFormData(this.formid, false);
@@ -401,8 +401,10 @@ export class FormdetailsComponent implements OnInit {
     this.form.quantity_Produced = 0;
     this.formsService.createFormDetails(this.form).subscribe((data) => {
       if (data) {
+        console.log(data);
         this.toastService.success("טופס נוצר בהצלחה")!;
         this.newForm = false;
+        this.formid = data._id;
       }
     });
   }
@@ -425,11 +427,16 @@ export class FormdetailsComponent implements OnInit {
   }
 
   async loadQAPersonalPallets(formId) {
-    this.formsService.getQAPersonalPalletsByFormId(formId).subscribe((QAPallets) => {
-      if (QAPallets) {
-        this.formQAPersonalPalletsData = this.calculateSumAmount(QAPallets, true);
-      } else this.formQAPersonalPalletsData = [];
-    });
+    this.formsService
+      .getQAPersonalPalletsByFormId(formId)
+      .subscribe((QAPallets) => {
+        if (QAPallets) {
+          this.formQAPersonalPalletsData = this.calculateSumAmount(
+            QAPallets,
+            true
+          );
+        } else this.formQAPersonalPalletsData = [];
+      });
   }
 
   calculateSumAmount(QAPallets, isPersonalPackage: boolean) {
@@ -442,9 +449,7 @@ export class FormdetailsComponent implements OnInit {
         QAPallet.palletStatus = "ממתין למשטח";
 
       count =
-        QAPallet.floorNumber *
-        QAPallet.kartonQuantity *
-        QAPallet.unitsInKarton;
+        QAPallet.floorNumber * QAPallet.kartonQuantity * QAPallet.unitsInKarton;
 
       if (QAPallet.lastFloorQuantity > 0)
         count += QAPallet.lastFloorQuantity * QAPallet.unitsInKarton;
@@ -457,10 +462,8 @@ export class FormdetailsComponent implements OnInit {
 
     if (isPersonalPackage) {
       this.form.totalUnits = 0;
-      for (let pallet of QAPallets)
-        this.form.totalUnits += pallet.sumAmount;
-    }
-    else {
+      for (let pallet of QAPallets) this.form.totalUnits += pallet.sumAmount;
+    } else {
       this.form.quantity_Produced = 0;
       for (let pallet of QAPallets)
         this.form.quantity_Produced += pallet.sumAmount;

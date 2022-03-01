@@ -142,6 +142,7 @@ import { RandomcolorModule } from "angular-randomcolor";
 import { AdminpanelComponent } from "./adminpanel/adminpanel.component";
 import { MaterialsComponent } from "./production/materials/materials.component";
 import { NewBatchComponent } from "./batches/new-batch/new-batch.component";
+import { BulksInventoryComponent } from "./batches/bulks-inventory/bulks-inventory.component";
 import { ProjectsComponent } from "./schedule/projects/projects.component";
 import { ReportBuilderComponent } from "./reports/report-builder/report-builder.component";
 import { UserSettingsComponent } from "./user/user-settings/user-settings.component";
@@ -179,6 +180,7 @@ import { AllItemsComponent } from "./production/planning/all-items/all-items.com
 import { PlanningDetailsComponent } from "./production/planning/planning-details/planning-details.component";
 import { OrderItemBatchStatusPipe } from "../pipes/order-item-batch-status.pipe";
 import { OrderItemBatchStatusColorPipe } from "../pipes/order-item-batch-status-color.pipe";
+import { OiStatusColorPipe } from "../pipes/oi-status-color.pipe";
 import { FreeBatchesComponent } from "./allorders/free-batches/free-batches.component";
 import { WhareHouseUpdatesComponent } from "./inventory/wharehouse/wharehouse-updates/wharehouse-updates.component";
 import { ProblematicOrderItemsComponent } from "./allorders/problematics/problematic-order-items.component";
@@ -238,6 +240,7 @@ import { MatrialArrivalsCetificatesComponent } from "./inventory/material-arriva
     NeworderComponent,
     NeworderComponent,
     NewBatchComponent,
+    BulksInventoryComponent,
     BatchesMkpComponent,
     LinesComponent,
     UserSettingsComponent,
@@ -335,6 +338,7 @@ import { MatrialArrivalsCetificatesComponent } from "./inventory/material-arriva
     WorkPlanStatusPipe,
     OrderItemBatchStatusPipe,
     OrderItemBatchStatusColorPipe,
+    OiStatusColorPipe,
     AllPlanningComponent,
     AllItemsComponent,
     PlanningDetailsComponent,
@@ -343,7 +347,7 @@ import { MatrialArrivalsCetificatesComponent } from "./inventory/material-arriva
     WhareHouseUpdatesComponent,
     ProblematicOrderItemsComponent,
     ProblematicItemsComponent,
-    MatrialArrivalsCetificatesComponent
+    MatrialArrivalsCetificatesComponent,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [

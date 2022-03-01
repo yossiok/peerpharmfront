@@ -281,7 +281,7 @@
         <td>
           <input type="text" id="div_qty" [(ngModel)]="form.quantity_Produced" disabled />
           <!-- <button onClick="update()">עדכן</button> -->
-          <button (click)="showQAPalletsModal = true" class="btn btn-light">משטחים</button>
+          <button (click)="showQAPalletsModal = true" [disabled]="!formid" class="btn btn-light">משטחים</button>
         </td>
 
         <td>אישור נקיון מכונה לאחר מילוי</td>

@@ -191,6 +191,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
       },
+      {
+        path: "/peerpharm/batches/bulksInventory",
+        title: "Bulks Inventory",
+        icon: "fas fa-list-ol",
+        class: "",
+        extralink: false,
+        submenu: [],
+      },
     ],
   },
 
