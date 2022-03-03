@@ -85,14 +85,15 @@ export class AdminpanelComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    if (this.authService.loggedInUser.screenPermission === "1") {
+    let user = await this.authService.loggedInUser;
+    if (user.screenPermission == "1" || user.screenPermission == "2") {
       this.adminPanelView = true;
     } else {
       this.adminPanelView = false;
-      console.log(this.authService.loggedInUser.screenPermission);
+      console.log(user.screenPermission);
     }
 
-    if (this.authService.loggedInUser.authorization.includes("adminPanel")) {
+    if (user.authorization.includes("adminPanel")) {
       this.adminPanelAllowed = true;
     } else {
       this.adminPanelAllowed = false;

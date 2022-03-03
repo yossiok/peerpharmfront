@@ -113,7 +113,8 @@
           <td>
             <img *ngIf="edit == i && authorized" ngbTooltip="שמור שינויים" (click)="saveChanges(i)" class="img click"
               src="../../../../../assets/images/aprroved.png" alt="">
-            <button [disabled]="orderItem.hasFormule" *ngIf="edit != i && authorized" (click)="edit = i" class="btn btn-secondary rounded">
+            <button [disabled]="orderItem.hasFormule" *ngIf="edit != i && authorized" (click)="edit = i"
+              class="btn btn-secondary rounded">
               עריכה
               <i class="fas fa-pencil-alt"></i>
             </button>
@@ -132,7 +133,8 @@
   <div *ngIf="notAndrey" class="row mt-5">
     <div class="col-5"></div>
     <div class="col-2">
-      <button *ngIf="checkItemsFormules()" class="btn btn-success cpf" (click)="createPAKA()">Create Production Formules</button>
+      <button *ngIf="checkItemsFormules()" class="btn btn-success cpf" (click)="createPAKA()">Create Production
+        Formules</button>
       <!-- <button class="btn btn-info" >Compare</button> -->
     </div>
     <div class="col-5"></div>
@@ -160,8 +162,9 @@
           </th>
           <th>Formule</th>
           <th>פריטים / הזמנות</th>
-          <th>סה"כ ק"ג</th>
-          <th>סטטוס חומרים</th>
+          <th>כמות שיוצרה ק"ג</th>
+          <th>/</th>
+          <th>כמות מוזמנת ק"ג</th>
           <th>סטטוס ייצור</th>
           <th>מתי אבשל?</th>
           <th></th>
@@ -179,17 +182,21 @@
           <td>{{formule.formule}}</td>
           <td>
             <span *ngFor="let orderAndItem of formule.ordersAndItems">
-              order <span class="order-span">{{orderAndItem.orderNumber}}</span>, item <span class="item-span">{{orderAndItem.itemNumber}}</span> {{orderAndItem.itemName}}, {{orderAndItem.weightKg}}KG <br>
+              order <span class="order-span">{{orderAndItem.orderNumber}}</span>, item <span
+                class="item-span">{{orderAndItem.itemNumber}}</span> {{orderAndItem.itemName}},
+              {{orderAndItem.weightKg}}KG <br>
             </span>
           </td>
+          <td style="text-align: end;">{{formule.producedKG}}</td>
+          <td>/</td>
           <td>
             <span (click)="editF = i" *ngIf="editF != i">{{formule.totalKG}}</span>
             <input placeholder="Enter Weight" *ngIf="editF == i" type="number" [(ngModel)]="formule.totalKG">
           </td>
-          <td *ngIf="formule.enoughMaterials"><i ngbTooltip="כמות מלאי תקינה" class="far fa-thumbs-up"></i>
+          <!-- <td *ngIf="formule.enoughMaterials"><i ngbTooltip="כמות מלאי תקינה" class="far fa-thumbs-up"></i>
           </td>
           <td *ngIf="!formule.enoughMaterials"><i ngbTooltip="חסרים קומפוננטים במלאי"
-              class="fas fa-exclamation-circle"></i></td>
+              class="fas fa-exclamation-circle"></i></td> -->
           <td [style.background]="formule.status | orderItemBatchStatusColor">
             {{formule.status | orderItemBatchStatus}}
             <span *ngIf="formule.status == 4">{{formule.dueDate | date: 'dd/MM/yyyy'}}</span>
@@ -204,12 +211,14 @@
             <span *ngIf="editDueDate == i && authorized">
               <!-- <input type="date" [disabled]="!authorized" (change)="scheduleBatch(i)" [(ngModel)]="formule.dueDate"> -->
               <select class="form-control" (change)="scheduleBatch(i, $event)">
-                <option *ngFor="let number of andreyisalazyworkersowehavetoworkharderfrohim" [value]="number">בעוד {{number}} ימים</option>
+                <option *ngFor="let number of andreyisalazyworkersowehavetoworkharderfrohim" [value]="number">בעוד
+                  {{number}} ימים</option>
               </select>
             </span>
           </td>
           <td>
-            <span *ngIf="!formule.batchNumber" [ngbTooltip]="formule.status < 3 ? 'Formula Not Approved!' : ''">
+            <span *ngIf="!formule.batchNumber || formule.status==9"
+              [ngbTooltip]="formule.status < 3 ? 'Formula Not Approved!' : ''">
               <button (click)="addBatch(formule)" class="btn batch-btn" [disabled]="formule.status < 3">בישלתי</button>
             </span>
           </td>
@@ -217,10 +226,10 @@
               {{formule.batchNumber}}</td>
             <td *ngIf="!formule.batchNumber"><i ngbTooltip="לא יוצר באטץ'" class="far fa-times-circle"></i>
             </td> -->
-            <td>
-              <img *ngIf="editF == i && authorized" ngbTooltip="שמור שינויים" (click)="saveChanges(i)" class="img click"
+          <td>
+            <img *ngIf="editF == i && authorized" ngbTooltip="שמור שינויים" (click)="saveChanges(i)" class="img click"
               src="../../../../../assets/images/aprroved.png" alt="">
-            </td>
+          </td>
 
         </tr>
       </tbody>
@@ -237,7 +246,7 @@
     </div>
     <div>
       <button class="btn btn-info formule-side" (click)="approveFormules()">
-        <span *ngIf="authorized"><img class="img2" ngbTooltip='Approve Formules' 
+        <span *ngIf="authorized"><img class="img2" ngbTooltip='Approve Formules'
             src="../../../../../assets/images/filter.png" alt="לחץ כאן על מנת לשלוח פורמולות לייצור"></span>
         Approve All & Print
       </button>

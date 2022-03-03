@@ -1223,10 +1223,14 @@ export class OrderdetailsComponent implements OnInit {
             item.licenseExpirationClose = diffDays < 30;
 
             //set remained amount (total amount - amount that has allready been supplied)
-            let quantitySupplied = item.billing
-              .map((b) => b.billQty)
-              .reduce((a, b) => a + b, 0);
-            item.quantityRemained = Number(item.quantity) - quantitySupplied;
+            // let quantitySupplied = item.billing
+            //   .map((b) => b.billQty)
+            //   .reduce((a, b) => a + b, 0);
+            item.quantitySupplied = item.quantitySupplied
+              ? item.quantitySupplied
+              : 0;
+            item.quantityRemained =
+              Number(item.quantity) - item.quantitySupplied;
 
             this.totalOrderQty += Number(item.quantity);
             if (item.fillingStatus != null) {

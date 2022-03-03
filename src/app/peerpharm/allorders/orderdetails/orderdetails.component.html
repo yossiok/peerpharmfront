@@ -102,8 +102,8 @@
         <th class="header">Description </th>
         <th class="header">Barcode </th>
         <th class="header">neto Weight(Gr) </th>
-        <th class="header">Ordered quantity </th>
-        <th class="header">Supplied quantity </th>
+        <th class="header">Ordered Qty </th>
+        <th class="header">Remained Qty </th>
         <th class="header">Item order date</th>
         <th class="header">Item packing date</th>
         <th class="header">Item delivery date</th>
@@ -223,9 +223,9 @@
                 style="width: 20px;" src="../../../../assets/images/alert3.gif" alt=""> -->
           </td>
           <td><input type="checkbox" [checked]="item.isSelected" (change)="isSelected($event,item)"></td>
-          <td [style.background-color]="item.oiStatus|oiStatusColor"
-            [ngbTooltip]="item.quantitySupplied+ ' units packed out of: '+ item.quantity +' that were ordered'">
-            <span class="status">{{item.oiStatus}}</span>
+          <td [style.background-color]="item.oiStatus|oiStatusColor">
+            <span [ngbTooltip]="item.quantitySupplied+ ' units produced out of: '+ item.quantity +' that were ordered'"
+              class="status">{{item.oiStatus}}</span>
           </td>
 
           <td class="click paka-status" (click)="openPAKA(pakaStatus)" (click)="currentItem = item"
@@ -297,8 +297,8 @@
           <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.quantity}}</td>
 
           <!--Quantity Supplied-->
-          <td *ngIf="item._id===EditRowId">{{item.quantitySupplied}}</td>
-          <td *ngIf="item._id!==EditRowId">{{item.quantitySupplied}}</td>
+          <td *ngIf="item._id===EditRowId">{{item.quantityRemained}}</td>
+          <td *ngIf="item._id!==EditRowId">{{item.quantityRemained}}</td>
 
           <!--Dates-->
           <td>{{item.itemOrderDate | date: 'dd/MM/YYY' }}</td>
@@ -1257,7 +1257,7 @@
         <th>Barcode</th>
         <th>Netto Weight</th>
         <th>Required Quantity</th>
-        <th>Supplied Quantity</th>
+        <th>Remained Quantity</th>
         <th>Item Order Date</th>
         <th>Item Packing Date</th>
         <th>Item Delivery Date</th>
@@ -1275,7 +1275,7 @@
           <td>{{item.barcodeK}}</td>
           <td>{{item.netWeightGr}}</td>
           <td>{{item.quantity}}</td>
-          <td>{{item.quantitySupplied}}</td>
+          <td>{{item.quantityRemained}</td>
           <td>{{item.itemOrderDate| date:'dd/MM/YYYY'}}</td>
           <td>{{item.packingDate| date:'dd/MM/YYYY' }}</td>
           <td>{{item.itemDeliveryDate| date:'dd/MM/YYYY' }}</td>
