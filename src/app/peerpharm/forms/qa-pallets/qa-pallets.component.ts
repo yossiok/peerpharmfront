@@ -726,12 +726,14 @@ export class QaPalletsComponent implements OnInit {
     }
   }
 
-  sendForBill(packlist) {
-    console.log(packlist);
-    if (confirm("האם לשלוח להפקת חשבונית ?")) {
-      packlist.readyForBill = true;
+  sendForBill(packlistNum) {
+    console.log(packlistNum);
+    let pl = { plNum: packlistNum };
 
-      this.formService.updatePLStatus(packlist).subscribe((data) => {
+    if (confirm("האם לשלוח להפקת חשבונית ?")) {
+      // packlistNum.readyForBill = true;
+      console.log(pl);
+      this.formService.updatePLStatus(pl).subscribe((data) => {
         console.log(data);
         if (data.msg) {
           this.toastr.error(data.msg);

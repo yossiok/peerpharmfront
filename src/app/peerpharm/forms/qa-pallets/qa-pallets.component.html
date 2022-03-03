@@ -391,7 +391,8 @@
                       class="btn btn-success border border-dark">HE</button><button
                       (click)="openProductForm(packlist,'EN')" class="btn btn-success border border-dark">EN</button>
                   </td>
-                  <td><button class="btn btn-info" (click)="sendForBill(packlist)">שלח לחשבונית</button></td>
+                  <td><button class="btn btn-info" (click)="sendForBill(packlist.packListNumber)">שלח לחשבונית</button>
+                  </td>
                   <td><button class="btn btn-secondary" (click)="findLostPallets(packlist)">מצא משטחים אבודים</button>
                   </td>
                   <td *ngIf="deleteLine"><i (click)="cancelPackList(packlist._id)" class="fa fa-times text-danger"></i>
