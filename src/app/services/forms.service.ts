@@ -90,6 +90,7 @@ export class FormsService {
     return this.http.post(url, JSON.stringify(packedList), this.options).pipe(map(res => res.json()));
   }
 
+  // Create new pallet
   createNewQaPallet(qaPallet){
     let url = this.baseUrl + "formDetails/addNewQAPallet";
     return this.http.post(url, JSON.stringify(qaPallet), this.options).pipe(map(res => res.json()));
