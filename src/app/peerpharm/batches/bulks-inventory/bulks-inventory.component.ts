@@ -15,7 +15,7 @@ import { AuthService } from "src/app/services/auth.service";
   styleUrls: ["./bulks-inventory.component.scss"],
 })
 export class BulksInventoryComponent implements OnInit {
-  user: Object = {};
+  user: any = {};
   allWarehouses: Array<any> = [];
 
   bulkArrival: FormGroup = new FormGroup({
