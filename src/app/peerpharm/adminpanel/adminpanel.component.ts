@@ -84,8 +84,8 @@ export class AdminpanelComponent implements OnInit {
     private authService: AuthService
   ) {}
 
-  async ngOnInit() {
-    let user = await this.authService.loggedInUser;
+  ngOnInit() {
+    let user = this.authService.loggedInUser;
     if (user.screenPermission == "1" || user.screenPermission == "2") {
       this.adminPanelView = true;
     } else {
@@ -99,15 +99,15 @@ export class AdminpanelComponent implements OnInit {
       this.adminPanelAllowed = false;
     }
 
-    await this.getAllWhareHouses();
+    this.getAllWhareHouses();
     this.userService.getAllScreens().subscribe((data) => {
       this.routes = [...data];
     });
     this.getAllUsers();
   }
 
-  async getAllUsers() {
-    await this.whareHouses;
+  getAllUsers() {
+    this.whareHouses;
     this.userService.getAllUsers().subscribe((users) => {
       // FAILED: trying to get wharehouses names but names doesnt match IDs.... ????
       users.forEach((user) => {
