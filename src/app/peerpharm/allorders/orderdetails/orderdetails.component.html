@@ -1,40 +1,86 @@
 <div class="main">
-
-
-
   <div *ngIf="!showingAllOrders">
     <p>Schdule Status:</p>
-    <div class="p-2 h3" style='background-color: aquamarine;display:inline-table'>לוקט</div>&nbsp;
-    <div class="p-2 h3" style='background-color: #CE90FF; display:inline-table'>מולא</div>&nbsp;
-    <div class="p-2 h3" style='background-color: #ffff00; display:inline-table'>נמצא בתהליך</div>&nbsp;
-    <div class="p-2 h3" style='background-color: #FFC058; display:inline-table'>נארז</div>&nbsp;
-    <div class="p-2 h3" style='background-color: red; display:inline-table'>בעיה</div>&nbsp;
-    <div class="p-2 h3" style='background-color: lightblue; display:inline-table'>הודפס</div>&nbsp;
+    <div
+      class="p-2 h3"
+      style="background-color: aquamarine; display: inline-table"
+    >
+      לוקט
+    </div>
+    &nbsp;
+    <div
+      class="p-2 h3"
+      style="background-color: #ce90ff; display: inline-table"
+    >
+      מולא
+    </div>
+    &nbsp;
+    <div
+      class="p-2 h3"
+      style="background-color: #ffff00; display: inline-table"
+    >
+      נמצא בתהליך
+    </div>
+    &nbsp;
+    <div
+      class="p-2 h3"
+      style="background-color: #ffc058; display: inline-table"
+    >
+      נארז
+    </div>
+    &nbsp;
+    <div class="p-2 h3" style="background-color: red; display: inline-table">
+      בעיה
+    </div>
+    &nbsp;
+    <div
+      class="p-2 h3"
+      style="background-color: lightblue; display: inline-table"
+    >
+      הודפס
+    </div>
+    &nbsp;
   </div>
 
-  <div class='orderHeader' *ngIf="!showingAllOrders">
-    <span class='spanTitle'>Order: </span><span class="orderSpanDetails">{{number}} </span><i
-      class="ti-check text-success m-r-10" (click)="closeOrder()" style="cursor: pointer;"></i>
-    <span class="spanTitle">Total Items: {{totalOrderQty}}</span>
-    <span class='spanTitle'> Order Date:</span><span class="orderSpanDetails"> {{orderDate}} </span><span
-      class='spanTitle'> Delivery Date: </span><span class="orderSpanDetails">{{deliveryDate}}</span>
-    <span class='spanTitle'> Customer :</span><span class="orderSpanDetails"> {{costumer}} </span><span
-      class='spanTitle'>
-      Customer Number:</span><span class="orderSpanDetails"> {{costumerInternalId}} </span>
-    <span class='spanTitle'> Customer <strong>Order</strong> Number :</span><span class="orderSpanDetails">
-      {{customerOrderNum}} </span>
-    <span class='spanTitle'> Remarks:</span>
-    <span class="orderSpanDetails">{{remarks}}</span>
-    <ng-container *ngIf="(multi && !showingAllOrders) ||(!multi && !showingAllOrders)">
-      <span class='spanTitle'>Customer Important Remark:</span>
-      <span *ngIf="costumersNumbers.length <= 1 && multiCostumerImpRemark.length > 0"> <b
-          style="color: red ; font-size: 18px; "> {{costumerImpRemark}} </b> </span>
+  <div class="orderHeader" *ngIf="!showingAllOrders">
+    <span class="spanTitle">Order: </span
+    ><span class="orderSpanDetails">{{ number }} </span
+    ><i
+      class="ti-check text-success m-r-10"
+      (click)="closeOrder()"
+      style="cursor: pointer"
+    ></i>
+    <span class="spanTitle">Total Items: {{ totalOrderQty }}</span>
+    <span class="spanTitle"> Order Date:</span
+    ><span class="orderSpanDetails"> {{ orderDate }} </span
+    ><span class="spanTitle"> Delivery Date: </span
+    ><span class="orderSpanDetails">{{ deliveryDate }}</span>
+    <span class="spanTitle"> Customer :</span
+    ><span class="orderSpanDetails"> {{ costumer }} </span
+    ><span class="spanTitle"> Customer Number:</span
+    ><span class="orderSpanDetails"> {{ costumerInternalId }} </span>
+    <span class="spanTitle"> Customer <strong>Order</strong> Number :</span
+    ><span class="orderSpanDetails"> {{ customerOrderNum }} </span>
+    <span class="spanTitle"> Remarks:</span>
+    <span class="orderSpanDetails">{{ remarks }}</span>
+    <ng-container
+      *ngIf="(multi && !showingAllOrders) || (!multi && !showingAllOrders)"
+    >
+      <span class="spanTitle">Customer Important Remark:</span>
+      <span
+        *ngIf="
+          costumersNumbers.length <= 1 && multiCostumerImpRemark.length > 0
+        "
+      >
+        <b style="color: red; font-size: 18px"> {{ costumerImpRemark }} </b>
+      </span>
       <!-- <span *ngIf="costumersNumbers.length == 1 && multiCostumerImpRemark.length > 1"> <b style="color: red ; font-size: 18px; ">  {{costumerImpRemark}} </b>  </span> -->
 
-      <span *ngIf="costumersNumbers.length > 1 && multiCostumerImpRemark.length  > 0"> <b style="color: red"> ריבוי
-          לקוחות- לא ניתן לצפות בהערות חשובות</b> </span>
-
-
+      <span
+        *ngIf="costumersNumbers.length > 1 && multiCostumerImpRemark.length > 0"
+      >
+        <b style="color: red"> ריבוי לקוחות- לא ניתן לצפות בהערות חשובות</b>
+      </span>
     </ng-container>
     <!-- <ng-container 
     *ngIf="(multi && !showingAllOrders) ||(!multi && !showingAllOrders)">
@@ -42,23 +88,46 @@
     <span *ngIf="costumersNumbers.length < 2"> {{costumerImpRemark}} </span>
     <span *ngIf="costumersNumbers.length > 1"> <b style="color: red"> ריבוי לקוחות- לא ניתן לצפות בהערות חשובות</b> </span>
 </ng-container > -->
-
   </div>
 
-
-  <div *ngIf="!multi" style="border: 1px solid black; width:98% ; display: flex; justify-content: center;"
-    [style.background-color]="stageColor">
+  <div
+    *ngIf="!multi"
+    style="
+      border: 1px solid black;
+      width: 98%;
+      display: flex;
+      justify-content: center;
+    "
+    [style.background-color]="stageColor"
+  >
     <div>
-      <label style=" padding: 15px 40px 0px 0px; font-size: 22px; ">Stage:</label>
-      <select #stage [value]='orderStage' (change)="updateSingleOrderStage($event)" style="font-size: 22px; "
-        [style.background-color]="stageColor">
-        <option value="new" style="background-color: white ;">חדש</option>
-        <option value="waitingFinance" style="background-color: #797068 ;">ממתין לאישור מחלקת כספים</option>
-        <option value="partialCmpt" style="background-color: #ffa64d ;">רכיבים קיימים- חלקית</option>
-        <option value="allCmpt" style="background-color: #ffff80 ;">כל הרכיבים קיימים</option>
-        <option value="production" style="background-color: #b3ecff ;">נשלח לייצור</option>
-        <option value="prodFinish" style="background-color: #d9b3ff ;">עבר ייצור</option>
-        <option value="done" style="background-color: #9ae59a;">הזמנה סגורה</option>
+      <label style="padding: 15px 40px 0px 0px; font-size: 22px">Stage:</label>
+      <select
+        #stage
+        [value]="orderStage"
+        (change)="updateSingleOrderStage($event)"
+        style="font-size: 22px"
+        [style.background-color]="stageColor"
+      >
+        <option value="new" style="background-color: white">חדש</option>
+        <option value="waitingFinance" style="background-color: #797068">
+          ממתין לאישור מחלקת כספים
+        </option>
+        <option value="partialCmpt" style="background-color: #ffa64d">
+          רכיבים קיימים- חלקית
+        </option>
+        <option value="allCmpt" style="background-color: #ffff80">
+          כל הרכיבים קיימים
+        </option>
+        <option value="production" style="background-color: #b3ecff">
+          נשלח לייצור
+        </option>
+        <option value="prodFinish" style="background-color: #d9b3ff">
+          עבר ייצור
+        </option>
+        <option value="done" style="background-color: #9ae59a">
+          הזמנה סגורה
+        </option>
       </select>
     </div>
   </div>
@@ -68,55 +137,85 @@
   <div *ngIf="!showingAllOrders">
     <p>License Status:</p>
     <span class="license h3 p-2">יש רשיון</span>&nbsp;
-    <span class="licenseExpirationClose h3 p-2">תוקף הרשיון יפוג בקרוב</span>&nbsp;
-    <span class="noLicense h3 p-2">אין רשיון</span>&nbsp;
+    <span class="licenseExpirationClose h3 p-2">תוקף הרשיון יפוג בקרוב</span
+    >&nbsp; <span class="noLicense h3 p-2">אין רשיון</span>&nbsp;
   </div>
 
-  <input matInput placeholder="Search item by name" (change)="changeText($event)" class="form-control  mb-8" />
+  <input
+    matInput
+    placeholder="Search item by name"
+    (change)="changeText($event)"
+    class="form-control mb-8"
+  />
   <select (change)="filterOrderItems($event)" class="form-control">
     <option value="all">All</option>
     <option value="open">Open</option>
     <option value="done">Closed</option>
   </select>
   <div class="text-center">
-    <button class="btn btn-primary" [disabled]="orderStage == 'waitingFinance'"
-      [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''" (click)="updatePakaStatus()">Send to
-      Work
-      Plan Creation</button>
+    <button
+      class="btn btn-primary"
+      [disabled]="orderStage == 'waitingFinance'"
+      [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''"
+      (click)="updatePakaStatus()"
+    >
+      Send to Work Plan Creation
+    </button>
   </div>
 
   <div *ngIf="orderExplodeLoader" class="loading">Loading&#8230;</div>
-  <div style="overflow-y:scroll; overflow-x:scroll; width:100%">
-
-    <table style="border: 1px solid black;" class='table'>
-      <thead class='bg-info tableHeader text-white' (click)="edit('')">
+  <div style="overflow-y: scroll; overflow-x: scroll; width: 100%">
+    <table style="border: 1px solid black" class="table">
+      <thead class="bg-info tableHeader text-white" (click)="edit('')">
         <tr>
-          <th> # <button><img style="width:35px;height:35px;" (click)="exportAsXLSXOrders()"
-                src="../../../assets/images/excel.png" /></button></th>
           <th>
-            <img *ngIf="hasSpecialOrderItems" src="../../../../assets/images/alert3.gif" class="reportImg click"
-              alt="Problematics Report" ngbTooltip="Problematic ingredients" (click)="exportProblems()">
+            #
+            <button>
+              <img
+                style="width: 35px; height: 35px"
+                (click)="exportAsXLSXOrders()"
+                src="../../../assets/images/excel.png"
+              />
+            </button>
+          </th>
+          <th>
+            <img
+              *ngIf="hasSpecialOrderItems"
+              src="../../../../assets/images/alert3.gif"
+              class="reportImg click"
+              alt="Problematics Report"
+              ngbTooltip="Problematic ingredients"
+              (click)="exportProblems()"
+            />
           </th>
           <th *ngIf="openFormule"></th>
           <th>O.I. Status</th>
           <th>Batch Status</th>
-          <th><img src="../../../../assets/images/print.png" ngbTooltip="Print Order Details" class="reportImg click"
-              (click)="printOrder = true"></th>
+          <th>
+            <img
+              src="../../../../assets/images/print.png"
+              ngbTooltip="Print Order Details"
+              class="reportImg click"
+              (click)="printOrder = true"
+            />
+          </th>
           <th *ngIf="showingAllOrders || multi">Order Number</th>
-          <th style="width:200px;" class="header">Item Number </th>
+          <th style="width: 200px" class="header">Item Number</th>
           <th class="header">Item Important Remark</th>
-          <th class="header">Description </th>
-          <th class="header">Barcode </th>
-          <th class="header">neto Weight(Gr) </th>
-          <th class="header">Ordered Qty </th>
-          <th class="header">Remained Qty </th>
+          <th class="header">Description</th>
+          <th class="header">Barcode</th>
+          <th class="header">neto Weight(Gr)</th>
+          <th class="header">Ordered Qty</th>
+          <th class="header">Remained Qty</th>
           <th class="header">Item order date</th>
           <th class="header">Item packing date</th>
           <th class="header">Item delivery date</th>
-          <th class="header">Printing/Filling </th>
-          <th class="header">Remarks </th>
+          <th class="header">Printing/Filling</th>
+          <th class="header">Remarks</th>
           <!-- <th class='printTd header'>Status</th> -->
-          <th *ngIf="productionApproved" class='printTd header'>Production Status</th>
+          <th *ngIf="productionApproved" class="printTd header">
+            Production Status
+          </th>
           <!-- <th class='printTd header'>Billing</th> -->
           <!-- <th class="header">C & F</th> -->
           <th>
@@ -124,105 +223,233 @@
           </th>
           <th *ngIf="!loadData">
             <img
-              *ngIf="userName == 'uri' || userName == 'sima' || userName == 'martha' || userName == 'haviv' || userName == 'dani'"
-              ngbTooltip="פיצוץ חומרים" (click)="loadMaterialsForFormule()" class="showCmptBtn"
-              src="../../../../assets/images/what-happens-when-we-mix-liquids.jpg" alt="">
+              *ngIf="
+                userName == 'uri' ||
+                userName == 'sima' ||
+                userName == 'martha' ||
+                userName == 'haviv' ||
+                userName == 'dani'
+              "
+              ngbTooltip="פיצוץ חומרים"
+              (click)="loadMaterialsForFormule()"
+              class="showCmptBtn"
+              src="../../../../assets/images/what-happens-when-we-mix-liquids.jpg"
+              alt=""
+            />
           </th>
           <!-- <th *ngIf="loadData">
           <div class="smallerLoader"></div>
         </th> -->
 
           <th>
-            <img class="showCmptBtn" ngbTooltip="פיצוץ קומפוננטים" src="../../../../assets/images/partsAssembly2.jpg"
-              (click)="openCmptDemandsModal()">
+            <img
+              class="showCmptBtn"
+              ngbTooltip="פיצוץ קומפוננטים"
+              src="../../../../assets/images/partsAssembly2.jpg"
+              (click)="openCmptDemandsModal()"
+            />
           </th>
-
         </tr>
       </thead>
 
       <tbody>
-
-        <tr *ngIf="!showingAllOrders" class='inputTr' (click)="edit('')">
+        <tr *ngIf="!showingAllOrders" class="inputTr" (click)="edit('')">
           <td>#</td>
-          <td><input type="checkbox" (change)="checkboxAllOrders($event)"></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td *ngIf="!showingAllOrders && multi"><input style="box-shadow:1px 1px 2px black;"
-              class="form-control form-control-sm" placeholder="Order Number" [(ngModel)]="itemData.orderNumber"
-              #orderNum (focusout)="searchItem(orderNumber.value)"></td>
-          <td><input style="box-shadow:1px 1px 2px black;" class="form-control form-control-sm"
-              placeholder="Item Number" [(ngModel)]="itemData.itemNumber" #itemNum (blur)="searchItem(itemNum.value)">
+          <td>
+            <input type="checkbox" (change)="checkboxAllOrders($event)" />
           </td>
-          <td><input style="box-shadow:1px 1px 2px black; color: red;" class="form-control form-control-sm"
-              placeholder="Item Important Remark" [(ngModel)]="itemData.itemImpRemark" disabled>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td *ngIf="!showingAllOrders && multi">
+            <input
+              style="box-shadow: 1px 1px 2px black"
+              class="form-control form-control-sm"
+              placeholder="Order Number"
+              [(ngModel)]="itemData.orderNumber"
+              #orderNum
+              (focusout)="searchItem(orderNumber.value)"
+            />
           </td>
-          <td><input style="box-shadow:1px 1px 2px black; width:350px;" class="form-control form-control-sm"
-              placeholder="Description" [(ngModel)]="itemData.discription"></td>
+          <td>
+            <input
+              style="box-shadow: 1px 1px 2px black"
+              class="form-control form-control-sm"
+              placeholder="Item Number"
+              [(ngModel)]="itemData.itemNumber"
+              #itemNum
+              (blur)="searchItem(itemNum.value)"
+            />
+          </td>
+          <td>
+            <input
+              style="box-shadow: 1px 1px 2px black; color: red"
+              class="form-control form-control-sm"
+              placeholder="Item Important Remark"
+              [(ngModel)]="itemData.itemImpRemark"
+              disabled
+            />
+          </td>
+          <td>
+            <input
+              style="box-shadow: 1px 1px 2px black; width: 350px"
+              class="form-control form-control-sm"
+              placeholder="Description"
+              [(ngModel)]="itemData.discription"
+            />
+          </td>
           <td></td>
-          <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm"
-              placeholder="neto Weight(Gr)" [(ngModel)]="itemData.netWeightGr"></td>
-          <td><input style="box-shadow:1px 1px 2px black" type="number" class="form-control form-control-sm"
-              placeholder="Quantity" [(ngModel)]="itemData.quantity"></td>
+          <td>
+            <input
+              style="box-shadow: 1px 1px 2px black"
+              class="form-control form-control-sm"
+              placeholder="neto Weight(Gr)"
+              [(ngModel)]="itemData.netWeightGr"
+            />
+          </td>
+          <td>
+            <input
+              style="box-shadow: 1px 1px 2px black"
+              type="number"
+              class="form-control form-control-sm"
+              placeholder="Quantity"
+              [(ngModel)]="itemData.quantity"
+            />
+          </td>
 
+          <td>
+            <input
+              style="box-shadow: 1px 1px 2px black"
+              class="form-control form-control-sm"
+              placeholder="Supplied"
+              [(ngModel)]="itemData.qtyKg"
+            />
+          </td>
 
-          <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" placeholder="Supplied"
-              [(ngModel)]="itemData.qtyKg"></td>
-
-          <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" type="date"
-              placeholder="Item order date" [(ngModel)]="itemData.itemOrderDate"></td>
+          <td>
+            <input
+              style="box-shadow: 1px 1px 2px black"
+              class="form-control form-control-sm"
+              type="date"
+              placeholder="Item order date"
+              [(ngModel)]="itemData.itemOrderDate"
+            />
+          </td>
 
           <td></td>
-          <td><input style="box-shadow:1px 1px 2px black" class="form-control form-control-sm" type="date"
-              placeholder="Item Delivery date" [(ngModel)]="itemData.itemDeliveryDate"></td>
+          <td>
+            <input
+              style="box-shadow: 1px 1px 2px black"
+              class="form-control form-control-sm"
+              type="date"
+              placeholder="Item Delivery date"
+              [(ngModel)]="itemData.itemDeliveryDate"
+            />
+          </td>
 
-          <td><textarea style="box-shadow:1px 1px 2px black;width:185px" class="form-control form-control-sm"
-              placeholder="Remarks" [(ngModel)]="itemData.itemRemarks"></textarea></td>
+          <td>
+            <textarea
+              style="box-shadow: 1px 1px 2px black; width: 185px"
+              class="form-control form-control-sm"
+              placeholder="Remarks"
+              [(ngModel)]="itemData.itemRemarks"
+            ></textarea>
+          </td>
 
           <!-- <td></td> -->
           <td *ngIf="!multi"></td>
-          <td><button style="box-shadow: 1px 1px 2px black;" (click)="addItemOrder()"
-              class='btn btn-success'>Add</button>
+          <td>
+            <button
+              style="box-shadow: 1px 1px 2px black"
+              (click)="addItemOrder()"
+              class="btn btn-success"
+            >
+              Add
+            </button>
           </td>
-
-
         </tr>
 
-        <tr>
-        </tr>
+        <tr></tr>
 
         <ng-container *ngFor="let item of ordersItems; let i = index">
-
-          <tr style="border: 2px solid black; box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
-            [style.background-color]="item.color">
-
+          <tr
+            style="
+              border: 2px solid black;
+              box-shadow: inset 1px -1px 2px 0px black;
+              margin-top: 1px;
+            "
+            [style.background-color]="item.color"
+          >
             <!--#-->
-            <td *ngIf="item._id===EditRowId">
-              <input #id type='hidden' [value]="item._id" style='width:370px'>
-              <input #itemNumber type='hidden' [value]="item.itemNumber">{{i+1}}
+            <td *ngIf="item._id === EditRowId">
+              <input
+                #id
+                type="hidden"
+                [value]="item._id"
+                style="width: 370px"
+              />
+              <input #itemNumber type="hidden" [value]="item.itemNumber" />{{
+                i + 1
+              }}
               <!-- <span>{{item.problematicComponents[0].componentN}}</span> -->
             </td>
-            <td *ngIf="item._id!==EditRowId">
-              <b>{{i+1}}</b>&nbsp;&nbsp;&nbsp;
+            <td *ngIf="item._id !== EditRowId">
+              <b>{{ i + 1 }}</b
+              >&nbsp;&nbsp;&nbsp;
               <ul *ngFor="let alert of item.alertsArr">
-                <li *ngIf="alert.alert == 1" style='list-style: none; color:red '
-                  [ngbTooltip]="'פריט '+ alert.itemNumber +': '+ alert.problem">
+                <li
+                  *ngIf="alert.alert == 1"
+                  style="list-style: none; color: red"
+                  [ngbTooltip]="
+                    'פריט ' + alert.itemNumber + ': ' + alert.problem
+                  "
+                >
                   <i class="fas fa-exclamation"></i>
                 </li>
-                <li *ngIf="alert.alert == 2" style="color:orange;list-style: none; "
-                  [ngbTooltip]="'פריט '+ alert.itemNumber +': '+ alert.problem"><i class="fas fa-battery-half"></i>
+                <li
+                  *ngIf="alert.alert == 2"
+                  style="color: orange; list-style: none"
+                  [ngbTooltip]="
+                    'פריט ' + alert.itemNumber + ': ' + alert.problem
+                  "
+                >
+                  <i class="fas fa-battery-half"></i>
                 </li>
-                <li *ngIf="alert.alert == 3" style="color:rgba(8, 63, 245, 0.616);list-style: none; "
-                  [ngbTooltip]="'פריט '+ alert.itemNumber +': '+ alert.problem"><i class="fas fa-shopping-cart"></i>
+                <li
+                  *ngIf="alert.alert == 3"
+                  style="color: rgba(8, 63, 245, 0.616); list-style: none"
+                  [ngbTooltip]="
+                    'פריט ' + alert.itemNumber + ': ' + alert.problem
+                  "
+                >
+                  <i class="fas fa-shopping-cart"></i>
                 </li>
-                <li *ngIf="alert.alert == 4" style="color:orange;list-style: none; "
-                  [ngbTooltip]="'פריט '+ alert.itemNumber +': '+ alert.problem"><i class="fas fa-shipping-fast"></i>
+                <li
+                  *ngIf="alert.alert == 4"
+                  style="color: orange; list-style: none"
+                  [ngbTooltip]="
+                    'פריט ' + alert.itemNumber + ': ' + alert.problem
+                  "
+                >
+                  <i class="fas fa-shipping-fast"></i>
                 </li>
-                <li *ngIf="alert.alert == 5" style="color:red;list-style: none; "
-                  [ngbTooltip]="'פריט '+ alert.itemNumber +': '+ alert.problem"><i
-                    class="fas fa-exclamation-triangle"></i></li>
-                <li *ngIf="alert.alert == 6" style="color:red;list-style: none; "
-                  [ngbTooltip]="'פריט '+ alert.itemNumber +': '+ alert.problem"><i class="fas fa-question-circle"></i>
+                <li
+                  *ngIf="alert.alert == 5"
+                  style="color: red; list-style: none"
+                  [ngbTooltip]="
+                    'פריט ' + alert.itemNumber + ': ' + alert.problem
+                  "
+                >
+                  <i class="fas fa-exclamation-triangle"></i>
+                </li>
+                <li
+                  *ngIf="alert.alert == 6"
+                  style="color: red; list-style: none"
+                  [ngbTooltip]="
+                    'פריט ' + alert.itemNumber + ': ' + alert.problem
+                  "
+                >
+                  <i class="fas fa-question-circle"></i>
                 </li>
               </ul>
 
@@ -230,114 +457,263 @@
                 *ngIf="item.problematicComponents.length > 0 || item.problematicMaterials.length > 0"
                 style="width: 20px;" src="../../../../assets/images/alert3.gif" alt=""> -->
             </td>
-            <td><input type="checkbox" [checked]="item.isSelected" (change)="isSelected($event,item)"></td>
-            <td [style.background-color]="item.oiStatus|oiStatusColor">
+            <td>
+              <input
+                type="checkbox"
+                [checked]="item.isSelected"
+                (change)="isSelected($event, item)"
+              />
+            </td>
+            <td [style.background-color]="item.oiStatus | oiStatusColor">
               <span
-                [ngbTooltip]="item.quantitySupplied+ ' units supplied out of: '+ item.quantity +' that were ordered'"
-                class="status">{{item.oiStatus}}</span>
+                [ngbTooltip]="
+                  item.quantitySupplied +
+                  ' units supplied out of: ' +
+                  item.quantity +
+                  ' that were ordered'
+                "
+                class="status"
+                >{{ item.oiStatus }}</span
+              >
             </td>
 
-            <td class="click paka-status" (click)="openPAKA(pakaStatus)" (click)="currentItem = item"
-              [style.background]="item.workPlans.length > 1 ? '#de826a' : item.pakaStatus|orderItemBatchStatusColor">
-              {{item.workPlans.length > 1 ? 'MULTI PAKA (click to watch)' : item.pakaStatus | orderItemBatchStatus}}
-              {{item.workPlans.length == 1 ? item.workPlans[0].batch : ''}} <br> <span class="font-weight-bold"
-                *ngIf="item.workPlans[0] && item.workPlans[0].quantity < item.quantity">{{item.workPlans[0].quantity}}</span>
+            <td
+              class="click paka-status"
+              (click)="openPAKA(pakaStatus)"
+              (click)="currentItem = item"
+              [style.background]="
+                item.workPlans.length > 1
+                  ? '#de826a'
+                  : (item.pakaStatus | orderItemBatchStatusColor)
+              "
+            >
+              {{
+                item.workPlans.length > 1
+                  ? "MULTI PAKA (click to watch)"
+                  : (item.pakaStatus | orderItemBatchStatus)
+              }}
+              {{ item.workPlans.length == 1 ? item.workPlans[0].batch : "" }}
+              <br />
+              <span
+                class="font-weight-bold"
+                *ngIf="
+                  item.workPlans[0] &&
+                  item.workPlans[0].quantity < item.quantity
+                "
+                >{{ item.workPlans[0].quantity }}</span
+              >
             </td>
-            <td *ngIf="multi==true">{{item.orderNumber}}</td>
+            <td *ngIf="multi == true">{{ item.orderNumber }}</td>
 
             <!--Formule exist?-->
-            <td *ngIf="!item.fillingOnly"><button style="border-radius: 30px;"
-                [ngClass]="{'lightgreen': item.formuleExist == true,'lightred':item.formuleExist != true}">F</button>
+            <td *ngIf="!item.fillingOnly">
+              <button
+                style="border-radius: 30px"
+                [ngClass]="{
+                  lightgreen: item.formuleExist == true,
+                  lightred: item.formuleExist != true
+                }"
+              >
+                F
+              </button>
             </td>
-            <td *ngIf="item.fillingOnly"><button style="border-radius: 30px;"
-                [ngClass]="{'white': item.fillingOnly==true}">Fill</button>
+            <td *ngIf="item.fillingOnly">
+              <button
+                style="border-radius: 30px"
+                [ngClass]="{ white: item.fillingOnly == true }"
+              >
+                Fill
+              </button>
             </td>
 
             <!--License exist & updated?-->
-            <td class="license" *ngIf="item.licsensNumber!='' && !item.licenseExpirationClose">
-              <button class='expendBtn' [style.background-color]="item.colorBtn"
-                (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
-              <a class="item" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
-                {{item.itemNumber}}
+            <td
+              class="license"
+              *ngIf="item.licsensNumber != '' && !item.licenseExpirationClose"
+            >
+              <button
+                class="expendBtn"
+                [style.background-color]="item.colorBtn"
+                (click)="getDetails(item.itemNumber, item._id)"
+              >
+                {{ item.isExpand }}</button
+              >&nbsp;&nbsp;
+              <a
+                class="item"
+                target="_blank"
+                routerLink="/peerpharm/items/itemDetails/{{ item.itemNumber }}"
+              >
+                {{ item.itemNumber }}
               </a>
             </td>
             <td class="noLicense" *ngIf="item.licsensNumber == ''">
-              <button class='expendBtn' [style.background-color]="item.colorBtn"
-                (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
-              <a class="item" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
-                {{item.itemNumber}}
+              <button
+                class="expendBtn"
+                [style.background-color]="item.colorBtn"
+                (click)="getDetails(item.itemNumber, item._id)"
+              >
+                {{ item.isExpand }}</button
+              >&nbsp;&nbsp;
+              <a
+                class="item"
+                target="_blank"
+                routerLink="/peerpharm/items/itemDetails/{{ item.itemNumber }}"
+              >
+                {{ item.itemNumber }}
               </a>
             </td>
-            <td class="licenseExpirationClose" *ngIf="item.licsensNumber!='' && item.licenseExpirationClose">
-              <button class='expendBtn' [style.background-color]="item.colorBtn"
-                (click)="getDetails(item.itemNumber , item._id)">{{item.isExpand}}</button>&nbsp;&nbsp;
-              <a class="item" target="_blank" routerLink="/peerpharm/items/itemDetails/{{item.itemNumber}}">
-                {{item.itemNumber}}
+            <td
+              class="licenseExpirationClose"
+              *ngIf="item.licsensNumber != '' && item.licenseExpirationClose"
+            >
+              <button
+                class="expendBtn"
+                [style.background-color]="item.colorBtn"
+                (click)="getDetails(item.itemNumber, item._id)"
+              >
+                {{ item.isExpand }}</button
+              >&nbsp;&nbsp;
+              <a
+                class="item"
+                target="_blank"
+                routerLink="/peerpharm/items/itemDetails/{{ item.itemNumber }}"
+              >
+                {{ item.itemNumber }}
               </a>
             </td>
 
             <!--Remarks-->
-            <td *ngIf="item._id===EditRowId">
-              <input #itemImpRemark type='text' *ngIf="item.itemImpRemark!=undefined" [value]="item.itemImpRemark"
-                style='width:150px ; color:red;' disabled>
-              <input #itemImpRemark type='text' *ngIf="item.itemImpRemark==undefined" [value]=""
-                style='width:150px ; color:red;' disabled>
+            <td *ngIf="item._id === EditRowId">
+              <input
+                #itemImpRemark
+                type="text"
+                *ngIf="item.itemImpRemark != undefined"
+                [value]="item.itemImpRemark"
+                style="width: 150px; color: red"
+                disabled
+              />
+              <input
+                #itemImpRemark
+                type="text"
+                *ngIf="item.itemImpRemark == undefined"
+                [value]=""
+                style="width: 150px; color: red"
+                disabled
+              />
             </td>
-            <td *ngIf="item._id!==EditRowId" style='width:150px ; color:red;' (click)="edit(item._id)">
-              {{item.itemImpRemark}}</td>
+            <td
+              *ngIf="item._id !== EditRowId"
+              style="width: 150px; color: red"
+              (click)="edit(item._id)"
+            >
+              {{ item.itemImpRemark }}
+            </td>
 
             <!--Description-->
-            <td *ngIf="item._id===EditRowId"><input #itemname type='text' [value]="item.discription"
-                style='width:370px'>
+            <td *ngIf="item._id === EditRowId">
+              <input
+                #itemname
+                type="text"
+                [value]="item.discription"
+                style="width: 370px"
+              />
             </td>
-            <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.discription}}</td>
+            <td *ngIf="item._id !== EditRowId" (click)="edit(item._id)">
+              {{ item.discription }}
+            </td>
 
             <!--Barcode-->
-            <td *ngIf="item._id!==EditRowId">{{item.barcodeK}}</td>
-            <td *ngIf="item._id==EditRowId">{{item.barcodeK}}</td>
+            <td *ngIf="item._id !== EditRowId">{{ item.barcodeK }}</td>
+            <td *ngIf="item._id == EditRowId">{{ item.barcodeK }}</td>
 
             <!--weight-->
-            <td *ngIf="item._id===EditRowId"><input #netWeightGr type='number' [value]="item.netWeightGr"
-                style='width:70px'>
+            <td *ngIf="item._id === EditRowId">
+              <input
+                #netWeightGr
+                type="number"
+                [value]="item.netWeightGr"
+                style="width: 70px"
+              />
             </td>
-            <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.netWeightGr}}</td>
+            <td *ngIf="item._id !== EditRowId" (click)="edit(item._id)">
+              {{ item.netWeightGr }}
+            </td>
 
             <!--Quantity-->
-            <td *ngIf="item._id===EditRowId"><input #quantity type='number' [value]=item.quantity style='width:70px'>
+            <td *ngIf="item._id === EditRowId">
+              <input
+                #quantity
+                type="number"
+                [value]="item.quantity"
+                style="width: 70px"
+              />
             </td>
-            <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.quantity}}</td>
+            <td *ngIf="item._id !== EditRowId" (click)="edit(item._id)">
+              {{ item.quantity }}
+            </td>
 
             <!--Quantity Supplied-->
-            <td *ngIf="item._id===EditRowId">{{item.quantityRemained}}</td>
-            <td *ngIf="item._id!==EditRowId">{{item.quantityRemained}}</td>
+            <td *ngIf="item._id === EditRowId">{{ item.quantityRemained }}</td>
+            <td *ngIf="item._id !== EditRowId">{{ item.quantityRemained }}</td>
 
             <!--Dates-->
-            <td>{{item.itemOrderDate | date: 'dd/MM/YYY' }}</td>
-            <td>{{item.packingDate | date: 'dd/MM/YYY' }}</td>
-            <td *ngIf="item._id===EditRowId"><input #itemDeliveryDate type='date' [value]=item.itemDeliveryDate
-                style='width:170px'></td>
-            <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.ietmDeliveryDate| date: 'dd/MM/YYYY'}}</td>
+            <td>{{ item.itemOrderDate | date: "dd/MM/YYY" }}</td>
+            <td>{{ item.packingDate | date: "dd/MM/YYY" }}</td>
+            <td *ngIf="item._id === EditRowId">
+              <input
+                #itemDeliveryDate
+                type="date"
+                [value]="item.itemDeliveryDate"
+                style="width: 170px"
+              />
+            </td>
+            <td *ngIf="item._id !== EditRowId" (click)="edit(item._id)">
+              {{ item.ietmDeliveryDate | date: "dd/MM/YYYY" }}
+            </td>
 
             <!--Printing / Filling status-->
-            <td *ngIf="item._id!==EditRowId"><img *ngIf="item.printStatus ==='printed'" style="width:15px"
-                src="../../../../assets/images/aprroved.png" /> / <img *ngIf="item.fillingStatus ==='filled'"
-                style="width:15px" src="../../../../assets/images/aprroved.png" /></td>
+            <td *ngIf="item._id !== EditRowId">
+              <img
+                *ngIf="item.printStatus === 'printed'"
+                style="width: 15px"
+                src="../../../../assets/images/aprroved.png"
+              />
+              /
+              <img
+                *ngIf="item.fillingStatus === 'filled'"
+                style="width: 15px"
+                src="../../../../assets/images/aprroved.png"
+              />
+            </td>
 
             <!--?-->
-            <td *ngIf="item._id===EditRowId"></td>
+            <td *ngIf="item._id === EditRowId"></td>
 
             <!--Remarks-->
-            <td *ngIf="item._id===EditRowId"><input #itemRemarks type='text' [value]=item.itemRemarks
-                style='width:130px' />
+            <td *ngIf="item._id === EditRowId">
+              <input
+                #itemRemarks
+                type="text"
+                [value]="item.itemRemarks"
+                style="width: 130px"
+              />
             </td>
-            <td *ngIf="item._id!==EditRowId" (click)="edit(item._id)">{{item.itemRemarks}}</td>
+            <td *ngIf="item._id !== EditRowId" (click)="edit(item._id)">
+              {{ item.itemRemarks }}
+            </td>
 
             <!--Filling again?-->
             <!-- <td [style.background-color]="item.infoColor" class='printTd'>{{item.fillingStatus}}</td> -->
 
             <!--Set production status-->
-            <td *ngIf="productionApproved"><button class="btn btn-info"
-                (click)="openItemStatus(item, itemProdStatus)">PP&C</button></td>
+            <td *ngIf="productionApproved">
+              <button
+                class="btn btn-info"
+                (click)="openItemStatus(item, itemProdStatus)"
+              >
+                PP&C
+              </button>
+            </td>
 
             <!--Invoice + amounts-->
             <!-- <td><label *ngIf="item.billing.length > 0"><img (click)="openInvoice(item)" style="width:40px"
@@ -352,48 +728,98 @@
             <td></td>
             <td></td>
 
-            <td class='printTd'>
-              <i class="ti-trash text-danger m-r-10" *ngIf="item._id!=EditRowId" (click)="deleteItem(item)"
-                style="cursor: pointer;"></i>
-              <i class="ti-check text-success m-r-10" *ngIf="item._id!=EditRowId" (click)="setOrderItemDone(item)"
-                style="cursor: pointer;"></i>
-              <i class="ti-save text-success m-r-10" *ngIf="item._id===EditRowId" (click)="saveEdit()"
-                style="cursor: pointer;"></i>
+            <td class="printTd">
+              <i
+                class="ti-trash text-danger m-r-10"
+                *ngIf="item._id != EditRowId"
+                (click)="deleteItem(item)"
+                style="cursor: pointer"
+              ></i>
+              <i
+                class="ti-check text-success m-r-10"
+                *ngIf="item._id != EditRowId"
+                (click)="setOrderItemDone(item)"
+                style="cursor: pointer"
+              ></i>
+              <i
+                class="ti-save text-success m-r-10"
+                *ngIf="item._id === EditRowId"
+                (click)="saveEdit()"
+                style="cursor: pointer"
+              ></i>
             </td>
-
           </tr>
-          <tr *ngIf="item._id== EditRowId2nd && expand==true;">
+          <tr *ngIf="item._id == EditRowId2nd && expand == true">
             <td colspan="5">
-
-              <table class='detilasTable' width='105%'>
+              <table class="detilasTable" width="105%">
                 <tr>
                   <td></td>
                   <td>
                     <h5>Batch</h5>
                   </td>
                   <!-- <td>{{item.batch}}</td> -->
-                  <td colspan="2"><label *ngIf="!editBatchN" (click)="editBatch(item.batch)"
-                      style="cursor: pointer; margin-right: 10px;">{{item.batch}}</label>
-                    <input *ngIf="editBatchN || item.batch == '' || item.batch == null || item.batch == undefined"
-                      type='text' style="width:50%" #inputBatch>
+                  <td colspan="2">
+                    <label
+                      *ngIf="!editBatchN"
+                      (click)="editBatch(item.batch)"
+                      style="cursor: pointer; margin-right: 10px"
+                      >{{ item.batch }}</label
+                    >
+                    <input
+                      *ngIf="
+                        editBatchN ||
+                        item.batch == '' ||
+                        item.batch == null ||
+                        item.batch == undefined
+                      "
+                      type="text"
+                      style="width: 50%"
+                      #inputBatch
+                    />
                   </td>
-                  <td><button [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''"
-                      class='btn btn-success' [disabled]="orderStage == 'waitingFinance'"
-                      (click)="setBatch(item, inputBatch.value, item.batch)">set</button>
+                  <td>
+                    <button
+                      [title]="
+                        orderStage == 'waitingFinance'
+                          ? 'ממתין לאישור מחלקת כספים'
+                          : ''
+                      "
+                      class="btn btn-success"
+                      [disabled]="orderStage == 'waitingFinance'"
+                      (click)="setBatch(item, inputBatch.value, item.batch)"
+                    >
+                      set
+                    </button>
                   </td>
-                  <td><i class="ti-check text-success m-r-10" (click)="updateBatchExist(item , item.batch)"
-                      style='cursor: pointer;'></i></td>
+                  <td>
+                    <i
+                      class="ti-check text-success m-r-10"
+                      (click)="updateBatchExist(item, item.batch)"
+                      style="cursor: pointer"
+                    ></i>
+                  </td>
                   <td></td>
                 </tr>
                 <tr *ngFor="let det of detailsArr">
                   <td></td>
                   <td>
-                    <h5>Set Printing Schedule: </h5>
+                    <h5>Set Printing Schedule:</h5>
                   </td>
-                  <td>{{det.type}} &nbsp;&nbsp; {{det.number}} &nbsp;&nbsp;&nbsp;<button
+                  <td>
+                    {{ det.type }} &nbsp;&nbsp;
+                    {{ det.number }} &nbsp;&nbsp;&nbsp;<button
                       [disabled]="orderStage == 'waitingFinance'"
-                      [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''" class='btn btn-info'
-                      (click)="setToPrintDetails(content, item, det)">print</button></td>
+                      [title]="
+                        orderStage == 'waitingFinance'
+                          ? 'ממתין לאישור מחלקת כספים'
+                          : ''
+                      "
+                      class="btn btn-info"
+                      (click)="setToPrintDetails(content, item, det)"
+                    >
+                      print
+                    </button>
+                  </td>
                   <td></td>
                   <td></td>
                   <td></td>
@@ -402,49 +828,200 @@
                 <tr>
                   <td></td>
                   <td>
-                    <h5>Set Filling Schedule: </h5>
+                    <h5>Set Filling Schedule:</h5>
                   </td>
-                  <td><input #date type='date'></td>
-                  <td><input #shift type='text' placeholder="Shift"></td>
-                  <td><input #marks placeholder="Remarks" type='marks' [value]="item.itemRemarks"></td>
-                  <td style="width:100px">
-                    <input type="radio" name="type" #type value='basic' [(ngModel)]="chosenType" checked>Basic<br>
-                    <input type="radio" name="type" #type value='tube' [(ngModel)]="chosenType">Tube<br>
-                    <input type="radio" name="type" #type value='mkp' [(ngModel)]="chosenType">Mkp<br>
-                    <input type="radio" name="type" #type value='sachet' [(ngModel)]="chosenType">Sachet<br>
-                    <input type="radio" name="type" #type value='laser' [(ngModel)]="chosenType">Laser<br>
-                    <input type="radio" name="type" #type value='stickers' [(ngModel)]="chosenType">Stickers<br>
-                    <input type="radio" name="type" #type value='mkp2' [(ngModel)]="chosenType">Mkp2<br>
-                    <input type="radio" name="type" #type value='packaging' [(ngModel)]="chosenType">Packaging<br>
+                  <td><input #date type="date" /></td>
+                  <td><input #shift type="text" placeholder="Shift" /></td>
+                  <td>
+                    <input
+                      #marks
+                      placeholder="Remarks"
+                      type="marks"
+                      [value]="item.itemRemarks"
+                    />
                   </td>
-                  <td placement="top" [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''"
-                    [ngbTooltip]="item.productionApproved ? '' : 'Item Not Approved by PP&C'"><button
-                      *ngIf="setScheduleAllowed" [disabled]="!item.productionApproved || orderStage == 'waitingFinance'"
-                      [style.cursor]="item.productionApproved ? 'pointer' : 'not-allowed'"
-                      (click)='setSchedule(item ,type.value)' class='btn btn-success'>Set</button></td>
+                  <td style="width: 100px">
+                    <input
+                      type="radio"
+                      name="type"
+                      #type
+                      value="basic"
+                      [(ngModel)]="chosenType"
+                      checked
+                    />Basic<br />
+                    <input
+                      type="radio"
+                      name="type"
+                      #type
+                      value="tube"
+                      [(ngModel)]="chosenType"
+                    />Tube<br />
+                    <input
+                      type="radio"
+                      name="type"
+                      #type
+                      value="mkp"
+                      [(ngModel)]="chosenType"
+                    />Mkp<br />
+                    <input
+                      type="radio"
+                      name="type"
+                      #type
+                      value="sachet"
+                      [(ngModel)]="chosenType"
+                    />Sachet<br />
+                    <input
+                      type="radio"
+                      name="type"
+                      #type
+                      value="laser"
+                      [(ngModel)]="chosenType"
+                    />Laser<br />
+                    <input
+                      type="radio"
+                      name="type"
+                      #type
+                      value="stickers"
+                      [(ngModel)]="chosenType"
+                    />Stickers<br />
+                    <input
+                      type="radio"
+                      name="type"
+                      #type
+                      value="mkp2"
+                      [(ngModel)]="chosenType"
+                    />Mkp2<br />
+                    <input
+                      type="radio"
+                      name="type"
+                      #type
+                      value="packaging"
+                      [(ngModel)]="chosenType"
+                    />Packaging<br />
+                  </td>
+                  <td
+                    placement="top"
+                    [title]="
+                      orderStage == 'waitingFinance'
+                        ? 'ממתין לאישור מחלקת כספים'
+                        : ''
+                    "
+                    [ngbTooltip]="
+                      item.productionApproved ? '' : 'Item Not Approved by PP&C'
+                    "
+                  >
+                    <button
+                      *ngIf="setScheduleAllowed"
+                      [disabled]="
+                        !item.productionApproved ||
+                        orderStage == 'waitingFinance'
+                      "
+                      [style.cursor]="
+                        item.productionApproved ? 'pointer' : 'not-allowed'
+                      "
+                      (click)="setSchedule(item, type.value)"
+                      class="btn btn-success"
+                    >
+                      Set
+                    </button>
+                  </td>
                 </tr>
-                <ng-container *ngIf="scheduleLines.length>0">
-
+              </table>
+              <ng-container
+                *ngIf="scheduleLines.length > 0 || shipmentsHistory.length > 0"
+              >
+                <table class="detilasTable" width="105%">
                   <tr>
-                    <td>Date</td>
-                    <td>Batch</td>
-                    <td>Remarks</td>
-                    <td>Line</td>
-                    <td>Ordered Qty</td>
-                    <td>Status</td>
-                    <td>Produced Qty</td>
+                    <td></td>
+                    <td colspan="4">
+                      <span class="tdHeading">
+                        Historical Filling Schedules
+                      </span>
+                    </td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <th>Date</th>
+                    <th>Batch</th>
+                    <th>Remarks</th>
+                    <th>Line</th>
+                    <th>Ordered Qty</th>
+                    <th>Status</th>
+                    <th>Produced Qty</th>
                   </tr>
                   <tr *ngFor="let sch of scheduleLines">
-                    <td>{{sch.date | date:'dd/MM/YYYY' }}</td>
-                    <td>{{sch.batch}}</td>
-                    <td>{{sch.itemImpRemark}}</td>
-                    <td>{{sch.productionLine}}</td>
-                    <td>{{sch.qty}}</td>
-                    <td>{{sch.status}}</td>
-                    <td>{{sch.qtyProduced}}</td>
+                    <td>{{ sch.date | date: "dd/MM/YYYY" }}</td>
+                    <td>{{ sch.batch }}</td>
+                    <td>{{ sch.itemImpRemark }}</td>
+                    <td>{{ sch.productionLine }}</td>
+                    <td>{{ sch.qty }}</td>
+                    <td>{{ sch.status }}</td>
+                    <th>{{ sch.qtyProduced }}</th>
                   </tr>
-                </ng-container>
-                <tr>
+                  <tr>
+                    <td></td>
+                    <td colspan="4">
+                      <span class="tdHeading"> Historical Shipments </span>
+                    </td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <th>Packing Date</th>
+                    <th>Invoice Date</th>
+                    <th>Packing List no.</th>
+                    <th>Invoice Number</th>
+                    <th>Ordered Qty</th>
+                    <th>Batch Number</th>
+                    <th>Supplied Qty</th>
+                  </tr>
+                  <tr *ngFor="let ship of shipmentsHistory">
+                    <td>{{ ship.packingDate | date: "dd/MM/yyyyy" }}</td>
+                    <td>{{ ship.invoiceDate | date: "dd/MM/yyyyy" }}</td>
+                    <td>{{ ship.packListNumber }}</td>
+                    <td>{{ ship.billNumber }}</td>
+                    <td>{{ ship.orderAmount }}</td>
+                    <td>{{ ship.batchNumber }}</td>
+                    <th>{{ ship.total }}</th>
+                  </tr>
+                </table>
+              </ng-container>
+              <!-- <div *ngIf="shipmentHistory.length > 0">
+                <table
+                  *ngIf="shipmentsHistory.length > 0"
+                  class="detilasTable"
+                  width="105%"
+                >
+                  <tr >
+                    <td></td>
+                    <td colspan="4">
+                      <span class="tdHeading"> Historical Shipments </span>
+                    </td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <th>Packing Date</th>
+                    <th>Invoice Date</th>
+                    <th>Packing List no.</th>
+                    <th>Invoice Number</th>
+                    <th>Ordered Qty</th>
+                    <th>Batch Number</th>
+                    <th>Supplied Qty</th>
+                  </tr>
+                  <tr *ngFor="let ship of shipmentsHistory">
+                    <td>{{ ship.pacckingDate | date: "dd/MM/YYYY" }}</td>
+                    <td>{{ ship.invoiceDate | date: "dd/MM/YYYY" }}</td>
+                    <td>{{ ship.plNumber }}</td>
+                    <td>{{ ship.invoiceNumber }}</td>
+                    <td>{{ ship.orderAmount }}</td>
+                    <td>{{ ship.batchNumber }}</td>
+                    <th>{{ ship.suppliedQty }}</th>
+                  </tr>
+                </table>
+              </div> -->
+              <!-- <tr>
                   <td></td>
                   <td>
                     <h5>Set Cooking Schedule: </h5>
@@ -474,24 +1051,17 @@
                       [title]="orderStage == 'waitingFinance' ? 'ממתין לאישור מחלקת כספים' : ''"
                       (click)='setMkpSchedule(item , mkpProdDate.value, mkpProdRemarks.value , mkpProdInvoice.value)'
                       class='btn btn-success'>Set</button></td>
-                </tr>
-              </table>
-              <br>
+                </tr>-->
 
-
+              <br />
             </td>
           </tr>
-
-
         </ng-container>
-
       </tbody>
-
     </table>
     <!-- </mat-tab> -->
   </div>
   <ng-container *ngIf="loadAlerts">
-
     <div class="row">
       <div class="col-5"></div>
       <div class="col-2">
@@ -503,34 +1073,20 @@
   </ng-container>
   <!-- </mat-tab-group> -->
 
-
-  <br>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <br />
 
   <!-- Print schedule Modal for open order items -->
 
   <ng-template #content let-c="close" let-d="dismiss">
-
     <div class="modal-header">
       <h4 class="modal-title" id="modal-basic-title">Print Schedule</h4>
       <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
-      <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="c('Cross click')"
+      >
         <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
         <span aria-hidden="true">&times;</span>
       </button>
@@ -540,101 +1096,160 @@
       <div class="form-group">
         <label for="a">Amount</label>
         <div class="input-group">
-          <input class="form-control mb-4" placeholder="Amount" [(ngModel)]="printSchedule.qty">
+          <input
+            class="form-control mb-4"
+            placeholder="Amount"
+            [(ngModel)]="printSchedule.qty"
+          />
         </div>
       </div>
 
       <div class="form-group">
         <label for="a">Schedule Date</label>
         <div class="input-group">
-          <input type="date" class="form-control mb-4" placeholder="Schedule Date"
-            [(ngModel)]="printSchedule.scheduleDate">
+          <input
+            type="date"
+            class="form-control mb-4"
+            placeholder="Schedule Date"
+            [(ngModel)]="printSchedule.scheduleDate"
+          />
         </div>
       </div>
 
       <div class="form-group">
         <label for="a">Date</label>
         <div class="input-group">
-          <input type="date" class="form-control mb-4" placeholder="Date" [(ngModel)]="printSchedule.date">
+          <input
+            type="date"
+            class="form-control mb-4"
+            placeholder="Date"
+            [(ngModel)]="printSchedule.date"
+          />
         </div>
       </div>
-
-
-
 
       <div class="form-group">
         <label for="a">Transfer to</label>
         <div class="input-group">
-          <select name="nextStage" id="nextStage" class="form-control mb-4" [(ngModel)]="printSchedule.nextStation">
+          <select
+            name="nextStage"
+            id="nextStage"
+            class="form-control mb-4"
+            [(ngModel)]="printSchedule.nextStation"
+          >
             <option value="production">Production</option>
             <option value="filling">Filling</option>
-            <option value="packing">Packing</option>
-          </select><br>
+            <option value="packing">Packing</option></select
+          ><br />
           <!-- <input class="form-control mb-4" placeholder="Invoice Adress" [(ngModel)]="costumer.invoice"> -->
         </div>
       </div>
 
-
       <div class="form-group">
         <label for="a">Color</label>
         <div class="input-group">
-          <input class="form-control mb-8" placeholder="color" [(ngModel)]="printSchedule.color">
+          <input
+            class="form-control mb-8"
+            placeholder="color"
+            [(ngModel)]="printSchedule.color"
+          />
         </div>
       </div>
 
       <div class="form-group">
         <label for="a">Print type</label>
         <div class="input-group">
-          <select name="printType" id="printType" class="form-control mb-4" [(ngModel)]="printSchedule.printType">
+          <select
+            name="printType"
+            id="printType"
+            class="form-control mb-4"
+            [(ngModel)]="printSchedule.printType"
+          >
             <option value="round">Round</option>
-            <option value="Straight">Straight</option>
-          </select><br>
+            <option value="Straight">Straight</option></select
+          ><br />
         </div>
       </div>
 
       <div class="form-group">
         <label for="a">Remarks </label>
         <div class="input-group">
-          <textarea [(ngModel)]="printSchedule.marks" class="form-control"></textarea>
+          <textarea
+            [(ngModel)]="printSchedule.marks"
+            class="form-control"
+          ></textarea>
         </div>
       </div>
 
       <div class="form-group">
         <label for="a">Image </label>
-        <div class="input-group" id='img-conatiner'>
-          <img *ngIf="plateImg!=''" [src]='plateImg' style='width:100%;height:100%;'>
-          <p *ngIf="plateImg==''">Printing Plate Image Missing</p>
+        <div class="input-group" id="img-conatiner">
+          <img
+            *ngIf="plateImg != ''"
+            [src]="plateImg"
+            style="width: 100%; height: 100%"
+          />
+          <p *ngIf="plateImg == ''">Printing Plate Image Missing</p>
         </div>
         <!-- <div #container>
       </div> -->
       </div>
-
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="c('Saved')">Save</button>
+      <button type="button" class="btn btn-outline-dark" (click)="c('Saved')">
+        Save
+      </button>
     </div>
-
   </ng-template>
 
-
-
-
-
-  <div *ngIf="packingModal==true" id="myModal" class="modal2"
-    style='border:1px; border-radius:5px;z-index: 1;position: fixed; left:230px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
-
+  <div
+    *ngIf="packingModal == true"
+    id="myModal"
+    class="modal2"
+    style="
+      border: 1px;
+      border-radius: 5px;
+      z-index: 1;
+      position: fixed;
+      left: 230px;
+      top: 130px;
+      box-shadow: 0px 0px 39px 8px rgba(0, 0, 0, 0.3);
+    "
+  >
     <!-- Modal content -->
-    <div dir="ltr" class="modal-content" style='width:650px' id='modelB'>
+    <div dir="ltr" class="modal-content" style="width: 650px" id="modelB">
       <div class="modal-header">
-        <button class="btn-success"
-          [printStyle]="{tr : {'border': 'solid 1px black'}, td : {'border': 'solid 1px black'}}"
-          printSectionId="modelB" ngxPrint>Print</button>
-        <span class="close" id="closeId2" (click)="packingModal=false;newItem='';">&times;</span>
-        <h2 id='div_h3'>{{openOrderPackingModalHeader}}</h2><br>
+        <button
+          class="btn-success"
+          [printStyle]="{
+            tr: { border: 'solid 1px black' },
+            td: { border: 'solid 1px black' }
+          }"
+          printSectionId="modelB"
+          ngxPrint
+        >
+          Print
+        </button>
+        <span
+          class="close"
+          id="closeId2"
+          (click)="packingModal = false; newItem = ''"
+          >&times;</span
+        >
+        <h2 id="div_h3">{{ openOrderPackingModalHeader }}</h2>
+        <br />
       </div>
 
-      <div class="modal-body"
-        style="overflow-y:scroll; overflow-x:hidden; height: auto; padding-left: 0px;text-align: center;">
+      <div
+        class="modal-body"
+        style="
+          overflow-y: scroll;
+          overflow-x: hidden;
+          height: auto;
+          padding-left: 0px;
+          text-align: center;
+        "
+      >
         <!-- <div clas="modalFullWidth" width="100%">
 
         </div> -->
@@ -660,17 +1275,25 @@
       <br><br> -->
 
         <div class="container">
-          <h4 width="100%" class="text-center">כל הפריטים הארוזים</h4> <br>
-          <div class="orerPallets row" *ngFor="let orderPallet of orderPalletsArr" class="width: 100%; ">
-            <br>
+          <h4 width="100%" class="text-center">כל הפריטים הארוזים</h4>
+          <br />
+          <div
+            class="orerPallets row"
+            *ngFor="let orderPallet of orderPalletsArr"
+            class="width: 100%;"
+          >
+            <br />
             <div class="row" style="width: 100%; text-align: right">
-              <div style="width: 100%;" class="">
-                <span class="float-sm-right" style="display: inline-block"> משטח מספר {{orderPallet.palletNumber}}
-                  &nbsp;&nbsp;</span>
-                <span class="float-sm-right" style="display: inline-block"> {{orderPallet.palletMesures}} מידות
-                  &nbsp;&nbsp;</span>
-                <span class="float-sm-right" style="display: inline-block"> משקל {{orderPallet.palletWeight}}
-                  &nbsp;&nbsp;</span>
+              <div style="width: 100%" class="">
+                <span class="float-sm-right" style="display: inline-block">
+                  משטח מספר {{ orderPallet.palletNumber }} &nbsp;&nbsp;</span
+                >
+                <span class="float-sm-right" style="display: inline-block">
+                  {{ orderPallet.palletMesures }} מידות &nbsp;&nbsp;</span
+                >
+                <span class="float-sm-right" style="display: inline-block">
+                  משקל {{ orderPallet.palletWeight }} &nbsp;&nbsp;</span
+                >
               </div>
 
               <table class="orerPalletsTable" width="100%">
@@ -680,17 +1303,24 @@
                     <th><b>יח' בקרטון</b></th>
                     <th><b>קרטונים במשטח</b></th>
                     <th><b>מספר פריט</b></th>
-
                   </tr>
                 </thead>
                 <tbody>
-                  <ng-container *ngFor="let orderitemPackingPallet of orderPackingList">
-                    <tr *ngIf="orderitemPackingPallet.palletId == orderPallet.palletId "
-                      [style.background-color]="orderitemPackingPallet.lineColor">
-                      <td>{{orderitemPackingPallet.totalAmount}}</td>
-                      <td>{{orderitemPackingPallet.pcsCtn}}</td>
-                      <td>{{orderitemPackingPallet.ctnPallet}}</td>
-                      <td>{{orderitemPackingPallet.itemNumber}}</td>
+                  <ng-container
+                    *ngFor="let orderitemPackingPallet of orderPackingList"
+                  >
+                    <tr
+                      *ngIf="
+                        orderitemPackingPallet.palletId == orderPallet.palletId
+                      "
+                      [style.background-color]="
+                        orderitemPackingPallet.lineColor
+                      "
+                    >
+                      <td>{{ orderitemPackingPallet.totalAmount }}</td>
+                      <td>{{ orderitemPackingPallet.pcsCtn }}</td>
+                      <td>{{ orderitemPackingPallet.ctnPallet }}</td>
+                      <td>{{ orderitemPackingPallet.itemNumber }}</td>
                     </tr>
                   </ng-container>
                   <!-- <tr *ngFor="let orderitemPackingPallet of orderPackingList" [style.background-color]="orderitemPackingPallet.lineColor">
@@ -706,7 +1336,6 @@
             </div>
           </div>
         </div>
-
       </div>
       <div class="modal-footer">
         <!-- <button  class="btn btn-success" (click)="updateItemPacking(itemNumber)" >עדכן</button> -->
@@ -714,122 +1343,144 @@
     </div>
   </div>
 
-
-
-
-
-
-
-
-
-
-
-  <div *ngIf="cmptModal==true" id="cmptModal" class="modal3"
-    style='width: 90%;border:1px; border-radius:5px;z-index: 1;position: fixed; left:100px;top:130px; box-shadow: 0px 0px 39px 8px rgba(0,0,0,0.3);'>
-
+  <div
+    *ngIf="cmptModal == true"
+    id="cmptModal"
+    class="modal3"
+    style="
+      width: 90%;
+      border: 1px;
+      border-radius: 5px;
+      z-index: 1;
+      position: fixed;
+      left: 100px;
+      top: 130px;
+      box-shadow: 0px 0px 39px 8px rgba(0, 0, 0, 0.3);
+    "
+  >
     <!-- Modal content -->
-    <div class="modal-content" id='modelC'>
+    <div class="modal-content" id="modelC">
       <div class="modal-header">
-        <h1>Order Explosion {{number}}</h1>
+        <h1>Order Explosion {{ number }}</h1>
 
-        <span class="close" id="closeId3" (click)="cmptModal=false ; newItem='';">&times;</span>
-        <h2 id='div_h3'>{{openOrderPackingModalHeader}}</h2><br>
+        <span
+          class="close"
+          id="closeId3"
+          (click)="cmptModal = false; newItem = ''"
+          >&times;</span
+        >
+        <h2 id="div_h3">{{ openOrderPackingModalHeader }}</h2>
+        <br />
       </div>
 
-      <div class="modal-body" style="overflow-y:scroll; ">
-        <div *ngIf="itemTreeRemarks.length>0" style="width: 100%;">
-          <h2 class="text-danger">יתכן מידע נוסף בהערות של הפריט קרטון ביניים/צלופן/אריזות אישיות</h2>
+      <div class="modal-body" style="overflow-y: scroll">
+        <div *ngIf="itemTreeRemarks.length > 0" style="width: 100%">
+          <h2 class="text-danger">
+            יתכן מידע נוסף בהערות של הפריט קרטון ביניים/צלופן/אריזות אישיות
+          </h2>
         </div>
         <div class="cmptListContainer">
-
-
-          <div *ngIf="bottleList.length>0" class="cmptListDiv">
+          <div *ngIf="bottleList.length > 0" class="cmptListDiv">
             <h5>Bottles</h5>
             <div *ngFor="let bottle of bottleList" class="cmptListData">
-              <label>Number: {{bottle.bottleNumber}}</label> &nbsp;&nbsp;
-              <label>Quantity: {{bottle.qnt}}</label> &nbsp;&nbsp;
-              <label [ngClass]="{ minAmount: bottle.qnt > bottle.amount}">Amount: {{bottle.amount}}</label>
+              <label>Number: {{ bottle.bottleNumber }}</label> &nbsp;&nbsp;
+              <label>Quantity: {{ bottle.qnt }}</label> &nbsp;&nbsp;
+              <label [ngClass]="{ minAmount: bottle.qnt > bottle.amount }"
+                >Amount: {{ bottle.amount }}</label
+              >
             </div>
           </div>
 
-          <div *ngIf="capList.length>0" class="cmptListDiv">
+          <div *ngIf="capList.length > 0" class="cmptListDiv">
             <h5>Caps</h5>
             <div *ngFor="let cap of capList" class="cmptListData">
-              <label>Number: {{cap.capNumber}}</label> &nbsp;&nbsp;
-              <label>Quantity: {{cap.qnt}}</label> &nbsp;&nbsp;
-              <label [ngClass]="{ minAmount: cap.qnt > cap.amount}">Amount: {{cap.amount}}</label>
+              <label>Number: {{ cap.capNumber }}</label> &nbsp;&nbsp;
+              <label>Quantity: {{ cap.qnt }}</label> &nbsp;&nbsp;
+              <label [ngClass]="{ minAmount: cap.qnt > cap.amount }"
+                >Amount: {{ cap.amount }}</label
+              >
             </div>
           </div>
-          <div *ngIf="pumpList.length>0" class="cmptListDiv">
+          <div *ngIf="pumpList.length > 0" class="cmptListDiv">
             <h5>Pumps</h5>
             <div *ngFor="let pump of pumpList" class="cmptListData">
-              <label>Number: {{pump.pumpNumber}}</label> &nbsp;&nbsp;
-              <label>Quantity: {{pump.qnt}}</label> &nbsp;&nbsp;
-              <label [ngClass]="{ minAmount: pump.qnt > pump.amount}">Amount: {{pump.amount}}</label>
+              <label>Number: {{ pump.pumpNumber }}</label> &nbsp;&nbsp;
+              <label>Quantity: {{ pump.qnt }}</label> &nbsp;&nbsp;
+              <label [ngClass]="{ minAmount: pump.qnt > pump.amount }"
+                >Amount: {{ pump.amount }}</label
+              >
             </div>
           </div>
-          <div *ngIf="sealList.length>0" class="cmptListDiv">
+          <div *ngIf="sealList.length > 0" class="cmptListDiv">
             <h5>Seals</h5>
             <div *ngFor="let seal of sealList" class="cmptListData">
-              <label>Number: {{seal.sealNumber}}</label> &nbsp;&nbsp;
-              <label>Quantity: {{seal.qnt}}</label> &nbsp;&nbsp;
-              <label [ngClass]="{ minAmount: seal.qnt > seal.amount}">Amount: {{seal.amount}}</label>
+              <label>Number: {{ seal.sealNumber }}</label> &nbsp;&nbsp;
+              <label>Quantity: {{ seal.qnt }}</label> &nbsp;&nbsp;
+              <label [ngClass]="{ minAmount: seal.qnt > seal.amount }"
+                >Amount: {{ seal.amount }}</label
+              >
             </div>
           </div>
-          <div *ngIf="stickerList.length>0" class="cmptListDiv">
+          <div *ngIf="stickerList.length > 0" class="cmptListDiv">
             <h5>Stickers</h5>
             <div *ngFor="let sticker of stickerList" class="cmptListData">
-              <label>Number: {{sticker.stickerNumber}}</label> &nbsp;&nbsp;
-              <label>Quantity: {{sticker.qnt}}</label> &nbsp;&nbsp;
-              <label [ngClass]="{ minAmount: sticker.qnt > sticker.amount}">Amount: {{sticker.amount}}</label>
+              <label>Number: {{ sticker.stickerNumber }}</label> &nbsp;&nbsp;
+              <label>Quantity: {{ sticker.qnt }}</label> &nbsp;&nbsp;
+              <label [ngClass]="{ minAmount: sticker.qnt > sticker.amount }"
+                >Amount: {{ sticker.amount }}</label
+              >
               &nbsp;&nbsp;
-
             </div>
           </div>
-          <div *ngIf="boxList.length>0" class="cmptListDiv">
+          <div *ngIf="boxList.length > 0" class="cmptListDiv">
             <h5>Boxes</h5>
             <div *ngFor="let box of boxList" class="cmptListData">
-              <label>Number: {{box.boxNumber}}</label> &nbsp;&nbsp;
-              <label>Quantity: {{box.qnt}}</label> &nbsp;&nbsp;
-              <label [ngClass]="{ minAmount: box.qnt > box.amount}">Amount: {{box.amount}}</label>
+              <label>Number: {{ box.boxNumber }}</label> &nbsp;&nbsp;
+              <label>Quantity: {{ box.qnt }}</label> &nbsp;&nbsp;
+              <label [ngClass]="{ minAmount: box.qnt > box.amount }"
+                >Amount: {{ box.amount }}</label
+              >
             </div>
           </div>
-          <div *ngIf="cartonList.length>0" class="cmptListDiv">
+          <div *ngIf="cartonList.length > 0" class="cmptListDiv">
             <h5>Cartons</h5>
             <div *ngFor="let carton of cartonList" class="cmptListData">
-              <label>Number: {{carton.cartonNumber}}</label> &nbsp;&nbsp;
-              <label>Quantity: {{carton.qnt}}</label> &nbsp;&nbsp;
-              <label [ngClass]="{ minAmount: carton.qnt > carton.amount}">Amount: {{carton.amount}}</label>
+              <label>Number: {{ carton.cartonNumber }}</label> &nbsp;&nbsp;
+              <label>Quantity: {{ carton.qnt }}</label> &nbsp;&nbsp;
+              <label [ngClass]="{ minAmount: carton.qnt > carton.amount }"
+                >Amount: {{ carton.amount }}</label
+              >
             </div>
           </div>
-          <div *ngIf="platesList.length>0" class="cmptListDiv">
+          <div *ngIf="platesList.length > 0" class="cmptListDiv">
             <h5>Plates</h5>
             <div *ngFor="let plate of platesList" class="cmptListData">
-              <label>Number: {{plate.palletNumber}}</label> &nbsp;&nbsp;
+              <label>Number: {{ plate.palletNumber }}</label> &nbsp;&nbsp;
             </div>
           </div>
           <div class="ml-5 text-center">
-            <img src="../../../assets/images/excel.png" alt="excel export" (click)="exportAsXLSX(orderItemsComponents)"
-              style="width: 200px; float: left; cursor: pointer;">
+            <img
+              src="../../../assets/images/excel.png"
+              alt="excel export"
+              (click)="exportAsXLSX(orderItemsComponents)"
+              style="width: 200px; float: left; cursor: pointer"
+            />
           </div>
         </div>
 
-        <br><br>
+        <br /><br />
         <!-- <div clas="modalFullWidth" width="100%">
 
       </div> -->
 
-        <div style="width: 100%; float: right ;" class="itemTreesTb">
-
-          <table class="table table-bordered" style="width: 98% ; ">
+        <div style="width: 100%; float: right" class="itemTreesTb">
+          <table class="table table-bordered" style="width: 98%">
             <thead>
               <!-- <tr scope="row">
 
                   </tr> -->
               <tr scope="row">
-                <th scope="col">
-
-                </th>
+                <th scope="col"></th>
                 <!--0-->
                 <th scope="col"><b>Order Number</b></th>
                 <!--1-->
@@ -886,154 +1537,173 @@
               </tr>
             </thead>
             <tbody>
-              <tr scope="row" *ngFor="let itemCmpts of orderItemsComponents; let i =index">
-                <td scope="col">{{i+1}}</td>
+              <tr
+                scope="row"
+                *ngFor="let itemCmpts of orderItemsComponents; let i = index"
+              >
+                <td scope="col">{{ i + 1 }}</td>
                 <!--0-->
-                <td scope="col">{{itemCmpts.orderNumber}}</td>
+                <td scope="col">{{ itemCmpts.orderNumber }}</td>
                 <!--1-->
-                <td scope="col">{{itemCmpts.itemNumber}}</td>
+                <td scope="col">{{ itemCmpts.itemNumber }}</td>
                 <!--2-->
-                <td scope="col">{{itemCmpts.itemName}}</td>
+                <td scope="col">{{ itemCmpts.itemName }}</td>
                 <!--3-->
-                <td scope="col">{{itemCmpts.bottleNumber}}</td>
+                <td scope="col">{{ itemCmpts.bottleNumber }}</td>
                 <!--4-->
-                <td scope="col">{{itemCmpts.bottleAmount}}</td>
+                <td scope="col">{{ itemCmpts.bottleAmount }}</td>
                 <!--5-->
-                <td scope="col">{{itemCmpts.capNumber}}</td>
+                <td scope="col">{{ itemCmpts.capNumber }}</td>
                 <!--6-->
-                <td scope="col">{{itemCmpts.capAmount}}</td>
+                <td scope="col">{{ itemCmpts.capAmount }}</td>
                 <!--7-->
-                <td scope="col">{{itemCmpts.pumpNumber}}</td>
+                <td scope="col">{{ itemCmpts.pumpNumber }}</td>
                 <!--8-->
-                <td scope="col">{{itemCmpts.pumpAmount}}</td>
+                <td scope="col">{{ itemCmpts.pumpAmount }}</td>
                 <!--9-->
-                <td scope="col">{{itemCmpts.sealNumber}}</td>
+                <td scope="col">{{ itemCmpts.sealNumber }}</td>
                 <!--10-->
-                <td scope="col">{{itemCmpts.sealAmount}}</td>
+                <td scope="col">{{ itemCmpts.sealAmount }}</td>
                 <!--11-->
-                <td scope="col">{{itemCmpts.boxNumber}}</td>
+                <td scope="col">{{ itemCmpts.boxNumber }}</td>
                 <!--12-->
-                <td scope="col">{{itemCmpts.boxAmount}}</td>
+                <td scope="col">{{ itemCmpts.boxAmount }}</td>
                 <!--13-->
-                <td scope="col">{{itemCmpts.cartonNumber}}</td>
+                <td scope="col">{{ itemCmpts.cartonNumber }}</td>
                 <!--14-->
-                <td scope="col">{{itemCmpts.cartonAmount}}</td>
+                <td scope="col">{{ itemCmpts.cartonAmount }}</td>
                 <!--13-->
-                <td scope="col">{{itemCmpts.cartonNumber2}}</td>
+                <td scope="col">{{ itemCmpts.cartonNumber2 }}</td>
                 <!--14-->
-                <td scope="col">{{itemCmpts.carton2Amount}}</td>
+                <td scope="col">{{ itemCmpts.carton2Amount }}</td>
                 <!--15-->
-                <td scope="col">{{itemCmpts.PcsCarton}}</td>
+                <td scope="col">{{ itemCmpts.PcsCarton }}</td>
                 <!--16-->
-                <td scope="col">{{itemCmpts.GT | number}}</td>
+                <td scope="col">{{ itemCmpts.GT | number }}</td>
                 <!--17-->
-                <td scope="col">{{itemCmpts.quantity}}</td>
+                <td scope="col">{{ itemCmpts.quantity }}</td>
                 <!--18-->
-                <td scope="col">{{itemCmpts.weight}}</td>
+                <td scope="col">{{ itemCmpts.weight }}</td>
                 <!--19-->
-                <td scope="col">{{itemCmpts.prodWeight}}</td>
+                <td scope="col">{{ itemCmpts.prodWeight }}</td>
                 <!--20-->
-                <td scope="col">{{itemCmpts.stickerNumber}}</td>
+                <td scope="col">{{ itemCmpts.stickerNumber }}</td>
                 <!--21-->
-                <td scope="col">{{itemCmpts.stickerAmount}}</td>
+                <td scope="col">{{ itemCmpts.stickerAmount }}</td>
                 <!--22-->
-                <td scope="col">{{itemCmpts.pallet}}</td>
+                <td scope="col">{{ itemCmpts.pallet }}</td>
                 <!--23-->
-                <td scope="col" style=" background-color:aliceblue; ">{{itemCmpts.currStock}}</td>
+                <td scope="col" style="background-color: aliceblue">
+                  {{ itemCmpts.currStock }}
+                </td>
                 <!--24-->
               </tr>
             </tbody>
           </table>
         </div>
-
       </div>
-      <div class="modal-footer">
-      </div>
+      <div class="modal-footer"></div>
     </div>
   </div>
-
-
-
 
   <!-- Modal -->
 
   <ng-template #components let-modal>
-
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Order Amounts</h4>
       </div>
       <div class="modal-body">
-        <table class='table'>
-          <thead class='tableHeader'>
-
+        <table class="table">
+          <thead class="tableHeader">
             <tr>
               <th>Bottle</th>
               <th>Pump</th>
               <th>Seal</th>
               <th>Cap</th>
               <th>Carton</th>
-
             </tr>
           </thead>
           <tbody id="table_body">
             <tr>
-              <td [ngClass]="itemDetails.hasEnoughBottles?'lightgreen':'lightred'"
-                *ngIf="itemDetails.bottleNumber != '---'">Quantity: {{itemDetails.orderItemQuantity}} <br> Bottle:
-                {{itemDetails.bottleNumber}}</td>
+              <td
+                [ngClass]="
+                  itemDetails.hasEnoughBottles ? 'lightgreen' : 'lightred'
+                "
+                *ngIf="itemDetails.bottleNumber != '---'"
+              >
+                Quantity: {{ itemDetails.orderItemQuantity }} <br />
+                Bottle: {{ itemDetails.bottleNumber }}
+              </td>
               <td *ngIf="itemDetails.bottleNumber == '---'"></td>
-              <td [ngClass]="itemDetails.hasEnoughPumps?'lightgreen':'lightred'"
-                *ngIf="itemDetails.pumpNumber != '---'">
-                Quantity: {{itemDetails.orderItemQuantity}} <br> Pump: {{itemDetails.pumpNumber}}</td>
+              <td
+                [ngClass]="
+                  itemDetails.hasEnoughPumps ? 'lightgreen' : 'lightred'
+                "
+                *ngIf="itemDetails.pumpNumber != '---'"
+              >
+                Quantity: {{ itemDetails.orderItemQuantity }} <br />
+                Pump: {{ itemDetails.pumpNumber }}
+              </td>
               <td *ngIf="itemDetails.pumpNumber == '---'"></td>
-              <td [ngClass]="itemDetails.hasEnoughSeals?'lightgreen':'lightred'"
-                *ngIf="itemDetails.sealNumber != '---'">
-                Quantity: {{itemDetails.orderItemQuantity}} <br> Seal: {{itemDetails.sealNumber}}</td>
+              <td
+                [ngClass]="
+                  itemDetails.hasEnoughSeals ? 'lightgreen' : 'lightred'
+                "
+                *ngIf="itemDetails.sealNumber != '---'"
+              >
+                Quantity: {{ itemDetails.orderItemQuantity }} <br />
+                Seal: {{ itemDetails.sealNumber }}
+              </td>
               <td *ngIf="itemDetails.sealNumber == '---'"></td>
-              <td [ngClass]="itemDetails.hasEnoughCaps?'lightgreen':'lightred'" *ngIf="itemDetails.capNumber != '---'">
-                Quantity: {{itemDetails.orderItemQuantity}} <br> Cap: {{itemDetails.capNumber}}</td>
+              <td
+                [ngClass]="
+                  itemDetails.hasEnoughCaps ? 'lightgreen' : 'lightred'
+                "
+                *ngIf="itemDetails.capNumber != '---'"
+              >
+                Quantity: {{ itemDetails.orderItemQuantity }} <br />
+                Cap: {{ itemDetails.capNumber }}
+              </td>
               <td *ngIf="itemDetails.capNumber == '---'"></td>
-              <td [ngClass]="itemDetails.hasEnoughCartons?'lightgreen':'lightred'"
-                *ngIf="itemDetails.cartonNumber != '---'">Quantity: {{itemDetails.cartons}} <br> Carton:
-                {{itemDetails.cartonNumber}}</td>
+              <td
+                [ngClass]="
+                  itemDetails.hasEnoughCartons ? 'lightgreen' : 'lightred'
+                "
+                *ngIf="itemDetails.cartonNumber != '---'"
+              >
+                Quantity: {{ itemDetails.cartons }} <br />
+                Carton: {{ itemDetails.cartonNumber }}
+              </td>
               <td *ngIf="itemDetails.cartonNumber == '---'"></td>
-
             </tr>
           </tbody>
         </table>
-        <br>
-        <table class='table'>
-          <thead class='tableHeader'>
+        <br />
+        <table class="table">
+          <thead class="tableHeader">
             <tr>
               <th>Total Order Amounts</th>
             </tr>
           </thead>
           <tbody id="table_body">
-            <tr>
-
-            </tr>
+            <tr></tr>
           </tbody>
         </table>
       </div>
-      <div class="modal-footer">
-      </div>
+      <div class="modal-footer"></div>
     </div>
-
   </ng-template>
 
-
   <ng-template #contentTwo let-modal>
-
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">Order Amounts</h4>
       </div>
       <div class="modal-body">
-        <table class='table'>
-          <thead class='tableHeader'>
-
+        <table class="table">
+          <thead class="tableHeader">
             <tr>
-
               <th>מק"ט</th>
               <th>אצווה</th>
               <th>כמות הזמנה</th>
@@ -1044,64 +1714,84 @@
             </tr>
           </thead>
           <tbody id="table_body">
-            <tr *ngFor="let item of ordersItems;" style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;">
-
-              <td>{{item.itemNumber}}</td>
-              <td>{{item.batch}}</td>
-              <td>{{item.quantity}}</td>
-              <td>{{item.quantityProduced}}</td>
-              <td>{{item.totalUnits}}</td>
-              <td><i class="ti-check text-success m-r-10" (click)="setOrderItemDone(item)" style="cursor: pointer;"></i>
+            <tr
+              *ngFor="let item of ordersItems"
+              style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px"
+            >
+              <td>{{ item.itemNumber }}</td>
+              <td>{{ item.batch }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.quantityProduced }}</td>
+              <td>{{ item.totalUnits }}</td>
+              <td>
+                <i
+                  class="ti-check text-success m-r-10"
+                  (click)="setOrderItemDone(item)"
+                  style="cursor: pointer"
+                ></i>
               </td>
-
-
             </tr>
           </tbody>
         </table>
       </div>
-      <div class="modal-footer">
-      </div>
+      <div class="modal-footer"></div>
     </div>
-
   </ng-template>
 
   <ng-template #formuleByItem let-modal>
     <div class="modal-header text-center">
-      <h4 class="modal-title" id="modal-basic-title">Formule {{currFormule.formuleNumber}}</h4>
+      <h4 class="modal-title" id="modal-basic-title">
+        Formule {{ currFormule.formuleNumber }}
+      </h4>
     </div>
     <div class="modal-body">
       <div class="row p-3">
         <div class="col-6">
-          <input placeholder="Quantity" [(ngModel)]="newProductionQuantity" class="form-control" type="number">
+          <input
+            placeholder="Quantity"
+            [(ngModel)]="newProductionQuantity"
+            class="form-control"
+            type="number"
+          />
         </div>
         <div class="col-6">
-          <input placeholder="Net Weight gr" [(ngModel)]="newProductionNetWeightGr" class="form-control" type="number">
+          <input
+            placeholder="Net Weight gr"
+            [(ngModel)]="newProductionNetWeightGr"
+            class="form-control"
+            type="number"
+          />
         </div>
       </div>
       <div class="row p-3">
         <div class="col-12">
-          <button class="btn btn-success form-control" (click)="sendToProduction()">Send To Production</button>
+          <button
+            class="btn btn-success form-control"
+            (click)="sendToProduction()"
+          >
+            Send To Production
+          </button>
         </div>
       </div>
-
     </div>
 
-    <div class="modal-footer">
-    </div>
+    <div class="modal-footer"></div>
   </ng-template>
 
-
-  <div *ngIf="invoiceModal == true" style="top:100px"
-    class="container w-25 h-50 mx-auto my-auto fixed-top shadow-lg rounded bg-white text-center p-4">
+  <div
+    *ngIf="invoiceModal == true"
+    style="top: 100px"
+    class="container w-25 h-50 mx-auto my-auto fixed-top shadow-lg rounded bg-white text-center p-4"
+  >
     <div class="row">
       <div class="col">
-        <h5>Item: {{currItem.itemNumber}}</h5>
+        <h5>Item: {{ currItem.itemNumber }}</h5>
       </div>
       <div class="col">
-        <h5>Order Quantity: {{currItem.quantity}}</h5>
+        <h5>Order Quantity: {{ currItem.quantity }}</h5>
       </div>
       <div class="col">
-        <h5>Produced: {{currItem.quantityProduced}}</h5>
+        <h5>Produced: {{ currItem.quantityProduced }}</h5>
       </div>
     </div>
     <div class="row">
@@ -1115,12 +1805,12 @@
           </thead>
           <tbody>
             <tr *ngFor="let bill of currBillingArr">
-              <td>{{bill.billNumber}}</td>
-              <td>{{bill.billQty}}</td>
+              <td>{{ bill.billNumber }}</td>
+              <td>{{ bill.billQty }}</td>
             </tr>
             <tr>
               <td></td>
-              <td>Sum: {{billQtySum}}</td>
+              <td>Sum: {{ billQtySum }}</td>
             </tr>
           </tbody>
         </table>
@@ -1128,63 +1818,112 @@
     </div>
     <div class="row">
       <div class="col">
-        <button (click)="invoiceModal = false" class="btn btn-success form-control">Exit</button>
+        <button
+          (click)="invoiceModal = false"
+          class="btn btn-success form-control"
+        >
+          Exit
+        </button>
       </div>
     </div>
   </div>
 
-  <div *ngIf="showMaterialsForFormules==true" id="myModal3" class="modal3 w-25 rounded"
-    style='border:1px; border-radius:5px; z-index: 1; position: fixed; left:1150px;top:70px;font-size:20px;'>
-
-    <div class="modal-content w-100" id='modelC'>
-
-      <div style="display: inline-block;" id="material-header" class="modal-header">
-
+  <div
+    *ngIf="showMaterialsForFormules == true"
+    id="myModal3"
+    class="modal3 w-25 rounded"
+    style="
+      border: 1px;
+      border-radius: 5px;
+      z-index: 1;
+      position: fixed;
+      left: 1150px;
+      top: 70px;
+      font-size: 20px;
+    "
+  >
+    <div class="modal-content w-100" id="modelC">
+      <div
+        style="display: inline-block"
+        id="material-header"
+        class="modal-header"
+      >
         <div class="row">
           <div class="col-4">
-            <button class="btn btn-success" printSectionId="materialsPrint"
-              [printStyle]="{td : {'border': 'solid 1px black'},tr : {'border': 'solid 1px black'}}"
-              ngxPrint>Print</button>
+            <button
+              class="btn btn-success"
+              printSectionId="materialsPrint"
+              [printStyle]="{
+                td: { border: 'solid 1px black' },
+                tr: { border: 'solid 1px black' }
+              }"
+              ngxPrint
+            >
+              Print
+            </button>
           </div>
           <div class="col-4">
-            <img style="width: 50px; height: 50px;" (click)="materialsToExcel()"
-              src="../../../../assets/images/excel.png" alt="">
+            <img
+              style="width: 50px; height: 50px"
+              (click)="materialsToExcel()"
+              src="../../../../assets/images/excel.png"
+              alt=""
+            />
           </div>
           <div class="col-4">
-            <span class="click close" id="closeId3" (click)="showMaterialsForFormules=false">&times;</span>
+            <span
+              class="click close"
+              id="closeId3"
+              (click)="showMaterialsForFormules = false"
+              >&times;</span
+            >
           </div>
         </div>
       </div>
 
-      <div class="container w-50" style="overflow: auto;" id="materialsPrint" class="modal-body">
+      <div
+        class="container w-50"
+        style="overflow: auto"
+        id="materialsPrint"
+        class="modal-body"
+      >
         <h1>חוסרים עבור הפריטים הנבחרים</h1>
         <table id="procurementItems" class="table table-striped">
-          <thead style="box-shadow: 1px 1px 2px 0px black;" class="bg-success text-white">
+          <thead
+            style="box-shadow: 1px 1px 2px 0px black"
+            class="bg-success text-white"
+          >
             <tr>
-
               <th>Material Number</th>
               <th>Material Name</th>
               <!--<th>KG Production</th>-->
               <th>Quantity In Stock</th>
-
             </tr>
           </thead>
           <tbody id="table_body">
             <ng-container *ngFor="let material of materialsForFormules">
-              <tr *ngIf="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0">
-                <td>{{material.itemNumber}}</td>
-                <td>{{material.itemName}}</td>
+              <tr
+                *ngIf="
+                  checkAmountsForMaterial(
+                    material.kgProduction,
+                    material.materialArrivals[0].amount
+                  ) < 0
+                "
+              >
+                <td>{{ material.itemNumber }}</td>
+                <td>{{ material.itemName }}</td>
                 <!-- <td>{{material.kgProduction}}</td>-->
                 <td>
-                  {{material.materialArrivals[0].amount}}</td>
+                  {{ material.materialArrivals[0].amount }}
+                </td>
               </tr>
             </ng-container>
           </tbody>
         </table>
-        <br>
-        <br>
+        <br />
+        <br />
         <table>
-          <thead style="box-shadow: 1px 1px 2px 0px black;">
+          <thead style="box-shadow: 1px 1px 2px 0px black">
             <tr>
               <th>מספר הזמנה</th>
               <th>שם פריט</th>
@@ -1194,97 +1933,155 @@
           </thead>
           <tbody>
             <tr *ngFor="let obj of selectedArr">
-              <td>{{obj.orderNumber}}</td>
-              <td>{{obj.discription}}</td>
-              <td (click)="changeItemQuantity(obj.itemNumber)">{{obj.itemNumber}}</td>
-              <td *ngIf="!obj.newKG">{{calculateKG(obj.netWeightGr,obj.quantity)}}</td>
-              <td *ngIf="obj.newKG">{{obj.newKG}}</td>
+              <td>{{ obj.orderNumber }}</td>
+              <td>{{ obj.discription }}</td>
+              <td (click)="changeItemQuantity(obj.itemNumber)">
+                {{ obj.itemNumber }}
+              </td>
+              <td *ngIf="!obj.newKG">
+                {{ calculateKG(obj.netWeightGr, obj.quantity) }}
+              </td>
+              <td *ngIf="obj.newKG">{{ obj.newKG }}</td>
             </tr>
           </tbody>
         </table>
-
       </div>
-
     </div>
   </div>
 
   <ng-template class="p-6" #itemProdStatus let-modal>
     <div class="modal-header bg-success">
-      <h4 class="modal-title text-center" id="modal-basic-title">Edit Item Production Status</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <h4 class="modal-title text-center" id="modal-basic-title">
+        Edit Item Production Status
+      </h4>
+      <button
+        type="button"
+        class="close"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
 
     <div class="modal-body p-5">
-
       <main>
-        <h2>Item Number {{productionItemStatus.itemNumber}}, Order Number {{productionItemStatus.orderNumber}}</h2>
+        <h2>
+          Item Number {{ productionItemStatus.itemNumber }}, Order Number
+          {{ productionItemStatus.orderNumber }}
+        </h2>
 
         <div class="d-flex flex-column justify-content-even">
-
           <div class="m-5">
-            <p>Has License?</p><br>
-            <input [disabled]="!iAmHaviv" class="form-control" type="checkbox"
-              [(ngModel)]="productionItemStatus.hasLicense">
-            <img src="../../../../assets/images/refreshData.png" style="width: 30px;cursor: pointer;"
-              alt="Check License" (click)="checkLicense(productionItemStatus.itemNumber)">
+            <p>Has License?</p>
+            <br />
+            <input
+              [disabled]="!iAmHaviv"
+              class="form-control"
+              type="checkbox"
+              [(ngModel)]="productionItemStatus.hasLicense"
+            />
+            <img
+              src="../../../../assets/images/refreshData.png"
+              style="width: 30px; cursor: pointer"
+              alt="Check License"
+              (click)="checkLicense(productionItemStatus.itemNumber)"
+            />
           </div>
           <div class="m-5">
-            <h5>Exploded?</h5><br>
-            <input class="form-control" type="checkbox" [(ngModel)]="productionItemStatus.exploded">
+            <h5>Exploded?</h5>
+            <br />
+            <input
+              class="form-control"
+              type="checkbox"
+              [(ngModel)]="productionItemStatus.exploded"
+            />
           </div>
           <div class="m-5">
-            <h5>Problem free?</h5><br>
-            <input class="form-control" type="checkbox" [(ngModel)]="productionItemStatus.problematic">
+            <h5>Problem free?</h5>
+            <br />
+            <input
+              class="form-control"
+              type="checkbox"
+              [(ngModel)]="productionItemStatus.problematic"
+            />
           </div>
           <div class="m-5">
-            <h4>Ready for Production?</h4><br>
-            <input [disabled]="!productionItemStatus.exploded || !productionItemStatus.hasLicense" class="form-control"
-              type="checkbox" [(ngModel)]="productionItemStatus.productionApproved">
+            <h4>Ready for Production?</h4>
+            <br />
+            <input
+              [disabled]="
+                !productionItemStatus.exploded ||
+                !productionItemStatus.hasLicense
+              "
+              class="form-control"
+              type="checkbox"
+              [(ngModel)]="productionItemStatus.productionApproved"
+            />
           </div>
           <div class="m-5">
-            <button (click)="setOrderItemStatus(); modal.dismiss('Cross click')">Set Status!</button>
+            <button
+              (click)="setOrderItemStatus(); modal.dismiss('Cross click')"
+            >
+              Set Status!
+            </button>
           </div>
         </div>
-
       </main>
     </div>
   </ng-template>
 
   <div id="print-order" *ngIf="printOrder" class="bg-light modal-inner rounded">
-    <br><br>
+    <br /><br />
     <div class="row">
+      <div class="col-4"></div>
       <div class="col-4">
-      </div>
-      <div class="col-4">
-        <button style="border:none;background: none;margin-left:100px;font-size: 25px;" ngxPrint
+        <button
+          style="
+            border: none;
+            background: none;
+            margin-left: 100px;
+            font-size: 25px;
+          "
+          ngxPrint
           printSectionId="print-order"
-          [printStyle]="{th : {'border': '1px solid black'}, td : {'border': '1px solid black'}, tr : {'border': '1px solid black'}}"><b>Order
-            {{number}}</b></button>
+          [printStyle]="{
+            th: { border: '1px solid black' },
+            td: { border: '1px solid black' },
+            tr: { border: '1px solid black' }
+          }"
+        >
+          <b>Order {{ number }}</b>
+        </button>
       </div>
-      <div class="col-4">
-      </div>
+      <div class="col-4"></div>
     </div>
-    <br><br>
+    <br /><br />
     <div class="row">
-      <span class="spanTitle">Total Items: {{totalOrderQty}}</span>
-      <span class='spanTitle'> Order Date:</span><span class="orderSpanDetails"> {{orderDate| date:'dd/MM/YYYY'}}
-      </span><span class='spanTitle'> Delivery Date: </span><span class="orderSpanDetails">{{deliveryDate|
-      date:'dd/MM/YYYY'}}</span>
+      <span class="spanTitle">Total Items: {{ totalOrderQty }}</span>
+      <span class="spanTitle"> Order Date:</span
+      ><span class="orderSpanDetails">
+        {{ orderDate | date: "dd/MM/YYYY" }} </span
+      ><span class="spanTitle"> Delivery Date: </span
+      ><span class="orderSpanDetails">{{
+        deliveryDate | date: "dd/MM/YYYY"
+      }}</span>
     </div>
-    <br><br>
+    <br /><br />
     <div class="row">
-      <span class='spanTitle'> Customer :</span><span class="orderSpanDetails"> {{costumer}} </span>
-      <span class='spanTitle'>Customer Number:</span><span class="orderSpanDetails"> {{costumerInternalId}} </span>
-      <span class='spanTitle'> Customer <strong>Order</strong> Number :</span>
-      <span class="orderSpanDetails">{{customerOrderNum}} </span>
+      <span class="spanTitle"> Customer :</span
+      ><span class="orderSpanDetails"> {{ costumer }} </span>
+      <span class="spanTitle">Customer Number:</span
+      ><span class="orderSpanDetails"> {{ costumerInternalId }} </span>
+      <span class="spanTitle"> Customer <strong>Order</strong> Number :</span>
+      <span class="orderSpanDetails">{{ customerOrderNum }} </span>
     </div>
-    <br><br>
+    <br /><br />
     <div class="row">
-      <span class='spanTitle'> Remarks:</span><span class="orderSpanDetails">{{remarks}}</span>
+      <span class="spanTitle"> Remarks:</span
+      ><span class="orderSpanDetails">{{ remarks }}</span>
     </div>
-    <br><br>
+    <br /><br />
     <table class="table table-striped">
       <thead>
         <tr>
@@ -1305,54 +2102,77 @@
       <tbody>
         <ng-container *ngFor="let item of ordersItems; let i = index">
           <tr>
-            <td>{{item.itemNumber}}</td>
-            <td>{{item.discription}}</td>
-            <td>{{item.barcodeK}}</td>
-            <td>{{item.netWeightGr}}</td>
-            <td>{{item.quantity}}</td>
+            <td>{{ item.itemNumber }}</td>
+            <td>{{ item.discription }}</td>
+            <td>{{ item.barcodeK }}</td>
+            <td>{{ item.netWeightGr }}</td>
+            <td>{{ item.quantity }}</td>
             <td>{{item.quantityRemained}</td>
-          <td>{{item.itemOrderDate| date:'dd/MM/YYYY'}}</td>
-            <td>{{item.packingDate| date:'dd/MM/YYYY' }}</td>
-            <td>{{item.itemDeliveryDate| date:'dd/MM/YYYY' }}</td>
+            <td>{{ item.itemOrderDate | date: "dd/MM/YYYY" }}</td>
+            <td>{{ item.packingDate | date: "dd/MM/YYYY" }}</td>
+            <td>{{ item.itemDeliveryDate | date: "dd/MM/YYYY" }}</td>
             <td>
-              <img *ngIf="item.printStatus ==='printed'" style="width:15px"
-                src="../../../../assets/images/aprroved.png" />
+              <img
+                *ngIf="item.printStatus === 'printed'"
+                style="width: 15px"
+                src="../../../../assets/images/aprroved.png"
+              />
             </td>
             <td>
-              <img *ngIf="item.fillingStatus ==='filled'" style="width:15px"
-                src="../../../../assets/images/aprroved.png" />
+              <img
+                *ngIf="item.fillingStatus === 'filled'"
+                style="width: 15px"
+                src="../../../../assets/images/aprroved.png"
+              />
             </td>
-            <td>{{item.fillingStatus}}</td>
-            <td>{{item.itemImpRemark}}</td>
-            <td>{{item.itemRemarks}}</td>
+            <td>{{ item.fillingStatus }}</td>
+            <td>{{ item.itemImpRemark }}</td>
+            <td>{{ item.itemRemarks }}</td>
           </tr>
         </ng-container>
       </tbody>
     </table>
   </div>
 
-
   <ng-template #pakaStatus>
     <div class="p-5">
-      <h1 class="border border-black">Item {{currentItem.itemNumber}}, Order {{currentItem.orderNumber}}</h1>
+      <h1 class="border border-black">
+        Item {{ currentItem.itemNumber }}, Order {{ currentItem.orderNumber }}
+      </h1>
       <h2 class="mt-5 font-weight-bolder">Work Plans:</h2>
-      <div class="mt-5" *ngFor="let workPlan of currentItem.workPlans; let i = index">
-        <h3 class="text-center text-decoration-underline">Work Plan {{workPlan.workPlanId}}</h3>
-        <h4 [style.background]="workPlan.WPstatus | orderItemBatchStatusColor" class="text-center p-2 m-2">Work Plan
-          Status: {{workPlan.WPstatus | orderItemBatchStatus}}</h4>
-        <h4 [style.background]="workPlan.itemStatus | orderItemBatchStatusColor" class="text-center p-2 m-2">Item
-          Status:
-          {{workPlan.itemStatus | orderItemBatchStatus}}</h4>
-        <h4 class="text-center p-2 m-2">Quantity: {{workPlan.quantity}}</h4>
-        <h4 class="text-center p-2 m-2">Due Date: {{workPlan.dueDate | date: 'dd/MM'}}</h4>
-        <h4 class="text-center p-2 m-2">Batch: {{workPlan.batch}}</h4>
+      <div
+        class="mt-5"
+        *ngFor="let workPlan of currentItem.workPlans; let i = index"
+      >
+        <h3 class="text-center text-decoration-underline">
+          Work Plan {{ workPlan.workPlanId }}
+        </h3>
+        <h4
+          [style.background]="workPlan.WPstatus | orderItemBatchStatusColor"
+          class="text-center p-2 m-2"
+        >
+          Work Plan Status: {{ workPlan.WPstatus | orderItemBatchStatus }}
+        </h4>
+        <h4
+          [style.background]="workPlan.itemStatus | orderItemBatchStatusColor"
+          class="text-center p-2 m-2"
+        >
+          Item Status: {{ workPlan.itemStatus | orderItemBatchStatus }}
+        </h4>
+        <h4 class="text-center p-2 m-2">Quantity: {{ workPlan.quantity }}</h4>
+        <h4 class="text-center p-2 m-2">
+          Due Date: {{ workPlan.dueDate | date: "dd/MM" }}
+        </h4>
+        <h4 class="text-center p-2 m-2">Batch: {{ workPlan.batch }}</h4>
       </div>
     </div>
   </ng-template>
 
   <ng-template #similarFormulesEref>
     <div class="p-5">
-      <h1 class="border border-black bg-info text-white rounded">Similar Formule:</h1>
+      <h1 class="border border-black bg-info text-white rounded">
+        Similar Formule:
+      </h1>
       <div class="mt-5">
         <table class="table table-hover">
           <thead class="bg-dark text-white">
@@ -1362,8 +2182,8 @@
           <tbody>
             <ng-container *ngFor="let item of similarFormules">
               <tr>
-                <td>{{item.orderNumber}}</td>
-                <td>{{item.itemNumber}}</td>
+                <td>{{ item.orderNumber }}</td>
+                <td>{{ item.itemNumber }}</td>
               </tr>
             </ng-container>
           </tbody>

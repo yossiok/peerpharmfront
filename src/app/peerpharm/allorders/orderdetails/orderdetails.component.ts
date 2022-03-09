@@ -112,6 +112,7 @@ export class OrderdetailsComponent implements OnInit {
   currentItem: any;
   loadAlerts: boolean = false;
   scheduleLines: any[] = [];
+  shipmentsHistory: any[] = [];
 
   componentsAmounts: any = {
     bottleQuantity: 0,
@@ -1389,8 +1390,9 @@ export class OrderdetailsComponent implements OnInit {
       } else {
         this.expand = true;
       }
+      this.getPackedAmount(itemNumber);
+      this.getFillingSchedule(itemNumber);
     });
-    this.getFillingSchedule(itemNumber);
     // this.scheduleService
     //   .getScheduleByOrdeItem(this.ordersItems[0].orderNumber, itemNumber)
     //   .subscribe((data) => {
@@ -1417,6 +1419,7 @@ export class OrderdetailsComponent implements OnInit {
           item.colorBtn = "#33FFE0";
         }
       });
+
     setTimeout(() => {
       this.inputBatch ? (this.inputBatch.nativeElement.value = "") : true;
       this.editBatchN = false;
@@ -1428,10 +1431,38 @@ export class OrderdetailsComponent implements OnInit {
     this.scheduleService
       .getScheduleByOrdeItem(this.ordersItems[0].orderNumber, itemNumber)
       .subscribe((data) => {
-        for (let line of data) {
-          line.date = new Date(line.date);
+        console.log(data);
+        if (data.msg) {
+          this.toastSrv.error(data.msg);
+          return;
+        } else if (data) {
+          for (let line of data) {
+            line.date = new Date(line.date);
+          }
+          this.scheduleLines = data;
+          console.log(this.scheduleLines);
         }
-        this.scheduleLines = data;
+      });
+  }
+
+  getPackedAmount(itemNumber) {
+    this.shipmentsHistory = [];
+    this.formService
+      .getPackedAmount(this.ordersItems[0].orderNumber, itemNumber)
+      .subscribe((data) => {
+        console.log(data);
+        if (data.msg) {
+          this.toastSrv.error(data.msg);
+        } else if (data) {
+          for (let pack of data) {
+            pack.packingDate = pack.creationDate
+              ? new Date(pack.creationDate)
+              : "NA";
+            pack.invoiceDate = pack.billDate ? new Date(pack.billDate) : "NA";
+            //  console.log(pack);
+            this.shipmentsHistory.push(pack);
+          }
+        }
       });
   }
 

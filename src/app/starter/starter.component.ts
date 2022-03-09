@@ -23,6 +23,7 @@ export class StarterComponent implements OnInit {
   ngOnInit() {
     setTimeout(() => {
       let user = this.authService.loggedInUser;
+      console.log("User object: ", user);
       if (user.userName && !this.check) {
         this.check = true;
         console.log("adminPanelView authorized: ", this.adminPanelAllowed);
@@ -40,7 +41,7 @@ export class StarterComponent implements OnInit {
 
         this.userPermission = user.screenPermission;
         this.userAuthorizations = user.authorization;
-        console.log("Admin Panle allowed: ", this.adminPanelAllowed);
+        console.log("Admin Panel allowed: ", this.adminPanelAllowed);
         console.log("User permission level: ", this.userPermission);
 
         if (localStorage.getItem("url")) {
