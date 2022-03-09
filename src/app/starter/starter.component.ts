@@ -22,35 +22,31 @@ export class StarterComponent implements OnInit {
 
   ngOnInit() {
     setTimeout(() => {
-      if (this.authService.loggedInUser.userName && !this.check) {
+      let user = this.authService.loggedInUser;
+      console.log("User object: ", user);
+      if (user.userName && !this.check) {
         this.check = true;
-        console.log(this.adminPanelAllowed);
-        if (
-          this.authService.loggedInUser.authorization.includes("adminPanel")
-        ) {
+        console.log("adminPanelView authorized: ", this.adminPanelAllowed);
+        if (user.authorization.includes("adminPanel")) {
           this.adminPanelAllowed = true;
         } else {
           this.adminPanelAllowed = false;
         }
-        if (this.authService.loggedInUser.screenPermission === "1") {
+        if (user.screenPermission === "1" || user.screenPermission == "2") {
           this.adminPanelView = true;
         } else {
           this.adminPanelView = false;
-          console.log(this.authService.loggedInUser.screenPermission);
+          console.log("Screen Pemission level: ", user.screenPermission);
         }
 
-        this.userPermission = this.authService.loggedInUser.screenPermission;
-        this.userAuthorizations = this.authService.loggedInUser.authorization;
-        console.log(this.adminPanelAllowed);
-        console.log(this.userPermission);
+        this.userPermission = user.screenPermission;
+        this.userAuthorizations = user.authorization;
+        console.log("Admin Panel allowed: ", this.adminPanelAllowed);
+        console.log("User permission level: ", this.userPermission);
 
-
-
-
-        if (localStorage.getItem('url')) {
-          
-          let urlToForward = localStorage.getItem('url');
-          localStorage.removeItem('url');
+        if (localStorage.getItem("url")) {
+          let urlToForward = localStorage.getItem("url");
+          localStorage.removeItem("url");
           this.router.navigate([urlToForward]);
         }
       }

@@ -111,6 +111,8 @@ export class OrderdetailsComponent implements OnInit {
   plateImg = "";
   currentItem: any;
   loadAlerts: boolean = false;
+  scheduleLines: any[] = [];
+  shipmentsHistory: any[] = [];
 
   componentsAmounts: any = {
     bottleQuantity: 0,
@@ -1223,10 +1225,14 @@ export class OrderdetailsComponent implements OnInit {
             item.licenseExpirationClose = diffDays < 30;
 
             //set remained amount (total amount - amount that has allready been supplied)
-            let quantitySupplied = item.billing
-              .map((b) => b.billQty)
-              .reduce((a, b) => a + b, 0);
-            item.quantityRemained = Number(item.quantity) - quantitySupplied;
+            // let quantitySupplied = item.billing
+            //   .map((b) => b.billQty)
+            //   .reduce((a, b) => a + b, 0);
+            item.quantitySupplied = item.quantitySupplied
+              ? item.quantitySupplied
+              : 0;
+            item.quantityRemained =
+              Number(item.quantity) - item.quantitySupplied;
 
             this.totalOrderQty += Number(item.quantity);
             if (item.fillingStatus != null) {
@@ -1384,8 +1390,20 @@ export class OrderdetailsComponent implements OnInit {
       } else {
         this.expand = true;
       }
+      this.getPackedAmount(itemNumber);
+      this.getFillingSchedule(itemNumber);
     });
+    // this.scheduleService
+    //   .getScheduleByOrdeItem(this.ordersItems[0].orderNumber, itemNumber)
+    //   .subscribe((data) => {
+    //     for (let line of data) {
+    //       line.date = new Date(line.date);
+    //     }
 
+    //     console.log(data);
+    //     this.scheduleLines = data;
+    //     console.log(data);
+    //   });
     this.ordersItems
       .filter((item) => item.itemNumber == itemNumber)
       .map((item) => {
@@ -1401,10 +1419,51 @@ export class OrderdetailsComponent implements OnInit {
           item.colorBtn = "#33FFE0";
         }
       });
+
     setTimeout(() => {
       this.inputBatch ? (this.inputBatch.nativeElement.value = "") : true;
       this.editBatchN = false;
     }, 100);
+  }
+
+  getFillingSchedule(itemNumber) {
+    this.scheduleLines = [];
+    this.scheduleService
+      .getScheduleByOrdeItem(this.ordersItems[0].orderNumber, itemNumber)
+      .subscribe((data) => {
+        console.log(data);
+        if (data.msg) {
+          this.toastSrv.error(data.msg);
+          return;
+        } else if (data) {
+          for (let line of data) {
+            line.date = new Date(line.date);
+          }
+          this.scheduleLines = data;
+          console.log(this.scheduleLines);
+        }
+      });
+  }
+
+  getPackedAmount(itemNumber) {
+    this.shipmentsHistory = [];
+    this.formService
+      .getPackedAmount(this.ordersItems[0].orderNumber, itemNumber)
+      .subscribe((data) => {
+        console.log(data);
+        if (data.msg) {
+          this.toastSrv.error(data.msg);
+        } else if (data) {
+          for (let pack of data) {
+            pack.packingDate = pack.creationDate
+              ? new Date(pack.creationDate)
+              : "NA";
+            pack.invoiceDate = pack.billDate ? new Date(pack.billDate) : "NA";
+            //  console.log(pack);
+            this.shipmentsHistory.push(pack);
+          }
+        }
+      });
   }
 
   edit(id) {
@@ -1600,6 +1659,16 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   async setSchedule(item, type) {
+    if (this.scheduleLines.length > 0) {
+      let qtyProduced = 0;
+      for (let line of this.scheduleLines) {
+        qtyProduced += line.qtyProduced;
+      }
+      if (qtyProduced > item.quantity) {
+        alert("הכמות שהוזמנה יוצרה כבר, האם להמשיך?");
+      }
+    }
+
     // check date
     if (this.date.nativeElement.value != "") {
       var packageP = "";
@@ -1689,6 +1758,8 @@ export class OrderdetailsComponent implements OnInit {
                             );
                           else {
                             this.toastSrv.success("Schedule Saved.");
+                            // this.getFillingSchedule(item);
+                            this.getDetails(item.itemNumber, item._id);
 
                             try {
                               // Send message to Shlomo if item has no license
