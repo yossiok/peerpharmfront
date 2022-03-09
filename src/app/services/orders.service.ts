@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from "@angular/core";
 import { Http, Headers, RequestOptions, Jsonp } from "@angular/http";
-import { Observable, BehaviorSubject } from "rxjs";
+import { Observable, BehaviorSubject, Subject } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { map } from "rxjs/operators";
 import { PeerPharmModule } from "../peerpharm/peerpharmmodule";
@@ -13,6 +13,7 @@ export class OrdersService {
   private headers = new Headers({ "Content-Type": "application/json" });
   private options = new RequestOptions({ headers: this.headers });
   private baseUrl = "/";
+  private openOrderReport = new Subject<any[]>();
 
   arr: any = [];
   private orderSrc = new BehaviorSubject<Array<string>>([]);
@@ -34,10 +35,23 @@ export class OrdersService {
     //.map((res: Response) => res.json())
     //.catch((error: any) => Observable.throw(error.json().error) || 'Server Error');
   }
+
+  // Get open orders reports with items and return excel
+  getOpenOrderReport(){
+    let url = this.baseUrl + "order/openReport";
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
   getAllOrders(): Observable<any> {
+    let url = this.baseUrl + "order/openReport";
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  
+  getOrdersReport(): Observable<any> {
     let url = this.baseUrl + "order/allorders";
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+
   getAllSalesByCMX(): Observable<any> {
     let url = this.baseUrl + "order/allsalesbycmx";
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
@@ -407,4 +421,6 @@ export class OrdersService {
       this.baseUrl + "formDetails/isLastFormOfItemTooOld?item=" + itemNumber;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+
+
 }

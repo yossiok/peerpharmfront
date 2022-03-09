@@ -40,6 +40,8 @@ export class FormdetailsComponent implements OnInit {
   showQAPalletsModal: boolean = false;
   showQAPersonalPalletsModal: boolean = false;
   allowUpdateForm: boolean = false;
+  disableRemarkEditAfterSave: boolean = true
+  today = new Date().getDate();
 
 
   newQAPallet = {
@@ -92,9 +94,9 @@ export class FormdetailsComponent implements OnInit {
     private scheduleService: ScheduleService,
     private batchService: BatchesService,
     private itemService: ItemsService
-  ) {}
+  ) { }
 
-  ngOnInit() {
+   ngOnInit() {
     let formID1 = this.route.snapshot.paramMap.get("id");
     let scheduleID = this.route.snapshot.paramMap.get("id2");
     this.getUserInfo();
@@ -111,7 +113,8 @@ export class FormdetailsComponent implements OnInit {
     }
 
     // הגענו מהטאבלט (עמוד ראשי) או ממסך טפסים
-    else this.getFormData(true, formID1);
+    else  this.getFormData(true, formID1);
+
   }
 
   async checkIfFormExist(scheduleId) {
@@ -154,6 +157,7 @@ export class FormdetailsComponent implements OnInit {
         }
       });
       this.CalcAvgWeight();
+      this.checkFormStatus();
       if (allChecks) this.wrapAllChecks();
     });
   }
@@ -277,32 +281,32 @@ export class FormdetailsComponent implements OnInit {
       : (this.form.checkNetoWeight = [newTest.checkNetoWeight]);
     this.form.checkBox_closedWaterProof
       ? this.form.checkBox_closedWaterProof.push(
-          newTest.checkBox_closedWaterProof
-        )
+        newTest.checkBox_closedWaterProof
+      )
       : (this.form.checkBox_closedWaterProof = [
-          newTest.checkBox_closedWaterProof,
-        ]);
+        newTest.checkBox_closedWaterProof,
+      ]);
     this.form.checkBox_stickerPrinting
       ? this.form.checkBox_stickerPrinting.push(
-          newTest.checkBox_stickerPrinting
-        )
+        newTest.checkBox_stickerPrinting
+      )
       : (this.form.checkBox_stickerPrinting = [
-          newTest.checkBox_stickerPrinting,
-        ]);
+        newTest.checkBox_stickerPrinting,
+      ]);
     this.form.checkBox_lotNumberPrinting
       ? this.form.checkBox_lotNumberPrinting.push(
-          newTest.checkBox_lotNumberPrinting
-        )
+        newTest.checkBox_lotNumberPrinting
+      )
       : (this.form.checkBox_lotNumberPrinting = [
-          newTest.checkBox_lotNumberPrinting,
-        ]);
+        newTest.checkBox_lotNumberPrinting,
+      ]);
     this.form.checkBox_correctFinalPacking
       ? this.form.checkBox_correctFinalPacking.push(
-          newTest.checkBox_correctFinalPacking
-        )
+        newTest.checkBox_correctFinalPacking
+      )
       : (this.form.checkBox_correctFinalPacking = [
-          newTest.checkBox_correctFinalPacking,
-        ]);
+        newTest.checkBox_correctFinalPacking,
+      ]);
     this.updateFormDetails();
     this.allChecks.push(newTest);
   }
@@ -382,11 +386,10 @@ export class FormdetailsComponent implements OnInit {
           this.getFormData(this.formid, false);
           this.toastService.success("טופס עודכן בהצלחה !");
           this.showQAPalletsModal = false;
-        } else {
-          this.toastService.error(
-            "טופס לא עודכן , אנא נסה שנית או פנה למנהל מערכת"
-          );
-        }
+          if (this.form.checkSignature && this.form.directorBackSignature) {
+            this.disabledValue = true;
+          }
+        } else this.toastService.error("טופס לא עודכן , אנא נסה שנית או פנה למנהל מערכת");
       });
     } catch (error) {
       this.toastService.error("אירעה שגיאה בעדכון , אנא נסה שנית");
@@ -398,6 +401,8 @@ export class FormdetailsComponent implements OnInit {
   }
 
   createFormDetails() {
+    // Get date from server
+
     this.form.quantity_Produced = 0;
     this.formsService.createFormDetails(this.form).subscribe((data) => {
       if (data) {
@@ -405,6 +410,8 @@ export class FormdetailsComponent implements OnInit {
         this.toastService.success("טופס נוצר בהצלחה")!;
         this.newForm = false;
         this.formid = data._id;
+        this.form.fillingDate = data.fillingDate;
+
       }
     });
   }
@@ -472,40 +479,46 @@ export class FormdetailsComponent implements OnInit {
     return QAPallets;
   }
 
-  getUserInfo() {
-    if (this.authService.loggedInUser) {
-      this.user = this.authService.loggedInUser;
-      if (this.user.authorization) {
-        if (
-          this.authService.loggedInUser.authorization.includes(
-            "updateFormDetails"
-          )
-        ) {
-          this.allowUpdateForm = true;
-          this.disabledValue = false;
-        }
-      }
-    } else {
-      this.authService.userEventEmitter.subscribe((user) => {
-        this.user = user;
-        if (this.user.authorization) {
-          if (
-            this.authService.loggedInUser.authorization.includes(
-              "updateFormDetails"
-            )
-          ) {
-            this.allowUpdateForm = true;
-            this.disabledValue = false;
-          }
-        }
-      });
+  checkFormStatus() {
+    if (this.form.checkSignature && this.form.directorBackSignature) {
+      this.disabledValue = true;
     }
   }
 
-  // UserDisableAuth() {
-  //   this.disabledcheckNetoWeightValue = this.authService.loggedInUser.formsdisable;
-  //   console.log(this.authService.loggedInUser.formsdisable);
-  // }
+  getUserInfo() {
+        // Need to check user Au
+      if (this.authService.loggedInUser) {
+        this.user = this.authService.loggedInUser;
+        if (this.user.authorization) {
+          if (this.authService.loggedInUser.authorization.includes("updateFormDetails")) {
+            this.allowUpdateForm = true;
+            this.disabledValue = false;
+          }
+          if(this.authService.loggedInUser.authorization.includes("QAAdmin")) {
+            this.disableRemarkEditAfterSave = false
+          }
+        }
+      } 
+      // else {
+      //   this.authService.userEventEmitter.subscribe((user) => {
+      //     this.user = user;
+      //     if (this.user.authorization) {
+      //       if (
+      //         this.authService.loggedInUser.authorization.includes(
+      //           "updateFormDetails"
+      //         )
+      //       ) {
+      //         this.allowUpdateForm = true;
+      //         this.disabledValue = false;
+      //       }
+      // if(this.authService.loggedInUser.authorization.includes("QAAdmin")) {
+      //   this.allowEditAfterSave = true
+      // }
+      //     }
+      //   });
+      // }
+    
+  }
 
   wrapAllChecks() {
     for (let index = 0; index < this.form.checkTime.length; index++) {
@@ -562,7 +575,7 @@ export class FormdetailsComponent implements OnInit {
     }
   }
 
-  
+
 
 
 
