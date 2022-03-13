@@ -1,4 +1,4 @@
-<div style="font-size: 30px;" class="container-fluid bg-white text-center p-4">
+<div style="font-size: 30px" class="container-fluid bg-white text-center p-4">
   <div class="row mt-4">
     <div class="col-4"></div>
     <div class="col-4">
@@ -6,32 +6,46 @@
     </div>
     <div class="col-3"></div>
     <div class="col-1">
-      <button class="btn btn-warning" *ngIf="workPlan" (click)="backToWP()">Back to PAKA {{workPlan.serialNumber}} <i
-          class="fas fa-arrow-right"></i></button>
+      <button class="btn btn-warning" *ngIf="workPlan" (click)="backToWP()">
+        Back to PAKA {{ workPlan.serialNumber }}
+        <i class="fas fa-arrow-right"></i>
+      </button>
     </div>
   </div>
   <div class="row mt-4">
     <div class="col-4"></div>
     <div *ngIf="lastBatch" class="col-4">
-      <h3>Last Batch: <span class="text-danger">{{lastBatch.batchNumber}}</span></h3>
+      <h3>
+        Last Batch: <span class="text-danger">{{ lastBatch.batchNumber }}</span>
+      </h3>
     </div>
     <div class="col-4"></div>
   </div>
 
-  <hr class="mt-4 bg-info">
-
+  <hr class="mt-4 bg-info" />
 
   <div class="container bg-light shadow-lg p-4">
     <h3>Add Item</h3>
     <div class="row">
       <div class="col-2">
         <label for="">Order Number</label>
-        <input type="number" class="form-control" #currentOrderNumber (change)="getOrderDetails($event)"
-          placeholder="order number">
+        <input
+          type="number"
+          class="form-control"
+          #currentOrderNumber
+          (change)="getOrderDetails($event)"
+          placeholder="order number"
+        />
       </div>
       <div class="col-2">
         <label for="">Item Number</label>
-        <input type="number" class="form-control" placeholder="item number" #itemNumber (change)="checkItem($event)">
+        <input
+          type="number"
+          class="form-control"
+          placeholder="item number"
+          #itemNumber
+          (change)="checkItem($event)"
+        />
         <!-- <select class="form-control" (change)="saveItem($event, itemWeight)">
           <option disabled value="">Choose Item</option>
           <option *ngFor="let item of currentItems" [value]="[item.itemNumber, item.discription]">{{item.itemNumber}} -
@@ -40,39 +54,73 @@
       </div>
       <div class="col-5">
         <label for="">Item Name</label>
-        <input type="text" placeholder="item name" class="form-control" #itemName>
+        <input
+          type="text"
+          placeholder="item name"
+          class="form-control"
+          #itemName
+        />
       </div>
       <div class="col-2">
         <label for="">Formule Weight</label>
-        <input type="number" class="form-control w-75" placeholder="KG" #itemWeight>
+        <input
+          type="number"
+          class="form-control w-75"
+          placeholder="KG"
+          #itemWeight
+        />
       </div>
       <div class="col-1">
         <label for="">Add</label>
-        <button (click)="saveItem()" class="btn btn-outline-info form-control batchbtn"><i
-            class="fa fa-plus"></i></button>
+        <button
+          (click)="saveItem()"
+          class="btn btn-outline-info form-control batchbtn"
+        >
+          <i class="fa fa-plus"></i>
+        </button>
       </div>
     </div>
   </div>
 
   <div class="container">
     <div class="row small">
-      <div *ngFor="let item of newBatchForm.value.itemsToCook; let i = index"
-        [style.background]="item.itemNumber == newBatchForm.value.chosenFormule ? 'rgb(158, 185, 236)' : ''"
-        class="col-2 border border-black click hover" (click)="setMainFormule(item)">
-        <i class="float-left fa fa-times text-danger" ngbTooltip="Remove" (click)="removeItem(i)"></i>
+      <div
+        *ngFor="let item of newBatchForm.value.itemsToCook; let i = index"
+        [style.background]="
+          item.itemNumber == newBatchForm.value.chosenFormule
+            ? 'rgb(158, 185, 236)'
+            : ''
+        "
+        class="col-2 border border-black click hover"
+        (click)="setMainFormule(item)"
+      >
+        <i
+          class="float-left fa fa-times text-danger"
+          ngbTooltip="Remove"
+          (click)="removeItem(i)"
+        ></i>
         <div
-          [ngbTooltip]="item.itemNumber == newBatchForm.value.chosenFormule ? 'Main Formule' : 'Set as main formule'">
-          <p class="font-italic">Order {{item.orderNumber}}</p>
-          <p class="text-info smaller"><span class="font-weight-bold">item {{item.itemNumber}}</span> -
-            {{item.itemName}}</p>
-          <p class="text-warning">{{finalWeight}}KG</p>
+          [ngbTooltip]="
+            item.itemNumber == newBatchForm.value.chosenFormule
+              ? 'Main Formule'
+              : 'Set as main formule'
+          "
+        >
+          <p class="font-italic">Order {{ item.orderNumber }}</p>
+          <p class="text-info smaller">
+            <span class="font-weight-bold">item {{ item.itemNumber }}</span> -
+            {{ item.itemName }}
+          </p>
+          <p class="text-warning">{{ finalWeight }}KG</p>
         </div>
       </div>
     </div>
     <div class="row p-2">
       <div class="col-4"></div>
       <div class="col-4">
-        <h4 class="text-center">Final Weight: {{newBatchForm.value.weightKg}} KG</h4>
+        <h4 class="text-center">
+          Final Weight: {{ newBatchForm.value.weightKg }} KG
+        </h4>
       </div>
       <div class="col-4"></div>
     </div>
@@ -84,32 +132,56 @@
         <div class="row mt-4">
           <div class="col-3"></div>
           <div class="col-3">
-            <label style="margin-bottom: 0" class="form-control"><b>Production Date</b></label>
+            <label style="margin-bottom: 0" class="form-control"
+              ><b>Production Date</b></label
+            >
             <!--4-->
-            <label style="margin-bottom: 0" class="form-control"><b>Expires in (years)</b></label>
+            <label style="margin-bottom: 0" class="form-control"
+              ><b>Expires in (years)</b></label
+            >
             <!--5-->
-            <label style="margin-bottom: 0" class="form-control"><b>Barrels</b></label>
+            <label style="margin-bottom: 0" class="form-control"
+              ><b>Barrels</b></label
+            >
             <!--6-->
-            <label style="margin-bottom: 0" class="form-control"><b>PH</b></label>
+            <label style="margin-bottom: 0" class="form-control"
+              ><b>PH</b></label
+            >
             <!--8-->
-            <label style="margin-bottom: 0" class="form-control"><b>Batch</b></label>
+            <label style="margin-bottom: 0" class="form-control"
+              ><b>Batch</b></label
+            >
             <!--9-->
           </div>
           <div class="col-3">
-            <input type="date" formControlName="produced" value="{{ today | date:'yyyy-MM-dd' }}" class="form-control">
+            <input
+              type="date"
+              formControlName="produced"
+              value="{{ today | date: 'yyyy-MM-dd' }}"
+              class="form-control"
+            />
             <!--4-->
             <select formControlName="expration" class="form-control">
               <!--5-->
-              <option value=2>2</option>
-              <option value=3>3</option>
-              <option value=4 selected='true'>4</option>
-              <option value=5>5</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4" selected="true">4</option>
+              <option value="5">5</option>
             </select>
-            <input type="number" formControlName="barrels" class="form-control">
+            <input
+              type="number"
+              formControlName="barrels"
+              class="form-control"
+            />
             <!--6-->
-            <input type="text" formControlName="ph" class="form-control">
+            <input type="text" formControlName="ph" class="form-control" />
             <!--8-->
-            <input type="text" formControlName="batchNumber" minlength="5" class="form-control">
+            <input
+              type="text"
+              formControlName="batchNumber"
+              minlength="5"
+              class="form-control"
+            />
             <!--9-->
           </div>
           <div class="col-3"></div>
@@ -118,8 +190,14 @@
         <div class="row mt-4">
           <div class="col-4"></div>
           <div class="col-4">
-            <button type="submit" class="btn btn-danger form-control" *ngIf="newBatchAllowed" [disabled]="disableButton"
-              [style.cursor]="disableButton ? 'not-allowed' : 'pointer'">Add Batch
+            <button
+              type="submit"
+              class="btn btn-danger form-control"
+              *ngIf="newBatchAllowed"
+              [disabled]="disableButton"
+              [style.cursor]="disableButton ? 'not-allowed' : 'pointer'"
+            >
+              Add Batch
             </button>
           </div>
           <div class="col-4"></div>
@@ -129,7 +207,11 @@
       <div class="row mt-4">
         <div class="col-4"></div>
         <div class="col-4">
-          <button (click)="addNewBatch(true)" class="btn btn-success form-control">Print Sticker
+          <button
+            (click)="addNewBatch(true)"
+            class="btn btn-success form-control"
+          >
+            Print Sticker
           </button>
         </div>
         <div class="col-4"></div>
@@ -138,7 +220,11 @@
       <div class="row mt-4">
         <div class="col-4"></div>
         <div class="col-4">
-          <button (click)="resetBatchValues()" class="btn btn-primary form-control">Reset Values
+          <button
+            (click)="resetBatchValues()"
+            class="btn btn-primary form-control"
+          >
+            Reset Values
           </button>
         </div>
         <div class="col-4"></div>
@@ -147,35 +233,87 @@
       <div class="row">
         <div class="col-4"></div>
         <div class="col-4">
-          <button style="visibility: hidden;" #printBtn [useExistingCss]="false" class="btn btn-success"
-            [printStyle]="{'#container':{'width':'10cm','height':'10cm', 'box-sizing':'border-box','padding':'20px','font-size':'20px'},div:{'font-family':'Arial', 'padding-right': '5px' }, '#product':{'text-align':'center', 'border-bottom':'solid 2px black', 'padding':'0px 0px 20px 0px'}}"
-            printSectionId="print-section" ngxPrint>Print</button>
+          <button
+            style="visibility: visible"
+            #printBtn
+            [useExistingCss]="false"
+            class="btn btn-success"
+            [printStyle]="{
+              '#container': {
+                width: '10cm',
+                height: '10cm',
+                'box-sizing': 'border-box',
+                padding: '20px',
+                'font-size': '20px'
+              },
+              div: { 'font-family': 'Arial', 'padding-right': '5px' },
+              '#product': {
+                'text-align': 'center',
+                'border-bottom': 'solid 2px black',
+                padding: '0px 0px 20px 0px'
+              }
+            }"
+            printSectionId="print-section"
+            ngxPrint
+          >
+            Print
+          </button>
         </div>
         <div class="col-4"></div>
       </div>
-
-
     </div>
   </div>
 </div>
-
-<div class="clearfix" id="print-section" style="visibility: hidden">
-  <div *ngFor="let sticker of allStickers;let i=index">
-    <div dir="rtl" class="container-fluid" id="container" style="margin-left:0px;">
+<h1>Heading</h1>
+<div id="barcode">
+  Above barcode:
+  <ngx-barcode
+    [bc-element-type]="elementType"
+    [bc-value]="bcValue"
+    [bc-format]="format"
+    [bc-line-color]="lineColor"
+    [bc-width]="width"
+    [bc-height]="height"
+    [bc-display-value]="displayValue"
+    [bc-font-options]="fontOptions"
+    [bc-font]="font"
+    [bc-text-align]="textAlign"
+    [bc-text-position]="textPosition"
+    [bc-text-margin]="textMargin"
+    [bc-font-size]="fontSize"
+    [bc-background]="background"
+    [bc-margin]="margin"
+    [bc-margin-top]="marginTop"
+    [bc-margin-bottom]="marginBottom"
+    [bc-margin-left]="marginLeft"
+    [bc-margin-right]="marginRight"
+    >{{ bcValue }}
+  </ngx-barcode>
+  below barcode
+</div>
+<div class="clearfix" id="print-section" style="visibility: visible">
+  <div *ngFor="let sticker of allStickers; let i = index">
+    <div
+      dir="rtl"
+      class="container-fluid"
+      id="container"
+      style="margin-left: 0px"
+    >
       <div class="row">
         <div id="product" class="col-12">
-          <span>שם החומר:</span>{{newBatchForm.controls['itemName'].value}}
+          <span>שם החומר:</span>{{ newBatchForm.controls["itemName"].value }}
         </div>
       </div>
       <div class="row">
-        <div style="border-bottom: 1px solid black;" class="col-12">
-          <span>אצווה:</span> {{newBatchForm.controls['batchNumber'].value}}
+        <div style="border-bottom: 1px solid black" class="col-12">
+          <span>אצווה:</span> {{ newBatchForm.controls["batchNumber"].value }}
         </div>
       </div>
 
       <div class="row">
-        <div style="border-bottom: 1px solid black;" class="col-12">
-          <span>ת.ייצור: </span>{{newBatchForm.controls['produced'].value | date: 'yyyy-MM-dd' }}
+        <div style="border-bottom: 1px solid black" class="col-12">
+          <span>ת.ייצור: </span
+          >{{ newBatchForm.controls["produced"].value | date: "yyyy-MM-dd" }}
         </div>
         <!-- <div style="border-bottom: 1px solid black;" class="col-6">
           <span>מק"טים: </span>
@@ -184,31 +322,41 @@
       </div>
 
       <div class="row">
-        <div style="border-bottom: 1px solid black;" class="col-12">
-          <span>ת.תפוגה: </span>{{newBatchForm.controls['expration'].value | date: 'yyyy-MM-dd'}}
+        <div style="border-bottom: 1px solid black" class="col-12">
+          <span>ת.תפוגה: </span
+          >{{ newBatchForm.controls["expration"].value | date: "yyyy-MM-dd" }}
         </div>
-        <div style="border-bottom: 1px solid black;" class="col-12">
-          <span>PH: </span>{{newBatchForm.controls['ph'].value}}{{newBatchForm.ph}}
-        </div>
-      </div>
-
-      <div class="row">
-        <div style="border-bottom: 1px solid black;" class="col-12">
-          <span>הזמנות / פריטים: </span><br>
-          <span *ngFor="let item of newBatchForm.value.itemsToCook">הזמנה {{item.orderNumber}}, מק"ט
-            {{item.itemNumber}}, משקל {{item.weightKg}} <br></span>
+        <div style="border-bottom: 1px solid black" class="col-12">
+          <span>PH: </span>{{ newBatchForm.controls["ph"].value
+          }}{{ newBatchForm.ph }}
         </div>
       </div>
 
       <div class="row">
-        <div style="border-bottom: 1px solid black;" class="col-6">
-          <span>משקל סה"כ: </span>{{newBatchForm.controls['weightKg'].value}}
-        </div>
-        <div style="border-bottom: 1px solid black;" class="col-6">
-          <span>חביות: </span>{{sticker.printNum}}
+        <div style="border-bottom: 1px solid black" class="col-12">
+          <span>הזמנות / פריטים: </span><br />
+          <span *ngFor="let item of newBatchForm.value.itemsToCook"
+            >הזמנה {{ item.orderNumber }}, מק"ט {{ item.itemNumber }}, משקל
+            {{ item.weightKg }} <br
+          /></span>
         </div>
       </div>
 
+      <div class="row">
+        <div style="border-bottom: 1px solid black" class="col-6">
+          <span>משקל סה"כ: </span>{{ newBatchForm.controls["weightKg"].value }}
+        </div>
+        <div style="border-bottom: 1px solid black" class="col-6">
+          <span>חביות: </span>{{ sticker.printNum }}.....ID:
+          {{ newBatchForm.controls["batchNumber"].value }}-{{ i + 1 }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <ngx-barcode [bc-value]="bacValue" [bc-display-value]="true">
+          </ngx-barcode>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -31,6 +31,7 @@ export class BulksInventoryComponent implements OnInit {
     barcode: new FormControl(""),
     arrivalDate: new FormControl(new Date()),
   });
+  barrelArivalView: boolean = true;
 
   constructor(
     private inventoryService: InventoryService,
@@ -61,4 +62,8 @@ export class BulksInventoryComponent implements OnInit {
   receiveBarrel() {}
 
   getShelves() {}
+
+  readyBarrelArrival() {
+    this.barrelArivalView = true;
+  }
 }

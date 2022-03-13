@@ -3,13 +3,24 @@ import { ToastrService } from "ngx-toastr";
 import { ItemsService } from "src/app/services/items.service";
 import { BatchesService } from "src/app/services/batches.service";
 import { InventoryService } from "src/app/services/inventory.service";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import {
+  FormControl,
+  FormGroup,
+  FormBuilder,
+  Validators,
+} from "@angular/forms";
 import { AuthService } from "src/app/services/auth.service";
 import { OrdersService } from "src/app/services/orders.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ProductionService } from "src/app/services/production.service";
 import { WorkPlan } from "../../production/planning/WorkPlan";
 import { AotCompiler } from "@angular/compiler";
+import { xor } from "lodash";
+import {
+  NgbModal,
+  NgbNav,
+  NgbNavChangeEvent,
+} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-new-batch",
@@ -34,21 +45,42 @@ export class NewBatchComponent implements OnInit {
   workPlanFormule: string;
   finalWeight: number;
 
+  //barcode parameters
+  bcValue = "BARCODE";
+  elementType = "svg";
+  format = "CODE128";
+  lineColor = "#000000";
+  width = 2;
+  height = 50;
+  displayValue = true; // true=display bcValue  fonts under barcode
+  fontOptions = "";
+  font = "monospace";
+  textAlign = "center";
+  textPosition = "bottom";
+  textMargin = 1.5;
+  fontSize = 20;
+  background = "#ffffff";
+  margin = 10;
+  marginTop = 10;
+  marginBottom = 10;
+  marginLeft = 10;
+  marginRight = 10;
+
   newBatchForm: FormGroup = new FormGroup({
     chosenFormule: new FormControl("", Validators.required),
     itemName: new FormControl("", Validators.required),
     produced: new FormControl(new Date(this.today), Validators.required),
     expration: new FormControl("", Validators.required),
-    barrels: new FormControl("", Validators.required),
+    barrels: new FormControl(0, Validators.min(1)),
     ph: new FormControl("", Validators.required),
-    weightKg: new FormControl(0, Validators.required),
-    weightQtyLeft: new FormControl(0, Validators.required),
+    weightKg: new FormControl("", Validators.required),
+    weightQtyLeft: new FormControl(""),
     batchNumber: new FormControl(this.batchDefaultNumber, [
       Validators.required,
-      Validators.minLength(5),
+      Validators.minLength(7),
     ]),
     batchCreated: new FormControl(0, Validators.required),
-    itemsToCook: new FormControl([], Validators.required),
+    itemsToCook: new FormControl([], Validators.minLength(1)),
   });
 
   constructor(
@@ -201,30 +233,29 @@ export class NewBatchComponent implements OnInit {
     });
   }
 
+  findInvalidControls() {
+    const invalid = [];
+    const controls = this.newBatchForm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        invalid.push(name);
+      }
+    }
+    return invalid;
+  }
+
   addNewBatch(justStickers: boolean) {
     console.log(this.newBatchForm.value);
-    if (parseInt(this.newBatchForm.controls["barrels"].value) > 1) {
-      for (
-        let x = 1;
-        x < parseInt(this.newBatchForm.controls["barrels"].value) + 1;
-        x++
-      ) {
-        let batchSticker = {
-          batch: this.newBatchForm.value,
-          printNum:
-            "" +
-            x +
-            "/" +
-            parseInt(this.newBatchForm.controls["barrels"].value),
-        };
-        this.allStickers.push(batchSticker);
-      }
-    } else {
-      let batchSticker = {
-        batch: this.newBatchForm.value,
-        printNum: "1/1",
-      };
-      this.allStickers.push(batchSticker);
+    console.log(this.newBatchForm.status);
+    let invalids = this.findInvalidControls();
+    console.log(invalids);
+    if (invalids.length > 0) {
+      this.toastSrv.error(
+        "Value in field " +
+          invalids[0] +
+          " is not valid, please fix and try again."
+      );
+      return;
     }
     // weightQtyLeft value doesn't exist in the form
     console.log(this.newBatchForm.controls.weightKg.value);
@@ -236,6 +267,7 @@ export class NewBatchComponent implements OnInit {
     this.newBatchForm.controls.batchNumber.setValue(
       this.newBatchForm.get("batchNumber").value.toLowerCase()
     );
+
     // set the date to today by default
     this.newBatchForm.controls.batchCreated.setValue(new Date().getTime());
 
@@ -256,96 +288,187 @@ export class NewBatchComponent implements OnInit {
         "Batch number must include at least 5 charchters",
         "Invalid Batch Number"
       );
-    } else {
-      if (justStickers) {
-        // just print stickers
-        //TODO: CHECK IF BATCH EXIST!!!
-        this.batchService
-          .checkIfBatchExist(
-            this.newBatchForm.get("batchNumber").value.toLowerCase()
-          )
-          .subscribe((response) => {
-            if (response) {
-              if (
-                confirm(
-                  "בחרת רק להדפיס מדבקות. באטצ' לא יתווסף למערכת. האם להמשיך?"
-                )
-              ) {
-                setTimeout(() => {
-                  this.printBtn.nativeElement.click();
-                  // this.newBatchForm.reset()
-                  // this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
-                  this.allStickers = [];
-                }, 2000);
-              }
-            } else this.toastSrv.error("", "Batch not exist.");
-          });
-      }
-      // add batch AND REDUCE AMOUNTS!!!
-      else {
-        if (this.newBatchForm.value.chosenFormule == "") {
-          this.toastSrv.error("Please Choose Main Formule");
-        } else {
-          if (
-            confirm("באטצ' יתווסף למערכת והכמויות יירדו מהמלאי. האם להמשיך?")
-          ) {
-            this.disableButton = true;
-            this.toastSrv.info("Adding Batch. Please wait...");
-            let con = true;
-            let user = this.authService.loggedInUser.userName;
-            console.log(user);
-            // reduce materials from itemShells
-            this.inventorySrv
-              .reduceMaterialAmounts(
-                this.newBatchForm.controls.batchNumber.value,
-                this.newBatchForm.controls.chosenFormule.value,
-                this.newBatchForm.controls.weightKg.value,
-                user,
-                true
-              )
-              .subscribe((data) => {
-                console.log(data);
-                this.disableButton = false;
-                if (data == "Formule Not Found") {
-                  this.toastSrv.error(data);
-                  con = confirm(
-                    "פורמולה לא קיימת. כמויות לא ירדו מהמלאי. להוסיף באטצ' בכל זאת?"
-                  );
-                  this.disableButton = false;
-                }
-                if (data.materials && data.updatedShells)
-                  this.toastSrv.success("Amounts reduced. Shelfs updated.");
-                if (con) {
-                  // add batch to batches list
-                  console.log(this.newBatchForm);
+    }
 
-                  this.batchService
-                    .addBatch(this.newBatchForm.value)
-                    .subscribe((data) => {
-                      console.log(data);
-                      if (data.msg == "success") {
-                        this.printBtn.nativeElement.click();
-                        this.toastSrv.success("באטצ נוסף בהצלחה !");
-                        setTimeout(() => {
-                          this.allStickers = [];
-                          this.getLastBatch();
-                          if (confirm("האם יש עוד חומר לייצר?")) {
-                            let finalWeight;
-                            while (isNaN(finalWeight))
-                              finalWeight = prompt("הכנס משקל");
-                            this.finalWeight = finalWeight;
-                          }
-                        }, 2000);
-                      } else if (data.msg == "Batch Allready Exist")
-                        this.toastSrv.error(
-                          "Please fill a different batch number.",
-                          "Batch number allready exist."
-                        );
-                      else this.toastSrv.error("Something went wrong.");
-                    });
-                }
-              });
-          }
+    if (parseInt(this.newBatchForm.controls["barrels"].value) > 1) {
+      for (
+        let x = 1;
+        x < parseInt(this.newBatchForm.controls["barrels"].value) + 1;
+        x++
+      ) {
+        //create barcode
+        let barcode = this.newBatchForm.value.batchNumber + "-" + x;
+        let batchSticker = {
+          bcValue: barcode,
+          batch: this.newBatchForm.value,
+          printNum:
+            "" +
+            x +
+            "/" +
+            parseInt(this.newBatchForm.controls["barrels"].value),
+        };
+        this.allStickers.push(batchSticker);
+      }
+      console.log(this.allStickers);
+    } else {
+      // create barcode
+      let barcode = this.newBatchForm.value.batchNumber + "-1";
+
+      let batchSticker = {
+        bcValue: barcode,
+        batch: this.newBatchForm.value,
+        printNum: "1/1",
+      };
+      this.allStickers.push(batchSticker);
+    }
+    console.log(this.allStickers);
+
+    if (justStickers) {
+      // just print stickers
+      //TODO: CHECK IF BATCH EXIST!!!
+      this.batchService
+        .checkIfBatchExist(
+          this.newBatchForm.get("batchNumber").value.toLowerCase()
+        )
+        .subscribe((response) => {
+          if (response) {
+            if (
+              confirm(
+                "בחרת רק להדפיס מדבקות. באטצ' לא יתווסף למערכת. האם להמשיך?"
+              )
+            ) {
+              setTimeout(() => {
+                this.printBtn.nativeElement.click();
+                // this.newBatchForm.reset()
+                // this.newBatchForm.controls.batchNumber.setValue(this.batchDefaultNumber)
+                this.allStickers = [];
+              }, 2000);
+            }
+          } else this.toastSrv.error("", "Batch not exist.");
+        });
+    }
+    // add batch AND REDUCE AMOUNTS!!!
+    else {
+      if (this.newBatchForm.value.chosenFormule == "") {
+        this.toastSrv.error("Please Choose Main Formule");
+      } else {
+        if (confirm("באטצ' יתווסף למערכת והכמויות יירדו מהמלאי. האם להמשיך?")) {
+          this.disableButton = true;
+          this.toastSrv.info("Adding Batch. Please wait...");
+          let con = true;
+          let user = this.authService.loggedInUser.userName;
+          console.log(user);
+          // reduce materials from itemShells
+
+          this.batchService
+            .addBatch(this.newBatchForm.value)
+            .subscribe((data) => {
+              console.log(data);
+              if (data.msg == "success") {
+                this.inventorySrv
+                  .reduceMaterialAmounts(
+                    this.newBatchForm.controls.batchNumber.value,
+                    this.newBatchForm.controls.chosenFormule.value,
+                    this.newBatchForm.controls.weightKg.value,
+                    user,
+                    true
+                  )
+                  .subscribe((data) => {
+                    console.log(data);
+                    this.disableButton = false;
+                    if (data == "Formule Not Found") {
+                      this.toastSrv.error(data);
+                      con = confirm(
+                        "פורמולה לא קיימת. כמויות לא ירדו מהמלאי. להוסיף באטצ' בכל זאת?"
+                      );
+                      this.disableButton = false;
+                    }
+                    if (data.materials && data.updatedShells)
+                      this.toastSrv.success("Amounts reduced. Shelfs updated.");
+                  });
+
+                this.printBtn.nativeElement.click();
+                this.toastSrv.success("באטצ נוסף בהצלחה !");
+                setTimeout(() => {
+                  this.allStickers = [];
+                  this.getLastBatch();
+                  if (confirm("האם יש עוד חומר לייצר?")) {
+                    let finalWeight;
+                    while (isNaN(finalWeight))
+                      finalWeight = prompt("הכנס משקל");
+                    this.finalWeight = finalWeight;
+                  }
+                }, 2000);
+              } else if (data.msg == "Batch Allready Exist") {
+                this.toastSrv.error(
+                  "Please fill a different batch number.",
+                  "Batch number allready exist."
+                );
+                this.disableButton = false;
+              } else {
+                this.toastSrv.error("Something went wrong.");
+                this.resetBatchValues();
+                return;
+              }
+            });
+
+          // this.inventorySrv
+          //   .reduceMaterialAmounts(
+          //     this.newBatchForm.controls.batchNumber.value,
+          //     this.newBatchForm.controls.chosenFormule.value,
+          //     this.newBatchForm.controls.weightKg.value,
+          //     user,
+          //     true
+          //   )
+          //   .subscribe((data) => {
+          //     console.log(data);
+          //     this.disableButton = false;
+          //     if (data == "Formule Not Found") {
+          //       this.toastSrv.error(data);
+          //       con = confirm(
+          //         "פורמולה לא קיימת. כמויות לא ירדו מהמלאי. להוסיף באטצ' בכל זאת?"
+          //       );
+          //       this.disableButton = false;
+          //     }
+          //     if (data.materials && data.updatedShells)
+          //       this.toastSrv.success("Amounts reduced. Shelfs updated.");
+          //     if (con) {
+          //       // add batch to batches list
+          //       console.log(this.newBatchForm);
+
+          //       this.batchService
+          //         .addBatch(this.newBatchForm.value)
+          //         .subscribe((data) => {
+          //           console.log(data);
+          //           if (data.msg == "success") {
+          //             this.printBtn.nativeElement.click();
+          //             this.toastSrv.success("באטצ נוסף בהצלחה !");
+          //             setTimeout(() => {
+          //               this.allStickers = [];
+          //               this.getLastBatch();
+          //               if (confirm("האם יש עוד חומר לייצר?")) {
+          //                 let finalWeight;
+          //                 while (isNaN(finalWeight))
+          //                   finalWeight = prompt("הכנס משקל");
+          //                 this.finalWeight = finalWeight;
+          //               }
+          //             }, 2000);
+          //           } else if (data.msg == "Batch Allready Exist")
+          //             this.toastSrv.error(
+          //               "Please fill a different batch number.",
+          //               "Batch number allready exist."
+          //             );
+          //           else this.toastSrv.error("Something went wrong.");
+          //         });
+          //     }
+          //   });
+        } else {
+          this.resetBatchValues();
+          this.toastSrv.info(
+            "אתה חוזר לפקודת העבודה",
+            "You are getting back to the workplan"
+          );
+          this.backToWP();
         }
       }
     }
