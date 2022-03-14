@@ -25,7 +25,7 @@
           <li
             style="cursor: pointer"
             class="task-item d-flex complete pr-2 border-bottom heb-menu"
-            (click)="importExcelFileView()"
+            (click)="barrelReturnArrival()"
           >
             החזרת חביות עודפות אחרי מילוי<span
               class="badge badge-success ml-auto pt-1"
@@ -87,7 +87,7 @@
       </div> -->
 
         <div class="text-center shadow bg-white w-75 mx-auto rounded p-5">
-          <div class="row mt-4" *ngIf="exportEmptyFile">
+          <div class="row mt-4" *ngIf="barrelArivalView">
             <div class="col-12">
               <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
                 קליטת חביות אחרי בישול
@@ -131,71 +131,10 @@
           </div>
 
           <div dir="rtl" class="row mt-4">
-            <ng-container *ngIf="exportEmptyFile">
-              <div *ngIf="whareHouse" class="col-1">
-                <!-- <button [printStyle]="{tr : {'border': 'solid 1px black'}}" style="visibility: hidden;"
-              printSectionId="print-section" #printStocktake ngxPrint><img src="../../../../assets/images/print.png"
-                alt="Print" style="width: 55px;"></button> -->
-                <img
-                  style="width: 50px; height: 50px; cursor: pointer"
-                  (click)="exportShelfListToXl()"
-                  src="../../../../assets/images/excel.png"
-                  alt=""
-                />
-              </div>
-            </ng-container>
-            <ng-container *ngIf="fetchingPrices">
-              <div class="bigLoader"></div>
-            </ng-container>
-            <ng-container *ngIf="exportEmptyFile">
-              <div class="col-3" *ngIf="!fetchingPrices && exportEmptyFile">
-                <label>מחסן</label>
-                <select
-                  (change)="getShelfsByWH($event)"
-                  #selectWh
-                  class="form-control"
-                >
-                  <option selected="true" disabled="disabled">בחר מחסן</option>
-                  <option value="Kasem">Kasem</option>
-                  <option value="material">Rosh HaAyin - Materials</option>
-                  <option value="component">Rosh HaAyin - Components</option>
-                  <option value="Rosh HaAyin products">
-                    Rosh HaAyin - Products
-                  </option>
-                  <option value="NEW KASEM">New Kasem</option>
-                  <option value="NEW KASEM-2">New Kasem-2</option>
-                  <option value="Labels">Labels</option>
-                  <option value="ARIEL 1">ARIEL 1</option>
-                  <option value="ARIEL 2">ARIEL 2</option>
-                  <option value="ARIEL 3">ARIEL 3</option>
-                  <option value="ARIEL 4">ARIEL 4</option>
-                  <option value="Rosh HaAyin-component">
-                    Rosh HaAyin Old- componenets
-                  </option>
-                </select>
-              </div>
-              <div *ngIf="whareHouse && !showFile" class="col-3">
-                <label>סנן לפי איתור</label>
-                <input class="form-control" (keyup)="filterByShelf($event)" />
-              </div>
-              <div *ngIf="whareHouse && !showFile" class="col-3">
-                <label>סנן לפי פריט</label>
-                <input
-                  list="itemNumbers"
-                  class="form-control"
-                  type="text"
-                  (change)="filterByIetmNumber($event)"
-                />
-                <datalist id="itemNumbers">
-                  <option
-                    *ngFor="let shelf of allShelfsCopy"
-                    [value]="shelf._id.item"
-                  >
-                    {{ shelf._id.item }}
-                  </option>
-                </datalist>
-              </div>
-            </ng-container>
+            <app-bulks-arrival
+              *ngIf="barrelArivalView"
+              [allWarehouses]="allWarehouses"
+            ></app-bulks-arrival>
             <div
               class="col-2"
               *ngIf="
