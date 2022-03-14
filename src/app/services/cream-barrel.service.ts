@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Http, Headers, RequestOptions, Jsonp } from "@angular/http";
 import { Observable } from "rxjs";
 import { tap, map } from "rxjs/operators";
+import { catchError } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root",
@@ -21,6 +22,6 @@ export class CreamBarrelService {
       barrelNumber +
       "&warehouse=" +
       wh;
-    return this.http.get(url).pipe(map((response) => response.json));
+    return this.http.get(url).pipe(map((response) => response.json()));
   }
 }
