@@ -977,8 +977,8 @@
                     <th>Supplied Qty</th>
                   </tr>
                   <tr *ngFor="let ship of shipmentsHistory">
-                    <td>{{ ship.packingDate | date: "dd/MM/yyyyy" }}</td>
-                    <td>{{ ship.invoiceDate | date: "dd/MM/yyyyy" }}</td>
+                    <td>{{ ship.packingDate | date: "dd/MM/YYYY" }}</td>
+                    <td>{{ ship.invoiceDate | date: "dd/MM/YYYY" }}</td>
                     <td>{{ ship.packListNumber }}</td>
                     <td>{{ ship.billNumber }}</td>
                     <td>{{ ship.orderAmount }}</td>

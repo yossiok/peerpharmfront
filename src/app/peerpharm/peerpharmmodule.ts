@@ -186,7 +186,7 @@ import { WhareHouseUpdatesComponent } from "./inventory/wharehouse/wharehouse-up
 import { ProblematicOrderItemsComponent } from "./allorders/problematics/problematic-order-items.component";
 import { ProblematicItemsComponent } from "./procurement/procumentOrders/problematic-items/problematic-items.component";
 import { MatrialArrivalsCetificatesComponent } from "./inventory/material-arrival/material-arrival-certificates/material-arrival-certificates.component";
-
+import { BulksArrivalComponent } from "./batches/bulks-inventory/bulks-arrival/bulks-arrival.component";
 @NgModule({
   exports: [
     // MatInputModule,
@@ -348,6 +348,7 @@ import { MatrialArrivalsCetificatesComponent } from "./inventory/material-arriva
     ProblematicOrderItemsComponent,
     ProblematicItemsComponent,
     MatrialArrivalsCetificatesComponent,
+    BulksArrivalComponent,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [
