@@ -72,12 +72,13 @@
           <th>ממחסן</th>
           <th>למחסן</th>
           <th>פריט / כמות / מדף</th>
-          <th>הדפסה</th>
+          <th></th>
         </tr>
       </thead>
       <div *ngIf="fetching" class="smallLoader"></div>
       <tbody *ngIf="!fetching">
-        <tr *ngFor="let move of histMovements">
+        <ng-container *ngFor="let move of histMovements">
+          <tr [ngClass]="move.canceled ? 'disable-pointer' : ''">
           <td>{{move.dateAndTime | date: 'dd/MM/yyyy'}}</td>
           <td>{{move.logs[0] ? move.logs[0].warehouseReception : ''}}</td>
           <td class="text-info">{{move.movementName}}</td>
@@ -90,14 +91,21 @@
                 <td><strong>ממדף:</strong> {{log.shell_position_in_whareHouse_Origin}}</td>
                 <td *ngIf="log.shell_position_in_whareHouse_Dest"><strong>למדף:</strong>
                   {{log.shell_position_in_whareHouse_Dest}}</td>
-                <td *ngIf="!log.shell_position_in_whareHouse_Dest"><strong>יעד:</strong> {{log.destination}}</td>
-                <td><strong>כמות:</strong> {{log.amount}}</td>
-              </tr>
-            </table>
-          </td>
-          <td><button (click)="printData(move)">Print</button></td>
-        </tr>
-      </tbody>
+                  <td *ngIf="!log.shell_position_in_whareHouse_Dest"><strong>יעד:</strong> {{log.destination}}</td>
+                  <td><strong>כמות:</strong> {{log.amount}}</td>
+                </tr>
+              </table>
+            </td>
+            <td>
+              <button class="btn btn-success" (click)="printData(move)">הדפסה</button>
+              <button *ngIf="!move.canceled" class="btn btn-danger" (click)="cancelInventory(move)">ביטול</button>
+            </td>
+          </tr>
+          <tr *ngIf="move.canceled">
+            <h2 class="text-danger text-center">בוטל!!!</h2>
+          </tr>
+        </ng-container>
+        </tbody>
     </table>
   </div>
 

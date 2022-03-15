@@ -27,6 +27,7 @@ export class CheckoutComponent implements OnInit {
   sending: boolean = false;
   disabled: boolean = false;
   isReturn: boolean = false;
+  isCanceled: boolean = false
   user: string = null;
 
   componentCheckout: FormGroup = new FormGroup({
@@ -61,15 +62,26 @@ export class CheckoutComponent implements OnInit {
   }
 
   getHistoricalCertificates() {
+    debugger
     this.warehouseService.outPrintCalled$.subscribe((data) => {
-      this.certificateReception = data.logs[0].warehouseReception;
-      this.today = data.dateAndTime;
-      data.logs.forEach((element) => {
-        element.position = element.shell_position_in_whareHouse_Origin;
-      });
-      this.outGoing = data.logs;
+      debugger
+      if(data.canceled) this.isCanceled = true
+      this.certificateReception = data.logs ? data.logs[0].warehouseReception : data.warehouseReception;
+      this.today = data.canceled ? this.today : data.dateAndTime;
+      if(data.logs) {
+        data.logs.forEach((element) => {
+          element.position = element.shell_position_in_whareHouse_Origin;
+        });
+        this.outGoing = data.logs;
+      }
+      else {
+        data.position = data.shell_position_in_whareHouse_Origin
+        this.outGoing.push(data)
+      } 
 
       setTimeout(() => {
+        debugger
+        console.log(this.outGoing)
         this.printBtn2.nativeElement.click();
         this.componentCheckout.reset();
         this.outGoing = [];
@@ -175,6 +187,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   checkout() {
+    debugger
     this.sending = true;
     console.log(this.outGoing);
     setTimeout(() => (this.sending = false), 7000); //if something goes wrong
@@ -196,7 +209,8 @@ export class CheckoutComponent implements OnInit {
             this.first.nativeElement.focus();
           }, 1500);
           this.componentCheckout.controls.valid.setValue(false);
-        } else if (data.actionLogs.length < this.outGoing.length) {
+        } else if (data.actionLogs.length < this.outGoing.length) { // ?
+          debugger
           let realData = [];
           for (let move of this.outGoing) {
             let index = data.actionLogs.findIndex((al) => {
@@ -224,18 +238,16 @@ export class CheckoutComponent implements OnInit {
           this.componentCheckout.controls.valid.setValue(false);
         } else {
           //set certificate data
-          this.certificateReception =
-            data.allResults[0].savedMovement.warehouseReception;
+          this.certificateReception = data.allResults[0].savedMovement.warehouseReception;
           for (let arrival of this.outGoing) {
-            arrival.itemName = data.allResults.find(
-              (a) => a.item == arrival.item
-            ).componentName;
+            arrival.itemName = data.allResults.find((a) => a.item == arrival.item).componentName;
             arrival.amount = Math.abs(arrival.amount);
           }
 
           this.sending = false;
           this.toastr.success("שינויים נשמרו בהצלחה", "נשמר");
           setTimeout(() => {
+            debugger
             this.printBtn2.nativeElement.click();
             setTimeout(() => (this.outGoing = []), 1000);
           }, 500);
@@ -248,6 +260,8 @@ export class CheckoutComponent implements OnInit {
   }
 
   justPrint() {
+    debugger
+    console.log(this.outGoing)
     setTimeout(() => {
       this.printBtn2.nativeElement.click();
     }, 500);

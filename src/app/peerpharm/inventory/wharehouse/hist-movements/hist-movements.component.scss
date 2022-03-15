@@ -8,3 +8,8 @@
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
   }
+
+  .disable-pointer {
+    pointer-events: none;
+    text-decoration: line-through;
+  }

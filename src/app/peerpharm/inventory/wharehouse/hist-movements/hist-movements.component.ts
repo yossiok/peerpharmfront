@@ -57,7 +57,7 @@ export class HistMovementsComponent implements OnInit, OnChanges {
     private purchaseService: Procurementservice,
     private userService: UsersService,
     private warehouseService: WarehouseService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getAllUsers();
@@ -75,10 +75,10 @@ export class HistMovementsComponent implements OnInit, OnChanges {
   getAllUsers() {
     this.userService.getAllUsers().subscribe(
       (users) =>
-        (this.allUsers = users.sort((a, b) => {
-          if (a.userName.toLowerCase() > b.userName.toLowerCase()) return 1;
-          else return -1;
-        }))
+      (this.allUsers = users.sort((a, b) => {
+        if (a.userName.toLowerCase() > b.userName.toLowerCase()) return 1;
+        else return -1;
+      }))
     );
   }
 
@@ -97,7 +97,6 @@ export class HistMovementsComponent implements OnInit, OnChanges {
 
     queryString = queryString.slice(0, -1);
     this.inventoryService.getHistMovements(queryString).subscribe((data) => {
-      console.log(data);
 
       // check if the recption belongs to wh authorized for this user, and the movement type is one of the three: in, out or between wh
       data.forEach((element) => {
@@ -123,9 +122,13 @@ export class HistMovementsComponent implements OnInit, OnChanges {
   }
 
   printData(move) {
+    debugger
     this.initTabByName.emit(move.movementType);
 
     setTimeout(() => {
+
+      // if ( (move.movementType == "out" && !move.canceled) || (move.movementType == "in" && move.canceled) ) {
+      // } else if ( (move.movementType == "in" && !move.cancel
       if (move.movementType == "out") {
         this.warehouseService.outCalledMethod(move);
       } else if (move.movementType == "in") {
@@ -135,6 +138,30 @@ export class HistMovementsComponent implements OnInit, OnChanges {
       }
       this.historicalMovements.reset();
     }, 500);
+  }
+
+  cancelInventory(movement) {
+    if (confirm(`ביטול תנועה מס' ${movement.deliveryNote}. האם להמשיך?`)) {
+    console.log('movement to cancel: ', movement)
+      switch (movement.movementType) {
+        case 'in':
+          this.inventoryService.checkoutComponents(movement, true).subscribe(data => {
+            if (data.failedResults.length > 0) this.toastr.error('ככל הנראה הפריט לא נמצא במלאי', 'לא ניתן לבטל תנועה')
+            else {
+              console.log('data from server: ', data)
+              this.getReceptions()
+              // print cancellation-certificates
+              for (let result of data.allResults) {
+                result.canceled.cancel = true
+                this.printData(result.canceled)
+              }
+            }
+          })
+        // case 'out':
+        // case 'shelfChange':
+        // case 'whareHouseChange':
+      }
+    }
   }
 
   resetTable() {

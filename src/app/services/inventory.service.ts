@@ -654,8 +654,8 @@ export class InventoryService {
       .pipe(map((res) => res.json()));
   }
 
-  checkoutComponents(allOutgoing) {
-    let url = this.baseUrl + "itemShell/checkout";
+  checkoutComponents(allOutgoing, cancel?) {
+    let url = cancel ? this.baseUrl + "itemShell/checkout?cancel=true" : this.baseUrl + "itemShell/checkout";
     return this.http
       .post(url, JSON.stringify({ allOutgoing }), this.options)
       .pipe(map((res) => res.json()));

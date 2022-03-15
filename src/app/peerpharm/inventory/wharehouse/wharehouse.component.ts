@@ -172,6 +172,7 @@ export class WharehouseComponent implements OnInit {
   }
 
   dirSet(action, direction) {
+    debugger
     if (direction != "production") this.multiInputLines = false;
     this.inventoryUpdateList = []; //reseting list before direction change
     this.multiLinesArr = [];
@@ -956,6 +957,7 @@ export class WharehouseComponent implements OnInit {
   }
 
   initTabByName(name) {
+    debugger
     this.dirSet("stkManagment", name);
   }
 }

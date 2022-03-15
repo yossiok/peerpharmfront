@@ -122,7 +122,12 @@
         </p>
       </header>
       <main>
-        <h2>תעודת <span *ngIf="!isReturn">יציאה</span><span *ngIf="isReturn">החזרה</span> מס' {{certificateReception}}
+        <h2>תעודת 
+          <span *ngIf="isCanceled">ביטול</span>
+          <span *ngIf="!isReturn && !isCanceled">יציאה</span>
+          <span *ngIf="isReturn">החזרה</span>
+           <span *ngIf="isCanceled"> לתנועה</span> 
+           מס' {{certificateReception}}
         </h2>
         <p class='originDestWh'>
           <span><u>תאריך:</u></span>&nbsp;&nbsp;
@@ -146,9 +151,9 @@
               <tr>
                 <td class="cellPadding">{{i+1}}</td>
                 <td>{{arrival.item}}</td>
-                <td>{{arrival.whareHouse}}</td>
-                <td>{{arrival.position}}</td>
-                <td>{{arrival.amount>=0?arrival.amount:-arrival.amount}}</td>
+                <td>{{arrival.whareHouse ? arrival.whareHouse : arrival.WH_destName ? arrival.WH_destName : arrival.WH_originName}}</td>
+                <td>{{arrival.position ? arrival.position : arrival.shell_position_in_whareHouse_Origin ? arrival.shell_position_in_whareHouse_Origin : arrival.shell_position_in_whareHouse_Dest}}</td>
+                <td>{{arrival.amount >= 0 ? arrival.amount : -arrival.amount}}</td>
                 <td>{{arrival.itemName}}</td>
                 <td>{{arrival.destination}}</td>
               </tr>
