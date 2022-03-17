@@ -332,6 +332,11 @@ export class ScheduleComponent implements OnInit {
       `/peerpharm/forms/formDetails/${undefined}/${scheduleId}`,
     ]);
     // location.href="http://localhost:4200/#/peerpharm/forms/formDetails/"+scheduleId+'scheduleId';
+
+
+
+    this.router.navigate([]).then(result => {  window.open( `#/peerpharm/forms/formDetails/${undefined}/${scheduleId}`, '_blank'); });
+
   }
 
   getAllSchedule(today) {

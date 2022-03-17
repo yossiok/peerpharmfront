@@ -1233,6 +1233,7 @@ export class AllFormulesComponent implements OnInit {
     } else return "";
   }
 
+  // For the draggable element
   startItemDrag(ev) {
     this.dragging = true;
     ev.dataTransfer.setData(
@@ -1241,6 +1242,7 @@ export class AllFormulesComponent implements OnInit {
     );
   }
 
+  // For the drag container
   startShakeDragOver(ev) {
     ev.preventDefault();
   }
@@ -1257,6 +1259,7 @@ export class AllFormulesComponent implements OnInit {
     // }
   }
 
+  // For The drag container
   getDroppedElemnt(ev) {
     // this.stopAllShakes();
 
@@ -1283,13 +1286,17 @@ export class AllFormulesComponent implements OnInit {
     let idx = phase.items.findIndex(
       (item) => item.itemNumber == droppedItemNum
     );
-    if (idx > -1) {
+    let includes = phase.items.filter(
+      (item) => item.itemNumber == droppedItemNum
+    );
+    if (idx > -1 && (droppedPhase !=droppedIntoPhase) ) {
       this.toastSrv.error(
         "הפריט שהועבר קיים כבר בפאזה אליה הועבר ולכן הפעולה בוטלה."
       );
       return;
     }
     //remove from old phase
+    console.log("this is the updateFormule array: ",this.updateFormule);
     let itemToaddToNewPhase = this.updateFormule.phases
       .find((x) => x.phaseName == droppedPhase)
       .items.find((a) => a.itemNumber == droppedItemNum);

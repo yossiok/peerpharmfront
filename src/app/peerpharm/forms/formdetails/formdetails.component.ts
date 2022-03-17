@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormsService } from "../../../services/forms.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "../../../services/auth.service";
 import { UserInfo } from "../../taskboard/models/UserInfo";
 import { TranslateService } from "@ngx-translate/core";
@@ -57,6 +57,8 @@ export class FormdetailsComponent implements OnInit {
     orderNumber: "",
     itemNumber: "",
     isPersonalPackage: false,
+    kindOfPallet:""
+
   };
 
   newQAPersonalPallet = {
@@ -72,6 +74,7 @@ export class FormdetailsComponent implements OnInit {
     orderNumber: "",
     itemNumber: "",
     isPersonalPackage: true,
+    kindOfPallet:""
   };
 
   newTest = {
@@ -93,7 +96,8 @@ export class FormdetailsComponent implements OnInit {
     private toastService: ToastrService,
     private scheduleService: ScheduleService,
     private batchService: BatchesService,
-    private itemService: ItemsService
+    private itemService: ItemsService,
+    private router: Router
   ) { }
 
    ngOnInit() {
@@ -391,13 +395,30 @@ export class FormdetailsComponent implements OnInit {
           }
         } else this.toastService.error("טופס לא עודכן , אנא נסה שנית או פנה למנהל מערכת");
       });
+      // ERANNNNNNN
+      // check if there is manager signature (whice mean the form is closed)
+      // If the form is close make a log
     } catch (error) {
       this.toastService.error("אירעה שגיאה בעדכון , אנא נסה שנית");
     }
   }
+  async updateTest(indexOfTest,test){
+    this.form.checkBox_clean.splice(indexOfTest, 1)
+    this.form.checkBox_closedWaterProof.splice(indexOfTest, 1)
+    this.form.checkBox_correctFinalPacking.splice(indexOfTest, 1)
+    this.form.checkBox_lotNumberPrinting.splice(indexOfTest, 1)
+    this.form.checkBox_stickerPrinting.splice(indexOfTest, 1)
+    this.form.checkNetoWeight.splice(indexOfTest, 1)
+    this.form.checkTime.splice(indexOfTest, 1)
+    this.allChecks.splice(indexOfTest, 1);
+    this.addNewTest(test);
+  }
 
   goBack() {
-    window.history.back();
+    // window.history.back();
+    this.router.navigate([
+      `/peerpharm/schedule/fillschedule`,
+    ]);
   }
 
   createFormDetails() {

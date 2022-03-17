@@ -498,11 +498,14 @@ export class NewProcurementComponent implements OnInit, OnChanges {
                   "הערה חשובה!"
                 );
               this.itemForm.controls.name.setValue(data[0].componentName);
+              //set price
+              this.itemForm.controls.price.setValue(data[0].manualPrice);
+              // set coin
               this.itemForm.controls.coin.setValue(
-                data[0].coin ? data[0].coin.toUpperCase() : "ILS"
+                data[0].manualCoin ? data[0].manualCoin.toUpperCase() : null
               );
               this.itemForm.controls.measurement.setValue(
-                data[0].unitOfMeasure
+                data[0].unitOfMeasure 
                   ? data[0].unitOfMeasure
                   : data[0].measurement
               );
@@ -510,8 +513,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
                 data[0].componentNs
               );
 
-              //set price
-              this.itemForm.controls.price.setValue(data[0].price);
+              
               if (!data[0].price || data[0].price == "") {
                 // search in suppliers
                 var supplier = data[0].alternativeSuppliers.find(

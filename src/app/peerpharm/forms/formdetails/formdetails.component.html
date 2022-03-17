@@ -222,29 +222,42 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let check of allChecks">
-                <td>{{check.checkTime}}</td>
+              <tr *ngFor="let check of allChecks;let indexOfelement=index">
+                <td>{{check.checkTime}}
+                    <br><input *ngIf="!disabledValue" type="time" [disabled]="disabledValue" [(ngModel)]="check.checkTime" class="form-control">
+                </td>
                 <td>
                   <i *ngIf="check.checkBox_clean" class="fas fa-check text-success"></i>
                   <i *ngIf="!check.checkBox_clean" class="fas fa-times text-danger"></i>
+                  <br><input [disabled]="disabledValue" type="checkbox" [(ngModel)]="check.checkBox_clean">
                 </td>
-                <td>{{check.checkNetoWeight}}</td>
+                <td>{{check.checkNetoWeight}}
+                  <br><input type="text" [disabled]="disabledValue" [(ngModel)]="check.checkNetoWeight"
+                    class="form-control">
+                </td>
                 <td>
                   <i *ngIf="check.checkBox_closedWaterProof" class="fas fa-check text-success"></i>
                   <i *ngIf="!check.checkBox_closedWaterProof" class="fas fa-times text-danger"></i>
+                  <br><input [disabled]="disabledValue" type="checkbox" [(ngModel)]="check.checkBox_closedWaterProof">
                 </td>
                 <td>
                   <i *ngIf="check.checkBox_stickerPrinting" class="fas fa-check text-success"></i>
                   <i *ngIf="!check.checkBox_stickerPrinting" class="fas fa-times text-danger"></i>
+                  <br><input [disabled]="disabledValue" type="checkbox" [(ngModel)]="check.checkBox_stickerPrinting">
                 </td>
                 <td>
                   <i *ngIf="check.checkBox_lotNumberPrinting" class="fas fa-check text-success"></i>
                   <i *ngIf="!check.checkBox_lotNumberPrinting" class="fas fa-times text-danger"></i>
+                  <br><input [disabled]="disabledValue" type="checkbox" [(ngModel)]="check.checkBox_lotNumberPrinting">
                 </td>
                 <td>
                   <i *ngIf="check.checkBox_correctFinalPacking" class="fas fa-check text-success"></i>
                   <i *ngIf="!check.checkBox_correctFinalPacking" class="fas fa-times text-danger"></i>
+                  <br><input [disabled]="disabledValue" type="checkbox" [(ngModel)]="check.checkBox_correctFinalPacking">
                 </td>
+                <td><button [disabled]="disabledValue" (click)="updateTest(indexOfelement,check)"
+                  class="btn btn-success">עדכון</button>
+              </td>
               </tr>
               <tr *ngIf="!disabledValue">
                 <td><input type="time" [disabled]="disabledValue" [(ngModel)]="newTest.checkTime" class="form-control">
@@ -413,8 +426,8 @@
       <tr>
         <th>Pallet Number</th>
         <td>{{i+1}}/{{(form.directorBackSignature && form.checkSignature) && formQAPersonalPalletsData.length  }}</td>
-        <th>Pallet EU/US</th>
-        <td></td>
+        <th>Pallet EU/US/Other</th>
+        <td>{{QAPallet.kindOfPallet}}</td>
       </tr>
 
       <tr>
@@ -472,8 +485,8 @@
       <tr>
         <th>Pallet Number</th>
         <td>{{i+1}}/{{form.directorFrontSignature && formQAPalletsData.length}}</td>
-        <th>Pallet EU/US</th>
-        <td></td>
+        <th>Pallet EU/US/Other</th>
+        <td>{{QAPallet.kindOfPallet}}</td>
       </tr>
 
       <tr>
@@ -700,6 +713,15 @@
           <td><input [(ngModel)]="newQAPallet.unitsQuantityPartKarton" (focusout)="return($event)"
               (focus)="enlarge($event)" type="number" title="יחידות בקרטון חלקי" style="font-weight: bold;font-size: medium;"
               placeholder="יחידות בקרטון חלקי" class="form-control"></td>
+              <td>
+                <select [(ngModel)]="newQAPallet.kindOfPallet" 
+                  [title]="newQAPallet.kindOfPallet" style="font-weight: bold;font-size: medium;" class="form-control">
+                  <option value="">סוג המשטח</option>
+                  <option value="EU">EU</option>
+                  <option value="US">US</option>
+                  <option value="Other">Other</option>
+                </select>
+              </td>
           <td></td>
           <td>
             <select [(ngModel)]="newQAPallet.qaStatus" 
@@ -734,6 +756,7 @@
             <th class="pallets-th"> קרטונים בקומה אחרונה</th>
             <th class="pallets-th">יחידות בקרטון חלקי</th>
             <th class="pallets-th">סה"כ</th>
+            <th class="pallets-th">סוג המשטח</th>
             <th class="pallets-th">סטטוס בקרת איכות</th>
             <th class="pallets-th">סטטוס משטח</th>
             <th><i class="fas fa-pallet"></i></th>
@@ -749,6 +772,7 @@
             <td class="pallets-td">{{QAPallet.lastFloorQuantity}}</td>
             <td class="pallets-td">{{QAPallet.unitsQuantityPartKarton}}</td>
             <td class="pallets-th">{{QAPallet.sumAmount}}</td>
+            <td class="pallets-th">{{QAPallet.kindOfPallet}}</td>
             <td class="pallets-td" [ngClass]="{ green:QAPallet.qaStatus == 'מוכן לשליחה',
                            red:QAPallet.qaStatus != 'מוכן לשליחה'
                           }">
@@ -824,6 +848,15 @@
         <td><input [(ngModel)]="newQAPersonalPallet.unitsQuantityPartKarton" (focusout)="return($event)"
             (focus)="enlarge($event)" type="number" title="יחידות בקרטון חלקי" style="font-weight: bold;font-size: medium;"
             placeholder="יחידות בקרטון חלקי" class="form-control"></td>
+            <td>
+              <select [(ngModel)]="newQAPersonalPallet.kindOfPallet" 
+                [title]="newQAPersonalPallet.kindOfPallet" style="font-weight: bold;font-size: medium;" class="form-control">
+                <option value="">סוג המשטח</option>
+                <option value="EU">EU</option>
+                <option value="US">US</option>
+                <option value="Other">Other</option>
+              </select>
+            </td>
         <td></td>
           <td>
             <select [(ngModel)]="newQAPersonalPallet.qaStatus" 
@@ -850,6 +883,7 @@
             <th class="pallets-th"> קרטונים בקומה אחרונה</th>
             <th class="pallets-th">יחידות בקרטון חלקי</th>
             <th class="pallets-th">סה"כ</th>
+            <th class="pallets-th">סוג המשטח</th>
             <th class="pallets-th">סטטוס בקרת איכות</th>
             <th class="pallets-th">סטטוס משטח</th>
             <th><i class="fas fa-pallet"></i></th>
@@ -865,6 +899,7 @@
             <td class="pallets-td">{{QAPallet.lastFloorQuantity}}</td>
             <td class="pallets-td">{{QAPallet.unitsQuantityPartKarton}}</td>
             <td class="pallets-th">{{QAPallet.sumAmount}}</td>
+            <td class="pallets-th">{{QAPallet.kindOfPallet}}</td>
             <td class="pallets-td" [ngClass]="{ green:QAPallet.qaStatus == 'מוכן לשליחה',
                            red:QAPallet.qaStatus != 'מוכן לשליחה'
                           }">

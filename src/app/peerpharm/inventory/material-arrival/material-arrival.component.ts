@@ -306,6 +306,7 @@ export class MaterialArrivalComponent implements OnInit {
   //
   // }
   saveMaterialRequirementsForm() {
+    debugger;
     this.authService.userEventEmitter.subscribe((data) => {
       let user =
         this.authService.loggedInUser.firstName +
@@ -407,6 +408,7 @@ export class MaterialArrivalComponent implements OnInit {
 
   checkShell() {
     // console.log(this.curentWhareHouseId);
+    debugger;
 
     this.invtSer
       .checkIfShelfExist(this.shellPosition, this.curentWhareHouseId)
@@ -621,12 +623,14 @@ export class MaterialArrivalComponent implements OnInit {
   }
 
   waitForShelf() {
+    debugger;
     setTimeout(() => {
       this.submitForm();
     }, 500);
   }
 
   async submitForm() {
+    debugger;
     const controls = this.newMaterialArrival.controls;
     for (let name in controls) {
       if (controls[name].invalid) {
@@ -812,6 +816,7 @@ export class MaterialArrivalComponent implements OnInit {
     formToSend.lastUpdate = new Date();
     formToSend.lastUpdateUser = this.user;
     this.invtSer.newMatrialArrival(formToSend).subscribe((res) => {
+      debugger;
       this.submittingForm = false;
       console.log(res);
       if (res.msg) {
@@ -842,9 +847,9 @@ export class MaterialArrivalComponent implements OnInit {
           res.newActionLogs.logs[0].cmxOrderN;
         this.materialArrivalLine.wareHouse =
           res.newActionLogs.logs[0].warehouse;
-        this.materialArrivalLine.position = res.newActionLogs.logs[0].position;
+        this.materialArrivalLine.position = formToSend.position;
         this.materialArrivalLine.amount = Number(
-          res.newActionLogs.logs[0].totalQnt
+          formToSend.totalQnt
         );
         this.materialArrivalLine.unitsAmount = Number(
           res.newActionLogs.logs[0].packageQnt

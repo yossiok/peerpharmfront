@@ -11,7 +11,7 @@ export interface MaterialArrivalCertif {
     sumUnits: number;
 }
 
-export interface MaterialArrivalLine {
+export interface MaterialArrivalLine { 
     itemInternalNumber: string;
     itemName: string;
     purchaseOrderNumber: number;
