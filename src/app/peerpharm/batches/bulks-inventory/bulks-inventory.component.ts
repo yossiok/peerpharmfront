@@ -27,10 +27,13 @@ export class BulksInventoryComponent implements OnInit {
     orderNumbers: new FormControl([], Validators.required),
     user: new FormControl(""),
     warehouseName: new FormControl("", Validators.required),
+    warehouseID: new FormControl("", Validators.required),
     position: new FormControl("", Validators.required),
     barcode: new FormControl(""),
     arrivalDate: new FormControl(new Date()),
   });
+  barrelArivalView: boolean = false;
+  barrelReturnView: boolean = false;
 
   constructor(
     private inventoryService: InventoryService,
@@ -55,10 +58,33 @@ export class BulksInventoryComponent implements OnInit {
   }
   getAllWhs() {
     this.inventoryService.getWhareHousesList().subscribe((whs) => {
-      this.allWarehouses = whs.filter((wh) => wh.name == "Rosh HaAyin");
+      console.log(whs);
+      this.allWarehouses = whs.filter(
+        (wh) =>
+          wh.name == "Cream Barrels" ||
+          wh.name == "Karantine" ||
+          wh.name == "Rosh HaAyin" ||
+          wh.name == "Filling"
+      );
+      // this.allWarehouses = whs.filter((wh) => wh.name == "Rosh HaAyin");
+      this.allWarehouses.sort((a, b) => {
+        let nameA = a.name.toLowerCase();
+        let nameB = b.name.toLowerCase();
+        return nameA > nameB ? 1 : nameA < nameB ? -1 : 0;
+      });
+      console.log(this.allWarehouses);
     });
   }
   receiveBarrel() {}
 
   getShelves() {}
+
+  readyBarrelArrival() {
+    this.barrelArivalView = true;
+    this.barrelReturnView = false;
+  }
+  barrelReturnArrival() {
+    this.barrelReturnView = true;
+    this.barrelArivalView = false;
+  }
 }

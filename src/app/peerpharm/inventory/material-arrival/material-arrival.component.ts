@@ -94,7 +94,7 @@ export class MaterialArrivalComponent implements OnInit {
 
   // barcode vars //
   materialNum: String;
-  materialName: String;
+  materialName: string;
   lotNumber: String;
   productionDate: String;
   arrivalDate: String;
@@ -452,6 +452,7 @@ export class MaterialArrivalComponent implements OnInit {
         .getMaterialStockItemByNum(this.requirementsForm.value.itemNumber)
         .subscribe((stockItem) => {
           // console.log(stockItem);
+          this.materialName = "";
 
           if (stockItem.msg) {
             let message =
@@ -462,6 +463,7 @@ export class MaterialArrivalComponent implements OnInit {
           } else if (stockItem) {
             // let elem = document.getElementsByName("itemName")[0];
             // elem.setAttribute("value", stockItem[0].componentName);
+            this.materialName = stockItem[0].componentName;
             this.requirementsForm.controls.itemName.setValue(
               stockItem[0].componentN
             );
@@ -598,6 +600,7 @@ export class MaterialArrivalComponent implements OnInit {
                   item[0].allowQtyInStock,
                 "הערה חשובה!"
               );
+            this.materialName = item[0].componentName;
             this.newMaterialArrival.controls.materialName.setValue(
               item[0].componentName
             );
@@ -656,7 +659,7 @@ export class MaterialArrivalComponent implements OnInit {
       this.submittingForm = true;
 
       this.materialNum = this.newMaterialArrival.value.internalNumber;
-      this.materialName = this.newMaterialArrival.value.materialName;
+      this.materialName; // to prevent changing this name by the user
       this.lotNumber = this.newMaterialArrival.value.lotNumber;
       this.productionDate = this.newMaterialArrival.value.productionDate;
       this.arrivalDate = this.newMaterialArrival.value.arrivalDate;
@@ -815,6 +818,7 @@ export class MaterialArrivalComponent implements OnInit {
     let formToSend = this.newMaterialArrival.value;
     formToSend.lastUpdate = new Date();
     formToSend.lastUpdateUser = this.user;
+    formToSend.materialName = this.materialName;
     this.invtSer.newMatrialArrival(formToSend).subscribe((res) => {
       debugger;
       this.submittingForm = false;
@@ -841,8 +845,7 @@ export class MaterialArrivalComponent implements OnInit {
           res.newActionLogs.logs[0].internalNumber;
         this.materialArrivalLine.itemSupplierNumber =
           res.newActionLogs.logs[0].supplierNumber;
-        this.materialArrivalLine.itemName =
-          res.newActionLogs.logs[0].materialName;
+        this.materialArrivalLine.itemName = this.materialName;
         this.materialArrivalLine.purchaseOrderNumber =
           res.newActionLogs.logs[0].cmxOrderN;
         this.materialArrivalLine.wareHouse =

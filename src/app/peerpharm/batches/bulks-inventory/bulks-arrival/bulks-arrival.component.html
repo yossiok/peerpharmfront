@@ -1,0 +1,359 @@
+<div dir="rtl">
+  <form [formGroup]="bulkArrival" (ngSubmit)="receiveBarrel()">
+    <h3>קליטת חבית</h3>
+    <div class="row mt-4">
+      <p class="h5">* = שדה חובה</p>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-2">
+        <label>מחסן *</label>
+        <select
+          class="form-control"
+          (change)="showWH()"
+          formControlName="warehouse"
+          #first
+        >
+          <option disabled value="">בחר מחסן</option>
+          <option *ngFor="let warehouse of allWarehouses" [value]="warehouse">
+            {{ warehouse.name }} {{ warehouse._id }}{{ warehouse }}
+          </option>
+        </select>
+      </div>
+      <div *ngIf="!disabled" class="col-2">
+        <label>מספר חבית * </label>
+        <input
+          type="text"
+          [disabled]="disabled"
+          formControlName="barrelNumber"
+          (blur)="getShelves()"
+          class="form-control"
+        />
+      </div>
+      <div *ngIf="!disabled" class="col-2">
+        <label class="d-block"> שם </label>
+        <input
+          class="d-inline form-control"
+          formControlName="itemName"
+          type="text"
+          #name
+        />
+        <button class="d-inline" type="button" (click)="getNames()">
+          Find
+        </button>
+        <select class="form-control" (change)="setItemDetailsNumber($event)">
+          <option
+            *ngFor="let itemName of itemNames"
+            [value]="itemName.componentN"
+          >
+            {{ itemName.componentName }}
+          </option>
+        </select>
+      </div>
+      <div class="col-2">
+        <label>מדף *</label>
+        <select class="form-control" formControlName="shell_id_in_whareHouse">
+          <option disabled value="">בחר מדף</option>
+          <option
+            *ngFor="let shellNum of shellNums"
+            [disabled]="shellNum.position == 'MINUS'"
+            [value]="shellNum.shell_id_in_whareHouse"
+            [ngStyle]="{ color: shellNum.amount >= 0 ? 'black' : 'red' }"
+          >
+            {{ shellNum.position }}: {{ shellNum.amount }} pcs
+          </option>
+        </select>
+        <div class="mt-1">
+          <span [ngbTooltip]="noItem ? 'יש להזין מספר פריט תקין' : ''">
+            <button
+              type="button"
+              [disabled]="noItem"
+              [style.cursor]="noItem ? 'not-allowed' : 'pointer'"
+              (click)="getAllShellsOfWhareHouse()"
+              class="btn btn-warning"
+            >
+              הכנס למדף חדש
+            </button>
+          </span>
+        </div>
+        <div class="mt-1" *ngIf="">
+          <span [ngbTooltip]="noItem ? 'יש להזין מספר פריט תקין' : ''">
+            <button
+              type="button"
+              [disabled]="noItem"
+              [style.cursor]="noItem ? 'not-allowed' : 'pointer'"
+              (click)="getAllShellsOfWhareHouse()"
+              class="btn btn-warning"
+            >
+              הכנס למדף חדש
+            </button>
+          </span>
+        </div>
+      </div>
+      <div class="col-2">
+        <label>כמות *</label>
+        <input type="number" formControlName="amount" class="form-control" />
+        <div
+          style="color: red; font-size: 1.2rem; font-weight: bold"
+          *ngIf="componentArrival.controls.amount.errors?.min"
+        >
+          * הכמות חייבת להיות גדולה מאפס
+        </div>
+      </div>
+      <div class="col-2 d-flex flex-column justify-content-around">
+        <button
+          type="submit"
+          [disabled]="!componentArrival.valid"
+          [style.cursor]="componentArrival.valid ? 'pointer' : 'not-allowed'"
+          class="btn btn-info"
+        >
+          הכנס
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="componentArrival.reset()"
+        >
+          נקה נתונים
+        </button>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <!-- <div class="col-2">
+          <label>בעלות</label>
+          <input list="customers" class="form-control" formControlName="ownerId">
+          <datalist id="customers">
+            <option value="0001" selected>PeerPharm</option>
+            <option *ngFor="let customer of customersList" value="{{customer.costumerId}}">
+              {{customer.costumerId}} - {{customer.costumerName}}
+            </option>
+          </datalist>
+  
+        </div> -->
+      <div class="col-2">
+        <label>ספק</label>
+        <input
+          list="suppliers"
+          (blur)="getPurchaseOrders($event)"
+          class="form-control"
+          formControlName="supplier"
+        />
+        <datalist id="suppliers">
+          <option
+            *ngFor="let supplier of allSuppliers"
+            value="{{ supplier.suplierNumber }}"
+          >
+            {{ supplier.suplierNumber }} - {{ supplier.suplierName }}
+          </option>
+        </datalist>
+
+        <!-- <select class="form-control" (change)="getPurchaseOrders($event)" formControlName="supplier">
+                      <option disabled value="">בחר ספק</option>
+                      <option *ngFor="let supplier of allSuppliers" [value]="supplier.suplierNumber">{{supplier.suplierNumber}} - {{supplier.suplierName}}
+                      </option>
+                  </select> -->
+      </div>
+      <div class="col-2">
+        <label>מס' הזמנת רכש</label>
+        <select class="form-control" formControlName="purchaseOrder">
+          <option selected value="">מס' הזמנה</option>
+          <option
+            *ngFor="let purchase of purchaseOrders"
+            [value]="purchase.orderNumber"
+          >
+            {{ purchase.orderNumber }}
+          </option>
+        </select>
+      </div>
+      <div class="col-4"></div>
+      <div class="col-2" *ngIf="itemNames">
+        <img [src]="itemNames[0].img" alt="תמונה ראשית" class="pictureTabImg" />
+      </div>
+    </div>
+    <!-- <div class="row">
+      
+        <img *ngIf="showStickerForm" class="img-refresh" (click)="loadStickerComponent()"
+          src="../../../../../assets/images/refreshData.png" alt="">
+      </div> -->
+    <div class="row" *ngIf="showStickerForm"></div>
+  </form>
+
+  <!-- All Arrivals -->
+  <div class="row mt-4 w-100">
+    <table class="table table-hover">
+      <thead class="bg-info text-white">
+        <tr>
+          <th class="text-center">פריט</th>
+          <th class="text-center">כמות</th>
+          <th class="text-center">נכנס למחסן..</th>
+          <th class="text-center">למדף..</th>
+          <th class="text-center"></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let arrival of allArrivals; let i = index">
+          <td class="text-center">{{ arrival.item }}</td>
+          <td class="text-center">{{ arrival.amount }}</td>
+          <td class="text-center">{{ arrival.whareHouse }}</td>
+          <td class="text-center">{{ arrival.position }}</td>
+          <td class="text-center">
+            <i
+              (click)="removeFromArrivals(i)"
+              class="fa fa-times text-danger"
+            ></i>
+          </td>
+          <td>
+            <button
+              *ngIf="!showStickerForm"
+              class="btn btn-outline-success"
+              (click)="setStickerDetails(arrival)"
+              (click)="open(invstck)"
+            >
+              הדפס מדבקה
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="row mt-2 d-flex flex-row justify-content-around w-50">
+    <button
+      *ngIf="!sending"
+      class="btn btn-info"
+      (click)="addToStock()"
+      [disabled]="allArrivals.length == 0"
+      [style.cursor]="allArrivals.length == 0 ? 'not-allowed' : 'pointer'"
+    >
+      הוסף למלאי (שלח שינויים) <i class="fa fa-check"></i>
+    </button>
+    <div class="smallerLoader" *ngIf="sending"></div>
+    <button class="btn btn-success" (click)="justPrint()">
+      הדפס <i class="fa fa-print"></i>
+    </button>
+    <button class="btn btn-warning" (click)="clearArrivals()">
+      נקה טבלה <i class="fas fa-trash-alt"></i>
+    </button>
+  </div>
+
+  <!-- תעודת קליטה -->
+  <div class="row mt-4">
+    <div
+      id="print-section2"
+      style="direction: rtl; text-align: right; display: none"
+    >
+      <header>
+        <h1>פאר פארם בע"מ</h1>
+        <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256</p>
+        <p>
+          <span>טלפון 03-9024055</span>&nbsp;&nbsp;
+          <span>פקס 03-9024015</span>&nbsp;&nbsp;
+          <span>דואר אלקטרוני peerpharm@barak.net.il</span>&nbsp;&nbsp;
+          <span>ח.פ: 511899023</span>
+        </p>
+      </header>
+      <main>
+        <h2>תעודת קליטה מס' {{ certificateReception }}</h2>
+        <p class="originDestWh">
+          <span><u>תאריך:</u></span
+          >&nbsp;&nbsp; <span>{{ today | date: "dd-MM-yyyy" }}</span
+          >&nbsp;&nbsp;
+        </p>
+        <br />
+        <table>
+          <tbody>
+            <tr>
+              <th>#</th>
+              <th>מספר פריט</th>
+              <th>מחסן</th>
+              <th>מיקום</th>
+              <th>כמות</th>
+              <th class="itemNamePrint">שם פריט</th>
+              <th>פריט מק"ט ספק</th>
+              <th></th>
+            </tr>
+            <ng-container *ngFor="let arrival of allArrivals; let i = index">
+              <tr>
+                <td class="cellPadding">{{ i + 1 }}</td>
+                <td>{{ arrival.item }}</td>
+                <td>{{ arrival.whareHouse }}</td>
+                <td>{{ arrival.position }}</td>
+                <td>{{ arrival.amount }}</td>
+                <td>{{ arrival.itemName }}</td>
+                <td>{{ arrival.componentNs }}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </main>
+      <div class="signatures">
+        <p>
+          <span>שם המקבל:</span>&nbsp;&nbsp;
+          <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u> </span
+          >&nbsp;&nbsp; <span>חתימה:</span>&nbsp;&nbsp;
+          <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u> </span
+          >&nbsp;&nbsp; <span>תאריך:</span>&nbsp;&nbsp;
+          <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u> </span
+          >&nbsp;&nbsp;
+        </p>
+      </div>
+      <footer></footer>
+    </div>
+    <button
+      type="button"
+      style="display: none"
+      #printBtn2
+      [printStyle]="{
+        body: { 'text-align': 'right', direction: 'rtl' },
+        header: { 'border-bottom': 'solid 1px' },
+        main: { 'border-bottom': 'solid 1px' },
+        table: { 'text-align': 'right' },
+        footer: { position: 'absolute', width: '100%' },
+        h2: { 'text-align': 'center' },
+        '.originDestWh': { 'text-align': 'right' },
+        th: { width: '16%' },
+        td: { width: '16%' },
+        '.itemNamePrint': { width: '35%' },
+        '.signatures': { margin: '50px' },
+        '.cellPadding': { padding: '15px 0px' }
+      }"
+      printTitle="תעודת קליטה"
+      printSectionId="print-section2"
+      ngxPrint
+    >
+      print
+    </button>
+    <!-- <button (click)="printStockTransferCertificate()">click</button> -->
+  </div>
+</div>
+
+<ng-template #invstck let-modal>
+  <div dir="rtl" class="fixNoaStupidStuff modal-header">
+    <h4 class="modal-title" id="modal-basic-title">הדפס מדבקות</h4>
+    <button
+      type="button"
+      class="float-left"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div dir="rtl" class="modal-body">
+    <app-inventory-sticker [itemDetails]="stickerItem"> </app-inventory-sticker>
+  </div>
+  <div class="modal-footer"></div>
+</ng-template>
