@@ -65,12 +65,14 @@ export class InventoryReportsComponent implements OnInit {
     }
   }
 
-  minuseReport() {
+  minusReport() {
     this.reportForm.controls.minus.setValue(true);
     this.getInvRep();
+    this.reportForm.controls.minus.setValue(false);
   }
   getInvRep() {
     console.log(this.reportForm.value);
+    this.reportData = [];
     let sortOrder;
     this.loader = true;
     this.inventorySer.getInvRep(this.reportForm.value).subscribe((data) => {
@@ -89,41 +91,10 @@ export class InventoryReportsComponent implements OnInit {
           delete item._id;
         });
         sortOrder = ["_id", "name", "position", "total"];
-      } else if (false) {
-        data.map((item) => {
-          console.log(item);
-          (item.item = item._id.itemNumber),
-            (item.name = item.name),
-            (item.amount = item.totalAmount);
-          return item;
-          // delete item.shell_id_in_whareHouse;
-          // delete item.deliveryNoteNum;
-          // delete item._id;
-          // delete item.whareHouseID;
-          if (this.reportForm.value.itemType != "material") {
-            delete item.expirationDate;
-            delete item.productionDate;
-          }
-
-          // get purchase details for components and materials
-          if (this.reportForm.value.itemType != "product") {
-            item.name = item.stockitem[0].componentName;
-            delete item.stockitem;
-          }
-          delete item.batchNumber;
-          delete item.supplierBatchNumber;
-          if (this.reportForm.value.itemType != "all") delete item.itemType;
-          delete item.__v;
-          delete item.barcode;
-          delete item.userName;
-          delete item.shell_id_in_whareHouse;
-          console.log(item);
-          return item;
-        });
-        sortOrder = ["item", "name", "position", "amount"];
+        this.reportData = data;
+      } else {
+        this.reportData = data;
       }
-      console.log(data);
-      this.reportData = data;
 
       // this.excelService.exportAsExcelFile(data, "Inventory Report", sortOrder);
     });
