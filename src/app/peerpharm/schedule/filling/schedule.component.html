@@ -420,7 +420,8 @@
                     line.cmptsStatus != null && line.cmptsStatus.includes('false')
                   " (click)="dismissInfo(line._id)" style="width: 20px;" />
                 <i class="ti-trash text-danger m-r-10" [class.read-only]="checkPermission()"
-                  (click)="deleteLine(line._id)"></i>&nbsp;
+                  (click)="deleteLine(line._id)"></i>&nbsp; <br>
+                  <p id="deleteReason" style="text-align: right; display: none;"></p>
                 <!-- <i class="ti-check text-success m-r-10" (click)="setDone()"></i> -->
               </td>
 
@@ -462,6 +463,8 @@
               <td class="hideInTablet" *ngIf="line._id === EditRowId">
                 <i class="ti-save text-info m-r-10 click" [class.read-only]="checkPermission()"
                   (click)="updateSchedule(line)"></i>
+                <textarea dir="rtl" id="editLineReason" name="editLineReason" rows="4" cols="25"  [(ngModel)]="line.editLineReason" placeholder="סיבת עריכת השורה" class="reason">{{line.editLineReason}}</textarea>
+                  <!-- עדכון -->
               </td>
             </ng-container>
           </tr>

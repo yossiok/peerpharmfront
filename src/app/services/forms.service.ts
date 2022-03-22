@@ -184,6 +184,7 @@ export class FormsService {
       .post(url, JSON.stringify({ formDetails }), this.options)
       .pipe(map((res) => res.json()));
   }
+ 
   createFormDetails(formDetails) {
     let url = this.baseUrl + "formDetails/add2";
     return this.http

@@ -40,9 +40,8 @@ export class FormdetailsComponent implements OnInit {
   showQAPalletsModal: boolean = false;
   showQAPersonalPalletsModal: boolean = false;
   allowUpdateForm: boolean = false;
-  disableRemarkEditAfterSave: boolean = true
+  disableRemarkEditAfterSave: boolean = true;
   today = new Date().getDate();
-
 
   newQAPallet = {
     floorNumber: null,
@@ -57,8 +56,7 @@ export class FormdetailsComponent implements OnInit {
     orderNumber: "",
     itemNumber: "",
     isPersonalPackage: false,
-    kindOfPallet:""
-
+    kindOfPallet: "",
   };
 
   newQAPersonalPallet = {
@@ -74,7 +72,7 @@ export class FormdetailsComponent implements OnInit {
     orderNumber: "",
     itemNumber: "",
     isPersonalPackage: true,
-    kindOfPallet:""
+    kindOfPallet: "",
   };
 
   newTest = {
@@ -98,9 +96,9 @@ export class FormdetailsComponent implements OnInit {
     private batchService: BatchesService,
     private itemService: ItemsService,
     private router: Router
-  ) { }
+  ) {}
 
-   ngOnInit() {
+  ngOnInit() {
     let formID1 = this.route.snapshot.paramMap.get("id");
     let scheduleID = this.route.snapshot.paramMap.get("id2");
     this.getUserInfo();
@@ -117,8 +115,7 @@ export class FormdetailsComponent implements OnInit {
     }
 
     // הגענו מהטאבלט (עמוד ראשי) או ממסך טפסים
-    else  this.getFormData(true, formID1);
-
+    else this.getFormData(true, formID1);
   }
 
   async checkIfFormExist(scheduleId) {
@@ -285,32 +282,32 @@ export class FormdetailsComponent implements OnInit {
       : (this.form.checkNetoWeight = [newTest.checkNetoWeight]);
     this.form.checkBox_closedWaterProof
       ? this.form.checkBox_closedWaterProof.push(
-        newTest.checkBox_closedWaterProof
-      )
+          newTest.checkBox_closedWaterProof
+        )
       : (this.form.checkBox_closedWaterProof = [
-        newTest.checkBox_closedWaterProof,
-      ]);
+          newTest.checkBox_closedWaterProof,
+        ]);
     this.form.checkBox_stickerPrinting
       ? this.form.checkBox_stickerPrinting.push(
-        newTest.checkBox_stickerPrinting
-      )
+          newTest.checkBox_stickerPrinting
+        )
       : (this.form.checkBox_stickerPrinting = [
-        newTest.checkBox_stickerPrinting,
-      ]);
+          newTest.checkBox_stickerPrinting,
+        ]);
     this.form.checkBox_lotNumberPrinting
       ? this.form.checkBox_lotNumberPrinting.push(
-        newTest.checkBox_lotNumberPrinting
-      )
+          newTest.checkBox_lotNumberPrinting
+        )
       : (this.form.checkBox_lotNumberPrinting = [
-        newTest.checkBox_lotNumberPrinting,
-      ]);
+          newTest.checkBox_lotNumberPrinting,
+        ]);
     this.form.checkBox_correctFinalPacking
       ? this.form.checkBox_correctFinalPacking.push(
-        newTest.checkBox_correctFinalPacking
-      )
+          newTest.checkBox_correctFinalPacking
+        )
       : (this.form.checkBox_correctFinalPacking = [
-        newTest.checkBox_correctFinalPacking,
-      ]);
+          newTest.checkBox_correctFinalPacking,
+        ]);
     this.updateFormDetails();
     this.allChecks.push(newTest);
   }
@@ -382,9 +379,9 @@ export class FormdetailsComponent implements OnInit {
       });
   }
 
+
   updateFormDetails() {
     try {
-      console.log(this.form);
       this.formsService.updateFormDetails(this.form).subscribe((result) => {
         if (result.ok == 1) {
           this.getFormData(this.formid, false);
@@ -393,32 +390,31 @@ export class FormdetailsComponent implements OnInit {
           if (this.form.checkSignature && this.form.directorBackSignature) {
             this.disabledValue = true;
           }
-        } else this.toastService.error("טופס לא עודכן , אנא נסה שנית או פנה למנהל מערכת");
+          console.log("this is the result: ", result);
+        } else
+          this.toastService.error(
+            "טופס לא עודכן , אנא נסה שנית או פנה למנהל מערכת"
+          );
       });
-      // ERANNNNNNN
-      // check if there is manager signature (whice mean the form is closed)
-      // If the form is close make a log
     } catch (error) {
       this.toastService.error("אירעה שגיאה בעדכון , אנא נסה שנית");
     }
   }
-  async updateTest(indexOfTest,test){
-    this.form.checkBox_clean.splice(indexOfTest, 1)
-    this.form.checkBox_closedWaterProof.splice(indexOfTest, 1)
-    this.form.checkBox_correctFinalPacking.splice(indexOfTest, 1)
-    this.form.checkBox_lotNumberPrinting.splice(indexOfTest, 1)
-    this.form.checkBox_stickerPrinting.splice(indexOfTest, 1)
-    this.form.checkNetoWeight.splice(indexOfTest, 1)
-    this.form.checkTime.splice(indexOfTest, 1)
+  async updateTest(indexOfTest, test) {
+    this.form.checkBox_clean.splice(indexOfTest, 1);
+    this.form.checkBox_closedWaterProof.splice(indexOfTest, 1);
+    this.form.checkBox_correctFinalPacking.splice(indexOfTest, 1);
+    this.form.checkBox_lotNumberPrinting.splice(indexOfTest, 1);
+    this.form.checkBox_stickerPrinting.splice(indexOfTest, 1);
+    this.form.checkNetoWeight.splice(indexOfTest, 1);
+    this.form.checkTime.splice(indexOfTest, 1);
     this.allChecks.splice(indexOfTest, 1);
     this.addNewTest(test);
   }
 
   goBack() {
     // window.history.back();
-    this.router.navigate([
-      `/peerpharm/schedule/fillschedule`,
-    ]);
+    this.router.navigate([`/peerpharm/schedule/fillschedule`]);
   }
 
   createFormDetails() {
@@ -432,7 +428,6 @@ export class FormdetailsComponent implements OnInit {
         this.newForm = false;
         this.formid = data._id;
         this.form.fillingDate = data.fillingDate;
-
       }
     });
   }
@@ -507,38 +502,41 @@ export class FormdetailsComponent implements OnInit {
   }
 
   getUserInfo() {
-        // Need to check user Au
-      if (this.authService.loggedInUser) {
-        this.user = this.authService.loggedInUser;
-        if (this.user.authorization) {
-          if (this.authService.loggedInUser.authorization.includes("updateFormDetails")) {
-            this.allowUpdateForm = true;
-            this.disabledValue = false;
-          }
-          if(this.authService.loggedInUser.authorization.includes("QAAdmin")) {
-            this.disableRemarkEditAfterSave = false
-          }
+    // Need to check user Au
+    if (this.authService.loggedInUser) {
+      this.user = this.authService.loggedInUser;
+      if (this.user.authorization) {
+        if (
+          this.authService.loggedInUser.authorization.includes(
+            "updateFormDetails"
+          )
+        ) {
+          this.allowUpdateForm = true;
+          this.disabledValue = false;
         }
-      } 
-      // else {
-      //   this.authService.userEventEmitter.subscribe((user) => {
-      //     this.user = user;
-      //     if (this.user.authorization) {
-      //       if (
-      //         this.authService.loggedInUser.authorization.includes(
-      //           "updateFormDetails"
-      //         )
-      //       ) {
-      //         this.allowUpdateForm = true;
-      //         this.disabledValue = false;
-      //       }
-      // if(this.authService.loggedInUser.authorization.includes("QAAdmin")) {
-      //   this.allowEditAfterSave = true
-      // }
-      //     }
-      //   });
-      // }
-    
+        if (this.authService.loggedInUser.authorization.includes("QAAdmin")) {
+          this.disableRemarkEditAfterSave = false;
+        }
+      }
+    }
+    // else {
+    //   this.authService.userEventEmitter.subscribe((user) => {
+    //     this.user = user;
+    //     if (this.user.authorization) {
+    //       if (
+    //         this.authService.loggedInUser.authorization.includes(
+    //           "updateFormDetails"
+    //         )
+    //       ) {
+    //         this.allowUpdateForm = true;
+    //         this.disabledValue = false;
+    //       }
+    // if(this.authService.loggedInUser.authorization.includes("QAAdmin")) {
+    //   this.allowEditAfterSave = true
+    // }
+    //     }
+    //   });
+    // }
   }
 
   wrapAllChecks() {
@@ -595,10 +593,4 @@ export class FormdetailsComponent implements OnInit {
       }
     }
   }
-
-
-
-
-
-
 }

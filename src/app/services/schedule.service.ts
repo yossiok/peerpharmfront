@@ -100,8 +100,9 @@ export class ScheduleService {
       .pipe(map((res) => res.json()));
   }
 
-  deleteSchedule(id): Observable<any> {
-    let sced = { _id: id };
+  deleteSchedule(id,reason): Observable<any> {
+    let sced = { _id: id,
+      reason:reason};
     let url = this.baseUrl + "schedule/delete";
     return this.http
       .post(url, JSON.stringify(sced), this.options)

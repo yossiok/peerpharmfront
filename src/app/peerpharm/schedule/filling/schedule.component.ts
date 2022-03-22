@@ -108,6 +108,7 @@ export class ScheduleComponent implements OnInit {
     productionLine: "",
     pLinePositionN: 999,
     itemImpRemark: "",
+    editLineReason:""
   };
   typeShown: String = "basic";
   constructor(
@@ -248,7 +249,6 @@ export class ScheduleComponent implements OnInit {
             else {
               this.scheduleData.push(res);
               this.scheduleLine.scheduleId = "";
-              this.scheduleLine.scheduleId = "";
               this.scheduleLine.positionN = "";
               this.scheduleLine.orderN = "";
               this.scheduleLine.item = "";
@@ -266,6 +266,7 @@ export class ScheduleComponent implements OnInit {
               this.scheduleLine.productionLine = "";
               this.scheduleLine.pLinePositionN = 999;
               this.scheduleLine.itemImpRemark = "";
+              this.scheduleLine.editLineReason = "";
             }
           });
       }
@@ -648,8 +649,8 @@ export class ScheduleComponent implements OnInit {
   }
 
   async updateSchedule(line) {
-    console.log(line);
-    if (this.orderN.nativeElement.value != "") {
+      if(line.editLineReason != ""){
+        if (this.orderN.nativeElement.value != "") {
       let scdLneInfo = await this.scheduleData.filter(
         (sced) => sced._id == this.EditRowId
       );
@@ -674,13 +675,15 @@ export class ScheduleComponent implements OnInit {
         mkp: this.currentType,
         itemImpRemark: scdLneInfo[0].itemImpRemark,
         whatIsMissing: this.whatIsMissing.nativeElement.value,
+        editLineReason:line.editLineReason
       };
 
       if (this.typeShown == "unpacked") {
         scheduleToUpdate.status = "";
         scdLneInfo[0].status = "";
       }
-
+      console.log("ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ")
+      console.log(scheduleToUpdate)
       this.scheduleService.editSchedule(scheduleToUpdate).subscribe((res) => {
         this.EditRowId = 0;
         scheduleToUpdate.date3 = moment(scheduleToUpdate.date).format(
@@ -700,6 +703,11 @@ export class ScheduleComponent implements OnInit {
       alert(
         'מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.'
       );
+    }
+
+    }else{
+      this.toastSrv.warning("יש לרשום את סיבת עריכת השורה");
+      
     }
   }
 
@@ -733,11 +741,18 @@ export class ScheduleComponent implements OnInit {
     });
   }
 
+
+
   deleteLine(id) {
-    if (confirm("האם אתה בטוח שברצונך למחוק את השורה?")) {
-      this.scheduleService.deleteSchedule(id).subscribe((res) => {
-        this.scheduleData = this.scheduleData.filter((elem) => elem._id != id);
-      });
+    let reason = prompt("אנא הכנס סיבה למחיקת הקו", "");
+    if (reason != null) {
+      document.getElementById("deleteReason").innerHTML =
+      `${reason}`;
+      if ((confirm("האם אתה בטוח שברצונך למחוק את השורה?"))) {
+        this.scheduleService.deleteSchedule(id,reason).subscribe((res) => {
+          this.scheduleData = this.scheduleData.filter((elem) => elem._id != id);
+        });
+      }
     }
   }
 
