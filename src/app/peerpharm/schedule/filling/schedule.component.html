@@ -463,8 +463,7 @@
               <td class="hideInTablet" *ngIf="line._id === EditRowId">
                 <i class="ti-save text-info m-r-10 click" [class.read-only]="checkPermission()"
                   (click)="updateSchedule(line)"></i>
-                <textarea dir="rtl" id="editLineReason" name="editLineReason" rows="4" cols="25"  [(ngModel)]="line.editLineReason" placeholder="סיבת עריכת השורה" class="reason">{{line.editLineReason}}</textarea>
-                  <!-- עדכון -->
+                  <p id="editReason" style="display: none;"></p>
               </td>
             </ng-container>
           </tr>

@@ -381,24 +381,31 @@ export class FormdetailsComponent implements OnInit {
 
 
   updateFormDetails() {
-    try {
-      this.formsService.updateFormDetails(this.form).subscribe((result) => {
-        if (result.ok == 1) {
-          this.getFormData(this.formid, false);
-          this.toastService.success("טופס עודכן בהצלחה !");
-          this.showQAPalletsModal = false;
-          if (this.form.checkSignature && this.form.directorBackSignature) {
-            this.disabledValue = true;
-          }
-          console.log("this is the result: ", result);
-        } else
-          this.toastService.error(
-            "טופס לא עודכן , אנא נסה שנית או פנה למנהל מערכת"
-          );
-      });
-    } catch (error) {
-      this.toastService.error("אירעה שגיאה בעדכון , אנא נסה שנית");
-    }
+    
+      let reason = prompt("אנא הכנס/י את סיבה העדכון", "");
+      if (reason != null && reason != "" ) {
+        document.getElementById("reason").innerHTML = reason;
+        try {
+          this.formsService.updateFormDetails(this.form,reason).subscribe((result) => {
+            if (result.ok == 1) {
+              this.getFormData(this.formid, false);
+              this.toastService.success("טופס עודכן בהצלחה !");
+              this.showQAPalletsModal = false;
+              if (this.form.checkSignature && this.form.directorBackSignature) {
+                this.disabledValue = true;
+              }
+              console.log("this is the result: ", result);
+            } else
+              this.toastService.error(
+                "טופס לא עודכן , אנא נסה שנית או פנה למנהל מערכת"
+              );
+          });
+        } catch (error) {
+          this.toastService.error("אירעה שגיאה בעדכון , אנא נסה שנית");
+        }
+      }else{
+        this.toastService.error("חובה לציין את סיבת העדכון");
+      }
   }
   async updateTest(indexOfTest, test) {
     this.form.checkBox_clean.splice(indexOfTest, 1);

@@ -108,7 +108,7 @@ export class ScheduleComponent implements OnInit {
     productionLine: "",
     pLinePositionN: 999,
     itemImpRemark: "",
-    editLineReason:""
+    editLineReason: "",
   };
   typeShown: String = "basic";
   constructor(
@@ -334,10 +334,12 @@ export class ScheduleComponent implements OnInit {
     ]);
     // location.href="http://localhost:4200/#/peerpharm/forms/formDetails/"+scheduleId+'scheduleId';
 
-
-
-    this.router.navigate([]).then(result => {  window.open( `#/peerpharm/forms/formDetails/${undefined}/${scheduleId}`, '_blank'); });
-
+    this.router.navigate([]).then((result) => {
+      window.open(
+        `#/peerpharm/forms/formDetails/${undefined}/${scheduleId}`,
+        "_blank"
+      );
+    });
   }
 
   getAllSchedule(today) {
@@ -649,65 +651,62 @@ export class ScheduleComponent implements OnInit {
   }
 
   async updateSchedule(line) {
-      if(line.editLineReason != ""){
-        if (this.orderN.nativeElement.value != "") {
-      let scdLneInfo = await this.scheduleData.filter(
-        (sced) => sced._id == this.EditRowId
-      );
-
-      let updateOrderItemDate =
-        scdLneInfo[0].date == this.date.nativeElement.value;
-
-      let scheduleToUpdate: any = {
-        _id: line._id,
-        positionN: this.positionN.nativeElement.value,
-        orderN: this.orderN.nativeElement.value,
-        item: this.item.nativeElement.value,
-        costumer: this.costumer.nativeElement.value,
-        productName: this.productName.nativeElement.value,
-        batch: this.batch.nativeElement.value,
-        packageP: this.packageP.nativeElement.value,
-        qty: this.qty.nativeElement.value,
-        qtyRdy: "",
-        date: this.date.nativeElement.value,
-        marks: this.marks.nativeElement.value,
-        shift: this.shift.nativeElement.value,
-        mkp: this.currentType,
-        itemImpRemark: scdLneInfo[0].itemImpRemark,
-        whatIsMissing: this.whatIsMissing.nativeElement.value,
-        editLineReason:line.editLineReason
-      };
-
-      if (this.typeShown == "unpacked") {
-        scheduleToUpdate.status = "";
-        scdLneInfo[0].status = "";
-      }
-      console.log("ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ERAN ")
-      console.log(scheduleToUpdate)
-      this.scheduleService.editSchedule(scheduleToUpdate).subscribe((res) => {
-        this.EditRowId = 0;
-        scheduleToUpdate.date3 = moment(scheduleToUpdate.date).format(
-          "YYYY-MM-DD"
+    let editReason = prompt("אנא הכנס/י את סיבת העדכון", "");
+    if (editReason != null && editReason != "") {
+      document.getElementById("editReason").innerHTML = editReason;
+      if (this.orderN.nativeElement.value != "") {
+        let scdLneInfo = await this.scheduleData.filter(
+          (sced) => sced._id == this.EditRowId
         );
-        this.scheduleData[
-          this.scheduleData.findIndex(
-            (sced) => sced._id == scheduleToUpdate._id
-          )
-        ] = scheduleToUpdate;
-        this.editRadioBtnType = "";
-        if (updateOrderItemDate) {
-          //update orderItemSchedule
-        }
-      });
-    } else {
-      alert(
-        'מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.'
-      );
-    }
 
-    }else{
-      this.toastSrv.warning("יש לרשום את סיבת עריכת השורה");
-      
+        let updateOrderItemDate =
+          scdLneInfo[0].date == this.date.nativeElement.value;
+
+        let scheduleToUpdate: any = {
+          _id: line._id,
+          positionN: this.positionN.nativeElement.value,
+          orderN: this.orderN.nativeElement.value,
+          item: this.item.nativeElement.value,
+          costumer: this.costumer.nativeElement.value,
+          productName: this.productName.nativeElement.value,
+          batch: this.batch.nativeElement.value,
+          packageP: this.packageP.nativeElement.value,
+          qty: this.qty.nativeElement.value,
+          qtyRdy: "",
+          date: this.date.nativeElement.value,
+          marks: this.marks.nativeElement.value,
+          shift: this.shift.nativeElement.value,
+          mkp: this.currentType,
+          itemImpRemark: scdLneInfo[0].itemImpRemark,
+          whatIsMissing: this.whatIsMissing.nativeElement.value,
+        };
+
+        if (this.typeShown == "unpacked") {
+          scheduleToUpdate.status = "";
+          scdLneInfo[0].status = "";
+        }
+        this.scheduleService.editSchedule(scheduleToUpdate,editReason).subscribe((res) => {
+          this.EditRowId = 0;
+          scheduleToUpdate.date3 = moment(scheduleToUpdate.date).format(
+            "YYYY-MM-DD"
+          );
+          this.scheduleData[
+            this.scheduleData.findIndex(
+              (sced) => sced._id == scheduleToUpdate._id
+            )
+          ] = scheduleToUpdate;
+          this.editRadioBtnType = "";
+          if (updateOrderItemDate) {
+            //update orderItemSchedule
+          }
+        });
+      } else {
+        alert(
+          'מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.'
+        );
+      }
+    } else {
+      this.toastSrv.warning("חייב לציין את סיבת עריכת השורה");
     }
   }
 
@@ -741,17 +740,18 @@ export class ScheduleComponent implements OnInit {
     });
   }
 
-
-
   deleteLine(id) {
-    let reason = prompt("אנא הכנס סיבה למחיקת הקו", "");
-    if (reason != null) {
-      document.getElementById("deleteReason").innerHTML =
-      `${reason}`;
-      if ((confirm("האם אתה בטוח שברצונך למחוק את השורה?"))) {
-        this.scheduleService.deleteSchedule(id,reason).subscribe((res) => {
-          this.scheduleData = this.scheduleData.filter((elem) => elem._id != id);
+    if (confirm("האם אתה בטוח שברצונך למחוק את השורה?")) {
+      let reason = prompt("אנא הכנס סיבה למחיקת הקו", "");
+      if (reason != null && reason != "") {
+        document.getElementById("deleteReason").innerHTML = reason;
+        this.scheduleService.deleteSchedule(id, reason).subscribe((res) => {
+          this.scheduleData = this.scheduleData.filter(
+            (elem) => elem._id != id
+          );
         });
+      } else {
+        this.toastSrv.warning("חייב לציין את סיבת המחיקה");
       }
     }
   }

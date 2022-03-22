@@ -369,6 +369,7 @@
       <tr *ngIf="allowUpdateForm">
         <td></td>
         <td colspan="2">
+          <p id="reason" style="display: none;"></p>
           <button *ngIf="!newForm" [disabled]="disabledValue" (click)="updateFormDetails()"
             class="btn btn-success form-control">עדכן טופס</button><br>
             
