@@ -122,7 +122,7 @@ export class BulksArrivalComponent implements OnInit {
       : null;
     if (barrelNumber) {
       this.creamBarrelService
-        .getBarrelByNumber(barrelNumber)
+        .getNewBarrelByNumber(barrelNumber)
         .subscribe((data) => {
           console.log(data);
           if (data.msg) {

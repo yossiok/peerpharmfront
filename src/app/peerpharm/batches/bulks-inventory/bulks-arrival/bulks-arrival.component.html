@@ -141,7 +141,7 @@
           class="form-control"
           (change)="showWH()"
         >
-          <option value="" disabled>בחר מדף</option>
+          <option value="null" disabled>בחר מדף</option>
           <option *ngFor="let shell of shellNums" [value]="shell.position">
             {{ shell.position }}
           </option>
