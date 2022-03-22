@@ -14,6 +14,13 @@ export class CreamBarrelService {
   private baseUrl = "/";
 
   //bulks and barrels
+  getBarrelByNumber(barrelNumber) {
+    let url =
+      this.baseUrl +
+      "creamBarrel/getBarrelByNumber?barrelNumber=" +
+      barrelNumber;
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
 
   getShelvesByBarrelNumber(barrelNumber, wh): Observable<any> {
     let url =
@@ -23,5 +30,29 @@ export class CreamBarrelService {
       "&warehouse=" +
       wh;
     return this.http.get(url).pipe(map((response) => response.json()));
+  }
+  getShelvesByBatchNumber(batchNumber, wh): Observable<any> {
+    let url =
+      this.baseUrl +
+      "creamBarrel/getShelvesByBatchNumber?batchNumber=" +
+      batchNumber +
+      "&warehouse=" +
+      wh;
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+
+  addBulksToStock(allBarrels) {
+    let url = this.baseUrl + "creamBarrel/addToStock";
+
+    return this.http
+      .post(url, allBarrels)
+      .pipe(map((response) => response.json()));
+  }
+  checkoutBarrels({ barrels, wh, position, user }): Observable<any> {
+    let url = this.baseUrl + "creamBarrel/checkoutBarrels";
+
+    return this.http
+      .post(url, { barrels, wh, position, user })
+      .pipe(map((res) => res.json()));
   }
 }

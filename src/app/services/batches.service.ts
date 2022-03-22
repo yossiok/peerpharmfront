@@ -34,6 +34,12 @@ export class BatchesService {
     let url = this.baseUrl + "batch";
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+
+  getBatchBySearchName(name) {
+    let url = this.baseUrl + "batch/search?name=" + name;
+    return this.http.get(url).pipe(map((res) => res.json()));
+  }
+
   getLastBatches(limit): Observable<any> {
     let url = this.baseUrl + "batch?limit=" + limit;
 

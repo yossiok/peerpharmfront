@@ -17,6 +17,7 @@ import { FormuleFormTableComponent } from "./formules/formule-form-table/formule
 import { PeerPharmRputs } from "./peerpharm.routing";
 import { OrdersComponent } from "./allorders/orders/orders.component";
 import { AllordersComponent } from "./allorders/allorders/allorders.component";
+
 import {
   TranslateModule,
   TranslateLoader,
@@ -187,12 +188,15 @@ import { ProblematicOrderItemsComponent } from "./allorders/problematics/problem
 import { ProblematicItemsComponent } from "./procurement/procumentOrders/problematic-items/problematic-items.component";
 import { MatrialArrivalsCetificatesComponent } from "./inventory/material-arrival/material-arrival-certificates/material-arrival-certificates.component";
 import { BulksArrivalComponent } from "./batches/bulks-inventory/bulks-arrival/bulks-arrival.component";
+import { BulksCheckoutComponent } from "./batches/bulks-inventory/bulks-checkout/bulks-checkout.component";
+
 @NgModule({
   exports: [
     // MatInputModule,
     AddProcurementItemDialog,
   ],
   imports: [
+    NgxBarcodeModule,
     MatAutocompleteModule,
     MatMenuModule,
     CommonModule,
@@ -209,7 +213,6 @@ import { BulksArrivalComponent } from "./batches/bulks-inventory/bulks-arrival/b
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
-    NgxBarcodeModule,
     FormsModule,
     ReactiveFormsModule,
     MatTabsModule,
@@ -239,7 +242,6 @@ import { BulksArrivalComponent } from "./batches/bulks-inventory/bulks-arrival/b
     NewFormuleComponent,
     NeworderComponent,
     NeworderComponent,
-    NewBatchComponent,
     BulksInventoryComponent,
     BatchesMkpComponent,
     LinesComponent,
@@ -293,6 +295,7 @@ import { BulksArrivalComponent } from "./batches/bulks-inventory/bulks-arrival/b
     InventoryRequestsComponent,
     InventoryNewRequestComponent,
     MaterialArrivalComponent,
+    NewBatchComponent,
     MaterialArrivalTableComponent,
     MaterialScanViewComponent,
     ItemScanViewComponent,
@@ -349,6 +352,7 @@ import { BulksArrivalComponent } from "./batches/bulks-inventory/bulks-arrival/b
     ProblematicItemsComponent,
     MatrialArrivalsCetificatesComponent,
     BulksArrivalComponent,
+    BulksCheckoutComponent,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [

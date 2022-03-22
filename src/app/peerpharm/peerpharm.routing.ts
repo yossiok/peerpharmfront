@@ -498,6 +498,7 @@ export const PeerPharmRputs: Routes = [
     },
     component: BatchesMkpComponent,
   },
+
   {
     path: "batches/newBatch",
     canActivate: [ScreenGuard],

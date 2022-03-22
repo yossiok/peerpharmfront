@@ -1,0 +1,121 @@
+<div *ngIf="!authorized">אינך מורשה לראות מסך זה</div>
+<div dir="rtl">
+  <form [formGroup]="bulkCheckout" class="form_1">
+    <div class="row mt-4">
+      <h3>הוצאת חביות למחלקת מילוי</h3>
+    </div>
+    <div class="row mt-2">
+      <div class="col-2">
+        <label>שם המחסן</label>
+        <select
+          class="form-control"
+          (change)="showWH()"
+          formControlName="originWH"
+        >
+          <option disabled value="null">בחר מחסן</option>
+          <option *ngFor="let wh of allWarehouses" [value]="wh.name">
+            {{ wh.name }}
+          </option>
+        </select>
+        <!-- <div
+          class="alert alert-danger"
+          *ngIf="originWH.touched && originWH.errors?.required"
+        >
+          * שדה חובה
+        </div>
+      </div> -->
+      </div>
+      <div class="col-2">
+        <label>העברה אל</label>
+        <select
+          class="form-control"
+          formControlName="destinationWH"
+          (change)="getShelves()"
+        >
+          <option disabled value="null">בחר מחסן</option>
+          <option *ngFor="let wh of destinationWHs" [value]="wh.name">
+            {{ wh.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-2">
+        <label>הקלד אצווה</label>
+        <input type="text" class="form-control" formControlName="searchBatch" />
+      </div>
+      <div class="col-2">
+        <label>חיפוש אצווה</label><br />
+        <button class="btn btn-secondary" (click)="getBatch()">
+          חפש אצווה
+        </button>
+      </div>
+      <div class="col-2">
+        <label>רשימות אצוות לבחירה</label>
+        <select
+          formControlName="batchNumber"
+          class="form-control"
+          [value]="batch.batchNumber"
+          (change)="getBarrelsByBatch()"
+        >
+          <option value="null">בחר אצווה</option>
+          <option *ngFor="let batch of batchesList">
+            {{ batch.batchNumber }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <table class="table table-strip">
+        <thead class="bg-secondary text-white">
+          <tr>
+            <th>#</th>
+            <th>מספר החבית</th>
+            <th>משקל</th>
+            <th>מיקום</th>
+            <th>תאריך ייצור</th>
+            <th>תאריך תפוגה</th>
+            <th>בחר</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let barrel of barrelsList; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ barrel.item }}</td>
+            <td>{{ barrel.weightKg }}</td>
+            <td>{{ barrel.position }}</td>
+            <td>{{ barrel.productionDate | date: "dd/MM/yyyy" }}</td>
+            <td>{{ barrel.expirationDate | date: "dd/MM/yyyy" }}</td>
+            <td>
+              <input
+                type="checkbox"
+                (click)="addBarrelToList($event.target.checked, barrel.item)"
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row mt-2">
+      <div class="col-2">
+        <label>מיקום במחסן היעד</label>
+        <select
+          class="form-control"
+          formControlName="destinationPosition"
+          [value]="shelf.position"
+        >
+          <option value="null">בחר מיקום</option>
+          <option *ngFor="let shelf of shelvesList">
+            {{ shelf.position }}
+          </option>
+        </select>
+      </div>
+      <div class="col-2">
+        <br />
+        <button class="btn btn-success" (click)="checkoutBarrels()">
+          העבר מחסן
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
