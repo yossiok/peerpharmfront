@@ -18,22 +18,12 @@ export class BulksInventoryComponent implements OnInit {
   user: any = {};
   allWarehouses: Array<any> = [];
 
-  bulkArrival: FormGroup = new FormGroup({
-    barrelNumber: new FormControl(null),
-    batchNumber: new FormControl("", Validators.required),
-    fomruleNumber: new FormControl("", Validators.required),
-    barrelWeight: new FormControl(null, Validators.required),
-    barrelStatus: new FormControl("", Validators.required),
-    orderNumbers: new FormControl([], Validators.required),
-    user: new FormControl(""),
-    warehouseName: new FormControl("", Validators.required),
-    warehouseID: new FormControl("", Validators.required),
-    position: new FormControl("", Validators.required),
-    barcode: new FormControl(""),
-    arrivalDate: new FormControl(new Date()),
-  });
   barrelArivalView: boolean = false;
+  barrelCheckoutView: boolean = false;
   barrelReturnView: boolean = false;
+  barrelInventoryView: boolean = false;
+  expiredBarrelsView: boolean = false;
+  beforeFillingView: boolean = false;
 
   constructor(
     private inventoryService: InventoryService,
@@ -59,19 +49,25 @@ export class BulksInventoryComponent implements OnInit {
   getAllWhs() {
     this.inventoryService.getWhareHousesList().subscribe((whs) => {
       console.log(whs);
-      this.allWarehouses = whs.filter(
+      let warehouses = whs.filter(
         (wh) =>
           wh.name == "Cream Barrels" ||
           wh.name == "Karantine" ||
           wh.name == "Rosh HaAyin" ||
           wh.name == "Filling"
       );
+
+      this.allWarehouses = warehouses.filter((wh) => {
+        return this.user.allowedWH.includes(wh._id);
+      });
+
       // this.allWarehouses = whs.filter((wh) => wh.name == "Rosh HaAyin");
       this.allWarehouses.sort((a, b) => {
         let nameA = a.name.toLowerCase();
         let nameB = b.name.toLowerCase();
         return nameA > nameB ? 1 : nameA < nameB ? -1 : 0;
       });
+
       console.log(this.allWarehouses);
     });
   }
@@ -81,10 +77,50 @@ export class BulksInventoryComponent implements OnInit {
 
   readyBarrelArrival() {
     this.barrelArivalView = true;
+    this.barrelCheckoutView = false;
     this.barrelReturnView = false;
+    this.barrelInventoryView = false;
+    this.expiredBarrelsView = false;
+    this.beforeFillingView = false;
+  }
+  barrelCheckout() {
+    this.barrelCheckoutView = true;
+    this.barrelReturnView = false;
+    this.barrelArivalView = false;
+    this.barrelInventoryView = false;
+    this.expiredBarrelsView = false;
+    this.beforeFillingView = false;
   }
   barrelReturnArrival() {
     this.barrelReturnView = true;
     this.barrelArivalView = false;
+    this.barrelCheckoutView = false;
+    this.barrelInventoryView = false;
+    this.expiredBarrelsView = false;
+    this.beforeFillingView = false;
+  }
+  barrelInventory() {
+    this.barrelArivalView = false;
+    this.barrelCheckoutView = false;
+    this.barrelReturnView = false;
+    this.barrelInventoryView = true;
+    this.expiredBarrelsView = false;
+    this.beforeFillingView = false;
+  }
+  viewExpiredReport() {
+    this.barrelArivalView = false;
+    this.barrelCheckoutView = false;
+    this.barrelReturnView = false;
+    this.barrelInventoryView = false;
+    this.expiredBarrelsView = true;
+    this.beforeFillingView = false;
+  }
+  viewBeforeFillingView() {
+    this.barrelArivalView = false;
+    this.barrelCheckoutView = false;
+    this.barrelReturnView = false;
+    this.barrelInventoryView = false;
+    this.expiredBarrelsView = false;
+    this.beforeFillingView = true;
   }
 }

@@ -30,6 +30,14 @@ export class InventoryService {
       `itemShell/shelfsByWareHouse?whareHouse=${whareHouseId}&type=${type}&db=${db}`;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+  getShelvesByWHName(name): Observable<any> {
+    let url = this.baseUrl + "shell?warehouseName=" + name;
+    return this.http.get(url).pipe(
+      map((res) => {
+        return res.json();
+      })
+    );
+  }
 
   getItemShellsByDate(fromDate, toDate): Observable<any> {
     let url =
@@ -598,8 +606,16 @@ export class InventoryService {
   //   return this.http.get(url).pipe(map((reponse) => reponse.json()));
   // }
 
+  // get all shelves from one warehouse by warehouse ID
+
   getWhareHouseShelfList(whareHouseId) {
     let url = this.baseUrl + "shell?whareHouseId=" + whareHouseId;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
+  // get all shelves from one warehouse by warehouse name
+  getAllShellsByWarehouseName(warehouseName) {
+    let url = this.baseUrl + "shell?warehouseName=" + warehouseName;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 

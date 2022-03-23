@@ -52,7 +52,7 @@
     "moment": "^2.29.1",
     "ng2-dnd": "^5.0.2",
     "ng2-filter-pipe": "^0.1.10",
-    "ngx-barcode": "^0.2.4",
+    "ngx-barcode": "^0.3.0",
     "ngx-perfect-scrollbar": "6.1.0",
     "ngx-print": "^1.2.1",
     "ngx-toastr": "^9.2.0",
