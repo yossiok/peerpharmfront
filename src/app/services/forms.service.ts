@@ -185,7 +185,7 @@ export class FormsService {
       reason:reason
     }
     return this.http
-      .post(url, JSON.stringify({ formDetails }), this.options)
+      .post(url, JSON.stringify(obj), this.options)
       .pipe(map((res) => res.json()));
   }
   createFormDetails(formDetails) {
