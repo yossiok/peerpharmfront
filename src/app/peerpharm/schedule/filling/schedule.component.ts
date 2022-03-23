@@ -652,6 +652,7 @@ export class ScheduleComponent implements OnInit {
 
   async updateSchedule(line) {
     let editReason = prompt("אנא הכנס/י את סיבת העדכון", "");
+    editReason = editReason.trim();
     if (editReason != null && editReason != "") {
       document.getElementById("editReason").innerHTML = editReason;
       if (this.orderN.nativeElement.value != "") {
@@ -743,6 +744,7 @@ export class ScheduleComponent implements OnInit {
   deleteLine(id) {
     if (confirm("האם אתה בטוח שברצונך למחוק את השורה?")) {
       let reason = prompt("אנא הכנס סיבה למחיקת הקו", "");
+      reason = reason.trim();
       if (reason != null && reason != "") {
         document.getElementById("deleteReason").innerHTML = reason;
         this.scheduleService.deleteSchedule(id, reason).subscribe((res) => {

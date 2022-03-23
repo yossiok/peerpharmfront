@@ -325,6 +325,40 @@ export class FormdetailsComponent implements OnInit {
   }
 
   addNewQAPallet() {
+    // Validation
+    let errors = [];
+    if(this.newQAPallet.floorNumber == null || this.newQAPallet.floorNumber == ""){
+      errors.push({msg:"חייב לציין את מספר הקומות"});
+      
+    }
+    if(this.newQAPallet.kartonQuantity == null || this.newQAPallet.kartonQuantity == ""){
+      errors.push({msg:"חייב לציין את כמות הקרטונים בכל קומה"});
+      
+    }
+    if(this.newQAPallet.unitsInKarton == null || this.newQAPallet.unitsInKarton == ""){
+      errors.push({msg:"חייב לציין את כמות היחידות בכל קרטון"});
+      
+    }
+    if(this.newQAPallet.lastFloorQuantity == null || this.newQAPallet.lastFloorQuantity == ""){
+      errors.push({msg:"חייב לציין את כמות הקרטונים בקומה האחרונה"});
+      
+    }
+    if(this.newQAPallet.unitsQuantityPartKarton == null || this.newQAPallet.unitsQuantityPartKarton == ""){
+      errors.push({msg:"חייב לציין את כמות היחידות בקרטון החלקי"});
+      
+    }
+    if(this.newQAPallet.kindOfPallet == null || this.newQAPallet.kindOfPallet == ""){
+      errors.push({msg:"חייב לציין את סוג המשטח"});
+      
+    }
+    if(this.newQAPallet.qaStatus == null || this.newQAPallet.qaStatus == ""){
+      errors.push({msg:"חייב לציין את הסטטוס"});
+      
+    }
+    if(errors.length > 0){
+      errors.map((err)=>this.toastService.warning(err.msg))
+      return;
+    }
     // Init object
     this.newQAPallet.batchNumber = this.form.batchN;
     this.newQAPallet.itemNumber = this.form.itemN;
@@ -383,6 +417,7 @@ export class FormdetailsComponent implements OnInit {
   updateFormDetails() {
     
       let reason = prompt("אנא הכנס/י את סיבה העדכון", "");
+       reason = reason.trim();
       if (reason != null && reason != "" ) {
         document.getElementById("reason").innerHTML = reason;
         try {
