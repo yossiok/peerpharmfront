@@ -65,6 +65,11 @@ table.checks{
 .fillEndDate{
     display: block !important;
 }
+.show{
+    top:150px;
+    overflow:scroll;
+    height:62.5rem;
+}
 
 @media (max-width: 1400px) and (min-width: 1000px) {
     i {

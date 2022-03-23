@@ -362,7 +362,6 @@
         <td>הערות</td>
         <td colspan="3" style="border-bottom:0px solid;">
           <textarea cols="90" rows="5" [(ngModel)]="form.frontRemarks" [disabled]="disabledValue && disableRemarkEditAfterSave"></textarea>
- 
         </td>
       </tr>
 
@@ -370,6 +369,7 @@
       <tr *ngIf="allowUpdateForm">
         <td></td>
         <td colspan="2">
+          <p id="reason" style="display: none;"></p>
           <button *ngIf="!newForm" [disabled]="disabledValue" (click)="updateFormDetails()"
             class="btn btn-success form-control">עדכן טופס</button><br>
             
@@ -672,8 +672,8 @@
 </div>
 
 
-<div *ngIf="showQAPalletsModal == true" style="top:150px;"
-  class="bg-white fixed-top mx-auto w-100 p-5 my-auto text-center rounded shadow-lg border border-info">
+<div *ngIf="showQAPalletsModal == true"
+  class="bg-white fixed-top mx-auto w-100 p-5 my-auto text-center rounded shadow-lg border border-info show">
   <div class="row mt-4">
     <div class="col-4"> </div>
     <div class="col-4">
