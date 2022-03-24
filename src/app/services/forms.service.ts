@@ -277,6 +277,13 @@ export class FormsService {
       .post(url, JSON.stringify(pallet), this.options)
       .pipe(map((res) => res.json()));
   }
+  // Eran
+  editQAPallet(qaPallet) {
+    let url = this.baseUrl + "formDetails/editQAPallet";
+    return this.http
+      .post(url, JSON.stringify(qaPallet), this.options)
+      .pipe(map((res) => res.json()));
+  }
 
   getCalibrationFormByYear(calibrationForm) {
     let url =
