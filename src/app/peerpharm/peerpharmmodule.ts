@@ -189,6 +189,9 @@ import { ProblematicItemsComponent } from "./procurement/procumentOrders/problem
 import { MatrialArrivalsCetificatesComponent } from "./inventory/material-arrival/material-arrival-certificates/material-arrival-certificates.component";
 import { BulksArrivalComponent } from "./batches/bulks-inventory/bulks-arrival/bulks-arrival.component";
 import { BulksCheckoutComponent } from "./batches/bulks-inventory/bulks-checkout/bulks-checkout.component";
+import { CustomersComponent } from "./customers/customers.component";
+import { ProposalsComponent } from "./customers/proposals/proposals.component";
+import { ProposalsListComponent } from "./customers/proposals-list/proposals-list.component";
 
 @NgModule({
   exports: [
@@ -353,6 +356,9 @@ import { BulksCheckoutComponent } from "./batches/bulks-inventory/bulks-checkout
     MatrialArrivalsCetificatesComponent,
     BulksArrivalComponent,
     BulksCheckoutComponent,
+    CustomersComponent,
+    ProposalsComponent,
+    ProposalsListComponent,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [

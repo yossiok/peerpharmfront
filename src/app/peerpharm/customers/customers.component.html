@@ -1,21 +1,23 @@
 <div *ngIf="user.userName == 'dani' || user.userName == 'testuser2'">
   <!-- <a
-    href="javascript:void(0)"
-    class="btn btn-success show-left-part d-block d-md-none ti-menu"
-  ></a> -->
+      href="javascript:void(0)"
+      class="btn btn-success show-left-part d-block d-md-none ti-menu"
+    ></a> -->
   <div class="main-part" dir="rtl">
     <div class="left-part bg-white fixed-left-part">
       <div class="position-relative">
         <div class="px-3 py-3 d-flex align-items-center border-bottom">
-          <p class="mb-0 mt-5 py-1 text-center font-18 font-bold heb">תפריט</p>
+          <p class="mb-0 mt-5 py-1 text-center font-18 font-bold heb">
+            תפריט לקוחות
+          </p>
         </div>
         <ul class="tasklist list-style-none">
           <li
             style="cursor: pointer"
             class="task-item pr-2 py-1 d-flex incomplete border-bottom heb-menu"
-            (click)="readyBarrelArrival()"
+            (click)="newProposalMenu()"
           >
-            קליטת חביות חדשות
+            הצעת מחיר חדשה
             <span
               class="badge badge-danger ml-auto pr-2 pt-1"
               [style.background]="1 | orderItemBatchStatusColor"
@@ -25,9 +27,9 @@
           <li
             style="cursor: pointer"
             class="task-item d-flex complete pr-2 border-bottom heb-menu"
-            (click)="barrelCheckout()"
+            (click)="proposalsListMenu()"
           >
-            הוצאת חביות למילוי<span
+            רשימת הצעות מחיר<span
               class="badge badge-success ml-auto pt-1"
               [style.background]="2 | orderItemBatchStatusColor"
             >
@@ -37,9 +39,9 @@
           <li
             style="cursor: pointer"
             class="task-item d-flex complete pr-2 border-bottom heb-menu"
-            (click)="barrelReturnArrival()"
+            (click)="customersListMenu()"
           >
-            החזרת עודפים ממילוי<span
+            רשימת לקוחות<span
               class="badge badge-success ml-auto pt-1"
               [style.background]="3 | orderItemBatchStatusColor"
             >
@@ -49,9 +51,9 @@
           <li
             style="cursor: pointer"
             class="task-item d-flex complete pr-2 border-bottom heb-menu"
-            (click)="barrelInventory()"
+            (click)="priceListsMenu()"
           >
-            דו"ח מלאי חביות<span
+            מחירונים<span
               class="badge badge-success ml-auto pt-1"
               [style.background]="4 | orderItemBatchStatusColor"
               >&nbsp; 4 &nbsp;
@@ -60,9 +62,9 @@
           <li
             style="cursor: pointer"
             class="task-item d-flex complete border-bottom heb-menu pr-2"
-            (click)="viewExpiredReport()"
+            (click)="emptyMenu()"
           >
-            דו"ח חביות פגי תוקף<span
+            מקום ריק<span
               class="badge badge-success ml-auto pt-1"
               [style.background]="5 | orderItemBatchStatusColor"
               >&nbsp; 5 &nbsp;
@@ -72,57 +74,55 @@
       </div>
     </div>
     <div>
-      <h1 class="text-center">
-        <span class="heading1"> Bulks Management - ניהול מלאי אצוות</span>
-      </h1>
+      <!-- <h1 class="text-center">
+        <span class="heading2"> Customers Management</span>
+      </h1> -->
       <div class="right-part bg-white">
-        <div class="text-center shadow bg-white w-75 mx-auto rounded p-5">
-          <div class="row mt-4" *ngIf="barrelArivalView">
+        <div class="text-center shadow bg-white w-75 mx-auto rounded p-2">
+          <div class="row mt-4" *ngIf="newProposalView">
+            <div class="col-12">
+              <h3>הצעת מחיר חדשה - New Proposal</h3>
+            </div>
+          </div>
+          <div class="row mt-4" *ngIf="proposalsListView">
             <div class="col-12">
               <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
-                קליטת חביות אחרי בישול
+                רשימת הצעות מחיר - Proposals List
               </h1>
             </div>
           </div>
-          <div class="row mt-4" *ngIf="barrelCheckoutView">
+          <div class="row mt-4" *ngIf="customersListView">
             <div class="col-12">
               <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
-                הוצאת חביות למילוי
+                רשימת לקוחות - Customers List
               </h1>
             </div>
           </div>
-          <div class="row mt-4" *ngIf="barrelReturnView">
+          <div class="row mt-4" *ngIf="priceListsView">
             <div class="col-12">
               <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
-                החזרת עודפים ממילוי
+                מחירונים - Price Lists
               </h1>
             </div>
           </div>
-          <div class="row mt-4" *ngIf="barrelInventoryView">
+          <div class="row mt-4" *ngIf="emptyView">
             <div class="col-12">
               <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
-                דו"ח מלאי חביות
-              </h1>
-            </div>
-          </div>
-          <div class="row mt-4" *ngIf="expiredBarrelsView">
-            <div class="col-12">
-              <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
-                דו"ח חביות שפג תוקפן
+                Empty Place
               </h1>
             </div>
           </div>
           <div dir="rtl" class="row mt-4">
-            <app-bulks-arrival
-              *ngIf="barrelArivalView"
-              [allWarehouses]="allWarehouses"
-            ></app-bulks-arrival>
+            <app-proposals
+              *ngIf="newProposalView"
+              [allCustomersList]="allCustomersList"
+            ></app-proposals>
           </div>
           <div dir="rtl" class="row mt-4">
-            <app-bulks-checkout
-              *ngIf="barrelCheckoutView"
-              [allWarehouses]="allWarehouses"
-            ></app-bulks-checkout>
+            <app-proposals-list
+              *ngIf="proposalsListView"
+              [allCustomersList]="allCustomersList"
+            ></app-proposals-list>
           </div>
         </div>
       </div>

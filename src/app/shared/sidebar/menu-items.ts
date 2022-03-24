@@ -503,7 +503,7 @@ export const ROUTES: RouteInfo[] = [
       },
       {
         path: "/peerpharm/costumers/costumers_list",
-        title: "Customers",
+        title: "Customers-",
         icon: "fas fa-address-book",
         class: "",
         extralink: false,
@@ -519,6 +519,24 @@ export const ROUTES: RouteInfo[] = [
       },
     ],
   },
+  {
+    path: "",
+    title: "Customers",
+    icon: "fas fa-dollar-sign",
+    class: "has-arrow",
+    extralink: false,
+    submenu: [
+      {
+        path: "/peerpharm/customers",
+        title: "Customers",
+        icon: "fas fa-list-ol",
+        class: "",
+        extralink: false,
+        submenu: [],
+      },
+    ],
+  },
+
   {
     path: "",
     title: "",
