@@ -188,6 +188,7 @@ export class FormsService {
       .post(url, JSON.stringify(obj), this.options)
       .pipe(map((res) => res.json()));
   }
+ 
   createFormDetails(formDetails) {
     let url = this.baseUrl + "formDetails/add2";
     return this.http
@@ -274,6 +275,13 @@ export class FormsService {
     let url = this.baseUrl + "formDetails/updateQAPallet";
     return this.http
       .post(url, JSON.stringify(pallet), this.options)
+      .pipe(map((res) => res.json()));
+  }
+  // Eran
+  editQAPallet(qaPallet) {
+    let url = this.baseUrl + "formDetails/editQAPallet";
+    return this.http
+      .post(url, JSON.stringify(qaPallet), this.options)
       .pipe(map((res) => res.json()));
   }
 
