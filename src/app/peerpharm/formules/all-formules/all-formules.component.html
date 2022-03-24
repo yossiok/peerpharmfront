@@ -56,44 +56,49 @@
 <table *ngIf="!loading" class="table table-fixed">
   <thead class="tableHeader">
     <tr>
+      <!-- 1 -->
       <th class="text-center">#</th>
-      <!--1-->
-      <th class="text-center">כתב כמויות</th>
       <!--2-->
-      <th class="text-center">Formule Number</th>
+      <th class="text-center">כתב כמויות</th>
       <!--3-->
-      <th class="text-center">Name</th>
+      <th class="text-center">Formule Number</th>
       <!--4-->
-      <th class="text-center">Remarks</th>
+      <th class="text-center">Name</th>
       <!--5-->
-      <th class="text-center">Category</th>
+      <th class="text-center">Remarks</th>
       <!--6-->
-      <th class="text-center">Materials</th>
+      <th class="text-center">Category</th>
       <!--7-->
-      <th class="text-center">PH</th>
+      <th class="text-center">Materials</th>
       <!--8-->
-      <th class="text-center">Viscosity</th>
+      <th class="text-center">PH</th>
       <!--9-->
-      <th class="text-center">Date Created / Updated</th>
+      <th class="text-center">Viscosity</th>
       <!--10-->
-      <th class="text-center">Formule Type</th>
+      <th class="text-center">Date Created / Updated</th>
       <!--11-->
+      <th class="text-center">Formule Type</th>
+      <!-- 12 -->
+      <th class="text-center">Father</th>
+      <!-- 13 -->
+      <th class="text-center">Children</th>
+      <!--14-->
       <th class="text-center">Approval</th>
-      <!--12-->
+      <!--15-->
       <th class="text-center">
         <img style="width: 30px;" src="../../../../assets/images/print.png" />
       </th>
-      <!--13-->
+      <!--16-->
       <th class="text-center"></th>
-      <!--14-->
+      <!--17-->
       <th class="text-center"></th>
-      <!--15 Delete formule -->
+      <!--18 Delete formule -->
       <th class="text-center"></th>
-      <!--16 Edit -->
+      <!--19 Edit -->
       <th></th>
-      <!--17 Save -->
+      <!--20 Save -->
       <th></th>
-      <!--18 Duplicate -->
+      <!--21 Duplicate -->
     </tr>
   </thead>
   <ng-container>
@@ -179,14 +184,30 @@
       <td *ngIf="formule._id != EditRowId">
         {{ formule.formuleType | formulesTypes }}
       </td>
-      <td *ngIf="formule._id == EditRowId"></td>
 
       <!--12-->
+      <td *ngIf="formule._id != EditRowId">
+        {{  formule.formuleType == 'child' ? formule.parentNumber : null}}
+      </td>
+
+      <!--13-->
+      <td *ngIf="formule._id != EditRowId">
+        <span *ngIf="formule.formuleType == 'father'">
+          <span *ngFor="let child of formule.children">
+            {{child.childNumber}},
+        </span>
+        </span>
+      </td>
+
+
+      <td *ngIf="formule._id == EditRowId"></td>
+
+      <!--14-->
       <td>
         <i style="cursor: pointer;" (click)="approveFormule(formule)" class="fa fa-check" aria-hidden="true"></i>
       </td>
 
-      <!--13-->
+      <!--15-->
       <td>
         <button *ngIf="formule._id != EditRowId" class="btn btn-info"
           (click)="openPrint(printFormule, formule.formuleNumber)">
@@ -194,30 +215,30 @@
         </button>
       </td>
 
-      <!--14-->
+      <!--16-->
       <td>
         <img ngbTooltip="Show Formule Pricing" *ngIf="formule._id != EditRowId" style="width: 50px; cursor: pointer;"
           (click)="getFormulePrice(formule)" src="../../../../assets/images/price.png" />
       </td>
 
-      <!--15-->
+      <!--17-->
       <td><img class="click" ngbTooltip="Delete Formule" *ngIf="formule._id != EditRowId" style="width:30px;"
           (click)="deleteFormule(formule._id)" src="../../../../assets/images/deleteBtn.png">
       </td>
 
-      <!--16-->
+      <!--18-->
       <td>
         <i *ngIf="formule._id != EditRowId" class="fa fa-pencil-alt h3 click" ngbTooltip="Edit Formule Details"
           (click)="edit(formule._id)"></i>
       </td>
 
-      <!--17-->
+      <!--19-->
       <td>
         <i *ngIf="formule._id == EditRowId" class="ti-save text-success m-r-10 click" ngbTooltip="Save Changes"
           style="font-size: 18px; cursor: pointer;" (click)="saveEdit(formule)"></i>
       </td>
 
-      <!--18-->
+      <!--20-->
       <td><button *ngIf="formule._id != EditRowId" (click)="copyFormule(formule)" ngbTooltip="Duplicate Formule"
           class="btn btn-secondary">Duplicate</button></td>
     </tr>
@@ -225,7 +246,7 @@
 </table>
 
 <div *ngIf="spinnerLoader == true" style="top: 150px;" class="spinnerLoader fixed-top mx-auto my-auto"></div>
-
+<!-- ERAN Phases Modal -->
 <div style="top: 20px; height: 900px !important;" class="container-fluid rounded fixed-top shadow-lg formBackGround"
   *ngIf="openFormuleModal == true">
   <div style="overflow: auto; height: 880px !important;">
@@ -310,6 +331,7 @@
 
         <tbody style="height: 500px;">
           <ng-container *ngFor="let phase of updateFormule.phases; let j = index">
+            <!-- drag object && drag container -->
             <tr [draggable]="draggable" *ngFor="let item of phase.items; let i = index"
               [style.background]="phaseColor(phase.phaseName)" [style.cursor]="draggingStatus()"
               (dragstart)="startItemDrag($event)" [attr.data-phase]="phase.phaseName"

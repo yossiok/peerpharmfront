@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormsService } from "../../../services/forms.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { AuthService } from "../../../services/auth.service";
 import { UserInfo } from "../../taskboard/models/UserInfo";
 import { TranslateService } from "@ngx-translate/core";
@@ -40,7 +40,12 @@ export class FormdetailsComponent implements OnInit {
   showQAPalletsModal: boolean = false;
   showQAPersonalPalletsModal: boolean = false;
   allowUpdateForm: boolean = false;
-
+  disableRemarkEditAfterSave: boolean = true;
+  today = new Date().getDate();
+  // edit bool value
+  enableEdit = false;
+  // edit bool index
+  enableEditIndex = null;
 
   newQAPallet = {
     floorNumber: null,
@@ -55,6 +60,7 @@ export class FormdetailsComponent implements OnInit {
     orderNumber: "",
     itemNumber: "",
     isPersonalPackage: false,
+    kindOfPallet: "",
   };
 
   newQAPersonalPallet = {
@@ -70,6 +76,7 @@ export class FormdetailsComponent implements OnInit {
     orderNumber: "",
     itemNumber: "",
     isPersonalPackage: true,
+    kindOfPallet: "",
   };
 
   newTest = {
@@ -91,7 +98,8 @@ export class FormdetailsComponent implements OnInit {
     private toastService: ToastrService,
     private scheduleService: ScheduleService,
     private batchService: BatchesService,
-    private itemService: ItemsService
+    private itemService: ItemsService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -154,6 +162,7 @@ export class FormdetailsComponent implements OnInit {
         }
       });
       this.CalcAvgWeight();
+      this.checkFormStatus();
       if (allChecks) this.wrapAllChecks();
     });
   }
@@ -320,6 +329,40 @@ export class FormdetailsComponent implements OnInit {
   }
 
   addNewQAPallet() {
+    // Validation
+    let errors = [];
+    if(this.newQAPallet.floorNumber == null || this.newQAPallet.floorNumber == ""){
+      errors.push({msg:"חייב לציין את מספר הקומות"});
+      
+    }
+    if(this.newQAPallet.kartonQuantity == null || this.newQAPallet.kartonQuantity == ""){
+      errors.push({msg:"חייב לציין את כמות הקרטונים בכל קומה"});
+      
+    }
+    if(this.newQAPallet.unitsInKarton == null || this.newQAPallet.unitsInKarton == ""){
+      errors.push({msg:"חייב לציין את כמות היחידות בכל קרטון"});
+      
+    }
+    // if(this.newQAPallet.lastFloorQuantity == null || this.newQAPallet.lastFloorQuantity == ""){
+    //   errors.push({msg:"חייב לציין את כמות הקרטונים בקומה האחרונה"});
+      
+    // }
+    // if(this.newQAPallet.unitsQuantityPartKarton == ""){
+    //   errors.push({msg:"חייב לציין את כמות היחידות בקרטון החלקי"});
+      
+    // }
+    if(this.newQAPallet.kindOfPallet == null || this.newQAPallet.kindOfPallet == ""){
+      errors.push({msg:"חייב לציין את סוג המשטח"});
+      
+    }
+    if(this.newQAPallet.qaStatus == null || this.newQAPallet.qaStatus == ""){
+      errors.push({msg:"חייב לציין את הסטטוס"});
+      
+    }
+    if(errors.length > 0){
+      errors.map((err)=>this.toastService.warning(err.msg))
+      return;
+    }
     // Init object
     this.newQAPallet.batchNumber = this.form.batchN;
     this.newQAPallet.itemNumber = this.form.itemN;
@@ -350,6 +393,40 @@ export class FormdetailsComponent implements OnInit {
   }
 
   addNewQAPersonalPallet() {
+    // Validation
+    let errors = [];
+    if(this.newQAPallet.floorNumber == null || this.newQAPallet.floorNumber == ""){
+      errors.push({msg:"חייב לציין את מספר הקומות"});
+      
+    }
+    if(this.newQAPallet.kartonQuantity == null || this.newQAPallet.kartonQuantity == ""){
+      errors.push({msg:"חייב לציין את כמות הקרטונים בכל קומה"});
+      
+    }
+    if(this.newQAPallet.unitsInKarton == null || this.newQAPallet.unitsInKarton == ""){
+      errors.push({msg:"חייב לציין את כמות היחידות בכל קרטון"});
+      
+    }
+    // if(this.newQAPallet.lastFloorQuantity == null || this.newQAPallet.lastFloorQuantity == ""){
+    //   errors.push({msg:"חייב לציין את כמות הקרטונים בקומה האחרונה"});
+      
+    // }
+    // if(this.newQAPallet.unitsQuantityPartKarton == ""){
+    //   errors.push({msg:"חייב לציין את כמות היחידות בקרטון החלקי"});
+      
+    // }
+    if(this.newQAPallet.kindOfPallet == null || this.newQAPallet.kindOfPallet == ""){
+      errors.push({msg:"חייב לציין את סוג המשטח"});
+      
+    }
+    if(this.newQAPallet.qaStatus == null || this.newQAPallet.qaStatus == ""){
+      errors.push({msg:"חייב לציין את הסטטוס"});
+      
+    }
+    if(errors.length > 0){
+      errors.map((err)=>this.toastService.warning(err.msg))
+      return;
+    }
     this.newQAPersonalPallet.batchNumber = this.form.batchN;
     this.newQAPersonalPallet.itemNumber = this.form.itemN;
     this.newQAPersonalPallet.orderNumber = this.form.orderNumber;
@@ -374,30 +451,55 @@ export class FormdetailsComponent implements OnInit {
       });
   }
 
+
   updateFormDetails() {
-    try {
-      console.log(this.form);
-      this.formsService.updateFormDetails(this.form).subscribe((result) => {
-        if (result.ok == 1) {
-          this.getFormData(this.formid, false);
-          this.toastService.success("טופס עודכן בהצלחה !");
-          this.showQAPalletsModal = false;
-        } else {
-          this.toastService.error(
-            "טופס לא עודכן , אנא נסה שנית או פנה למנהל מערכת"
-          );
+    
+      let reason = prompt("אנא הכנס/י את סיבה העדכון", "");
+       reason = reason.trim();
+      if (reason != null && reason != "" ) {
+        document.getElementById("reason").innerHTML = reason;
+        try {
+          this.formsService.updateFormDetails(this.form,reason).subscribe((result) => {
+            if (result.ok == 1) {
+              this.getFormData(this.formid, false);
+              this.toastService.success("טופס עודכן בהצלחה !");
+              this.showQAPalletsModal = false;
+              if (this.form.checkSignature && this.form.directorBackSignature) {
+                this.disabledValue = true;
+              }
+              console.log("this is the result: ", result);
+            } else
+              this.toastService.error(
+                "טופס לא עודכן , אנא נסה שנית או פנה למנהל מערכת"
+              );
+          });
+        } catch (error) {
+          this.toastService.error("אירעה שגיאה בעדכון , אנא נסה שנית");
         }
-      });
-    } catch (error) {
-      this.toastService.error("אירעה שגיאה בעדכון , אנא נסה שנית");
-    }
+      }else{
+        this.toastService.error("חובה לציין את סיבת העדכון");
+      }
+  }
+  async updateTest(indexOfTest, test) {
+    this.form.checkBox_clean.splice(indexOfTest, 1);
+    this.form.checkBox_closedWaterProof.splice(indexOfTest, 1);
+    this.form.checkBox_correctFinalPacking.splice(indexOfTest, 1);
+    this.form.checkBox_lotNumberPrinting.splice(indexOfTest, 1);
+    this.form.checkBox_stickerPrinting.splice(indexOfTest, 1);
+    this.form.checkNetoWeight.splice(indexOfTest, 1);
+    this.form.checkTime.splice(indexOfTest, 1);
+    this.allChecks.splice(indexOfTest, 1);
+    this.addNewTest(test);
   }
 
   goBack() {
-    window.history.back();
+    // window.history.back();
+    this.router.navigate([`/peerpharm/schedule/fillschedule`]);
   }
 
   createFormDetails() {
+    // Get date from server
+
     this.form.quantity_Produced = 0;
     this.formsService.createFormDetails(this.form).subscribe((data) => {
       if (data) {
@@ -405,6 +507,7 @@ export class FormdetailsComponent implements OnInit {
         this.toastService.success("טופס נוצר בהצלחה")!;
         this.newForm = false;
         this.formid = data._id;
+        this.form.fillingDate = data.fillingDate;
       }
     });
   }
@@ -449,7 +552,7 @@ export class FormdetailsComponent implements OnInit {
         QAPallet.palletStatus = "ממתין למשטח";
 
       count =
-        QAPallet.floorNumber * QAPallet.kartonQuantity * QAPallet.unitsInKarton;
+        QAPallet.floorNumber * (QAPallet.kartonQuantity) * QAPallet.unitsInKarton;
 
       if (QAPallet.lastFloorQuantity > 0)
         count += QAPallet.lastFloorQuantity * QAPallet.unitsInKarton;
@@ -472,7 +575,19 @@ export class FormdetailsComponent implements OnInit {
     return QAPallets;
   }
 
+  checkFormStatus() {
+    if (this.form.checkSignature && this.form.directorBackSignature) {
+      this.disabledValue = true;
+    }
+  }
+  // make edit available function
+  enableEditMethod(e, i) {
+    this.enableEdit = true;
+    this.enableEditIndex = i;
+    console.log(i, e);
+  }
   getUserInfo() {
+    // Need to check user Au
     if (this.authService.loggedInUser) {
       this.user = this.authService.loggedInUser;
       if (this.user.authorization) {
@@ -484,28 +599,30 @@ export class FormdetailsComponent implements OnInit {
           this.allowUpdateForm = true;
           this.disabledValue = false;
         }
-      }
-    } else {
-      this.authService.userEventEmitter.subscribe((user) => {
-        this.user = user;
-        if (this.user.authorization) {
-          if (
-            this.authService.loggedInUser.authorization.includes(
-              "updateFormDetails"
-            )
-          ) {
-            this.allowUpdateForm = true;
-            this.disabledValue = false;
-          }
+        if (this.authService.loggedInUser.authorization.includes("QAAdmin")) {
+          this.disableRemarkEditAfterSave = false;
         }
-      });
+      }
     }
+    // else {
+    //   this.authService.userEventEmitter.subscribe((user) => {
+    //     this.user = user;
+    //     if (this.user.authorization) {
+    //       if (
+    //         this.authService.loggedInUser.authorization.includes(
+    //           "updateFormDetails"
+    //         )
+    //       ) {
+    //         this.allowUpdateForm = true;
+    //         this.disabledValue = false;
+    //       }
+    // if(this.authService.loggedInUser.authorization.includes("QAAdmin")) {
+    //   this.allowEditAfterSave = true
+    // }
+    //     }
+    //   });
+    // }
   }
-
-  // UserDisableAuth() {
-  //   this.disabledcheckNetoWeightValue = this.authService.loggedInUser.formsdisable;
-  //   console.log(this.authService.loggedInUser.formsdisable);
-  // }
 
   wrapAllChecks() {
     for (let index = 0; index < this.form.checkTime.length; index++) {
@@ -561,10 +678,4 @@ export class FormdetailsComponent implements OnInit {
       }
     }
   }
-
-  
-
-
-
-
 }

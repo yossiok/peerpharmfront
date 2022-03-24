@@ -93,15 +93,19 @@ export class ScheduleService {
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
-  editSchedule(schedule): Observable<any> {
+  editSchedule(schedule,editReason): Observable<any> {
+    let obj = {
+      schedule:schedule,
+      editReason:editReason
+    }
     let url = this.baseUrl + "schedule/update";
     return this.http
-      .post(url, JSON.stringify(schedule), this.options)
+      .post(url, JSON.stringify(obj), this.options)
       .pipe(map((res) => res.json()));
   }
 
-  deleteSchedule(id): Observable<any> {
-    let sced = { _id: id };
+  deleteSchedule(id,reason?): Observable<any> {
+    let sced = { _id: id,reason:reason };
     let url = this.baseUrl + "schedule/delete";
     return this.http
       .post(url, JSON.stringify(sced), this.options)

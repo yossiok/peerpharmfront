@@ -112,9 +112,44 @@ export class OrdersComponent implements OnInit {
         "סוג הזמנה": order.type,
         "משתמש": order.user,
         "הערות": order.orderRemarks,
+        "סטטוס": order.status,
+        "שלב": order.stage,
       })
     }
     this.excelService.exportAsExcelFile(orders, `דו"ח הזמנות ${new Date().toString().slice(0, 10)}`);
+  }
+
+  exportAsXLSX2() {
+    this.ordersService.getOpenOrderReport().subscribe(data=>{
+      let orders = []
+      // console.log(data)
+
+      for (let order of data) {
+        let items = '';
+        for(let item of order.items){
+          items = items + "מספר מוצר: " + item.itemNumber + ", " + "מצב: " + item.fillingStatus + "| "
+        }
+  
+        orders.push({
+          "הלקוח": order.openOrder.costumer,
+          "מס' הזמנה": order.openOrder.orderNumber,
+          "לקוח": order.openOrder.costumer,
+          'מק"ט לקוח (פנימי)': order.openOrder.costumerInternalId,
+          "תאריך הזמנה": order.openOrder.orderDate,
+          "תאריך אספקה (משוער)": order.openOrder.deliveryDate,
+          "סוג הזמנה": order.openOrder.type,
+          "משתמש": order.openOrder.user,
+          "הערות": order.openOrder.orderRemarks,
+          "סטטוס": order.openOrder.status,
+          "שלב": order.openOrder.stage,
+          "מוצרים":items
+        })
+      }
+      this.excelService.exportAsExcelFile(orders, `דו"ח הזמנות תקועות ${new Date().toString().slice(0, 10)}`);
+
+
+    })
+    console.log('orders: ', this.orders)
   }
 
   uploadFreeBatchesFile(ev) {

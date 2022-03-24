@@ -142,6 +142,7 @@ export class StockComponent implements OnInit {
   itemsMovementModal: boolean = false;
   invRequestsModal: boolean = false;
   newPurchaseRecommendModal: boolean = false;
+  newSpecificPurchaseRecommendModal: boolean = false;
   lastYearOutAmount: number = 0;
   itemMovements: any = [];
   materialPurchases: any[];
@@ -525,6 +526,7 @@ export class StockComponent implements OnInit {
     }
   }
 
+
   fillSupplierInRec(ev) {
     let supplier = this.allSuppliers.find(
       (s) => s.suplierNumber == ev.target.value
@@ -547,6 +549,7 @@ export class StockComponent implements OnInit {
   }
 
   addStockItemToRecommend() {
+
     if (
       this.recommendStockItem.quantity == "" ||
       this.recommendStockItem.name == "" ||
@@ -557,7 +560,24 @@ export class StockComponent implements OnInit {
       this.toastSrv.error("אנא מלא את כל הפרטים של הפריט");
     } else {
       let objToPush = { ...this.recommendStockItem };
-      this.newPurchaseRecommendation.controls.stockitems.value.push(objToPush);
+      const length = this.newPurchaseRecommendation.controls.stockitems.value.length
+      const productsArray = this.newPurchaseRecommendation.controls.stockitems.value
+      let isExits = false;
+
+      for(let i=0;i<length;i++){
+        if(productsArray[i].number == objToPush.number){
+          isExits = true
+        }
+      }
+      if(isExits){
+        for(let i=0;i<length;i++){
+          if(this.newPurchaseRecommendation.controls.stockitems.value[i].number == objToPush.number){
+            this.newPurchaseRecommendation.controls.stockitems.value[i].quantity += objToPush.quantity
+          }
+        }
+      }else{
+        this.newPurchaseRecommendation.controls.stockitems.value.push(objToPush);
+      }
       this.toastSrv.success("פריט נוסף בהצלחה !");
       this.recommendStockItem.quantity = "";
       this.recommendStockItem.name = "";
@@ -1078,6 +1098,7 @@ export class StockComponent implements OnInit {
     });
   }
 
+  // start
   getStockItemByNumber(ev) {
     if (ev.target.value != "") {
       //get existing amounts of and locations on shelfs
@@ -1102,6 +1123,7 @@ export class StockComponent implements OnInit {
     }
   }
 
+  // E2
   sendRecommandation() {
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
