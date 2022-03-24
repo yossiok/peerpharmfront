@@ -2,35 +2,57 @@
 <nav>
   <ul class="nav nav-tabs">
     <li class="nav-item" (click)="tabChange('fillingForm')">
-      <div class="nav-link" [ngStyle]="{'background-color': fillingTabBtn}">Filling</div>
+      <div class="nav-link" [ngStyle]="{ 'background-color': fillingTabBtn }">
+        Filling
+      </div>
     </li>
-    <li class="nav-item" (click)="tabChange('personalPackingForm')" [ngStyle]="{'background-color': pPackingTabBtn}">
+    <li
+      class="nav-item"
+      (click)="tabChange('personalPackingForm')"
+      [ngStyle]="{ 'background-color': pPackingTabBtn }"
+    >
       <div class="nav-link">Personal Packing</div>
     </li>
-    <li class="nav-item" (click)="tabChange('compileForm')" [ngStyle]="{'background-color': compileTabBtn}">
+    <li
+      class="nav-item"
+      (click)="tabChange('compileForm')"
+      [ngStyle]="{ 'background-color': compileTabBtn }"
+    >
       <div class="nav-link">Compile Order</div>
     </li>
-    <li class="nav-item" (click)="tabChange('itemTree')" [ngStyle]="{'background-color': itemTreeTabBtn}">
+    <li
+      class="nav-item"
+      (click)="tabChange('itemTree')"
+      [ngStyle]="{ 'background-color': itemTreeTabBtn }"
+    >
       <div class="nav-link">Item Tree</div>
     </li>
   </ul>
 </nav>
 
-
 <div id="print-section">
   <h4 class="card-title">Quality Control</h4>
 
   <div *ngIf="tabView == 'fillingForm'">
-
-    <table dir="rtl" style="display: inline-table;font-size: 17px;font-weight: bold;">
+    <table
+      dir="rtl"
+      style="display: inline-table; font-size: 17px; font-weight: bold"
+    >
       <thead>
         <tr>
-          <td colspan="4" [translate]="'Quality Control Form'" class="subHeader">Filling Form</td>
+          <td
+            colspan="4"
+            [translate]="'Quality Control Form'"
+            class="subHeader"
+          >
+            Filling Form
+          </td>
         </tr>
         <tr>
           <td>
-            <button (click)="goBack()" class="btn btn-info">חזור <i class="fa fa-arrow-left"
-                aria-hidden="true"></i></button>
+            <button (click)="goBack()" class="btn btn-info">
+              חזור <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </button>
           </td>
         </tr>
       </thead>
@@ -38,68 +60,118 @@
       <tr>
         <td>מספר הזמנה</td>
         <td>
-          <input id="div_orderNumber" [(ngModel)]="form.orderNumber" disabled class="form-control inputDiv" />
+          <input
+            id="div_orderNumber"
+            [(ngModel)]="form.orderNumber"
+            disabled
+            class="form-control inputDiv"
+          />
         </td>
         <td>כמות מוזמנת</td>
         <td>
-          <input id="div_orderQuantity" [(ngModel)]="form.orderQuantity" class="inputDiv form-control" disabled />
+          <input
+            id="div_orderQuantity"
+            [(ngModel)]="form.orderQuantity"
+            class="inputDiv form-control"
+            disabled
+          />
         </td>
       </tr>
       <tr>
         <td [translate]="'Product Name'">שם המוצר</td>
         <td [ngbTooltip]="form.productName" colspan="3">
-          <input type="text" [(ngModel)]="form.productName" id="div_productName" style="width:571px" disabled
-            class="form-control inputDivLonger" />
+          <input
+            type="text"
+            [(ngModel)]="form.productName"
+            id="div_productName"
+            style="width: 571px"
+            disabled
+            class="form-control inputDivLonger"
+          />
         </td>
       </tr>
       <tr>
         <td>שם הלקוח</td>
         <td>
-          <input id="div_costumerName" [(ngModel)]="form.costumerName" disabled class="form-control inputDivLonger" />
+          <input
+            id="div_costumerName"
+            [(ngModel)]="form.costumerName"
+            disabled
+            class="form-control inputDivLonger"
+          />
         </td>
         <td>מק"ט</td>
         <td>
-          <input id="div_itemN" [(ngModel)]="form.itemN" class="inputDiv form-control" disabled />
+          <input
+            id="div_itemN"
+            [(ngModel)]="form.itemN"
+            class="inputDiv form-control"
+            disabled
+          />
         </td>
       </tr>
       <tr>
         <td>מס' אצווה</td>
         <td>
-          <input type="text" [(ngModel)]="form.batchN" [disabled]="disabledValue" id="div_batchN" class="form-control inputDivLonger" />
+          <input
+            type="text"
+            [(ngModel)]="form.batchN"
+            [disabled]="disabledValue"
+            id="div_batchN"
+            class="form-control inputDivLonger"
+          />
         </td>
         <td>כמות חביות</td>
         <td>
-          <input type="number" id="div_drumsAmount" [(ngModel)]="form.drumsAmount" class="inputDiv form-control"
-            [disabled]="disabledValue" />
+          <input
+            type="number"
+            id="div_drumsAmount"
+            [(ngModel)]="form.drumsAmount"
+            class="inputDiv form-control"
+            [disabled]="disabledValue"
+          />
         </td>
       </tr>
       <tr *ngIf="numberOfFormsWithSameBatch > 0">
         <td></td>
         <td>
-          <span class="text-danger">קיימים {{numberOfFormsWithSameBatch}} טפסים נוספים הכוללים את אחת האצוות</span>
+          <span class="text-danger"
+            >קיימים {{ numberOfFormsWithSameBatch }} טפסים נוספים הכוללים את אחת
+            האצוות</span
+          >
         </td>
       </tr>
       <tr>
         <td>תאריך ייצור/תאריך סיום</td>
         <td>
           <span *ngIf="form.batchN.length > 8">
-            <input type="date" id="div_productionDate" [(ngModel)]="form.productaionDate" class="inputDiv form-control"
-              [disabled]="form.batchN" />
+            <input
+              type="date"
+              id="div_productionDate"
+              [(ngModel)]="form.productaionDate"
+              class="inputDiv form-control"
+              [disabled]="form.batchN"
+            />
           </span>
           <span *ngIf="form.batchN.length == 8">
             <!-- {{form.productaionDate}} -->
-            {{form.productaionDate | date: 'dd/MM/yy'}}
+            {{ form.productaionDate | date: "dd/MM/yy" }}
           </span>
         </td>
         <td>תאריך תפוגה</td>
         <td>
           <span *ngIf="form.batchN.length > 8">
-            <input type="date" id="div_expirationDate" [(ngModel)]="form.expirationDate" class="inputDiv form-control"
-              [disabled]="disabledValue" />
+            <input
+              type="date"
+              id="div_expirationDate"
+              [(ngModel)]="form.expirationDate"
+              class="inputDiv form-control"
+              [disabled]="disabledValue"
+            />
           </span>
           <span *ngIf="form.batchN.length == 8">
             <!-- {{form.expirationDate}} -->
-            {{form.expirationDate | date: 'dd/MM/yy'}}
+            {{ form.expirationDate | date: "dd/MM/yy" }}
           </span>
         </td>
       </tr>
@@ -107,103 +179,171 @@
       <tr>
         <td>תאריך מילוי</td>
         <td>
-          {{form.fillingDate | date: 'dd/MM/yyyy'}}
+          {{ form.fillingDate | date: "dd/MM/yyyy" }}
         </td>
         <td>מילוי ע"י</td>
         <td>
-          <input id="div_fillingBy" [(ngModel)]="form.filledBy" class="inputDiv form-control"
-            [disabled]="disabledValue" />
+          <input
+            id="div_fillingBy"
+            [(ngModel)]="form.filledBy"
+            class="inputDiv form-control"
+            [disabled]="disabledValue"
+          />
         </td>
       </tr>
       <tr>
         <td>שינוי תאריך מילוי</td>
         <td>
-          <input type="date" id="div_fillDate" [(ngModel)]="form.fillingDate" class="inputDiv form-control"
-          [disabled]="disabledValue" />
+          <input
+            type="date"
+            id="div_fillDate"
+            [(ngModel)]="form.fillingDate"
+            class="inputDiv form-control"
+            [disabled]="disabledValue"
+          />
         </td>
       </tr>
       <tr>
         <td>שעת התחלת מילוי</td>
         <td>
-          <input type="time" id="div_fillingStart" [(ngModel)]="form.fillStartTime" class="inputDiv form-control"
-            [disabled]="disabledValue" />
+          <input
+            type="time"
+            id="div_fillingStart"
+            [(ngModel)]="form.fillStartTime"
+            class="inputDiv form-control"
+            [disabled]="disabledValue"
+          />
         </td>
         <td>תאריך סיום מילוי</td>
         <td>
-          <input type="date" id="div_fillEndDate" [(ngModel)]="form.fillingEndDate" class="fillEndDate inputDiv form-control"
-            [disabled]="disabledValue" />
+          <input
+            type="date"
+            id="div_fillEndDate"
+            [(ngModel)]="form.fillingEndDate"
+            class="fillEndDate inputDiv form-control"
+            [disabled]="disabledValue"
+          />
         </td>
       </tr>
       <tr>
         <td>שעת סיום מילוי</td>
         <td>
-          <input type="time" id="div_endTimeWork" [(ngModel)]="form.endTimeWork" class="inputDiv form-control"
-            [disabled]="disabledValue" />
+          <input
+            type="time"
+            id="div_endTimeWork"
+            [(ngModel)]="form.endTimeWork"
+            class="inputDiv form-control"
+            [disabled]="disabledValue"
+          />
         </td>
       </tr>
       <tr></tr>
       <tr>
         <td>טווח סטיה</td>
         <td>
-          <input id="div_weightRange" [(ngModel)]="form.weightRange" class="inputDiv form-control"
-            [disabled]="disabledValue" />
+          <input
+            id="div_weightRange"
+            [(ngModel)]="form.weightRange"
+            class="inputDiv form-control"
+            [disabled]="disabledValue"
+          />
         </td>
         <td>משקל נטו</td>
         <td>
-          <input type="number" id="div_netoWeight" [(ngModel)]="form.netWeight" class="inputDiv form-control"
-            [disabled]="disabledValue" />
+          <input
+            type="number"
+            id="div_netoWeight"
+            [(ngModel)]="form.netWeight"
+            class="inputDiv form-control"
+            [disabled]="disabledValue"
+          />
         </td>
       </tr>
       <tr>
         <td>הדבקה ע"י</td>
         <td>
-          <input id="div_lableldBy" [(ngModel)]="form.labeledBy" class="inputDiv form-control"
-            [disabled]="disabledValue" />
+          <input
+            id="div_lableldBy"
+            [(ngModel)]="form.labeledBy"
+            class="inputDiv form-control"
+            [disabled]="disabledValue"
+          />
         </td>
         <td>אריזה ע"י</td>
         <td>
-          <input id="div_packegeBy" [(ngModel)]="form.packageBy" class="inputDiv form-control"
-            [disabled]="disabledValue" />
+          <input
+            id="div_packegeBy"
+            [(ngModel)]="form.packageBy"
+            class="inputDiv form-control"
+            [disabled]="disabledValue"
+          />
         </td>
       </tr>
 
-
-      <tr style="background-color:50D7FF">
+      <tr style="background-color: 50d7ff">
         <td colspan="4" class="subHeader">בדיקות לפני מילוי</td>
       </tr>
       <tr>
         <td>בדיקה סנטורית של המוצר</td>
         <td>
-          <input type="checkbox" id="sentoric" [disabled]="disabledValue" [(ngModel)]="form.visualIndentCheck" />
+          <input
+            type="checkbox"
+            id="sentoric"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.visualIndentCheck"
+          />
         </td>
         <td>זיהוי וניקוי מיכלים</td>
         <td>
-          <input type="checkbox" id="cleanContainer" [disabled]="disabledValue"
-            [(ngModel)]="form.containeMatchAndClean" />
+          <input
+            type="checkbox"
+            id="cleanContainer"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.containeMatchAndClean"
+          />
         </td>
       </tr>
       <tr>
         <td>זיהוי תוויות</td>
         <td>
-          <input type="checkbox" id="label" [disabled]="disabledValue" [(ngModel)]="form.presentOfTheLabels" />
+          <input
+            type="checkbox"
+            id="label"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.presentOfTheLabels"
+          />
         </td>
         <td>זיהוי קרטון<br />מכסה/משאבה</td>
         <td>
-          <input type="checkbox" id="ccc" [disabled]="disabledValue" [(ngModel)]="form.presentOfPackageComponent" />
+          <input
+            type="checkbox"
+            id="ccc"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.presentOfPackageComponent"
+          />
         </td>
       </tr>
       <tr>
         <td>אישור כיוון ונקיון מכונה</td>
         <td>
-          <input type="checkbox" id="cleanMachine" [disabled]="disabledValue" [(ngModel)]="form.confSetupeClean" />
+          <input
+            type="checkbox"
+            id="cleanMachine"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.confSetupeClean"
+          />
         </td>
         <td>חתימת מנהל מאשר</td>
         <td>
-          <input id="div_mangaerSign" class="inputDiv form-control" [disabled]="disabledValue"
-            [(ngModel)]="form.directorFrontSignature" />
+          <input
+            id="div_mangaerSign"
+            class="inputDiv form-control"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.directorFrontSignature"
+          />
         </td>
       </tr>
-      <tr style="background-color:50D7FF">
+      <tr style="background-color: 50d7ff">
         <td colspan="4" class="subHeader">בקרה במהלך מילוי</td>
       </tr>
 
@@ -222,72 +362,177 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let check of allChecks;let indexOfelement=index">
-                <td>{{check.checkTime}}
-                    <br><input *ngIf="!disabledValue" type="time" [disabled]="disabledValue" [(ngModel)]="check.checkTime" class="form-control">
+              <tr *ngFor="let check of allChecks; let indexOfelement = index">
+                <td>
+                  {{ check.checkTime }} <br /><input
+                    *ngIf="!disabledValue"
+                    type="time"
+                    [disabled]="disabledValue"
+                    [(ngModel)]="check.checkTime"
+                    class="form-control"
+                  />
                 </td>
                 <td>
-                  <i *ngIf="check.checkBox_clean" class="fas fa-check text-success"></i>
-                  <i *ngIf="!check.checkBox_clean" class="fas fa-times text-danger"></i>
-                  <br><input [disabled]="disabledValue" type="checkbox" [(ngModel)]="check.checkBox_clean">
-                </td>
-                <td>{{check.checkNetoWeight}}
-                  <br><input type="text" [disabled]="disabledValue" [(ngModel)]="check.checkNetoWeight"
-                    class="form-control">
-                </td>
-                <td>
-                  <i *ngIf="check.checkBox_closedWaterProof" class="fas fa-check text-success"></i>
-                  <i *ngIf="!check.checkBox_closedWaterProof" class="fas fa-times text-danger"></i>
-                  <br><input [disabled]="disabledValue" type="checkbox" [(ngModel)]="check.checkBox_closedWaterProof">
-                </td>
-                <td>
-                  <i *ngIf="check.checkBox_stickerPrinting" class="fas fa-check text-success"></i>
-                  <i *ngIf="!check.checkBox_stickerPrinting" class="fas fa-times text-danger"></i>
-                  <br><input [disabled]="disabledValue" type="checkbox" [(ngModel)]="check.checkBox_stickerPrinting">
+                  <i
+                    *ngIf="check.checkBox_clean"
+                    class="fas fa-check text-success"
+                  ></i>
+                  <i
+                    *ngIf="!check.checkBox_clean"
+                    class="fas fa-times text-danger"
+                  ></i>
+                  <br /><input
+                    [disabled]="disabledValue"
+                    type="checkbox"
+                    [(ngModel)]="check.checkBox_clean"
+                  />
                 </td>
                 <td>
-                  <i *ngIf="check.checkBox_lotNumberPrinting" class="fas fa-check text-success"></i>
-                  <i *ngIf="!check.checkBox_lotNumberPrinting" class="fas fa-times text-danger"></i>
-                  <br><input [disabled]="disabledValue" type="checkbox" [(ngModel)]="check.checkBox_lotNumberPrinting">
+                  {{ check.checkNetoWeight }} <br /><input
+                    type="text"
+                    [disabled]="disabledValue"
+                    [(ngModel)]="check.checkNetoWeight"
+                    class="form-control"
+                  />
                 </td>
                 <td>
-                  <i *ngIf="check.checkBox_correctFinalPacking" class="fas fa-check text-success"></i>
-                  <i *ngIf="!check.checkBox_correctFinalPacking" class="fas fa-times text-danger"></i>
-                  <br><input [disabled]="disabledValue" type="checkbox" [(ngModel)]="check.checkBox_correctFinalPacking">
+                  <i
+                    *ngIf="check.checkBox_closedWaterProof"
+                    class="fas fa-check text-success"
+                  ></i>
+                  <i
+                    *ngIf="!check.checkBox_closedWaterProof"
+                    class="fas fa-times text-danger"
+                  ></i>
+                  <br /><input
+                    [disabled]="disabledValue"
+                    type="checkbox"
+                    [(ngModel)]="check.checkBox_closedWaterProof"
+                  />
                 </td>
-                <td><button [disabled]="disabledValue" (click)="updateTest(indexOfelement,check)"
-                  class="btn btn-success">עדכון</button>
-              </td>
+                <td>
+                  <i
+                    *ngIf="check.checkBox_stickerPrinting"
+                    class="fas fa-check text-success"
+                  ></i>
+                  <i
+                    *ngIf="!check.checkBox_stickerPrinting"
+                    class="fas fa-times text-danger"
+                  ></i>
+                  <br /><input
+                    [disabled]="disabledValue"
+                    type="checkbox"
+                    [(ngModel)]="check.checkBox_stickerPrinting"
+                  />
+                </td>
+                <td>
+                  <i
+                    *ngIf="check.checkBox_lotNumberPrinting"
+                    class="fas fa-check text-success"
+                  ></i>
+                  <i
+                    *ngIf="!check.checkBox_lotNumberPrinting"
+                    class="fas fa-times text-danger"
+                  ></i>
+                  <br /><input
+                    [disabled]="disabledValue"
+                    type="checkbox"
+                    [(ngModel)]="check.checkBox_lotNumberPrinting"
+                  />
+                </td>
+                <td>
+                  <i
+                    *ngIf="check.checkBox_correctFinalPacking"
+                    class="fas fa-check text-success"
+                  ></i>
+                  <i
+                    *ngIf="!check.checkBox_correctFinalPacking"
+                    class="fas fa-times text-danger"
+                  ></i>
+                  <br /><input
+                    [disabled]="disabledValue"
+                    type="checkbox"
+                    [(ngModel)]="check.checkBox_correctFinalPacking"
+                  />
+                </td>
+                <td>
+                  <button
+                    [disabled]="disabledValue"
+                    (click)="updateTest(indexOfelement, check)"
+                    class="btn btn-success"
+                  >
+                    עדכון
+                  </button>
+                </td>
               </tr>
               <tr *ngIf="!disabledValue">
-                <td><input type="time" [disabled]="disabledValue" [(ngModel)]="newTest.checkTime" class="form-control">
+                <td>
+                  <input
+                    type="time"
+                    [disabled]="disabledValue"
+                    [(ngModel)]="newTest.checkTime"
+                    class="form-control"
+                  />
                 </td>
 
                 <td>
-                  <input [disabled]="disabledValue" type="checkbox" [(ngModel)]="newTest.checkBox_clean">
-                </td>
-
-                <td><input type="text" [disabled]="disabledValue" [(ngModel)]="newTest.checkNetoWeight"
-                    class="form-control"></td>
-
-                <td>
-                  <input [disabled]="disabledValue" type="checkbox" [(ngModel)]="newTest.checkBox_closedWaterProof">
+                  <input
+                    [disabled]="disabledValue"
+                    type="checkbox"
+                    [(ngModel)]="newTest.checkBox_clean"
+                  />
                 </td>
 
                 <td>
-                  <input [disabled]="disabledValue" type="checkbox" [(ngModel)]="newTest.checkBox_stickerPrinting">
+                  <input
+                    type="text"
+                    [disabled]="disabledValue"
+                    [(ngModel)]="newTest.checkNetoWeight"
+                    class="form-control"
+                  />
                 </td>
 
                 <td>
-                  <input [disabled]="disabledValue" type="checkbox" [(ngModel)]="newTest.checkBox_lotNumberPrinting">
+                  <input
+                    [disabled]="disabledValue"
+                    type="checkbox"
+                    [(ngModel)]="newTest.checkBox_closedWaterProof"
+                  />
                 </td>
 
                 <td>
-                  <input [disabled]="disabledValue" type="checkbox" [(ngModel)]="newTest.checkBox_correctFinalPacking">
+                  <input
+                    [disabled]="disabledValue"
+                    type="checkbox"
+                    [(ngModel)]="newTest.checkBox_stickerPrinting"
+                  />
                 </td>
 
-                <td><button *ngIf="allowUpdateForm" [disabled]="disabledValue" (click)="addNewTest(newTest)"
-                    class="btn btn-success">+</button>
+                <td>
+                  <input
+                    [disabled]="disabledValue"
+                    type="checkbox"
+                    [(ngModel)]="newTest.checkBox_lotNumberPrinting"
+                  />
+                </td>
+
+                <td>
+                  <input
+                    [disabled]="disabledValue"
+                    type="checkbox"
+                    [(ngModel)]="newTest.checkBox_correctFinalPacking"
+                  />
+                </td>
+
+                <td>
+                  <button
+                    *ngIf="allowUpdateForm"
+                    [disabled]="disabledValue"
+                    (click)="addNewTest(newTest)"
+                    class="btn btn-success"
+                  >
+                    +
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -295,29 +540,52 @@
         </td>
       </tr>
 
-
-      <tr style="background-color:50D7FF">
+      <tr style="background-color: 50d7ff">
         <td colspan="4" class="subHeader"></td>
       </tr>
       <tr>
         <td>כמות שיוצרה</td>
         <td>
-          <input type="text" id="div_qty" [(ngModel)]="form.quantity_Produced" disabled />
+          <input
+            type="text"
+            id="div_qty"
+            [(ngModel)]="form.quantity_Produced"
+            disabled
+          />
           <!-- <button onClick="update()">עדכן</button> -->
-          <button (click)="showQAPalletsModal = true"  [disabled]="!formid || disabledValue" class="btn btn-light">משטחים</button>
+          <button
+            (click)="showQAPalletsModal = true"
+            [disabled]="!formid || disabledValue"
+            class="btn btn-light"
+          >
+            משטחים
+          </button>
         </td>
 
         <td>אישור נקיון מכונה לאחר מילוי</td>
         <td>
-          <input id="div_cleanFinal" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
-            [(ngModel)]="form.cleanFillMachineSignature" />
+          <input
+            id="div_cleanFinal"
+            class="inputDiv form-control"
+            style="width: 100px"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.cleanFillMachineSignature"
+          />
         </td>
       </tr>
       <h3 class="text-info">שאריות</h3>
       <tr>
         <td>
-          <input class="form-control" [disabled]="disabledValue" type="radio" id="no-leftOvers" (change)="consoleLogLeftOvers()" name="leftOvers"
-            [value]="false" [(ngModel)]="form.leftOvers" />
+          <input
+            class="form-control"
+            [disabled]="disabledValue"
+            type="radio"
+            id="no-leftOvers"
+            (change)="consoleLogLeftOvers()"
+            name="leftOvers"
+            [value]="false"
+            [(ngModel)]="form.leftOvers"
+          />
           <!-- <input class="form-control" *ngIf="form.batchStatus =='full'" style="width:5%" type="checkbox"
           [disabled]="disabledValue" [checked]='true' />
           <input class="form-control" *ngIf="form.batchStatus !='full'" style="width:5%" type="checkbox"
@@ -325,8 +593,16 @@
         </td>
         <td>באטצ' נוצל במלואו</td>
         <td>
-          <input type="radio" [disabled]="disabledValue" class="form-control" id="yes-leftOvers" (change)="consoleLogLeftOvers()" name="leftOvers"
-            [value]="true" [(ngModel)]="form.leftOvers" />
+          <input
+            type="radio"
+            [disabled]="disabledValue"
+            class="form-control"
+            id="yes-leftOvers"
+            (change)="consoleLogLeftOvers()"
+            name="leftOvers"
+            [value]="true"
+            [(ngModel)]="form.leftOvers"
+          />
           <!-- <input class="form-control" *ngIf="form.batchStatus =='part'" style="width:12%" type="checkbox" id="ccc"
             [disabled]="disabledValue" [checked]='true' />
           <input class="form-control" *ngIf="form.batchStatus !='part'" style="width:12%" type="checkbox" id="ccc"
@@ -335,52 +611,83 @@
         <td>שאריות באטצ' קיימות</td>
       </tr>
       <tr *ngIf="form.leftOvers">
-        <td style="color: crimson;">אצווה</td>
+        <td style="color: crimson">אצווה</td>
         <td>
-          <input class="form-control" type="text" [disabled]="disabledValue" [(ngModel)]="form.leftBatchNumber"
-            style="width:100px" />
+          <input
+            class="form-control"
+            type="text"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.leftBatchNumber"
+            style="width: 100px"
+          />
         </td>
-        <td style="color: crimson;">כמות שנשארה</td>
+        <td style="color: crimson">כמות שנשארה</td>
         <td>
-          <input class="form-control" type="number" [disabled]="disabledValue" [(ngModel)]="form.leftBatchWeight"
-            style="width:100px" />
+          <input
+            class="form-control"
+            type="number"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.leftBatchWeight"
+            style="width: 100px"
+          />
         </td>
       </tr>
       <tr>
         <td>רשיון לפריט</td>
         <td>
-          <input type="checkbox" [checked]='form.itemHasLicense' [disabled]="disabledValue" />
+          <input
+            type="checkbox"
+            [checked]="form.itemHasLicense"
+            [disabled]="disabledValue"
+          />
         </td>
         <td>אריזה אישית</td>
         <td>
-          <input type="checkbox" [(ngModel)]="form.personalPackage" class="inputDiv" [disabled]="disabledValue" />
+          <input
+            type="checkbox"
+            [(ngModel)]="form.personalPackage"
+            class="inputDiv"
+            [disabled]="disabledValue"
+          />
         </td>
       </tr>
-
 
       <tr>
         <td>הערות</td>
-        <td colspan="3" style="border-bottom:0px solid;">
-          <textarea cols="90" rows="5" [(ngModel)]="form.frontRemarks" [disabled]="disabledValue && disableRemarkEditAfterSave"></textarea>
+        <td colspan="3" style="border-bottom: 0px solid">
+          <textarea
+            cols="90"
+            rows="5"
+            [(ngModel)]="form.frontRemarks"
+            [disabled]="disabledValue && disableRemarkEditAfterSave"
+          ></textarea>
         </td>
       </tr>
-
 
       <tr *ngIf="allowUpdateForm">
         <td></td>
         <td colspan="2">
-          <p id="reason" style="display: none;"></p>
-          <button *ngIf="!newForm" [disabled]="disabledValue" (click)="updateFormDetails()"
-            class="btn btn-success form-control">עדכן טופס</button><br>
-            
-          <button *ngIf="newForm"  [disabled]="disabledValue" (click)="createFormDetails()"
-            class="btn btn-success form-control">צור טופס</button>
+          <p id="reason" style="display: none"></p>
+          <button
+            *ngIf="!newForm"
+            [disabled]="disabledValue"
+            (click)="updateFormDetails()"
+            class="btn btn-success form-control"
+          >
+            עדכן טופס</button
+          ><br />
+
+          <button
+            *ngIf="newForm"
+            [disabled]="disabledValue"
+            (click)="createFormDetails()"
+            class="btn btn-success form-control"
+          >
+            צור טופס
+          </button>
         </td>
         <td></td>
       </tr>
-
-
-
 
       <!-- <tr> -->
       <!-- <td style="border-bottom:0px solid;">
@@ -388,46 +695,53 @@
               </td>
             </tr> -->
     </table>
-
-
   </div>
 
-  <div id="srickerTablePersonal" class="sricker_table" style="display: none;">
-
+  <div id="srickerTablePersonal" class="sricker_table" style="display: none">
     <table *ngFor="let QAPallet of formQAPersonalPalletsData; let i = index">
-
       <tr>
         <th>Order Number</th>
-        <td>{{form.orderNumber}}</td>
+        <td>{{ form.orderNumber }}</td>
         <th>Quantity per carton</th>
-        <td>{{QAPallet.unitsInKarton}}</td>
+        <td>{{ QAPallet.unitsInKarton }}</td>
       </tr>
 
       <tr>
         <th>Batch</th>
-        <td>{{form.batchN}}</td>
+        <td>{{ form.batchN }}</td>
         <th>Total Quantity of cartons</th>
-        <td>{{(QAPallet.kartonQuantity * QAPallet.floorNumber) + QAPallet.lastFloorQuantity}}</td>
+        <td>
+          {{
+            QAPallet.kartonQuantity * QAPallet.floorNumber +
+              QAPallet.lastFloorQuantity
+          }}
+        </td>
       </tr>
 
       <tr>
         <th>Item Number</th>
-        <td>{{form.itemN}}</td>
+        <td>{{ form.itemN }}</td>
         <th>Quantity in partial carton</th>
-        <td>{{QAPallet.unitsQuantityPartKarton}}</td>
+        <td>{{ QAPallet.unitsQuantityPartKarton }}</td>
       </tr>
       <tr>
         <th>Carton Weight</th>
-        <td>{{QAPallet.unitsInKarton * form.netWeight }}</td>
+        <td>{{ QAPallet.unitsInKarton * form.netWeight }}</td>
         <th>Total units</th>
-        <td>{{QAPallet.sumAmount}}</td>
+        <td>{{ QAPallet.sumAmount }}</td>
       </tr>
 
       <tr>
         <th>Pallet Number</th>
-        <td>{{i+1}}/{{(form.directorBackSignature && form.checkSignature) && formQAPersonalPalletsData.length  }}</td>
+        <td>
+          {{ i + 1 }}/{{
+            form.directorBackSignature &&
+              form.checkSignature &&
+              formQAPersonalPalletsData.length
+          }}
+        </td>
         <th>Pallet EU/US/Other</th>
-        <td>{{QAPallet.kindOfPallet}}</td>
+        <td>{{ QAPallet.kindOfPallet }}</td>
       </tr>
 
       <tr>
@@ -437,56 +751,56 @@
         <td></td>
       </tr>
 
-      <br>
-    <br>
-
-      
+      <br />
+      <br />
     </table>
-
-
-
   </div>
 
   <!-- Sticker Print Table -->
-  <div id="srickerTable" class="sricker_table" style="display: none;" >
-
-    
-
+  <div id="srickerTable" class="sricker_table" style="display: none">
     <table *ngFor="let QAPallet of formQAPalletsData; let i = index">
-
       <tr>
         <th>Order Number</th>
-        <td>{{form.orderNumber}}</td>
+        <td>{{ form.orderNumber }}</td>
         <th>Quantity per carton</th>
-        <td>{{QAPallet.unitsInKarton}}</td>
+        <td>{{ QAPallet.unitsInKarton }}</td>
       </tr>
 
       <tr>
         <th>Batch</th>
-        <td>{{form.batchN}}</td>
+        <td>{{ form.batchN }}</td>
         <th>Total Quantity of cartons</th>
-        <td>{{(QAPallet.kartonQuantity * QAPallet.floorNumber) + QAPallet.lastFloorQuantity}}</td>
+        <td>
+          {{
+            QAPallet.kartonQuantity * QAPallet.floorNumber +
+              QAPallet.lastFloorQuantity
+          }}
+        </td>
       </tr>
 
       <tr>
         <th>Item Number</th>
-        <td>{{form.itemN}}</td>
+        <td>{{ form.itemN }}</td>
         <th>Quantity in partial carton</th>
-        <td>{{QAPallet.unitsQuantityPartKarton}}</td>
+        <td>{{ QAPallet.unitsQuantityPartKarton }}</td>
       </tr>
 
       <tr>
         <th>Carton Weight</th>
-        <td>{{QAPallet.unitsInKarton * form.netWeight }}</td>
+        <td>{{ QAPallet.unitsInKarton * form.netWeight }}</td>
         <th>Total units</th>
-        <td>{{QAPallet.sumAmount}}</td>
+        <td>{{ QAPallet.sumAmount }}</td>
       </tr>
 
       <tr>
         <th>Pallet Number</th>
-        <td>{{i+1}}/{{form.directorFrontSignature && formQAPalletsData.length}}</td>
+        <td>
+          {{ i + 1 }}/{{
+            form.directorFrontSignature && formQAPalletsData.length
+          }}
+        </td>
         <th>Pallet EU/US/Other</th>
-        <td>{{QAPallet.kindOfPallet}}</td>
+        <td>{{ QAPallet.kindOfPallet }}</td>
       </tr>
 
       <tr>
@@ -496,20 +810,23 @@
         <td></td>
       </tr>
 
-      <br>
-    <br>
-
-      
+      <br />
+      <br />
     </table>
-
-    
-    
   </div>
-  
 
   <div *ngIf="tabView == 'packingForm'">
-    <table dir="rtl" style="width:100%;display: inline-table;font-size: 17px;font-weight: bold;" class="post"
-      id="table_p">
+    <table
+      dir="rtl"
+      style="
+        width: 100%;
+        display: inline-table;
+        font-size: 17px;
+        font-weight: bold;
+      "
+      class="post"
+      id="table_p"
+    >
       <!-- <table
           border="0"
           style="font-size:18px; width:800px;height:600px; font-family:Arial; border-collapse: collapse; display:inline-table;float:right"
@@ -518,94 +835,188 @@
         > -->
       <thead>
         <tr>
-          <td colspan="4" [translate]="'Quality Control Form'" class="subHeader">Packing Form</td>
+          <td
+            colspan="4"
+            [translate]="'Quality Control Form'"
+            class="subHeader"
+          >
+            Packing Form
+          </td>
         </tr>
       </thead>
       <tr>
         <td>שם המוצר</td>
         <td colspan="3">
-          <input id="div_productName2" class="inputDiv form-control" [disabled]="disabledValue" style="width:446px"
-            [(ngModel)]="form.productName" />
+          <input
+            id="div_productName2"
+            class="inputDiv form-control"
+            [disabled]="disabledValue"
+            style="width: 446px"
+            [(ngModel)]="form.productName"
+          />
         </td>
       </tr>
       <tr>
         <td>תאריך פתיחת טופס</td>
         <td>
-          <input type="date" id="div_fillingDate2" class="inputDiv form-control" style="width:100px"
-            [disabled]="disabledValue" [(ngModel)]="form.dateN" />
+          <input
+            type="date"
+            id="div_fillingDate2"
+            class="inputDiv form-control"
+            style="width: 100px"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.dateN"
+          />
         </td>
         <td>מספר אצווה</td>
         <td>
-          <input id="div_batchN2" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
-            [(ngModel)]="form.batchN" />
+          <input
+            id="div_batchN2"
+            class="inputDiv form-control"
+            style="width: 100px"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.batchN"
+          />
         </td>
       </tr>
 
       <tr>
         <td>כמות מוזמנת</td>
         <td>
-          <input id="div_orderQty" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
-            [(ngModel)]="form.orderQuantity" />
+          <input
+            id="div_orderQty"
+            class="inputDiv form-control"
+            style="width: 100px"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.orderQuantity"
+          />
         </td>
         <td>שם הלקוח</td>
         <td>
-          <input id="div_costumerName2" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
-            [(ngModel)]="form.costumerName" />
+          <input
+            id="div_costumerName2"
+            class="inputDiv form-control"
+            style="width: 100px"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.costumerName"
+          />
         </td>
       </tr>
       <tr>
         <td>תחילת עבודה</td>
         <td>
-          <input type="date" id="div_packageStartDate" class="inputDiv form-control" style="width:100px"
-            [disabled]="disabledValue" [(ngModel)]="form.packageStartTime" />
+          <input
+            type="date"
+            id="div_packageStartDate"
+            class="inputDiv form-control"
+            style="width: 100px"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.packageStartTime"
+          />
         </td>
         <td>סוף עבודה</td>
         <td>
-          <input type="date" id="div_packageEndDate" class="inputDiv form-control" style="width:100px"
-            [disabled]="disabledValue" [(ngModel)]="form.packgeEndTime" />
+          <input
+            type="date"
+            id="div_packageEndDate"
+            class="inputDiv form-control"
+            style="width: 100px"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.packgeEndTime"
+          />
         </td>
       </tr>
       <tr>
         <td>מק"ט מוצר</td>
-        <td><input id="div_itemN2" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
-            [(ngModel)]="form.itemN" /></td>
+        <td>
+          <input
+            id="div_itemN2"
+            class="inputDiv form-control"
+            style="width: 100px"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.itemN"
+          />
+        </td>
         <td>מק"ט אריזה אישית</td>
         <td>
-          <input id="div_personalPackageN" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
-            [(ngModel)]="form.personalPackageN" />
+          <input
+            id="div_personalPackageN"
+            class="inputDiv form-control"
+            style="width: 100px"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.personalPackageN"
+          />
         </td>
       </tr>
       <tr>
         <td>מק"ט קרטון מאסטר</td>
-        <td><input id="div_masterCtn" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
-            [(ngModel)]="form.masterCartonN"></td>
+        <td>
+          <input
+            id="div_masterCtn"
+            class="inputDiv form-control"
+            style="width: 100px"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.masterCartonN"
+          />
+        </td>
         <td>מס' יחידות בקרטון</td>
-        <td><input id="div_untCtn" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
-            [(ngModel)]="form.cartonUnitNumber" /></td>
+        <td>
+          <input
+            id="div_untCtn"
+            class="inputDiv form-control"
+            style="width: 100px"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.cartonUnitNumber"
+          />
+        </td>
       </tr>
       <tr>
         <td>שם האורז</td>
         <td>
-          <input id="div_packageName" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
-            [(ngModel)]="form.packagerName" />
+          <input
+            id="div_packageName"
+            class="inputDiv form-control"
+            style="width: 100px"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.packagerName"
+          />
         </td>
         <td>סה"כ קרטונים</td>
         <td>
-          <input class="form-control" type="text" id="div_totalCtn" style="width:100px" [disabled]="disabledValue"
-            [(ngModel)]="form.totalCartons" />
+          <input
+            class="form-control"
+            type="text"
+            id="div_totalCtn"
+            style="width: 100px"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.totalCartons"
+          />
           <!-- <button onClick="update()"  > עדכן   </button> -->
         </td>
       </tr>
       <tr>
         <td>סה"כ יחידות פריט</td>
         <td>
-          <input disabled class="form-control" type="text" id="div_totalItemsN" style="width:100px"
-            [disabled]="disabledValue" [(ngModel)]="form.totalUnits" />
+          <input
+            disabled
+            class="form-control"
+            type="text"
+            id="div_totalItemsN"
+            style="width: 100px"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.totalUnits"
+          />
           <!-- <button onClick="update()"> עדכן</button> -->
         </td>
         <td></td>
         <td>
-          <button class="btn btn-info" [disabled]="disabledValue" (click)="showQAPersonalPalletsModal = true">משטחים אישיים</button>
+          <button
+            class="btn btn-info"
+            [disabled]="disabledValue"
+            (click)="showQAPersonalPalletsModal = true"
+          >
+            משטחים אישיים
+          </button>
         </td>
         <!-- <td>משקל ברוטו</td>
             <td>
@@ -614,16 +1025,33 @@
       </tr>
       <tr>
         <td colspan="2">
-          <input type="radio" name="gender" id="delivery" [disabled]="disabledValue" />יוצא למשלוח
-          <input type="radio" name="gender" id="wareHouse" style="margin-right:35px" [disabled]="disabledValue" />
+          <input
+            type="radio"
+            name="gender"
+            id="delivery"
+            [disabled]="disabledValue"
+          />יוצא למשלוח
+          <input
+            type="radio"
+            name="gender"
+            id="wareHouse"
+            style="margin-right: 35px"
+            [disabled]="disabledValue"
+          />
           עבר למחסן מלאי<br />
         </td>
       </tr>
       <tr>
-        <td style="border-bottom:0px solid;">הערות</td>
+        <td style="border-bottom: 0px solid">הערות</td>
         <td colspan="3">
-          <input class="form-control" type="text" id="div_totalItemsN" style="width:446px" [disabled]="disabledValue && disableRemarkEditAfterSave"
-            [(ngModel)]="form.backRemarks" />
+          <input
+            class="form-control"
+            type="text"
+            id="div_totalItemsN"
+            style="width: 446px"
+            [disabled]="disabledValue && disableRemarkEditAfterSave"
+            [(ngModel)]="form.backRemarks"
+          />
         </td>
       </tr>
       <!-- <tr>
@@ -634,17 +1062,27 @@
       <tr>
         <td>שם ותחימת מבקר איכות</td>
         <td>
-          <input id="div_qualtySign" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
-            [(ngModel)]="form.checkSignature" />
+          <input
+            id="div_qualtySign"
+            class="inputDiv form-control"
+            style="width: 100px"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.checkSignature"
+          />
         </td>
         <td>שם וחתימת מנהל</td>
         <td>
-          <input id="div_managerSign" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"
-            [(ngModel)]="form.directorBackSignature" />
+          <input
+            id="div_managerSign"
+            class="inputDiv form-control"
+            style="width: 100px"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.directorBackSignature"
+          />
         </td>
       </tr>
       <tr>
-        <td style="border-bottom:0px solid;">
+        <td style="border-bottom: 0px solid">
           <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
           <!-- <button onclick="rotateYDIV(&quot;table_p&quot;)">חזרה</button> -->
         </td>
@@ -653,42 +1091,60 @@
       <tr>
         <td></td>
         <td colspan="2">
-          <button *ngIf="!newForm && allowUpdateForm" [disabled]="disabledValue" (click)="updateFormDetails()"
-            class="btn btn-success form-control">Update Form</button>
-          <button *ngIf="newForm && allowUpdateForm" [disabled]="disabledValue" (click)="createFormDetails()"
-            class="btn btn-success form-control">Create Form</button>
+          <button
+            *ngIf="!newForm && allowUpdateForm"
+            [disabled]="disabledValue"
+            (click)="updateFormDetails()"
+            class="btn btn-success form-control"
+          >
+            Update Form
+          </button>
+          <button
+            *ngIf="newForm && allowUpdateForm"
+            [disabled]="disabledValue"
+            (click)="createFormDetails()"
+            class="btn btn-success form-control"
+          >
+            Create Form
+          </button>
         </td>
         <td></td>
       </tr>
-
     </table>
   </div>
 
   <div class="zoom" *ngIf="tabView == 'itemTree'">
     <app-itemdetais [formDetailsItemNum]="formDetailsItemNum"></app-itemdetais>
   </div>
-
-
 </div>
 
-
-<div *ngIf="showQAPalletsModal == true"
-  class="bg-white fixed-top mx-auto w-100 p-5 my-auto text-center rounded shadow-lg border border-info show">
+<div
+  *ngIf="showQAPalletsModal == true"
+  class="bg-white fixed-top mx-auto w-100 p-5 my-auto text-center rounded shadow-lg border border-info show"
+>
   <div class="row mt-4">
-    <div class="col-4"> </div>
+    <div class="col-4"></div>
     <div class="col-4">
-      <h2>משטחי בקרת איכות
-      </h2>
+      <h2>משטחי בקרת איכות</h2>
     </div>
     <div class="col-4">
-      <i style="cursor: pointer;font-size: large;" (click)="showQAPalletsModal = false"
-        class="fa fa-times text-info"></i>
+      <i
+        style="cursor: pointer; font-size: large"
+        (click)="showQAPalletsModal = false"
+        class="fa fa-times text-info"
+      ></i>
     </div>
     <div class="col-4">
-    <button printSectionId="srickerTable" styleSheetFile="../../../../assets/stylesheets/palletPrint.css"  style="width: 33%;" class="btn btn-success form-control" ngxPrint>הדפס משטחים <i class="fa fa-print"></i></button>
-        
+      <button
+        printSectionId="srickerTable"
+        styleSheetFile="../../../../assets/stylesheets/palletPrint.css"
+        style="width: 33%"
+        class="btn btn-success form-control"
+        ngxPrint
+      >
+        הדפס משטחים <i class="fa fa-print"></i>
+      </button>
     </div>
-
   </div>
 
   <div class="row mt-4">
@@ -698,34 +1154,87 @@
           <td>
             <h3 class="text-info"><u>הוסף משטח:</u> &nbsp;</h3>
           </td>
-          <td><input [(ngModel)]="newQAPallet.floorNumber" (focusout)="return($event)" (focus)="enlarge($event)"
-              type="number" style="font-weight: bold;font-size: medium; overflow-x: scroll;" placeholder="מספר קומות"
-              title="מספר קומות" class="form-control"></td>
-          <td><input [(ngModel)]="newQAPallet.kartonQuantity" type="number" (focusout)="return($event)"
-              (focus)="enlarge($event)" style="font-weight: bold;font-size: medium;" placeholder="כמות קרטונים בקומה"
-              title="כמות קרטונים בקומה" class="form-control"></td>
-          <td><input [(ngModel)]="newQAPallet.unitsInKarton" type="number" (focusout)="return($event)"
-              (focus)="enlarge($event)" style="font-weight: bold;font-size: medium;" placeholder="כמות יחידות בקרטון"
-              title="כמות יחידות בקרטון" class="form-control"></td>
-          <td><input [(ngModel)]="newQAPallet.lastFloorQuantity" type="number" (focusout)="return($event)"
-              (focus)="enlarge($event)" title="קרטונים בקומה אחרונה" style="font-weight: bold;font-size: medium;"
-              placeholder="קרטונים בקומה אחרונה" class="form-control"></td>
-          <td><input [(ngModel)]="newQAPallet.unitsQuantityPartKarton" (focusout)="return($event)"
-              (focus)="enlarge($event)" type="number" title="יחידות בקרטון חלקי" style="font-weight: bold;font-size: medium;"
-              placeholder="יחידות בקרטון חלקי" class="form-control"></td>
-              <td>
-                <select [(ngModel)]="newQAPallet.kindOfPallet" 
-                  [title]="newQAPallet.kindOfPallet" style="font-weight: bold;font-size: medium;" class="form-control">
-                  <option value="">סוג המשטח</option>
-                  <option value="EU">EU</option>
-                  <option value="US">US</option>
-                  <option value="Other">Other</option>
-                </select>
-              </td>
+          <td>
+            <input
+              [(ngModel)]="newQAPallet.floorNumber"
+              (focusout)="return($event)"
+              (focus)="enlarge($event)"
+              type="number"
+              style="font-weight: bold; font-size: medium; overflow-x: scroll"
+              placeholder="מספר קומות"
+              title="מספר קומות"
+              class="form-control"
+            />
+          </td>
+          <td>
+            <input
+              [(ngModel)]="newQAPallet.kartonQuantity"
+              type="number"
+              (focusout)="return($event)"
+              (focus)="enlarge($event)"
+              style="font-weight: bold; font-size: medium"
+              placeholder="כמות קרטונים בקומה"
+              title="כמות קרטונים בקומה"
+              class="form-control"
+            />
+          </td>
+          <td>
+            <input
+              [(ngModel)]="newQAPallet.unitsInKarton"
+              type="number"
+              (focusout)="return($event)"
+              (focus)="enlarge($event)"
+              style="font-weight: bold; font-size: medium"
+              placeholder="כמות יחידות בקרטון"
+              title="כמות יחידות בקרטון"
+              class="form-control"
+            />
+          </td>
+          <td>
+            <input
+              [(ngModel)]="newQAPallet.lastFloorQuantity"
+              type="number"
+              (focusout)="return($event)"
+              (focus)="enlarge($event)"
+              title="קרטונים בקומה אחרונה"
+              style="font-weight: bold; font-size: medium"
+              placeholder="קרטונים בקומה אחרונה"
+              class="form-control"
+            />
+          </td>
+          <td>
+            <input
+              [(ngModel)]="newQAPallet.unitsQuantityPartKarton"
+              (focusout)="return($event)"
+              (focus)="enlarge($event)"
+              type="number"
+              title="יחידות בקרטון חלקי"
+              style="font-weight: bold; font-size: medium"
+              placeholder="יחידות בקרטון חלקי"
+              class="form-control"
+            />
+          </td>
+          <td>
+            <select
+              [(ngModel)]="newQAPallet.kindOfPallet"
+              [title]="newQAPallet.kindOfPallet"
+              style="font-weight: bold; font-size: medium"
+              class="form-control"
+            >
+              <option value="">סוג המשטח</option>
+              <option value="EU">EU</option>
+              <option value="US">US</option>
+              <option value="Other">Other</option>
+            </select>
+          </td>
           <td></td>
           <td>
-            <select [(ngModel)]="newQAPallet.qaStatus" 
-              [title]="newQAPallet.qaStatus" style="font-weight: bold;font-size: medium;" class="form-control">
+            <select
+              [(ngModel)]="newQAPallet.qaStatus"
+              [title]="newQAPallet.qaStatus"
+              style="font-weight: bold; font-size: medium"
+              class="form-control"
+            >
               <option value="">סטטוס</option>
               <option value="מוכן לשליחה">מוכן לשליחה</option>
               <option value="חסר מדבקות">חסר מדבקות</option>
@@ -740,12 +1249,19 @@
             </select>
           </td>
           <td></td>
-          <td><button *ngIf="allowUpdateForm" (click)="addNewQAPallet()" style="font-weight: bold;font-size: medium;"
-              class="btn btn-success">+</button></td>
+          <td>
+            <button
+              *ngIf="allowUpdateForm"
+              (click)="addNewQAPallet()"
+              style="font-weight: bold; font-size: medium"
+              class="btn btn-success"
+            >
+              +
+            </button>
+          </td>
         </tr>
       </table>
       <table dir="rtl" class="table table-striped table-hover">
-
         <thead class="text-white bg-info">
           <tr>
             <th class="pallets-th">#</th>
@@ -753,132 +1269,241 @@
             <th class="pallets-th">כמות קרטונים בקומה</th>
             <th class="pallets-th">כמות יחידות בקרטון</th>
             <th class="pallets-th">משקל הקרטון</th>
-            <th class="pallets-th"> קרטונים בקומה אחרונה</th>
+            <th class="pallets-th">קרטונים בקומה אחרונה</th>
             <th class="pallets-th">יחידות בקרטון חלקי</th>
             <th class="pallets-th">סה"כ</th>
             <th class="pallets-th">סוג המשטח</th>
             <th class="pallets-th">סטטוס בקרת איכות</th>
             <th class="pallets-th">סטטוס משטח</th>
             <th><i class="fas fa-pallet"></i></th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let QAPallet of formQAPalletsData; let i = index">
-            <td class="pallets-td">{{i+1}}</td>
+            <td class="pallets-td">{{ i + 1 }}</td>
             <td class="pallets-td">
-              {{QAPallet.floorNumber}}
-              <input *ngIf="enableEdit && enableEditIndex==i"  [(ngModel)]="newQAPallet.floorNumber" (focusout)="return($event)" (focus)="enlarge($event)"
-              type="number" style="font-weight: bold;font-size: medium; overflow-x: scroll;" placeholder="מספר קומות"
-              title="מספר קומות" class="form-control">
+              {{ QAPallet.floorNumber }}
+              <input
+                *ngIf="enableEdit && enableEditIndex == i"
+                [(ngModel)]="floorNumberUpdate"
+                (focusout)="return($event)"
+                (focus)="enlarge($event)"
+                type="number"
+                style="font-weight: bold; font-size: medium; overflow-x: scroll"
+                placeholder="מספר קומות"
+                title="מספר קומות"
+                class="form-control"
+              />
             </td>
-            <td  class="pallets-td">{{QAPallet.kartonQuantity}}
-              <input *ngIf="enableEdit && enableEditIndex==i" [(ngModel)]="newQAPallet.kartonQuantity" type="number" (focusout)="return($event)"
-              (focus)="enlarge($event)" style="font-weight: bold;font-size: medium;" placeholder="כמות קרטונים בקומה"
-              title="כמות קרטונים בקומה" class="form-control">
+            <td class="pallets-td">
+              {{ QAPallet.kartonQuantity }}
+              <input
+                *ngIf="enableEdit && enableEditIndex == i"
+                [(ngModel)]="kartonQuantityUpdate"
+                type="number"
+                (focusout)="return($event)"
+                (focus)="enlarge($event)"
+                style="font-weight: bold; font-size: medium"
+                placeholder="כמות קרטונים בקומה"
+                title="כמות קרטונים בקומה"
+                class="form-control"
+              />
             </td>
-            <td  class="pallets-td">{{QAPallet.unitsInKarton}}
-              <input *ngIf="enableEdit && enableEditIndex==i" [(ngModel)]="newQAPallet.unitsInKarton" type="number" (focusout)="return($event)"
-              (focus)="enlarge($event)" style="font-weight: bold;font-size: medium;" placeholder="כמות יחידות בקרטון"
-              title="כמות יחידות בקרטון" class="form-control">
+            <td class="pallets-td">
+              {{ QAPallet.unitsInKarton }}
+              <input
+                *ngIf="enableEdit && enableEditIndex == i"
+                [(ngModel)]="unitsInKartonUpdate"
+                type="number"
+                (focusout)="return($event)"
+                (focus)="enlarge($event)"
+                style="font-weight: bold; font-size: medium"
+                placeholder="כמות יחידות בקרטון"
+                title="כמות יחידות בקרטון"
+                class="form-control"
+              />
             </td>
-            <td [style.background]="QAPallet.unitsInKarton * form.netWeight <= 0 ? 'red' : '' " class="pallets-td">{{QAPallet.unitsInKarton * form.netWeight }}</td>
-            <td class="pallets-td">{{QAPallet.lastFloorQuantity}}
-              <input *ngIf="enableEdit && enableEditIndex==i" [(ngModel)]="newQAPallet.lastFloorQuantity" type="number" (focusout)="return($event)"
-              (focus)="enlarge($event)" title="קרטונים בקומה אחרונה" style="font-weight: bold;font-size: medium;"
-              placeholder="קרטונים בקומה אחרונה" class="form-control">
+            <td
+              [style.background]="
+                QAPallet.unitsInKarton * form.netWeight <= 0 ? 'red' : ''
+              "
+              class="pallets-td"
+            >
+              {{ QAPallet.unitsInKarton * form.netWeight }}
             </td>
-            <td class="pallets-td">{{QAPallet.unitsQuantityPartKarton}}
-              <input *ngIf="enableEdit && enableEditIndex==i" [(ngModel)]="newQAPallet.unitsQuantityPartKarton" (focusout)="return($event)"
-              (focus)="enlarge($event)" type="number" title="יחידות בקרטון חלקי" style="font-weight: bold;font-size: medium;"
-              placeholder="יחידות בקרטון חלקי" class="form-control">
+            <td class="pallets-td">
+              {{ QAPallet.lastFloorQuantity }}
+              <input
+                *ngIf="enableEdit && enableEditIndex == i"
+                [(ngModel)]="lastFloorQuantityUpdate"
+                type="number"
+                (focusout)="return($event)"
+                (focus)="enlarge($event)"
+                title="קרטונים בקומה אחרונה"
+                style="font-weight: bold; font-size: medium"
+                placeholder="קרטונים בקומה אחרונה"
+                class="form-control"
+              />
             </td>
-            <td class="pallets-th">{{QAPallet.sumAmount}}</td>
-            <td class="pallets-th">{{QAPallet.kindOfPallet}}
-              <select *ngIf="enableEdit && enableEditIndex==i" [(ngModel)]="newQAPallet.kindOfPallet" 
-                  [title]="newQAPallet.kindOfPallet" style="font-weight: bold;font-size: medium;" class="form-control">
-                  <option value="">סוג המשטח</option>
-                  <option value="EU">EU</option>
-                  <option value="US">US</option>
-                  <option value="Other">Other</option>
-                </select>
+            <td class="pallets-td">
+              {{ QAPallet.unitsQuantityPartKarton }}
+              <input
+                *ngIf="enableEdit && enableEditIndex == i"
+                [(ngModel)]="unitsQuantityPartKartonUpdate"
+                (focusout)="return($event)"
+                (focus)="enlarge($event)"
+                type="number"
+                title="יחידות בקרטון חלקי"
+                style="font-weight: bold; font-size: medium"
+                placeholder="יחידות בקרטון חלקי"
+                class="form-control"
+              />
             </td>
-            <td class="pallets-td" [ngClass]="{ green:QAPallet.qaStatus == 'מוכן לשליחה',
-                           red:QAPallet.qaStatus != 'מוכן לשליחה'
-                          }">
-              {{QAPallet.qaStatus}}
-              <select *ngIf="enableEdit && enableEditIndex==i" [(ngModel)]="newQAPallet.qaStatus" 
-              [title]="newQAPallet.qaStatus" style="font-weight: bold;font-size: medium;" class="form-control">
-              <option value="">סטטוס</option>
-              <option value="מוכן לשליחה">מוכן לשליחה</option>
-              <option value="חסר מדבקות">חסר מדבקות</option>
-              <option value="חסר קומפוננטים">חסר קומפוננטים</option>
-              <option value="עובר לאריזה אישית">עובר לאריזה אישית</option>
-              <option value="חסר לייזר">חסר לייזר</option>
-              <option value="נשלח להדפסה">נשלח להדפסה</option>
-              <option value="חסר קרטונים">חסר קרטונים</option>
-              <option value="חסר קרטוני מאסטר">חסר קרטוני מאסטר</option>
-              <option value="חסר עלונים לצרכן">חסר עלונים לצרכן</option>
-              <option value="למלאי">למלאי</option>
-            </select>
+            <td class="pallets-th">{{ QAPallet.sumAmount }}</td>
+            <td class="pallets-th">
+              {{ QAPallet.kindOfPallet }}
+              <select
+                *ngIf="enableEdit && enableEditIndex == i"
+                [(ngModel)]="kindOfPalletUpdate"
+                [title]="newQAPallet.kindOfPallet"
+                style="font-weight: bold; font-size: medium"
+                class="form-control"
+              >
+                <option value="">סוג המשטח</option>
+                <option value="EU">EU</option>
+                <option value="US">US</option>
+                <option value="Other">Other</option>
+              </select>
             </td>
-            <td class="pallets-td"
-              [ngClass]="{green:QAPallet.palletStatus == 'הועלה על משטח',red:QAPallet.palletStatus == 'ממתין למשטח'}">
-              {{QAPallet.palletStatus}}</td>
-            <td><button *ngIf="allowUpdateForm" (click)="deleteQAPallet(QAPallet)" class="btn btn-danger"><i
-                  class="fa fa-times"></i></button></td>
+            <td
+              class="pallets-td"
+              [ngClass]="{
+                green: QAPallet.qaStatus == 'מוכן לשליחה',
+                red: QAPallet.qaStatus != 'מוכן לשליחה'
+              }"
+            >
+              {{ QAPallet.qaStatus }}
+              <select
+                *ngIf="enableEdit && enableEditIndex == i"
+                [(ngModel)]="qaStatusUpdate"
+                [title]="newQAPallet.qaStatus"
+                style="font-weight: bold; font-size: medium"
+                class="form-control"
+              >
+                <option value="">סטטוס</option>
+                <option value="מוכן לשליחה">מוכן לשליחה</option>
+                <option value="חסר מדבקות">חסר מדבקות</option>
+                <option value="חסר קומפוננטים">חסר קומפוננטים</option>
+                <option value="עובר לאריזה אישית">עובר לאריזה אישית</option>
+                <option value="חסר לייזר">חסר לייזר</option>
+                <option value="נשלח להדפסה">נשלח להדפסה</option>
+                <option value="חסר קרטונים">חסר קרטונים</option>
+                <option value="חסר קרטוני מאסטר">חסר קרטוני מאסטר</option>
+                <option value="חסר עלונים לצרכן">חסר עלונים לצרכן</option>
+                <option value="למלאי">למלאי</option>
+              </select>
+            </td>
+            <td
+              class="pallets-td"
+              [ngClass]="{
+                green: QAPallet.palletStatus == 'הועלה על משטח',
+                red: QAPallet.palletStatus == 'ממתין למשטח'
+              }"
+            >
+              {{ QAPallet.palletStatus }}
+            </td>
             <td>
+              <button
+                *ngIf="allowUpdateForm"
+                (click)="deleteQAPallet(QAPallet)"
+                class="btn btn-danger"
+              >
+                <i class="fa fa-times"></i>
+              </button>
+            </td>
+            <td>
+              <!-- cancel edit button -->
+              <!-- if enableEdit == true and enableEditIndex == index(i) display the cancel button -->
+              <!-- on click cancel changes function -->
+              <button
+                *ngIf="enableEdit && enableEditIndex == i"
+                (click)="enableEdit = false"
+                class="btn page-secondary-action-btn"
+                class="btn btn-danger form-control"
+              >
+                ביטול
+              </button>
+              <br>
+              <!-- save edit button, type = submit -->
+              <!-- if enableEdit == true and enableEditIndex == index(i) display the save button -->
+              <!-- on click save changes function -->
+              <button
+                *ngIf="enableEdit && enableEditIndex == i"
+                id="saveBtn"
+                class="btn page-primary-action-btn"
+                (click)="savePalltesChances(QAPallet)"
+                type="submit"
+                class="btn btn-success form-control"
+              >
+                שמירה
+              </button>
               <!-- edit button -->
-        <!-- if enableEdit == false display the button -->
-        <!-- on click make edit available with a function which takes event and index  -->
-        <button
-        *ngIf="!enableEdit"
-        (click)="enableEditMethod($event, i)"
-      >
-        edit
-      </button>
+              <!-- if enableEdit == false display the button -->
+              <!-- on click make edit available with a function which takes event and index  -->
+              <button class="btn btn-success form-control" *ngIf="!enableEdit" (click)="enableEditMethod($event, i)">
+                עדכון
+              </button>
             </td>
           </tr>
-
-
         </tbody>
       </table>
     </div>
   </div>
 
   <div class="row mt-1">
-
     <div class="col-4"></div>
     <div class="col-4">
-      <button style="font-size: large;" (click)="showQAPalletsModal = false"
-        class="form btn btn-danger form-control">סגירה</button>
+      <button
+        style="font-size: large"
+        (click)="showQAPalletsModal = false"
+        class="form btn btn-danger form-control"
+      >
+        סגירה
+      </button>
     </div>
     <div class="col-4"></div>
-
   </div>
-
 </div>
 
-
-<div *ngIf="showQAPersonalPalletsModal == true" style="top:150px;"
-  class="personal-pallets fixed-top mx-auto w-100 p-5 my-auto text-center rounded shadow-lg border border-info show">
+<div
+  *ngIf="showQAPersonalPalletsModal == true"
+  style="top: 150px"
+  class="personal-pallets fixed-top mx-auto w-100 p-5 my-auto text-center rounded shadow-lg border border-info show"
+>
   <div class="row mt-4">
-    <div class="col-4"> </div>
+    <div class="col-4"></div>
     <div class="col-4">
-      <h2>משטחי בקרת איכות שנשלחו לאריזה אישית
-      </h2>
+      <h2>משטחי בקרת איכות שנשלחו לאריזה אישית</h2>
     </div>
     <div class="col-4">
-      <i style="cursor: pointer;font-size: large;" (click)="showQAPersonalPalletsModal = false"
-        class="fa fa-times text-info"></i>
+      <i
+        style="cursor: pointer; font-size: large"
+        (click)="showQAPersonalPalletsModal = false"
+        class="fa fa-times text-info"
+      ></i>
     </div>
     <div class="col-4">
-      <button 
-       printSectionId="srickerTablePersonal" 
-      styleSheetFile="../../../../assets/stylesheets/palletPrint.css" 
-      style="width: 33%;" class="btn btn-success form-control" 
-      ngxPrint>הדפס משטחים <i class="fa fa-print"></i></button>
-          
-      </div>
+      <button
+        printSectionId="srickerTablePersonal"
+        styleSheetFile="../../../../assets/stylesheets/palletPrint.css"
+        style="width: 33%"
+        class="btn btn-success form-control"
+        ngxPrint
+      >
+        הדפס משטחים <i class="fa fa-print"></i>
+      </button>
+    </div>
   </div>
 
   <div class="row mt-4">
@@ -888,46 +1513,106 @@
           <td>
             <h3 class="text-info"><u>הוסף משטח:</u> &nbsp;</h3>
           </td>
-          <td><input [(ngModel)]="newQAPersonalPallet.floorNumber" (focusout)="return($event)" (focus)="enlarge($event)"
-            type="number" style="font-weight: bold;font-size: medium; overflow-x: scroll;" placeholder="מספר קומות"
-            title="מספר קומות" class="form-control"></td>
-        <td><input [(ngModel)]="newQAPersonalPallet.kartonQuantity" type="number" (focusout)="return($event)"
-            (focus)="enlarge($event)" style="font-weight: bold;font-size: medium;" placeholder="כמות קרטונים בקומה"
-            title="כמות קרטונים בקומה" class="form-control"></td>
-        <td><input [(ngModel)]="newQAPersonalPallet.unitsInKarton" type="number" (focusout)="return($event)"
-            (focus)="enlarge($event)" style="font-weight: bold;font-size: medium;" placeholder="כמות יחידות בקרטון"
-            title="כמות יחידות בקרטון" class="form-control"></td>
-        <td><input [(ngModel)]="newQAPersonalPallet.lastFloorQuantity" type="number" (focusout)="return($event)"
-            (focus)="enlarge($event)" title="קרטונים בקומה אחרונה" style="font-weight: bold;font-size: medium;"
-            placeholder="קרטונים בקומה אחרונה" class="form-control"></td>
-        <td><input [(ngModel)]="newQAPersonalPallet.unitsQuantityPartKarton" (focusout)="return($event)"
-            (focus)="enlarge($event)" type="number" title="יחידות בקרטון חלקי" style="font-weight: bold;font-size: medium;"
-            placeholder="יחידות בקרטון חלקי" class="form-control"></td>
-            <td>
-              <select [(ngModel)]="newQAPersonalPallet.kindOfPallet" 
-                [title]="newQAPersonalPallet.kindOfPallet" style="font-weight: bold;font-size: medium;" class="form-control">
-                <option value="">סוג המשטח</option>
-                <option value="EU">EU</option>
-                <option value="US">US</option>
-                <option value="Other">Other</option>
-              </select>
-            </td>
-        <td></td>
           <td>
-            <select [(ngModel)]="newQAPersonalPallet.qaStatus" 
-              [title]="newQAPersonalPallet.qaStatus" style="font-weight: bold;font-size: medium;" class="form-control">
+            <input
+              [(ngModel)]="newQAPersonalPallet.floorNumber"
+              (focusout)="return($event)"
+              (focus)="enlarge($event)"
+              type="number"
+              style="font-weight: bold; font-size: medium; overflow-x: scroll"
+              placeholder="מספר קומות"
+              title="מספר קומות"
+              class="form-control"
+            />
+          </td>
+          <td>
+            <input
+              [(ngModel)]="newQAPersonalPallet.kartonQuantity"
+              type="number"
+              (focusout)="return($event)"
+              (focus)="enlarge($event)"
+              style="font-weight: bold; font-size: medium"
+              placeholder="כמות קרטונים בקומה"
+              title="כמות קרטונים בקומה"
+              class="form-control"
+            />
+          </td>
+          <td>
+            <input
+              [(ngModel)]="newQAPersonalPallet.unitsInKarton"
+              type="number"
+              (focusout)="return($event)"
+              (focus)="enlarge($event)"
+              style="font-weight: bold; font-size: medium"
+              placeholder="כמות יחידות בקרטון"
+              title="כמות יחידות בקרטון"
+              class="form-control"
+            />
+          </td>
+          <td>
+            <input
+              [(ngModel)]="newQAPersonalPallet.lastFloorQuantity"
+              type="number"
+              (focusout)="return($event)"
+              (focus)="enlarge($event)"
+              title="קרטונים בקומה אחרונה"
+              style="font-weight: bold; font-size: medium"
+              placeholder="קרטונים בקומה אחרונה"
+              class="form-control"
+            />
+          </td>
+          <td>
+            <input
+              [(ngModel)]="newQAPersonalPallet.unitsQuantityPartKarton"
+              (focusout)="return($event)"
+              (focus)="enlarge($event)"
+              type="number"
+              title="יחידות בקרטון חלקי"
+              style="font-weight: bold; font-size: medium"
+              placeholder="יחידות בקרטון חלקי"
+              class="form-control"
+            />
+          </td>
+          <td>
+            <select
+              [(ngModel)]="newQAPersonalPallet.kindOfPallet"
+              [title]="newQAPersonalPallet.kindOfPallet"
+              style="font-weight: bold; font-size: medium"
+              class="form-control"
+            >
+              <option value="">סוג המשטח</option>
+              <option value="EU">EU</option>
+              <option value="US">US</option>
+              <option value="Other">Other</option>
+            </select>
+          </td>
+          <td></td>
+          <td>
+            <select
+              [(ngModel)]="newQAPersonalPallet.qaStatus"
+              [title]="newQAPersonalPallet.qaStatus"
+              style="font-weight: bold; font-size: medium"
+              class="form-control"
+            >
               <option value="">סטטוס</option>
               <option value="מוכן לשליחה">מוכן לשליחה</option>
               <option value="למלאי">למלאי</option>
             </select>
           </td>
           <td></td>
-          <td><button *ngIf="allowUpdateForm" (click)="addNewQAPersonalPallet()"
-              style="font-weight: bold;font-size: medium;" class="btn btn-success">+</button></td>
+          <td>
+            <button
+              *ngIf="allowUpdateForm"
+              (click)="addNewQAPersonalPallet()"
+              style="font-weight: bold; font-size: medium"
+              class="btn btn-success"
+            >
+              +
+            </button>
+          </td>
         </tr>
       </table>
       <table dir="rtl" class="table table-striped table-hover">
-
         <thead class="text-white bg-info">
           <tr>
             <th class="pallets-th">#</th>
@@ -935,7 +1620,7 @@
             <th class="pallets-th">כמות קרטונים בקומה</th>
             <th class="pallets-th">כמות יחידות בקרטון</th>
             <th class="pallets-th">משקל הקרטון</th>
-            <th class="pallets-th"> קרטונים בקומה אחרונה</th>
+            <th class="pallets-th">קרטונים בקומה אחרונה</th>
             <th class="pallets-th">יחידות בקרטון חלקי</th>
             <th class="pallets-th">סה"כ</th>
             <th class="pallets-th">סוג המשטח</th>
@@ -946,46 +1631,185 @@
         </thead>
         <tbody>
           <tr *ngFor="let QAPallet of formQAPersonalPalletsData; let i = index">
-            <td class="pallets-td">{{i+1}}</td>
-            <td class="pallets-td">{{QAPallet.floorNumber}}</td>
-            <td class="pallets-td">{{QAPallet.kartonQuantity}}</td>
-            <td class="pallets-td">{{QAPallet.unitsInKarton}}</td>
-            <td [style.background]="QAPallet.unitsInKarton * form.netWeight <= 0 ? 'red' : '' " class="pallets-td">{{QAPallet.unitsInKarton * form.netWeight }}</td>
-            <td class="pallets-td">{{QAPallet.lastFloorQuantity}}</td>
-            <td class="pallets-td">{{QAPallet.unitsQuantityPartKarton}}</td>
-            <td class="pallets-th">{{QAPallet.sumAmount}}</td>
-            <td class="pallets-th">{{QAPallet.kindOfPallet}}</td>
-            <td class="pallets-td" [ngClass]="{ green:QAPallet.qaStatus == 'מוכן לשליחה',
-                           red:QAPallet.qaStatus != 'מוכן לשליחה'
-                          }">
-              {{QAPallet.qaStatus}}</td>
-            <td class="pallets-td"
-              [ngClass]="{green:QAPallet.palletStatus == 'הועלה על משטח',red:QAPallet.palletStatus == 'ממתין למשטח'}">
-              {{QAPallet.palletStatus}}</td>
-            <td><button *ngIf="allowUpdateForm" (click)="deleteQAPallet(QAPallet)" class="btn btn-danger"><i
-                  class="fa fa-times"></i></button></td>
+            <td class="pallets-td">{{ i + 1 }}</td>
+            <td class="pallets-td">{{ QAPallet.floorNumber }}
+              <input
+                *ngIf="enableEdit && enableEditIndex == i"
+                [(ngModel)]="floorNumberUpdate"
+                (focusout)="return($event)"
+                (focus)="enlarge($event)"
+                type="number"
+                style="font-weight: bold; font-size: medium; overflow-x: scroll"
+                placeholder="מספר קומות"
+                title="מספר קומות"
+                class="form-control"
+              />
+            </td>
+            <td class="pallets-td">{{ QAPallet.kartonQuantity }}
+              <input
+                *ngIf="enableEdit && enableEditIndex == i"
+                [(ngModel)]="kartonQuantityUpdate"
+                type="number"
+                (focusout)="return($event)"
+                (focus)="enlarge($event)"
+                style="font-weight: bold; font-size: medium"
+                placeholder="כמות קרטונים בקומה"
+                title="כמות קרטונים בקומה"
+                class="form-control"
+              />
+            </td>
+            <td class="pallets-td">{{ QAPallet.unitsInKarton }}
+              <input
+                *ngIf="enableEdit && enableEditIndex == i"
+                [(ngModel)]="unitsInKartonUpdate"
+                type="number"
+                (focusout)="return($event)"
+                (focus)="enlarge($event)"
+                style="font-weight: bold; font-size: medium"
+                placeholder="כמות יחידות בקרטון"
+                title="כמות יחידות בקרטון"
+                class="form-control"
+              />
+            </td>
+            <td
+              [style.background]="
+                QAPallet.unitsInKarton * form.netWeight <= 0 ? 'red' : ''
+              "
+              class="pallets-td"
+            >
+              {{ QAPallet.unitsInKarton * form.netWeight }}
+            </td>
+            <td class="pallets-td">{{ QAPallet.lastFloorQuantity }}
+              <input
+                *ngIf="enableEdit && enableEditIndex == i"
+                [(ngModel)]="lastFloorQuantityUpdate"
+                type="number"
+                (focusout)="return($event)"
+                (focus)="enlarge($event)"
+                title="קרטונים בקומה אחרונה"
+                style="font-weight: bold; font-size: medium"
+                placeholder="קרטונים בקומה אחרונה"
+                class="form-control"
+              />
+            </td>
+            <td class="pallets-td">{{ QAPallet.unitsQuantityPartKarton }}
+              <input
+                *ngIf="enableEdit && enableEditIndex == i"
+                [(ngModel)]="unitsQuantityPartKartonUpdate"
+                (focusout)="return($event)"
+                (focus)="enlarge($event)"
+                type="number"
+                title="יחידות בקרטון חלקי"
+                style="font-weight: bold; font-size: medium"
+                placeholder="יחידות בקרטון חלקי"
+                class="form-control"
+              />
+            </td>
+            <td class="pallets-th">{{ QAPallet.sumAmount }}</td>
+            <td class="pallets-th">{{ QAPallet.kindOfPallet }}
+              <select
+                *ngIf="enableEdit && enableEditIndex == i"
+                [(ngModel)]="kindOfPalletUpdate"
+                [title]="newQAPallet.kindOfPallet"
+                style="font-weight: bold; font-size: medium"
+                class="form-control"
+              >
+                <option value="">סוג המשטח</option>
+                <option value="EU">EU</option>
+                <option value="US">US</option>
+                <option value="Other">Other</option>
+              </select>
+            </td>
+            <td
+              class="pallets-td"
+              [ngClass]="{
+                green: QAPallet.qaStatus == 'מוכן לשליחה',
+                red: QAPallet.qaStatus != 'מוכן לשליחה'
+              }"
+            >
+              {{ QAPallet.qaStatus }}
+              <select
+                *ngIf="enableEdit && enableEditIndex == i"
+                [(ngModel)]="qaStatusUpdate"
+                [title]="newQAPallet.qaStatus"
+                style="font-weight: bold; font-size: medium"
+                class="form-control"
+              >
+                <option value="">סטטוס</option>
+                <option value="מוכן לשליחה">מוכן לשליחה</option>
+                <option value="למלאי">למלאי</option>
+              </select>
+            </td>
+            <td
+              class="pallets-td"
+              [ngClass]="{
+                green: QAPallet.palletStatus == 'הועלה על משטח',
+                red: QAPallet.palletStatus == 'ממתין למשטח'
+              }"
+            >
+              {{ QAPallet.palletStatus }}
+            </td>
+            <td>
+              <button
+                *ngIf="allowUpdateForm"
+                (click)="deleteQAPallet(QAPallet)"
+                class="btn btn-danger"
+              >
+                <i class="fa fa-times"></i>
+              </button>
+            </td>
+            <td>
+              <!-- cancel edit button -->
+              <!-- if enableEdit == true and enableEditIndex == index(i) display the cancel button -->
+              <!-- on click cancel changes function -->
+              <button
+                *ngIf="enableEdit && enableEditIndex == i"
+                (click)="enableEdit = false"
+                class="btn page-secondary-action-btn"
+                class="btn btn-danger form-control"
+              >
+                ביטול
+              </button>
+              <br>
+              <!-- save edit button, type = submit -->
+              <!-- if enableEdit == true and enableEditIndex == index(i) display the save button -->
+              <!-- on click save changes function -->
+              <button
+                *ngIf="enableEdit && enableEditIndex == i"
+                id="saveBtn"
+                class="btn page-primary-action-btn"
+                (click)="savePalltesChances(QAPallet)"
+                type="submit"
+                class="btn btn-success form-control"
+              >
+                שמירה
+              </button>
+              <!-- edit button -->
+              <!-- if enableEdit == false display the button -->
+              <!-- on click make edit available with a function which takes event and index  -->
+              <button class="btn btn-success form-control" *ngIf="!enableEdit" (click)="enableEditMethod($event, i)">
+                עדכון
+              </button>
+            </td>
           </tr>
-
-
         </tbody>
       </table>
     </div>
   </div>
 
   <div class="row mt-1">
-
     <div class="col-4"></div>
     <div class="col-4">
-      <button style="font-size: large;" (click)="showQAPersonalPalletsModal = false"
-        class="form btn btn-danger form-control">סגירה</button>
+      <button
+        style="font-size: large"
+        (click)="showQAPersonalPalletsModal = false"
+        class="form btn btn-danger form-control"
+      >
+        סגירה
+      </button>
     </div>
     <div class="col-4"></div>
-
   </div>
-
 </div>
-
-
-
 
 <!-- <button printSectionId="print-section" ngxPrint>Print</button> -->
