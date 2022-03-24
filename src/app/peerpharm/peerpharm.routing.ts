@@ -86,7 +86,8 @@ import { AllItemsComponent } from "./production/planning/all-items/all-items.com
 import { FinanceReportComponent } from "./finance-reports/financereport.component";
 import { WhareHouseUpdatesComponent } from "./inventory/wharehouse/wharehouse-updates/wharehouse-updates.component";
 import { TwoFactorSms } from "../guards/twofactorsms.guard";
-
+import { CustomersComponent } from "./customers/customers.component";
+import { ProposalsComponent } from "./customers/proposals/proposals.component";
 export const PeerPharmRputs: Routes = [
   {
     path: "user/user-settings",
@@ -745,5 +746,21 @@ export const PeerPharmRputs: Routes = [
       title: "Financial Reports",
     },
     component: FinanceReportComponent,
+  },
+  {
+    path: "customers",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Customers",
+    },
+    component: CustomersComponent,
+  },
+  {
+    path: "customers/proposals",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Proposals",
+    },
+    component: ProposalsComponent,
   },
 ];

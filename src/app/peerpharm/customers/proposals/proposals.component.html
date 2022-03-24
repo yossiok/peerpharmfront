@@ -1,0 +1,101 @@
+<div *ngIf="!authorized">אינך מורשה לראות מסך זה</div>
+<div dir="rtl" *ngIf="authorized">
+  <form [formGroup]="newProposalForm" class="form_1">
+    <div class="row mt-2">
+      <div class="col-1"></div>
+      <div class="col-4">
+        <label>שם הלקוח</label>
+        <select
+          class="form-control"
+          formControlName="customerName"
+          (change)="getCustomerByName()"
+        >
+          <option value="null" disabled>בחר לקוח</option>
+          <option
+            *ngFor="let customer of allCustomersList"
+            [value]="customer.costumerName"
+          >
+            {{ customer.costumerId }} - {{ customer.costumerName }}
+          </option>
+        </select>
+      </div>
+      <div class="col-2">
+        <label>מספר הלקוח</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="customerNum"
+          (blur)="getCustomerByNumber()"
+        />
+      </div>
+      <div class="col-2"></div>
+      <div class="col-2">
+        <label>מתאריך</label>
+        <input
+          type="date"
+          class="form-control"
+          formControlName="proposalDate"
+          [value]="currentDate | date: 'YYYY-MM-dd'"
+        />
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-1"></div>
+      <div class="col-2">
+        <label>שם הסוכן</label>
+        <select class="form-control" formControlName="agent">
+          <option value="null" disabled>בחר סוכן</option>
+          <option [value]="agent.userName" *ngFor="let agent of allUsers">
+            {{ agent.firstName }} {{ agent.lastName }}
+          </option>
+        </select>
+      </div>
+      <div class="col-2"></div>
+      <div class="col-2">
+        <label>מטבע</label>
+        <select class="form-control" formControlName="currency">
+          <option value="null" disabled>בחר מטבע</option>
+          <option
+            [value]="currency.name"
+            *ngFor="let currency of allCurrencies"
+          >
+            {{ currency.name }} : {{ currency.value }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-1"></div>
+      <div class="col-6">
+        <label>פרטי הלקוח</label>
+        <div>
+          {{ currentCustomer.invoice }}
+        </div>
+        <div
+          class="text-start"
+          *ngFor="let contact of currentCustomer.contact; index as i"
+        >
+          <label>שם איש קשר {{ i + 1 }}:</label>
+          {{ contact.name }}
+          <br />
+          <label>טלפון: </label>
+          {{ contact.phone }}<br />
+          <label>דוא"ל:</label>
+          {{ contact.mail }}
+        </div>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-1"></div>
+      <div class="col-2">
+        <label>מחירון:</label>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="priceList"
+          [value]="currenCustomer.priceList"
+        />
+      </div>
+    </div>
+  </form>
+</div>
