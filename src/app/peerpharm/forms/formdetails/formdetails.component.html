@@ -765,23 +765,78 @@
         <tbody>
           <tr *ngFor="let QAPallet of formQAPalletsData; let i = index">
             <td class="pallets-td">{{i+1}}</td>
-            <td class="pallets-td">{{QAPallet.floorNumber}}</td>
-            <td class="pallets-td">{{QAPallet.kartonQuantity}}</td>
-            <td class="pallets-td">{{QAPallet.unitsInKarton}}</td>
+            <td class="pallets-td">
+              {{QAPallet.floorNumber}}
+              <input *ngIf="enableEdit && enableEditIndex==i"  [(ngModel)]="newQAPallet.floorNumber" (focusout)="return($event)" (focus)="enlarge($event)"
+              type="number" style="font-weight: bold;font-size: medium; overflow-x: scroll;" placeholder="מספר קומות"
+              title="מספר קומות" class="form-control">
+            </td>
+            <td  class="pallets-td">{{QAPallet.kartonQuantity}}
+              <input *ngIf="enableEdit && enableEditIndex==i" [(ngModel)]="newQAPallet.kartonQuantity" type="number" (focusout)="return($event)"
+              (focus)="enlarge($event)" style="font-weight: bold;font-size: medium;" placeholder="כמות קרטונים בקומה"
+              title="כמות קרטונים בקומה" class="form-control">
+            </td>
+            <td  class="pallets-td">{{QAPallet.unitsInKarton}}
+              <input *ngIf="enableEdit && enableEditIndex==i" [(ngModel)]="newQAPallet.unitsInKarton" type="number" (focusout)="return($event)"
+              (focus)="enlarge($event)" style="font-weight: bold;font-size: medium;" placeholder="כמות יחידות בקרטון"
+              title="כמות יחידות בקרטון" class="form-control">
+            </td>
             <td [style.background]="QAPallet.unitsInKarton * form.netWeight <= 0 ? 'red' : '' " class="pallets-td">{{QAPallet.unitsInKarton * form.netWeight }}</td>
-            <td class="pallets-td">{{QAPallet.lastFloorQuantity}}</td>
-            <td class="pallets-td">{{QAPallet.unitsQuantityPartKarton}}</td>
+            <td class="pallets-td">{{QAPallet.lastFloorQuantity}}
+              <input *ngIf="enableEdit && enableEditIndex==i" [(ngModel)]="newQAPallet.lastFloorQuantity" type="number" (focusout)="return($event)"
+              (focus)="enlarge($event)" title="קרטונים בקומה אחרונה" style="font-weight: bold;font-size: medium;"
+              placeholder="קרטונים בקומה אחרונה" class="form-control">
+            </td>
+            <td class="pallets-td">{{QAPallet.unitsQuantityPartKarton}}
+              <input *ngIf="enableEdit && enableEditIndex==i" [(ngModel)]="newQAPallet.unitsQuantityPartKarton" (focusout)="return($event)"
+              (focus)="enlarge($event)" type="number" title="יחידות בקרטון חלקי" style="font-weight: bold;font-size: medium;"
+              placeholder="יחידות בקרטון חלקי" class="form-control">
+            </td>
             <td class="pallets-th">{{QAPallet.sumAmount}}</td>
-            <td class="pallets-th">{{QAPallet.kindOfPallet}}</td>
+            <td class="pallets-th">{{QAPallet.kindOfPallet}}
+              <select *ngIf="enableEdit && enableEditIndex==i" [(ngModel)]="newQAPallet.kindOfPallet" 
+                  [title]="newQAPallet.kindOfPallet" style="font-weight: bold;font-size: medium;" class="form-control">
+                  <option value="">סוג המשטח</option>
+                  <option value="EU">EU</option>
+                  <option value="US">US</option>
+                  <option value="Other">Other</option>
+                </select>
+            </td>
             <td class="pallets-td" [ngClass]="{ green:QAPallet.qaStatus == 'מוכן לשליחה',
                            red:QAPallet.qaStatus != 'מוכן לשליחה'
                           }">
-              {{QAPallet.qaStatus}}</td>
+              {{QAPallet.qaStatus}}
+              <select *ngIf="enableEdit && enableEditIndex==i" [(ngModel)]="newQAPallet.qaStatus" 
+              [title]="newQAPallet.qaStatus" style="font-weight: bold;font-size: medium;" class="form-control">
+              <option value="">סטטוס</option>
+              <option value="מוכן לשליחה">מוכן לשליחה</option>
+              <option value="חסר מדבקות">חסר מדבקות</option>
+              <option value="חסר קומפוננטים">חסר קומפוננטים</option>
+              <option value="עובר לאריזה אישית">עובר לאריזה אישית</option>
+              <option value="חסר לייזר">חסר לייזר</option>
+              <option value="נשלח להדפסה">נשלח להדפסה</option>
+              <option value="חסר קרטונים">חסר קרטונים</option>
+              <option value="חסר קרטוני מאסטר">חסר קרטוני מאסטר</option>
+              <option value="חסר עלונים לצרכן">חסר עלונים לצרכן</option>
+              <option value="למלאי">למלאי</option>
+            </select>
+            </td>
             <td class="pallets-td"
               [ngClass]="{green:QAPallet.palletStatus == 'הועלה על משטח',red:QAPallet.palletStatus == 'ממתין למשטח'}">
               {{QAPallet.palletStatus}}</td>
             <td><button *ngIf="allowUpdateForm" (click)="deleteQAPallet(QAPallet)" class="btn btn-danger"><i
                   class="fa fa-times"></i></button></td>
+            <td>
+              <!-- edit button -->
+        <!-- if enableEdit == false display the button -->
+        <!-- on click make edit available with a function which takes event and index  -->
+        <button
+        *ngIf="!enableEdit"
+        (click)="enableEditMethod($event, i)"
+      >
+        edit
+      </button>
+            </td>
           </tr>
 
 
@@ -805,7 +860,7 @@
 
 
 <div *ngIf="showQAPersonalPalletsModal == true" style="top:150px;"
-  class="personal-pallets fixed-top mx-auto w-100 p-5 my-auto text-center rounded shadow-lg border border-info">
+  class="personal-pallets fixed-top mx-auto w-100 p-5 my-auto text-center rounded shadow-lg border border-info show">
   <div class="row mt-4">
     <div class="col-4"> </div>
     <div class="col-4">

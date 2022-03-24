@@ -42,6 +42,10 @@ export class FormdetailsComponent implements OnInit {
   allowUpdateForm: boolean = false;
   disableRemarkEditAfterSave: boolean = true;
   today = new Date().getDate();
+  // edit bool value
+  enableEdit = false;
+  // edit bool index
+  enableEditIndex = null;
 
   newQAPallet = {
     floorNumber: null,
@@ -576,7 +580,12 @@ export class FormdetailsComponent implements OnInit {
       this.disabledValue = true;
     }
   }
-
+  // make edit available function
+  enableEditMethod(e, i) {
+    this.enableEdit = true;
+    this.enableEditIndex = i;
+    console.log(i, e);
+  }
   getUserInfo() {
     // Need to check user Au
     if (this.authService.loggedInUser) {
