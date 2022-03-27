@@ -14,6 +14,12 @@ export class CreamBarrelService {
   private baseUrl = "/";
 
   //bulks and barrels
+  getBarrelsByList(list) {
+    let url = this.baseUrl + "creamBarrel/getBarrelsByList";
+
+    return this.http.post(url, list).pipe(map((response) => response.json()));
+  }
+
   getNewBarrelByNumber(barrelNumber) {
     let url =
       this.baseUrl +

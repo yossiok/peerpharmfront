@@ -94,6 +94,7 @@
       <div *ngIf="loadData" class="smallerLoader"></div>
     </span>
   </h2>
+  <div class="smallLoader" *ngIf="smallLoader"></div>
   <div *ngIf="notAndrey" class="row mt-4" #tableDiv>
     <table class="table" style="table-layout: fixed">
       <thead class="thead-dark">
@@ -113,9 +114,9 @@
           <th>משקל</th>
           <th>כמות</th>
           <th>סה"כ ק"ג</th>
-          <th>חומרי גלם</th>
-          <th>קומפוננטים</th>
-          <th>סטטוס ייצור</th>
+          <th>חביות מוכנות</th>
+          <th>משקל חביות כללי</th>
+          <th>משקל חביות שנבחרו</th>
           <th>הערות</th>
           <th></th>
           <th *ngIf="authorized"></th>
@@ -135,8 +136,12 @@
               class="check-box"
             />
           </td>
-          <td>{{ orderItem.itemNumber }}</td>
-          <td>{{ orderItem.parentFormule }}</td>
+          <td class="break-lines">
+            {{ orderItem.itemNumber }}
+          </td>
+          <td class="break-lines">
+            {{ orderItem.parentFormule }}
+          </td>
           <td>
             <span [ngbTooltip]="orderItem.customerName"
               >{{ orderItem.orderNumber }} <i class="fas fa-info"></i
@@ -154,16 +159,21 @@
               [(ngModel)]="orderItem.totalKG"
             />
           </td>
-          <td class="text-center" *ngIf="orderItem.enoughMaterials">
-            <i ngbTooltip="כמות מלאי תקינה" class="far fa-thumbs-up"></i>
+          <td class="text-center">
+            {{ orderItem.barrels.length }}
+            <button
+              type="button"
+              class="btn btn-primary"
+              (click)="viewBarrels(orderItem)"
+            >
+              הצג פרטים
+            </button>
           </td>
           <td class="text-center" *ngIf="!orderItem.enoughMaterials">
-            <i
-              ngbTooltip="חסרים חומרי גלם במלאי"
-              class="fas fa-exclamation-circle"
-            ></i>
+            {{ orderItem.barrelsWeight | number: "1.0-1" }} Kg
           </td>
-          <td class="text-center" *ngIf="orderItem.enoughComponents">
+          <td>{{ orderItem.addedBarrelsWeight }}</td>
+          <!-- <td class="text-center" *ngIf="orderItem.enoughComponents">
             <i ngbTooltip="כמות מלאי תקינה" class="far fa-thumbs-up"></i>
           </td>
           <td class="text-center" *ngIf="!orderItem.enoughComponents">
@@ -171,7 +181,7 @@
               ngbTooltip="חסרים קומפוננטים במלאי"
               class="fas fa-exclamation-circle"
             ></i>
-          </td>
+          </td> -->
           <td [style.background]="orderItem.status | orderItemBatchStatusColor">
             {{ orderItem.status | orderItemBatchStatus }}
           </td>
@@ -270,6 +280,7 @@
           <th>כמות שיוצרה ק"ג</th>
           <th>/</th>
           <th>כמות מוזמנת ק"ג</th>
+          <th>כמות בחביות ק"ג</th>
           <th>סטטוס ייצור</th>
           <th>מתי אבשל?</th>
           <th></th>
@@ -314,13 +325,28 @@
               [(ngModel)]="formule.totalKG"
             />
           </td>
+          <td
+            style="
+              cursor: pointer;
+              text-decoration: underline;
+              color: darkgreen;
+              background-color: yellow;
+              border-radius: 20px;
+              font-weight: bold;
+              text-align: center;
+              font-size: 1.5rem;
+            "
+            (click)="openBarrelsList(formule.barrels)"
+          >
+            {{ formule.barrelsWeight }}
+          </td>
           <!-- <td *ngIf="formule.enoughMaterials"><i ngbTooltip="כמות מלאי תקינה" class="far fa-thumbs-up"></i>
                 </td>
                 <td *ngIf="!formule.enoughMaterials"><i ngbTooltip="חסרים קומפוננטים במלאי"
                   class="fas fa-exclamation-circle"></i></td> -->
           <td
-            style="word-wrap: break-word; width: 200px"
             [style.background]="formule.status | orderItemBatchStatusColor"
+            class="break-lines"
           >
             {{ formule.status | orderItemBatchStatus }}
             <span *ngIf="formule.status == 4">{{
@@ -663,5 +689,156 @@
         <h1>PAKA {{ workPlan.serialNumber }}</h1>
       </footer>
     </ng-container>
+  </div>
+  <!-- Modal -->
+  <div
+    dir="rtl"
+    *ngIf="openBarrelsView == true"
+    style="top: 100px; max-height: 700px; overflow: scroll; border-radius: 20px"
+    class="p-2 text-center container mx-auto my-auto rounded shadow-lg fixed-top bg-light border border-secondary"
+  >
+    <div class="container">
+      <div class="row mt-2">
+        <div class="col-1"></div>
+        <div class="col-10">
+          <h2 class="text-seconday">
+            רשימת חביות לפריט: {{ currentOrderItem.orderNumber }}
+          </h2>
+        </div>
+        <div class="col-1">
+          <i
+            (click)="openBarrelsView = false"
+            style="font-size: 23px; padding: 8px"
+            class="click fa fa-times text-secondary"
+          ></i>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-12">
+          <table class="table table-strip">
+            <thead>
+              <tr>
+                <th>מספר החבית</th>
+                <th>משקל החבית</th>
+                <th>פורמולה</th>
+                <th>תאריך ייצור</th>
+                <th>תאריך תפוגה</th>
+                <th>הוסף לבישול</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let barrel of currentOrderItem.barrels">
+                <td>{{ barrel.barrelNumber }}</td>
+                <td>{{ barrel.barrelWeight }}</td>
+                <td>{{ barrel.formuleNumber }}</td>
+                <td>{{ barrel.productionDate | date: "dd/MM/yyyy" }}</td>
+                <td>{{ barrel.expirationDate | date: "dd/MM/yyyy" }}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    class="check-box"
+                    (click)="addBarrelToBatch($event.target.checked, barrel)"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row mt-2">
+          <div class="col-1"></div>
+          <div class="col-2">
+            <button
+              type="button"
+              class="btn btn-info"
+              (click)="updateProductionFormules()"
+            >
+              אשר
+            </button>
+          </div>
+          <div class="col-6"></div>
+          <div class="col-2">
+            <button class="btn btn-secondary" (click)="cancelBarrelsList()">
+              בטל
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    dir="rtl"
+    *ngIf="openBarrelsListView == true"
+    style="top: 100px; max-height: 700px; overflow: scroll; border-radius: 20px"
+    class="p-2 text-center container mx-auto my-auto rounded shadow-lg fixed-top bg-light border border-secondary"
+  >
+    <div class="container">
+      <div class="row mt-2">
+        <div class="col-1"></div>
+        <div class="col-10">
+          <h2 class="text-seconday">
+            רשימת חביות לפריט: {{ productionBarrelsList[0].formuleNumber }}
+          </h2>
+        </div>
+        <div class="col-1">
+          <i
+            (click)="openBarrelsListView = false"
+            style="font-size: 23px; padding: 8px"
+            class="click fa fa-times text-secondary"
+          ></i>
+        </div>
+      </div>
+
+      <div class="row mt-2">
+        <div class="col-12">
+          <table class="table table-strip">
+            <thead>
+              <tr>
+                <th>מספר החבית</th>
+                <th>משקל החבית</th>
+                <th>פורמולה</th>
+                <th>תאריך ייצור</th>
+                <th>תאריך תפוגה</th>
+                <!-- <th>הוסף לבישול</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let barrel of productionBarrelsList">
+                <td>{{ barrel.barrelNumber }}</td>
+                <td>{{ barrel.barrelWeight }}</td>
+                <td>{{ barrel.formuleNumber }}</td>
+                <td>{{ barrel.productionDate | date: "dd/MM/yyyy" }}</td>
+                <td>{{ barrel.expirationDate | date: "dd/MM/yyyy" }}</td>
+                <!-- <td>
+                  <input
+                    type="checkbox"
+                    class="check-box"
+                    (click)="addBarrelToBatch($event.target.checked, barrel)"
+                  />
+                </td> -->
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- <div class="row mt-2">
+        <div class="col-1"></div>
+        <div class="col-2">
+          <button
+            type="button"
+            class="btn btn-info"
+            (click)="updateProductionFormules()"
+          >
+            אשר
+          </button>
+        </div>
+        <div class="col-6"></div>
+        <div class="col-2">
+          <button class="btn btn-secondary" (click)="cancelBarrelsList()">
+            בטל
+          </button>
+        </div>
+      </div> -->
+      </div>
+    </div>
   </div>
 </div>

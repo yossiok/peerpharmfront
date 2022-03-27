@@ -16,6 +16,9 @@ export interface OrderItem {
   batchNumber?: string;
   checked?: boolean;
   hasFormule?: boolean;
+  barrels: any;
+  barrelsWeight: number;
+  addedBarrelsWeight: number;
 }
 
 export interface ProductionFormule {
@@ -28,6 +31,8 @@ export interface ProductionFormule {
   status: number;
   checked?: boolean;
   dueDate?: Date;
+  barrels?: any[];
+  barrelsWeight?: number;
   // _id: string;
   // numOfItems: number
 }
