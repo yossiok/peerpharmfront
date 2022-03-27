@@ -46,6 +46,14 @@ export class FormdetailsComponent implements OnInit {
   enableEdit = false;
   // edit bool index
   enableEditIndex = null;
+  // update fields for qaPallet update
+  floorNumberUpdate = null;
+  kartonQuantityUpdate = null;
+  unitsInKartonUpdate = null;
+  lastFloorQuantityUpdate = null;
+  unitsQuantityPartKartonUpdate = null;
+  kindOfPalletUpdate = null;
+  qaStatusUpdate = null;
 
   newQAPallet = {
     floorNumber: null,
@@ -331,36 +339,43 @@ export class FormdetailsComponent implements OnInit {
   addNewQAPallet() {
     // Validation
     let errors = [];
-    if(this.newQAPallet.floorNumber == null || this.newQAPallet.floorNumber == ""){
-      errors.push({msg:"חייב לציין את מספר הקומות"});
-      
+    if (
+      this.newQAPallet.floorNumber == null ||
+      this.newQAPallet.floorNumber == ""
+    ) {
+      errors.push({ msg: "חייב לציין את מספר הקומות" });
     }
-    if(this.newQAPallet.kartonQuantity == null || this.newQAPallet.kartonQuantity == ""){
-      errors.push({msg:"חייב לציין את כמות הקרטונים בכל קומה"});
-      
+    if (
+      this.newQAPallet.kartonQuantity == null ||
+      this.newQAPallet.kartonQuantity == ""
+    ) {
+      errors.push({ msg: "חייב לציין את כמות הקרטונים בכל קומה" });
     }
-    if(this.newQAPallet.unitsInKarton == null || this.newQAPallet.unitsInKarton == ""){
-      errors.push({msg:"חייב לציין את כמות היחידות בכל קרטון"});
-      
+    if (
+      this.newQAPallet.unitsInKarton == null ||
+      this.newQAPallet.unitsInKarton == ""
+    ) {
+      errors.push({ msg: "חייב לציין את כמות היחידות בכל קרטון" });
     }
     // if(this.newQAPallet.lastFloorQuantity == null || this.newQAPallet.lastFloorQuantity == ""){
     //   errors.push({msg:"חייב לציין את כמות הקרטונים בקומה האחרונה"});
-      
+
     // }
     // if(this.newQAPallet.unitsQuantityPartKarton == ""){
     //   errors.push({msg:"חייב לציין את כמות היחידות בקרטון החלקי"});
-      
+
     // }
-    if(this.newQAPallet.kindOfPallet == null || this.newQAPallet.kindOfPallet == ""){
-      errors.push({msg:"חייב לציין את סוג המשטח"});
-      
+    if (
+      this.newQAPallet.kindOfPallet == null ||
+      this.newQAPallet.kindOfPallet == ""
+    ) {
+      errors.push({ msg: "חייב לציין את סוג המשטח" });
     }
-    if(this.newQAPallet.qaStatus == null || this.newQAPallet.qaStatus == ""){
-      errors.push({msg:"חייב לציין את הסטטוס"});
-      
+    if (this.newQAPallet.qaStatus == null || this.newQAPallet.qaStatus == "") {
+      errors.push({ msg: "חייב לציין את הסטטוס" });
     }
-    if(errors.length > 0){
-      errors.map((err)=>this.toastService.warning(err.msg))
+    if (errors.length > 0) {
+      errors.map((err) => this.toastService.warning(err.msg));
       return;
     }
     // Init object
@@ -395,36 +410,43 @@ export class FormdetailsComponent implements OnInit {
   addNewQAPersonalPallet() {
     // Validation
     let errors = [];
-    if(this.newQAPallet.floorNumber == null || this.newQAPallet.floorNumber == ""){
-      errors.push({msg:"חייב לציין את מספר הקומות"});
-      
+    if (
+      this.newQAPersonalPallet.floorNumber == null ||
+      this.newQAPersonalPallet.floorNumber == ""
+    ) {
+      errors.push({ msg: "חייב לציין את מספר הקומות" });
     }
-    if(this.newQAPallet.kartonQuantity == null || this.newQAPallet.kartonQuantity == ""){
-      errors.push({msg:"חייב לציין את כמות הקרטונים בכל קומה"});
-      
+    if (
+      this.newQAPersonalPallet.kartonQuantity == null ||
+      this.newQAPersonalPallet.kartonQuantity == ""
+    ) {
+      errors.push({ msg: "חייב לציין את כמות הקרטונים בכל קומה" });
     }
-    if(this.newQAPallet.unitsInKarton == null || this.newQAPallet.unitsInKarton == ""){
-      errors.push({msg:"חייב לציין את כמות היחידות בכל קרטון"});
-      
+    if (
+      this.newQAPersonalPallet.unitsInKarton == null ||
+      this.newQAPersonalPallet.unitsInKarton == ""
+    ) {
+      errors.push({ msg: "חייב לציין את כמות היחידות בכל קרטון" });
     }
     // if(this.newQAPallet.lastFloorQuantity == null || this.newQAPallet.lastFloorQuantity == ""){
     //   errors.push({msg:"חייב לציין את כמות הקרטונים בקומה האחרונה"});
-      
+
     // }
     // if(this.newQAPallet.unitsQuantityPartKarton == ""){
     //   errors.push({msg:"חייב לציין את כמות היחידות בקרטון החלקי"});
-      
+
     // }
-    if(this.newQAPallet.kindOfPallet == null || this.newQAPallet.kindOfPallet == ""){
-      errors.push({msg:"חייב לציין את סוג המשטח"});
-      
+    if (
+      this.newQAPersonalPallet.kindOfPallet == null ||
+      this.newQAPersonalPallet.kindOfPallet == ""
+    ) {
+      errors.push({ msg: "חייב לציין את סוג המשטח" });
     }
-    if(this.newQAPallet.qaStatus == null || this.newQAPallet.qaStatus == ""){
-      errors.push({msg:"חייב לציין את הסטטוס"});
-      
+    if (this.newQAPersonalPallet.qaStatus == null || this.newQAPersonalPallet.qaStatus == "") {
+      errors.push({ msg: "חייב לציין את הסטטוס" });
     }
-    if(errors.length > 0){
-      errors.map((err)=>this.toastService.warning(err.msg))
+    if (errors.length > 0) {
+      errors.map((err) => this.toastService.warning(err.msg));
       return;
     }
     this.newQAPersonalPallet.batchNumber = this.form.batchN;
@@ -451,15 +473,15 @@ export class FormdetailsComponent implements OnInit {
       });
   }
 
-
   updateFormDetails() {
-    
-      let reason = prompt("אנא הכנס/י את סיבה העדכון", "");
-       reason = reason.trim();
-      if (reason != null && reason != "" ) {
-        document.getElementById("reason").innerHTML = reason;
-        try {
-          this.formsService.updateFormDetails(this.form,reason).subscribe((result) => {
+    let reason = prompt("אנא הכנס/י את סיבה העדכון", "");
+    reason = reason.trim();
+    if (reason != null && reason != "") {
+      document.getElementById("reason").innerHTML = reason;
+      try {
+        this.formsService
+          .updateFormDetails(this.form, reason)
+          .subscribe((result) => {
             if (result.ok == 1) {
               this.getFormData(this.formid, false);
               this.toastService.success("טופס עודכן בהצלחה !");
@@ -473,12 +495,12 @@ export class FormdetailsComponent implements OnInit {
                 "טופס לא עודכן , אנא נסה שנית או פנה למנהל מערכת"
               );
           });
-        } catch (error) {
-          this.toastService.error("אירעה שגיאה בעדכון , אנא נסה שנית");
-        }
-      }else{
-        this.toastService.error("חובה לציין את סיבת העדכון");
+      } catch (error) {
+        this.toastService.error("אירעה שגיאה בעדכון , אנא נסה שנית");
       }
+    } else {
+      this.toastService.error("חובה לציין את סיבת העדכון");
+    }
   }
   async updateTest(indexOfTest, test) {
     this.form.checkBox_clean.splice(indexOfTest, 1);
@@ -552,7 +574,7 @@ export class FormdetailsComponent implements OnInit {
         QAPallet.palletStatus = "ממתין למשטח";
 
       count =
-        QAPallet.floorNumber * (QAPallet.kartonQuantity) * QAPallet.unitsInKarton;
+        QAPallet.floorNumber * QAPallet.kartonQuantity * QAPallet.unitsInKarton;
 
       if (QAPallet.lastFloorQuantity > 0)
         count += QAPallet.lastFloorQuantity * QAPallet.unitsInKarton;
@@ -585,6 +607,32 @@ export class FormdetailsComponent implements OnInit {
     this.enableEdit = true;
     this.enableEditIndex = i;
     console.log(i, e);
+  }
+  // Eran
+  savePalltesChances(QAPallet) {
+    let floorNumber = this.floorNumberUpdate || QAPallet.floorNumber 
+    let kartonQuantity = this.kartonQuantityUpdate || QAPallet.kartonQuantity
+    let unitsInKarton = this.unitsInKartonUpdate || QAPallet.unitsInKarton
+    let lastFloorQuantity = this.lastFloorQuantityUpdate || QAPallet.lastFloorQuantity
+    let unitsQuantityPartKarton = this.unitsQuantityPartKartonUpdate || QAPallet.unitsQuantityPartKarton
+    let kindOfPallet = this.kindOfPalletUpdate || QAPallet.kindOfPallet
+    let qaStatus = this.qaStatusUpdate || QAPallet.qaStatus
+    let obj ={};
+    Object.keys(QAPallet).map((key, index)=> {
+      obj = {...QAPallet,floorNumber,kartonQuantity,unitsInKarton,lastFloorQuantity,
+        unitsQuantityPartKarton,kindOfPallet,qaStatus}
+      return "";
+    });
+    this.formsService.editQAPallet(obj).subscribe((res)=>{
+      console.log(res);
+      this.floorNumberUpdate = null;
+      this.kartonQuantityUpdate = null;
+      this.unitsInKartonUpdate = null;
+      this.lastFloorQuantityUpdate = null;
+      this.unitsQuantityPartKartonUpdate = null;
+      this.kindOfPalletUpdate = null;
+      this.qaStatusUpdate = null;
+    })
   }
   getUserInfo() {
     // Need to check user Au
