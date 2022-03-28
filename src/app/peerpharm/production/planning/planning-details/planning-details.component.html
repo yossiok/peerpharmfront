@@ -325,19 +325,7 @@
               [(ngModel)]="formule.totalKG"
             />
           </td>
-          <td
-            style="
-              cursor: pointer;
-              text-decoration: underline;
-              color: darkgreen;
-              background-color: yellow;
-              border-radius: 20px;
-              font-weight: bold;
-              text-align: center;
-              font-size: 1.5rem;
-            "
-            (click)="openBarrelsList(formule.barrels)"
-          >
+          <td class="td-cursor" (click)="openBarrelsList(formule.barrels)">
             {{ formule.barrelsWeight }}
           </td>
           <!-- <td *ngIf="formule.enoughMaterials"><i ngbTooltip="כמות מלאי תקינה" class="far fa-thumbs-up"></i>
