@@ -32,6 +32,8 @@ export class ProposalsComponent implements OnInit {
     proposalStatus: new FormControl(""),
     proposalDate: new FormControl(new Date(), Validators.required),
     currency: new FormControl("", Validators.required),
+    proposalNumber: new FormControl(null),
+    destination: new FormControl("", Validators.required),
   });
 
   constructor(
@@ -109,6 +111,9 @@ export class ProposalsComponent implements OnInit {
       customer[0].costumerName
     );
     console.log(this.currentCustomer.contact);
+    console.log(this.currentCustomer.costumerName);
+    console.log(this.currentCustomer.delivery);
+    console.log(this.currentCustomer.invoice);
   }
 
   getCustomer() {
@@ -129,4 +134,11 @@ export class ProposalsComponent implements OnInit {
       );
     }
   }
+
+  createProposal() {
+    console.log(this.newProposalForm.value);
+    console.log(this.newProposalForm.controls);
+  }
+
+  resetForm() {}
 }

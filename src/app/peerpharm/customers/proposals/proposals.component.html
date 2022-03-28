@@ -3,32 +3,7 @@
   <form [formGroup]="newProposalForm" class="form_1">
     <div class="row mt-2">
       <div class="col-1"></div>
-      <div class="col-4">
-        <label>שם הלקוח</label>
-        <select
-          class="form-control"
-          formControlName="customerName"
-          (change)="getCustomerByName()"
-        >
-          <option value="null" disabled>בחר לקוח</option>
-          <option
-            *ngFor="let customer of allCustomersList"
-            [value]="customer.costumerName"
-          >
-            {{ customer.costumerId }} - {{ customer.costumerName }}
-          </option>
-        </select>
-      </div>
-      <div class="col-2">
-        <label>מספר הלקוח</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="customerNum"
-          (blur)="getCustomerByNumber()"
-        />
-      </div>
-      <div class="col-2"></div>
+      <div class="col-6"><h3>פרטי הלקוח</h3></div>
       <div class="col-2">
         <label>מתאריך</label>
         <input
@@ -42,6 +17,45 @@
     <div class="row mt-2">
       <div class="col-1"></div>
       <div class="col-2">
+        <label>מספר הלקוח</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="customerNum"
+          (blur)="getCustomerByNumber()"
+        />
+      </div>
+      <div class="col-4">
+        <label>שם הלקוח</label>
+        <select
+          class="form-control"
+          formControlName="customerName"
+          (change)="getCustomerByName()"
+        >
+          <option value="null" disabled>בחר לקוח</option>
+          <ng-container *ngIf="allCustomersList.length > 0">
+            <option
+              *ngFor="let customer of allCustomersList"
+              [value]="customer.costumerName"
+            >
+              {{ customer.costumerId }} - {{ customer.costumerName }}
+            </option>
+          </ng-container>
+        </select>
+      </div>
+
+      <div class="col-2">
+        <label>ארץ יעד</label>
+        <select formControlName="destination" class="form-control">
+          <option disabled value="null">בחר יעד</option>
+          <option value="israel">Israel - ישראל</option>
+          <option value="abroad">Abroad - חו"ל</option>
+        </select>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-1"></div>
+      <div class="col-3">
         <label>שם הסוכן</label>
         <select class="form-control" formControlName="agent">
           <option value="null" disabled>בחר סוכן</option>
@@ -50,7 +64,16 @@
           </option>
         </select>
       </div>
-      <div class="col-2"></div>
+      <div class="col-1"></div>
+      <div class="col-2">
+        <label>מחירון:</label>
+        <input
+          class="form-control"
+          type="text"
+          formControlName="priceList"
+          [value]="currentCustomer.costumerId"
+        />
+      </div>
       <div class="col-2">
         <label>מטבע</label>
         <select class="form-control" formControlName="currency">
@@ -59,42 +82,60 @@
             [value]="currency.name"
             *ngFor="let currency of allCurrencies"
           >
-            {{ currency.name }} : {{ currency.value }}
+            {{ currency.name }}
           </option>
         </select>
       </div>
     </div>
-    <div class="row mt-2">
+    <div class="row mt-4">
       <div class="col-1"></div>
       <div class="col-6">
-        <label>פרטי הלקוח</label>
-        <div>
-          {{ currentCustomer.invoice }}
+        <label> כתובת למשלוח:</label>
+        <div *ngIf="currentCustomer.delivery">
+          {{ currentCustomer.delivery }}
         </div>
-        <div
-          class="text-start"
-          *ngFor="let contact of currentCustomer.contact; index as i"
-        >
-          <label>שם איש קשר {{ i + 1 }}:</label>
-          {{ contact.name }}
-          <br />
-          <label>טלפון: </label>
-          {{ contact.phone }}<br />
-          <label>דוא"ל:</label>
-          {{ contact.mail }}
-        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-1"></div>
+      <div class="col-6">
+        <label> כתובת חשבונית:</label>
+        <div *ngIf="currentCustomer.invoice">{{ currentCustomer.invoice }}</div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-1"></div>
+      <div class="col-8">
+        <table class="table striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>שם איש קשר</th>
+              <th>טלפון</th>
+              <th>אימייל</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let contact of currentCustomer.contact; index as i">
+              <td>{{ i + 1 }}</td>
+              <td>{{ contact.name }}</td>
+              <td>{{ contact.phone }}</td>
+              <td>{{ contact.mail }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
     <div class="row mt-2">
       <div class="col-1"></div>
       <div class="col-2">
-        <label>מחירון:</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="priceList"
-          [value]="currenCustomer.priceList"
-        />
+        <button class="btn btn-info" (click)="createProposal()">
+          אשר והמשך
+        </button>
+      </div>
+      <div class="col-4"></div>
+      <div class="col-2">
+        <button class="btn btn-danger">בטל ונקה</button>
       </div>
     </div>
   </form>
