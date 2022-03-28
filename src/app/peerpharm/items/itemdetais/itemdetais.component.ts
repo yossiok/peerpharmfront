@@ -545,6 +545,9 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   ngOnInit() {
+    // this is for setin netWeightK of products with null value to the volume value.
+    // it was used once on the 28/03/2022
+    // this.updateNetWeightByVolume();
     if (location.href.endsWith("itemDetails")) {
       //no item selected
       // textbox not disabled for new
@@ -557,6 +560,12 @@ export class ItemdetaisComponent implements OnInit {
     this.getItemData();
     //  this.showGoddetData();
     setTimeout(() => this.itemNum.nativeElement.focus(), 300);
+  }
+
+  updateNetWeightByVolume() {
+    this.itemsService.updateNetWeightByVolume().subscribe((data) => {
+      console.log(data);
+    });
   }
 
   checkPermission() {

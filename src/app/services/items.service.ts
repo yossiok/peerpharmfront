@@ -121,6 +121,11 @@ export class ItemsService {
       .pipe(map((res) => res.json()));
   }
 
+  updateNetWeightByVolume() {
+    let url = this.baseUrl + "item/updateNetWeightByVolume";
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
   updateDocuments(itemDocObj) {
     let url = this.baseUrl + "item/updateDocs";
     return this.http
