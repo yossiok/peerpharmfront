@@ -80,6 +80,35 @@ export class FormslistComponent implements OnInit {
   exportAsXLSX(): void {
     this.excelService.exportAsExcelFile(this.forms, 'form');
   }
+
+  exportAsXLSX2() {
+    let orders = []
+      // console.log(data)
+        
+  
+  //       orders.push({
+  //         "הלקוח": order.openOrder.costumer,
+  //         "מס' הזמנה": order.openOrder.orderNumber,
+  //         "לקוח": order.openOrder.costumer,
+  //         'מק"ט לקוח (פנימי)': order.openOrder.costumerInternalId,
+  //         "תאריך הזמנה": order.openOrder.orderDate,
+  //         "תאריך אספקה (משוער)": order.openOrder.deliveryDate,
+  //         "סוג הזמנה": order.openOrder.type,
+  //         "משתמש": order.openOrder.user,
+  //         "הערות": order.openOrder.orderRemarks,
+  //         "סטטוס": order.openOrder.status,
+  //         "שלב": order.openOrder.stage,
+  //         "מוצרים":items
+  //       })
+      
+  //     this.excelService.exportAsExcelFile(orders, `דו"ח הזמנות תקועות ${new Date().toString().slice(0, 10)}`);
+  }
+
+
+
+
+
+
   sortFormsByFillingDate() {
     // NOT WOTKING WELL !! NEED TO DIVIDE YEAR/MONTH/DAY
     this.sortByFillingDate = (this.sortByFillingDate) ? false : true;

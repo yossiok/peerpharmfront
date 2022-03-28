@@ -86,6 +86,8 @@ import { AllItemsComponent } from "./production/planning/all-items/all-items.com
 import { FinanceReportComponent } from "./finance-reports/financereport.component";
 import { WhareHouseUpdatesComponent } from "./inventory/wharehouse/wharehouse-updates/wharehouse-updates.component";
 import { TwoFactorSms } from "../guards/twofactorsms.guard";
+import { QaLogsComponent } from "./qa/qalogs/qaLogs.component";
+
 import { CustomersComponent } from "./customers/customers.component";
 import { ProposalsComponent } from "./customers/proposals/proposals.component";
 export const PeerPharmRputs: Routes = [
@@ -565,6 +567,14 @@ export const PeerPharmRputs: Routes = [
       title: "Packing Lists",
     },
     component: PackingListComponent,
+  },
+  {
+    path: "qa/qaLogs",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "QA Logs",
+    },
+    component: QaLogsComponent,
   },
   {
     path: "forms/first-aid",

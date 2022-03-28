@@ -188,6 +188,7 @@ import { ProblematicOrderItemsComponent } from "./allorders/problematics/problem
 import { ProblematicItemsComponent } from "./procurement/procumentOrders/problematic-items/problematic-items.component";
 import { MatrialArrivalsCetificatesComponent } from "./inventory/material-arrival/material-arrival-certificates/material-arrival-certificates.component";
 import { BulksArrivalComponent } from "./batches/bulks-inventory/bulks-arrival/bulks-arrival.component";
+import { QaLogsComponent } from "./qa/qalogs/qaLogs.component";
 import { BulksCheckoutComponent } from "./batches/bulks-inventory/bulks-checkout/bulks-checkout.component";
 import { CustomersComponent } from "./customers/customers.component";
 import { ProposalsComponent } from "./customers/proposals/proposals.component";
@@ -276,6 +277,7 @@ import { ProposalsListComponent } from "./customers/proposals-list/proposals-lis
     ContentComponent,
     BoardComponent,
     TaskCardComponent,
+    QaLogsComponent,
     SubTaskCardComponent,
     CreateBoardComponent,
     BatchesComponent,

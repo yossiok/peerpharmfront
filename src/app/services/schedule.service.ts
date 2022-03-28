@@ -94,11 +94,12 @@ export class ScheduleService {
   }
 
   editSchedule(schedule,editReason): Observable<any> {
+ 
+    let url = this.baseUrl + "schedule/update";
     let obj = {
       schedule:schedule,
       editReason:editReason
     }
-    let url = this.baseUrl + "schedule/update";
     return this.http
       .post(url, JSON.stringify(obj), this.options)
       .pipe(map((res) => res.json()));
