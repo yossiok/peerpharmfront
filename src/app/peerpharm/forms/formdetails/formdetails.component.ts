@@ -320,7 +320,6 @@ export class FormdetailsComponent implements OnInit {
       : (this.form.checkBox_correctFinalPacking = [
           newTest.checkBox_correctFinalPacking,
         ]);
-    this.updateFormDetails();
     this.allChecks.push(newTest);
   }
 
@@ -474,6 +473,7 @@ export class FormdetailsComponent implements OnInit {
   }
 
   updateFormDetails() {
+    debugger;
     let reason = prompt("אנא הכנס/י את סיבה העדכון", "");
     reason = reason.trim();
     if (reason != null && reason != "") {
@@ -502,6 +502,8 @@ export class FormdetailsComponent implements OnInit {
       this.toastService.error("חובה לציין את סיבת העדכון");
     }
   }
+
+
   async updateTest(indexOfTest, test) {
     this.form.checkBox_clean.splice(indexOfTest, 1);
     this.form.checkBox_closedWaterProof.splice(indexOfTest, 1);

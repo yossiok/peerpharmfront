@@ -651,10 +651,78 @@ export class ScheduleComponent implements OnInit {
   }
 
   async updateSchedule(line) {
-    let editReason = prompt("אנא הכנס/י את סיבת העדכון", "");
-    editReason = editReason.trim();
-    if (editReason != null && editReason != "") {
-      document.getElementById("editReason").innerHTML = editReason;
+    const today = new Date();
+    const year = today.getFullYear()
+    const mount = today.getMonth()
+    const day = today.getDay()
+    const hours = today.getHours()
+    const scheduleLineDate = new Date(line.date)
+    const scheduleYear = scheduleLineDate.getFullYear()
+    const scheduleMount =scheduleLineDate.getMonth()
+    const scheduleDay = scheduleLineDate.getDay()
+    if(year == scheduleYear && mount == scheduleMount && day == scheduleDay && hours > 7 && hours < 19){
+
+      let editReason = prompt("אנא הכנס/י את סיבת העדכון", "");
+      editReason = editReason.trim();
+      if (editReason != null && editReason != "") {
+        document.getElementById("editReason").innerHTML = editReason;
+        if (this.orderN.nativeElement.value != "") {
+          let scdLneInfo = await this.scheduleData.filter(
+            (sced) => sced._id == this.EditRowId
+          );
+  
+          let updateOrderItemDate =
+            scdLneInfo[0].date == this.date.nativeElement.value;
+  
+          let scheduleToUpdate: any = {
+            _id: line._id,
+            positionN: this.positionN.nativeElement.value,
+            orderN: this.orderN.nativeElement.value,
+            item: this.item.nativeElement.value,
+            costumer: this.costumer.nativeElement.value,
+            productName: this.productName.nativeElement.value,
+            batch: this.batch.nativeElement.value,
+            packageP: this.packageP.nativeElement.value,
+            qty: this.qty.nativeElement.value,
+            qtyRdy: "",
+            date: this.date.nativeElement.value,
+            marks: this.marks.nativeElement.value,
+            shift: this.shift.nativeElement.value,
+            mkp: this.currentType,
+            itemImpRemark: scdLneInfo[0].itemImpRemark,
+            whatIsMissing: this.whatIsMissing.nativeElement.value,
+          };
+  
+          if (this.typeShown == "unpacked") {
+            scheduleToUpdate.status = "";
+            scdLneInfo[0].status = "";
+          }
+          this.scheduleService.editSchedule(scheduleToUpdate,editReason).subscribe((res) => {
+            this.EditRowId = 0;
+            scheduleToUpdate.date3 = moment(scheduleToUpdate.date).format(
+              "YYYY-MM-DD"
+            );
+            this.scheduleData[
+              this.scheduleData.findIndex(
+                (sced) => sced._id == scheduleToUpdate._id
+              )
+            ] = scheduleToUpdate;
+            this.editRadioBtnType = "";
+            if (updateOrderItemDate) {
+              //update orderItemSchedule
+            }
+          });
+        } else {
+          alert(
+            'מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.'
+          );
+        }
+      } else {
+        this.toastSrv.warning("חייב לציין את סיבת עריכת השורה");
+      }
+
+    }else{
+
       if (this.orderN.nativeElement.value != "") {
         let scdLneInfo = await this.scheduleData.filter(
           (sced) => sced._id == this.EditRowId
@@ -686,7 +754,7 @@ export class ScheduleComponent implements OnInit {
           scheduleToUpdate.status = "";
           scdLneInfo[0].status = "";
         }
-        this.scheduleService.editSchedule(scheduleToUpdate,editReason).subscribe((res) => {
+        this.scheduleService.editSchedule(scheduleToUpdate).subscribe((res) => {
           this.EditRowId = 0;
           scheduleToUpdate.date3 = moment(scheduleToUpdate.date).format(
             "YYYY-MM-DD"
@@ -706,8 +774,7 @@ export class ScheduleComponent implements OnInit {
           'מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.'
         );
       }
-    } else {
-      this.toastSrv.warning("חייב לציין את סיבת עריכת השורה");
+
     }
   }
 
