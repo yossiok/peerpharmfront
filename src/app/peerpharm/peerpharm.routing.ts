@@ -88,6 +88,8 @@ import { WhareHouseUpdatesComponent } from "./inventory/wharehouse/wharehouse-up
 import { TwoFactorSms } from "../guards/twofactorsms.guard";
 import { QaLogsComponent } from "./qa/qalogs/qaLogs.component";
 
+import { CustomersComponent } from "./customers/customers.component";
+import { ProposalsComponent } from "./customers/proposals/proposals.component";
 export const PeerPharmRputs: Routes = [
   {
     path: "user/user-settings",
@@ -499,6 +501,7 @@ export const PeerPharmRputs: Routes = [
     },
     component: BatchesMkpComponent,
   },
+
   {
     path: "batches/newBatch",
     canActivate: [ScreenGuard],
@@ -753,5 +756,21 @@ export const PeerPharmRputs: Routes = [
       title: "Financial Reports",
     },
     component: FinanceReportComponent,
+  },
+  {
+    path: "customers",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Customers",
+    },
+    component: CustomersComponent,
+  },
+  {
+    path: "customers/proposals",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Proposals",
+    },
+    component: ProposalsComponent,
   },
 ];

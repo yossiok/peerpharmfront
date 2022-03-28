@@ -309,9 +309,9 @@
         >
           <thead class="text-white bg-info">
             <tr style="text-align: center">
-              <th style="width: 3%;"></th>
-              <th style="width: 6%;"></th>
-              <th style="width: 3%;"><b>מספר פריט</b></th>
+              <th style="width: 3%"></th>
+              <th style="width: 6%"></th>
+              <th style="width: 3%"><b>מספר פריט</b></th>
               <th style="width: 5%"><b>מק"ט פריט-ספק</b></th>
               <th style="width: 5%"><b>ספק</b></th>
               <th style="width: 5%"><b></b></th>
@@ -328,7 +328,7 @@
           <tbody id="table_body" class="componentTable">
             <tr *ngFor="let component of components; let i = index">
               <td style="width: 3%">{{ i + 1 }}</td>
-              <td style="padding: auto 50%;">
+              <td style="padding: 5px">
                 <button
                   class="btn btn-warning form-control rounded-pill"
                   (click)="
@@ -336,7 +336,7 @@
                     getStockItemByNumber($event)
                   "
                   [ngModelOptions]="{ standalone: true }"
-                  style="width: 20%;"
+                  style="width: 100%"
                 >
                   בקשה לרכש חדשה
                 </button>

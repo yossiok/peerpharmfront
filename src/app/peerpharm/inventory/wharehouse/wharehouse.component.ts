@@ -135,7 +135,10 @@ export class WharehouseComponent implements OnInit {
 
   getAllWhs() {
     this.inventoryService.getWhareHousesList().subscribe((whs) => {
-      this.allWhareHouses = whs.filter((wh) => wh.name != "Rosh HaAyin");
+      this.allWhareHouses = whs;
+
+      console.log(this.allWhareHouses);
+      // this.allWhareHouses = whs.filter((wh) => wh.name != "Rosh HaAyin");
     });
   }
 
@@ -148,9 +151,10 @@ export class WharehouseComponent implements OnInit {
           displayAllowedWH.push(wh);
         }
       });
-      this.whareHouses = displayAllowedWH.filter(
-        (wh) => wh.name != "Rosh HaAyin"
-      );
+      // this.whareHouses = displayAllowedWH.filter(
+      //   (wh) => wh.name != "Rosh HaAyin"
+      // );
+      this.whareHouses = displayAllowedWH;
 
       this.curentWhareHouseId = displayAllowedWH[0]._id;
       this.curentWhareHouseName = displayAllowedWH[0].name;

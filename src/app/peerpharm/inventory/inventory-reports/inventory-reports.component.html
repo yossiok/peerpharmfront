@@ -1,36 +1,93 @@
-<div *ngIf="!loader">
-    <form [formGroup]="reportForm" (ngSubmit)="getInvRep()">
-        <div class="row">
-            <div class="col-1">
-                <label>item type:</label>
-                <select class="form-control" #itemType formControlName="itemType">
-                    <option value="all">all</option>
-                    <option value="material">materials</option>
-                    <option value="component">components</option>
-                    <option value="product">products</option>
-                </select>
-            </div>
-            <div class="col-1">
-                <label for="">Component Type:</label>
-                <select class="form-control" formControlName="cmptType">
-                    <option *ngFor="let type of cmptTypes" [value]="type">{{type}}</option>
-                </select>
-            </div>
-            <div class="col-1">
-                <label for="">Component Number:</label>
-                <input type="text" class="form-control" formControlName="componentN">
-            </div>
-            <div class="col-1">
-                <label for="">Component Name:</label>
-                <input type="text" class="form-control" formControlName="componentName">
-            </div>
-            <div class="col-1">
-                <label for="">&nbsp;</label>
-                <button class="form-control btn btn-primary" type="submit">Get inventory Report</button>
-            </div>
-        </div>
-    </form>
+<div *ngIf="!loader" dir="rtl">
+  <form [formGroup]="reportForm" (ngSubmit)="getInvRep()">
+    <div class="row mt-2">
+      <div class="col-2">
+        <label>מחסן</label>
+        <select
+          class="form-control"
+          (change)="getShelves()"
+          formControlName="warehouse"
+        >
+          <option value="all">All</option>
+          <option *ngFor="let wh of allWarehouses" [value]="wh.name">
+            {{ wh.name }}
+          </option>
+        </select>
+      </div>
+      <div class="col-2">
+        <label>סוג הפריט</label>
+        <select class="form-control" #itemType formControlName="itemType">
+          <option value="all">All</option>
+          <option value="material">Materials</option>
+          <option value="component">Components</option>
+          <option value="product">Products</option>
+        </select>
+      </div>
+      <div class="col-2">
+        <label for="">מדף</label>
+        <select class="form-control" formControlName="position">
+          <option value="all">All</option>
+          <option *ngFor="let shelf of shelvesList" [value]="shelf.position">
+            {{ shelf.position }}
+          </option>
+        </select>
+      </div>
+      <div class="col-2">
+        <label for="">מק"ט</label>
+        <input type="text" class="form-control" formControlName="componentN" />
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-2">
+        <label for="">&nbsp;</label>
+        <button class="form-control btn btn-primary" type="submit">
+          דו"ח מלאי
+        </button>
+      </div>
+      <div class="col-2">
+        <label for="">&nbsp;</label>
+        <button class="form-control btn btn-danger" (click)="minusReport()">
+          דו"ח מינוסים
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="row mt-2" *ngIf="reportData.length > 0">
+    <div class="col-2">
+      <button class="btn btn-success" (click)="exportToExcel()">
+        יצא לקובץ אקסל
+      </button>
+    </div>
+    <div class="col-10">
+      <div class="table table-strip">
+        <thead>
+          <tr>
+            <th>מס'</th>
+            <th>מק"ט</th>
+            <th>שם הפריט</th>
+            <th>כמות</th>
+            <!-- <th>מחסן</th>
+            <th>מדף</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of reportData; index as i">
+            <td>{{ i + 1 }}</td>
+            <td>{{ item.itemNumber }}</td>
+            <td>{{ item.itemName }}</td>
+            <td
+              dir="ltr"
+              [style.color]="item.totalAmount < 0 ? 'red' : 'black'"
+            >
+              {{ item.totalAmount | number: "1.0-2" }}
+            </td>
+            <!-- <td>{{ item.warehouse }}</td>
+            <td>{{ item.position }}</td> -->
+          </tr>
+        </tbody>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="bigLoader" *ngIf="loader">
-</div>
+<div class="bigLoader" *ngIf="loader"></div>

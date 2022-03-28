@@ -63,7 +63,7 @@ export class NewBatchComponent implements OnInit {
   margin = 10;
   marginTop = 10;
   marginBottom = 10;
-  marginLeft = 10;
+  marginLeft = 20;
   marginRight = 10;
 
   newBatchForm: FormGroup = new FormGroup({

@@ -13,12 +13,19 @@ export class InventoryReportsComponent implements OnInit {
   loader: boolean = false;
   cmptTypes: Array<any>;
   purchaseOrders: Array<any>;
+  allWarehouses: any[] = [];
+  reportData: any[] = [];
+  shelvesList: any[] = [];
 
   reportForm = new FormGroup({
     cmptType: new FormControl(""),
     itemType: new FormControl("all", Validators.required),
     componentN: new FormControl(null),
     componentName: new FormControl(null),
+    warehouse: new FormControl(""),
+    warehouseID: new FormControl("", Validators.required),
+    position: new FormControl("all", Validators.required),
+    minus: new FormControl(false, Validators.required),
   });
 
   constructor(
@@ -29,6 +36,7 @@ export class InventoryReportsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTypes();
+    this.getAllWhs();
   }
 
   getTypes() {
@@ -36,8 +44,35 @@ export class InventoryReportsComponent implements OnInit {
       this.cmptTypes = allTypes;
     });
   }
+  getAllWhs() {
+    this.inventorySer.getWhareHousesList().subscribe((whs) => {
+      this.allWarehouses = whs;
+    });
+  }
+  getShelves() {
+    let wh = this.reportForm.controls.warehouse.value;
+    if (!wh) {
+      alert("יש לבחור  מחסן");
+      return;
+    } else {
+      this.inventorySer.getShelvesByWHName(wh).subscribe((data) => {
+        console.log(data);
+        this.shelvesList = data;
+        this.reportForm.controls.destinationWHID.setValue(data[0].whareHouseId);
 
+        console.log(this.reportForm.value);
+      });
+    }
+  }
+
+  minusReport() {
+    this.reportForm.controls.minus.setValue(true);
+    this.getInvRep();
+    this.reportForm.controls.minus.setValue(false);
+  }
   getInvRep() {
+    console.log(this.reportForm.value);
+    this.reportData = [];
     let sortOrder;
     this.loader = true;
     this.inventorySer.getInvRep(this.reportForm.value).subscribe((data) => {
@@ -45,48 +80,31 @@ export class InventoryReportsComponent implements OnInit {
       console.log(data);
       if (this.reportForm.value.itemType == "product") {
         data.map((item) => {
-          item.name
-            ? (item.name = `${item.name[0]} ${item.subName[0]} ${item.description[0]}`)
-            : null;
+          item.itemNumber = item._id;
+          item.itemName =
+            item.name[0] + " " + item.subName[0] + ", " + item.description[0];
+          item.totalAmount = item.total;
+          item.warehouse = this.reportForm.controls.warehouse.value;
+          delete item.name;
           delete item.subName;
           delete item.description;
+          delete item._id;
         });
         sortOrder = ["_id", "name", "position", "total"];
-      } else if (this.reportForm.value.itemType == "component") {
-        data.map((item) => {
-          console.log(item);
-          (item.item = item._id.itemNumber),
-            (item.name = item.name),
-            (item.amount = item.totalAmount);
-          return item;
-          // delete item.shell_id_in_whareHouse;
-          // delete item.deliveryNoteNum;
-          // delete item._id;
-          // delete item.whareHouseID;
-          if (this.reportForm.value.itemType != "material") {
-            delete item.expirationDate;
-            delete item.productionDate;
-          }
-
-          // get purchase details for components and materials
-          if (this.reportForm.value.itemType != "product") {
-            item.name = item.stockitem[0].componentName;
-            delete item.stockitem;
-          }
-          delete item.batchNumber;
-          delete item.supplierBatchNumber;
-          if (this.reportForm.value.itemType != "all") delete item.itemType;
-          delete item.__v;
-          delete item.barcode;
-          delete item.userName;
-          delete item.shell_id_in_whareHouse;
-          console.log(item);
-          return item;
-        });
-        sortOrder = ["item", "name", "position", "amount"];
+        this.reportData = data;
+      } else {
+        this.reportData = data;
       }
-      console.log(data);
-      this.excelService.exportAsExcelFile(data, "Inventory Report", sortOrder);
+
+      // this.excelService.exportAsExcelFile(data, "Inventory Report", sortOrder);
     });
+  }
+  exportToExcel() {
+    let sortOrder = ["itemNumber", "itemName", "totalAmount"];
+    this.excelService.exportAsExcelFile(
+      this.reportData,
+      "Inventory Report",
+      sortOrder
+    );
   }
 }

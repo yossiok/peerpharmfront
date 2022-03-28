@@ -1,0 +1,86 @@
+.form_1 {
+  width: 70rem;
+}
+smallLoader {
+  margin: auto;
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #3498db;
+  width: 30px;
+  height: 30px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+.bigLoader {
+  margin: auto;
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #3498db;
+  width: 300px;
+  height: 300px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+
+.sortable:hover {
+  background: rgb(56, 123, 199);
+  cursor: pointer;
+}
+
+.click {
+  cursor: pointer;
+}
+
+.new-shelf {
+  background: rgb(188, 146, 228);
+}
+
+.save-form {
+  background: rgb(43, 153, 226);
+  width: 275px;
+  height: 98px;
+  font-size: 28px;
+}
+
+.minus {
+  background-color: rgb(201, 123, 118);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.plus {
+  background-color: rgb(153, 211, 120);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.heb {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 2rem;
+}
+
+.heb-menu {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+
+  font-size: 1.5rem;
+}
+
+.heading2 {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  font-size: 1.5rem;
+  text-align: center;
+}
+// Hide arrows from input type number  :
+/*********************************************** ********************/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/*******************************************************************/

@@ -473,6 +473,9 @@ export class AllItemsComponent implements OnInit {
     }
   }
   addWorkPlan(orderItems, remark, wp) {
+    console.log(orderItems);
+    console.log(remark);
+    console.log(wp);
     this.ordersService.makePlan(orderItems, remark, wp).subscribe((data) => {
       console.log(data);
       console.log(data.workPlan);
@@ -494,6 +497,10 @@ export class AllItemsComponent implements OnInit {
         );
       else if (data.msg) {
         this.toastr.error(data.msg);
+      } else if (data.errors.length > 0) {
+        for (let msg of data.errors) {
+          this.toastr.error(msg.msg);
+        }
       } else if (data.workPlan.orderItems.length > 0) {
         console.log(data.workPlan);
         // this.deleteProductionFormules(data.workPlan);
@@ -515,17 +522,21 @@ export class AllItemsComponent implements OnInit {
         //     this.orderItems[index].workPlanId = data.workPlan.serialNumber;
         //   }
         // }
-        this.getAllOrderItems();
-        this.getWorkPlans();
+
         this.toastr.success(
           "נשמרה בהצלחה.",
           `תכנית עבודה ${data.workPlan.serialNumber}`
         );
         this.selectedArr = [];
-      } else
+      } else {
         this.toastr.warning(
           'היתה בעיה. אנא בדוק את תכנית העבודה במסך "Planning"'
         );
+      }
+      this.getAllOrderItems();
+      this.getWorkPlans();
+      this.orderItems = [];
+      this.selectedArr = [];
     });
   }
 

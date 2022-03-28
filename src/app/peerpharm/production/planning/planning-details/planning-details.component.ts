@@ -17,6 +17,7 @@ import { ProductionService } from "src/app/services/production.service";
 import { OrderItem, ProductionFormule, WorkPlan } from "../WorkPlan";
 import { ConfirmService } from "../../../../services/confirm.modal.service";
 import { Router } from "@angular/router";
+import { CreamBarrelService } from "src/app/services/cream-barrel.service";
 
 @Component({
   selector: "app-planning-details",
@@ -57,6 +58,12 @@ export class PlanningDetailsComponent implements OnInit {
   notAndrey: boolean = true;
   editDueDate: number = -1;
   checkedFormules: ProductionFormule[];
+  smallLoader: boolean = false;
+  openBarrelsView: boolean = false;
+  currentOrderItem: any;
+  barrelsList: any[] = [];
+  openBarrelsListView: boolean = false;
+  productionBarrelsList: any[] = [];
   andreyisalazyworkersowehavetoworkharderfrohim: number[] = [
     1,
     2,
@@ -99,7 +106,8 @@ export class PlanningDetailsComponent implements OnInit {
     private formuleService: FormulesService,
     private inventoryService: InventoryService,
     private modalService: ConfirmService,
-    public router: Router
+    public router: Router,
+    private creamBarrelService: CreamBarrelService
   ) {}
 
   ngOnInit(): void {
@@ -111,6 +119,83 @@ export class PlanningDetailsComponent implements OnInit {
     this.workPlan.orderItems.sort(
       (a, b) => <any>a.parentFormule - <any>b.parentFormule
     );
+
+    this.getBarrelsForWP();
+  }
+
+  getBarrelsForWP() {
+    this.smallLoader = true;
+    console.log(this.workPlan);
+    let formulesList = [];
+    for (let oi of this.workPlan.orderItems) {
+      formulesList.push({
+        orderNumber: oi.orderNumber,
+        formuleNumber: oi.formule.formuleNumber,
+      });
+    }
+    console.log(formulesList);
+    this.creamBarrelService.getBarrelsByList(formulesList).subscribe((data) => {
+      console.log(data);
+      if (data.msg) {
+        this.toastr.error(data.msg);
+        return;
+      } else if (data) {
+        for (let bList of data) {
+          let idx = this.workPlan.orderItems.findIndex(
+            (oi) => oi.itemNumber == bList.formuleNumber
+          );
+          if (idx > -1) {
+            this.workPlan.orderItems[idx].barrels = bList.barrels;
+            this.workPlan.orderItems[idx].barrelsWeight = bList.totalWeight;
+          }
+        }
+        this.smallLoader = false;
+        console.log(this.workPlan);
+      }
+    });
+  }
+  viewBarrels(orderItem) {
+    console.log(orderItem);
+    this.currentOrderItem = { addedBarrelsWeight: 0, ...orderItem };
+    this.openBarrelsView = true;
+    console.log(this.openBarrelsView);
+  }
+
+  addBarrelToBatch(e, barrel) {
+    console.log(e);
+    console.log(barrel);
+
+    if (e) {
+      this.currentOrderItem.addedBarrelsWeight += barrel.barrelWeight;
+      this.barrelsList.push(barrel);
+    } else {
+      this.currentOrderItem.addedBarrelsWeight -= barrel.barrelWeight;
+      this.barrelsList = this.barrelsList.filter(
+        (bn) => bn.barrelNumber != barrel.barrelNumber
+      );
+    }
+    console.log(this.barrelsList);
+    console.log(this.currentOrderItem.addedBarrelsWeight);
+  }
+  cancelBarrelsList() {
+    this.barrelsList = [];
+    this.openBarrelsView = false;
+  }
+
+  updateProductionFormules() {
+    let idx = this.workPlan.orderItems.findIndex(
+      (oi) => oi.itemNumber == this.currentOrderItem.itemNumber
+    );
+    this.workPlan.orderItems[idx].addedBarrelsWeight =
+      this.currentOrderItem.addedBarrelsWeight;
+    this.workPlan.orderItems[idx].barrels = [...this.barrelsList];
+    this.cancelBarrelsList();
+    console.log(this.workPlan);
+  }
+
+  openBarrelsList(barrels) {
+    this.productionBarrelsList = barrels;
+    this.openBarrelsListView = true;
   }
 
   checkItemsFormules() {
@@ -179,6 +264,12 @@ export class PlanningDetailsComponent implements OnInit {
             element.enoughMaterials === false
               ? false
               : true;
+          this.workPlan.productionFormules[allreadyExist].barrelsWeight +=
+            element.addedBarrelsWeight;
+          this.workPlan.productionFormules[allreadyExist].barrels = [
+            element.barrels,
+            ...this.workPlan.productionFormules[allreadyExist].barrels,
+          ];
           this.workPlan.productionFormules[allreadyExist].ordersAndItems.push({
             orderNumber: element.orderNumber,
             itemNumber: element.itemNumber,
@@ -202,10 +293,12 @@ export class PlanningDetailsComponent implements OnInit {
             totalKG: element.totalKG,
             enoughMaterials: element.enoughMaterials,
             batchNumber: "",
+            barrels: element.barrels,
+            barrelsWeight: element.addedBarrelsWeight,
           });
         element.hasFormule = true;
       }
-
+      console.log(this.workPlan);
       this.saveChanges()
         .then((succesMessage) => this.toastr.success(succesMessage))
         .catch((errorMessage) => this.toastr.error(errorMessage));
@@ -255,10 +348,10 @@ export class PlanningDetailsComponent implements OnInit {
             this.editF = -1;
             this.workPlan = data;
             this.updateWorkPlans.emit();
-            if(data.status == -1) {
-              this.closeWorkPlan(-1)
-              this.toastr.info('פק"ע ריקה מפריטים', 'פק"ע נמחקה.')
-            } 
+            if (data.status == -1) {
+              this.closeWorkPlan(-1);
+              this.toastr.info('פק"ע ריקה מפריטים', 'פק"ע נמחקה.');
+            }
             resolve("הפרטים נשמרו בהצלחה");
           } else if (data.msg) {
             reject(data.msg);
@@ -397,7 +490,9 @@ export class PlanningDetailsComponent implements OnInit {
   async approveFormules() {
     if (confirm("לאשר לייצור?")) {
       // change status
-      this.workPlan.productionFormules.map(f => f.status < 3 ? f.status = 3 : f.status = f.status);
+      this.workPlan.productionFormules.map((f) =>
+        f.status < 3 ? (f.status = 3) : (f.status = f.status)
+      );
 
       this.saveChanges()
         .then((succesMessage) => {

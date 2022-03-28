@@ -17,6 +17,7 @@ import { FormuleFormTableComponent } from "./formules/formule-form-table/formule
 import { PeerPharmRputs } from "./peerpharm.routing";
 import { OrdersComponent } from "./allorders/orders/orders.component";
 import { AllordersComponent } from "./allorders/allorders/allorders.component";
+
 import {
   TranslateModule,
   TranslateLoader,
@@ -188,12 +189,18 @@ import { ProblematicItemsComponent } from "./procurement/procumentOrders/problem
 import { MatrialArrivalsCetificatesComponent } from "./inventory/material-arrival/material-arrival-certificates/material-arrival-certificates.component";
 import { BulksArrivalComponent } from "./batches/bulks-inventory/bulks-arrival/bulks-arrival.component";
 import { QaLogsComponent } from "./qa/qalogs/qaLogs.component";
+import { BulksCheckoutComponent } from "./batches/bulks-inventory/bulks-checkout/bulks-checkout.component";
+import { CustomersComponent } from "./customers/customers.component";
+import { ProposalsComponent } from "./customers/proposals/proposals.component";
+import { ProposalsListComponent } from "./customers/proposals-list/proposals-list.component";
+
 @NgModule({
   exports: [
     // MatInputModule,
     AddProcurementItemDialog,
   ],
   imports: [
+    NgxBarcodeModule,
     MatAutocompleteModule,
     MatMenuModule,
     CommonModule,
@@ -210,7 +217,6 @@ import { QaLogsComponent } from "./qa/qalogs/qaLogs.component";
       provide: DateAdapter,
       useFactory: adapterFactory,
     }),
-    NgxBarcodeModule,
     FormsModule,
     ReactiveFormsModule,
     MatTabsModule,
@@ -240,7 +246,6 @@ import { QaLogsComponent } from "./qa/qalogs/qaLogs.component";
     NewFormuleComponent,
     NeworderComponent,
     NeworderComponent,
-    NewBatchComponent,
     BulksInventoryComponent,
     BatchesMkpComponent,
     LinesComponent,
@@ -295,6 +300,7 @@ import { QaLogsComponent } from "./qa/qalogs/qaLogs.component";
     InventoryRequestsComponent,
     InventoryNewRequestComponent,
     MaterialArrivalComponent,
+    NewBatchComponent,
     MaterialArrivalTableComponent,
     MaterialScanViewComponent,
     ItemScanViewComponent,
@@ -351,6 +357,10 @@ import { QaLogsComponent } from "./qa/qalogs/qaLogs.component";
     ProblematicItemsComponent,
     MatrialArrivalsCetificatesComponent,
     BulksArrivalComponent,
+    BulksCheckoutComponent,
+    CustomersComponent,
+    ProposalsComponent,
+    ProposalsListComponent,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [
