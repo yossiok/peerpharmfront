@@ -44,7 +44,12 @@ main {
   left: 50px;
   right: 50px;
   width: auto;
-  overflow-y: scroll;
-  max-height: 150%;
+  // overflow-y: scroll;
+  // max-height: 150%;
   padding: 20px;
+}
+.scroll{
+  top:150px;
+  overflow:scroll;
+  height:62.5rem;
 }
