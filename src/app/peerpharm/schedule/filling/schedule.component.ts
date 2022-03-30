@@ -655,12 +655,11 @@ export class ScheduleComponent implements OnInit {
     const year = today.getFullYear()
     const mount = today.getMonth()
     const day = today.getDay()
-    const hours = today.getHours()
     const scheduleLineDate = new Date(line.date)
     const scheduleYear = scheduleLineDate.getFullYear()
     const scheduleMount =scheduleLineDate.getMonth()
     const scheduleDay = scheduleLineDate.getDay()
-    if(year == scheduleYear && mount == scheduleMount && day == scheduleDay && hours > 7 && hours < 19){
+    if(year == scheduleYear && mount == scheduleMount && day == scheduleDay){
 
       let editReason = prompt("אנא הכנס/י את סיבת העדכון", "");
       editReason = editReason.trim();
@@ -810,6 +809,22 @@ export class ScheduleComponent implements OnInit {
 
   deleteLine(id) {
     if (confirm("האם אתה בטוח שברצונך למחוק את השורה?")) {
+    const today = new Date();
+    const year = today.getFullYear()
+    const mount = today.getMonth()
+    const day = today.getDay()
+    let l;
+    this.scheduleData.forEach((ele)=>{
+      if(ele._id == id){
+        l=ele;
+      }
+    })
+    const scheduleLineDate = new Date(l.date);
+    const scheduleYear = scheduleLineDate.getFullYear()
+    const scheduleMount =scheduleLineDate.getMonth()
+    const scheduleDay = scheduleLineDate.getDay()
+    if(year == scheduleYear && mount == scheduleMount && day == scheduleDay){
+
       let reason = prompt("אנא הכנס סיבה למחיקת הקו", "");
       reason = reason.trim();
       if (reason != null && reason != "") {
@@ -822,6 +837,17 @@ export class ScheduleComponent implements OnInit {
       } else {
         this.toastSrv.warning("חייב לציין את סיבת המחיקה");
       }
+
+    }else{
+
+      
+        this.scheduleService.deleteSchedule(id).subscribe((res) => {
+          this.scheduleData = this.scheduleData.filter(
+            (elem) => elem._id != id
+          );
+        });
+
+    }
     }
   }
 
