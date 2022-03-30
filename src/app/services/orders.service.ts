@@ -37,16 +37,16 @@ export class OrdersService {
   }
 
   // Get open orders reports with items and return excel
-  getOpenOrderReport(){
+  getOpenOrderReport() {
     let url = this.baseUrl + "order/openReport";
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
   getAllOrders(): Observable<any> {
-    let url = this.baseUrl + "order/openReport";
+    let url = this.baseUrl + "order/allorders";
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
-  
+
   getOrdersReport(): Observable<any> {
     let url = this.baseUrl + "order/allorders";
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
@@ -215,8 +215,13 @@ export class OrdersService {
 
   getProblematicsReportForPurchase(itemType) {
     let url;
-    if (itemType == 'all') url = this.baseUrl + "order/allOpenProblematicOrderItemsForPurchase";
-    else url = this.baseUrl + "order/allOpenProblematicOrderItemsForPurchase?itemType="+itemType;
+    if (itemType == "all")
+      url = this.baseUrl + "order/allOpenProblematicOrderItemsForPurchase";
+    else
+      url =
+        this.baseUrl +
+        "order/allOpenProblematicOrderItemsForPurchase?itemType=" +
+        itemType;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
@@ -421,6 +426,4 @@ export class OrdersService {
       this.baseUrl + "formDetails/isLastFormOfItemTooOld?item=" + itemNumber;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
-
-
 }

@@ -95,6 +95,7 @@ export class ProposalsComponent implements OnInit {
     });
     console.log(customer);
     this.newProposalForm.controls.customerNum.setValue(customer.costumerId);
+    this.newProposalForm.controls.priceList.setValue(customer.costumerId);
     console.log(this.newProposalForm.value);
     this.currentCustomer = customer;
     console.log(this.currentCustomer.contact);
@@ -110,6 +111,7 @@ export class ProposalsComponent implements OnInit {
     this.newProposalForm.controls.customerName.setValue(
       customer[0].costumerName
     );
+    this.newProposalForm.controls.priceList.setValue(customer[0].costumerId);
     console.log(this.currentCustomer.contact);
     console.log(this.currentCustomer.costumerName);
     console.log(this.currentCustomer.delivery);
@@ -140,5 +142,7 @@ export class ProposalsComponent implements OnInit {
     console.log(this.newProposalForm.controls);
   }
 
-  resetForm() {}
+  resetForm() {
+    this.newProposalForm.reset();
+  }
 }

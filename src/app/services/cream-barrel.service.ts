@@ -27,6 +27,13 @@ export class CreamBarrelService {
       barrelNumber;
     return this.http.get(url).pipe(map((response) => response.json()));
   }
+  getBarrelsByBatchNumber(batchNumber) {
+    let url =
+      this.baseUrl +
+      "creamBarrel/getBarrelsByBatchNumber?batchNumber=" +
+      batchNumber;
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
 
   getShelvesByBarrelNumber(barrelNumber, wh): Observable<any> {
     let url =
