@@ -237,7 +237,119 @@
           />
         </td>
       </tr>
-      <tr></tr>
+      <tr>
+        <td>מס' אצווה</td>
+        <td>
+          <input
+            type="text"
+            [(ngModel)]="currentBatchNumber"
+            class="inputDiv form-control"
+            style="display: inline"
+            [disabled]="disabledValue"
+          />
+          <button class="btn btn-success" (click)="getBarrelsList()"
+          [disabled]="disabledValue">
+            בחר
+          </button>
+        </td>
+      </tr>
+      <tr>
+        <td>שם החבית</td>
+        <td>
+          <select
+            class="inputDiv form-control"
+            name="barrelNumber"
+            [(ngModel)]="currentBarrelNumber"
+            style="display: inline"
+            [disabled]="disabledValue"
+          >
+            <option value="null" disabled>בחר חבית</option>
+            <option
+              *ngFor="let barrel of barrelsList; index as i"
+              [value]="barrel.barrelNumber"
+            >
+              {{ barrel.barrelNumber }}
+            </option>
+          </select>
+          <button
+            class="btn btn-success"
+            (click)="updateBarrelsList()"
+            [disabled]="barrelsList.length == 0 || batchDisabled||disabledValue"
+          >בחר
+          </button>
+        </td>
+        <td></td>
+      </tr>
+
+      <tr>
+        <td colspan="12" *ngIf="form.barrelsList">
+          <table class="table table-bordered table_01">
+            <thead>
+              <tr>
+                <th scope="col">מס' אצווה</th>
+                <th scope="col">מס' החבית</th>
+                <th scope="col">שעת התחלה</th>
+                <th scope="col">משקל חבית</th>
+                <th scope="col">משקל נותר</th>
+                <th scope="col">שעת סיום</th>
+                <th scope="col">שם הבקר</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let barrel of form.barrelsList; index as i">
+                <td *ngIf="barrel.batchNumber">
+                  {{ barrel.batchNumber }}
+                </td>
+                <td>
+                  {{ barrel.barrelNumber }}
+                </td>
+                <td>
+                  <input
+                    type="time"
+                    [(ngModel)]="barrel.startTime"
+                    class="form-control"
+                    [disabled]="barrel.saved"
+                  />
+                </td>
+                <td>{{ barrel.barrelWeight }}</td>
+                <td>
+                  <input
+                    type="number"
+                    [(ngModel)]="barrel.leftWeight"
+                    class="form-control"
+                    [disabled]="barrel.saved"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="time"
+                    [(ngModel)]="barrel.endTime"
+                    class="form-control"
+                    [disabled]="barrel.saved"
+                  />
+                </td>
+                <td>{{ user.firstName }} {{ user.lastName }}</td>
+                <td>
+                  <button
+                    *ngIf="!barrel.saved"
+                    (click)="updateUsedBarrels(barrel)"
+                    class="btn btn-success"
+                  >
+                    עדכן
+                  </button>
+                  <button
+                    (click)="deleteUsedBarrel(barrel, i)"
+                    class="btn btn-danger"
+                   *ngIf="!disabledValue"
+                  >
+                    <i class="fa fa-times"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
       <tr>
         <td>טווח סטיה</td>
         <td>
@@ -333,6 +445,19 @@
             [(ngModel)]="form.confSetupeClean"
           />
         </td>
+
+        <td *ngIf="isTube">בדיקת גובה שפורפרת (טיובה)</td>
+        <td *ngIf="isTube">
+          <input
+            type="checkbox"
+            id="tubeLevelChecked"
+            [disabled]="disabledValue"
+            [(ngModel)]="form.tubeLevelChecked"
+          />
+        </td>
+      </tr>
+
+      <tr>
         <td>חתימת מנהל מאשר</td>
         <td>
           <input
@@ -1433,7 +1558,7 @@
               >
                 ביטול
               </button>
-              <br>
+              <br />
               <!-- save edit button, type = submit -->
               <!-- if enableEdit == true and enableEditIndex == index(i) display the save button -->
               <!-- on click save changes function -->
@@ -1450,7 +1575,11 @@
               <!-- edit button -->
               <!-- if enableEdit == false display the button -->
               <!-- on click make edit available with a function which takes event and index  -->
-              <button class="btn btn-success form-control" *ngIf="!enableEdit" (click)="enableEditMethod($event, i)">
+              <button
+                class="btn btn-success form-control"
+                *ngIf="!enableEdit"
+                (click)="enableEditMethod($event, i)"
+              >
                 עדכון
               </button>
             </td>
@@ -1631,7 +1760,8 @@
         <tbody>
           <tr *ngFor="let QAPallet of formQAPersonalPalletsData; let i = index">
             <td class="pallets-td">{{ i + 1 }}</td>
-            <td class="pallets-td">{{ QAPallet.floorNumber }}
+            <td class="pallets-td">
+              {{ QAPallet.floorNumber }}
               <input
                 *ngIf="enableEdit && enableEditIndex == i"
                 [(ngModel)]="floorNumberUpdate"
@@ -1644,7 +1774,8 @@
                 class="form-control"
               />
             </td>
-            <td class="pallets-td">{{ QAPallet.kartonQuantity }}
+            <td class="pallets-td">
+              {{ QAPallet.kartonQuantity }}
               <input
                 *ngIf="enableEdit && enableEditIndex == i"
                 [(ngModel)]="kartonQuantityUpdate"
@@ -1657,7 +1788,8 @@
                 class="form-control"
               />
             </td>
-            <td class="pallets-td">{{ QAPallet.unitsInKarton }}
+            <td class="pallets-td">
+              {{ QAPallet.unitsInKarton }}
               <input
                 *ngIf="enableEdit && enableEditIndex == i"
                 [(ngModel)]="unitsInKartonUpdate"
@@ -1678,7 +1810,8 @@
             >
               {{ QAPallet.unitsInKarton * form.netWeight }}
             </td>
-            <td class="pallets-td">{{ QAPallet.lastFloorQuantity }}
+            <td class="pallets-td">
+              {{ QAPallet.lastFloorQuantity }}
               <input
                 *ngIf="enableEdit && enableEditIndex == i"
                 [(ngModel)]="lastFloorQuantityUpdate"
@@ -1691,7 +1824,8 @@
                 class="form-control"
               />
             </td>
-            <td class="pallets-td">{{ QAPallet.unitsQuantityPartKarton }}
+            <td class="pallets-td">
+              {{ QAPallet.unitsQuantityPartKarton }}
               <input
                 *ngIf="enableEdit && enableEditIndex == i"
                 [(ngModel)]="unitsQuantityPartKartonUpdate"
@@ -1705,7 +1839,8 @@
               />
             </td>
             <td class="pallets-th">{{ QAPallet.sumAmount }}</td>
-            <td class="pallets-th">{{ QAPallet.kindOfPallet }}
+            <td class="pallets-th">
+              {{ QAPallet.kindOfPallet }}
               <select
                 *ngIf="enableEdit && enableEditIndex == i"
                 [(ngModel)]="kindOfPalletUpdate"
@@ -1769,7 +1904,7 @@
               >
                 ביטול
               </button>
-              <br>
+              <br />
               <!-- save edit button, type = submit -->
               <!-- if enableEdit == true and enableEditIndex == index(i) display the save button -->
               <!-- on click save changes function -->
@@ -1786,7 +1921,11 @@
               <!-- edit button -->
               <!-- if enableEdit == false display the button -->
               <!-- on click make edit available with a function which takes event and index  -->
-              <button class="btn btn-success form-control" *ngIf="!enableEdit" (click)="enableEditMethod($event, i)">
+              <button
+                class="btn btn-success form-control"
+                *ngIf="!enableEdit"
+                (click)="enableEditMethod($event, i)"
+              >
                 עדכון
               </button>
             </td>
@@ -1811,6 +1950,5 @@
   </div>
 </div>
 <p id="reason" style="display: none"></p>
-
 
 <!-- <button printSectionId="print-section" ngxPrint>Print</button> -->

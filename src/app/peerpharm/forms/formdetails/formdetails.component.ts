@@ -11,6 +11,8 @@ import { Costumer } from "../../classes/costumer.class";
 import { Observable } from "rxjs";
 import { BatchesService } from "src/app/services/batches.service";
 import { ItemsService } from "src/app/services/items.service";
+import { CreamBarrelService } from "src/app/services/cream-barrel.service";
+import { data } from "jquery";
 
 @Component({
   selector: "app-formdetails",
@@ -54,6 +56,16 @@ export class FormdetailsComponent implements OnInit {
   unitsQuantityPartKartonUpdate = null;
   kindOfPalletUpdate = null;
   qaStatusUpdate = null;
+  isTube = false;
+  barrelsList: any[] = [];
+
+  usedBarrels: any[] = [];
+  currentBatchNumber: string = "";
+  currentBarrelNumber: string = "";
+
+  barrelToFill = {};
+  barrelDisabled: boolean = false;
+  batchDisabled: boolean = false;
 
   newQAPallet = {
     floorNumber: null,
@@ -107,12 +119,14 @@ export class FormdetailsComponent implements OnInit {
     private scheduleService: ScheduleService,
     private batchService: BatchesService,
     private itemService: ItemsService,
-    private router: Router
+    private router: Router,
+    private creamBarrelService: CreamBarrelService
   ) {}
 
   ngOnInit() {
     let formID1 = this.route.snapshot.paramMap.get("id");
     let scheduleID = this.route.snapshot.paramMap.get("id2");
+
     this.getUserInfo();
 
     // הגענו מלו"ז עבודה
@@ -128,6 +142,99 @@ export class FormdetailsComponent implements OnInit {
 
     // הגענו מהטאבלט (עמוד ראשי) או ממסך טפסים
     else this.getFormData(true, formID1);
+  }
+
+  getIsTubeState(itemNumber) {
+    this.itemService.getItemData(itemNumber).subscribe((data) => {
+      this.isTube = data[0].isTube;
+    });
+  }
+
+  getBarrelsList() {
+    let batchNumber = this.currentBatchNumber;
+    if (batchNumber.length < 5) {
+      alert("מספר אצווה קשר מידי");
+    }
+    this.creamBarrelService
+      .getBarrelsByBatchNumber(batchNumber)
+      .subscribe((data) => {
+        console.log(data);
+        if (data.msg) {
+          console.log(data.msg);
+          this.toastService.error(data.msg);
+          this.return;
+        } else if (data.length > 0) {
+          this.barrelsList = data;
+        } else {
+          this.toastService.error("barrels were not found");
+        }
+      });
+  }
+
+  updateBarrelsList() {
+    // let barrelNumber = e[e.selectedIndex].innerHTML.trim();
+
+    // console.log(barrelNumber);
+    this.batchDisabled = true;
+    console.log(this.currentBarrelNumber);
+    console.log(this.barrelsList);
+    let barrelToFill = this.barrelsList.find(
+      (b) => b.barrelNumber == this.currentBarrelNumber
+    );
+    console.log(barrelToFill);
+    barrelToFill.leftWeight = 0;
+    this.form.barrelsList = this.form.barrelsList ? this.form.barrelsList : [];
+    this.form.barrelsList.push(barrelToFill);
+    this.usedBarrels.push(barrelToFill);
+    this.barrelsList = this.barrelsList.filter(
+      (b) => b.barrelNumber != this.currentBarrelNumber
+    );
+    console.log(this.usedBarrels);
+    console.log(this.barrelsList);
+    this.barrelDisabled = false;
+  }
+
+  updateUsedBarrels(barrel, i) {
+    console.log(barrel);
+    if (!barrel.startTime || !barrel.endTime) {
+      alert("יש למלא את כל הפרטים בשורה לפני עדכון");
+      return;
+    } else if (
+      barrel.leftWeight < 0 ||
+      barrel.leftWeight > barrel.barrelWeight
+    ) {
+      alert("המשקל הנותר בחבית מעל משקל החבית או מתחת לאפס");
+      return;
+    }
+    barrel.userName = this.user.firstName + " " + this.user.lastName;
+    console.log(barrel);
+
+    console.log(this.form);
+    // this.form.barrelsList = this.form.barrelsList ? this.form.barrelsList : [];
+    // this.form.barrelsList.push(barrel);
+    barrel.saved = true;
+    this.form.barrelsList[i] = barrel;
+    this.barrelDisabled = true;
+    this.batchDisabled = false;
+    console.log(this.barrelDisabled);
+    console.log(this.batchDisabled);
+    this.currentBarrelNumber = "";
+  }
+
+  deleteUsedBarrel(barrel) {
+    console.log(barrel);
+    this.usedBarrels = this.usedBarrels.filter(
+      (b) => b.barrelNumber != barrel.barrelNumber
+    );
+    this.form.barrelsList = this.form.barrelsList.filter(
+      (b) => b.barrelNumber != barrel.barrelNumber
+    );
+    barrel.userName = "";
+    barrel.startTime = null;
+    barrel.endTime = null;
+    barrel.leftWeight = 0;
+    barrel.saved = false;
+    this.barrelsList.push(barrel);
   }
 
   async checkIfFormExist(scheduleId) {
@@ -148,9 +255,12 @@ export class FormdetailsComponent implements OnInit {
     this.formid = formID;
     await this.formsService.getFormData(this.formid).subscribe((res) => {
       this.form = res[0];
+      //Get the list of barrels to be used with this batch
+      // this.getBarrelsList(this.form.batchN);
       this.loadQAPallets(this.form._id);
       this.loadQAPersonalPallets(this.form._id);
       this.formDetailsItemNum = this.form.itemN;
+      this.getIsTubeState(this.form.itemN);
       this.batchService.getBatchData(this.form.batchN).subscribe((data) => {
         console.log("batchData: ", data);
         this.form.productaionDate = data[0].produced;
@@ -171,6 +281,7 @@ export class FormdetailsComponent implements OnInit {
       });
       this.CalcAvgWeight();
       this.checkFormStatus();
+
       if (allChecks) this.wrapAllChecks();
     });
   }
@@ -187,6 +298,8 @@ export class FormdetailsComponent implements OnInit {
       if (data) {
         // get neto weight
         this.itemService.getItemData(data.item).subscribe((itemData) => {
+          console.log(itemData);
+          this.isTube = itemData.isTube;
           let netWeight = itemData[0].netWeightK;
 
           // check batch QA status
@@ -441,7 +554,10 @@ export class FormdetailsComponent implements OnInit {
     ) {
       errors.push({ msg: "חייב לציין את סוג המשטח" });
     }
-    if (this.newQAPersonalPallet.qaStatus == null || this.newQAPersonalPallet.qaStatus == "") {
+    if (
+      this.newQAPersonalPallet.qaStatus == null ||
+      this.newQAPersonalPallet.qaStatus == ""
+    ) {
       errors.push({ msg: "חייב לציין את הסטטוס" });
     }
     if (errors.length > 0) {
@@ -473,7 +589,6 @@ export class FormdetailsComponent implements OnInit {
   }
 
   updateFormDetails() {
-    debugger;
     let reason = prompt("אנא הכנס/י את סיבה העדכון", "");
     reason = reason.trim();
     if (reason != null && reason != "") {
@@ -481,28 +596,34 @@ export class FormdetailsComponent implements OnInit {
       try {
         this.formsService
           .updateFormDetails(this.form, reason)
-          .subscribe((result) => {
-            if (result.ok == 1) {
+          .subscribe((data) => {
+            console.log(data);
+            if (data.msg) {
+              this.toastService.error(data.msg);
+              return;
+            } else if (data.errors.length > 0) {
+              for (let error of data.errors) {
+                this.toastService.error(error.msg);
+              }
+            } else if (data) {
+              this.getFormData(this.formid, false);
               this.getFormData(this.formid, false);
               this.toastService.success("טופס עודכן בהצלחה !");
               this.showQAPalletsModal = false;
               if (this.form.checkSignature && this.form.directorBackSignature) {
                 this.disabledValue = true;
               }
-              console.log("this is the result: ", result);
-            } else
-              this.toastService.error(
-                "טופס לא עודכן , אנא נסה שנית או פנה למנהל מערכת"
-              );
+              console.log("Returned data: ", data);
+            }
           });
       } catch (error) {
         this.toastService.error("אירעה שגיאה בעדכון , אנא נסה שנית");
+        this.toastService.error(error.message);
       }
     } else {
       this.toastService.error("חובה לציין את סיבת העדכון");
     }
   }
-
 
   async updateTest(indexOfTest, test) {
     this.form.checkBox_clean.splice(indexOfTest, 1);
@@ -528,6 +649,7 @@ export class FormdetailsComponent implements OnInit {
     this.formsService.createFormDetails(this.form).subscribe((data) => {
       if (data) {
         console.log(data);
+        // this.getBarrelsList(data.batchN);
         this.toastService.success("טופס נוצר בהצלחה")!;
         this.newForm = false;
         this.formid = data._id;
@@ -612,20 +734,30 @@ export class FormdetailsComponent implements OnInit {
   }
   // Eran
   savePalltesChances(QAPallet) {
-    let floorNumber = this.floorNumberUpdate || QAPallet.floorNumber 
-    let kartonQuantity = this.kartonQuantityUpdate || QAPallet.kartonQuantity
-    let unitsInKarton = this.unitsInKartonUpdate || QAPallet.unitsInKarton
-    let lastFloorQuantity = this.lastFloorQuantityUpdate || QAPallet.lastFloorQuantity
-    let unitsQuantityPartKarton = this.unitsQuantityPartKartonUpdate || QAPallet.unitsQuantityPartKarton
-    let kindOfPallet = this.kindOfPalletUpdate || QAPallet.kindOfPallet
-    let qaStatus = this.qaStatusUpdate || QAPallet.qaStatus
-    let obj ={};
-    Object.keys(QAPallet).map((key, index)=> {
-      obj = {...QAPallet,floorNumber,kartonQuantity,unitsInKarton,lastFloorQuantity,
-        unitsQuantityPartKarton,kindOfPallet,qaStatus}
+    let floorNumber = this.floorNumberUpdate || QAPallet.floorNumber;
+    let kartonQuantity = this.kartonQuantityUpdate || QAPallet.kartonQuantity;
+    let unitsInKarton = this.unitsInKartonUpdate || QAPallet.unitsInKarton;
+    let lastFloorQuantity =
+      this.lastFloorQuantityUpdate || QAPallet.lastFloorQuantity;
+    let unitsQuantityPartKarton =
+      this.unitsQuantityPartKartonUpdate || QAPallet.unitsQuantityPartKarton;
+    let kindOfPallet = this.kindOfPalletUpdate || QAPallet.kindOfPallet;
+    let qaStatus = this.qaStatusUpdate || QAPallet.qaStatus;
+    let obj = {};
+    Object.keys(QAPallet).map((key, index) => {
+      obj = {
+        ...QAPallet,
+        floorNumber,
+        kartonQuantity,
+        unitsInKarton,
+        lastFloorQuantity,
+        unitsQuantityPartKarton,
+        kindOfPallet,
+        qaStatus,
+      };
       return "";
     });
-    this.formsService.editQAPallet(obj).subscribe((res)=>{
+    this.formsService.editQAPallet(obj).subscribe((res) => {
       console.log(res);
       this.floorNumberUpdate = null;
       this.kartonQuantityUpdate = null;
@@ -634,7 +766,7 @@ export class FormdetailsComponent implements OnInit {
       this.unitsQuantityPartKartonUpdate = null;
       this.kindOfPalletUpdate = null;
       this.qaStatusUpdate = null;
-    })
+    });
   }
   getUserInfo() {
     // Need to check user Au

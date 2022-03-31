@@ -1,16 +1,15 @@
-.subHeader{
-    margin: 20px auto 20px auto;
-    display: block;
-    font-weight: bold;
-    font-size: 18px;
+.subHeader {
+  margin: 20px auto 20px auto;
+  display: block;
+  font-weight: bold;
+  font-size: 18px;
 }
-.nav-item{
-    cursor: pointer;
-    width: 150px;
+.nav-item {
+  cursor: pointer;
+  width: 150px;
 }
 
-input[type=checkbox]
-{
+input[type="checkbox"] {
   /* Double-sized Checkboxes */
   -ms-transform: scale(1.5); /* IE */
   -moz-transform: scale(1.5); /* FF */
@@ -20,59 +19,64 @@ input[type=checkbox]
 }
 
 .personal-pallets {
-    background-color: aquamarine;
+  background-color: aquamarine;
 }
 
 .inputDiv {
-    width: 154px;
+  width: 154px;
 }
 
 .inputDivLonger {
-    width: 350px !important
+  width: 350px !important;
 }
 
-tr{
-    height: 45px;
+tr {
+  height: 45px;
 }
-table.checks{
-
+table.checks {
+}
+.table_01 {
+  td {
+    font-weight: normal;
+    padding: 5px;
+  }
 }
 
 .green {
-    color:green;
+  color: green;
 }
 .red {
-    color:red;
+  color: red;
 }
 
 .left-batches {
-    border: 1px solid black
+  border: 1px solid black;
 }
 
 .pallets-th {
-    font-weight: bold;
-    font-size: large;
+  font-weight: bold;
+  font-size: large;
 }
 
 .pallets-td {
-    font-weight: bold;
-    font-size: medium;
+  font-weight: bold;
+  font-size: medium;
 }
 
 .zoom {
-    zoom: 50%;
+  zoom: 50%;
 }
-.fillEndDate{
-    display: block !important;
+.fillEndDate {
+  display: block !important;
 }
-.scroll{
-    top:150px;
-    overflow:scroll;
-    height:62.5rem;
+.scroll {
+  top: 150px;
+  overflow: scroll;
+  height: 62.5rem;
 }
 
 @media (max-width: 1400px) and (min-width: 1000px) {
-    i {
-        display: block!important;
-    }
+  i {
+    display: block !important;
+  }
 }
