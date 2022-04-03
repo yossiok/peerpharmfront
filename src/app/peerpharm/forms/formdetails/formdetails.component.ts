@@ -153,7 +153,7 @@ export class FormdetailsComponent implements OnInit {
   getBarrelsList() {
     let batchNumber = this.currentBatchNumber;
     if (batchNumber.length < 5) {
-      alert("מספר אצווה קשר מידי");
+      alert("מספר אצווה קצר מידי");
     }
     this.creamBarrelService
       .getBarrelsByBatchNumber(batchNumber)
@@ -164,7 +164,19 @@ export class FormdetailsComponent implements OnInit {
           this.toastService.error(data.msg);
           this.return;
         } else if (data.length > 0) {
-          this.barrelsList = data;
+          console.log(this.form.barrelsList);
+          // check if the barrels alrady exist in the form and push only those that are not
+          if (this.form.barrelsList && this.form.barrelsList.length > 0) {
+            for (let barrel of data) {
+              let isInList = this.form.barrelsList.find(
+                (b) => b.barrelNumber == barrel.barrelNumber
+              );
+              if (!isInList) this.barrelsList.push(barrel);
+            }
+          } else {
+            // no arrels are in the form, no need to check the form
+            this.barrelsList = data;
+          }
         } else {
           this.toastService.error("barrels were not found");
         }
@@ -589,40 +601,39 @@ export class FormdetailsComponent implements OnInit {
   }
 
   updateFormDetails() {
-    let reason = prompt("אנא הכנס/י את סיבה העדכון", "");
-    reason = reason.trim();
-    if (reason != null && reason != "") {
-      document.getElementById("reason").innerHTML = reason;
-      try {
-        this.formsService
-          .updateFormDetails(this.form, reason)
-          .subscribe((data) => {
-            console.log(data);
-            if (data.msg) {
-              this.toastService.error(data.msg);
-              return;
-            } else if (data.errors.length > 0) {
-              for (let error of data.errors) {
-                this.toastService.error(error.msg);
-              }
-            } else if (data) {
-              this.getFormData(this.formid, false);
-              this.getFormData(this.formid, false);
-              this.toastService.success("טופס עודכן בהצלחה !");
-              this.showQAPalletsModal = false;
-              if (this.form.checkSignature && this.form.directorBackSignature) {
-                this.disabledValue = true;
-              }
-              console.log("Returned data: ", data);
-            }
-          });
-      } catch (error) {
-        this.toastService.error("אירעה שגיאה בעדכון , אנא נסה שנית");
-        this.toastService.error(error.message);
-      }
-    } else {
-      this.toastService.error("חובה לציין את סיבת העדכון");
+    // let reason = prompt("אנא הכנס/י את סיבה העדכון", "");
+    // reason = reason.trim();
+    // if (reason != null && reason != "") {
+    //   document.getElementById("reason").innerHTML = reason;
+    try {
+      this.form.weightQtyleft = this.form.leftBatchWeight;
+      this.formsService.updateFormDetails(this.form).subscribe((data) => {
+        console.log(data);
+        if (data.msg) {
+          this.toastService.error(data.msg);
+          return;
+        } else if (data.errors.length > 0) {
+          for (let error of data.errors) {
+            this.toastService.error(error.msg);
+          }
+        } else if (data) {
+          this.getFormData(this.formid, false);
+          this.getFormData(this.formid, false);
+          this.toastService.success("טופס עודכן בהצלחה !");
+          this.showQAPalletsModal = false;
+          if (this.form.checkSignature && this.form.directorBackSignature) {
+            this.disabledValue = true;
+          }
+          console.log("Returned data: ", data);
+        }
+      });
+    } catch (error) {
+      this.toastService.error("אירעה שגיאה בעדכון , אנא נסה שנית");
+      this.toastService.error(error.message);
     }
+    // } else {
+    //   this.toastService.error("חובה לציין את סיבת העדכון");
+    // }
   }
 
   async updateTest(indexOfTest, test) {
@@ -646,10 +657,12 @@ export class FormdetailsComponent implements OnInit {
     // Get date from server
 
     this.form.quantity_Produced = 0;
+    this.form.weightQtyleft = 0;
+    this.form.leftBatchWeight = 0;
     this.formsService.createFormDetails(this.form).subscribe((data) => {
       if (data) {
         console.log(data);
-        // this.getBarrelsList(data.batchN);
+        //this.getBarrelsList(data.batchN);
         this.toastService.success("טופס נוצר בהצלחה")!;
         this.newForm = false;
         this.formid = data._id;

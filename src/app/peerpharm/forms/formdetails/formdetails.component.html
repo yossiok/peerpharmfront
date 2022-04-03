@@ -247,8 +247,11 @@
             style="display: inline"
             [disabled]="disabledValue"
           />
-          <button class="btn btn-success" (click)="getBarrelsList()"
-          [disabled]="disabledValue">
+          <button
+            class="btn btn-success"
+            (click)="getBarrelsList()"
+            [disabled]="disabledValue"
+          >
             בחר
           </button>
         </td>
@@ -274,8 +277,11 @@
           <button
             class="btn btn-success"
             (click)="updateBarrelsList()"
-            [disabled]="barrelsList.length == 0 || batchDisabled||disabledValue"
-          >בחר
+            [disabled]="
+              barrelsList.length == 0 || batchDisabled || disabledValue
+            "
+          >
+            בחר
           </button>
         </td>
         <td></td>
@@ -340,7 +346,7 @@
                   <button
                     (click)="deleteUsedBarrel(barrel, i)"
                     class="btn btn-danger"
-                   *ngIf="!disabledValue"
+                    *ngIf="!disabledValue"
                   >
                     <i class="fa fa-times"></i>
                   </button>

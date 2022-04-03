@@ -178,17 +178,17 @@ export class FormsService {
       .post(url, JSON.stringify({ id: palletId }), this.options)
       .pipe(map((res) => res.json()));
   }
-  updateFormDetails(formDetails,reason) {
+  updateFormDetails(formDetails, reason?) {
     let url = this.baseUrl + "formDetails/update";
-    let obj ={
-      formDetails:formDetails,
-      reason:reason
-    }
+    let obj = {
+      formDetails: formDetails,
+      reason: reason,
+    };
     return this.http
       .post(url, JSON.stringify(obj), this.options)
       .pipe(map((res) => res.json()));
   }
- 
+
   createFormDetails(formDetails) {
     let url = this.baseUrl + "formDetails/add2";
     return this.http
