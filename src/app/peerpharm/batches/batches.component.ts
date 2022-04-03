@@ -26,6 +26,27 @@ export class BatchesComponent implements OnInit {
   myRefresh: any = null;
   savingSpecValues: boolean;
 
+  //barcode parameters
+  bcValue = "BARCODE";
+  elementType = "svg";
+  format = "CODE128";
+  lineColor = "#000000";
+  width = 1.5;
+  height = 30;
+  displayValue = true; // true=display bcValue  fonts under barcode
+  fontOptions = "";
+  font = "monospace";
+  textAlign = "center";
+  textPosition = "bottom";
+  textMargin = 1.5;
+  fontSize = 20;
+  background = "#ffffff";
+  // margin = 10;
+  marginTop = 15;
+  marginBottom = 5;
+  marginLeft = 20;
+  marginRight = 10;
+
   constructor(
     private itemService: ItemsService,
     private modalService: NgbModal,
@@ -643,7 +664,9 @@ export class BatchesComponent implements OnInit {
       this.allStickers = [];
       for (let x = 1; x <= barellsNum; x++) {
         console.log("I am in the loop");
+        // let barcode = this.batchToPrint.batchNumber+"-"+x;
         let batchSticker = {
+          bcValue: this.batchToPrint.batchNumber + "-" + x,
           printNum: "" + x + "/" + barellsNum,
           itemName: this.batchToPrint.itemName,
           batchNumber: this.batchToPrint.batchNumber,

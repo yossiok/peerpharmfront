@@ -50,8 +50,8 @@ export class NewBatchComponent implements OnInit {
   elementType = "svg";
   format = "CODE128";
   lineColor = "#000000";
-  width = 2;
-  height = 50;
+  width = 1.5;
+  height = 30;
   displayValue = true; // true=display bcValue  fonts under barcode
   fontOptions = "";
   font = "monospace";
@@ -60,9 +60,9 @@ export class NewBatchComponent implements OnInit {
   textMargin = 1.5;
   fontSize = 20;
   background = "#ffffff";
-  margin = 10;
-  marginTop = 10;
-  marginBottom = 10;
+  // margin = 10;
+  marginTop = 15;
+  marginBottom = 5;
   marginLeft = 20;
   marginRight = 10;
 
