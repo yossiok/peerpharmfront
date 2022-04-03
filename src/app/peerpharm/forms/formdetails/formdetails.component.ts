@@ -59,7 +59,7 @@ export class FormdetailsComponent implements OnInit {
   isTube = false;
   barrelsList: any[] = [];
 
-  usedBarrels: any[] = [];
+  // usedBarrels: any[] = [];
   currentBatchNumber: string = "";
   currentBarrelNumber: string = "";
 
@@ -197,11 +197,11 @@ export class FormdetailsComponent implements OnInit {
     barrelToFill.leftWeight = 0;
     this.form.barrelsList = this.form.barrelsList ? this.form.barrelsList : [];
     this.form.barrelsList.push(barrelToFill);
-    this.usedBarrels.push(barrelToFill);
+    // this.usedBarrels.push(barrelToFill);
     this.barrelsList = this.barrelsList.filter(
       (b) => b.barrelNumber != this.currentBarrelNumber
     );
-    console.log(this.usedBarrels);
+    // console.log(this.usedBarrels);
     console.log(this.barrelsList);
     this.barrelDisabled = false;
   }
@@ -235,9 +235,9 @@ export class FormdetailsComponent implements OnInit {
 
   deleteUsedBarrel(barrel) {
     console.log(barrel);
-    this.usedBarrels = this.usedBarrels.filter(
-      (b) => b.barrelNumber != barrel.barrelNumber
-    );
+    // this.usedBarrels = this.usedBarrels.filter(
+    //   (b) => b.barrelNumber != barrel.barrelNumber
+    // );
     this.form.barrelsList = this.form.barrelsList.filter(
       (b) => b.barrelNumber != barrel.barrelNumber
     );
