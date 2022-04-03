@@ -96,7 +96,7 @@
   </h2>
   <div class="smallLoader" *ngIf="smallLoader"></div>
   <div *ngIf="notAndrey" class="row mt-4" #tableDiv>
-    <table class="table" style="table-layout: fixed">
+    <table class="table" id="table_1" style="table-layout: auto">
       <thead class="thead-dark">
         <tr>
           <th>#</th>
@@ -107,10 +107,10 @@
               class="check-box"
             />
           </th>
-          <th>Item</th>
-          <th>Parent Formule</th>
-          <th>Order</th>
-          <th>Description</th>
+          <th>מק"ט</th>
+          <th>פורמולת אב</th>
+          <th>הזמנה</th>
+          <th style="min-width: 100px">תאור</th>
           <th>משקל</th>
           <th>כמות</th>
           <th>סה"כ ק"ג</th>
@@ -136,7 +136,7 @@
               class="check-box"
             />
           </td>
-          <td class="break-lines">
+          <td>
             {{ orderItem.itemNumber }}
           </td>
           <td class="break-lines">

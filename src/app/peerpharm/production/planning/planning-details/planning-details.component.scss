@@ -114,6 +114,13 @@
   font-size: 1rem;
 }
 
+#table_1 {
+  td,
+  th {
+    padding: 5px;
+  }
+}
+
 /******************Scroll Bar********************************************/
 ::-webkit-scrollbar {
   width: 10px;
