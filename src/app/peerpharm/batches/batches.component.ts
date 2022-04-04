@@ -16,6 +16,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { UserInfo } from "../taskboard/models/UserInfo";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { ItemsService } from "src/app/services/items.service";
+import { CreamBarrelService } from "src/app/services/cream-barrel.service";
 
 @Component({
   selector: "app-batches",
@@ -53,7 +54,8 @@ export class BatchesComponent implements OnInit {
     private authService: AuthService,
     private batchService: BatchesService,
     private excelService: ExcelService,
-    private toastSrv: ToastrService
+    private toastSrv: ToastrService,
+    private creamBarrelService: CreamBarrelService
   ) {}
   // dateList:Array<any>=[{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5},{date:1,address:2,mode:3,distance:4,fare:5}];
   batches: Array<any>;
@@ -79,6 +81,7 @@ export class BatchesComponent implements OnInit {
   item: any;
   batchToPrint: any;
   allStickers: Array<any>;
+  barrelAuthorized: Boolean = false;
 
   batch = {
     batchNumber: "",
@@ -631,14 +634,19 @@ export class BatchesComponent implements OnInit {
         this.alowUserEditBatches = true;
       }
     }
+    this.user = await this.authService.loggedInUser;
 
-    await this.authService.userEventEmitter.subscribe((user) => {
-      this.user = user;
-      this.userValueUpdate = user.userName;
-    });
+    this.barrelAuthorized = this.user.authorization.includes(
+      "creamProductionManager"
+    );
+    // await this.authService.userEventEmitter.subscribe((user) => {
+    //   this.user = user;
+    //   this.userValueUpdate = user.userName;
+    // });
   }
   printSticker(index) {
     this.batchToPrint = this.batches[index];
+    console.log(this.batchToPrint);
     let multiBatch = [];
     multiBatch = this.batches.filter(
       (b) => b.batchNumber == this.batchToPrint.batchNumber
@@ -687,5 +695,31 @@ export class BatchesComponent implements OnInit {
     } else {
       this.toastSrv.error("The batch doesn't exist.");
     }
+  }
+
+  addCreamBarrelsFromBatch(index) {
+    let batch = this.batches[index];
+    let number = prompt("הכנס מספר חביות", "");
+    batch.barrels = +number;
+    let weight = prompt("הכנס משקל משוער לחבית ", "");
+    batch.weightKg = +weight * batch.barrels;
+
+    batch.user = this.user.userName;
+
+    this.creamBarrelService
+      .addCreamBarrelsFromBatch(batch)
+      .subscribe((data) => {
+        console.log(data);
+        if (data.msg) {
+          this.toastSrv.error(data.msg);
+          return;
+        } else if (data) {
+          this.toastSrv.success("חביות נוצרו עבור אצווה זו והן זמינות במערכת");
+          return;
+        } else {
+          this.toastSrv.error("תקלה, לא נוצרו חביות");
+          return;
+        }
+      });
   }
 }
