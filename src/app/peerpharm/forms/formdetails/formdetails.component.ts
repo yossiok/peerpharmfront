@@ -735,7 +735,7 @@ export class FormdetailsComponent implements OnInit {
   }
 
   checkFormStatus() {
-    if (this.form.checkSignature && this.form.directorBackSignature) {
+    if (this.form.checkSignature && this.form.directorBackSignature && !this.authService.loggedInUser.authorization.includes("QAAdmin")) {
       this.disabledValue = true;
     }
   }
@@ -795,7 +795,8 @@ export class FormdetailsComponent implements OnInit {
           this.disabledValue = false;
         }
         if (this.authService.loggedInUser.authorization.includes("QAAdmin")) {
-          this.disableRemarkEditAfterSave = false;
+          this.disableRemarkEditAfterSave = false
+
         }
       }
     }
