@@ -188,7 +188,7 @@ export class FormsService {
       .post(url, JSON.stringify({ id: palletId }), this.options)
       .pipe(map((res) => res.json()));
   }
-  updateFormDetails(formDetails,reason) {
+  updateFormDetails(formDetails,reason?) {
     let url = this.baseUrl + "formDetails/update";
     let obj ={
       formDetails:formDetails,
