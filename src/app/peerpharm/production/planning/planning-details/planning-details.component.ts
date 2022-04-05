@@ -127,26 +127,46 @@ export class PlanningDetailsComponent implements OnInit {
     this.smallLoader = true;
     console.log(this.workPlan);
     let formulesList = [];
+    // build a formule list from which we search for relevant barrels: same formule, status returned
+
     for (let oi of this.workPlan.orderItems) {
       formulesList.push({
         orderNumber: oi.orderNumber,
         formuleNumber: oi.formule.formuleNumber,
       });
+      for (let barrel of oi.barrels) {
+        barrel.selected = true;
+      }
     }
     console.log(formulesList);
+    // we ask the db for the list of the barrels
     this.creamBarrelService.getBarrelsByList(formulesList).subscribe((data) => {
       console.log(data);
       if (data.msg) {
         this.toastr.error(data.msg);
         return;
       } else if (data) {
+        // we  filter out barrels that already assigned to the order item in the workplan
         for (let bList of data) {
           let idx = this.workPlan.orderItems.findIndex(
             (oi) => oi.itemNumber == bList.formuleNumber
           );
           if (idx > -1) {
-            this.workPlan.orderItems[idx].barrels = bList.barrels;
-            this.workPlan.orderItems[idx].barrelsWeight = bList.totalWeight;
+            for (let barrel of this.workPlan.orderItems[idx].barrels) {
+              bList.barrels = bList.barrels.filter(
+                (b) => b.barrelNumber != barrel.barrelNumber
+              );
+            }
+            if (bList.barrels.length > 0) {
+              this.workPlan.orderItems[idx].barrels = [...bList.barrels];
+            }
+
+            // we calculate again the total weight by the new list of barrels per order item
+            this.workPlan.orderItems[idx].barrelsWeight = 0;
+            for (let barrel of this.workPlan.orderItems[idx].barrels) {
+              this.workPlan.orderItems[idx].barrelsWeight +=
+                barrel.barrelWeight;
+            }
           }
         }
         this.smallLoader = false;
@@ -157,6 +177,7 @@ export class PlanningDetailsComponent implements OnInit {
   viewBarrels(orderItem) {
     console.log(orderItem);
     this.currentOrderItem = { addedBarrelsWeight: 0, ...orderItem };
+    console.log(this.currentOrderItem);
     this.openBarrelsView = true;
     console.log(this.openBarrelsView);
   }
@@ -167,14 +188,18 @@ export class PlanningDetailsComponent implements OnInit {
 
     if (e) {
       this.currentOrderItem.addedBarrelsWeight += barrel.barrelWeight;
+      barrel.selected = true;
       this.barrelsList.push(barrel);
     } else {
       this.currentOrderItem.addedBarrelsWeight -= barrel.barrelWeight;
-      this.barrelsList = this.barrelsList.filter(
-        (bn) => bn.barrelNumber != barrel.barrelNumber
-      );
+      // this.barrelsList = this.barrelsList.filter(
+      //   (bn) => bn.barrelNumber != barrel.barrelNumber
+      // );
     }
     console.log(this.barrelsList);
+    // this.currentOrderItem.barrels = this.currentOrderItem.barrels.filter(
+    //   (bn) => bn.barrelNumber != barrel.barrelNumber
+    // );
     console.log(this.currentOrderItem.addedBarrelsWeight);
   }
   cancelBarrelsList() {
@@ -377,10 +402,12 @@ export class PlanningDetailsComponent implements OnInit {
   deleteProductionFormules() {
     if (confirm("כל הפורמולות יימחקו ותצטרך ליצור אותן מחדש. להמשיך?")) {
       this.workPlan.productionFormules = [];
+
       // TODO: update status
       this.workPlan.orderItems.map((oi) => {
         oi.hasFormule = false;
         oi.status = 2;
+        oi.addedBarrelsWeight = 0;
         return oi;
       });
       this.saveChanges()
@@ -516,9 +543,11 @@ export class PlanningDetailsComponent implements OnInit {
 
   async printFormules() {
     for (let formule of this.workPlan.productionFormules) {
+      formule.barrelsWeight = formule.barrelsWeight ? formule.barrelsWeight : 0;
+      let prodWeight = formule.totalKG - formule.barrelsWeight;
       formule.formuleData = this.formuleCalculate(
         formule.formuleData,
-        formule.totalKG
+        prodWeight
       );
     }
 
@@ -533,6 +562,7 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   formuleCalculate(data, formuleWeight) {
+    console.log(formuleWeight);
     data.phases.forEach((phase) => {
       phase.items.forEach((item) => {
         item.kgProd = Number(formuleWeight) * (Number(item.percentage) / 100);
@@ -542,6 +572,7 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   async loadMaterialsForFormule(authenticated) {
+    console.log(this.materialsForFormules);
     if (!this.checkedFormules)
       this.checkedFormules = this.workPlan.productionFormules.filter(
         (f) => f.checked
@@ -555,16 +586,25 @@ export class PlanningDetailsComponent implements OnInit {
         } else {
           this.toastr.info("אנא המתן...", "מחשב כמויות");
           for (let formule of this.workPlan.productionFormules) {
+            formule.barrelsWeight = formule.barrelsWeight
+              ? formule.barrelsWeight
+              : 0;
+            let prodWeight = formule.totalKG - formule.barrelsWeight;
+            console.log(prodWeight);
             formule.formuleData = this.formuleCalculate(
               formule.formuleData,
-              formule.totalKG
+              prodWeight
             );
+            console.log(formule.formuleData);
           }
+          console.log(this.workPlan);
           this.loadData = true;
           this.inventoryService
             .getBomMulti(this.workPlan.productionFormules)
             .subscribe((data) => {
               this.materialsForFormules = data;
+              console.log(this.materialsForFormules);
+
               this.showMaterialsForFormules = true;
               this.loadData = false;
               resolve(true);

@@ -114,11 +114,12 @@
           <th>משקל</th>
           <th>כמות</th>
           <th>סה"כ ק"ג</th>
+          <th>משקל לייצור חדש</th>
           <th>חביות מוכנות</th>
           <th>משקל חביות כללי</th>
           <th>משקל חביות שנבחרו</th>
+          <th>סטטוס</th>
           <th>הערות</th>
-          <th></th>
           <th *ngIf="authorized"></th>
         </tr>
       </thead>
@@ -159,6 +160,11 @@
               [(ngModel)]="orderItem.totalKG"
             />
           </td>
+          <td>
+            {{
+              orderItem.totalKG - orderItem.addedBarrelsWeight | number: "1.0-2"
+            }}
+          </td>
           <td class="text-center">
             {{ orderItem.barrels.length }}
             <button
@@ -170,7 +176,7 @@
             </button>
           </td>
           <td class="text-center" *ngIf="!orderItem.enoughMaterials">
-            {{ orderItem.barrelsWeight | number: "1.0-1" }} Kg
+            {{ orderItem.barrelsWeight | number: "1.0-2" }} Kg
           </td>
           <td>{{ orderItem.addedBarrelsWeight }}</td>
           <!-- <td class="text-center" *ngIf="orderItem.enoughComponents">
@@ -467,7 +473,7 @@
   printTitle="Formules: Production Weighting"
   printSectionId="formuleSection"
   ngxPrint
-  style="display: none"
+  style="display: block"
 ></button>
 
 <div id="formuleSection">
@@ -513,7 +519,7 @@
           <tr *ngFor="let material of materialsForFormules">
             <td>{{ material.itemNumber }}</td>
             <td>{{ material.itemName }}</td>
-            <td>{{ material.kgProd }}</td>
+            <td>{{ material.kgProd | number: "1.3" }}</td>
             <td
               *ngIf="material.itemAmount[0]"
               [style.backgroundColor]="
@@ -525,7 +531,7 @@
                   : 'lightgreen'
               "
             >
-              {{ material.itemAmount[0].amount | number }}
+              {{ material.itemAmount[0].amount | number: "1.2" }}
             </td>
           </tr>
         </tbody>
@@ -542,8 +548,11 @@
     <h1 *ngIf="formule.numOfItems <= 16">Page 1 of 1</h1> -->
       <h1>PAKA {{ workPlan.serialNumber }}</h1>
       <h1>Formule {{ i + 1 }}</h1>
-
-      <table class="table table-bordered">
+      <h2>
+        New batch, Total weight:
+        {{ formule.totalKG - formule.barrelsWeight | number: "1.0-2" }} KG
+      </h2>
+      <table class="table table-bordered" style="table-layout: auto">
         <thead class="text-info">
           <tr>
             <th scope="col">Item number</th>
@@ -562,7 +571,10 @@
               <td>{{ item.itemNumber }}</td>
               <td>{{ item.description }}</td>
               <td>{{ item.orderNumber }}</td>
-              <td>{{ item.totalKG }} KG</td>
+              <td>
+                {{ item.totalKG - item.addedBarrelsWeight | number: "1.0-2" }}
+                KG
+              </td>
               <td>{{ item.netWeightGr }} Gr.</td>
               <td>{{ item.formule.phFrom }} - {{ item.formule.phTo }}</td>
               <td></td>
@@ -578,9 +590,60 @@
           </tr>
         </tbody>
       </table>
-      <h2>Batch Weight: {{ formule.totalKG }} KG</h2>
-      <br /><br />
+      <br />
+      <h2>Old batch, Total Weight: {{ formule.barrelsWeight }}</h2>
+      <table
+        class="table table-bordered"
+        style="table-layout: auto; width: 100%"
+      >
+        <thead class="text-info">
+          <tr>
+            <th scope="col">Barrel ID</th>
+            <th scope="col">Batch</th>
+            <th scope="col">Weight</th>
+            <th class="w-50" scope="col">Remarks</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of workPlan.orderItems">
+            <ng-container *ngIf="checkForItemsInFormule(formule, item)">
+              <tr *ngFor="let barrel of item.barrels">
+                <!-- <tr> -->
+                <td>{{ barrel.barrelNumber }}</td>
+                <td>{{ barrel.batchNumber }}</td>
+                <td>{{ barrel.barrelWeight }}</td>
+                <td></td>
+              </tr>
+            </ng-container>
+          </ng-container>
+          <!-- <tr class="bg-light">
+            <td style="font-weight: bold">Date:</td>
+            <td><input style="height: 60px" type="text" /></td>
+            <td style="font-weight: bold">Batch:</td>
+            <td><input style="height: 60px" type="text" value="22pp" /></td>
+            <td style="font-weight: bold">Final PH:</td>
+            <td colspan="2"><input style="height: 60px" type="text" /></td>
+          </tr> -->
+        </tbody>
+      </table>
+      <br />
 
+      <h2>Total Batch Weight: New + Old = {{ formule.totalKG }} KG</h2>
+      <table>
+        <tr class="bg-light">
+          <td style="font-weight: bold">Date:</td>
+          <td><input style="height: 60px" type="text" /></td>
+          <td style="font-weight: bold">Batch:</td>
+          <td><input style="height: 60px" type="text" value="22pp" /></td>
+          <td style="font-weight: bold">Final PH:</td>
+          <td colspan="2"><input style="height: 60px" type="text" /></td>
+        </tr>
+      </table>
+
+      <br /><br />
+      <h2>
+        New Batch Preparation: {{ formule.totalKG - formule.barrelsWeight }} Kg.
+      </h2>
       <table class="table table-hover">
         <thead class="bg-info text-white">
           <tr>
@@ -725,6 +788,8 @@
                 <td>{{ barrel.expirationDate | date: "dd/MM/yyyy" }}</td>
                 <td>
                   <input
+                    [disabled]="barrel.selected"
+                    [checked]="barrel.selected"
                     type="checkbox"
                     class="check-box"
                     (click)="addBarrelToBatch($event.target.checked, barrel)"

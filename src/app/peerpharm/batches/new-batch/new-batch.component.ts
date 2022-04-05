@@ -81,6 +81,8 @@ export class NewBatchComponent implements OnInit {
     ]),
     batchCreated: new FormControl(0, Validators.required),
     itemsToCook: new FormControl([], Validators.minLength(1)),
+    newWeight: new FormControl(0),
+    barrelsList: new FormControl([]),
   });
 
   constructor(
@@ -118,11 +120,18 @@ export class NewBatchComponent implements OnInit {
             let formule = this.workPlan.productionFormules.find(
               (f) => f.formule == params["params"].formule
             );
-
+            this.newBatchForm.controls.barrelsList.setValue(formule.barrels);
             let finalWeight;
-            while (isNaN(finalWeight)) finalWeight = prompt("הכנס משקל");
+            let barrelsWeight;
+            while (isNaN(finalWeight)) finalWeight = prompt("הכנס משקל כולל");
             this.finalWeight = finalWeight;
+            while (isNaN(barrelsWeight))
+              barrelsWeight = prompt("הכנס משקל חביות");
             this.newBatchForm.controls.weightKg.setValue(this.finalWeight);
+            this.newBatchForm.controls.newWeight.setValue(
+              finalWeight - barrelsWeight
+            );
+            console.log(formule);
             for (let item of formule.ordersAndItems) {
               item.weightKg = this.finalWeight / formule.ordersAndItems.length;
               this.newBatchForm.value.itemsToCook.push(item);
@@ -369,9 +378,10 @@ export class NewBatchComponent implements OnInit {
                   .reduceMaterialAmounts(
                     this.newBatchForm.controls.batchNumber.value,
                     this.newBatchForm.controls.chosenFormule.value,
-                    this.newBatchForm.controls.weightKg.value,
+                    this.newBatchForm.controls.newWeight.value,
                     user,
-                    true
+                    true,
+                    this.newBatchForm.controls.barrelsList
                   )
                   .subscribe((data) => {
                     console.log(data);
@@ -394,9 +404,18 @@ export class NewBatchComponent implements OnInit {
                   this.getLastBatch();
                   if (confirm("האם יש עוד חומר לייצר?")) {
                     let finalWeight;
+                    let barrelsWeight;
                     while (isNaN(finalWeight))
-                      finalWeight = prompt("הכנס משקל");
+                      finalWeight = prompt("הכנס משקל כולל");
                     this.finalWeight = finalWeight;
+                    while (isNaN(barrelsWeight))
+                      barrelsWeight = prompt("הכנס משקל חביות");
+                    this.newBatchForm.controls.weightKg.setValue(
+                      this.finalWeight
+                    );
+                    this.newBatchForm.controls.newWeight.setValue(
+                      finalWeight - barrelsWeight
+                    );
                   }
                 }, 2000);
               } else if (data.msg == "Batch Allready Exist") {

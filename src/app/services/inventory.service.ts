@@ -497,7 +497,8 @@ export class InventoryService {
     formuleNumber,
     weightKG,
     user,
-    reduce
+    reduce,
+    barrels
   ): Observable<any> {
     let url = this.baseUrl + "material/reduceMaterialAmounts";
     return this.http
@@ -509,6 +510,7 @@ export class InventoryService {
           weightKG: weightKG,
           user: user,
           reduce: reduce,
+          barrels: barrels,
         }),
         this.options
       )
