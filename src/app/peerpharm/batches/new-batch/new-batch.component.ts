@@ -374,6 +374,7 @@ export class NewBatchComponent implements OnInit {
             .subscribe((data) => {
               console.log(data);
               if (data.msg == "success") {
+                console.log(this.newBatchForm.controls);
                 this.inventorySrv
                   .reduceMaterialAmounts(
                     this.newBatchForm.controls.batchNumber.value,
@@ -381,7 +382,7 @@ export class NewBatchComponent implements OnInit {
                     this.newBatchForm.controls.newWeight.value,
                     user,
                     true,
-                    this.newBatchForm.controls.barrelsList
+                    this.newBatchForm.controls.barrelsList.value
                   )
                   .subscribe((data) => {
                     console.log(data);
