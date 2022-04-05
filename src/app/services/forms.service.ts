@@ -120,6 +120,7 @@ export class FormsService {
       .post(url, JSON.stringify(packedList), this.options)
       .pipe(map((res) => res.json()));
   }
+ 
   updatePLStatus(packedList) {
     let url = this.baseUrl + "formDetails/updatePLStatus";
     return this.http
@@ -131,6 +132,15 @@ export class FormsService {
     return this.http
       .post(url, JSON.stringify({ pallet }), this.options)
       .pipe(map((res) => res.json()));
+  }
+
+  removePalletFormClosedPL(pallet){
+
+    let url = this.baseUrl + "formDetails/removePalletFormClosedPL";
+    return this.http
+      .post(url, JSON.stringify({ pallet }), this.options)
+      .pipe(map((res) => res.json()));
+
   }
 
   closeForm(id) {
@@ -178,17 +188,17 @@ export class FormsService {
       .post(url, JSON.stringify({ id: palletId }), this.options)
       .pipe(map((res) => res.json()));
   }
-  updateFormDetails(formDetails, reason?) {
+  updateFormDetails(formDetails,reason?) {
     let url = this.baseUrl + "formDetails/update";
-    let obj = {
-      formDetails: formDetails,
-      reason: reason,
-    };
+    let obj ={
+      formDetails:formDetails,
+      reason:reason
+    }
     return this.http
       .post(url, JSON.stringify(obj), this.options)
       .pipe(map((res) => res.json()));
   }
-
+ 
   createFormDetails(formDetails) {
     let url = this.baseUrl + "formDetails/add2";
     return this.http

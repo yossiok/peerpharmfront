@@ -226,3 +226,9 @@ img:hover {
 .closebtn:hover {
   color: black;
 }
+
+@media screen and (max-width: 992px) {
+  .myScale:hover {
+    transform: scale(3)
+  }
+}
