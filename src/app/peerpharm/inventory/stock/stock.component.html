@@ -655,7 +655,7 @@
                 {{ component.componentType }}
               </td>
               <td
-                *ngIf="component.openOrders"
+                *ngIf="component.allocations"
                 style="
                   width: 5%;
                   cursor: pointer;
@@ -664,7 +664,7 @@
                 (click)="openAllocatedOrders(component)"
                 [ngClass]="calcIfLowThenMin(component)"
               >
-                {{ component.alloAmount }}
+                {{ component.allocationsAmount }}
                 <img
                   src="../../../../assets/images/search_plus_blue.png"
                   alt="watch quantities"
@@ -3106,9 +3106,9 @@
     "
   >
     <!-- Modal content -->
-    <div style="width: 800px !important" class="modal-content" id="modelC">
+    <div style="width: 1200px !important" class="modal-content" id="modelC">
       <div
-        style="width: 800px !important"
+        style="width: 1200px !important"
         id="material-header"
         class="modal-header"
       >
@@ -3124,7 +3124,7 @@
       <div
         style="
           height: auto !important;
-          width: 800px !important;
+          width: 1200px !important;
           overflow: scroll;
         "
         class="container"
@@ -3134,7 +3134,7 @@
         <div class="smallLoader" *ngIf="alloAmountsLoading"></div>
         <table
           *ngIf="!alloAmountsLoading"
-          style="background: white"
+          style="background: white; table-layout: auto"
           class="table table-hover"
         >
           <thead>
@@ -3142,7 +3142,9 @@
               <th scope="col">#</th>
               <th scope="col">Order Number</th>
               <th scope="col">Order Stage</th>
-              <th scope="col">Allocated Amount</th>
+              <th scope="col">Item Status</th>
+              <th scope="col">Ordered Amount</th>
+              <th scope="col">Produced Amount</th>
               <th scope="col">Order Date</th>
               <th scope="col">Delivery Date</th>
               <th scope="col">Customer</th>
@@ -3152,11 +3154,13 @@
             <tr *ngFor="let order of allocatedOrders; let i = index">
               <td>{{ i + 1 }}</td>
               <td>{{ order.orderNumber }}</td>
-              <td>{{ order.stage }}</td>
-              <td>{{ order.allocatedAmount }}</td>
-              <td>{{ order.orderDate }}</td>
-              <td>{{ order.deliveryDate }}</td>
-              <td>{{ order.costumer }}</td>
+              <td>{{ order.orders.stage }}</td>
+              <td>{{ order.oiStatus }}</td>
+              <td>{{ order.quantity }}</td>
+              <td>{{ order.quantityProduced }}</td>
+              <td>{{ order.orders.orderDate }}</td>
+              <td>{{ order.orders.deliveryDate }}</td>
+              <td>{{ order.orders.costumer }}</td>
             </tr>
           </tbody>
         </table>

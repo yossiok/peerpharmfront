@@ -92,7 +92,13 @@ export class ProductionService {
   }
 
   editWorkPlan(workPlan, orderItemToDelete?) {
-    let url = this.baseUrl + `productionSchedule/workplan?itemId=${orderItemToDelete ? orderItemToDelete._id : null}`;
+    let url =
+      this.baseUrl +
+      `productionSchedule/workplan?itemId=${
+        orderItemToDelete && orderItemToDelete._id
+          ? orderItemToDelete._id
+          : null
+      }`;
     return this.http
       .post(url, JSON.stringify(workPlan), this.options)
       .pipe(map((res) => res.json()));
@@ -101,7 +107,11 @@ export class ProductionService {
   joinFormules(workPlanId, itemNumbers: string[], finalFormule) {
     let url = this.baseUrl + `productionSchedule/joinFormules`;
     return this.http
-      .post(url, JSON.stringify({ workPlanId, itemNumbers, finalFormule }), this.options)
+      .post(
+        url,
+        JSON.stringify({ workPlanId, itemNumbers, finalFormule }),
+        this.options
+      )
       .pipe(map((res) => res.json()));
   }
 

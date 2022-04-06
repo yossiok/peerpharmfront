@@ -68,4 +68,9 @@ export class CreamBarrelService {
       .post(url, { barrels, wh, position, user })
       .pipe(map((res) => res.json()));
   }
+
+  addCreamBarrelsFromBatch(batch) {
+    let url = this.baseUrl + "batch/addCreamBarrelsFromBatch";
+    return this.http.post(url, batch).pipe(map((res) => res.json()));
+  }
 }
