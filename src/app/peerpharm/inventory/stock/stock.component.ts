@@ -526,7 +526,6 @@ export class StockComponent implements OnInit {
     }
   }
 
-
   fillSupplierInRec(ev) {
     let supplier = this.allSuppliers.find(
       (s) => s.suplierNumber == ev.target.value
@@ -549,7 +548,6 @@ export class StockComponent implements OnInit {
   }
 
   addStockItemToRecommend() {
-
     if (
       this.recommendStockItem.quantity == "" ||
       this.recommendStockItem.name == "" ||
@@ -560,23 +558,32 @@ export class StockComponent implements OnInit {
       this.toastSrv.error("אנא מלא את כל הפרטים של הפריט");
     } else {
       let objToPush = { ...this.recommendStockItem };
-      const length = this.newPurchaseRecommendation.controls.stockitems.value.length
-      const productsArray = this.newPurchaseRecommendation.controls.stockitems.value
+      const length =
+        this.newPurchaseRecommendation.controls.stockitems.value.length;
+      const productsArray =
+        this.newPurchaseRecommendation.controls.stockitems.value;
       let isExits = false;
 
-      for(let i=0;i<length;i++){
-        if(productsArray[i].number == objToPush.number){
-          isExits = true
+      for (let i = 0; i < length; i++) {
+        if (productsArray[i].number == objToPush.number) {
+          isExits = true;
         }
       }
-      if(isExits){
-        for(let i=0;i<length;i++){
-          if(this.newPurchaseRecommendation.controls.stockitems.value[i].number == objToPush.number){
-            this.newPurchaseRecommendation.controls.stockitems.value[i].quantity += objToPush.quantity
+      if (isExits) {
+        for (let i = 0; i < length; i++) {
+          if (
+            this.newPurchaseRecommendation.controls.stockitems.value[i]
+              .number == objToPush.number
+          ) {
+            this.newPurchaseRecommendation.controls.stockitems.value[
+              i
+            ].quantity += objToPush.quantity;
           }
         }
-      }else{
-        this.newPurchaseRecommendation.controls.stockitems.value.push(objToPush);
+      } else {
+        this.newPurchaseRecommendation.controls.stockitems.value.push(
+          objToPush
+        );
       }
       this.toastSrv.success("פריט נוסף בהצלחה !");
       this.recommendStockItem.quantity = "";
@@ -1769,6 +1776,9 @@ export class StockComponent implements OnInit {
     console.log("filter parameters: ", this.filterParams.value);
     this.smallLoader = true;
     let query = this.filterParams.value;
+    query.componentN = query.componentN.trim();
+    query.componentName = query.componentName.trim();
+    console.log(query);
     query.itemType = this.stockType;
     this.loadingText = "(1/4) מייבא פריטים...";
 
@@ -1813,26 +1823,35 @@ export class StockComponent implements OnInit {
   getAllocationsNew() {
     if (this.components.length > 0) {
       for (let component of this.components) {
-        this.inventoryService
-          .getAllocatedOrdersByNumber(component.componentN)
-          .subscribe((data) => {
-            console.log(data);
-            let productAllocation = [];
-            let allocatedAmount = 0;
-            for (let orderItem of data) {
-              allocatedAmount += +orderItem.quantity;
-              productAllocation.push({
-                orderNumber: orderItem.orderNumber,
-                allocatedQuantity: orderItem.quantity,
-              });
-            }
-            component.productAllocation = productAllocation;
-            component.allocatedAmount = allocatedAmount;
-          });
+        if (component.itemType == "product") {
+          this.inventoryService
+            .getAllocatedOrdersByNumber(component.componentN)
+            .subscribe((data) => {
+              console.log(data);
+              let productAllocation = [];
+              let allocatedAmount = 0;
+              for (let orderItem of data) {
+                allocatedAmount += +orderItem.quantity;
+                productAllocation.push({
+                  orderNumber: orderItem.orderNumber,
+                  allocatedQuantity: orderItem.quantity,
+                });
+              }
+              component.productAllocation = productAllocation;
+              component.allocatedAmount = allocatedAmount;
+            });
+        } else if (component.itemType == "component") {
+          this.inventoryService
+            .getCmptPPCDetails(component.componentN)
+            .subscribe((data) => {
+              console.log(data);
+              component.allocations = data.allocations;
+              component.allocationsAmount = data.allocationsAmount;
+            });
+        }
       }
     }
   }
-
   searchItemShelfs() {
     if (this.newItemShelfWH != "") {
       this.inventoryService
@@ -2026,7 +2045,7 @@ export class StockComponent implements OnInit {
   openAllocatedOrders(component) {
     this.openModalHeader = "הקצאות מלאי";
     this.openOrderAmountsModal = true;
-    this.allocatedOrders;
+    this.allocatedOrders = component.allocations;
   }
 
   getAllocations() {
@@ -2041,6 +2060,7 @@ export class StockComponent implements OnInit {
           );
           component.openOrders = ordersObject.openOrders;
         }
+        console.log(this.components);
         this.toastSrv.success("כל הנתונים נטענו.");
       });
   }
