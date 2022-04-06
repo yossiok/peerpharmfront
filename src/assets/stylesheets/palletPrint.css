@@ -7,3 +7,6 @@ th{
 td{
     border: 1px solid; border-collapse: collapse; padding: 0.5rem; width: 25%;
 }
+.myFont{
+    font-size: 1.2rem;
+}

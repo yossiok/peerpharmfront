@@ -832,16 +832,16 @@
     <table *ngFor="let QAPallet of formQAPersonalPalletsData; let i = index">
       <tr>
         <th>Order Number</th>
-        <td>{{ form.orderNumber }}</td>
+        <td class="myFont">{{ form.orderNumber }}</td>
         <th>Quantity per carton</th>
-        <td>{{ QAPallet.unitsInKarton }}</td>
+        <td class="myFont">{{ QAPallet.unitsInKarton }}</td>
       </tr>
 
       <tr>
         <th>Batch</th>
-        <td>{{ form.batchN }}</td>
-        <th>Total Quantity of cartons</th>
-        <td>
+        <td class="myFont">{{ form.batchN }}</td>
+        <th >Total Quantity of cartons</th>
+        <td class="myFont">
           {{
             QAPallet.kartonQuantity * QAPallet.floorNumber +
               QAPallet.lastFloorQuantity
@@ -851,20 +851,20 @@
 
       <tr>
         <th>Item Number</th>
-        <td>{{ form.itemN }}</td>
-        <th>Quantity in partial carton</th>
+        <td class="myFont">{{ form.itemN }}</td>
+        <th class="myFont">Quantity in partial carton</th>
         <td>{{ QAPallet.unitsQuantityPartKarton }}</td>
       </tr>
       <tr>
         <th>Carton Weight</th>
-        <td>{{ QAPallet.unitsInKarton * form.netWeight }}</td>
+        <td class="myFont">{{ QAPallet.unitsInKarton * form.netWeight }}</td>
         <th>Total units</th>
-        <td>{{ QAPallet.sumAmount }}</td>
+        <td class="myFont">{{ QAPallet.sumAmount }}</td>
       </tr>
 
       <tr>
         <th>Pallet Number</th>
-        <td>
+        <td class="myFont">
           {{ i + 1 }}/{{
             form.directorBackSignature &&
               form.checkSignature &&
@@ -872,7 +872,7 @@
           }}
         </td>
         <th>Pallet EU/US/Other</th>
-        <td>{{ QAPallet.kindOfPallet }}</td>
+        <td class="myFont">{{ QAPallet.kindOfPallet }}</td>
       </tr>
 
       <tr>
@@ -892,16 +892,16 @@
     <table *ngFor="let QAPallet of formQAPalletsData; let i = index">
       <tr>
         <th>Order Number</th>
-        <td>{{ form.orderNumber }}</td>
+        <td class="myFont">{{ form.orderNumber }}</td>
         <th>Quantity per carton</th>
-        <td>{{ QAPallet.unitsInKarton }}</td>
+        <td class="myFont">{{ QAPallet.unitsInKarton }}</td>
       </tr>
 
       <tr>
         <th>Batch</th>
-        <td>{{ form.batchN }}</td>
+        <td class="myFont">{{ form.batchN }}</td>
         <th>Total Quantity of cartons</th>
-        <td>
+        <td class="myFont">
           {{
             QAPallet.kartonQuantity * QAPallet.floorNumber +
               QAPallet.lastFloorQuantity
@@ -911,27 +911,27 @@
 
       <tr>
         <th>Item Number</th>
-        <td>{{ form.itemN }}</td>
+        <td class="myFont">{{ form.itemN }}</td>
         <th>Quantity in partial carton</th>
-        <td>{{ QAPallet.unitsQuantityPartKarton }}</td>
+        <td class="myFont">{{ QAPallet.unitsQuantityPartKarton }}</td>
       </tr>
 
       <tr>
         <th>Carton Weight</th>
-        <td>{{ QAPallet.unitsInKarton * form.netWeight }}</td>
+        <td class="myFont">{{ QAPallet.unitsInKarton * form.netWeight }}</td>
         <th>Total units</th>
-        <td>{{ QAPallet.sumAmount }}</td>
+        <td class="myFont">{{ QAPallet.sumAmount }}</td>
       </tr>
 
       <tr>
         <th>Pallet Number</th>
-        <td>
+        <td class="myFont">
           {{ i + 1 }}/{{
             form.directorFrontSignature && formQAPalletsData.length
           }}
         </td>
         <th>Pallet EU/US/Other</th>
-        <td>{{ QAPallet.kindOfPallet }}</td>
+        <td class="myFont">{{ QAPallet.kindOfPallet }}</td>
       </tr>
 
       <tr>
