@@ -3141,6 +3141,7 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Order Number</th>
+              <th scope="col">Item Number</th>
               <th scope="col">Order Stage</th>
               <th scope="col">Item Status</th>
               <th scope="col">Ordered Amount</th>
@@ -3154,6 +3155,7 @@
             <tr *ngFor="let order of allocatedOrders; let i = index">
               <td>{{ i + 1 }}</td>
               <td>{{ order.orderNumber }}</td>
+              <td>{{ order.itemNumber }}</td>
               <td>{{ order.orders.stage }}</td>
               <td>{{ order.oiStatus }}</td>
               <td>{{ order.quantity }}</td>
