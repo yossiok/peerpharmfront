@@ -12,7 +12,7 @@
         <label>ממחסן *</label>
         <select class="form-control" formControlName="WH_originId" (change)="getChunks('o')">
           <option disabled value="">בחר מחסן</option>
-          <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id" [disabled]="allMovements.length>0">
+          <option *ngFor="let whareHouse of userWH" [value]="whareHouse._id" [disabled]="allMovements.length>0">
             {{whareHouse.name}}
           </option>
         </select>
@@ -76,7 +76,7 @@
         <select class="form-control" formControlName="WH_destId" #whid (change)="getChunks('d')"
           (change)="getAllShelfsOfDest($event)">
           <option disabled value="">בחר מחסן</option>
-          <option [disabled]="allMovements.length > 0" *ngFor="let whareHouse of reallyAllWhareHouses"
+          <option [disabled]="allMovements.length > 0" *ngFor="let whareHouse of userWH"
             [value]="whareHouse._id">{{whareHouse.name}}
           </option>
         </select>

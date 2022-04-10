@@ -163,6 +163,10 @@ export class ScheduleComponent implements OnInit {
     return false; // Permission granted
   }
 
+  goToProductTree(){
+    this.router.navigate([`/peerpharm/items/itemDetails`]);
+  }
+
   checkTime(i) {
     if (i < 10) {
       i = "0" + i;
