@@ -137,6 +137,7 @@ export class PlanningDetailsComponent implements OnInit {
       for (let barrel of oi.barrels) {
         barrel.selected = true;
       }
+      oi.addedBarrelsWeight = 0;
     }
     console.log(formulesList);
     // we ask the db for the list of the barrels

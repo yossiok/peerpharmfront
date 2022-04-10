@@ -83,6 +83,9 @@ export class NewBatchComponent implements OnInit {
     itemsToCook: new FormControl([], Validators.minLength(1)),
     newWeight: new FormControl(0),
     barrelsList: new FormControl([]),
+    workPlanID: new FormControl(null),
+    ordersAndItems: new FormControl([]),
+    formule: new FormControl(""),
   });
 
   constructor(
@@ -116,10 +119,16 @@ export class NewBatchComponent implements OnInit {
           .subscribe((workPlan) => {
             console.log(workPlan);
             this.workPlan = workPlan;
+
+            // get the serial number of the wp. It will be sent together with the new batch
+            this.newBatchForm.controls.workPlanID.setValue(
+              workPlan.serialNumber
+            );
             this.workPlanFormule = params["params"].formule;
             let formule = this.workPlan.productionFormules.find(
               (f) => f.formule == params["params"].formule
             );
+            this.newBatchForm.controls.formule.setValue(formule.formule);
             this.newBatchForm.controls.barrelsList.setValue(formule.barrels);
             let finalWeight;
             let barrelsWeight;
@@ -131,12 +140,47 @@ export class NewBatchComponent implements OnInit {
             this.newBatchForm.controls.newWeight.setValue(
               finalWeight - barrelsWeight
             );
+
+            // calculate the weight for each order from the total weight of the batch
             console.log(formule);
-            for (let item of formule.ordersAndItems) {
-              item.weightKg = this.finalWeight / formule.ordersAndItems.length;
-              this.newBatchForm.value.itemsToCook.push(item);
+
+            console.log(formule.producedKG);
+            let totalToUse = Number(finalWeight); // total weight of the  new batch
+            //ordersAndItems will be sent to the server with the new batch
+            this.newBatchForm.controls.ordersAndItems.setValue(
+              formule.ordersAndItems
+            );
+            for (let item of this.newBatchForm.controls.ordersAndItems.value) {
+              item.producedKg = item.producedKg ? item.producedKg : 0;
+              let usedInThisbatch = 0;
+              // it could be a second batch for the same workplan, we need to check what is the weight that was already added to this order
+              // check if there is weight left
+              if (totalToUse > 0) {
+                //check if it is needed to add batch for this order
+                if (item.producedKg < item.weightKg) {
+                  // check if we have enough weight to fill the gap
+                  if (totalToUse >= item.weightKg - item.producedKg) {
+                    usedInThisbatch = item.weightKg - item.producedKg;
+                    totalToUse -= item.weightKg - item.producedKg;
+                    item.producedKg = item.weightKg;
+                  } else {
+                    // if not enough, we will use all the wight for this order.
+                    usedInThisbatch = totalToUse;
+                    item.producedKg += totalToUse;
+                    totalToUse = 0;
+                  }
+                }
+                // item.weightKg = this.finalWeight / formule.ordersAndItems.length;
+              }
+              let itemToPush = { ...item, usedInThisbatch };
+              this.newBatchForm.value.itemsToCook.push(itemToPush);
             }
+
+            //if there is weight left we will add it to the last order
+
             console.log(this.newBatchForm);
+
+            // need to update the workplan with the produced quantities
           });
       }
     });
@@ -400,25 +444,32 @@ export class NewBatchComponent implements OnInit {
 
                 this.printBtn.nativeElement.click();
                 this.toastSrv.success("באטצ נוסף בהצלחה !");
-                setTimeout(() => {
-                  this.allStickers = [];
-                  this.getLastBatch();
-                  if (confirm("האם יש עוד חומר לייצר?")) {
-                    let finalWeight;
-                    let barrelsWeight;
-                    while (isNaN(finalWeight))
-                      finalWeight = prompt("הכנס משקל כולל");
-                    this.finalWeight = finalWeight;
-                    while (isNaN(barrelsWeight))
-                      barrelsWeight = prompt("הכנס משקל חביות");
-                    this.newBatchForm.controls.weightKg.setValue(
-                      this.finalWeight
-                    );
-                    this.newBatchForm.controls.newWeight.setValue(
-                      finalWeight - barrelsWeight
-                    );
-                  }
-                }, 2000);
+                // setTimeout(() => {
+                //   this.allStickers = [];
+                //   this.getLastBatch();
+                //   if (confirm("האם יש עוד חומר לייצר?")) {
+                //     let finalWeight;
+                //     let barrelsWeight;
+                //     while (isNaN(finalWeight))
+                //       finalWeight = prompt("הכנס משקל כולל");
+                //     this.finalWeight = finalWeight;
+                //     while (isNaN(barrelsWeight))
+                //       barrelsWeight = prompt("הכנס משקל חביות");
+                //     this.newBatchForm.controls.weightKg.setValue(
+                //       this.finalWeight
+                //     );
+                //     this.newBatchForm.controls.newWeight.setValue(
+                //       finalWeight - barrelsWeight
+                //     );
+                //   }
+                // }, 2000);
+                this.resetBatchValues();
+                this.toastSrv.info(
+                  "אתה חוזר לפקודת העבודה",
+                  "You are getting back to the workplan"
+                );
+
+                this.backToWP();
               } else if (data.msg == "Batch Allready Exist") {
                 this.toastSrv.error(
                   "Please fill a different batch number.",
