@@ -281,7 +281,10 @@ export class FormdetailsComponent implements OnInit {
           this.formid = formID;
           this.formsService.getFormData(this.formid).subscribe((res) => {
             this.form = res[0];
-            this.form.batchN = this.currentBatchNumber;
+            console.log(res[0]);
+            this.form.batchN = this.currentBatchNumber
+              ? this.currentBatchNumber
+              : res[0].batchN;
             console.log(this.form);
 
             //Get the list of barrels to be used with this batch
