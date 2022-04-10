@@ -66,6 +66,8 @@ export class FormdetailsComponent implements OnInit {
   barrelToFill = {};
   barrelDisabled: boolean = false;
   batchDisabled: boolean = false;
+  additionalForms = [];
+  scheduleID = "";
 
   newQAPallet = {
     floorNumber: null,
@@ -125,13 +127,13 @@ export class FormdetailsComponent implements OnInit {
 
   ngOnInit() {
     let formID1 = this.route.snapshot.paramMap.get("id");
-    let scheduleID = this.route.snapshot.paramMap.get("id2");
+    this.scheduleID = this.route.snapshot.paramMap.get("id2");
 
     this.getUserInfo();
 
     // הגענו מלו"ז עבודה
-    if (scheduleID && scheduleID != "0") {
-      this.checkIfFormExist(scheduleID)
+    if (this.scheduleID && this.scheduleID != "0") {
+      this.checkIfFormExist(this.scheduleID)
         .then((formID2) => {
           this.getFormData(true, formID2);
         })
@@ -147,6 +149,18 @@ export class FormdetailsComponent implements OnInit {
   getIsTubeState(itemNumber) {
     this.itemService.getItemData(itemNumber).subscribe((data) => {
       this.isTube = data[0].isTube;
+    });
+  }
+
+  getBarrelsByBatchList() {
+    let batchNumbers = this.form.batchN.trim();
+    if (batchNumbers == "") return;
+
+    let batches = batchNumbers.split("+");
+
+    this.creamBarrelService.getBarrelsByBatchList(batches).subscribe((data) => {
+      console.log(data);
+      this.barrelsList = data;
     });
   }
 
@@ -208,13 +222,7 @@ export class FormdetailsComponent implements OnInit {
 
   updateUsedBarrels(barrel, i) {
     console.log(barrel);
-    if (!barrel.startTime || !barrel.endTime) {
-      alert("יש למלא את כל הפרטים בשורה לפני עדכון");
-      return;
-    } else if (
-      barrel.leftWeight < 0 ||
-      barrel.leftWeight > barrel.barrelWeight
-    ) {
+    if (barrel.leftWeight < 0 || barrel.leftWeight > barrel.barrelWeight) {
       alert("המשקל הנותר בחבית מעל משקל החבית או מתחת לאפס");
       return;
     }
@@ -264,38 +272,59 @@ export class FormdetailsComponent implements OnInit {
   }
 
   async getFormData(allChecks, formID) {
-    this.formid = formID;
-    await this.formsService.getFormData(this.formid).subscribe((res) => {
-      this.form = res[0];
-      //Get the list of barrels to be used with this batch
-      // this.getBarrelsList(this.form.batchN);
-      this.loadQAPallets(this.form._id);
-      this.loadQAPersonalPallets(this.form._id);
-      this.formDetailsItemNum = this.form.itemN;
-      this.getIsTubeState(this.form.itemN);
-      this.batchService.getBatchData(this.form.batchN).subscribe((data) => {
-        console.log("batchData: ", data);
-        this.form.productaionDate = data[0].produced;
-        this.form.expirationDate = data[0].expration;
-      });
-      if (this.form.productionEndDate) {
-        let days = this.form.productionEndDate.slice(8, 10);
-        let monthes = this.form.productionEndDate.slice(5, 7);
-        this.form.productionEndDate = this.form.productionEndDate.slice(0, 5);
-        this.form.productionEndDate =
-          this.form.productionEndDate + days + "-" + monthes;
-      }
-      this.form.checkNetoWeight.forEach((element) => {
-        if (element) {
-          const netNumber = parseInt(element, 10);
-          this.netoWeightArr.push(netNumber);
+    await this.scheduleService
+      .getScheduleById(this.scheduleID)
+      .subscribe((data) => {
+        if (data) {
+          console.log(data);
+          this.currentBatchNumber = data.batch;
+          this.formid = formID;
+          this.formsService.getFormData(this.formid).subscribe((res) => {
+            this.form = res[0];
+            this.form.batchN = this.currentBatchNumber;
+            console.log(this.form);
+
+            //Get the list of barrels to be used with this batch
+            // this.getBarrelsList(this.form.batchN);
+            this.loadQAPallets(this.form._id);
+            this.loadQAPersonalPallets(this.form._id);
+            this.formDetailsItemNum = this.form.itemN;
+            this.getIsTubeState(this.form.itemN);
+            this.batchService
+              .getBatchData(this.form.batchN)
+              .subscribe((data) => {
+                console.log("batchData: ", data);
+                this.form.productaionDate = data[0].produced;
+                this.form.expirationDate = data[0].expration;
+              });
+            if (this.form.productionEndDate) {
+              let days = this.form.productionEndDate.slice(8, 10);
+              let monthes = this.form.productionEndDate.slice(5, 7);
+              this.form.productionEndDate = this.form.productionEndDate.slice(
+                0,
+                5
+              );
+              this.form.productionEndDate =
+                this.form.productionEndDate + days + "-" + monthes;
+            }
+            this.form.checkNetoWeight.forEach((element) => {
+              if (element) {
+                const netNumber = parseInt(element, 10);
+                this.netoWeightArr.push(netNumber);
+              }
+            });
+            this.CalcAvgWeight();
+            this.checkFormStatus();
+            this.getFormsDetailsByBatch();
+
+            if (allChecks) this.wrapAllChecks();
+          });
+        } else {
+          this.toastService.error(
+            "No filling schedule found. Check the filling schedule"
+          );
         }
       });
-      this.CalcAvgWeight();
-      this.checkFormStatus();
-
-      if (allChecks) this.wrapAllChecks();
-    });
   }
 
   consoleLogLeftOvers() {
@@ -309,11 +338,11 @@ export class FormdetailsComponent implements OnInit {
     this.scheduleService.getScheduleById(scheduleId).subscribe((data) => {
       if (data) {
         // get neto weight
+        console.log(data);
         this.itemService.getItemData(data.item).subscribe((itemData) => {
           console.log(itemData);
           this.isTube = itemData.isTube;
           let netWeight = itemData[0].netWeightK;
-
           // check batch QA status
           let batches = data.batch.split("+");
 
@@ -377,25 +406,54 @@ export class FormdetailsComponent implements OnInit {
           }
 
           // check if there is another form with that batch
-          this.numberOfFormsWithSameBatch = 0;
-          for (let batch of batches) {
-            this.formsService
-              .getFormDetailsByBatch(batch)
-              .subscribe((forms) => {
-                if (forms.length > 0) {
-                  for (let form of forms) {
-                    if (form.batchN && form.batchN != "") {
-                      this.numberOfFormsWithSameBatch++;
-                    }
-                  }
-                }
-              });
-          }
+          this.getFormsDetailsByBatch();
+          // this.numberOfFormsWithSameBatch = 0;
+          // for (let batch of batches) {
+          //   console.log(batch);
+          //   this.formsService
+          //     .getFormDetailsByBatch(batch)
+          //     .subscribe((forms) => {
+          //       console.log("forms: ", forms);
+          //       if (forms.length > 0) {
+          //         for (let form of forms) {
+          //           if (form.batchN && form.batchN != "") {
+          //             this.numberOfFormsWithSameBatch++;
+          //           }
+          //         }
+          //       }
+          //     });
+          // }
         });
       }
     });
 
     // have fun.
+  }
+
+  getFormsDetailsByBatch() {
+    if (this.form.batchN.trim() == "") {
+      this.additionalForms = [];
+      return;
+    }
+    // let batches = this.form.batchN.split("+");
+    // console.log(batches);
+    // this.numberOfFormsWithSameBatch = 0;
+
+    console.log(this.form.batchN);
+    this.formsService
+      .getFormDetailsByBatch(this.form.batchN)
+      .subscribe((forms) => {
+        console.log("forms: ", forms);
+        for (let form of forms) {
+          if (form.orderNumber == this.form.orderNumber) {
+            form.background = "yellow";
+          } else {
+            form.background = "#eef5f9";
+          }
+        }
+        this.additionalForms = forms;
+      });
+    this.getBarrelsByBatchList();
   }
 
   enlarge(event) {
@@ -735,7 +793,11 @@ export class FormdetailsComponent implements OnInit {
   }
 
   checkFormStatus() {
-    if (this.form.checkSignature && this.form.directorBackSignature && !this.authService.loggedInUser.authorization.includes("QAAdmin")) {
+    if (
+      this.form.checkSignature &&
+      this.form.directorBackSignature &&
+      !this.authService.loggedInUser.authorization.includes("QAAdmin")
+    ) {
       this.disabledValue = true;
     }
   }
@@ -795,8 +857,7 @@ export class FormdetailsComponent implements OnInit {
           this.disabledValue = false;
         }
         if (this.authService.loggedInUser.authorization.includes("QAAdmin")) {
-          this.disableRemarkEditAfterSave = false
-
+          this.disableRemarkEditAfterSave = false;
         }
       }
     }

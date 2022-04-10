@@ -13,7 +13,7 @@
     >
       <div class="nav-link">Personal Packing</div>
     </li>
-    
+
     <li
       class="nav-item"
       (click)="tabChange('compileForm')"
@@ -120,9 +120,10 @@
             [disabled]="disabledValue"
             id="div_batchN"
             class="form-control inputDivLonger"
+            (blur)="getFormsDetailsByBatch()"
           />
         </td>
-        <td>כמות חביות</td>
+        <!-- <td>כמות חביות</td>
         <td>
           <input
             type="number"
@@ -131,18 +132,59 @@
             class="inputDiv form-control"
             [disabled]="disabledValue"
           />
-        </td>
+        </td> -->
       </tr>
-      <tr *ngIf="numberOfFormsWithSameBatch > 0">
+      <tr></tr>
+      <tr *ngIf="numberOfFormsWithSameBatch > 1">
         <td></td>
         <td>
           <span class="text-danger"
-            >קיימים {{ numberOfFormsWithSameBatch }} טפסים נוספים הכוללים את אחת
-            האצוות</span
+            >קיימים {{ numberOfFormsWithSameBatch - 1 }} טפסים נוספים הכוללים את
+            אחת האצוות</span
           >
         </td>
       </tr>
       <tr>
+        <td colspan="12">
+          <table class="table table-bordered table_01">
+            <thead>
+              <tr>
+                <th>מס' אצווה</th>
+                <th>תאריך ייצור</th>
+                <th>תאריך תפוגה</th>
+                <th>מס' הזמנה</th>
+                <th>מק"ט</th>
+                <th>כמות שהוזמנה</th>
+                <th>משקל יחידה</th>
+                <th>תאריך מילוי</th>
+                <th>כמות שיוצרה</th>
+                <th>סטטוס</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let forme of additionalForms"
+                [style.background-color]="forme.background"
+              >
+                <td>
+                  {{ forme.batchN }}
+                </td>
+                <td>{{ forme.productaionDate | date: "dd/MM/yyyy" }}</td>
+                <td>{{ forme.expirationDate | date: "dd/MM/yyyy" }}</td>
+                <td>{{ forme.orderNumber }}</td>
+                <td>{{ forme.itemN }}</td>
+                <td>{{ forme.orderQuantity }}</td>
+                <td>{{ forme.netWeight }}</td>
+                <td>{{ forme.fillingDate | date: "dd/MM/yyyy" }}</td>
+                <td>{{ forme.quantity_Produced }}</td>
+                <td>{{ forme.status }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </td>
+      </tr>
+
+      <!-- <tr>
         <td>תאריך ייצור/תאריך סיום</td>
         <td>
           <span *ngIf="form.batchN.length > 8">
@@ -154,9 +196,9 @@
               [disabled]="form.batchN"
             />
           </span>
-          <span *ngIf="form.batchN.length == 8">
-            <!-- {{form.productaionDate}} -->
-            {{ form.productaionDate | date: "dd/MM/yy" }}
+          <span *ngIf="form.batchN.length == 8"> -->
+      <!-- {{form.productaionDate}} -->
+      <!-- {{ form.productaionDate | date: "dd/MM/yy" }}
           </span>
         </td>
         <td>תאריך תפוגה</td>
@@ -170,12 +212,12 @@
               [disabled]="disabledValue"
             />
           </span>
-          <span *ngIf="form.batchN.length == 8">
-            <!-- {{form.expirationDate}} -->
-            {{ form.expirationDate | date: "dd/MM/yy" }}
+          <span *ngIf="form.batchN.length == 8"> -->
+      <!-- {{form.expirationDate}} -->
+      <!-- {{ form.expirationDate | date: "dd/MM/yy" }}
           </span>
         </td>
-      </tr>
+      </tr> -->
       <tr></tr>
       <tr>
         <td>תאריך מילוי</td>
@@ -238,7 +280,7 @@
           />
         </td>
       </tr>
-      <tr>
+      <!-- <tr>
         <td>מס' אצווה</td>
         <td>
           <input
@@ -256,7 +298,7 @@
             בחר
           </button>
         </td>
-      </tr>
+      </tr> -->
       <tr>
         <td>שם החבית</td>
         <td>
@@ -278,9 +320,7 @@
           <button
             class="btn btn-success"
             (click)="updateBarrelsList()"
-            [disabled]="
-              barrelsList.length == 0 || batchDisabled || disabledValue
-            "
+            [disabled]="barrelsList.length == 0 || disabledValue"
           >
             בחר
           </button>
@@ -289,17 +329,15 @@
       </tr>
 
       <tr>
-        <td colspan="12" *ngIf="form.barrelsList">
+        <td colspan="8" *ngIf="form.barrelsList">
           <table class="table table-bordered table_01">
             <thead>
               <tr>
                 <th scope="col">מס' אצווה</th>
                 <th scope="col">מס' החבית</th>
-                <th scope="col">שעת התחלה</th>
                 <th scope="col">משקל חבית</th>
                 <th scope="col">משקל נותר</th>
-                <th scope="col">שעת סיום</th>
-                <th scope="col">שם הבקר</th>
+                <th scope="col">עדכן/מחק</th>
               </tr>
             </thead>
             <tbody>
@@ -309,14 +347,6 @@
                 </td>
                 <td>
                   {{ barrel.barrelNumber }}
-                </td>
-                <td>
-                  <input
-                    type="time"
-                    [(ngModel)]="barrel.startTime"
-                    class="form-control"
-                    [disabled]="barrel.saved"
-                  />
                 </td>
                 <td>{{ barrel.barrelWeight }}</td>
                 <td>
@@ -328,15 +358,6 @@
                   />
                 </td>
                 <td>
-                  <input
-                    type="time"
-                    [(ngModel)]="barrel.endTime"
-                    class="form-control"
-                    [disabled]="barrel.saved"
-                  />
-                </td>
-                <td>{{ user.firstName }} {{ user.lastName }}</td>
-                <td>
                   <button
                     *ngIf="!barrel.saved"
                     (click)="updateUsedBarrels(barrel)"
@@ -344,6 +365,7 @@
                   >
                     עדכן
                   </button>
+                  &nbsp;
                   <button
                     (click)="deleteUsedBarrel(barrel, i)"
                     class="btn btn-danger"
