@@ -623,7 +623,7 @@
                     <input #editQuantity [value]="stockitem.quantity" type="number">
                   </td>
 
-                  <td *ngIf="EditRowId == ''">{{stockitem.price}} {{stockitem.coin | currencySymbol}}{{"ERAN GRADY"}}</td>
+                  <td *ngIf="EditRowId == ''">{{stockitem.price}} {{stockitem.coin | currencySymbol}}</td>
                   <td *ngIf="EditRowId == stockitem.number">
                     <input #editPrice [value]="stockitem.price" type="number">
                   </td>
