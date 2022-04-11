@@ -109,6 +109,10 @@ export class FormsService {
       .pipe(map((res) => res.json()));
   }
 
+  removeLineFromPL(ID) {
+    let url = this.baseUrl + "formDetails/removeLine?id=" + ID;
+    return this.http.get(url).pipe(map((res) => res.json()));
+  }
   // createNewQaPersonalPallet(qaPallet){
   //   let url = this.baseUrl + "formDetails/addNewQAPallet";
   //   return this.http.post(url, JSON.stringify(qaPallet), this.options).pipe(map(res => res.json()));

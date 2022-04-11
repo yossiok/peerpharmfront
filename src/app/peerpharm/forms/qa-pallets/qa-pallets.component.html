@@ -856,7 +856,10 @@
   <div [ngbNavOutlet]="nav" class="mt-2"></div>
 
   <div id="print-sectionHE">
-    <div class="modal3 bg-white scroll" *ngIf="showProductsBeforeDeliveryHE == true">
+    <div
+      class="modal3 bg-white scroll"
+      *ngIf="showProductsBeforeDeliveryHE == true"
+    >
       <!-- Modal content -->
       <div class="row">
         <div class="col-10"></div>
@@ -931,6 +934,7 @@
         <table class="table table-bordered">
           <thead style="background: lightgray !important">
             <tr>
+              <th></th>
               <th scope="col">משטח</th>
               <th scope="col">פריט</th>
               <th scope="col">שם פריט</th>
@@ -948,6 +952,11 @@
           <tbody>
             <ng-container *ngFor="let pallet of selectedArr; let i = index">
               <tr *ngFor="let line of pallet.lines">
+                <td>
+                  <button (click)="removeLine(line)">
+                    <i class="fa fa-times text-danger"></i>
+                  </button>
+                </td>
                 <td>{{ i + 1 }}</td>
                 <td
                   style="cursor: pointer; text-decoration: underline"
@@ -1103,6 +1112,7 @@
         <table class="table table-bordered">
           <thead>
             <tr>
+              <th></th>
               <th scope="col">Pallet</th>
               <th scope="col">Item</th>
               <th scope="col">Item Name</th>
@@ -1120,6 +1130,11 @@
           <tbody>
             <ng-container *ngFor="let pallet of selectedArr; let i = index">
               <tr *ngFor="let line of pallet.lines">
+                <td>
+                  <button btn (click)="removeLine(line)">
+                    <i class="fa fa-times text-danger"></i>
+                  </button>
+                </td>
                 <td>{{ i + 1 }}</td>
                 <td
                   style="cursor: pointer; text-decoration: underline"
