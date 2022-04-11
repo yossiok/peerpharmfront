@@ -145,7 +145,7 @@ export class FormdetailsComponent implements OnInit {
     }
 
     // הגענו מהטאבלט (עמוד ראשי) או ממסך טפסים
-    else this.getFormData(true, formID1);
+    else this.getForms(true, formID1);
   }
 
   getIsTubeState(itemNumber) {
@@ -281,55 +281,98 @@ export class FormdetailsComponent implements OnInit {
           console.log(data);
           this.currentBatchNumber = data.batch;
           this.formid = formID;
-          this.formsService.getFormData(this.formid).subscribe((res) => {
-            this.form = res[0];
-            console.log(res[0]);
-            this.form.batchN = this.currentBatchNumber
-              ? this.currentBatchNumber
-              : res[0].batchN;
-            console.log(this.form);
+          this.getForms(true, this.formid);
 
-            //Get the list of barrels to be used with this batch
-            // this.getBarrelsList(this.form.batchN);
-            this.loadQAPallets(this.form._id);
-            this.loadQAPersonalPallets(this.form._id);
-            this.formDetailsItemNum = this.form.itemN;
-            this.getIsTubeState(this.form.itemN);
-            this.batchService
-              .getBatchData(this.form.batchN)
-              .subscribe((data) => {
-                console.log("batchData: ", data);
-                this.form.productaionDate = data[0].produced;
-                this.form.expirationDate = data[0].expration;
-              });
-            if (this.form.productionEndDate) {
-              let days = this.form.productionEndDate.slice(8, 10);
-              let monthes = this.form.productionEndDate.slice(5, 7);
-              this.form.productionEndDate = this.form.productionEndDate.slice(
-                0,
-                5
-              );
-              this.form.productionEndDate =
-                this.form.productionEndDate + days + "-" + monthes;
-            }
-            this.form.checkNetoWeight.forEach((element) => {
-              if (element) {
-                const netNumber = parseInt(element, 10);
-                this.netoWeightArr.push(netNumber);
-              }
-            });
-            this.CalcAvgWeight();
-            this.checkFormStatus();
-            this.getFormsDetailsByBatch();
+          // this.formsService.getFormData(this.formid).subscribe((res) => {
+          //   this.form = res[0];
+          //   console.log(res[0]);
+          //   this.form.batchN = this.currentBatchNumber
+          //     ? this.currentBatchNumber
+          //     : res[0].batchN;
+          //   console.log(this.form);
 
-            if (allChecks) this.wrapAllChecks();
-          });
+          //   //Get the list of barrels to be used with this batch
+          //   // this.getBarrelsList(this.form.batchN);
+          //   this.loadQAPallets(this.form._id);
+          //   this.loadQAPersonalPallets(this.form._id);
+          //   this.formDetailsItemNum = this.form.itemN;
+          //   this.getIsTubeState(this.form.itemN);
+          //   this.batchService
+          //     .getBatchData(this.form.batchN)
+          //     .subscribe((data) => {
+          //       console.log("batchData: ", data);
+          //       this.form.productaionDate = data[0].produced;
+          //       this.form.expirationDate = data[0].expration;
+          //     });
+          //   if (this.form.productionEndDate) {
+          //     let days = this.form.productionEndDate.slice(8, 10);
+          //     let monthes = this.form.productionEndDate.slice(5, 7);
+          //     this.form.productionEndDate = this.form.productionEndDate.slice(
+          //       0,
+          //       5
+          //     );
+          //     this.form.productionEndDate =
+          //       this.form.productionEndDate + days + "-" + monthes;
+          //   }
+          //   this.form.checkNetoWeight.forEach((element) => {
+          //     if (element) {
+          //       const netNumber = parseInt(element, 10);
+          //       this.netoWeightArr.push(netNumber);
+          //     }
+          //   });
+          //   this.CalcAvgWeight();
+          //   this.checkFormStatus();
+          //   this.getFormsDetailsByBatch();
+
+          //   if (allChecks) this.wrapAllChecks();
+          // });
         } else {
           this.toastService.error(
             "No filling schedule found. Check the filling schedule"
           );
         }
       });
+  }
+
+  async getForms(allChecks, formID) {
+    this.formsService.getFormData(formID).subscribe((res) => {
+      this.form = res[0];
+      console.log(res[0]);
+      this.form.batchN = this.currentBatchNumber
+        ? this.currentBatchNumber
+        : res[0].batchN;
+      console.log(this.form);
+
+      //Get the list of barrels to be used with this batch
+      // this.getBarrelsList(this.form.batchN);
+      this.loadQAPallets(this.form._id);
+      this.loadQAPersonalPallets(this.form._id);
+      this.formDetailsItemNum = this.form.itemN;
+      this.getIsTubeState(this.form.itemN);
+      this.batchService.getBatchData(this.form.batchN).subscribe((data) => {
+        console.log("batchData: ", data);
+        this.form.productaionDate = data[0].produced;
+        this.form.expirationDate = data[0].expration;
+      });
+      if (this.form.productionEndDate) {
+        let days = this.form.productionEndDate.slice(8, 10);
+        let monthes = this.form.productionEndDate.slice(5, 7);
+        this.form.productionEndDate = this.form.productionEndDate.slice(0, 5);
+        this.form.productionEndDate =
+          this.form.productionEndDate + days + "-" + monthes;
+      }
+      this.form.checkNetoWeight.forEach((element) => {
+        if (element) {
+          const netNumber = parseInt(element, 10);
+          this.netoWeightArr.push(netNumber);
+        }
+      });
+      this.CalcAvgWeight();
+      this.checkFormStatus();
+      this.getFormsDetailsByBatch();
+
+      if (allChecks) this.wrapAllChecks();
+    });
   }
 
   consoleLogLeftOvers() {
