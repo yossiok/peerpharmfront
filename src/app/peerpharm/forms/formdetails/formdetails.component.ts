@@ -128,6 +128,8 @@ export class FormdetailsComponent implements OnInit {
   ngOnInit() {
     let formID1 = this.route.snapshot.paramMap.get("id");
     this.scheduleID = this.route.snapshot.paramMap.get("id2");
+    console.log(this.scheduleID);
+    console.log(formID1);
 
     this.getUserInfo();
 
