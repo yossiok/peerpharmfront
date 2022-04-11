@@ -144,7 +144,7 @@ export class FormdetailsComponent implements OnInit {
         });
     }
 
-    // הגענו מהטאבלט (עמוד ראשי) או ממסך טפסים
+    // הגענו מהטאבלט (עמוד ראשי)
     else this.getForms(true, formID1);
   }
 
@@ -342,6 +342,9 @@ export class FormdetailsComponent implements OnInit {
         ? this.currentBatchNumber
         : res[0].batchN;
       console.log(this.form);
+      this.formid = formID;
+      console.log(this.formid);
+      console.log(this.disabledValue);
 
       //Get the list of barrels to be used with this batch
       // this.getBarrelsList(this.form.batchN);
@@ -729,6 +732,7 @@ export class FormdetailsComponent implements OnInit {
           this.showQAPalletsModal = false;
           if (this.form.checkSignature && this.form.directorBackSignature) {
             this.disabledValue = true;
+            console.log(this.disabledValue);
           }
           console.log("Returned data: ", data);
         }
@@ -847,6 +851,7 @@ export class FormdetailsComponent implements OnInit {
       !this.authService.loggedInUser.authorization.includes("QAAdmin")
     ) {
       this.disabledValue = true;
+      console.log(this.disabledValue);
     }
   }
   // make edit available function
@@ -903,6 +908,7 @@ export class FormdetailsComponent implements OnInit {
         ) {
           this.allowUpdateForm = true;
           this.disabledValue = false;
+          console.log(this.disabledValue);
         }
         if (this.authService.loggedInUser.authorization.includes("QAAdmin")) {
           this.disableRemarkEditAfterSave = false;
