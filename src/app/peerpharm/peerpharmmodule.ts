@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { JsonpModule } from "@angular/http";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgxBarcodeModule } from "ngx-barcode";
+import {NgxPaginationModule} from 'ngx-pagination';
 import { FormuleComponent } from "./formules/formule.component";
 import { AddFormuleComponent } from "./formules/add-formule/add-formule.component";
 import { AddFormuleItemComponent } from "./formules/add-formule-item/add-formule-item.component";
@@ -212,6 +213,7 @@ import { ProposalsListComponent } from "./customers/proposals-list/proposals-lis
     HttpClientModule,
     MatCheckboxModule,
     NgbModule,
+    NgxPaginationModule,
     FlatpickrModule.forRoot(),
     CalendarModule.forRoot({
       provide: DateAdapter,
