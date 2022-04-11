@@ -15,6 +15,7 @@ export class QaLogsComponent implements OnInit {
   isLogin:boolean = false;
   table:Array<any>;
   pageNumber:number = 1;
+  showLogsModal:boolean = true;
 
   constructor(
     private logService:LogsService,
