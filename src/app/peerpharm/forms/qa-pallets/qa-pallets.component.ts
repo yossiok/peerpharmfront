@@ -220,6 +220,28 @@ export class QaPalletsComponent implements OnInit {
     }
   }
 
+  removeLine(line) {
+    console.log(line);
+    let confirmed = confirm("You are about to remove this line are you sure?");
+    if (!confirmed) return;
+    this.formService.removeLineFromPL(line._id).subscribe((data) => {
+      console.log(data);
+      if (data.msg) {
+        this.toastr.error(data.msg);
+        return;
+      } else {
+        console.log(this.selectedArr);
+        for (let pallet of this.selectedArr) {
+          pallet.lines = pallet.lines.filter((p) => p._id != line._id);
+        }
+        console.log(this.selectedArr);
+        // this.showProductsBeforeDeliveryHE = false;
+
+        this.toastr.success("הרשימה עודכנה בהצלחה");
+      }
+    });
+  }
+
   saveNewCustomerForPallet(ev, id) {
     let pallet = this.allQaPallets.find((p) => p._id == id);
     pallet.customerName = ev.target.value;
