@@ -33,6 +33,7 @@ export interface ProductionFormule {
   dueDate?: Date;
   barrels?: any[];
   barrelsWeight?: number;
+  producedKG?: number;
   // _id: string;
   // numOfItems: number
 }
@@ -51,4 +52,5 @@ export interface orderAndItem {
   itemNumber: string;
   itemName: string;
   weightKg: number;
+  producedKg?: number;
 }

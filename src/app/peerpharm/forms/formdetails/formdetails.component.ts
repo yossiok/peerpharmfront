@@ -128,6 +128,8 @@ export class FormdetailsComponent implements OnInit {
   ngOnInit() {
     let formID1 = this.route.snapshot.paramMap.get("id");
     this.scheduleID = this.route.snapshot.paramMap.get("id2");
+    console.log(this.scheduleID);
+    console.log(formID1);
 
     this.getUserInfo();
 
@@ -142,8 +144,8 @@ export class FormdetailsComponent implements OnInit {
         });
     }
 
-    // הגענו מהטאבלט (עמוד ראשי) או ממסך טפסים
-    else this.getFormData(true, formID1);
+    // הגענו מהטאבלט (עמוד ראשי)
+    else this.getForms(true, formID1);
   }
 
   getIsTubeState(itemNumber) {
@@ -279,52 +281,101 @@ export class FormdetailsComponent implements OnInit {
           console.log(data);
           this.currentBatchNumber = data.batch;
           this.formid = formID;
-          this.formsService.getFormData(this.formid).subscribe((res) => {
-            this.form = res[0];
-            this.form.batchN = this.currentBatchNumber;
-            console.log(this.form);
+          this.getForms(true, this.formid);
 
-            //Get the list of barrels to be used with this batch
-            // this.getBarrelsList(this.form.batchN);
-            this.loadQAPallets(this.form._id);
-            this.loadQAPersonalPallets(this.form._id);
-            this.formDetailsItemNum = this.form.itemN;
-            this.getIsTubeState(this.form.itemN);
-            this.batchService
-              .getBatchData(this.form.batchN)
-              .subscribe((data) => {
-                console.log("batchData: ", data);
-                this.form.productaionDate = data[0].produced;
-                this.form.expirationDate = data[0].expration;
-              });
-            if (this.form.productionEndDate) {
-              let days = this.form.productionEndDate.slice(8, 10);
-              let monthes = this.form.productionEndDate.slice(5, 7);
-              this.form.productionEndDate = this.form.productionEndDate.slice(
-                0,
-                5
-              );
-              this.form.productionEndDate =
-                this.form.productionEndDate + days + "-" + monthes;
-            }
-            this.form.checkNetoWeight.forEach((element) => {
-              if (element) {
-                const netNumber = parseInt(element, 10);
-                this.netoWeightArr.push(netNumber);
-              }
-            });
-            this.CalcAvgWeight();
-            this.checkFormStatus();
-            this.getFormsDetailsByBatch();
+          // this.formsService.getFormData(this.formid).subscribe((res) => {
+          //   this.form = res[0];
+          //   console.log(res[0]);
+          //   this.form.batchN = this.currentBatchNumber
+          //     ? this.currentBatchNumber
+          //     : res[0].batchN;
+          //   console.log(this.form);
 
-            if (allChecks) this.wrapAllChecks();
-          });
+          //   //Get the list of barrels to be used with this batch
+          //   // this.getBarrelsList(this.form.batchN);
+          //   this.loadQAPallets(this.form._id);
+          //   this.loadQAPersonalPallets(this.form._id);
+          //   this.formDetailsItemNum = this.form.itemN;
+          //   this.getIsTubeState(this.form.itemN);
+          //   this.batchService
+          //     .getBatchData(this.form.batchN)
+          //     .subscribe((data) => {
+          //       console.log("batchData: ", data);
+          //       this.form.productaionDate = data[0].produced;
+          //       this.form.expirationDate = data[0].expration;
+          //     });
+          //   if (this.form.productionEndDate) {
+          //     let days = this.form.productionEndDate.slice(8, 10);
+          //     let monthes = this.form.productionEndDate.slice(5, 7);
+          //     this.form.productionEndDate = this.form.productionEndDate.slice(
+          //       0,
+          //       5
+          //     );
+          //     this.form.productionEndDate =
+          //       this.form.productionEndDate + days + "-" + monthes;
+          //   }
+          //   this.form.checkNetoWeight.forEach((element) => {
+          //     if (element) {
+          //       const netNumber = parseInt(element, 10);
+          //       this.netoWeightArr.push(netNumber);
+          //     }
+          //   });
+          //   this.CalcAvgWeight();
+          //   this.checkFormStatus();
+          //   this.getFormsDetailsByBatch();
+
+          //   if (allChecks) this.wrapAllChecks();
+          // });
         } else {
           this.toastService.error(
             "No filling schedule found. Check the filling schedule"
           );
         }
       });
+  }
+
+  async getForms(allChecks, formID) {
+    this.formsService.getFormData(formID).subscribe((res) => {
+      this.form = res[0];
+      console.log(res[0]);
+      this.form.batchN = this.currentBatchNumber
+        ? this.currentBatchNumber
+        : res[0].batchN;
+      console.log(this.form);
+      this.formid = formID;
+      console.log(this.formid);
+      console.log(this.disabledValue);
+
+      //Get the list of barrels to be used with this batch
+      // this.getBarrelsList(this.form.batchN);
+      this.loadQAPallets(this.form._id);
+      this.loadQAPersonalPallets(this.form._id);
+      this.formDetailsItemNum = this.form.itemN;
+      this.getIsTubeState(this.form.itemN);
+      this.batchService.getBatchData(this.form.batchN).subscribe((data) => {
+        console.log("batchData: ", data);
+        this.form.productaionDate = data[0].produced;
+        this.form.expirationDate = data[0].expration;
+      });
+      if (this.form.productionEndDate) {
+        let days = this.form.productionEndDate.slice(8, 10);
+        let monthes = this.form.productionEndDate.slice(5, 7);
+        this.form.productionEndDate = this.form.productionEndDate.slice(0, 5);
+        this.form.productionEndDate =
+          this.form.productionEndDate + days + "-" + monthes;
+      }
+      this.form.checkNetoWeight.forEach((element) => {
+        if (element) {
+          const netNumber = parseInt(element, 10);
+          this.netoWeightArr.push(netNumber);
+        }
+      });
+      this.CalcAvgWeight();
+      this.checkFormStatus();
+      this.getFormsDetailsByBatch();
+
+      if (allChecks) this.wrapAllChecks();
+    });
   }
 
   consoleLogLeftOvers() {
@@ -681,6 +732,7 @@ export class FormdetailsComponent implements OnInit {
           this.showQAPalletsModal = false;
           if (this.form.checkSignature && this.form.directorBackSignature) {
             this.disabledValue = true;
+            console.log(this.disabledValue);
           }
           console.log("Returned data: ", data);
         }
@@ -799,6 +851,7 @@ export class FormdetailsComponent implements OnInit {
       !this.authService.loggedInUser.authorization.includes("QAAdmin")
     ) {
       this.disabledValue = true;
+      console.log(this.disabledValue);
     }
   }
   // make edit available function
@@ -855,6 +908,7 @@ export class FormdetailsComponent implements OnInit {
         ) {
           this.allowUpdateForm = true;
           this.disabledValue = false;
+          console.log(this.disabledValue);
         }
         if (this.authService.loggedInUser.authorization.includes("QAAdmin")) {
           this.disableRemarkEditAfterSave = false;
