@@ -90,6 +90,7 @@ import { QaLogsComponent } from "./qa/qalogs/qaLogs.component";
 
 import { CustomersComponent } from "./customers/customers.component";
 import { ProposalsComponent } from "./customers/proposals/proposals.component";
+import { CreamBarrelComponent } from "./inventory/creamBarrel/creamBarrel.component";
 export const PeerPharmRputs: Routes = [
   {
     path: "user/user-settings",
@@ -559,6 +560,14 @@ export const PeerPharmRputs: Routes = [
       title: "Cleaning Forms",
     },
     component: CleaningFormsComponent,
+  },
+  {
+    path: "inventory/creamBarrels",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Cream Barrels",
+    },
+    component: CreamBarrelComponent,
   },
   {
     path: "qa/packing-list",
