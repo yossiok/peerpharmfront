@@ -137,6 +137,11 @@ export class AllFormulesComponent implements OnInit {
   updatingFormule: boolean = false;
   partialPrice: boolean;
 
+  deleteConfirmation:boolean = false;
+  formuleToDelete:string;
+  formuleToDeleteConfirmation:string ='';
+  deleteId:string;
+
   constructor(
     private invtSer: InventoryService,
     private formuleService: FormulesService,
@@ -1067,10 +1072,18 @@ export class AllFormulesComponent implements OnInit {
     this.toastSrv.warning("In order to save all changes", "Press 'Save'!");
   }
 
-  deleteFormule(id) {
-    if (confirm("האם אתה בטוח שאתה רוצה למחוק פורמולה זו ?")) {
-      if (prompt("הזיני סיסמא") == this.password) {
-        this.formuleService.deleteFormuleById({ id }).subscribe((data) => {
+  onSubmit() {
+    this.formuleToDeleteConfirmation = (<HTMLInputElement>document.getElementById("formuleToDeleteConfirmation")).value;
+    this.deleteConfirmation == false;
+    this.deleteFormuleStep2(this.deleteId)
+  }
+
+  deleteFormuleStep2(id){
+    
+    if(this.formuleToDeleteConfirmation != ""){
+      if(this.formuleToDelete == this.formuleToDeleteConfirmation){
+
+          this.formuleService.deleteFormuleById( {id} ).subscribe((data) => {
           console.log(data);
           if (data.msg) {
             console.log(data);
@@ -1083,10 +1096,31 @@ export class AllFormulesComponent implements OnInit {
           } else {
             this.toastSrv.error("Operation failed");
           }
+
         });
+
+      }else{
+        this.toastSrv.error("המספר שהוקלד שונה ממספר הפורמולה שנבחרה");
+      }
+
+    }
+  }
+
+ 
+
+  deleteFormuleStep1(formule) {
+    if (confirm("האם את/ה בטוח שאת/ה רוצה למחוק פורמולה זו ?")) {
+      if (prompt("נא הכנס/י סיסמא") == this.password) {
+        this.formuleToDelete = formule.formuleNumber;
+        this.deleteConfirmation = true;
+        this.deleteId = formule._id;
       }
     }
   }
+
+
+
+
 
   deletePhase(phaseId) {
     if (confirm("למחוק פאזה?")) {
