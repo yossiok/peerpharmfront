@@ -2,7 +2,7 @@
   <h3>Sorry, but you don't have the authorization to view this screen. Check with the system administrator </h3>
 </div>
 
-<div *ngIf="adminPanelView" class="container text-center bg-white shadow-lg">
+<div *ngIf="adminPanelView && adminPanelAllowed" class="container text-center bg-white shadow-lg">
   <div class="row mt-4">
     <div class="col-12">
       <h1 class="text-info">Admin Panel</h1>
