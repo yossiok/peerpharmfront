@@ -7,7 +7,6 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ProductionService } from 'src/app/services/production.service';
-import { WorkPlanService } from 'src/app/services/workPlan.service';
 import { resolve } from 'url';
 import { WorkPlan } from '../WorkPlan';
 
@@ -44,7 +43,6 @@ export class AllPlanningComponent implements OnInit {
     private inventoryService: InventoryService,
     private toastr: ToastrService,
     private authService: AuthService,
-    private workPlanService: WorkPlanService,
     private route: ActivatedRoute,
     private modalService: NgbModal,
     private router: Router,
@@ -81,20 +79,7 @@ export class AllPlanningComponent implements OnInit {
     }
   }
 
-  multiDelete(){
-    if(this.deleteArray.length>0){
-      const idArray = []
-      this.deleteArray.map((wp)=>{
-        idArray.push(wp._id)
-      })
-      this.workPlanService.multiDelete(idArray).subscribe((res)=>{
-        console.log(res)
-        this.ngOnInit();
-      })
-      
-
-    }
-  }
+ 
 
   checkForProduced() {
     this.producedWorkPlans = this.workPlans.filter(wp => wp.status == 6).map(wp => wp.serialNumber)
