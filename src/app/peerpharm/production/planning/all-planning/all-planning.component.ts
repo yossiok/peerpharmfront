@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { WorkPlanStatusPipe } from 'src/app/pipes/work-plan-status.pipe';
@@ -7,6 +7,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { ExcelService } from 'src/app/services/excel.service';
 import { InventoryService } from 'src/app/services/inventory.service';
 import { ProductionService } from 'src/app/services/production.service';
+import { WorkPlanService } from 'src/app/services/workPlan.service';
 import { resolve } from 'url';
 import { WorkPlan } from '../WorkPlan';
 
@@ -33,6 +34,7 @@ export class AllPlanningComponent implements OnInit {
   loadData: boolean = false;
   showCheckbox: boolean = false
   authorized: boolean = false
+  deleteArray: Array<any> = [];
 
 
   constructor(
@@ -42,8 +44,10 @@ export class AllPlanningComponent implements OnInit {
     private inventoryService: InventoryService,
     private toastr: ToastrService,
     private authService: AuthService,
+    private workPlanService: WorkPlanService,
     private route: ActivatedRoute,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router,
   ) { }
 
   async ngOnInit() {
@@ -67,6 +71,29 @@ export class AllPlanningComponent implements OnInit {
         resolve(true)
       })
     })
+  }
+
+  updateDeleteArray(workPlan){
+    if(this.deleteArray.includes(workPlan)){
+      this.deleteArray = this.deleteArray.filter((wp)=> wp._id != workPlan._id);
+    }else{
+      this.deleteArray.push(workPlan);
+    }
+  }
+
+  multiDelete(){
+    if(this.deleteArray.length>0){
+      const idArray = []
+      this.deleteArray.map((wp)=>{
+        idArray.push(wp._id)
+      })
+      this.workPlanService.multiDelete(idArray).subscribe((res)=>{
+        console.log(res)
+        this.ngOnInit();
+      })
+      
+
+    }
   }
 
   checkForProduced() {
