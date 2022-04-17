@@ -311,6 +311,14 @@ export const PeerPharmRputs: Routes = [
     component: ShelfListComponent,
   },
   {
+    path: "inventory/creamBarrels",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "cream Barrels",
+    },
+    component: CreamBarrelComponent,
+  },
+  {
     path: "suppliers/suppliers",
     canActivate: [ScreenGuard],
     data: {
@@ -561,14 +569,7 @@ export const PeerPharmRputs: Routes = [
     },
     component: CleaningFormsComponent,
   },
-  {
-    path: "inventory/creamBarrels",
-    canActivate: [ScreenGuard],
-    data: {
-      title: "Cream Barrels",
-    },
-    component: CreamBarrelComponent,
-  },
+ 
   {
     path: "qa/packing-list",
     canActivate: [ScreenGuard],
