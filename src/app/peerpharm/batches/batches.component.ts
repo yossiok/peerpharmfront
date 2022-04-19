@@ -82,6 +82,9 @@ export class BatchesComponent implements OnInit {
   batchToPrint: any;
   allStickers: Array<any>;
   barrelAuthorized: Boolean = false;
+  listMin: number = 0;
+  listMax: number = 500;
+  listStep: number = 500;
 
   batch = {
     batchNumber: "",
@@ -137,7 +140,8 @@ export class BatchesComponent implements OnInit {
   ngOnInit() {
     this.stopInterval();
     // this.getAllBatchesYear("thisYear");
-    this.getLastBatches(1000);
+    this.getLastBatches(5000);
+    // this.getAllBatches();
     if (confirm("האם אתה רוצה שהאצוות יתרעננו אוטומטית כל 5 דקות?"))
       this.startInterval();
     this.lastValueUpdate = this.formatDate(new Date());
@@ -158,6 +162,23 @@ export class BatchesComponent implements OnInit {
     this.printValueBtn.nativeElement.click();
   }
 
+  nextList() {
+    console.log(this.batches.length);
+    if (this.listMax < this.batches.length) {
+      this.listMin += this.listStep;
+      this.listMax += this.listStep;
+    }
+  }
+
+  previousList() {
+    if (this.listMin >= this.listStep) {
+      this.listMin -= this.listStep;
+      this.listMax -= this.listStep;
+    } else if (this.listMin > 0) {
+      this.listMin = 0;
+      this.listMax = this.listStep;
+    }
+  }
   addBatch() {
     this.batch.user = this.authService.loggedInUser.userName;
     console.log(this.batch);
@@ -186,6 +207,8 @@ export class BatchesComponent implements OnInit {
   }
 
   getAllBatches() {
+    this.hasMoreItemsToload = true;
+    this.showLoader = true;
     this.batchService.getAllBatches().subscribe((res) => {
       console.log(res);
       this.batches = res;
@@ -699,27 +722,43 @@ export class BatchesComponent implements OnInit {
 
   addCreamBarrelsFromBatch(index) {
     let batch = this.batches[index];
-    let number = prompt("הכנס מספר חביות", "");
+    let number;
+    let weight;
+    while (isNaN(number)) number = prompt("הכנס מספר חביות");
     batch.barrels = +number;
-    let weight = prompt("הכנס משקל משוער לחבית ", "");
+    while (isNaN(weight)) weight = prompt("הכנס משקל משוער לחבית");
+
     batch.weightKg = +weight * batch.barrels;
+    let confBarrel = confirm(
+      "יווצרו " +
+        batch.barrels +
+        " חביות במשקל כולל של " +
+        batch.weightKg +
+        " קילוגרם, להמשיך?"
+    );
 
-    batch.user = this.user.userName;
+    if (confBarrel) {
+      batch.user = this.user.userName;
 
-    this.creamBarrelService
-      .addCreamBarrelsFromBatch(batch)
-      .subscribe((data) => {
-        console.log(data);
-        if (data.msg) {
-          this.toastSrv.error(data.msg);
-          return;
-        } else if (data) {
-          this.toastSrv.success("חביות נוצרו עבור אצווה זו והן זמינות במערכת");
-          return;
-        } else {
-          this.toastSrv.error("תקלה, לא נוצרו חביות");
-          return;
-        }
-      });
+      this.creamBarrelService
+        .addCreamBarrelsFromBatch(batch)
+        .subscribe((data) => {
+          console.log(data);
+          if (data.msg) {
+            if (data.msg == "Barrels already exist for this batch.") {
+              this.toastSrv.error("חביות לאצווה זו כבר קיימות במערכת");
+            } else this.toastSrv.error(data.msg);
+            return;
+          } else if (data) {
+            this.toastSrv.success(
+              "חביות נוצרו עבור אצווה זו והן זמינות במערכת"
+            );
+            return;
+          } else {
+            this.toastSrv.error("תקלה, לא נוצרו חביות");
+            return;
+          }
+        });
+    }
   }
 }

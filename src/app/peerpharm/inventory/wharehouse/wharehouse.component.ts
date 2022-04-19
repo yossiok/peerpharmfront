@@ -97,9 +97,9 @@ export class WharehouseComponent implements OnInit {
   allowNewRequest: boolean = false;
   showNewReq: boolean = false;
 
-  noDouble: any =[];
-  start: boolean =false;
-  reset: boolean=false;
+  noDouble: any = [];
+  start: boolean = false;
+  reset: boolean = false;
 
   constructor(
     private procurementSrv: Procurementservice,
@@ -386,6 +386,7 @@ export class WharehouseComponent implements OnInit {
           this.curentWhareHouseId
         )
         .subscribe(async (res) => {
+          console.log(res);
           if (res.length > 0) {
             this.currItemShelfs = res;
           } else {
@@ -410,6 +411,7 @@ export class WharehouseComponent implements OnInit {
             this.curentWhareHouseId
           )
           .subscribe(async (res) => {
+            console.log(res);
             if (res.length > 0) {
               element.currItemShelfs = res;
             } else {
@@ -455,28 +457,25 @@ export class WharehouseComponent implements OnInit {
     }
   }
   // eran
-  removeDouble(){
+  removeDouble() {
     debugger;
-    if(this.start){
-
-      this.multiLinesArr.forEach((elem)=>{
-        let shelfsPositionArr =[];
-        elem.currItemShelfs.forEach((shelf)=>{
-          if(!(shelfsPositionArr.includes(shelf.position))){
-            shelfsPositionArr.push(shelf.position)
+    if (this.start) {
+      this.multiLinesArr.forEach((elem) => {
+        let shelfsPositionArr = [];
+        elem.currItemShelfs.forEach((shelf) => {
+          if (!shelfsPositionArr.includes(shelf.position)) {
+            shelfsPositionArr.push(shelf.position);
           }
-          
-        })
+        });
         this.noDouble.push(shelfsPositionArr);
-      })
-
+      });
     }
-    this.start=false;
+    this.start = false;
   }
   // eran
-  resetDouble(){
-    if(this.reset){
-      this.noDouble=[];
+  resetDouble() {
+    if (this.reset) {
+      this.noDouble = [];
     }
     this.reset = false;
   }
@@ -655,7 +654,7 @@ export class WharehouseComponent implements OnInit {
     var itemLineToAdd = JSON.parse(JSON.stringify(itemLine));
     console.log(itemLineToAdd.amount);
     if (this.multiInputLines) itemLineToAdd.amount = itemLineToAdd.qnt;
-    console.log(itemLineToAdd.amount);
+    console.log(itemLineToAdd);
 
     this.loadingToTable = true;
     var position;
@@ -692,10 +691,11 @@ export class WharehouseComponent implements OnInit {
               this.inventoryService
                 .checkIfShelfExist(position, this.curentWhareHouseId)
                 .subscribe(async (shelfRes) => {
-                  if (shelfRes.ShelfId) {
+                  console.log(shelfRes);
+                  if (shelfRes.position) {
                     var itemShelfCurrAmounts = [];
                     await currItemShelfs.forEach((x) => {
-                      if (x.shell_id_in_whareHouse == shelfRes.ShelfId) {
+                      if (x.position == shelfRes.position) {
                         itemShelfCurrAmounts.push(x.amount);
                       }
                     });

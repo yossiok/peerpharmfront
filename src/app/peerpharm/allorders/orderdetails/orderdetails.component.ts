@@ -314,7 +314,7 @@ export class OrderdetailsComponent implements OnInit {
         this.showingAllOrders = true;
         this.loadData = true;
         this.orderService.getOpenOrdersItems().subscribe(async (orders) => {
-          // console.log(orders);
+          console.log(orders);
           this.multi = true;
           orders.orderItems.forEach((item) => {
             item.pakaStatus = item.pakaStatus ? item.pakaStatus : 0;
@@ -1370,28 +1370,37 @@ export class OrderdetailsComponent implements OnInit {
     this.editBatchN = false;
     this.EditRowId2nd = itemId;
     this.orderService.getItemByNumber(itemNumber).subscribe((itemDetais) => {
-      this.detailsArr = [];
-      itemDetais.forEach((element) => {
-        if (element.bottleNumber != null && element.bottleNumber != "")
-          this.detailsArr.push({
-            type: "Bottle",
-            number: element.bottleNumber,
-            discription: element.bottleTube,
-          });
-        if (element.capNumber != null && element.capNumber != "")
-          this.detailsArr.push({
-            type: "Cap",
-            number: element.capNumber,
-            discription: element.capTube,
-          });
-      });
-      if (this.expand === true) {
-        this.expand = false;
+      console.log(itemDetais);
+      if (itemDetais.msg) {
+        this.toastSrv.error(itemDetais.msg);
+        return;
+      } else if (itemDetais) {
+        this.detailsArr = [];
+        itemDetais.forEach((element) => {
+          if (element.bottleNumber != null && element.bottleNumber != "")
+            this.detailsArr.push({
+              type: "Bottle",
+              number: element.bottleNumber,
+              discription: element.bottleTube,
+            });
+          if (element.capNumber != null && element.capNumber != "")
+            this.detailsArr.push({
+              type: "Cap",
+              number: element.capNumber,
+              discription: element.capTube,
+            });
+        });
+        // if (this.expand === true) {
+        //   this.expand = false;
+        // } else {
+        //   this.expand = true;
+        // }
+        this.expand = !this.expand;
+        this.getPackedAmount(itemNumber);
+        this.getFillingSchedule(itemNumber);
       } else {
-        this.expand = true;
+        this.toastSrv.error("Item number wasn't found");
       }
-      this.getPackedAmount(itemNumber);
-      this.getFillingSchedule(itemNumber);
     });
     // this.scheduleService
     //   .getScheduleByOrdeItem(this.ordersItems[0].orderNumber, itemNumber)
