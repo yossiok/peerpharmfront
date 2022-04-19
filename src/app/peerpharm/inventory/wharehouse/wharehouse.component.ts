@@ -97,9 +97,7 @@ export class WharehouseComponent implements OnInit {
   allowNewRequest: boolean = false;
   showNewReq: boolean = false;
 
-  noDouble: any = [];
-  start: boolean = false;
-  reset: boolean = false;
+  shelves: Array<any>;
 
   constructor(
     private procurementSrv: Procurementservice,
@@ -136,6 +134,11 @@ export class WharehouseComponent implements OnInit {
     this.allowNewRequest =
       Number(this.authService.loggedInUser.screenPermission) < 4;
   }
+
+  // sortShelves(){
+  //   this.multiLinesArr.map((item)=>{
+  //   })
+  // }
 
   getAllWhs() {
     this.inventoryService.getWhareHousesList().subscribe((whs) => {
@@ -455,29 +458,6 @@ export class WharehouseComponent implements OnInit {
         }
       });
     }
-  }
-  // eran
-  removeDouble() {
-    debugger;
-    if (this.start) {
-      this.multiLinesArr.forEach((elem) => {
-        let shelfsPositionArr = [];
-        elem.currItemShelfs.forEach((shelf) => {
-          if (!shelfsPositionArr.includes(shelf.position)) {
-            shelfsPositionArr.push(shelf.position);
-          }
-        });
-        this.noDouble.push(shelfsPositionArr);
-      });
-    }
-    this.start = false;
-  }
-  // eran
-  resetDouble() {
-    if (this.reset) {
-      this.noDouble = [];
-    }
-    this.reset = false;
   }
 
   async getChildArr(arrSent) {

@@ -79,4 +79,8 @@ export class CreamBarrelService {
     let url = this.baseUrl + "batch/addCreamBarrelsFromBatch";
     return this.http.post(url, batch).pipe(map((res) => res.json()));
   }
+  getAllBarrels() {
+    let url = this.baseUrl + "creamBarrel/getAllBarrels";
+    return this.http.get(url).pipe(map((res) => res.json()));
+  }
 }

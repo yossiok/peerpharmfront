@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { WorkPlanStatusPipe } from 'src/app/pipes/work-plan-status.pipe';
@@ -33,6 +33,7 @@ export class AllPlanningComponent implements OnInit {
   loadData: boolean = false;
   showCheckbox: boolean = false
   authorized: boolean = false
+  deleteArray: Array<any> = [];
 
 
   constructor(
@@ -43,7 +44,8 @@ export class AllPlanningComponent implements OnInit {
     private toastr: ToastrService,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private router: Router,
   ) { }
 
   async ngOnInit() {
@@ -68,6 +70,16 @@ export class AllPlanningComponent implements OnInit {
       })
     })
   }
+
+  updateDeleteArray(workPlan){
+    if(this.deleteArray.includes(workPlan)){
+      this.deleteArray = this.deleteArray.filter((wp)=> wp._id != workPlan._id);
+    }else{
+      this.deleteArray.push(workPlan);
+    }
+  }
+
+ 
 
   checkForProduced() {
     this.producedWorkPlans = this.workPlans.filter(wp => wp.status == 6).map(wp => wp.serialNumber)

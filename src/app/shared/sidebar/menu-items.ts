@@ -293,6 +293,14 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
       },
       {
+        path: "/peerpharm/inventory/creamBarrels",
+        title: "cream Barrels",
+        icon: "fas fa-tree",
+        class: "",
+        extralink: false,
+        submenu: [],
+      },
+      {
         path: "/peerpharm/inventory/shelf-list",
         title: "ספירת מלאי",
         icon: "fas fa-address-book",
@@ -351,7 +359,7 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
       },
       {
-        path: "/peerpharm/qa/qaLogs",
+        path: "/peerpharm/qa/qaLogs/page/1",
         title: "QA Logs",
         icon: "fas fa-list-ol",
         class: "",

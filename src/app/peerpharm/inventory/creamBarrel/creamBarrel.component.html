@@ -1,0 +1,41 @@
+<section *ngIf="isLogin" dir="rtl">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>מספר חבית</th>
+          <th>סטטוס</th>
+          <th>משקל חבית</th>
+          <th>מספר אצווה</th>
+          <th>תאריך ייצור</th>
+          <th>תאריך תפוגה</th>
+          <th>שם פריט</th>
+          <th>מספר פריט</th>
+          <th>סוג פריט</th>
+          <th>מספר הזמנה</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of table">
+          <td>
+            {{row.barrelNumber}}
+          </td>
+          <td>
+           {{row.barrelStatus}}
+          </td>
+          <td>
+            {{row.barrelWeight}}
+          </td>
+          <td>{{row.batchNumber}}</td>
+          <td>{{row.productionDate}}</td>
+          <td>{{row.expirationDate}}</td>
+          <td>{{row.itemName}}</td>
+          <td>{{row.itemNumber}}</td>
+          <td>
+            {{row.itemType}}
+          </td>
+          <td>
+          {{row.orderNumber}}
+          </td>
+        </tr>
+      </tbody>
+    </table>
