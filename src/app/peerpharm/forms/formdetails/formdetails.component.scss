@@ -82,6 +82,33 @@ table.checks {
   font-size: large;
 }
 
+.alert {
+  padding: 70px;
+  background-color: #f44336;
+  color: white;
+  position: absolute;
+  z-index: 9999;
+  width: 500px;
+  font-size: 22px;
+  top:10rem;
+  right: 70rem;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 40px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
 @media (max-width: 1400px) and (min-width: 1000px) {
   i {
     display: block !important;

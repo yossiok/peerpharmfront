@@ -502,7 +502,7 @@
       </tr>
 
       <tr>
-        <td colspan="12">
+        <td colspan="12" *ngIf="form.tubeLevelChecked">
           <table class="checks table table-bordered">
             <thead>
               <tr>
@@ -1979,5 +1979,13 @@
   </div>
 </div>
 <p id="reason" style="display: none"></p>
+
+<div *ngIf="isTube && tubeAlart" class="alert">
+  <span dir="rtl" class="closebtn"
+    >&times;</span
+  >
+  <i class="fa fa-times" (click)="tubeAlart = !tubeAlart"></i>
+  <strong>הערה חשובה:</strong> שים לב המוצר שלפניך נשלח באריזה אישית !!! יש לבדוק את גובה חיתוך !!
+</div>
 
 <!-- <button printSectionId="print-section" ngxPrint>Print</button> -->
