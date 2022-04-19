@@ -104,6 +104,15 @@ export class ProductionService {
       .pipe(map((res) => res.json()));
   }
 
+  multiUpdateWorkPlans(workPlansArray) {
+    let url =
+      this.baseUrl +
+      `productionSchedule/MultiUpdateWorkPlan`;
+    return this.http
+      .post(url, JSON.stringify(workPlansArray), this.options)
+      .pipe(map((res) => res.json()));
+  }
+
   joinFormules(workPlanId, itemNumbers: string[], finalFormule) {
     let url = this.baseUrl + `productionSchedule/joinFormules`;
     return this.http
