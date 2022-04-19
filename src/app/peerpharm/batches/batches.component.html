@@ -129,6 +129,7 @@
         Reset Filters
       </button>
     </div>
+
     <div class="col-2">
       <button (click)="getAllBatches()" class="btn btn-info">
         All Batches
@@ -137,6 +138,27 @@
     <div class="col-2">
       <button (click)="getAllBatchesYear('lastYear')" class="btn btn-info">
         Batches Last Year
+      </button>
+    </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col-2">
+      <button (click)="listMin = 0; listMax = listStep" class="btn btn-info">
+        First
+      </button>
+    </div>
+    <div class="col-2">
+      <button (click)="previousList()" class="btn btn-danger">Previous</button>
+    </div>
+    <div class="col-2">
+      <button (click)="nextList()" class="btn btn-success">Next</button>
+    </div>
+    <div class="col-2">
+      <button
+        (click)="listMax = batches.length; listMin = batches.length - listStep"
+        class="btn btn-success"
+      >
+        Last
       </button>
     </div>
   </div>
@@ -286,10 +308,13 @@
               text-align: left;
               font-size: 1rem;
             "
-            *ngFor="let batch of batches; let i = index"
+            *ngFor="
+              let batch of batches | slice: listMin:listMax;
+              let i = index
+            "
             [style.background-color]="batch.color"
           >
-            <td style="width: 3%">{{ i + 1 }}</td>
+            <td style="width: 3%">{{ i + listMin + 1 }}</td>
             <td style="width: 6%" *ngIf="batch._id == EditRowId"></td>
             <td *ngIf="batch._id !== EditRowId && barrelAuthorized">
               <button
@@ -536,7 +561,7 @@
         <thead
           id="myHeader"
           style="box-shadow: inset 0px 0px 4px 1px black"
-          class="tableHeader bg-info text-white"
+          class="tableHeader-- bg-info text-white"
         >
           <tr>
             <td style="width: 3%">#</td>

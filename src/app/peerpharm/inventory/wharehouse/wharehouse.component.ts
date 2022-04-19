@@ -97,7 +97,7 @@ export class WharehouseComponent implements OnInit {
   allowNewRequest: boolean = false;
   showNewReq: boolean = false;
 
-  shelves: Array<any>
+  shelves: Array<any>;
 
   constructor(
     private procurementSrv: Procurementservice,
@@ -389,6 +389,7 @@ export class WharehouseComponent implements OnInit {
           this.curentWhareHouseId
         )
         .subscribe(async (res) => {
+          console.log(res);
           if (res.length > 0) {
             this.currItemShelfs = res;
           } else {
@@ -413,6 +414,7 @@ export class WharehouseComponent implements OnInit {
             this.curentWhareHouseId
           )
           .subscribe(async (res) => {
+            console.log(res);
             if (res.length > 0) {
               element.currItemShelfs = res;
             } else {
@@ -457,7 +459,6 @@ export class WharehouseComponent implements OnInit {
       });
     }
   }
-
 
   async getChildArr(arrSent) {
     console.log(arrSent);
@@ -633,7 +634,7 @@ export class WharehouseComponent implements OnInit {
     var itemLineToAdd = JSON.parse(JSON.stringify(itemLine));
     console.log(itemLineToAdd.amount);
     if (this.multiInputLines) itemLineToAdd.amount = itemLineToAdd.qnt;
-    console.log(itemLineToAdd.amount);
+    console.log(itemLineToAdd);
 
     this.loadingToTable = true;
     var position;
@@ -670,10 +671,11 @@ export class WharehouseComponent implements OnInit {
               this.inventoryService
                 .checkIfShelfExist(position, this.curentWhareHouseId)
                 .subscribe(async (shelfRes) => {
-                  if (shelfRes.ShelfId) {
+                  console.log(shelfRes);
+                  if (shelfRes.position) {
                     var itemShelfCurrAmounts = [];
                     await currItemShelfs.forEach((x) => {
-                      if (x.shell_id_in_whareHouse == shelfRes.ShelfId) {
+                      if (x.position == shelfRes.position) {
                         itemShelfCurrAmounts.push(x.amount);
                       }
                     });
