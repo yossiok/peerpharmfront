@@ -240,11 +240,13 @@ export class PrintingComponent implements OnInit {
 
 
   updateSchedule(line) {
-    ;
+
     if (!line.qtyProduced) line.qtyProduced = 0;
     if (!line.amountPckgs) line.amountPckgs = 0;
-
-    let dateToUpdate = moment(this.dateToEditStr).format();
+    
+    // This line make a bug on update
+    // let dateToUpdate = moment(this.dateToEditStr).format();
+    let dateToUpdate = new Date();
     if (this.dateToEditStr != "" && this.item.nativeElement.value != "") {
 
       let scheduleToUpdate = {
