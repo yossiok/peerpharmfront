@@ -1,5 +1,6 @@
 <div>
   <h1>Work Plans</h1>
+  <button *ngIf="toDoneArray.length>0" class="btn btn-danger toDoneBtn" (click)="toDone()">done העבר לסטטוס</button>
   <i class="fas fa-check-double"></i>
   <div class="row mt-4">
     <!--side bar-->
@@ -71,7 +72,7 @@
           <div class="box click" [style.background]="workPlan.status | orderItemBatchStatusColor"
             *ngIf="filterByRole(workPlan.status)">
             <input *ngIf="showCheckbox" [disabled]="disableCheckBox" class="checkbox" type="checkbox"
-              (change)="addOrRemove($event, i)">
+              (change)="updateToDoneArray(workPlan)" [checked]="toDoneArray.includes(workPlan)">
             <div (click)="openWorkPlan(workPlan.serialNumber)">
               <div class="service-line mt-4">
                 <h3>{{workPlan.serialNumber}}</h3>

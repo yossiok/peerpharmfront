@@ -1,101 +1,198 @@
 <section *ngIf="isLogin">
+  <button
+    *ngIf="logsArray.length > 0"
+    class="btn btn-danger border border-dark"
+    (click)="showLogsModal = true"
+  >
+    Show logs
+  </button>
   <table class="styled-table">
     <thead>
       <tr>
-        <th>Line</th>
-        <th>batch</th>
-        <th>Open Lot</th>
-        <th>Close Lot</th>
+        <th>Select</th>
+        <th>
+          <button
+            class="btn btn-warning border border-dark"
+            (click)="sortByLine()"
+          >
+            Line
+          </button>
+        </th>
+        <th>
+          <button
+            class="btn btn-warning border border-dark"
+            (click)="sortByBatch()"
+          >
+            batch
+          </button>
+        </th>
+        <th>
+          <button
+            class="btn btn-warning border border-dark"
+            (click)="sortByOpenLot()"
+          >
+            Open Lot
+          </button>
+        </th>
+        <th>
+          <button
+            class="btn btn-warning border border-dark"
+            (click)="sortByCloseLot()"
+          >
+            Close Lot
+          </button>
+        </th>
         <th>Total Work Time</th>
         <th>Order Quantity</th>
         <th>Produced Quantity</th>
-        <th>Percentage Quantity From Order</th>
-        <th>Single Unit Filling Time In Seconds</th>
+        <th>Percentage Quantity</th>
+        <th>Single Unit Filling Time</th>
         <th>Remarks</th>
-        <th>Logs</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let row of table">
-        <td>
-          {{row.line}}
+        <td style="width: 1%">
+          <input
+            type="checkbox"
+            value="{{ row }}"
+            [checked]="logsArray.includes(row)"
+            (change)="updateLogsArray(row)"
+          />
         </td>
-        <td>
-         {{row.batch}}
+        <td style="width: 3%">
+          {{ row.line }}
         </td>
-        <td>
-          {{row.openLot}}
+        <td style="width: 5%">
+          {{ row.batch }}
         </td>
-        <td>{{row.closeLot}}</td>
-        <td>{{row.totalWorkTime}}</td>
-        <td>{{row.orderQuantity}}</td>
-        <td>{{row.producedQuantity}}</td>
-        <td>{{row.percentageQuantity}}%</td>
-        <td>
-          {{row.unitFillingTime}} seconds
+        <td style="width: 12%">
+          {{ row.openLot }}
         </td>
-        <td>
-          <span *ngIf="row.remarksFront != '' ">
-            {{row.remarksFront}}
+        <td style="width: 12%">{{ row.closeLot }}</td>
+        <td style="width: 12%">{{ row.totalWorkTime }}</td>
+        <td style="width: 7%">{{ row.orderQuantity }}</td>
+        <td style="width: 7%">{{ row.producedQuantity }}</td>
+        <td style="width: 7%">{{ row.percentageQuantity }}%</td>
+        <td style="width: 12%">{{ row.unitFillingTime }} seconds</td>
+        <td style="width: 7%">
+          <span *ngIf="row.remarksFront != ''">
+            {{ row.remarksFront }}
           </span>
-          <span *ngIf="row.remarksFront != '' && row.remarksBack != '' ">
+          <span *ngIf="row.remarksFront != '' && row.remarksBack != ''">
             ,
           </span>
-          <span *ngIf="row.remarksBack != '' ">
-            {{row.remarksBack}}
+          <span *ngIf="row.remarksBack != ''">
+            {{ row.remarksBack }}
           </span>
-        </td>
-        <td>
-         Go to logs
         </td>
       </tr>
     </tbody>
   </table>
-  <button (click)="paginatePrevious()">Previous</button>
+  <button (click)="paginatePrevious()" class="btn btn-info border border-dark">
+    Next Week
+  </button>
   ...........
-  <button (click)="paginateNext()">Next</button>
-
-
+  <button (click)="paginateNext()" class="btn btn-info border border-dark">
+    Previous Week
+  </button>
 
   <div
-  *ngIf="showLogsModal == true"
-  dir="rtl"
-  class="bg-white fixed-top mx-auto w-100 p-5 my-auto text-center rounded shadow-lg border border-info scroll"
->
+    *ngIf="showLogsModal == true"
+    class="bg-white fixed-top mx-auto w-100 p-5 my-auto text-center rounded shadow-lg border border-info scroll"
+  >
+    <div>
+      <i
+        style="cursor: pointer; font-size: large"
+        (click)="showLogsModal = false"
+        class="fa fa-times text-info"
+      ></i>
+    </div>
 
-<div>
-  <i
-    style="cursor: pointer; font-size: large"
-    (click)="showLogsModal = false"
-    class="fa fa-times text-info"
-  ></i>
-</div>
+    <div>
+      <button
+        printSectionId="logTable"
+        style="width: 15%"
+        class="btn btn-success form-control"
+        ngxPrint
+        styleSheetFile="../../../../assets/stylesheets/logTable.css"
+      >
+    הדפסה <i class="fa fa-print"></i>
+      </button>
+    </div>
 
-<table class="styled-table">
-  <thead>
-    <tr>
-      <th>שם משתמש</th>
-      <th>מתי</th>
-      <th>שם הפעולה</th>
-      <th>סיבה</th>
-      <th>מה שונה</th>
-      <th>לפני שינוי</th>
-      <th>אחרי שינוי</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>bla</td>
-      <td>bla</td>
-      <td>bla</td>
-      <td>bla</td>
-      <td>bla</td>
-      <td>bla</td>
-      <td>bla</td>
-    </tr>
-  </tbody>
-</table>
-
-
-</div>
+    <div id="logTable">
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Line</th>
+            <th>batch</th>
+            <th>Open Lot</th>
+            <th>Close Lot</th>
+            <th>Total Work Time</th>
+            <th>Order Quantity</th>
+            <th>Produced Quantity</th>
+            <th>Percentage Quantity</th>
+            <th>Single Unit Filling Time</th>
+            <th>Remarks</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of logsArray">
+            <td>
+              {{ row.line }}
+            </td>
+            <td>
+              {{ row.batch }}
+            </td>
+            <td>
+              {{ row.openLot }}
+            </td>
+            <td>{{ row.closeLot }}</td>
+            <td>{{ row.totalWorkTime }}</td>
+            <td>{{ row.orderQuantity }}</td>
+            <td>{{ row.producedQuantity }}</td>
+            <td>{{ row.percentageQuantity }}%</td>
+            <td>{{ row.unitFillingTime }} seconds</td>
+            <td>
+              <span *ngIf="row.remarksFront != ''">
+                {{ row.remarksFront }}
+              </span>
+              <span *ngIf="row.remarksFront != '' && row.remarksBack != ''">
+                ,
+              </span>
+              <span *ngIf="row.remarksBack != ''">
+                {{ row.remarksBack }}
+              </span>
+            </td>
+            <td *ngIf="row.logs.length > 0">
+              <thead>
+                <tr>
+                  <th>User Name</th>
+                  <th>When</th>
+                  <th>Action</th>
+                  <th>Reason</th>
+                  <th>What Changes</th>
+                  <th>Before</th>
+                  <th>After</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let log of row.logs">
+                  <td>{{ log.userName }}</td>
+                  <td>{{ log.when }}</td>
+                  <td>{{ log.action }}</td>
+                  <td>{{ log.reason }}</td>
+                  <td>{{ log.name }}</td>
+                  <td>{{ log.before }}</td>
+                  <td>{{ log.after }}</td>
+                </tr>
+              </tbody>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </section>

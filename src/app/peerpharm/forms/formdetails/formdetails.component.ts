@@ -57,6 +57,7 @@ export class FormdetailsComponent implements OnInit {
   kindOfPalletUpdate = null;
   qaStatusUpdate = null;
   isTube = false;
+  tubeAlart:boolean = true;
   barrelsList: any[] = [];
 
   // usedBarrels: any[] = [];
@@ -147,6 +148,8 @@ export class FormdetailsComponent implements OnInit {
     // הגענו מהטאבלט (עמוד ראשי)
     else this.getForms(true, formID1);
   }
+
+ 
 
   getIsTubeState(itemNumber) {
     this.itemService.getItemData(itemNumber).subscribe((data) => {

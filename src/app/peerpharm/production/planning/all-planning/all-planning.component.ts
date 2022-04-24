@@ -33,7 +33,9 @@ export class AllPlanningComponent implements OnInit {
   loadData: boolean = false;
   showCheckbox: boolean = false
   authorized: boolean = false
-  deleteArray: Array<any> = [];
+
+
+  toDoneArray: Array<any> = [];
 
 
   constructor(
@@ -55,8 +57,9 @@ export class AllPlanningComponent implements OnInit {
       if (params["params"].workPlanId && bool) {
         this.openWorkPlan(Number(params["params"].workPlanId))
       }
-      else this.checkForProduced()
     })
+
+    this.producedToDone()
   }
 
   getWorkPlans() {
@@ -71,20 +74,48 @@ export class AllPlanningComponent implements OnInit {
     })
   }
 
-  updateDeleteArray(workPlan){
-    if(this.deleteArray.includes(workPlan)){
-      this.deleteArray = this.deleteArray.filter((wp)=> wp._id != workPlan._id);
+  updateToDoneArray(workPlan){
+    if(this.toDoneArray.includes(workPlan)){
+      this.toDoneArray = this.toDoneArray.filter((wp)=> wp._id != workPlan._id);
     }else{
-      this.deleteArray.push(workPlan);
+      this.toDoneArray.push(workPlan);
     }
   }
 
+  toDone(){
+
+    for(let wp of this.toDoneArray){
+      wp.status = 7;
+    }
+
+    this.productionService.multiUpdateWorkPlans(this.toDoneArray).subscribe((res)=>{
+      console.log(res)
+      this.toDoneArray=[]
+      this.ngOnInit()
+    })
+
+
+  }
+  producedToDone(){
+    let producedArray = this.workPlans.filter((wp)=> wp.status == 6)
+
+    for(let wp of producedArray){
+      wp.status = 7;
+    }
+
+    this.productionService.multiUpdateWorkPlans(producedArray).subscribe((res)=>{
+      console.log(res)
+    })
+
+  }
+
+
  
 
-  checkForProduced() {
-    this.producedWorkPlans = this.workPlans.filter(wp => wp.status == 6).map(wp => wp.serialNumber)
-    this.modalService.open(this.producedWorkPlansER)
-  }
+  // checkForProduced() {
+  //   this.producedWorkPlans = this.workPlans.filter(wp => wp.status == 6).map(wp => wp.serialNumber)
+  //   this.modalService.open(this.producedWorkPlansER)
+  // }
 
   openWorkPlan(serialNum) {
     this.showWorkPlan = true
@@ -142,7 +173,8 @@ export class AllPlanningComponent implements OnInit {
   }
 
   showHideCheckBox() {
-    if (this.showCheckbox) this.checkedWorkPlans = []
+    if (this.showCheckbox)this.checkedWorkPlans = []
+    
     this.showCheckbox = !this.showCheckbox
   }
 

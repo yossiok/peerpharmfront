@@ -98,6 +98,8 @@ export class PlanningDetailsComponent implements OnInit {
     30,
   ];
 
+  editTotalKG:any;
+
   constructor(
     private authService: AuthService,
     private toastr: ToastrService,
@@ -365,6 +367,43 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   saveChanges(oderItemToDelete?): Promise<string> {
+
+    
+    /*
+     Check if the new weight is bigger than 10% of the order quantity
+     or less than that
+     */
+    if(this.editTotalKG){
+
+      const quantity = Number(this.workPlan.orderItems[oderItemToDelete].quantity)
+      console.log(quantity);
+
+      if((this.editTotalKG -  (quantity + (quantity*0.1) ) ) > 0 ){
+        const text = "הכמות החדשה גדולה יותר ב10% מהכמות המוזמנת. האם אתה בטוח?";
+        if (confirm(text)) {
+          this.workPlan.orderItems[oderItemToDelete].totalKG = this.editTotalKG
+        } else {
+          this.toastr.warning('לא בוצעו שינויים');
+          return
+        }
+      }
+
+      if(this.editTotalKG < quantity){
+
+        const text = "הכמות החדשה קטנה יותר מהכמות המוזמנת. האם אתה בטוח?";
+        if (confirm(text)) {
+          this.workPlan.orderItems[oderItemToDelete].totalKG = this.editTotalKG
+        } else {
+          this.toastr.warning('לא בוצעו שינויים');
+          return
+        }
+
+      }
+
+      this.workPlan.orderItems[oderItemToDelete].totalKG = this.editTotalKG
+
+    }
+    
     return new Promise((resolve, reject) => {
       this.productionService
         .editWorkPlan(this.workPlan, oderItemToDelete)

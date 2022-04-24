@@ -108,6 +108,10 @@
   /* Safari */
   animation: spin 2s linear infinite;
 }
+.toDoneBtn{
+  z-index: 100;
+  position: fixed;
+}
 
 /******************Scroll Bar********************************************/
 ::-webkit-scrollbar {
