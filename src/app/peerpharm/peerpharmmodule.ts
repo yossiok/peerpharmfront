@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { JsonpModule } from "@angular/http";
 import { NgbModule } from "@ng-bootstrap/ng-bootstrap";
 import { NgxBarcodeModule } from "ngx-barcode";
-import {NgxPaginationModule} from 'ngx-pagination';
+import { NgxPaginationModule } from "ngx-pagination";
 import { FormuleComponent } from "./formules/formule.component";
 import { AddFormuleComponent } from "./formules/add-formule/add-formule.component";
 import { AddFormuleItemComponent } from "./formules/add-formule-item/add-formule-item.component";
@@ -195,6 +195,7 @@ import { CustomersComponent } from "./customers/customers.component";
 import { ProposalsComponent } from "./customers/proposals/proposals.component";
 import { ProposalsListComponent } from "./customers/proposals-list/proposals-list.component";
 import { CreamBarrelComponent } from "./inventory/creamBarrel/creamBarrel.component";
+import { BulksReportComponent } from "./batches/bulks-inventory/bulks-report/bulks-report.component";
 
 @NgModule({
   exports: [
@@ -365,6 +366,7 @@ import { CreamBarrelComponent } from "./inventory/creamBarrel/creamBarrel.compon
     CustomersComponent,
     ProposalsComponent,
     ProposalsListComponent,
+    BulksReportComponent,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [

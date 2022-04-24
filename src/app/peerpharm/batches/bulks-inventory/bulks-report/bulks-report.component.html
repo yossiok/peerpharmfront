@@ -1,0 +1,148 @@
+<div dir="rtl">
+  <h1 class="text-center">
+    <span
+      class="heading1"
+      [style.backgroundColor]="currentView | orderItemBatchStatusColor"
+    >
+    </span>
+  </h1>
+  <div class="bg-white">
+    <div class="px-3 py-3 d-flex align-items-center border-bottom bg-light">
+      <form class="form-inline my-2 my-lg-0">
+        <input
+          class="form-control mr-sm-2"
+          type="text"
+          placeholder="Search"
+          aria-label="Search"
+          (keyup)="filterBarrels($event)"
+          #barrelFilter
+        />
+        <button
+          class="btn btn-outline-primary my-2 my-sm-0"
+          type="button"
+          (click)="clearBarrelsList()"
+        >
+          Clear
+        </button>
+      </form>
+      <form
+        novalidate=""
+        class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
+      >
+        <button
+          type="button"
+          id="btnCreateWP"
+          class="btn btn-warning flex-shrink-0"
+          (click)="noOrder()"
+        >
+          לא משויך להזמנה
+        </button>
+      </form>
+      <form
+        novalidate=""
+        class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
+      >
+        <button
+          type="button"
+          id="btnCreateWP"
+          class="btn btn-primary flex-shrink-0"
+          (click)="hasOrder()"
+        >
+          משויך להזמנה
+        </button>
+      </form>
+      <form
+        novalidate=""
+        class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
+      >
+        <button
+          type="button"
+          id="btnCreateWP"
+          class="btn btn-primary flex-shrink-0"
+          (click)="filterOrders()"
+        >
+          מתאים להזמנות
+        </button>
+      </form>
+      <form
+        novalidate=""
+        class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
+      >
+        <button
+          type="button"
+          id="btnCreateWP"
+          class="btn btn-warning flex-shrink-0"
+          (click)="getReturned()"
+        >
+          חביות ישנות
+        </button>
+      </form>
+      <form
+        novalidate=""
+        class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
+      >
+        <button
+          type="button"
+          id="btnCreateWP"
+          class="btn btn-success flex-shrink-0"
+          (click)="clearBarrelsList()"
+        >
+          כל החביות
+        </button>
+      </form>
+    </div>
+
+    <table class="table table-striped">
+      <thead class="bg-secondary text-white">
+        <tr>
+          <td>#</td>
+          <th style="min-width: 150px; font-weight: bold; padding: 5px">
+            שם החבית
+          </th>
+          <th>פורמולת אב</th>
+          <th>סוג הפורמולה</th>
+          <th>משקל</th>
+          <th>סטטוס</th>
+          <th>משויך להזמנה</th>
+          <th>מתאים להזמנות</th>
+          <th>תאריך ייצור</th>
+          <th>תאריך תפוגה</th>
+        </tr>
+      </thead>
+
+      <tbody class="bg-light text-align">
+        <tr
+          *ngFor="let barrel of filteredBarrelsList; let i = index"
+          class="border-bottom border-dark"
+        >
+          <td>{{ i + 1 }}</td>
+          <td style="min-width: 150px; font-weight: bold; padding: 5px">
+            {{ barrel.barrelNumber }}
+          </td>
+          <td>{{ barrel.parentFormule }}</td>
+          <td>{{ barrel.formuleType }}</td>
+          <!-- <td *ngIf="barrel.children.length > 0">
+            <span *ngFor="let child of barrel.children"
+            >{{ child.childNumber }},
+          </span>
+        </td> -->
+          <!-- <td *ngIf="barrel.children.length == 0">
+          {{ barrel.formuleNumber }}
+        </td> -->
+          <td>Kg {{ barrel.barrelWeight | number: "1.0-2" }}</td>
+          <td>{{ barrel.barrelStatus }}</td>
+          <td>{{ barrel.orderNumber }}</td>
+          <td>
+            <span *ngFor="let order of barrel.relevantOrders"
+              ><span style="font-weight: bold">{{ order.orderNumber }} :</span
+              >{{ order.itemNumber }},
+            </span>
+          </td>
+          <td>{{ barrel.productionDate | date: "dd/MM/yyyy" }}</td>
+          <td>{{ barrel.expirationDate | date: "dd/MM/yyyy" }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="barrelsLoader" class="loading">Loading&#8230;</div>
+  </div>
+</div>

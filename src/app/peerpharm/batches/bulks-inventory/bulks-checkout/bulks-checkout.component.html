@@ -1,5 +1,5 @@
 <div *ngIf="!authorized">אינך מורשה לראות מסך זה</div>
-<div dir="rtl">
+<div dir="rtl" *ngIf="authorized">
   <form [formGroup]="bulkCheckout" class="form_1">
     <div class="row mt-4">
       <h3>הוצאת חביות למחלקת מילוי</h3>

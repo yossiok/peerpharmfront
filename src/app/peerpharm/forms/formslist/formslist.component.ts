@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { FormsService } from '../../../services/forms.service';
-import { ExcelService } from 'src/app/services/excel.service';
-import { AuthService } from 'src/app/services/auth.service';
-import { Router } from '@angular/router';
+import { Component, OnInit } from "@angular/core";
+import { FormsService } from "../../../services/forms.service";
+import { ExcelService } from "src/app/services/excel.service";
+import { AuthService } from "src/app/services/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
-  selector: 'app-formslist',
-  templateUrl: './formslist.component.html',
-  styleUrls: ['./formslist.component.scss']
+  selector: "app-formslist",
+  templateUrl: "./formslist.component.html",
+  styleUrls: ["./formslist.component.scss"],
 })
 export class FormslistComponent implements OnInit {
   myRefresh: any = null;
@@ -15,8 +15,13 @@ export class FormslistComponent implements OnInit {
   formsCopy: any[];
   sortByFillingDate: Boolean = false;
   showLoader: Boolean = true;
-  year: string = '2022'
-  constructor(private formsService: FormsService, private excelService: ExcelService, private authService: AuthService, private router: Router) { }
+  year: string = "2022";
+  constructor(
+    private formsService: FormsService,
+    private excelService: ExcelService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.getForms();
@@ -24,94 +29,98 @@ export class FormslistComponent implements OnInit {
   }
 
   checkPermission() {
-    return this.authService.loggedInUser.screenPermission == '5'
+    return this.authService.loggedInUser.screenPermission == "5";
   }
 
   getForms() {
+    this.showLoader = true;
 
-    this.showLoader = true
-
-    if (this.year == '2021' || this.year == '2022') {
-      this.formsService.getAllForms(this.year).subscribe(forms => {
+    if (this.year == "2021" || this.year == "2022") {
+      this.formsService.getAllForms(this.year).subscribe((forms) => {
+        console.log(forms);
         if (forms) {
-          forms.map(form => {
+          forms.map((form) => {
             let dateStr = this.year + "/01/01";
             try {
-              let dateSAsArrray = form.fillingDate.split('/');
-              dateStr = dateSAsArrray[2] + "/" + dateSAsArrray[1] + "/" + dateSAsArrray[0];
-            } catch (e) { console.log(e) }
+              let dateSAsArrray = form.fillingDate.split("/");
+              dateStr =
+                dateSAsArrray[2] +
+                "/" +
+                dateSAsArrray[1] +
+                "/" +
+                dateSAsArrray[0];
+            } catch (e) {
+              console.log(e);
+            }
             form.formatedDate = new Date(dateStr);
             return form;
-          })
-          forms.sort((a, b) => b.formatedDate - a.formatedDate)
+          });
+          forms.sort((a, b) => b.formatedDate - a.formatedDate);
+          this.showLoader = false;
+          this.forms = forms;
+          this.formsCopy = forms;
+        }
+      });
+    } else if (this.year == "2019" || this.year == "2020") {
+      this.formsService.getFormsFromArchive(this.year).subscribe((forms) => {
+        if (forms) {
+          forms.map((form) => {
+            let dateStr = this.year + "/01/01";
+            try {
+              let dateSAsArrray = form.fillingDate.split("/");
+              dateStr =
+                dateSAsArrray[2] +
+                "/" +
+                dateSAsArrray[1] +
+                "/" +
+                dateSAsArrray[0];
+            } catch (e) {
+              console.log(e);
+            }
+            form.formatedDate = new Date(dateStr);
+            return form;
+          });
+          forms.sort((a, b) => b.formatedDate - a.formatedDate);
           this.showLoader = false;
           this.forms = forms;
           this.formsCopy = forms;
         }
       });
     }
-
-    else if (this.year == '2019' || this.year == '2020') {
-      this.formsService.getFormsFromArchive(this.year).subscribe(forms => {
-        if (forms) {
-          forms.map(form => {
-            let dateStr = this.year + "/01/01";
-            try {
-              let dateSAsArrray = form.fillingDate.split('/');
-              dateStr = dateSAsArrray[2] + "/" + dateSAsArrray[1] + "/" + dateSAsArrray[0];
-            } catch (e) { console.log(e) }
-            form.formatedDate = new Date(dateStr);
-            return form;
-          })
-          forms.sort((a, b) => b.formatedDate - a.formatedDate)
-          this.showLoader = false;
-          this.forms = forms;
-          this.formsCopy = forms;
-        }
-
-      })
-    }
-
   }
   sortFormsByFormNumber() {
-    this.forms.reverse()
+    this.forms.reverse();
   }
 
   exportAsXLSX(): void {
-    this.excelService.exportAsExcelFile(this.forms, 'form');
+    this.excelService.exportAsExcelFile(this.forms, "form");
   }
 
   exportAsXLSX2() {
-    let orders = []
-      // console.log(data)
-        
-  
-  //       orders.push({
-  //         "הלקוח": order.openOrder.costumer,
-  //         "מס' הזמנה": order.openOrder.orderNumber,
-  //         "לקוח": order.openOrder.costumer,
-  //         'מק"ט לקוח (פנימי)': order.openOrder.costumerInternalId,
-  //         "תאריך הזמנה": order.openOrder.orderDate,
-  //         "תאריך אספקה (משוער)": order.openOrder.deliveryDate,
-  //         "סוג הזמנה": order.openOrder.type,
-  //         "משתמש": order.openOrder.user,
-  //         "הערות": order.openOrder.orderRemarks,
-  //         "סטטוס": order.openOrder.status,
-  //         "שלב": order.openOrder.stage,
-  //         "מוצרים":items
-  //       })
-      
-  //     this.excelService.exportAsExcelFile(orders, `דו"ח הזמנות תקועות ${new Date().toString().slice(0, 10)}`);
+    let orders = [];
+    // console.log(data)
+
+    //       orders.push({
+    //         "הלקוח": order.openOrder.costumer,
+    //         "מס' הזמנה": order.openOrder.orderNumber,
+    //         "לקוח": order.openOrder.costumer,
+    //         'מק"ט לקוח (פנימי)': order.openOrder.costumerInternalId,
+    //         "תאריך הזמנה": order.openOrder.orderDate,
+    //         "תאריך אספקה (משוער)": order.openOrder.deliveryDate,
+    //         "סוג הזמנה": order.openOrder.type,
+    //         "משתמש": order.openOrder.user,
+    //         "הערות": order.openOrder.orderRemarks,
+    //         "סטטוס": order.openOrder.status,
+    //         "שלב": order.openOrder.stage,
+    //         "מוצרים":items
+    //       })
+
+    //     this.excelService.exportAsExcelFile(orders, `דו"ח הזמנות תקועות ${new Date().toString().slice(0, 10)}`);
   }
-
-
-
-
-
 
   sortFormsByFillingDate() {
     // NOT WOTKING WELL !! NEED TO DIVIDE YEAR/MONTH/DAY
-    this.sortByFillingDate = (this.sortByFillingDate) ? false : true;
+    this.sortByFillingDate = this.sortByFillingDate ? false : true;
     let sortDir = this.sortByFillingDate;
     this.forms.sort(function (a, b) {
       let aFillingDate = new Date(a.fillingDate);
@@ -122,17 +131,17 @@ export class FormslistComponent implements OnInit {
         return bFillingDate.getTime() - aFillingDate.getTime();
       }
     });
-
   }
 
   stopInterval() {
-    clearInterval(this.myRefresh)
+    clearInterval(this.myRefresh);
   }
 
   startInterval() {
-    this.myRefresh = setInterval(() => { this.getForms(); }, 1000 * 60 * 3);
+    this.myRefresh = setInterval(() => {
+      this.getForms();
+    }, 1000 * 60 * 3);
   }
-
 
   // exportAsXLSX() {
   //   let arrToExcel=this.forms.map(f=>f);
@@ -157,7 +166,7 @@ export class FormslistComponent implements OnInit {
   //         [checkNetoWeight_filedName]:x.checkNetoWeight[i],
   //         [checkBox_stickerPrinting_filedName]:x.checkBox_stickerPrinting[i],
   //       });
-  //       
+  //
   //     }
   //     arrToExcel.push(newObj);
   //   });
@@ -174,41 +183,49 @@ export class FormslistComponent implements OnInit {
   // }
 
   FilterForms(enteredText, field) {
-    ;
     const enteredValue = enteredText.target.value;
-    if (enteredValue !== '') {
+    if (enteredValue !== "") {
       switch (field) {
-        case 'costumer': {
-          this.forms = this.forms.filter(x => x.costumerName.includes(enteredValue));
+        case "costumer": {
+          this.forms = this.forms.filter((x) =>
+            x.costumerName.includes(enteredValue)
+          );
           break;
         }
-        case 'batch': {
-          this.forms = this.forms.filter(x => x.batchN.includes(enteredValue));
+        case "batch": {
+          this.forms = this.forms.filter((x) =>
+            x.batchN.includes(enteredValue)
+          );
           break;
         }
-        case 'item': {
-          this.forms = this.forms.filter(x => x.itemN.includes(enteredValue));
+        case "item": {
+          this.forms = this.forms.filter((x) => x.itemN.includes(enteredValue));
           break;
         }
-        case 'fill': {
-          this.forms = this.forms.filter(x => x.fillingDate.includes(enteredValue));
+        case "fill": {
+          this.forms = this.forms.filter((x) =>
+            x.fillingDate.includes(enteredValue)
+          );
           break;
         }
-        case 'order': {
-          this.forms = this.forms.filter(x => x.orderNumber.includes(enteredValue));
+        case "order": {
+          this.forms = this.forms.filter((x) =>
+            x.orderNumber.includes(enteredValue)
+          );
           break;
         }
-        case 'productionLine': {
-          this.forms = this.forms.filter(x => x.productionLine == enteredValue);
+        case "productionLine": {
+          this.forms = this.forms.filter(
+            (x) => x.productionLine == enteredValue
+          );
           break;
         }
-        case 'status': {
-          if (enteredValue == 'all') this.forms = this.formsCopy
-          else this.forms = this.formsCopy.filter(x => x.status == enteredValue);
+        case "status": {
+          if (enteredValue == "all") this.forms = this.formsCopy;
+          else
+            this.forms = this.formsCopy.filter((x) => x.status == enteredValue);
           break;
         }
-
-
       }
     } else {
       this.getForms();

@@ -1766,6 +1766,11 @@ export class OrderdetailsComponent implements OnInit {
                               "Schedule not saved! Please check all fields."
                             );
                           else {
+                            if (res.errors.length > 0) {
+                              for (let msg of res.errors) {
+                                this.toastSrv.warning(msg.msg);
+                              }
+                            }
                             this.toastSrv.success("Schedule Saved.");
                             // this.getFillingSchedule(item);
                             this.getDetails(item.itemNumber, item._id);

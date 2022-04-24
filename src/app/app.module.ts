@@ -32,25 +32,29 @@ import { AppComponent } from "./app.component";
 import { SpinnerComponent } from "./shared/spinner.component";
 //import { AmplifyAngularModule, AmplifyService } from 'aws-amplify-angular'
 
-import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
-import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-import { ContentComponent } from './peerpharm/taskboard/core/content/content.component';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { OverlayModule } from '@angular/cdk/overlay';
-import { ScheduleCardComponent } from './peerpharm/production/production/schedule-card/schedule-card.component';
-import { MyiframeComponent } from './myiframe/myiframe.component';
-import { ToastrModule } from 'ngx-toastr';
-import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
-import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import { NgxBarcodeModule } from 'ngx-barcode';
-import { TestPipePipe } from './pipes/test-pipe.pipe';
-import { ConfirmModalComponent } from './services/confirm.modal.service';
-import { OrdersService } from './services/orders.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandlerService } from './services/error-handler.service';
-import { ConfirmModalSMSComponent } from './services/confirmsms.modal.service';
+import { PerfectScrollbarModule } from "ngx-perfect-scrollbar";
+import { PERFECT_SCROLLBAR_CONFIG } from "ngx-perfect-scrollbar";
+import { PerfectScrollbarConfigInterface } from "ngx-perfect-scrollbar";
+import { ContentComponent } from "./peerpharm/taskboard/core/content/content.component";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { OverlayModule } from "@angular/cdk/overlay";
+import { ScheduleCardComponent } from "./peerpharm/production/production/schedule-card/schedule-card.component";
+import { MyiframeComponent } from "./myiframe/myiframe.component";
+import { ToastrModule } from "ngx-toastr";
+import {
+  TranslateModule,
+  TranslateLoader,
+  TranslateService,
+} from "@ngx-translate/core";
+import { TranslateHttpLoader } from "@ngx-translate/http-loader";
+import { NgxBarcodeModule } from "ngx-barcode";
+import { TestPipePipe } from "./pipes/test-pipe.pipe";
+import { ConfirmModalComponent } from "./services/confirm.modal.service";
+import { OrdersService } from "./services/orders.service";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
+import { BrowserModule } from "@angular/platform-browser";
+import { ErrorHandlerService } from "./services/error-handler.service";
+import { ConfirmModalSMSComponent } from "./services/confirmsms.modal.service";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -107,7 +111,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     BrowserAnimationsModule,
     RouterModule.forRoot(Approutes, { useHash: false }),
     PerfectScrollbarModule,
-    NgxBarcodeModule.forRoot()
+    NgxBarcodeModule.forRoot(),
   ],
   providers: [
     OrdersService,
