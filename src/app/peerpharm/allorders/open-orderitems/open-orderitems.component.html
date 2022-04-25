@@ -21,19 +21,7 @@
           Clear
         </button>
       </form>
-      <form
-        novalidate=""
-        class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
-      >
-        <button
-          type="button"
-          id="btnCreateWP"
-          class="btn btn-warning flex-shrink-0"
-          (click)="clearOrderItems()"
-        >
-          בטל סינון
-        </button>
-      </form>
+
       <!-- <form
         novalidate=""
         class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
@@ -70,7 +58,20 @@
           class="btn btn-warning flex-shrink-0"
           (click)="withoutBarrels()"
         >
-          אין חביות
+          ללא חביות
+        </button>
+      </form>
+      <form
+        novalidate=""
+        class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
+      >
+        <button
+          type="button"
+          id="btnCreateWP"
+          class="btn btn-secondary flex-shrink-0"
+          (click)="clearOrderItems()"
+        >
+          בטל סינון
         </button>
       </form>
       <form
@@ -83,12 +84,12 @@
           class="btn btn-success flex-shrink-0"
           (click)="withBarrels()"
         >
-          יש חביות
+          עם חביות
         </button>
       </form>
     </div>
 
-    <table class="table table-striped">
+    <table class="table table-striped table_01">
       <thead class="bg-secondary text-white">
         <tr>
           <td>#</td>
@@ -97,7 +98,16 @@
               class="ti-exchange-vertical"
               (click)="sortItemsOne('orderNumber')"
               style="cursor: pointer"
-              >הזמנה</i
+            >
+              <span class="font-roboto">הזמנה</span>
+            </i>
+          </th>
+          <th>
+            <i
+              class="ti-exchange-vertical"
+              (click)="sortItemsOne('orderNumber')"
+              style="cursor: pointer"
+              ><span class="font-roboto">שם הלקוח</span></i
             >
           </th>
           <th>
@@ -105,7 +115,7 @@
               class="ti-exchange-vertical"
               (click)="sortItemsOne('orderNumber')"
               style="cursor: pointer"
-              >שם הלקוח</i
+              ><span class="font-roboto">תאריך הזמנה</span></i
             >
           </th>
           <th>
@@ -113,15 +123,7 @@
               class="ti-exchange-vertical"
               (click)="sortItemsOne('orderNumber')"
               style="cursor: pointer"
-              >תאריך הזמנה</i
-            >
-          </th>
-          <th>
-            <i
-              class="ti-exchange-vertical"
-              (click)="sortItemsOne('orderNumber')"
-              style="cursor: pointer"
-              >פריט</i
+              ><span class="font-roboto">פריט</span></i
             >
           </th>
           <th>משקל פריט</th>
@@ -132,11 +134,11 @@
               class="ti-exchange-vertical"
               (click)="sortItemsOne('orderNumber')"
               style="cursor: pointer"
-              >תאריך אספקה</i
+              ><span class="font-roboto">תאריך אספקה</span></i
             >
           </th>
           <th>כמות שיוצרה</th>
-          <th>הערות</th>
+          <th style="width: 300px">הערות</th>
           <th>חביות מתאימות</th>
         </tr>
       </thead>
@@ -180,9 +182,11 @@
                 <tbody>
                   <tr *ngFor="let barrel of orderItem.relevantBarrels">
                     <td style="font-weight: bold">{{ barrel.barrelNumber }}</td>
-                    <td>{{ barrel.barrelWeight | number: "1.0-1" }}</td>
+                    <td>ק"ג {{ barrel.barrelWeight | number: "1.0-1" }}</td>
                     <td>{{ barrel.barrelStatus }}</td>
-                    <td style="font-weight: bold">{{ barrel.orderNumber }}</td>
+                    <td style="font-weight: bold">
+                      {{ barrel.orderNumber }}
+                    </td>
                     <td>{{ barrel.expirationDate | date: "dd/MM/yyyy" }}</td>
                   </tr>
                 </tbody>
@@ -201,7 +205,9 @@
             </span> -->
             </td>
           </ng-container>
-          <td *ngIf="orderItem.relevantBarrels.length == 0">אין חביות</td>
+          <td *ngIf="orderItem.relevantBarrels.length == 0">
+            אין חביות מוכנות לפריט זה
+          </td>
         </tr>
       </tbody>
     </table>
