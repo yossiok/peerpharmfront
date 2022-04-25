@@ -234,7 +234,8 @@ export class StockComponent implements OnInit {
   orderItems: any;
   procurementInputEvent: any;
   newPurchaseRecommendation: FormGroup;
-  stockType: String = "component";
+  // stockType
+  stockType: String = "";
   newItem: String = "";
   newItemBtn: String = "new";
   today: Date = new Date();
@@ -393,6 +394,13 @@ export class StockComponent implements OnInit {
   dir: string;
   PPCLoading: boolean = false;
 
+  // Arrays for filter tabs
+  componentFilter:Array<any> = [] 
+  productFilter:Array<any> = []
+  materialFilter:Array<any> = []
+
+  sumofAmount:string
+
   // currentFileUpload: File; //for img upload creating new component
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
@@ -491,6 +499,7 @@ export class StockComponent implements OnInit {
   checkPermission() {
     return this.authService.loggedInUser.screenPermission == "5";
   }
+
 
   //expected Arrivals modal
   getNewExpectedArrivalsData(outputeEvent) {
@@ -1085,11 +1094,11 @@ export class StockComponent implements OnInit {
         this.whareHouses = displayAllowedWH;
         this.curentWhareHouseId = displayAllowedWH[0]._id;
         this.curentWhareHouseName = displayAllowedWH[0].name;
-        if (this.curentWhareHouseName.includes("product")) {
-          this.stockType = "product";
-        } else {
-          this.stockType = "component";
-        }
+        // if (this.curentWhareHouseName.includes("product")) {
+        //   this.stockType = "product";
+        // } else {
+        //   this.stockType = "component";
+        // }
       }
       console.log(res);
     });
@@ -1106,7 +1115,7 @@ export class StockComponent implements OnInit {
   }
 
   // start
-  getStockItemByNumber(ev) {
+  getStockItemByNumber(ev) {;
     if (ev.target.value != "") {
       //get existing amounts of and locations on shelfs
       this.inventoryService
@@ -1208,7 +1217,7 @@ export class StockComponent implements OnInit {
   getAmountsFromShelfs() {
     let allNumbers = this.components.map((component) => component.componentN);
     this.inventoryService
-      .getAmountsForMulti(allNumbers)
+      .getAmountsForAll(allNumbers)
       .subscribe((itemsAmounts) => {
         for (let component of this.components) {
           let itemWithTotal = itemsAmounts.find(
@@ -1601,15 +1610,21 @@ export class StockComponent implements OnInit {
   }
 
   setType(type) {
-    this.components = [];
+    // this.components = []; 
     switch (type) {
       case "component":
+        
         this.buttonColor = "#2962FF";
         this.buttonColor2 = "white";
         this.buttonColor3 = "white";
         this.fontColor = "white";
         this.fontColor2 = "black";
         this.fontColor3 = "black";
+
+        this.components = this.componentFilter
+        this.componentsUnFiltered = this.componentFilter
+
+
 
         break;
       case "material":
@@ -1620,6 +1635,14 @@ export class StockComponent implements OnInit {
         this.fontColor2 = "white";
         this.fontColor3 = "black";
 
+        this.components = this.materialFilter
+        this.componentsUnFiltered = this.materialFilter
+
+
+
+
+
+
         break;
       case "product":
         this.buttonColor = "white";
@@ -1628,6 +1651,14 @@ export class StockComponent implements OnInit {
         this.fontColor = "black";
         this.fontColor2 = "black";
         this.fontColor3 = "white";
+
+        this.components = this.productFilter
+        this.componentsUnFiltered = this.productFilter
+
+
+
+
+        
 
         break;
     }
@@ -1771,14 +1802,22 @@ export class StockComponent implements OnInit {
       );
     });
   }
-
+  // search 
   filterComponents() {
-    console.log("filter parameters: ", this.filterParams.value);
+
+    this.stockType ="";
+    this.components = []
+    this.componentsUnFiltered = []
+    this.componentFilter = []
+    this.productFilter = []
+    this.materialFilter = []
+
+    // console.log("this.stockType: ", this.stockType);
     this.smallLoader = true;
     let query = this.filterParams.value;
     query.componentN = query.componentN.trim();
     query.componentName = query.componentName.trim();
-    console.log(query);
+    // console.log(query);
     query.itemType = this.stockType;
     this.loadingText = "(1/4) מייבא פריטים...";
 
@@ -1787,21 +1826,52 @@ export class StockComponent implements OnInit {
         this.smallLoader = false;
         this.toastSrv.error("משהו השתבש.");
       }
-    }, 1000 * 15); // stop the loader if no answer
+    }, 1000 * 30); // stop the loader if no answer
 
     this.inventoryService
       .getFilteredComponents(query)
       .subscribe((filteredComponents) => {
-        console.log(filteredComponents);
-        this.components = filteredComponents.filter(
-          (s) => s.itemType == this.stockType
-        );
-        this.componentsUnFiltered = filteredComponents.filter(
-          (s) => s.itemType == this.stockType
-        );
+        // console.log(filteredComponents);
+        // this.components = filteredComponents.filter(
+        //   (s) => s.itemType == this.stockType
+        // );
+        // this.componentsUnFiltered = filteredComponents.filter(
+        //   (s) => s.itemType == this.stockType
+        // );
+        // this.components = filteredComponents
+        // console.log("this.components: ",this.components);
+
+        // this.componentsUnFiltered = filteredComponents
+        // console.log("this.componentsUnFiltered: ",this.componentsUnFiltered);
+
+        // Filtre by types
+        this.componentFilter = filteredComponents.filter((item)=> item.itemType == "component")
+        this.productFilter = filteredComponents.filter((item)=> item.itemType == "product")
+        this.materialFilter = filteredComponents.filter((item)=> item.itemType == "material")
+
+        // Change type
+        const componentFilterSize = this.componentFilter.length
+        const productFilterSize = this.productFilter.length
+        const materialFilterSize = this.materialFilter.length
+        const sizes = [componentFilterSize,productFilterSize,materialFilterSize]
+        const index = sizes.indexOf(Math.max(...sizes))
+
+
+        if(index == 0){
+          this.stockType = "component"
+          this.setType(this.stockType)
+        }else if(index == 1){
+          this.stockType = "product"
+          this.setType(this.stockType)
+        }else if(index == 2){
+          this.stockType = "material"
+          this.setType(this.stockType)
+        }
+
+
         if (this.components.length > 0) {
           try {
-            console.log(this.components);
+            // console.log(this.components);
             this.loadingText = "(2/4) מחשב כמויות... ";
             this.getAmountsFromShelfs();
             this.getItemPurchases(false);
@@ -2592,6 +2662,28 @@ export class StockComponent implements OnInit {
     this.editVersionForm.reset();
   }
 
+  // getSumofAmount(){
+  //   let sum = 0
+  //   this.itemAmountsData.map((i)=>{
+  //     sum += i.sumShelfAmounts
+  //   })
+
+  //   this.sumofAmount = String(sum)
+
+  // }
+
+  // eran
+
+  myfunc(cmptN){
+
+    this.inventoryService
+    .getAmountOnShelfs(cmptN)
+    .subscribe(async (res) => {
+      console.log("Eran: ",res);
+    });
+
+
+  }
   async getCmptAmounts(cmptN, cmptId) {
     this.callingForCmptAmounts = true;
     // this.currItemShelfs=[];
@@ -2612,11 +2704,13 @@ export class StockComponent implements OnInit {
           this.stockType == "material"
             ? res.whList
             : res.whList.filter((wh) => wh != "Rosh HaAyin"); // remove
+            
 
         this.currItemShelfs = [];
         this.newItemShelfWH = "";
 
         await this.openAmountsData(cmptN, cmptId);
+        
       });
   }
   getAllOrderItems(componentN) {
