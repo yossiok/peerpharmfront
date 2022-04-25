@@ -1244,7 +1244,9 @@
         <th colspan="11" *ngIf="fillingDate && fillingDate != ''">
           <b
             >Filling Schedule Date:
-            {{ this.fillingDate | date: "dd/MM/yyyy" }}</b
+            {{ this.fillingDate | date: "dd/MM/yyyy" }}
+            {{this.myDate | date: "hh:mm"}}
+            </b
           >
         </th>
       </tr>
@@ -1308,3 +1310,4 @@
     </tbody>
   </table>
 </div>
+

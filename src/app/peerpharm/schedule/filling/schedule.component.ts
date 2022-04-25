@@ -61,6 +61,9 @@ export class ScheduleComponent implements OnInit {
   batchesSpecifications: any[];
   fillingDate: any;
 
+  myDate:Date = new Date();
+  intervalId:any;
+
   closeResult: string;
   public printScheduleFillingForm: FormGroup;
   schedFillLine = new Schedule();
@@ -150,7 +153,13 @@ export class ScheduleComponent implements OnInit {
       volumeK: new FormControl("", [Validators.required]),
       barcodeK: new FormControl("", [Validators.required]),
     });
+    this.intervalId = setInterval(() => {
+      this.myDate = new Date();
+    }, 1000);
+
   }
+
+
 
   checkPermission() {
     if (this.authService.loggedInUser.screenPermission != "3") {
