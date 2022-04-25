@@ -164,7 +164,12 @@
                 | number: "1.0-1"
             }}
           </td>
-          <td>{{ orderItem.itemDeliveryDate | date: "dd/MM/yyyy" }}</td>
+          <td *ngIf="orderItem.itemDeliveryDate">
+            {{ orderItem.itemDeliveryDate | date: "dd/MM/yyyy" }}
+          </td>
+          <td *ngIf="!orderItem.itemDeliveryDate">
+            {{ orderItem.orderDeliveryDate | date: "dd/MM/yyyy" }}
+          </td>
           <td>{{ orderItem.quantityProduced }}</td>
           <td>{{ orderItem.itemRemarks }}</td>
           <ng-container *ngIf="orderItem.relevantBarrels.length > 0">
