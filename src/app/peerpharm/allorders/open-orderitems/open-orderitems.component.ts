@@ -34,8 +34,14 @@ export class OpenOrderitemsComponent implements OnInit {
     this.orderItemsLoader = true;
     this.creamBarrelService.getOpenOrderItemsAndBarrels().subscribe((data) => {
       console.log(data);
-      this.allOpenOrderItems = data;
-      this.filteredOpenOrderItems = this.allOpenOrderItems;
+      if (data.msg) {
+        this.toastSrv.error(data.msg);
+      } else if (data) {
+        this.allOpenOrderItems = data;
+        this.filteredOpenOrderItems = this.allOpenOrderItems;
+      } else {
+        this.toastSrv.error("לא נמצאו נתונים במערכת");
+      }
       this.orderItemsLoader = false;
     });
   }
