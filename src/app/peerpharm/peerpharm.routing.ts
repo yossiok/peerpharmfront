@@ -91,6 +91,7 @@ import { QaLogsComponent } from "./qa/qalogs/qaLogs.component";
 import { CustomersComponent } from "./customers/customers.component";
 import { ProposalsComponent } from "./customers/proposals/proposals.component";
 import { CreamBarrelComponent } from "./inventory/creamBarrel/creamBarrel.component";
+import { OpenOrderitemsComponent } from "./allorders/open-orderitems/open-orderitems.component";
 export const PeerPharmRputs: Routes = [
   {
     path: "user/user-settings",
@@ -122,6 +123,14 @@ export const PeerPharmRputs: Routes = [
       title: "All Orders",
     },
     component: AllordersComponent,
+  },
+  {
+    path: "allorders/open-orderitems",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Open OrderItems",
+    },
+    component: OpenOrderitemsComponent,
   },
   {
     path: "allorders/orderitems/:id",
@@ -569,7 +578,7 @@ export const PeerPharmRputs: Routes = [
     },
     component: CleaningFormsComponent,
   },
- 
+
   {
     path: "qa/packing-list",
     canActivate: [ScreenGuard],

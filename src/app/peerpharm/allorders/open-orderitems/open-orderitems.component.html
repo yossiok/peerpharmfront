@@ -1,0 +1,210 @@
+<div dir="rtl">
+  <h1 class="text-center">
+    <span class="heading1">דו"ח הזמנות פתוחות </span>
+  </h1>
+  <div class="bg-white">
+    <div class="px-3 py-3 d-flex align-items-center border-bottom bg-light">
+      <form class="form-inline my-2 my-lg-0">
+        <input
+          class="form-control mr-sm-2"
+          type="text"
+          placeholder="Search"
+          aria-label="Search"
+          (keyup)="filterOrderItems()"
+          #orderItmeFilter
+        />
+        <button
+          class="btn btn-outline-primary my-2 my-sm-0"
+          type="button"
+          (click)="clearOrderItems()"
+        >
+          Clear
+        </button>
+      </form>
+      <form
+        novalidate=""
+        class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
+      >
+        <button
+          type="button"
+          id="btnCreateWP"
+          class="btn btn-warning flex-shrink-0"
+          (click)="clearOrderItems()"
+        >
+          בטל סינון
+        </button>
+      </form>
+      <!-- <form
+        novalidate=""
+        class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
+      >
+        <button
+          type="button"
+          id="btnCreateWP"
+          class="btn btn-primary flex-shrink-0"
+          (click)="hasOrder()"
+        >
+          משויך להזמנה
+        </button>
+      </form>
+      <form
+        novalidate=""
+        class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
+      >
+        <button
+          type="button"
+          id="btnCreateWP"
+          class="btn btn-primary flex-shrink-0"
+          (click)="filterOrders()"
+        >
+          מתאים להזמנות
+        </button>
+      </form> -->
+      <form
+        novalidate=""
+        class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
+      >
+        <button
+          type="button"
+          id="btnCreateWP"
+          class="btn btn-warning flex-shrink-0"
+          (click)="withoutBarrels()"
+        >
+          אין חביות
+        </button>
+      </form>
+      <form
+        novalidate=""
+        class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
+      >
+        <button
+          type="button"
+          id="btnCreateWP"
+          class="btn btn-success flex-shrink-0"
+          (click)="withBarrels()"
+        >
+          יש חביות
+        </button>
+      </form>
+    </div>
+
+    <table class="table table-striped">
+      <thead class="bg-secondary text-white">
+        <tr>
+          <td>#</td>
+          <th>
+            <i
+              class="ti-exchange-vertical"
+              (click)="sortItemsOne('orderNumber')"
+              style="cursor: pointer"
+              >הזמנה</i
+            >
+          </th>
+          <th>
+            <i
+              class="ti-exchange-vertical"
+              (click)="sortItemsOne('orderNumber')"
+              style="cursor: pointer"
+              >שם הלקוח</i
+            >
+          </th>
+          <th>
+            <i
+              class="ti-exchange-vertical"
+              (click)="sortItemsOne('orderNumber')"
+              style="cursor: pointer"
+              >תאריך הזמנה</i
+            >
+          </th>
+          <th>
+            <i
+              class="ti-exchange-vertical"
+              (click)="sortItemsOne('orderNumber')"
+              style="cursor: pointer"
+              >פריט</i
+            >
+          </th>
+          <th>משקל פריט</th>
+          <th>כמות מוזמנת</th>
+          <th>משקל כללי</th>
+          <th>
+            <i
+              class="ti-exchange-vertical"
+              (click)="sortItemsOne('orderNumber')"
+              style="cursor: pointer"
+              >תאריך אספקה</i
+            >
+          </th>
+          <th>כמות שיוצרה</th>
+          <th>הערות</th>
+          <th>חביות מתאימות</th>
+        </tr>
+      </thead>
+
+      <tbody class="bg-light text-align">
+        <tr
+          *ngFor="let orderItem of filteredOpenOrderItems; let i = index"
+          class="border-bottom border-dark"
+        >
+          <td>{{ i + 1 }}</td>
+          <td style="font-weight: bold">
+            {{ orderItem.orderNumber }}
+          </td>
+          <td>{{ orderItem.customerName }}</td>
+          <td>{{ orderItem.itemOrderDate | date: "dd/MM/yyyy" }}</td>
+          <td style="font-weight: bold">{{ orderItem.itemNumber }}</td>
+          <td>{{ orderItem.netWeightGr }} gr</td>
+          <td>{{ orderItem.qtyOrdered }}</td>
+          <td>
+            Kg
+            {{
+              (orderItem.qtyOrdered * orderItem.netWeightGr) / 1000
+                | number: "1.0-1"
+            }}
+          </td>
+          <td>{{ orderItem.itemDeliveryDate | date: "dd/MM/yyyy" }}</td>
+          <td>{{ orderItem.quantityProduced }}</td>
+          <td>{{ orderItem.itemRemarks }}</td>
+          <ng-container *ngIf="orderItem.relevantBarrels.length > 0">
+            <td>
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th style="font-weight: bold">חבית</th>
+                    <th>משקל</th>
+                    <th>סטטוס</th>
+                    <th>מיועדת להזמנה</th>
+                    <th>תפוגה</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let barrel of orderItem.relevantBarrels">
+                    <td style="font-weight: bold">{{ barrel.barrelNumber }}</td>
+                    <td>{{ barrel.barrelWeight | number: "1.0-1" }}</td>
+                    <td>{{ barrel.barrelStatus }}</td>
+                    <td style="font-weight: bold">{{ barrel.orderNumber }}</td>
+                    <td>{{ barrel.expirationDate | date: "dd/MM/yyyy" }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- <ul dir="ltr" *ngFor="let barrel of orderItem.relevantBarrels">
+              <li>
+                <span style="font-weight: bold"
+                  >{{ barrel.barrelNumber }} :</span
+                >{{ barrel.barrelWeight | number: "1.0-2" }} Kg.
+              </li>
+            </ul> -->
+
+              <!-- <span *ngFor="let barrel of orderItem.relevantBarrels"
+              ><span style="font-weight: bold">{{ barrel.barrelNumber }} :</span
+              >{{ barrel.barrelWeight | number: "1.0-2" }},
+            </span> -->
+            </td>
+          </ng-container>
+          <td *ngIf="orderItem.relevantBarrels.length == 0">אין חביות</td>
+        </tr>
+      </tbody>
+    </table>
+    <div *ngIf="orderItemsLoader" class="loading">Loading&#8230;</div>
+  </div>
+</div>

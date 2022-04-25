@@ -47,6 +47,11 @@ export class CreamBarrelService {
     return this.http.get(url).pipe(map((res) => res.json()));
   }
 
+  getOpenOrderItemsAndBarrels() {
+    let url = this.baseUrl + "creamBarrel/getOpenOrderItemsAndBarrels";
+    return this.http.get(url).pipe(map((res) => res.json()));
+  }
+
   getShelvesByBarrelNumber(barrelNumber, wh): Observable<any> {
     let url =
       this.baseUrl +

@@ -18,7 +18,7 @@ import { FormuleFormTableComponent } from "./formules/formule-form-table/formule
 import { PeerPharmRputs } from "./peerpharm.routing";
 import { OrdersComponent } from "./allorders/orders/orders.component";
 import { AllordersComponent } from "./allorders/allorders/allorders.component";
-
+import { OpenOrderitemsComponent } from "./allorders/open-orderitems/open-orderitems.component";
 import {
   TranslateModule,
   TranslateLoader,
@@ -367,6 +367,7 @@ import { BulksReportComponent } from "./batches/bulks-inventory/bulks-report/bul
     ProposalsComponent,
     ProposalsListComponent,
     BulksReportComponent,
+    OpenOrderitemsComponent,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [
