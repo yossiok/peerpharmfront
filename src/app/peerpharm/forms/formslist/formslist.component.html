@@ -145,7 +145,7 @@
               >
             </td>
             <td>{{ form.productName }}</td>
-            <td>{{ form.fillingDate }}</td>
+            <td>{{ form.fillingDate | date: "dd/MM/yyyy" }}</td>
             <td>{{ form.orderNumber }}</td>
             <td>{{ form.productionLine }}</td>
             <td>{{ form.costumerName }}</td>

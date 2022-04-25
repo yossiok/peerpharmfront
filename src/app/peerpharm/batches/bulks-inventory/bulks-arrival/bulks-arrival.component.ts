@@ -99,7 +99,6 @@ export class BulksArrivalComponent implements OnInit {
     let authorizations = this.user.authorization;
     if (
       authorizations.includes("updateStock") &&
-      authorizations.includes("updateStock") &&
       authorizations.includes("materialStock")
     ) {
       this.authorized = true;

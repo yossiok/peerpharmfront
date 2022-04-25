@@ -599,6 +599,7 @@ export class AllItemsComponent implements OnInit {
     }
   }
 
+  //sort by the first level of the array
   sortItemsTwo(field, sub) {
     let i = this.sortToggle;
     this.filteredOrderItems.sort((a, b) =>
@@ -606,7 +607,7 @@ export class AllItemsComponent implements OnInit {
     );
     this.sortToggle *= -1;
   }
-
+  //sort by the second level of the array (nested array)
   sortItemsOne(field) {
     let i = this.sortToggle;
     this.filteredOrderItems.sort((a, b) => {

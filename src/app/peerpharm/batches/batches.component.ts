@@ -6,11 +6,8 @@ import {
   ElementRef,
 } from "@angular/core";
 import { BatchesService } from "../../services/batches.service";
-// test for excel export
 import { ExcelService } from "../../services/excel.service";
-// private excelService:ExcelService
 import * as moment from "moment";
-import { Toast } from "ngx-toastr";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
 import { UserInfo } from "../taskboard/models/UserInfo";
@@ -515,7 +512,7 @@ export class BatchesComponent implements OnInit {
       this.batches = this.batchesCopy;
     } else if (ev.target.value.length > 2) {
       if (filterBy == "itemName") {
-        let name = ev.target.value;
+        let name = ev.target.value.toLowerCase();
         this.batches = this.batchesCopy.filter((batch) =>
           batch.itemName.toLowerCase().includes(name.toLowerCase())
         );
@@ -529,10 +526,13 @@ export class BatchesComponent implements OnInit {
       }
 
       if (filterBy == "batchNumber") {
-        let number = ev.target.value;
-        this.batches = this.batchesCopy.filter((batch) =>
-          batch.batchNumber.toLowerCase().includes(number.toLowerCase())
-        );
+        let value = ev.target.value.toLowerCase();
+        this.batches = this.batchesCopy.filter((batch) => {
+          batch.batchNumber = batch.batchNumber
+            ? batch.batchNumber.toLowerCase()
+            : "undefined";
+          return batch.batchNumber.includes(value);
+        });
       }
     }
   }
