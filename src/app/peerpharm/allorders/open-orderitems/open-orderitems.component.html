@@ -129,14 +129,7 @@
           <th>משקל פריט</th>
           <th>כמות מוזמנת</th>
           <th>משקל כללי</th>
-          <th>
-            <i
-              class="ti-exchange-vertical"
-              (click)="sortItemsOne('orderNumber')"
-              style="cursor: pointer"
-              ><span class="font-roboto">תאריך אספקה</span></i
-            >
-          </th>
+          <th>תאריך אספקה</th>
           <th>כמות שיוצרה</th>
           <th style="width: 300px">הערות</th>
           <th>חביות מתאימות</th>
@@ -168,7 +161,7 @@
             {{ orderItem.itemDeliveryDate | date: "dd/MM/yyyy" }}
           </td>
           <td *ngIf="!orderItem.itemDeliveryDate">
-            {{ orderItem.orderDeliveryDate | date: "dd/MM/yyyy" }}
+            {{ orderItem.orderDeliveryDate }}
           </td>
           <td>{{ orderItem.quantityProduced }}</td>
           <td>{{ orderItem.itemRemarks }}</td>
