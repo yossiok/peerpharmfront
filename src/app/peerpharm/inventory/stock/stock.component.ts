@@ -1624,6 +1624,25 @@ export class StockComponent implements OnInit {
         this.components = this.componentFilter
         this.componentsUnFiltered = this.componentFilter
 
+        if (this.components.length > 0) {
+          try {
+            // console.log(this.components);
+            this.loadingText = "(2/4) מחשב כמויות... ";
+            this.getAmountsFromShelfs();
+            this.getItemPurchases(false);
+            this.getAllocations();
+            this.getAllocationsNew();
+          } catch (e) {
+            this.smallLoader = false;
+            alert(e);
+          }
+        } else {
+          this.toastSrv.error(
+            "לא נמצאו פריטים עבור החיפוש שביצעתם. אנא נסו חיפוש אחר."
+          );
+          this.smallLoader = false;
+        }
+
 
 
         break;
@@ -1637,6 +1656,25 @@ export class StockComponent implements OnInit {
 
         this.components = this.materialFilter
         this.componentsUnFiltered = this.materialFilter
+
+        if (this.components.length > 0) {
+          try {
+            // console.log(this.components);
+            this.loadingText = "(2/4) מחשב כמויות... ";
+            this.getAmountsFromShelfs();
+            this.getItemPurchases(false);
+            this.getAllocations();
+            this.getAllocationsNew();
+          } catch (e) {
+            this.smallLoader = false;
+            alert(e);
+          }
+        } else {
+          this.toastSrv.error(
+            "לא נמצאו פריטים עבור החיפוש שביצעתם. אנא נסו חיפוש אחר."
+          );
+          this.smallLoader = false;
+        }
 
 
 
@@ -1654,6 +1692,25 @@ export class StockComponent implements OnInit {
 
         this.components = this.productFilter
         this.componentsUnFiltered = this.productFilter
+
+        if (this.components.length > 0) {
+          try {
+            // console.log(this.components);
+            this.loadingText = "(2/4) מחשב כמויות... ";
+            this.getAmountsFromShelfs();
+            this.getItemPurchases(false);
+            this.getAllocations();
+            this.getAllocationsNew();
+          } catch (e) {
+            this.smallLoader = false;
+            alert(e);
+          }
+        } else {
+          this.toastSrv.error(
+            "לא נמצאו פריטים עבור החיפוש שביצעתם. אנא נסו חיפוש אחר."
+          );
+          this.smallLoader = false;
+        }
 
 
 
@@ -2672,18 +2729,7 @@ export class StockComponent implements OnInit {
 
   // }
 
-  // eran
 
-  myfunc(cmptN){
-
-    this.inventoryService
-    .getAmountOnShelfs(cmptN)
-    .subscribe(async (res) => {
-      console.log("Eran: ",res);
-    });
-
-
-  }
   async getCmptAmounts(cmptN, cmptId) {
     this.callingForCmptAmounts = true;
     // this.currItemShelfs=[];
@@ -2694,6 +2740,7 @@ export class StockComponent implements OnInit {
       .getAmountOnShelfs(cmptN)
       .subscribe(async (res) => {
         this.callingForCmptAmounts = false;
+        console.log(res);
 
         // remove these 2 filters after "Rosh HaAyin" components are all removed from db ("Rosh HaAyin C" = new warehouse for components)
         this.itemAmountsData =
