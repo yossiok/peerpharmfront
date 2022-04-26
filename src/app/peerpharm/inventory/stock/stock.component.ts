@@ -1913,17 +1913,19 @@ export class StockComponent implements OnInit {
         const componentFilterSize = this.componentFilter.length
         const productFilterSize = this.productFilter.length
         const materialFilterSize = this.materialFilter.length
-        const sizes = [componentFilterSize,productFilterSize,materialFilterSize]
-        const index = sizes.indexOf(Math.max(...sizes))
 
-
-        if(index == 0){
+        
+        if(componentFilterSize == 1 && this.componentFilter[0].componentN == this.numberSearchInput.nativeElement.value){
           this.stockType = "component"
           this.setType(this.stockType)
-        }else if(index == 1){
+        }
+
+        if(productFilterSize == 1 && this.productFilter[0].componentN == this.numberSearchInput.nativeElement.value){
           this.stockType = "product"
           this.setType(this.stockType)
-        }else if(index == 2){
+        }
+
+        if(materialFilterSize == 1 && this.materialFilter[0].componentN == this.numberSearchInput.nativeElement.value){
           this.stockType = "material"
           this.setType(this.stockType)
         }
