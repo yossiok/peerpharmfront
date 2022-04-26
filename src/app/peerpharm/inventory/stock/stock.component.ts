@@ -1610,7 +1610,8 @@ export class StockComponent implements OnInit {
   }
 
   setType(type) {
-    // this.components = []; 
+    this.components = [];
+    this.componentsUnFiltered =[];
     switch (type) {
       case "component":
         
@@ -1629,7 +1630,6 @@ export class StockComponent implements OnInit {
             // console.log(this.components);
             this.loadingText = "(2/4) מחשב כמויות... ";
             this.getAmountsFromShelfs();
-            this.getItemPurchases(false);
             this.getAllocations();
             this.getAllocationsNew();
           } catch (e) {
@@ -1662,9 +1662,10 @@ export class StockComponent implements OnInit {
             // console.log(this.components);
             this.loadingText = "(2/4) מחשב כמויות... ";
             this.getAmountsFromShelfs();
-            this.getItemPurchases(false);
+
             this.getAllocations();
             this.getAllocationsNew();
+
           } catch (e) {
             this.smallLoader = false;
             alert(e);
@@ -1698,9 +1699,11 @@ export class StockComponent implements OnInit {
             // console.log(this.components);
             this.loadingText = "(2/4) מחשב כמויות... ";
             this.getAmountsFromShelfs();
-            this.getItemPurchases(false);
+
             this.getAllocations();
             this.getAllocationsNew();
+
+
           } catch (e) {
             this.smallLoader = false;
             alert(e);
