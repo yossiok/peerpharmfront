@@ -2108,9 +2108,9 @@
             <td>{{ item.netWeightGr }}</td>
             <td>{{ item.quantity }}</td>
             <td>{{item.quantityRemained}</td>
-            <td>{{ item.itemOrderDate }}</td>
-            <td>{{ item.itemDeliveryDate }}</td>
-            <td>{{ item.packingDate }}</td>
+            <td>{{ item.itemOrderDate | date: "dd/MM/yyyy" }}</td>
+            <td>{{ item.packingDate | date: "dd/MM/yyyy" }}</td>
+            <td>{{ item.itemDeliveryDate | date: "dd/MM/yyyy" }}</td>
             <td>
               <img
                 *ngIf="item.printStatus === 'printed'"
