@@ -2,59 +2,128 @@
   <div class="col-12" *ngIf="!submited">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title" style="width: 95%;float:left">Order Assigning</h4>
-        <h4 class="card-title" (click)="back()" style="width:1%;float:right">X</h4>
+        <h4 class="card-title" style="width: 95%; float: left">
+          Order Assigning
+        </h4>
+        <h4 class="card-title" (click)="back()" style="width: 1%; float: right">
+          X
+        </h4>
       </div>
-      <hr>
-      <form class="form-horizontal" [formGroup]="orderForm" (ngSubmit)='addNewOrder(orderForm.value)'>
+      <hr />
+      <form
+        class="form-horizontal"
+        [formGroup]="orderForm"
+        (ngSubmit)="addNewOrder()"
+      >
         <div class="card-body">
           <h4 class="card-title">Order Info</h4>
 
           <div class="form-group row">
-            <label for="lname"
-              class="col-sm-4 text-right control-label col-form-label"><strong>Costumer</strong></label>
+            <label
+              for="lname"
+              class="col-sm-4 text-right control-label col-form-label"
+            >
+              <span style="color: red">(*) חובה</span>&nbsp;<strong
+                >Customer
+              </strong>
+            </label>
             <div class="col-sm-4">
-              <input type="text" class="form-control" placeholder="Costumer" formControlName="costumer">
-              <input type='hidden' formControlName="costumerInternalId">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Customer"
+                formControlName="costumer"
+              />
+              <input type="hidden" formControlName="costumerInternalId" />
             </div>
-            <button style="box-shadow: 2px 2px 2px black;" (click)="openSearch(content);  submited=false;"
-              class='btn btn-info'><strong>List</strong></button>
+            <button
+              style="box-shadow: 2px 2px 2px black"
+              (click)="openSearch(content); submited = false"
+              class="btn btn-info"
+            >
+              <strong>List</strong>
+            </button>
           </div>
           <div class="form-group row">
-            <label for="email1" class="col-sm-4 text-right control-label col-form-label"><strong>Date Of
-                Order</strong></label>
+            <label
+              for="email1"
+              class="col-sm-4 text-right control-label col-form-label"
+              ><span style="color: red">(*) חובה</span>&nbsp;<strong
+                >Date Of Order</strong
+              ></label
+            >
             <div class="col-sm-4">
-              <input type="date" class="form-control" placeholder="Date of order" formControlName="orderdate">
+              <input
+                type="date"
+                class="form-control"
+                placeholder="Date of order"
+                formControlName="orderDate"
+                value="{{ today | date: 'yyyy-MM-dd' }}"
+              />
             </div>
           </div>
           <div class="form-group row">
-            <label for="cono1" class="col-sm-4 text-right control-label col-form-label"><strong>Delivery
-                Date</strong></label>
+            <label
+              for="cono1"
+              class="col-sm-4 text-right control-label col-form-label"
+              ><span style="color: red">(*) חובה</span>&nbsp;<strong
+                >Delivery Date</strong
+              ></label
+            >
             <div class="col-sm-4">
-              <input type="date" class="form-control" placeholder="Delivery date" formControlName="delivery">
+              <input
+                type="date"
+                class="form-control"
+                placeholder="Delivery date"
+                formControlName="deliveryDate"
+              />
             </div>
           </div>
           <div class="form-group row">
-            <label for="cono1" class="col-sm-4 text-right control-label col-form-label"><strong>Customer
-                Order</strong></label>
+            <label
+              for="cono1"
+              class="col-sm-4 text-right control-label col-form-label"
+              ><strong>Customer Order</strong></label
+            >
             <div class="col-sm-4">
-              <input type="text" class="form-control" placeholder="Customer Order Number"
-                formControlName="customerOrderNum">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Customer Order Number"
+                formControlName="customerOrderNum"
+              />
             </div>
           </div>
           <div class="form-group row">
-            <label for="cono1" class="col-sm-4 text-right control-label col-form-label"><strong>Remarks</strong></label>
+            <label
+              for="cono1"
+              class="col-sm-4 text-right control-label col-form-label"
+              ><strong>Remarks</strong></label
+            >
             <div class="col-sm-4">
-              <input type="text" class="form-control" placeholder="Remarks" formControlName="remarks">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Remarks"
+                formControlName="orderRemarks"
+              />
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-4 text-right control-label col-form-label"><strong>Type</strong></label>
+            <label class="col-sm-4 text-right control-label col-form-label"
+              ><span style="color: red">(*) חובה</span>&nbsp;<strong
+                >Type</strong
+              ></label
+            >
             <div class="col-sm-4">
-              <select style="box-shadow: 1px 1px 1px black;" class="form-control" formControlName="type">
-                <option>Cosmetic</option>
-                <option>Make Up</option>
-                <option>Cosmetic & Make Up</option>
+              <select
+                style="box-shadow: 1px 1px 1px black"
+                class="form-control"
+                formControlName="type"
+              >
+                <option value="Cosmetic">Cosmetic</option>
+                <option value="Make Up">Make Up</option>
+                <option value="Cosmetic & MakeUp">Cosmetic & Make Up</option>
               </select>
             </div>
           </div>
@@ -64,19 +133,36 @@
           </div>
           <div class="col-sm-3">
             <label for="user">Username</label>
-            <input type="text" class="form-control is-valid" placeholder="user name" formControlName="user" required
-              disabled>
+            <input
+              type="text"
+              class="form-control is-valid"
+              placeholder="user name"
+              formControlName="user"
+              required
+              disabled
+            />
           </div>
           <div class="card-body" *ngIf="newOrderAllowed">
             <div class="form-group m-b-0 text-right">
-              <button style="box-shadow: 2px 2px 2px black;" type="submit"
-                class="btn btn-info waves-effect waves-light">Save</button>
-              <button style="box-shadow: 2px 2px 2px black;" type="button" (click)="back()"
-                class="btn btn-dark waves-effect waves-light">Cancel</button>
+              <button
+                style="box-shadow: 2px 2px 2px black"
+                type="submit"
+                class="btn btn-info waves-effect waves-light"
+              >
+                Save
+              </button>
+              <button
+                style="box-shadow: 2px 2px 2px black"
+                type="button"
+                (click)="back()"
+                class="btn btn-dark waves-effect waves-light"
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>
-        <hr>
+        <hr />
       </form>
     </div>
   </div>
@@ -110,14 +196,19 @@
 </div> -->
 
 <div class="p-5 modal-inner" *ngIf="submited">
-  <h3>Order Number : {{ orderNumber}}</h3>
+  <h3>Order Number : {{ orderNumber }}</h3>
   <h4 class="card-title">Items Assigning</h4>
-  <hr>
+  <hr />
   <div class="row mt-5">
     <div class="col-2">
       <label for="">Shipping Method</label>
-      <select required style="box-shadow: 1px 1px 1px;" [ngModelOptions]="{standalone: true}"
-        [(ngModel)]="shippingDetails.shippingWay" class="form-control">
+      <select
+        required
+        style="box-shadow: 1px 1px 1px"
+        [ngModelOptions]="{ standalone: true }"
+        [(ngModel)]="shippingDetails.shippingWay"
+        class="form-control"
+      >
         <option value="land">יבשה</option>
         <option value="flight">אוויר</option>
         <option value="sea">ים</option>
@@ -125,95 +216,143 @@
     </div>
     <div class="col-2">
       <label for="">Shipping Quantity</label>
-      <input [ngModelOptions]="{standalone: true}" [(ngModel)]="shippingDetails.shippingQuantity" class="form-control">
+      <input
+        [ngModelOptions]="{ standalone: true }"
+        [(ngModel)]="shippingDetails.shippingQuantity"
+        class="form-control"
+      />
     </div>
     <div class="col-2">
-      <button type="button" class="btn btn-primary mt-2" (click)="addShipping()">Add Shipping</button>
+      <button
+        type="button"
+        class="btn btn-primary mt-2"
+        (click)="addShipping()"
+      >
+        Add Shipping
+      </button>
     </div>
     <div class="col-6"></div>
   </div>
 
   <ul class="list-group d-flex flex-row">
-    <li *ngFor="let shipping of shippingMethod"
-      class="list-group-item w-25 d-flex justify-content-between align-items-center">
-      <span *ngIf="shippingMethod != []">{{shipping.shippingWay}}</span>
-      <span *ngIf="shippingMethod != []" class="badge badge-primary badge-pill">{{shipping.shippingQuantity}}</span>
+    <li
+      *ngFor="let shipping of shippingMethod"
+      class="list-group-item w-25 d-flex justify-content-between align-items-center"
+    >
+      <span *ngIf="shippingMethod != []">{{ shipping.shippingWay }}</span>
+      <span
+        *ngIf="shippingMethod != []"
+        class="badge badge-primary badge-pill"
+        >{{ shipping.shippingQuantity }}</span
+      >
     </li>
   </ul>
 
-  <form [formGroup]="orderItemForm" (ngSubmit)='addNewItemOrder(orderItemForm.value)'>
+  <form [formGroup]="orderItemForm" (ngSubmit)="addNewItemOrder()">
     <div class="row mt-3 bg-muted">
       <div style="background: #d5cff9" class="col-12 shadow rounded">
-        <div class="row mt-2"> Required <span class="red">*</span></div>
+        <div class="row mt-2">Required <span class="red">*</span></div>
         <table class="table table-hover">
           <thead>
             <tr>
               <th>#</th>
-              <th>Item<span class="red">*</span> </th>
-              <th>Description <span class="red">*</span> </th>
-              <th>neto Weight (Gr)<span class="red">*</span> </th>
-              <th>Quantity<span class="red">*</span> </th>
-              <th>Weight </th>
+              <th>Item<span class="red">*</span></th>
+              <th>Description <span class="red">*</span></th>
+              <th>neto Weight (Gr)<span class="red">*</span></th>
+              <th>Quantity<span class="red">*</span></th>
+              <th>Weight</th>
+              <th>Delivery Date</th>
               <th>Remarks</th>
               <th></th>
             </tr>
             <tr>
               <td></td>
-              <td><input formControlName="itemN" class="form-control" #itemN (focusout)="searchItem(itemN.value)"></td>
-              <td><input formControlName="discription" class="form-control" style='width:370px'></td>
-              <td><input formControlName="netWeightK" class="form-control"></td>
-              <td><input formControlName="quantity" class="form-control"></td>
-              <td><input formControlName="qtyKg" class="form-control"></td>
-              <td><input formControlName="remarks" class="form-control"></td>
+              <td>
+                <input
+                  formControlName="itemNumber"
+                  class="form-control"
+                  #itemN
+                  (focusout)="searchItem()"
+                />
+              </td>
+              <td>
+                <input
+                  formControlName="discription"
+                  class="form-control"
+                  style="width: 370px"
+                />
+              </td>
+              <td>
+                <input formControlName="netWeightGr" class="form-control" />
+              </td>
+              <td><input formControlName="quantity" class="form-control" /></td>
+              <td><input formControlName="qtyKg" class="form-control" /></td>
+              <td>
+                <input
+                  formControlName="itemDeliveryDate"
+                  class="form-control"
+                  type="date"
+                  placeholder="Delivery date"
+                />
+              </td>
+              <td>
+                <input formControlName="itemRemarks" class="form-control" />
+              </td>
 
-              <td><button [disabled]="!orderItemForm.valid" type="submit"
-                  [style.cursor]="orderItemForm.valid ? 'pointer' : 'not-allowed'"
-                  class="btn btn-info waves-effect waves-light">Add
-                </button></td>
+              <td>
+                <button
+                  [disabled]="!orderItemForm.valid"
+                  type="submit"
+                  [style.cursor]="
+                    orderItemForm.valid ? 'pointer' : 'not-allowed'
+                  "
+                  class="btn btn-info waves-effect waves-light"
+                >
+                  Add
+                </button>
+              </td>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let item of items; let i = index">
-              <td>{{i+1}}</td>
-              <td>{{item.itemNumber}}</td>
-              <td>{{item.discription}}</td>
-              <td>{{item.netWeightK}}</td>
-              <td>{{item.quantity}}</td>
-              <td>{{item.qtyKg}}</td>
-              <td></td>
-              <td></td>
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.itemNumber }}</td>
+              <td>{{ item.discription }}</td>
+              <td>{{ item.netWeightGr }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.qtyKg }}</td>
+              <td>{{ item.itemDeliveryDate | date: "dd/MM/yyyy" }}</td>
+              <td>{{ item.itemRemarks }}</td>
             </tr>
           </tbody>
         </table>
       </div>
     </div>
-
   </form>
-  <br>
-  <h1 dir="rtl" style="color:red" class="mt-2" *ngIf="existOrderItem"><i class="far fa-clipboard"></i> פריט זה קיים
-    בהזמנות קודמות ,ייתכן ותוכל לשלוח אותם ביחד לייצור</h1>
+  <br />
+  <h1 dir="rtl" style="color: red" class="mt-2" *ngIf="existOrderItem">
+    <i class="far fa-clipboard"></i> פריט זה קיים בהזמנות קודמות ,ייתכן ותוכל
+    לשלוח אותם ביחד לייצור
+  </h1>
 
-  <div style="width:500px;" *ngIf="existOrderItem">
+  <div style="width: 500px" *ngIf="existOrderItem">
     <table class="table table-striped">
       <thead>
-        <tr style="text-align: center;">
+        <tr style="text-align: center">
           <th>כמות</th>
           <th>מספר הזמנה</th>
         </tr>
       </thead>
       <tbody>
-        <tr style="text-align: center;" *ngFor="let item of existOrderItem">
-
-          <td>{{item.quantity}}</td>
-          <td>{{item.orderNumber}}</td>
+        <tr style="text-align: center" *ngFor="let item of existOrderItem">
+          <td>{{ item.quantity }}</td>
+          <td>{{ item.orderNumber }}</td>
         </tr>
       </tbody>
     </table>
   </div>
   <button class="btn btn-primary" (click)="back()">Close</button>
 </div>
-
-
 
 <!-- <ng-template dir="rtl" #amounts let-c="close" let-d="dismiss">
     <div class="p-2" dir="rtl" *ngIf="waitForAmounts">
@@ -240,66 +379,102 @@
 </ng-template> -->
 
 <ng-template #problematics let-c="close">
-
   <div dir="rtl">
-
     <div class="m-4 p-2 border border-bottom" *ngIf="isTooOld">
-      <h1><i style="color: red;" class="fas fa-exclamation-triangle"></i></h1>
+      <h1><i style="color: red" class="fas fa-exclamation-triangle"></i></h1>
       <h1 class="text-center">לא נפתח טופס ייצור למוצר מעל שנה וחצי</h1>
       <h2 class="text-center">יש לבצע בדיקת תקינות לכל הרכיבים</h2>
     </div>
 
     <div *ngIf="noNeto" class="m-4 p-2 border border-bottom">
-      <h2 class="text-center"><i style="color: orange;" class="fas fa-exclamation-triangle"></i> יש לעדכן משקל
-        נטו!
+      <h2 class="text-center">
+        <i style="color: orange" class="fas fa-exclamation-triangle"></i> יש
+        לעדכן משקל נטו!
       </h2>
     </div>
 
-    <h2 class="m-5 text-info">מידע אודות רכיבים {{orderItemForm.value.itemN}}:</h2>
+    <h2 class="m-5 text-info">
+      מידע אודות רכיבים {{ orderItemForm.value.itemN }}:
+    </h2>
     <div class="p-5 w-100 h-100">
-      <p class="h3" *ngIf="formuleExist"><i style="color: lightgreen;" class="fas fa-check-circle"></i> יש
-        פורמולה</p>
-      <p class="h3" *ngIf="!formuleExist"><i style="color: red;" class="fas fa-exclamation-triangle"></i> אין
-        פורמולה</p>
+      <p class="h3" *ngIf="formuleExist">
+        <i style="color: lightgreen" class="fas fa-check-circle"></i> יש פורמולה
+      </p>
+      <p class="h3" *ngIf="!formuleExist">
+        <i style="color: red" class="fas fa-exclamation-triangle"></i> אין
+        פורמולה
+      </p>
       <div
-        *ngIf="formuleExist && problematicComponents && problematicComponents.length == 0 && problematicMaterials && problematicMaterials.length == 0">
-        <h4><i style="color: lightgreen;" class="fas fa-check-circle"></i> רכיבים - תקין</h4>
+        *ngIf="
+          formuleExist &&
+          problematicComponents &&
+          problematicComponents.length == 0 &&
+          problematicMaterials &&
+          problematicMaterials.length == 0
+        "
+      >
+        <h4>
+          <i style="color: lightgreen" class="fas fa-check-circle"></i> רכיבים -
+          תקין
+        </h4>
       </div>
 
-      <div *ngIf="problematicComponents && problematicComponents.length > 0" class="row mt-4">
+      <div
+        *ngIf="problematicComponents && problematicComponents.length > 0"
+        class="row mt-4"
+      >
         <h4>קומפוננטים בעייתיים:</h4>
-        <ul *ngFor="let component of problematicComponents" class="list-group mt-4">
-
-          <li class="list-group-item" *ngFor="let problem of component.problems">
-            {{component.componentN}} {{component.componentName}}{{probelm}}
+        <ul
+          *ngFor="let component of problematicComponents"
+          class="list-group mt-4"
+        >
+          <li
+            class="list-group-item"
+            *ngFor="let problem of component.problems"
+          >
+            {{ component.componentN }} {{ component.componentName
+            }}{{ probelm }}
           </li>
-          <i style="color: red;" class="fas fa-exclamation-triangle"></i>
+          <i style="color: red" class="fas fa-exclamation-triangle"></i>
         </ul>
       </div>
 
-      <div *ngIf="problematicMaterials && problematicMaterials.length > 0" class="row mt-4">
+      <div
+        *ngIf="problematicMaterials && problematicMaterials.length > 0"
+        class="row mt-4"
+      >
         <h4>חו"ג בעייתיים:</h4>
-        <ul *ngFor="let component of problematicMaterials" class="list-group mt-4">
+        <ul
+          *ngFor="let component of problematicMaterials"
+          class="list-group mt-4"
+        >
           <li class="list-group-item">
-            {{component.componentN}} {{component.componentName}} <i style="color: red;"
-              class="fas fa-exclamation-triangle"></i>
+            {{ component.componentN }} {{ component.componentName }}
+            <i style="color: red" class="fas fa-exclamation-triangle"></i>
             <ul *ngFor="let problem of component.problems">
-              <li>{{problem}}</li>
+              <li>{{ problem }}</li>
             </ul>
           </li>
         </ul>
       </div>
 
-      <button (click)="c('Cross click')" class="mt-4 btn btn-info">קראתי ואני מאשרת</button>
+      <button (click)="c('Cross click')" class="mt-4 btn btn-info">
+        קראתי ואני מאשרת
+      </button>
     </div>
   </div>
 </ng-template>
 
 <ng-template #content let-c="close" let-d="dismiss">
   <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Add Costumer</h4>
+    <h4 class="modal-title" id="modal-basic-title">Add Customer</h4>
     <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
-    <button type="button" class="close" aria-label="Close" (click)="c('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="c('Cross click')"
+    >
       <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
       <span aria-hidden="true">&times;</span>
     </button>
@@ -307,18 +482,25 @@
   <div class="modal-body">
     <div class="form-group">
       <div class="input-group">
-        <input class="form-control mb-8" #costumerSearch placeholder="Search Costumer"
-          (keyup)="searchCostumer(costumerSearch.value)">
+        <input
+          class="form-control mb-8"
+          #costumerSearch
+          placeholder="Search Costumer"
+          (keyup)="searchCostumer(costumerSearch.value)"
+        />
       </div>
     </div>
   </div>
   <div>
     <ul *ngFor="let costumer of costumers">
-      <li (click)="c('Saved'); choosedCostumer = costumer">{{costumer.costumerName}} - {{costumer.costumerId}}
+      <li (click)="c('Saved'); choosedCostumer = costumer">
+        {{ costumer.costumerName }} - {{ costumer.costumerId }}
       </li>
     </ul>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="c('Saved')">Save</button>
+    <button type="button" class="btn btn-outline-dark" (click)="c('Saved')">
+      Save
+    </button>
   </div>
 </ng-template>

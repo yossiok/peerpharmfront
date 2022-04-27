@@ -195,6 +195,7 @@ export class OrderdetailsComponent implements OnInit {
     itemDeliveryDate: "",
     pakaStatus: 0,
     oiStatus: "",
+    packingDate: "",
   };
   show: boolean;
   EditRowId: any = "";
@@ -258,6 +259,7 @@ export class OrderdetailsComponent implements OnInit {
   @ViewChild("cookingDate") cookingDate: ElementRef;
   @ViewChild("cookingShift") cookingShift: ElementRef;
   @ViewChild("cookingMarks") cookingMarks: ElementRef;
+  @ViewChild("itemDeliveryDate") itemDeliveryDate: ElementRef;
 
   @ViewChild("date") date: ElementRef;
   @ViewChild("shift") shift: ElementRef;
@@ -898,36 +900,42 @@ export class OrderdetailsComponent implements OnInit {
     if (!this.multi) this.itemData.orderNumber = this.number;
     let newItemImpRemark = this.itemData.itemImpRemark;
     this.itemData.status = "open";
+    this.itemData.oiStatus = "open";
 
-    this.orderService.addNewOrderItem(this.itemData).subscribe((item) => {
-      if (item.msg == "notActive") {
+    this.orderService.addNewOrderItem(this.itemData).subscribe((data) => {
+      if (data.msg == "notActive") {
         this.toastSrv.error("שים לב פריט זה אינו פעיל");
-      }
-      if (item.itemNumber == this.itemData.itemNumber) {
-        item.itemImpRemark = newItemImpRemark;
-        item.isExpand = "+";
-        item.colorBtn = "#33FFE0";
-        item.compiled = [];
-        this.ordersItems.push(item);
-        this.itemData = {
-          itemNumber: "",
-          discription: "",
-          netWeightGr: "",
-          quantity: "",
-          qtyKg: "",
-          orderId: "",
-          orderNumber: "",
-          batch: "",
-          itemRemarks: "",
-          formuleCheck: "",
-          componentCheck: "",
-          compiled: [],
-          batchStatus: 0,
-        };
-        this.getOrderItems(true);
+      } else if (data.msg) {
+        this.toastSrv.error(data.msg);
+      } else if (data) {
+        let item = data.document;
 
-        this.toastSrv.success("item " + item.itemNumber + " added");
-      } else if (item == "error") {
+        if (item.itemNumber == this.itemData.itemNumber) {
+          item.itemImpRemark = newItemImpRemark;
+          item.isExpand = "+";
+          item.colorBtn = "#33FFE0";
+          item.compiled = [];
+          this.ordersItems.push(item);
+          this.itemData = {
+            itemNumber: "",
+            discription: "",
+            netWeightGr: "",
+            quantity: "",
+            qtyKg: "",
+            orderId: "",
+            orderNumber: "",
+            batch: "",
+            itemRemarks: "",
+            formuleCheck: "",
+            componentCheck: "",
+            compiled: [],
+            batchStatus: 0,
+          };
+          this.getOrderItems(true);
+
+          this.toastSrv.success("item " + item.itemNumber + " added");
+        }
+      } else if (data == "error") {
         this.toastSrv.error("Adding item faild");
       }
     });
@@ -1292,10 +1300,11 @@ export class OrderdetailsComponent implements OnInit {
             // console.log(this.ordersItems);
           } else {
             this.ordersItems = orderItems;
-            // console.log(this.ordersItems);
+            console.log(this.ordersItems);
             this.productionRequirements = orderItems;
 
             this.ordersItemsCopy = orderItems;
+            console.log(this.ordersItemsCopy);
           }
 
           this.getComponents(this.ordersItems[0].orderNumber);
@@ -1526,6 +1535,7 @@ export class OrderdetailsComponent implements OnInit {
       quantity: this.quantity.nativeElement.value,
       // "qtyKg": this.weight.nativeElement.value,
       itemRemarks: this.itemRemarks.nativeElement.value,
+      itemDeliveryDate: this.itemDeliveryDate.nativeElement.value,
       lastUpdated: [
         { user: this.authService.loggedInUser.firstName, time: new Date() },
       ],
@@ -1547,6 +1557,8 @@ export class OrderdetailsComponent implements OnInit {
         this.ordersItems[index].quantity = itemToUpdate.quantity;
         // this.ordersItems[index].qtyKg = itemToUpdate.qtyKg;
         this.ordersItems[index].netWeightGr = itemToUpdate.netWeightGr;
+        this.ordersItems[index].itemDeliveryDate =
+          itemToUpdate.itemDeliveryDate;
       } else {
       }
     });
