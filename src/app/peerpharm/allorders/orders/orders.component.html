@@ -1,55 +1,110 @@
-<div class="container-fluid text-center bg-white" style="transform: scale(0.99);">
+<div
+  class="container-fluid text-center bg-white"
+  style="transform: scale(0.99)"
+>
   <div class="row mt-3 p-1">
     <div class="col-2">
-      <button (click)="newOrderModal = true" class="btn btn-info">F2 - הזמנה חדשה</button>
+      <button (click)="newOrderModal = true" class="btn btn-info">
+        F2 - הזמנה חדשה
+      </button>
     </div>
     <div class="col-2">
-      <button [disabled]="loadingProblematics" (click)="getProblematicsReport()" class="btn btn-info">
-        {{loadingProblematics ? '...אנא המתן' : 'דו"ח פריטים בעייתיים'}}
-        <img style="width: 20px;" src="../../../../assets/images/alert3.gif" alt="">
+      <button
+        [disabled]="loadingProblematics"
+        (click)="getProblematicsReport()"
+        class="btn btn-info"
+      >
+        {{ loadingProblematics ? "...אנא המתן" : 'דו"ח פריטים בעייתיים' }}
+        <img
+          style="width: 20px"
+          src="../../../../assets/images/alert3.gif"
+          alt=""
+        />
       </button>
     </div>
     <div class="col-4 bg-white">
-      <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info">Open Orders</h1>
+      <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
+        Open Orders
+      </h1>
     </div>
     <div class="col-2">
-      <button (click)="getLatesReport()" class="btn btn-info">F8 - דו"ח איחורים</button>
+      <button (click)="getLatesReport()" class="btn btn-info">
+        F8 - דו"ח איחורים
+      </button>
     </div>
     <div class="col-2">
       <div *ngIf="loadingUri" class="smallerLoader"></div>
-      <button *ngIf="!loadingUri" (click)="getUriReport()" class="btn btn-info">F4 - דו"ח אורי</button>
+      <button *ngIf="!loadingUri" (click)="getUriReport()" class="btn btn-info">
+        F4 - דו"ח אורי
+      </button>
     </div>
   </div>
-  <hr>
+  <hr />
   <div class="row mt-4">
     <div class="col-2">
-      <div class="form-control border border-dark rounded" style="background-color: white; ">
-        חדש: <span><b>{{stagesCount.new}}</b></span>
+      <div
+        class="form-control border border-dark rounded"
+        style="background-color: white"
+      >
+        חדש:
+        <span
+          ><b>{{ stagesCount.new }}</b></span
+        >
       </div>
     </div>
     <div class="col-2">
-      <div class="form-control border border-dark rounded" style="background-color: #ffa64d; ">
-        רכיבים קיימים- חלקית: <span><b>{{stagesCount.partialCmpt}}</b></span>
+      <div
+        class="form-control border border-dark rounded"
+        style="background-color: #ffa64d"
+      >
+        רכיבים קיימים- חלקית:
+        <span
+          ><b>{{ stagesCount.partialCmpt }}</b></span
+        >
       </div>
     </div>
     <div class="col-2">
-      <div class="form-control border border-dark rounded" style="background-color: #ffff80; ">
-        כל הרכיבים קיימים: <span><b>{{stagesCount.allCmpt}}</b></span>
+      <div
+        class="form-control border border-dark rounded"
+        style="background-color: #ffff80"
+      >
+        כל הרכיבים קיימים:
+        <span
+          ><b>{{ stagesCount.allCmpt }}</b></span
+        >
       </div>
     </div>
     <div class="col-2">
-      <div class="form-control border border-dark rounded" style="background-color: #b3ecff; ">
-        נשלח לייצור: <span><b>{{stagesCount.production}}</b></span>
+      <div
+        class="form-control border border-dark rounded"
+        style="background-color: #b3ecff"
+      >
+        נשלח לייצור:
+        <span
+          ><b>{{ stagesCount.production }}</b></span
+        >
       </div>
     </div>
     <div class="col-2">
-      <div class="form-control border border-dark rounded" style="background-color: #d9b3ff; ">
-        עבר ייצור: <span><b>{{stagesCount.prodFinish}}</b></span>
+      <div
+        class="form-control border border-dark rounded"
+        style="background-color: #d9b3ff"
+      >
+        עבר ייצור:
+        <span
+          ><b>{{ stagesCount.prodFinish }}</b></span
+        >
       </div>
     </div>
     <div class="col-2">
-      <div class="form-control border border-dark rounded" style="background-color: #9ae59a; ">
-        הזמנה סגורה: <span><b>{{stagesCount.done}}</b></span>
+      <div
+        class="form-control border border-dark rounded"
+        style="background-color: #9ae59a"
+      >
+        הזמנה סגורה:
+        <span
+          ><b>{{ stagesCount.done }}</b></span
+        >
       </div>
     </div>
   </div>
@@ -58,149 +113,310 @@
     <div class="col-1"></div>
     <div class="col-2"></div>
     <div class="col-2">
-      <input matInput class="form-control" placeholder="Search Costumer By Name" (change)="changeText($event)" />
+      <input
+        matInput
+        class="form-control"
+        placeholder="Search Costumer By Name"
+        (change)="changeText($event)"
+      />
     </div>
     <div class="col-2">
-      <button (click)="loadOrders()" class='btn btn-info form-control'> Load </button>
+      <button (click)="loadOrders()" class="btn btn-info form-control">
+        Load
+      </button>
     </div>
     <div class="col-2">
-      <button (click)="loadOrdersItems()" class='btn btn-info form-control'> Show Items </button>
+      <button (click)="loadOrdersItems()" class="btn btn-info form-control">
+        Show Items
+      </button>
     </div>
     <div *ngIf="PPCPermission" class="col-2 border border-dark p-2">
-      <label class="h4 text-primary">אצוות מוכנות</label><br>
+      <label class="h4 text-primary">אצוות מוכנות</label><br />
       <div class="d-flex flex-row justify-content-between">
         <div>
-          <label class="h5">עדכון נתונים</label><br>
-          <input type="file" multiple="false" id="excelFile" (change)="uploadFreeBatchesFile($event)" #uploadExFile>
+          <label class="h5">עדכון נתונים</label><br />
+          <input
+            type="file"
+            multiple="false"
+            id="excelFile"
+            (change)="uploadFreeBatchesFile($event)"
+            #uploadExFile
+          />
         </div>
         <div>
-          <label class="h5">הצגת נתונים</label><br>
-          <button class="show-free-batches-btn" (click)="downloadFreeBatches()">הצג אצוות</button>
+          <label class="h5">הצגת נתונים</label><br />
+          <button class="show-free-batches-btn" (click)="downloadFreeBatches()">
+            הצג אצוות
+          </button>
         </div>
       </div>
     </div>
     <div class="col-1">
-      <img src="../../../../assets/images/excel.png" ngbTooltip='דו"ח הזמנות' class="click" alt="export to excel" style="width: 40px;"
-        (click)="exportAsXLSX()">
+      <img
+        src="../../../../assets/images/excel.png"
+        ngbTooltip='דו"ח הזמנות'
+        class="click"
+        alt="export to excel"
+        style="width: 40px"
+        (click)="exportAsXLSX()"
+      />
     </div>
 
     <div class="col-1">
-      <img src="../../../../assets/images/excel.png" ngbTooltip='דו"ח הזמנות תקועות' class="click" alt="export to excel" style="width: 40px;"
-        (click)="exportAsXLSX2()">
+      <img
+        src="../../../../assets/images/excel.png"
+        ngbTooltip='דו"ח הזמנות תקועות'
+        class="click"
+        alt="export to excel"
+        style="width: 40px"
+        (click)="exportAsXLSX2()"
+      />
     </div>
-
   </div>
 
   <div class="mt-2 bg-primary w-25 rounded-pill p-2">
     <div class="row">
       <label class="text-center text-white ml-5 mr-5 h3">Filter By Item</label>
-      <input class="form-control w-50" placeholder='הכנס שם / מק"ט' #filterItem>
+      <input
+        class="form-control w-50"
+        placeholder='הכנס שם / מק"ט'
+        #filterItem
+      />
       <div *ngIf="lodingOrders" class="smallerLoader"></div>
     </div>
-    <div *ngIf="!lodingOrders" class="row mt-2 d-flex flex-row justify-content-around">
+    <div
+      *ngIf="!lodingOrders"
+      class="row mt-2 d-flex flex-row justify-content-around"
+    >
       <div>
-        <button class="itshak-rabin" (click)="filterByItem(filterItem.value)">Filter</button>
+        <button class="itshak-rabin" (click)="filterByItem(filterItem.value)">
+          Filter
+        </button>
       </div>
       <div>
-        <button class="shimon-peres" (click)="allOrders(filterItem)">Reset</button>
+        <button class="shimon-peres" (click)="allOrders(filterItem)">
+          Reset
+        </button>
       </div>
     </div>
   </div>
-  <h4 class="text-center text-success">Showing {{orders.length}} orders <span *ngIf="filterValue != ''">Filtered by <span class="text-primary font-weight-bold">{{filterValue}}</span></span></h4>
+  <h4 class="text-center text-success">
+    Showing {{ orders.length }} orders
+    <span *ngIf="filterValue != ''"
+      >Filtered by
+      <span class="text-primary font-weight-bold">{{ filterValue }}</span></span
+    >
+  </h4>
   <div class="row mt-4">
-    <table class='table table-hover table-fixed' style="overflow-x: scroll;">
-      <thead class='bg-info text-white'>
-        <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black;">
-          <th style="width:3%;"></th>
-          <th style="width:3%;">
-            <input type="checkbox" [(ngModel)]="selectAllOrders" (change)="checkboxAllOrders($event)">
+    <table class="table table-hover table-fixed" style="overflow-x: scroll">
+      <thead class="bg-info text-white">
+        <tr
+          [class.read-only]="checkPermission()"
+          style="box-shadow: inset 0px 0px 4px 1px black"
+        >
+          <th style="width: 3%"></th>
+          <th style="width: 3%">
+            <input
+              type="checkbox"
+              [(ngModel)]="selectAllOrders"
+              (change)="checkboxAllOrders($event)"
+            />
           </th>
-          <th style="padding:5px">Order Number
-            <i class="ti-exchange-vertical" (click)="sortOrdersByOrderNumber()" style="cursor:pointer"></i>
+          <th style="padding: 5px">
+            Order Number
+            <i
+              class="ti-exchange-vertical"
+              (click)="sortOrdersByOrderNumber()"
+              style="cursor: pointer"
+            ></i>
           </th>
-          <th style="width:18%; padding:5px">
-
+          <th style="width: 18%; padding: 5px"></th>
+          <th style="padding: 5px">
+            Order date
+            <i
+              class="ti-exchange-vertical"
+              (click)="filterOrdersByDate('order')"
+              style="cursor: pointer"
+            ></i>
           </th>
-          <th style="padding:5px">Order date
-            <i class="ti-exchange-vertical" (click)="filterOrdersByDate('order')" style="cursor:pointer"></i>
+          <th style="padding: 5px">
+            Delivery Date
+            <i
+              class="ti-exchange-vertical"
+              (click)="filterOrdersByDate('delivery')"
+              style="cursor: pointer"
+            ></i>
           </th>
-          <th style="padding:5px">Delivery Date
-            <i class="ti-exchange-vertical" (click)="filterOrdersByDate('delivery')" style="cursor:pointer"></i>
-          </th>
-          <th style="padding:5px">Customer Order</th>
-          <th style="width:12%; padding:5px">Remarks</th>
-          <th style="padding:5px ; width: 7%">
-            <select style="display: inline-block;" class="form-control w-75" (change)="searchByType($event)">
+          <th style="padding: 5px">Customer Order</th>
+          <th style="width: 12%; padding: 5px">Remarks</th>
+          <th style="padding: 5px; width: 7%">
+            <select
+              style="display: inline-block"
+              class="form-control w-75"
+              (change)="searchByType($event)"
+            >
               <option value="">Type-All</option>
               <option value="Make Up">Make Up</option>
               <option value="Cosmetic">Cosmetic</option>
               <option value="Cosmetic & MakeUp">Cosmetic & MakeUp</option>
             </select>
           </th>
-          <th style="padding:5px">Stage
-            <i class="ti-exchange-vertical" (click)="sortOrdersByStage()" style="cursor:pointer"></i>
+          <th style="padding: 5px">
+            Stage
+            <i
+              class="ti-exchange-vertical"
+              (click)="sortOrdersByStage()"
+              style="cursor: pointer"
+            ></i>
           </th>
-          <th style="padding:5px ; width:11%">User's Order</th>
-          <th style="width:4%;"> </th>
-          <th style="width:5%;"></th>
+          <th style="padding: 5px; width: 11%">User's Order</th>
+          <th style="width: 4%"></th>
+          <th style="width: 5%"></th>
         </tr>
       </thead>
       <tbody>
-        <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black;"
-          *ngFor="let order of orders; let i = index" [style.background-color]="order.color"
-          (blur)="saveEdit(false, '')">
-          <td [style.background]="order.batchStatus | orderItemBatchStatusColor" style="width:3%;">{{i+1}}</td>
-          <td style="width:3%;" (click)="edit('')">
-            <input type="checkbox" [(ngModel)]="order.isSelected" name="orderSelect">
+        <tr
+          [class.read-only]="checkPermission()"
+          style="box-shadow: inset 0px 0px 4px 1px black"
+          *ngFor="let order of orders; let i = index"
+          [style.background-color]="order.color"
+          (blur)="saveEdit(false, '')"
+        >
+          <td
+            [style.background]="order.batchStatus | orderItemBatchStatusColor"
+            style="width: 3%"
+          >
+            {{ i + 1 }}
+          </td>
+          <td style="width: 3%" (click)="edit('')">
+            <input
+              type="checkbox"
+              [(ngModel)]="order.isSelected"
+              name="orderSelect"
+            />
           </td>
           <td (click)="edit('')">
-            <a target="_blank" routerLink='/peerpharm/allorders/orderitems/{{order.orderNumber}}'>
-              {{order.orderNumber}}
-              <img *ngIf="order.hasSpecialOrderItems"  title="order has problematic items or materials" style="width: 20px;" class="reportImg" src="../../../../assets/images/alert3.gif" alt="">
-            
+            <a
+              target="_blank"
+              routerLink="/peerpharm/allorders/orderitems/{{
+                order.orderNumber
+              }}"
+            >
+              {{ order.orderNumber }}
+              <img
+                *ngIf="order.hasSpecialOrderItems"
+                title="order has problematic items or materials"
+                style="width: 20px"
+                class="reportImg"
+                src="../../../../assets/images/alert3.gif"
+                alt=""
+              />
             </a>
           </td>
-          <td style="width:18%;" *ngIf="order._id===EditRowId">
-            <input #costumer type='text' [value]="order.costumer" style='width:170px'>
-            <input [value]='order._id' #id type='hidden'>
-            <input [value]='order.orderNumber' #orderNumber type='hidden'>
+          <td style="width: 18%" *ngIf="order._id === EditRowId">
+            <input
+              #costumer
+              type="text"
+              [value]="order.costumer"
+              style="width: 170px"
+            />
+            <input [value]="order._id" #id type="hidden" />
+            <input [value]="order.orderNumber" #orderNumber type="hidden" />
           </td>
-          <td style="width:18%;" *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.costumer}}</td>
-
-          <td *ngIf="order._id===EditRowId">
-            <input #orderDate type='text' [value]="order.orderDate" style='width:170px'>
-          </td>
-          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.orderDate}}</td>
-
-          <td *ngIf="order._id===EditRowId">
-            <input #deliveryDate type='text' [value]="order.deliveryDate" style='width:170px'>
-          </td>
-          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.deliveryDate}}</td>
-          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)">{{order.customerOrderNum}}</td>
-          <td style="width:10%;" *ngIf="order._id===EditRowId">
-            <input #customerOrderNum type='text' [value]="order.customerOrderNum" style='width:170px'>
+          <td
+            style="width: 18%"
+            *ngIf="order._id !== EditRowId"
+            (click)="edit(order._id)"
+          >
+            {{ order.costumer }}
           </td>
 
-          <td style="width:10%;" *ngIf="order._id===EditRowId">
-            <input #orderRemarks type='text' [value]="order.orderRemarks" style='width:170px'>
+          <td *ngIf="order._id === EditRowId">
+            <input
+              #orderDate
+              type="text"
+              [value]="order.orderDate"
+              style="width: 170px"
+            />
           </td>
-          <td style="width: 10%; height: 100%; overflow-wrap: normal; overflow-y: auto;" *ngIf="order._id!==EditRowId"
-            (click)="edit(order._id)">{{order.orderRemarks}}</td>
+          <td *ngIf="order._id !== EditRowId" (click)="edit(order._id)">
+            {{ order.orderDate }}
+          </td>
 
-          <td style="width:7%;" *ngIf="order._id!==EditRowId">{{order.type}}</td>
-          <td style="width:7%;" *ngIf="order._id===EditRowId">
-            <select #orderType type='text' [value]="order.type" style='width:100px'>
+          <td *ngIf="order._id === EditRowId">
+            <input
+              #deliveryDate
+              type="text"
+              [value]="order.deliveryDate"
+              style="width: 170px"
+            />
+          </td>
+          <td *ngIf="order._id !== EditRowId" (click)="edit(order._id)">
+            {{ order.deliveryDate }}
+          </td>
+          <td *ngIf="order._id !== EditRowId" (click)="edit(order._id)">
+            {{ order.customerOrderNum }}
+          </td>
+          <td style="width: 10%" *ngIf="order._id === EditRowId">
+            <input
+              #customerOrderNum
+              type="text"
+              [value]="order.customerOrderNum"
+              style="width: 170px"
+            />
+          </td>
+
+          <td style="width: 10%" *ngIf="order._id === EditRowId">
+            <input
+              #orderRemarks
+              type="text"
+              [value]="order.orderRemarks"
+              style="width: 170px"
+            />
+          </td>
+          <td
+            style="
+              width: 10%;
+              height: 100%;
+              overflow-wrap: normal;
+              overflow-y: auto;
+            "
+            *ngIf="order._id !== EditRowId"
+            (click)="edit(order._id)"
+          >
+            {{ order.orderRemarks }}
+          </td>
+
+          <td style="width: 7%" *ngIf="order._id !== EditRowId">
+            {{ order.type }}
+          </td>
+          <td style="width: 7%" *ngIf="order._id === EditRowId">
+            <select
+              #orderType
+              type="text"
+              [value]="order.type"
+              style="width: 100px"
+            >
               <option value="Make Up">Make Up</option>
               <option value="Cosmetic">Cosmetic</option>
               <option value="Cosmetic & MakeUp">Cosmetic & Make Up</option>
             </select>
           </td>
 
-          <td *ngIf="order._id!==EditRowId" (click)="edit(order._id)"
-            style="box-shadow: inset 0px 0px 1px 1px black; text-align: center;  height: 100%;"
-            [style.background-color]="order.stageColor">{{order.stage | orderStage}}</td>
-          <td *ngIf="order._id===EditRowId">
-            <select #stage style="width: 80%" [value]='order.stage'>
+          <td
+            *ngIf="order._id !== EditRowId"
+            (click)="edit(order._id)"
+            style="
+              box-shadow: inset 0px 0px 1px 1px black;
+              text-align: center;
+              height: 100%;
+            "
+            [style.background-color]="order.stageColor"
+          >
+            {{ order.stage | orderStage }}
+          </td>
+          <td *ngIf="order._id === EditRowId">
+            <select #stage style="width: 80%" [value]="order.stage">
               <option value="new">חדש</option>
               <option value="partialCmpt">רכיבים קיימים- חלקית</option>
               <option value="allCmpt">כל הרכיבים קיימים</option>
@@ -209,39 +425,62 @@
               <option value="done">הזמנה סגורה</option>
             </select>
           </td>
-       
-          <td *ngIf="order._id!==EditRowId">{{order.user}}</td>
- 
-          <td *ngIf="order._id===EditRowId" style="width:11%">
-        
-          </td>
+
+          <td *ngIf="order._id !== EditRowId">{{ order.user }}</td>
+
+          <td *ngIf="order._id === EditRowId" style="width: 11%"></td>
           <td style="width: 4%"></td>
           <td style="width: 5%">
-            <i class="ti-trash text-danger m-r-10" *ngIf="order._id!==EditRowId" (click)="deleteOrder(order)"
-              style="cursor:pointer"></i>&nbsp;
-            <i class="ti-check text-success m-r-10" *ngIf="order._id!==EditRowId" (click)="saveEdit(true, order._id)"
-              style="cursor:pointer"></i>
-            <i class="ti-save text-success m-r-10" *ngIf="order._id===EditRowId" (click)="saveEdit(false, order._id)"
-              style="cursor:pointer"></i>
+            <i
+              class="ti-trash text-danger m-r-10"
+              *ngIf="order._id !== EditRowId"
+              (click)="deleteOrder(order)"
+              style="cursor: pointer"
+            ></i
+            >&nbsp;
+            <i
+              class="ti-check text-success m-r-10"
+              *ngIf="order._id !== EditRowId"
+              (click)="saveEdit(true, order._id)"
+              style="cursor: pointer"
+            ></i>
+            <i
+              class="ti-save text-success m-r-10"
+              *ngIf="order._id === EditRowId"
+              (click)="saveEdit(false, order._id)"
+              style="cursor: pointer"
+            ></i>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-
 </div>
 
-<div *ngIf="newOrderModal"
-  class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal">
+<div
+  *ngIf="newOrderModal"
+  class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal"
+>
   <app-neworder (closed)="newOrderModal = false"></app-neworder>
 </div>
 
-<div *ngIf="freeBatchesModal"
-  class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal batches-modal p-5">
-  <app-free-batches [orders]="orders" [freeBatches]="freeBatches" (closed)="freeBatchesModal = false"></app-free-batches>
+<div
+  *ngIf="freeBatchesModal"
+  class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal batches-modal p-5"
+>
+  <app-free-batches
+    [orders]="orders"
+    [freeBatches]="freeBatches"
+    (closed)="freeBatchesModal = false"
+  ></app-free-batches>
 </div>
 
-<div *ngIf="problematicsModal"
-  class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal batches-modal p-5">
-  <app-problematic-order-items [problematicorderItems]="problematicorderItems" (closed)="problematicsModal = false"></app-problematic-order-items>
+<div
+  *ngIf="problematicsModal"
+  class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal batches-modal p-5"
+>
+  <app-problematic-order-items
+    [problematicorderItems]="problematicorderItems"
+    (closed)="problematicsModal = false"
+  ></app-problematic-order-items>
 </div>

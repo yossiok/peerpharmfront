@@ -38,14 +38,12 @@ export class NeworderComponent implements OnInit {
   @ViewChild("amounts") amounts;
   @ViewChild("problematics") problematics: ElementRef;
 
-  orderItemForm: FormGroup;
-  orderForm: FormGroup;
   orderNumber: string;
   orderId: string;
   closeResult: string;
   choosedCostumer: any;
   itemName: String;
-  netWeightK: Number = 0;
+  netWeightGr: Number = 0;
   lastOrderNumber: Number;
   user: any;
   existOrderItem: any[];
@@ -69,6 +67,46 @@ export class NeworderComponent implements OnInit {
   formuleExist: boolean = false;
   isTooOld: boolean = false;
   noNeto: boolean = false;
+  dateStr: string = "";
+  today: Date = new Date();
+
+  orderForm: FormGroup = new FormGroup({
+    //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
+    deliveryDate: new FormControl(null, Validators.required),
+    costumer: new FormControl(null, Validators.required),
+    costumerInternalId: new FormControl(""),
+    orderDate: new FormControl(new Date(), Validators.required),
+    orderRemarks: new FormControl(null),
+    customerOrderNum: new FormControl(null),
+    type: new FormControl(null, Validators.required),
+    user: new FormControl(null, Validators.required),
+    status: new FormControl("open"),
+    stage: new FormControl("new"),
+    hasSpecialOrderItems: new FormControl(false),
+
+    // area: new FormControl(null),
+  });
+
+  orderItemForm: FormGroup = new FormGroup({
+    itemNumber: new FormControl(null, Validators.required),
+    discription: new FormControl(null, Validators.required),
+    netWeightGr: new FormControl(null, Validators.required),
+    quantity: new FormControl(0, Validators.min(1)),
+    qtyKg: new FormControl(null, Validators.nullValidator),
+    itemRemarks: new FormControl(null, Validators.nullValidator),
+    hasLicense: new FormControl(false, Validators.required),
+    exploded: new FormControl(false, Validators.required),
+    productionApproved: new FormControl(false, Validators.required),
+    problematic: new FormControl(false, Validators.required),
+    formuleExist: new FormControl(false, Validators.required),
+    problematicMaterials: new FormControl([[]]),
+    problematicComponents: new FormControl([[]]),
+    itemDeliveryDate: new FormControl(null),
+    status: new FormControl("open"),
+    orderId: new FormControl(null),
+    orderNumber: new FormControl(null),
+    shippingMethod: new FormControl([]),
+  });
 
   constructor(
     private modalService: NgbModal,
@@ -80,54 +118,9 @@ export class NeworderComponent implements OnInit {
     private inventoryService: InventoryService,
     private itemsService: ItemsService,
     private location: Location
-  ) {
-    this.orderForm = fb.group({
-      //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
-      delivery: [null, Validators.required],
-      costumer: [null, Validators.required],
-      costumerInternalId: [""],
-      orderdate: [null, Validators.required],
-      remarks: [null],
-      customerOrderNum: [null],
-      type: [null],
-      user: [null, Validators.required],
-      area: [null],
-    });
-
-    this.orderItemForm = fb.group({
-      itemN: [null, Validators.required],
-      discription: [null, Validators.required],
-      netWeightK: [null, Validators.required],
-      quantity: [null, Validators.required],
-      qtyKg: [null, Validators.nullValidator],
-      remarks: [null, Validators.nullValidator],
-      hasLicense: [false, Validators.required],
-      exploded: [false, Validators.required],
-      productionApproved: [false, Validators.required],
-      problematic: [false, Validators.required],
-      formuleExist: [false, Validators.required],
-      problematicMaterials: [[]],
-      problematicComponents: [[]],
-    });
-  }
+  ) {}
 
   ngOnInit() {
-    //this.getLastOrderNumber();
-
-    /* this.rForm.get('validate').valueChanges.subscribe(
-  
-       (validate) => {
-  
-           if (validate == '1') {
-               this.rForm.get('name').setValidators([Validators.required, Validators.minLength(3)]);
-               this.titleAlert = 'You need to specify at least 3 characters';
-           } else {
-               this.rForm.get('name').setValidators(Validators.required);
-           }
-           this.rForm.get('name').updateValueAndValidity();
-  
-       });
-  */
     this.getCostumers();
     if (this.authService.loggedInUser) {
       if (this.authService.loggedInUser.authorization.includes("newOrder")) {
@@ -141,58 +134,76 @@ export class NeworderComponent implements OnInit {
         this.orderForm.controls.user.setValue(this.user);
       });
     }
+    this.setCurrentDate();
+  }
+
+  setCurrentDate() {
+    let tmpD = new Date();
+    this.dateStr = tmpD.toISOString().slice(0, 10);
   }
   back(): void {
     this.location.back();
   }
 
-  addNewOrder(post) {
+  addNewOrder() {
+    console.log(this.orderForm);
     if (this.orderForm.controls.costumerInternalId.value == null) {
       this.orderForm.controls.costumerInternalId.setValue(
         this.choosedCostumer.costumerId
       );
     }
-
     if (this.orderForm.valid) {
-      let newOrderObj = {
-        area: this.choosedCostumer.area,
-        costumer: post.costumer,
-        orderDate: post.orderdate,
-        costumerInternalId: post.costumerInternalId,
-        deliveryDate: post.delivery,
-        orderRemarks: post.remarks,
-        customerOrderNum: post.customerOrderNum,
-        type: post.type,
-        status: "open",
-        stage: "new",
-        onHoldDate: null,
-        user: post.user,
-      };
-      this.orderSer.addNewOrder(newOrderObj).subscribe((res) => {
+      // let newOrderObj = {
+      //   area: this.choosedCostumer.area,
+      //   costumer: post.costumer,
+      //   orderDate: post.orderdate,
+      //   costumerInternalId: post.costumerInternalId,
+      //   deliveryDate: post.delivery,
+      //   orderRemarks: post.remarks,
+      //   customerOrderNum: post.customerOrderNum,
+      //   type: post.type,
+      //   status: "open",
+      //   stage: "new",
+      //   onHoldDate: null,
+      //   user: post.user,
+      // };
+
+      this.orderSer.addNewOrder(this.orderForm.value).subscribe((res) => {
         console.log(res);
-        this.orderId = res._id;
-        this.orderNumber = res.orderNumber;
-        this.submited = true;
-        this.orderSer.refreshOrders.emit(res);
-        console.log(res);
+        if (res.msg) {
+          this.toastSrv.error(res.msg);
+          return;
+        } else if (res) {
+          this.orderId = res._id;
+          this.orderNumber = res.orderNumber;
+          this.submited = true;
+          this.orderSer.refreshOrders.emit(res);
+          console.log(res);
+          this.toastSrv.success("הזמנה חדשה נוצרה בהצלחה");
+        } else {
+          this.toastSrv.error(
+            "הוספת הזמנה חדשה לא הצליחה. אם ניסיון חוזר לא מצליח, יש לפנות למנהל המערכת."
+          );
+          return;
+        }
       });
     } else {
-      this.toastSrv.error("Failed please finish filling the form");
+      this.toastSrv.error("יש למלא את שדות החובה");
     }
   }
 
   // checkAmounts() {
   //   if (
-  //     this.orderItemForm.controls["netWeightK"].value != "" &&
+  //     this.orderItemForm.controls["netWeightGr"].value != "" &&
   //     this.orderItemForm.controls["quantity"].value != "" &&
-  //     this.orderItemForm.controls["netWeightK"].value != null &&
+  //     this.orderItemForm.controls["netWeightGr"].value != null &&
   //     this.orderItemForm.controls["quantity"].value != null
   //   ) {
   //     this.waitForAmounts = true;
   //     this.modalService.open(this.amounts);
 
   //     let weightKG =
-  //       (Number(this.orderItemForm.controls["netWeightK"].value) *
+  //       (Number(this.orderItemForm.controls["netWeightGr"].value) *
   //         Number(this.orderItemForm.controls["quantity"].value)) /
   //       1000;
   //     let formule = this.orderItemForm.controls["itemN"].value;
@@ -217,23 +228,31 @@ export class NeworderComponent implements OnInit {
   //   } else this.toastSrv.warning("יש להזין משקל נטו וכמות");
   // }
 
-  addNewItemOrder(post) {
-    console.log(post);
+  addNewItemOrder() {
+    console.log(this.orderItemForm);
+    // console.log(post);
     if (
       this.shippingDetails.shippingWay == "" ||
-      this.orderItemForm.controls.itemN.value == "" ||
-      this.orderItemForm.controls.itemN.value == null
+      this.orderItemForm.controls.itemNumber.value == "" ||
+      this.orderItemForm.controls.itemNumber.value == null
     ) {
       this.toastSrv.error("Please fill all the details");
     } else {
       //update order has problematic items
       let hasSpecialOrderItems = false;
-      if (this.problematicMaterials && this.problematicMaterials.length > 0) {
+      if (
+        this.orderItemForm.value.problematicMaterials.length > 0 ||
+        this.orderItemForm.value.problematicComponents.length > 0
+      ) {
         hasSpecialOrderItems = true;
       }
-      if (this.problematicComponents && this.problematicComponents.length > 0) {
-        hasSpecialOrderItems = true;
-      }
+
+      // if (this.problematicMaterials && this.problematicMaterials.length > 0) {
+      //   hasSpecialOrderItems = true;
+      // }
+      // if (this.problematicComponents && this.problematicComponents.length > 0) {
+      //   hasSpecialOrderItems = true;
+      // }
       this.orderSer
         .editOrder({
           orderId: this.orderId,
@@ -249,48 +268,59 @@ export class NeworderComponent implements OnInit {
         shippingQuantitySum += parseInt(details.shippingQuantity);
         return shippingQuantitySum;
       });
+      this.orderItemForm.controls.shippingMethod.setValue(this.shippingMethod);
+      this.orderItemForm.controls.orderNumber.setValue(this.orderNumber);
+      this.orderItemForm.controls.orderId.setValue(this.orderId);
 
-      if (post.quantity) {
-        let newOrderItemObj = {
-          itemNumber: post.itemN,
-          discription: post.discription,
-          netWeightGr: post.netWeightK,
-          quantity: post.quantity,
-          qtyKg: post.qtyKg,
-          hasLicense: post.hasLicense,
-          exploded: post.exploded,
-          productionApproved: post.productionApproved,
-          problematic: post.problematic,
-          formuleExist: post.formuleExist,
-          problematicComponents: post.problematicComponents,
-          problematicMaterials: post.problematicMaterials,
-          shippingMethod: this.shippingMethod,
-          batch: "",
-          price: "",
-          discount: "",
-          totalPrice: "",
-          itemRemarks: post.remarks,
-          orderId: this.orderId,
-          orderNumber: this.orderNumber,
-          status: "open",
-        };
-        this.orderItemForm.reset();
-        this.orderItemForm.controls.hasLicense.setValue(false);
-        this.orderItemForm.controls.exploded.setValue(false);
-        this.orderItemForm.controls.productionApproved.setValue(false);
-        this.orderSer.addNewOrderItem(newOrderItemObj).subscribe((res) => {
-          if (res.msg == "notActive") {
-            this.toastSrv.error("שים לב פריט זה אינו פעיל");
-          } else if (res != "error") {
-            this.items.push(res);
-            this.itemName = "";
-            this.netWeightK = 0;
-            this.toastSrv.success("item " + res.itemNumber + " added");
-          } else {
-            this.toastSrv.error("Adding item faild");
-          }
-          this.shippingMethod = [];
-        });
+      if (this.orderItemForm.valid) {
+        // let newOrderItemObj = {
+        // itemNumber: post.itemN,
+        // discription: post.discription,
+        // netWeightGr: post.netWeightGr,
+        // quantity: post.quantity,
+        // qtyKg: post.qtyKg,
+        // hasLicense: post.hasLicense,
+        // exploded: post.exploded,
+        // productionApproved: post.productionApproved,
+        // problematic: post.problematic,
+        // formuleExist: post.formuleExist,
+        // problematicComponents: post.problematicComponents,
+        // problematicMaterials: post.problematicMaterials,
+        // shippingMethod: this.shippingMethod,
+        // batch: "",
+        // price: "",
+        // discount: "",
+        // totalPrice: "",
+        // // itemRemarks: post.remarks,
+        // orderId: this.orderId,
+        // orderNumber: this.orderNumber,
+        // status: "open",
+        // itemDeliveryDate: this.orderItemForm.controls.itemDeliveryDate.value,
+        // };
+
+        this.orderSer
+          .addNewOrderItem(this.orderItemForm.value)
+          .subscribe((res) => {
+            console.log(res);
+            if (res.msg == "notActive") {
+              this.toastSrv.error("שים לב פריט זה אינו פעיל");
+            } else if (res != "error") {
+              this.items.push(res.document);
+              this.itemName = "";
+              // this.netWeightGr = 0;
+              this.toastSrv.success(
+                "item " + res.document.itemNumber + " added"
+              );
+            } else {
+              this.toastSrv.error("Adding item faild");
+            }
+            this.shippingMethod = [];
+            this.orderItemForm.reset();
+            this.orderItemForm.controls.quantity.setValue(0);
+            this.orderItemForm.controls.hasLicense.setValue(false);
+            this.orderItemForm.controls.exploded.setValue(false);
+            this.orderItemForm.controls.productionApproved.setValue(false);
+          });
       }
     }
   }
@@ -300,7 +330,8 @@ export class NeworderComponent implements OnInit {
     this.shippingMethod.push(DetailsToPush);
   }
 
-  searchItem(itemNumber) {
+  searchItem() {
+    let itemNumber = this.orderItemForm.controls.itemNumber.value;
     this.noNeto = false;
     this.itemName = "";
     this.existOrderItem = [];
@@ -310,10 +341,10 @@ export class NeworderComponent implements OnInit {
         this.orderItemForm.controls.discription.setValue(
           res[0].name + " " + res[0].subName + " " + res[0].discriptionK
         );
-        this.orderItemForm.controls.netWeightK.setValue(res[0].netWeightK);
+        this.orderItemForm.controls.netWeightGr.setValue(res[0].netWeightK);
         if (!res[0].netWeightK) {
           this.noNeto = true;
-          this.orderItemForm.controls.netWeightK.setValue(res[0].volumeKey);
+          this.orderItemForm.controls.netWeightGr.setValue(res[0].volumeKey);
         }
 
         //check license
@@ -324,49 +355,56 @@ export class NeworderComponent implements OnInit {
 
         //check for problematic ingredients
         this.itemsService
-          .checkForProblematicItems(itemNumber)
+          .checkForProblematicItems([itemNumber])
           .subscribe((data) => {
             console.log(data);
-            this.problematicMaterials = data.problematicMaterials;
-            this.problematicComponents = data.problematicComponents;
-            this.formuleExist = data.formuleFound;
-            this.modalService.open(this.problematics);
+            this.problematicMaterials = data[0].problematicMaterials;
+            this.problematicComponents = data[0].problematicComponents;
+            this.formuleExist = data[0].formuleFound;
+            this.orderItemForm.controls.formuleExist.setValue(
+              data[0].formuleFound
+            );
+            this.orderItemForm.controls.problematicMaterials.setValue(
+              data[0].problematicMaterials
+            );
+
+            this.orderItemForm.controls.problematicComponents.setValue(
+              data[0].problematicComponents
+            );
             if (
-              !data.formuleFound ||
-              data.problematicMaterials.length > 0 ||
-              data.problematicComponents.length > 0
+              !data[0].formuleFound ||
+              data[0].problematicMaterials.length > 0 ||
+              data[0].problematicComponents.length > 0
             ) {
               this.orderItemForm.controls.problematic.setValue(true);
-              this.orderItemForm.controls.formuleExist.setValue(
-                data.formuleFound
-              );
-              this.orderItemForm.controls.problematicMaterials.setValue(
-                data.problematicMaterials
-              );
-              this.orderItemForm.controls.problematicComponents.setValue(
-                data.problematicComponents
-              );
-            }
-          });
-
-        //check if this product was produced in the last 18 months (Haviv & Uri request 25/8/2021)
-        this.orderSer.checkForLastProduction(itemNumber).subscribe((data) => {
-          if (data.err)
-            this.toastSrv.error(
-              "אנא וודא כי המוצר יוצר בשנה האחרונה",
-              "בעיה בבדיקת ייצור של המוצר. "
-            );
-          else this.isTooOld = data.isTooOld;
-        });
-
-        this.orderSer
-          .getAllOpenOrderItemsByItemNumber(itemNumber)
-          .subscribe((data) => {
-            if (data.length > 0) {
-              this.existOrderItem = data;
             } else {
-              this.existOrderItem = undefined;
+              this.orderItemForm.controls.problematic.setValue(false);
             }
+            setTimeout(() => {
+              this.modalService.open(this.problematics);
+            }, 300);
+
+            //check if this product was produced in the last 18 months (Haviv & Uri request 25/8/2021)
+            this.orderSer
+              .checkForLastProduction(itemNumber)
+              .subscribe((data) => {
+                if (data.err)
+                  this.toastSrv.error(
+                    "אנא וודא כי המוצר יוצר בשנה האחרונה",
+                    "בעיה בבדיקת ייצור של המוצר. "
+                  );
+                else this.isTooOld = data.isTooOld;
+
+                this.orderSer
+                  .getAllOpenOrderItemsByItemNumber(itemNumber)
+                  .subscribe((data) => {
+                    if (data.length > 0) {
+                      this.existOrderItem = data;
+                    } else {
+                      this.existOrderItem = undefined;
+                    }
+                  });
+              });
           });
       });
     }
@@ -400,12 +438,12 @@ export class NeworderComponent implements OnInit {
     // cause this 2 firleds has [value] also, it won't read them if it's not data what was insert
     if (post.discription == null || post.discription != this.itemName)
       post.discription = this.itemName;
-    if (post.netWeightK == null || post.netWeightK != this.netWeightK)
-      post.netWeightK = this.netWeightK;
+    if (post.netWeightGr == null || post.netWeightGr != this.netWeightGr)
+      post.netWeightGr = this.netWeightGr;
     let newOrderItemObj = {
       itemNumber: post.itemN,
       discription: post.discription,
-      netWeightGr: post.netWeightK,
+      netWeightGr: post.netWeightGr,
       quantity: post.quantity,
       qtyKg: post.qtyKg,
       shippingMethod: post.shippingMethod,

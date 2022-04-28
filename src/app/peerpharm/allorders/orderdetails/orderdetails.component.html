@@ -668,7 +668,7 @@
               />
             </td>
             <td *ngIf="item._id !== EditRowId" (click)="edit(item._id)">
-              {{ item.ietmDeliveryDate | date: "dd/MM/YYYY" }}
+              {{ item.itemDeliveryDate | date: "dd/MM/YYYY" }}
             </td>
 
             <!--Printing / Filling status-->
@@ -2108,9 +2108,9 @@
             <td>{{ item.netWeightGr }}</td>
             <td>{{ item.quantity }}</td>
             <td>{{item.quantityRemained}</td>
-            <td>{{ item.itemOrderDate | date: "dd/MM/YYYY" }}</td>
-            <td>{{ item.packingDate | date: "dd/MM/YYYY" }}</td>
-            <td>{{ item.itemDeliveryDate | date: "dd/MM/YYYY" }}</td>
+            <td>{{ item.itemOrderDate | date: "dd/MM/yyyy" }}</td>
+            <td>{{ item.packingDate | date: "dd/MM/yyyy" }}</td>
+            <td>{{ item.itemDeliveryDate | date: "dd/MM/yyyy" }}</td>
             <td>
               <img
                 *ngIf="item.printStatus === 'printed'"
