@@ -142,7 +142,6 @@ export class StockComponent implements OnInit {
   itemsMovementModal: boolean = false;
   invRequestsModal: boolean = false;
   newPurchaseRecommendModal: boolean = false;
-  newSpecificPurchaseRecommendModal: boolean = false;
   lastYearOutAmount: number = 0;
   itemMovements: any = [];
   materialPurchases: any[];
@@ -234,8 +233,7 @@ export class StockComponent implements OnInit {
   orderItems: any;
   procurementInputEvent: any;
   newPurchaseRecommendation: FormGroup;
-  // stockType
-  stockType: String = "";
+  stockType: String = "component";
   newItem: String = "";
   newItemBtn: String = "new";
   today: Date = new Date();
@@ -394,13 +392,6 @@ export class StockComponent implements OnInit {
   dir: string;
   PPCLoading: boolean = false;
 
-  // Arrays for filter tabs
-  componentFilter:Array<any> = [] 
-  productFilter:Array<any> = []
-  materialFilter:Array<any> = []
-
-  sumofAmount:string
-
   // currentFileUpload: File; //for img upload creating new component
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
@@ -500,7 +491,6 @@ export class StockComponent implements OnInit {
     return this.authService.loggedInUser.screenPermission == "5";
   }
 
-
   //expected Arrivals modal
   getNewExpectedArrivalsData(outputeEvent) {
     console.log("getting new updated expected arrivals data");
@@ -567,33 +557,7 @@ export class StockComponent implements OnInit {
       this.toastSrv.error("אנא מלא את כל הפרטים של הפריט");
     } else {
       let objToPush = { ...this.recommendStockItem };
-      const length =
-        this.newPurchaseRecommendation.controls.stockitems.value.length;
-      const productsArray =
-        this.newPurchaseRecommendation.controls.stockitems.value;
-      let isExits = false;
-
-      for (let i = 0; i < length; i++) {
-        if (productsArray[i].number == objToPush.number) {
-          isExits = true;
-        }
-      }
-      if (isExits) {
-        for (let i = 0; i < length; i++) {
-          if (
-            this.newPurchaseRecommendation.controls.stockitems.value[i]
-              .number == objToPush.number
-          ) {
-            this.newPurchaseRecommendation.controls.stockitems.value[
-              i
-            ].quantity += objToPush.quantity;
-          }
-        }
-      } else {
-        this.newPurchaseRecommendation.controls.stockitems.value.push(
-          objToPush
-        );
-      }
+      this.newPurchaseRecommendation.controls.stockitems.value.push(objToPush);
       this.toastSrv.success("פריט נוסף בהצלחה !");
       this.recommendStockItem.quantity = "";
       this.recommendStockItem.name = "";
@@ -1094,11 +1058,11 @@ export class StockComponent implements OnInit {
         this.whareHouses = displayAllowedWH;
         this.curentWhareHouseId = displayAllowedWH[0]._id;
         this.curentWhareHouseName = displayAllowedWH[0].name;
-        // if (this.curentWhareHouseName.includes("product")) {
-        //   this.stockType = "product";
-        // } else {
-        //   this.stockType = "component";
-        // }
+        if (this.curentWhareHouseName.includes("product")) {
+          this.stockType = "product";
+        } else {
+          this.stockType = "component";
+        }
       }
       console.log(res);
     });
@@ -1114,8 +1078,7 @@ export class StockComponent implements OnInit {
     });
   }
 
-  // start
-  getStockItemByNumber(ev) {;
+  getStockItemByNumber(ev) {
     if (ev.target.value != "") {
       //get existing amounts of and locations on shelfs
       this.inventoryService
@@ -1139,7 +1102,6 @@ export class StockComponent implements OnInit {
     }
   }
 
-  // E2
   sendRecommandation() {
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -1217,7 +1179,7 @@ export class StockComponent implements OnInit {
   getAmountsFromShelfs() {
     let allNumbers = this.components.map((component) => component.componentN);
     this.inventoryService
-      .getAmountsForAll(allNumbers)
+      .getAmountsForMulti(allNumbers)
       .subscribe((itemsAmounts) => {
         for (let component of this.components) {
           let itemWithTotal = itemsAmounts.find(
@@ -1611,39 +1573,14 @@ export class StockComponent implements OnInit {
 
   setType(type) {
     this.components = [];
-    this.componentsUnFiltered =[];
     switch (type) {
       case "component":
-        
         this.buttonColor = "#2962FF";
         this.buttonColor2 = "white";
         this.buttonColor3 = "white";
         this.fontColor = "white";
         this.fontColor2 = "black";
         this.fontColor3 = "black";
-
-        this.components = this.componentFilter
-        this.componentsUnFiltered = this.componentFilter
-
-        if (this.components.length > 0) {
-          try {
-            // console.log(this.components);
-            this.loadingText = "(2/4) מחשב כמויות... ";
-            this.getAmountsFromShelfs();
-            this.getAllocations();
-            this.getAllocationsNew();
-          } catch (e) {
-            this.smallLoader = false;
-            alert(e);
-          }
-        } else {
-          this.toastSrv.error(
-            "לא נמצאו פריטים עבור החיפוש שביצעתם. אנא נסו חיפוש אחר."
-          );
-          this.smallLoader = false;
-        }
-
-
 
         break;
       case "material":
@@ -1654,34 +1591,6 @@ export class StockComponent implements OnInit {
         this.fontColor2 = "white";
         this.fontColor3 = "black";
 
-        this.components = this.materialFilter
-        this.componentsUnFiltered = this.materialFilter
-
-        if (this.components.length > 0) {
-          try {
-            // console.log(this.components);
-            this.loadingText = "(2/4) מחשב כמויות... ";
-            this.getAmountsFromShelfs();
-
-            this.getAllocations();
-            this.getAllocationsNew();
-
-          } catch (e) {
-            this.smallLoader = false;
-            alert(e);
-          }
-        } else {
-          this.toastSrv.error(
-            "לא נמצאו פריטים עבור החיפוש שביצעתם. אנא נסו חיפוש אחר."
-          );
-          this.smallLoader = false;
-        }
-
-
-
-
-
-
         break;
       case "product":
         this.buttonColor = "white";
@@ -1690,35 +1599,6 @@ export class StockComponent implements OnInit {
         this.fontColor = "black";
         this.fontColor2 = "black";
         this.fontColor3 = "white";
-
-        this.components = this.productFilter
-        this.componentsUnFiltered = this.productFilter
-
-        if (this.components.length > 0) {
-          try {
-            // console.log(this.components);
-            this.loadingText = "(2/4) מחשב כמויות... ";
-            this.getAmountsFromShelfs();
-
-            this.getAllocations();
-            this.getAllocationsNew();
-
-
-          } catch (e) {
-            this.smallLoader = false;
-            alert(e);
-          }
-        } else {
-          this.toastSrv.error(
-            "לא נמצאו פריטים עבור החיפוש שביצעתם. אנא נסו חיפוש אחר."
-          );
-          this.smallLoader = false;
-        }
-
-
-
-
-        
 
         break;
     }
@@ -1862,22 +1742,11 @@ export class StockComponent implements OnInit {
       );
     });
   }
-  // search 
+
   filterComponents() {
-
-    this.stockType ="";
-    this.components = []
-    this.componentsUnFiltered = []
-    this.componentFilter = []
-    this.productFilter = []
-    this.materialFilter = []
-
-    // console.log("this.stockType: ", this.stockType);
+    console.log("filter parameters: ", this.filterParams.value);
     this.smallLoader = true;
     let query = this.filterParams.value;
-    query.componentN = query.componentN.trim();
-    query.componentName = query.componentName.trim();
-    // console.log(query);
     query.itemType = this.stockType;
     this.loadingText = "(1/4) מייבא פריטים...";
 
@@ -1886,54 +1755,21 @@ export class StockComponent implements OnInit {
         this.smallLoader = false;
         this.toastSrv.error("משהו השתבש.");
       }
-    }, 1000 * 30); // stop the loader if no answer
+    }, 1000 * 15); // stop the loader if no answer
 
     this.inventoryService
       .getFilteredComponents(query)
       .subscribe((filteredComponents) => {
-        // console.log(filteredComponents);
-        // this.components = filteredComponents.filter(
-        //   (s) => s.itemType == this.stockType
-        // );
-        // this.componentsUnFiltered = filteredComponents.filter(
-        //   (s) => s.itemType == this.stockType
-        // );
-        // this.components = filteredComponents
-        // console.log("this.components: ",this.components);
-
-        // this.componentsUnFiltered = filteredComponents
-        // console.log("this.componentsUnFiltered: ",this.componentsUnFiltered);
-
-        // Filtre by types
-        this.componentFilter = filteredComponents.filter((item)=> item.itemType == "component")
-        this.productFilter = filteredComponents.filter((item)=> item.itemType == "product")
-        this.materialFilter = filteredComponents.filter((item)=> item.itemType == "material")
-
-        // Change type
-        const componentFilterSize = this.componentFilter.length
-        const productFilterSize = this.productFilter.length
-        const materialFilterSize = this.materialFilter.length
-
-        
-        if(componentFilterSize == 1 && this.componentFilter[0].componentN == this.numberSearchInput.nativeElement.value){
-          this.stockType = "component"
-          this.setType(this.stockType)
-        }
-
-        if(productFilterSize == 1 && this.productFilter[0].componentN == this.numberSearchInput.nativeElement.value){
-          this.stockType = "product"
-          this.setType(this.stockType)
-        }
-
-        if(materialFilterSize == 1 && this.materialFilter[0].componentN == this.numberSearchInput.nativeElement.value){
-          this.stockType = "material"
-          this.setType(this.stockType)
-        }
-
-
+        console.log(filteredComponents);
+        this.components = filteredComponents.filter(
+          (s) => s.itemType == this.stockType
+        );
+        this.componentsUnFiltered = filteredComponents.filter(
+          (s) => s.itemType == this.stockType
+        );
         if (this.components.length > 0) {
           try {
-            // console.log(this.components);
+            console.log(this.components);
             this.loadingText = "(2/4) מחשב כמויות... ";
             this.getAmountsFromShelfs();
             this.getItemPurchases(false);
@@ -1955,35 +1791,26 @@ export class StockComponent implements OnInit {
   getAllocationsNew() {
     if (this.components.length > 0) {
       for (let component of this.components) {
-        if (component.itemType == "product") {
-          this.inventoryService
-            .getAllocatedOrdersByNumber(component.componentN)
-            .subscribe((data) => {
-              console.log(data);
-              let productAllocation = [];
-              let allocatedAmount = 0;
-              for (let orderItem of data) {
-                allocatedAmount += +orderItem.quantity;
-                productAllocation.push({
-                  orderNumber: orderItem.orderNumber,
-                  allocatedQuantity: orderItem.quantity,
-                });
-              }
-              component.productAllocation = productAllocation;
-              component.allocatedAmount = allocatedAmount;
-            });
-        } else if (component.itemType == "component") {
-          this.inventoryService
-            .getCmptPPCDetails(component.componentN)
-            .subscribe((data) => {
-              console.log(data);
-              component.allocations = data.allocations;
-              component.allocationsAmount = data.allocationsAmount;
-            });
-        }
+        this.inventoryService
+          .getAllocatedOrdersByNumber(component.componentN)
+          .subscribe((data) => {
+            console.log(data);
+            let productAllocation = [];
+            let allocatedAmount = 0;
+            for (let orderItem of data) {
+              allocatedAmount += +orderItem.quantity;
+              productAllocation.push({
+                orderNumber: orderItem.orderNumber,
+                allocatedQuantity: orderItem.quantity,
+              });
+            }
+            component.productAllocation = productAllocation;
+            component.allocatedAmount = allocatedAmount;
+          });
       }
     }
   }
+
   searchItemShelfs() {
     if (this.newItemShelfWH != "") {
       this.inventoryService
@@ -2177,7 +2004,7 @@ export class StockComponent implements OnInit {
   openAllocatedOrders(component) {
     this.openModalHeader = "הקצאות מלאי";
     this.openOrderAmountsModal = true;
-    this.allocatedOrders = component.allocations;
+    this.allocatedOrders;
   }
 
   getAllocations() {
@@ -2192,7 +2019,6 @@ export class StockComponent implements OnInit {
           );
           component.openOrders = ordersObject.openOrders;
         }
-        console.log(this.components);
         this.toastSrv.success("כל הנתונים נטענו.");
       });
   }
@@ -2724,17 +2550,6 @@ export class StockComponent implements OnInit {
     this.editVersionForm.reset();
   }
 
-  // getSumofAmount(){
-  //   let sum = 0
-  //   this.itemAmountsData.map((i)=>{
-  //     sum += i.sumShelfAmounts
-  //   })
-
-  //   this.sumofAmount = String(sum)
-
-  // }
-
-
   async getCmptAmounts(cmptN, cmptId) {
     this.callingForCmptAmounts = true;
     // this.currItemShelfs=[];
@@ -2745,7 +2560,6 @@ export class StockComponent implements OnInit {
       .getAmountOnShelfs(cmptN)
       .subscribe(async (res) => {
         this.callingForCmptAmounts = false;
-        console.log(res);
 
         // remove these 2 filters after "Rosh HaAyin" components are all removed from db ("Rosh HaAyin C" = new warehouse for components)
         this.itemAmountsData =
@@ -2756,13 +2570,11 @@ export class StockComponent implements OnInit {
           this.stockType == "material"
             ? res.whList
             : res.whList.filter((wh) => wh != "Rosh HaAyin"); // remove
-            
 
         this.currItemShelfs = [];
         this.newItemShelfWH = "";
 
         await this.openAmountsData(cmptN, cmptId);
-        
       });
   }
   getAllOrderItems(componentN) {
