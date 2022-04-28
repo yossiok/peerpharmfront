@@ -113,6 +113,7 @@ export class OrderdetailsComponent implements OnInit {
   loadAlerts: boolean = false;
   scheduleLines: any[] = [];
   shipmentsHistory: any[] = [];
+  theDay: Date = new Date();
 
   componentsAmounts: any = {
     bottleQuantity: 0,
@@ -191,7 +192,7 @@ export class OrderdetailsComponent implements OnInit {
     componentCheck: "",
     compiled: [],
     actionTime: [],
-    itemOrderDate: "",
+    itemOrderDate: this.theDay,
     itemDeliveryDate: "",
     pakaStatus: 0,
     oiStatus: "",
@@ -308,6 +309,9 @@ export class OrderdetailsComponent implements OnInit {
     this.productionApproved =
       this.authService.loggedInUser.authorization.includes("production");
     this.getUserInfo();
+    setTimeout(() => {
+      this.itemData.itemOrderDate = new Date().toISOString().substr(0, 10);
+    }, 150);
     this.orderService.openOrdersValidate.subscribe((res) => {
       this.number = this.route.snapshot.paramMap.get("id");
 
@@ -909,7 +913,8 @@ export class OrderdetailsComponent implements OnInit {
         this.toastSrv.error(data.msg);
       } else if (data) {
         let item = data.document;
-
+        console.log(item);
+        console.log(this.itemData);
         if (item.itemNumber == this.itemData.itemNumber) {
           item.itemImpRemark = newItemImpRemark;
           item.isExpand = "+";
@@ -930,7 +935,9 @@ export class OrderdetailsComponent implements OnInit {
             componentCheck: "",
             compiled: [],
             batchStatus: 0,
+            itemOrderDate: new Date().toISOString().substr(0, 10),
           };
+
           this.getOrderItems(true);
 
           this.toastSrv.success("item " + item.itemNumber + " added");
@@ -1181,6 +1188,15 @@ export class OrderdetailsComponent implements OnInit {
       .getOrderItemsByNumber(orderNum)
       .subscribe((orderItems) => {
         console.log(orderItems);
+        if (!orderItems || orderItems.length == 0) {
+          this.toastSrv.warning(
+            "להזמנה זו לא משויכים פריטים, יש להוסיף לפחות פריט אחד."
+          );
+          this.loadData = false;
+          this.loadAlerts = false;
+          this.ordersItems = orderItems;
+          return;
+        }
         let itemNumbers = [];
         for (let oi of orderItems) {
           // if the item has no formule and filling only, to prevent adding to cream production workplan
@@ -2008,6 +2024,22 @@ export class OrderdetailsComponent implements OnInit {
 
   searchItem(itemNumber) {
     console.log(itemNumber);
+    let itemExists = this.ordersItems.findIndex(
+      (oi) => oi.itemNumber == itemNumber
+    );
+    if (itemExists > -1) {
+      alert(
+        "פריט זה קיים כבר בהזמנה זו, יש לפתוח הזמנה חדשה או לשנות את הכמות בפריט הקיים (לפני שנשלח לבישול!).  "
+      );
+      this.itemData.itemNumber = "";
+      this.itemData.discription = "";
+      this.itemData.netWeightGr = "";
+      this.itemData.itemRemarks = "";
+      this.itemData.itemImpRemark = "";
+      this.itemData.quantity = "";
+
+      return;
+    }
     if (itemNumber != "") {
       this.orderService.getItemByNumber(itemNumber).subscribe((res) => {
         if (res.length == 1) {

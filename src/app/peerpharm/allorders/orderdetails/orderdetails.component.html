@@ -52,9 +52,11 @@
     ></i>
     <span class="spanTitle">Total Items: {{ totalOrderQty }}</span>
     <span class="spanTitle"> Order Date:</span
-    ><span class="orderSpanDetails"> {{ orderDate }} </span
+    ><span class="orderSpanDetails"> {{ orderDate | date: "dd/MM/yyyy" }} </span
     ><span class="spanTitle"> Delivery Date: </span
-    ><span class="orderSpanDetails">{{ deliveryDate }}</span>
+    ><span class="orderSpanDetails">{{
+      deliveryDate | date: "dd/MM/yyyy"
+    }}</span>
     <span class="spanTitle"> Customer :</span
     ><span class="orderSpanDetails"> {{ costumer }} </span
     ><span class="spanTitle"> Customer Number:</span
@@ -333,6 +335,7 @@
               type="date"
               placeholder="Item order date"
               [(ngModel)]="itemData.itemOrderDate"
+              value="{{ itemData.itemOrderDate | date: 'yyyy-MM-dd' }}"
             />
           </td>
 
