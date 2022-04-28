@@ -67,18 +67,17 @@ export class NeworderComponent implements OnInit {
   formuleExist: boolean = false;
   isTooOld: boolean = false;
   noNeto: boolean = false;
-  dateStr: string = "";
   today: Date = new Date();
 
   orderForm: FormGroup = new FormGroup({
     //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
-    deliveryDate: new FormControl(null, Validators.required),
-    costumer: new FormControl(null, Validators.required),
+    deliveryDate: new FormControl(new Date(), Validators.required),
+    costumer: new FormControl("", Validators.required),
     costumerInternalId: new FormControl(""),
     orderDate: new FormControl(new Date(), Validators.required),
-    orderRemarks: new FormControl(null),
-    customerOrderNum: new FormControl(null),
-    type: new FormControl(null, Validators.required),
+    orderRemarks: new FormControl(""),
+    customerOrderNum: new FormControl("", Validators.required),
+    type: new FormControl("", Validators.required),
     user: new FormControl(null, Validators.required),
     status: new FormControl("open"),
     stage: new FormControl("new"),
@@ -106,6 +105,7 @@ export class NeworderComponent implements OnInit {
     orderId: new FormControl(null),
     orderNumber: new FormControl(null),
     shippingMethod: new FormControl([]),
+    itemOrderDate: new FormControl(new Date(), Validators.required),
   });
 
   constructor(
@@ -134,13 +134,8 @@ export class NeworderComponent implements OnInit {
         this.orderForm.controls.user.setValue(this.user);
       });
     }
-    this.setCurrentDate();
   }
 
-  setCurrentDate() {
-    let tmpD = new Date();
-    this.dateStr = tmpD.toISOString().slice(0, 10);
-  }
   back(): void {
     this.location.back();
   }
@@ -152,6 +147,7 @@ export class NeworderComponent implements OnInit {
         this.choosedCostumer.costumerId
       );
     }
+
     if (this.orderForm.valid) {
       // let newOrderObj = {
       //   area: this.choosedCostumer.area,
@@ -257,6 +253,7 @@ export class NeworderComponent implements OnInit {
         .editOrder({
           orderId: this.orderId,
           hasSpecialOrderItems: hasSpecialOrderItems,
+          orderType: this.orderForm.controls.type.value,
         })
         .subscribe((data) => {
           console.log("order problematic items updated");
@@ -314,12 +311,16 @@ export class NeworderComponent implements OnInit {
             } else {
               this.toastSrv.error("Adding item faild");
             }
+            this.today = new Date();
             this.shippingMethod = [];
             this.orderItemForm.reset();
             this.orderItemForm.controls.quantity.setValue(0);
             this.orderItemForm.controls.hasLicense.setValue(false);
             this.orderItemForm.controls.exploded.setValue(false);
             this.orderItemForm.controls.productionApproved.setValue(false);
+            setTimeout(() => {
+              this.orderItemForm.controls.itemOrderDate.setValue(this.today);
+            }, 150);
           });
       }
     }
@@ -332,6 +333,22 @@ export class NeworderComponent implements OnInit {
 
   searchItem() {
     let itemNumber = this.orderItemForm.controls.itemNumber.value;
+    console.log(itemNumber);
+    let itemExists = this.items.findIndex((oi) => oi.itemNumber == itemNumber);
+    if (itemExists > -1) {
+      alert(
+        "פריט זה קיים כבר בהזמנה זו, יש לפתוח הזמנה חדשה או לשנות את הכמות בפריט הקיים (לפני שנשלח לבישול!). "
+      );
+      this.orderItemForm.controls.itemNumber.setValue("");
+      this.orderItemForm.controls.discription.setValue("");
+      this.orderItemForm.controls.itemRemarks.setValue("");
+      this.orderItemForm.controls.quantity.setValue(0);
+      this.orderItemForm.controls.netWeightGr.setValue(null);
+      this.orderItemForm.controls.qtyKg.setValue(null);
+
+      return;
+    }
+
     this.noNeto = false;
     this.itemName = "";
     this.existOrderItem = [];
@@ -541,5 +558,17 @@ export class NeworderComponent implements OnInit {
     this.orderForm.controls.costumerInternalId.setValue(
       this.choosedCostumer.costumerId
     );
+  }
+  calcQuantity() {
+    if (
+      this.orderItemForm.controls.netWeightGr.value &&
+      this.orderItemForm.controls.quantity.value
+    ) {
+      let totalWeight =
+        (this.orderItemForm.controls.netWeightGr.value *
+          this.orderItemForm.controls.quantity.value) /
+        1000;
+      this.orderItemForm.controls.qtyKg.setValue(totalWeight);
+    }
   }
 }

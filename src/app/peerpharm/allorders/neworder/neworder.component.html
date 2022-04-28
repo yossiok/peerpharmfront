@@ -83,7 +83,9 @@
             <label
               for="cono1"
               class="col-sm-4 text-right control-label col-form-label"
-              ><strong>Customer Order</strong></label
+              ><span style="color: red">(*) חובה</span>&nbsp;<strong
+                >Customer Order</strong
+              ></label
             >
             <div class="col-sm-4">
               <input
@@ -261,6 +263,7 @@
               <th>neto Weight (Gr)<span class="red">*</span></th>
               <th>Quantity<span class="red">*</span></th>
               <th>Weight</th>
+              <th>Item Order Date</th>
               <th>Delivery Date</th>
               <th>Remarks</th>
               <th></th>
@@ -285,8 +288,27 @@
               <td>
                 <input formControlName="netWeightGr" class="form-control" />
               </td>
-              <td><input formControlName="quantity" class="form-control" /></td>
-              <td><input formControlName="qtyKg" class="form-control" /></td>
+              <td>
+                <input
+                  formControlName="quantity"
+                  class="form-control"
+                  (blur)="calcQuantity()"
+                />
+              </td>
+              <td>
+                <input formControlName="qtyKg" class="form-control" />
+              </td>
+              <td>
+                <input
+                  formControlName="itemOrderDate"
+                  class="form-control"
+                  type="date"
+                  placeholder="Item Order date"
+                  [value]="
+                    orderItemForm.value.itemOrderDate | date: 'yyyy-MM-dd'
+                  "
+                />
+              </td>
               <td>
                 <input
                   formControlName="itemDeliveryDate"
@@ -321,6 +343,7 @@
               <td>{{ item.netWeightGr }}</td>
               <td>{{ item.quantity }}</td>
               <td>{{ item.qtyKg }}</td>
+              <td>{{ item.itemOrderDate | date: "dd/MM/yyyy" }}</td>
               <td>{{ item.itemDeliveryDate | date: "dd/MM/yyyy" }}</td>
               <td>{{ item.itemRemarks }}</td>
             </tr>
@@ -339,12 +362,14 @@
     <table class="table table-striped">
       <thead>
         <tr style="text-align: center">
+          <th>פריט</th>
           <th>כמות</th>
           <th>מספר הזמנה</th>
         </tr>
       </thead>
       <tbody>
         <tr style="text-align: center" *ngFor="let item of existOrderItem">
+          <td>{{ item.itemNumber }}</td>
           <td>{{ item.quantity }}</td>
           <td>{{ item.orderNumber }}</td>
         </tr>
