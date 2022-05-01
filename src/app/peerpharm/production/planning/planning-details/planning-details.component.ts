@@ -378,7 +378,7 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   saveChanges(oderItemToDelete?): Promise<string> {
-    if (oderItemToDelete && this.editWeightInput) {
+    if (oderItemToDelete && this.editWeightInput || oderItemToDelete === 0 && this.editWeightInput) {
       // Vars for ranges calculation
       const itemNetWeightGr =
         this.workPlan.orderItems[oderItemToDelete].netWeightGr;
