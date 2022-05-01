@@ -61,6 +61,7 @@ export class OrdersComponent implements OnInit {
   problematicsModal: boolean = false;
   PPCPermission: boolean = false;
   loadingProblematics: boolean = false;
+  orderEditApprove: boolean = false;
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
     event: KeyboardEvent
@@ -93,6 +94,9 @@ export class OrdersComponent implements OnInit {
   ngOnInit() {
     this.PPCPermission =
       this.authService.loggedInUser.authorization.includes("PPCPermission");
+    this.orderEditApprove =
+      this.authService.loggedInUser.authorization.includes("newOrder");
+
     this.today = new Date();
     this.today = moment(this.today).format("DD/MM/YYYY");
     this.getOrders();
@@ -335,9 +339,11 @@ export class OrdersComponent implements OnInit {
   }
 
   edit(id) {
-    this.EditRowId = id;
+    if (this.orderEditApprove) {
+      this.EditRowId = id;
+    }
 
-    if (id != "") {
+    if (id != "" && this.orderEditApprove) {
       let i = this.orders.findIndex((elemnt) => elemnt._id == id);
       if (
         this.orders[i].onHoldDate != null &&

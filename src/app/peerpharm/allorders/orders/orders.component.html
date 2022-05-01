@@ -313,7 +313,10 @@
               />
             </a>
           </td>
-          <td style="width: 18%" *ngIf="order._id === EditRowId">
+          <td
+            style="width: 18%"
+            *ngIf="order._id === EditRowId && orderEditApprove"
+          >
             <input
               #costumer
               type="text"
@@ -325,7 +328,7 @@
           </td>
           <td
             style="width: 18%"
-            *ngIf="order._id !== EditRowId"
+            *ngIf="order._id !== EditRowId || !orderEditApprove"
             (click)="edit(order._id)"
           >
             {{ order.costumer }}
@@ -431,25 +434,27 @@
           <td *ngIf="order._id === EditRowId" style="width: 11%"></td>
           <td style="width: 4%"></td>
           <td style="width: 5%">
-            <i
-              class="ti-trash text-danger m-r-10"
-              *ngIf="order._id !== EditRowId"
-              (click)="deleteOrder(order)"
-              style="cursor: pointer"
-            ></i
-            >&nbsp;
-            <i
-              class="ti-check text-success m-r-10"
-              *ngIf="order._id !== EditRowId"
-              (click)="saveEdit(true, order._id)"
-              style="cursor: pointer"
-            ></i>
-            <i
-              class="ti-save text-success m-r-10"
-              *ngIf="order._id === EditRowId"
-              (click)="saveEdit(false, order._id)"
-              style="cursor: pointer"
-            ></i>
+            <ng-container *ngIf="orderEditApprove">
+              <i
+                class="ti-trash text-danger m-r-10"
+                *ngIf="order._id !== EditRowId"
+                (click)="deleteOrder(order)"
+                style="cursor: pointer"
+              ></i
+              >&nbsp;
+              <i
+                class="ti-check text-success m-r-10"
+                *ngIf="order._id !== EditRowId"
+                (click)="saveEdit(true, order._id)"
+                style="cursor: pointer"
+              ></i>
+              <i
+                class="ti-save text-success m-r-10"
+                *ngIf="order._id === EditRowId"
+                (click)="saveEdit(false, order._id)"
+                style="cursor: pointer"
+              ></i>
+            </ng-container>
           </td>
         </tr>
       </tbody>

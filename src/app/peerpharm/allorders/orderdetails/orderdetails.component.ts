@@ -36,6 +36,7 @@ import { FormsService } from "src/app/services/forms.service";
 import { BatchesService } from "src/app/services/batches.service";
 import { isValid } from "date-fns";
 import { NotificationService } from "src/app/services/notification.service";
+import { BooleanInput } from "@angular/cdk/coercion";
 
 var _ = require("lodash");
 
@@ -241,6 +242,7 @@ export class OrderdetailsComponent implements OnInit {
   formDetailsAmounts: Array<any>;
   customerOrderNum: string;
   iAmHaviv: boolean = false;
+  orderItemEditApprove: boolean = false;
 
   @ViewChild("weight") weight: ElementRef;
   @ViewChild("itemRemarks") itemRemarks: ElementRef;
@@ -308,6 +310,8 @@ export class OrderdetailsComponent implements OnInit {
 
     this.productionApproved =
       this.authService.loggedInUser.authorization.includes("production");
+    this.orderItemEditApprove =
+      this.authService.loggedInUser.authorization.includes("newOrder");
     this.getUserInfo();
     setTimeout(() => {
       this.itemData.itemOrderDate = new Date().toISOString().substr(0, 10);
@@ -1503,6 +1507,9 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   edit(id) {
+    if (!this.orderItemEditApprove) {
+      return;
+    }
     if (this.authService.loggedInUser.userName == "SHARK") {
       this.EditRowId = "";
     } else {

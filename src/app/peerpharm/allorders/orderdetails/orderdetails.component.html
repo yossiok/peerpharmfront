@@ -255,7 +255,11 @@
       </thead>
 
       <tbody>
-        <tr *ngIf="!showingAllOrders" class="inputTr" (click)="edit('')">
+        <tr
+          *ngIf="!showingAllOrders && orderItemEditApprove"
+          class="inputTr"
+          (click)="edit('')"
+        >
           <td>#</td>
           <td>
             <input type="checkbox" (change)="checkboxAllOrders($event)" />
@@ -732,37 +736,44 @@
             <td></td> -->
 
             <td class="printTd">
-              <i
-                class="ti-trash text-danger m-r-10"
-                *ngIf="item._id != EditRowId"
-                (click)="deleteItem(item)"
-                style="cursor: pointer"
-              ></i>
-              <i
-                class="ti-new text-success m-r-10"
-                *ngIf="item._id != EditRowId && item.status == 'done'"
-                (click)="reOpenOrderItem(item)"
-                style="cursor: pointer"
-                >Open</i
-              >
-              <i
-                class="ti-check text-danger m-r-10"
-                *ngIf="item._id != EditRowId && item.status != 'done'"
-                (click)="setOrderItemDone(item)"
-                style="cursor: pointer"
-                >Close</i
-              >
-              <i
-                class="ti-save text-success m-r-10"
-                *ngIf="item._id === EditRowId"
-                (click)="saveEdit()"
-                style="cursor: pointer"
-              ></i>
+              <ng-container *ngIf="orderItemEditApprove">
+                <i
+                  class="ti-trash text-danger m-r-10"
+                  *ngIf="item._id != EditRowId"
+                  (click)="deleteItem(item)"
+                  style="cursor: pointer"
+                ></i>
+                <i
+                  class="ti-new text-success m-r-10"
+                  *ngIf="item._id != EditRowId && item.status == 'done'"
+                  (click)="reOpenOrderItem(item)"
+                  style="cursor: pointer"
+                  >Open</i
+                >
+                <i
+                  class="ti-check text-danger m-r-10"
+                  *ngIf="item._id != EditRowId && item.status != 'done'"
+                  (click)="setOrderItemDone(item)"
+                  style="cursor: pointer"
+                  >Close</i
+                >
+                <i
+                  class="ti-save text-success m-r-10"
+                  *ngIf="item._id === EditRowId"
+                  (click)="saveEdit()"
+                  style="cursor: pointer"
+                ></i>
+              </ng-container>
             </td>
           </tr>
           <tr *ngIf="item._id == EditRowId2nd && expand == true">
             <td colspan="5">
               <table class="detilasTable" width="105%">
+                <tr *ngIf="!orderItemEditApprove">
+                  <td colspan="7">
+                    <h5>הנתונים לצפייה בלבד - אין לך הרשאת שינוי</h5>
+                  </td>
+                </tr>
                 <tr>
                   <td></td>
                   <td>
@@ -796,7 +807,9 @@
                           : ''
                       "
                       class="btn btn-success"
-                      [disabled]="orderStage == 'waitingFinance'"
+                      [disabled]="
+                        orderStage == 'waitingFinance' || !orderItemEditApprove
+                      "
                       (click)="setBatch(item, inputBatch.value, item.batch)"
                     >
                       set
@@ -819,7 +832,9 @@
                   <td>
                     {{ det.type }} &nbsp;&nbsp;
                     {{ det.number }} &nbsp;&nbsp;&nbsp;<button
-                      [disabled]="orderStage == 'waitingFinance'"
+                      [disabled]="
+                        orderStage == 'waitingFinance' || !orderItemEditApprove
+                      "
                       [title]="
                         orderStage == 'waitingFinance'
                           ? 'ממתין לאישור מחלקת כספים'
@@ -925,7 +940,8 @@
                       *ngIf="setScheduleAllowed"
                       [disabled]="
                         !item.productionApproved ||
-                        orderStage == 'waitingFinance'
+                        orderStage == 'waitingFinance' ||
+                        !orderItemEditApprove
                       "
                       [style.cursor]="
                         item.productionApproved ? 'pointer' : 'not-allowed'
