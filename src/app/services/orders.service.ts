@@ -250,6 +250,14 @@ export class OrdersService {
       .post(url, JSON.stringify(orderItem), this.options)
       .pipe(map((res) => res.json()));
   }
+  reOpenOrderItem(item): Observable<any> {
+    let url = this.baseUrl + "orderitem/reopenorderitem";
+
+    return this.http
+      .post(url, JSON.stringify(item), this.options)
+      .pipe(map((res) => res.json()));
+  }
+
   changeReqStatus(status, id, type): Observable<any> {
     let url = this.baseUrl + "orderitem/changeReqStatus";
     return this.http

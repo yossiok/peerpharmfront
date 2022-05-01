@@ -208,7 +208,7 @@
           <th class="header">Barcode</th>
           <th class="header">neto Weight(Gr)</th>
           <th class="header">Ordered Qty</th>
-          <th class="header">Remained Qty</th>
+          <th class="header">Remaining Qty</th>
           <th class="header">Item order date</th>
           <th class="header">Item packing date</th>
           <th class="header">Item delivery date</th>
@@ -728,8 +728,8 @@
   
           </td> -->
 
-            <td></td>
-            <td></td>
+            <!-- <td></td>
+            <td></td> -->
 
             <td class="printTd">
               <i
@@ -739,11 +739,19 @@
                 style="cursor: pointer"
               ></i>
               <i
-                class="ti-check text-success m-r-10"
-                *ngIf="item._id != EditRowId"
+                class="ti-new text-success m-r-10"
+                *ngIf="item._id != EditRowId && item.status == 'done'"
+                (click)="reOpenOrderItem(item)"
+                style="cursor: pointer"
+                >Open</i
+              >
+              <i
+                class="ti-check text-danger m-r-10"
+                *ngIf="item._id != EditRowId && item.status != 'done'"
                 (click)="setOrderItemDone(item)"
                 style="cursor: pointer"
-              ></i>
+                >Close</i
+              >
               <i
                 class="ti-save text-success m-r-10"
                 *ngIf="item._id === EditRowId"
@@ -2092,7 +2100,7 @@
           <th>Barcode</th>
           <th>Netto Weight</th>
           <th>Required Quantity</th>
-          <th>Remained Quantity</th>
+          <th>Remaining Quantity</th>
           <th>Item Order Date</th>
           <th>Item Packing Date</th>
           <th>Item Delivery Date</th>

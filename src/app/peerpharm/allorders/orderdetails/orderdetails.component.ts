@@ -1256,7 +1256,9 @@ export class OrderdetailsComponent implements OnInit {
               ? item.quantitySupplied
               : 0;
             item.quantityRemained =
-              Number(item.quantity) - item.quantitySupplied;
+              Number(item.quantity) - item.quantitySupplied > 0
+                ? Number(item.quantity) - item.quantitySupplied
+                : 0;
 
             this.totalOrderQty += Number(item.quantity);
             if (item.fillingStatus != null) {
@@ -2075,14 +2077,16 @@ export class OrderdetailsComponent implements OnInit {
           item.itemNumber +
           "\n From order " +
           item.orderNumber +
-          "\n Is ready?"
+          "\n Is ready?" +
+          "  האם אתה בטוח שאתה רוצה להעביר את שורה זו למצב סגור? "
       )
     ) {
       this.orderService.editItemOrderStatus(item).subscribe((res) => {
-        if (res._id) {
+        if (res.doc._id) {
           this.ordersItems.filter((i) => {
-            if (i._id == res._id) {
+            if (i._id == res.doc._id) {
               i.status = "done";
+              i.oiStatus = "done";
               i.color = "aquamarine";
               this.toastSrv.success("Item " + i.itemNumber + " set to Done");
             }
@@ -2091,6 +2095,35 @@ export class OrderdetailsComponent implements OnInit {
       });
     }
   }
+
+  reOpenOrderItem(item) {
+    let confirmOpen = confirm(`שורת הפריט תפתח מחדש, האם לבמשיך?`);
+    if (!confirmOpen) {
+      return;
+    }
+    console.log(item);
+    this.orderService.reOpenOrderItem(item).subscribe((data) => {
+      console.log(data);
+      if (data.msg) {
+        this.toastSrv.error(data.msg);
+        return;
+      } else if (data.updatedOrderItem && data.updatedOrder) {
+        this.ordersItems.filter((oi) => {
+          if (oi._id == data.updatedOrderItem._id) {
+            oi.status = "open";
+            oi.oiStatus = "reOpen";
+            oi.color = "white";
+            this.toastSrv.success("שורת הפריט נפתחה מחדש");
+          }
+        });
+        return;
+      } else {
+        this.toastSrv.warning("קרתה תקלה, יש לרענן את הדף ולנסות שוב.");
+        return;
+      }
+    });
+  }
+
   setPrintSced(orderItemId) {
     // this.printSchedule.date.setHours(2,0,0,0);
     let dateToUpdate = new Date(this.printSchedule.date);
