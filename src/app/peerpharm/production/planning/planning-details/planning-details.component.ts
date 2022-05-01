@@ -47,9 +47,15 @@ export class PlanningDetailsComponent implements OnInit {
   // finalFormule: any;
   statuses: number[] = [1, 2, 3];
   materialsForFormules: Array<any>;
+
   edit: number = -1;
   editF: number = -1;
   authorized: boolean = false;
+
+  enableEdit: boolean = false;
+  enableEditIndex: any = null;
+  editWeightInput: any = null;
+
   loadData: boolean;
   showMaterialsForFormules: boolean = false;
   printingFormules: boolean = false;
@@ -121,6 +127,13 @@ export class PlanningDetailsComponent implements OnInit {
     );
 
     this.getBarrelsForWP();
+  }
+
+  // make edit available and set index
+  enableEditMethod(e, i) {
+    this.enableEdit = true;
+    this.enableEditIndex = i;
+    console.log(i, e);
   }
 
   getBarrelsForWP() {
@@ -365,43 +378,136 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   saveChanges(oderItemToDelete?): Promise<string> {
-    let itemNetWeightGr = this.workPlan.orderItems[oderItemToDelete].netWeightGr
-    let itemQuantity = Number(this.workPlan.orderItems[oderItemToDelete].quantity)
-    let normalRange = (itemNetWeightGr * itemQuantity)/1000
-    let maxSafeRange = normalRange * 1.25
-    let minSafeRange = normalRange * 1
-    let newTotalKg = this.workPlan.orderItems[oderItemToDelete].totalKG
+    if (oderItemToDelete && this.editWeightInput) {
+      // Vars for ranges calculation
+      const itemNetWeightGr =
+        this.workPlan.orderItems[oderItemToDelete].netWeightGr;
+      const itemQuantity = Number(
+        this.workPlan.orderItems[oderItemToDelete].quantity
+      );
+      const normalRange = (itemNetWeightGr * itemQuantity) / 1000;
+      const maxSafeRange = normalRange * 1.25;
+      const minSafeRange = normalRange * 1;
+      const newTotalKg = this.editWeightInput;
 
-    let confirmWp;
-
-    if(newTotalKg > maxSafeRange || newTotalKg < minSafeRange){
-      confirmWp = confirm("המשקל החדש חורג מהמשקל המקורי ב25%. האם להמשיך?")
-    }
-
-    if(!confirmWp){
-      return
-    }
-    console.log(this.workPlan);
-    console.log(oderItemToDelete);
-    return new Promise((resolve, reject) => {
-      this.productionService
-        .editWorkPlan(this.workPlan, oderItemToDelete)
-        .subscribe((data) => {
-          if (data.status) {
-            this.edit = -1;
-            this.editF = -1;
-            this.workPlan = data;
-            this.updateWorkPlans.emit();
-            if (data.status == -1) {
-              this.closeWorkPlan(-1);
-              this.toastr.info('פק"ע ריקה מפריטים', 'פק"ע נמחקה.');
-            }
-            resolve("הפרטים נשמרו בהצלחה");
-          } else if (data.msg) {
-            reject(data.msg);
-          }
+      // If smaller than min range
+      if (newTotalKg < minSafeRange) {
+        if (confirm("המשקל החדש קטן מהמשקל המקורי. האם להמשיך?")) {
+          this.workPlan.orderItems[oderItemToDelete].totalKG = newTotalKg;
+          console.log(this.workPlan);
+          console.log(oderItemToDelete);
+          return new Promise((resolve, reject) => {
+            this.productionService
+              .editWorkPlan(this.workPlan, oderItemToDelete)
+              .subscribe((data) => {
+                if (data.status) {
+                  this.edit = -1;
+                  this.editF = -1;
+                  this.enableEdit = false;
+                  this.enableEditIndex = null;
+                  this.editWeightInput = null;
+                  this.workPlan = data;
+                  this.updateWorkPlans.emit();
+                  if (data.status == -1) {
+                    this.closeWorkPlan(-1);
+                    this.toastr.info('פק"ע ריקה מפריטים', 'פק"ע נמחקה.');
+                  }
+                  resolve("הפרטים נשמרו בהצלחה");
+                } else if (data.msg) {
+                  reject(data.msg);
+                }
+              });
+          });
+        } else {
+          this.editWeightInput = null;
+          return;
+        }
+        // If bigger than max range
+      } else if (newTotalKg > maxSafeRange) {
+        if (confirm("המשקל החדש חורג מהמשקל המקורי ב25%. האם להמשיך?")) {
+          this.workPlan.orderItems[oderItemToDelete].totalKG = newTotalKg;
+          console.log(this.workPlan);
+          console.log(oderItemToDelete);
+          return new Promise((resolve, reject) => {
+            this.productionService
+              .editWorkPlan(this.workPlan, oderItemToDelete)
+              .subscribe((data) => {
+                if (data.status) {
+                  this.edit = -1;
+                  this.editF = -1;
+                  this.enableEdit = false;
+                  this.enableEditIndex = null;
+                  this.editWeightInput = null;
+                  this.workPlan = data;
+                  this.updateWorkPlans.emit();
+                  if (data.status == -1) {
+                    this.closeWorkPlan(-1);
+                    this.toastr.info('פק"ע ריקה מפריטים', 'פק"ע נמחקה.');
+                  }
+                  resolve("הפרטים נשמרו בהצלחה");
+                } else if (data.msg) {
+                  reject(data.msg);
+                }
+              });
+          });
+        } else {
+          this.editWeightInput = null;
+          return;
+        }
+        // If between ranges
+      } else {
+        console.log(this.workPlan);
+        console.log(oderItemToDelete);
+        this.workPlan.orderItems[oderItemToDelete].totalKG = newTotalKg;
+        return new Promise((resolve, reject) => {
+          this.productionService
+            .editWorkPlan(this.workPlan, oderItemToDelete)
+            .subscribe((data) => {
+              if (data.status) {
+                this.edit = -1;
+                this.editF = -1;
+                this.enableEdit = false;
+                this.enableEditIndex = null;
+                this.editWeightInput = null;
+                this.workPlan = data;
+                this.updateWorkPlans.emit();
+                if (data.status == -1) {
+                  this.closeWorkPlan(-1);
+                  this.toastr.info('פק"ע ריקה מפריטים', 'פק"ע נמחקה.');
+                }
+                resolve("הפרטים נשמרו בהצלחה");
+              } else if (data.msg) {
+                reject(data.msg);
+              }
+            });
         });
-    });
+      }
+    } else {
+      console.log(this.workPlan);
+      console.log(oderItemToDelete);
+      return new Promise((resolve, reject) => {
+        this.productionService
+          .editWorkPlan(this.workPlan, oderItemToDelete)
+          .subscribe((data) => {
+            if (data.status) {
+              this.edit = -1;
+              this.editF = -1;
+              this.enableEdit = false;
+              this.enableEditIndex = null;
+              this.editWeightInput = null;
+              this.workPlan = data;
+              this.updateWorkPlans.emit();
+              if (data.status == -1) {
+                this.closeWorkPlan(-1);
+                this.toastr.info('פק"ע ריקה מפריטים', 'פק"ע נמחקה.');
+              }
+              resolve("הפרטים נשמרו בהצלחה");
+            } else if (data.msg) {
+              reject(data.msg);
+            }
+          });
+      });
+    }
   }
 
   deleteLine(i: number) {
