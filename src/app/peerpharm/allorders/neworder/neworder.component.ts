@@ -106,6 +106,7 @@ export class NeworderComponent implements OnInit {
     orderNumber: new FormControl(null),
     shippingMethod: new FormControl([]),
     itemOrderDate: new FormControl(new Date(), Validators.required),
+    batch: new FormControl(""),
   });
 
   constructor(
