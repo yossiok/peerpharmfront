@@ -152,12 +152,12 @@
           <td>{{ orderItem.netWeightGr }}</td>
           <td>{{ orderItem.quantity }}</td>
           <td #editWeight>
-            <span *ngIf="edit != i">{{ orderItem.totalKG }}</span>
+            <span *ngIf="!enableEdit">{{ orderItem.totalKG }}</span>
             <input
               placeholder="Enter Weight"
-              *ngIf="edit == i"
+              *ngIf="enableEdit && enableEditIndex == i"
               type="number"
-              [(ngModel)]="orderItem.totalKG"
+              [(ngModel)]="editWeightInput"
             />
           </td>
           <td>
@@ -192,27 +192,44 @@
             {{ orderItem.status | orderItemBatchStatus }}
           </td>
           <td>
-            <span *ngIf="edit != i">{{ orderItem.remarks }}</span>
+            <span *ngIf="!enableEdit">{{ orderItem.remarks }}</span>
             <input
               placeholder="Remarks"
-              *ngIf="edit == i"
+              *ngIf="enableEdit && enableEditIndex == i"
               type="text"
               [(ngModel)]="orderItem.remarks"
             />
           </td>
           <td>
-            <img
+            <!-- cancel edit button -->
+            <!-- if enableEdit == true and enableEditIndex == index(i) display the cancel button -->
+            <button
+              *ngIf="enableEdit && enableEditIndex == i"
+              (click)="enableEdit = false; enableEditIndex = null;editWeightInput = null"
+              class="btn btn-danger"
+            >
+              ביטול
+            </button>
+            <!-- <img
               *ngIf="edit == i && authorized"
               ngbTooltip="שמור שינויים"
               (click)="saveChanges(i)"
               class="img click"
               src="../../../../../assets/images/aprroved.png"
               alt=""
-            />
+            /> -->
+            <img
+            *ngIf="enableEdit && enableEditIndex == i authorized"
+            ngbTooltip="שמור שינויים"
+            (click)="saveChanges(i)"
+            class="img click"
+            src="../../../../../assets/images/aprroved.png"
+            alt=""
+          />
             <button
               [disabled]="orderItem.hasFormule"
-              *ngIf="edit != i && authorized"
-              (click)="edit = i"
+              *ngIf="!enableEdit && authorized"
+              (click)="enableEditMethod($event, i)"
               class="btn btn-secondary rounded"
             >
               עריכה
@@ -221,7 +238,7 @@
           </td>
           <td *ngIf="authorized">
             <button
-              [disabled]="orderItem.hasFormule"
+              [disabled]="orderItem.hasFormule || enableEdit"
               (click)="deleteLine(i)"
               class="btn btn-danger"
             >
