@@ -434,4 +434,9 @@ export class OrdersService {
       this.baseUrl + "formDetails/isLastFormOfItemTooOld?item=" + itemNumber;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+
+  getItemStock(itemNumber) {
+    let url = this.baseUrl + "itemShell/getItemStock?itemNumber=" + itemNumber;
+    return this.http.get(url).pipe(map((res) => res.json()));
+  }
 }
