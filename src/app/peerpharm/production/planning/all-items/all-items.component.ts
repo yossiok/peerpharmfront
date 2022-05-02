@@ -464,7 +464,11 @@ export class AllItemsComponent implements OnInit {
         }
       }
 
-      this.addWorkPlan(this.selectedArr, "WP updated!!!", wp.serialNumber);
+      this.addWorkPlan(
+        this.selectedArr,
+        wp.remark + ": updated!",
+        wp.serialNumber
+      );
       // this.ordersService
       //   .makePlan(this.selectedArr, "WP updated!!!", wp.serialNumber)
       //   .subscribe((data) => {
