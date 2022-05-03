@@ -4,11 +4,11 @@
   </h1>
   <div class="bg-white">
     <div class="px-3 py-3 d-flex align-items-center border-bottom bg-light">
-      <form class="form-inline my-2 my-lg-0">
+      <form class="form-inline mr-2 ml-5 my-lg-0">
         <input
           class="form-control mr-sm-2"
           type="text"
-          placeholder="Search"
+          placeholder="חיפוש במאפייני חביות"
           aria-label="Search"
           (keyup)="filterBarrels($event)"
           #barrelFilter
@@ -21,6 +21,25 @@
           Clear
         </button>
       </form>
+      <form class="form-inline my-2 my-lg-0">
+        <input
+          class="form-control mr-sm-2"
+          type="text"
+          placeholder="חיפוש לפי הזמנות/פריטים"
+          aria-label="Search"
+          (keyup)="filterBarrelsTwo($event)"
+          #barrelFilterTwo
+        />
+        <button
+          class="btn btn-outline-primary my-2 my-sm-0"
+          type="button"
+          (click)="clearBarrelsListTwo()"
+        >
+          Clear
+        </button>
+      </form>
+    </div>
+    <div class="px-3 py-3 d-flex align-items-center border-bottom bg-light">
       <form
         novalidate=""
         class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
@@ -86,6 +105,23 @@
           כל החביות
         </button>
       </form>
+      <form
+        novalidate=""
+        class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
+      >
+        <button
+          type="button"
+          id="btnCreateWP"
+          class="btn btn-success border-dark flex-shrink-0"
+          (click)="exportAsXLSX()"
+          ngbTooltip="יצא לקובץ אקסל"
+        >
+          <img
+            style="width: 35px; height: 35px"
+            src="../../../assets/images/excel.png"
+          />
+        </button>
+      </form>
     </div>
 
     <table class="table table-striped">
@@ -95,8 +131,8 @@
           <th style="min-width: 150px; font-weight: bold; padding: 5px">
             שם החבית
           </th>
-          <th>פורמולת אב</th>
-          <th>סוג הפורמולה</th>
+          <th>מקט פריט</th>
+          <th>תאור פריט</th>
           <th>משקל</th>
           <th>סטטוס</th>
           <th>משויך להזמנה</th>
@@ -115,8 +151,8 @@
           <td style="min-width: 150px; font-weight: bold; padding: 5px">
             {{ barrel.barrelNumber }}
           </td>
-          <td>{{ barrel.parentFormule }}</td>
-          <td>{{ barrel.formuleType }}</td>
+          <td>{{ barrel.itemNumber }}</td>
+          <td>{{ barrel.itemName }}</td>
           <!-- <td *ngIf="barrel.children.length > 0">
             <span *ngFor="let child of barrel.children"
             >{{ child.childNumber }},

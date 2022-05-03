@@ -4,6 +4,7 @@ import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
 import { ItemsService } from "src/app/services/items.service";
 import { CreamBarrelService } from "src/app/services/cream-barrel.service";
+import { ExcelService } from "src/app/services/excel.service";
 
 @Component({
   selector: "app-open-orderitems",
@@ -23,7 +24,8 @@ export class OpenOrderitemsComponent implements OnInit {
     private authService: AuthService,
     private batchService: BatchesService,
     private toastSrv: ToastrService,
-    private creamBarrelService: CreamBarrelService
+    private creamBarrelService: CreamBarrelService,
+    private excelService: ExcelService
   ) {}
 
   ngOnInit(): void {
@@ -84,6 +86,66 @@ export class OpenOrderitemsComponent implements OnInit {
   withoutBarrels() {
     this.filteredOpenOrderItems = this.filteredOpenOrderItems.filter(
       (oi) => !oi.relevantBarrels || oi.relevantBarrels.length == 0
+    );
+  }
+
+  exportAsXLSX() {
+    let orders = [];
+    console.log("orders: ", this.allOpenOrderItems);
+    for (let order of this.allOpenOrderItems) {
+      if (order.relevantBarrels.length > 0) {
+        for (let barrel of order.relevantBarrels) {
+          orders.push({
+            "מספר הזמנה": order.orderNumber,
+            "שם הלקוח": order.customerName,
+            "מקט פריט": order.itemNumber,
+            פורמולה: order.formuleNumber,
+            "פורמולת אב": order.parentFormule,
+            "סוג הפורמולה": order.formuleType,
+            "תאריך הזמנה": order.orderDate,
+            "תאריך אספקה (משוער)": order.orderDeliveryDate,
+            "משקל פריט": order.netWeightGr,
+            "כמות מוזמנת": order.qtyOrdered,
+            "כמות שיוצרה": order.quantityProduced,
+            "סטטוס ייצור": order.oiStatus,
+            "סטטוס שורה": order.orderItemStatus,
+            חבית: barrel.barrelNumber,
+            "מיועד להזמנה": barrel.orderlNumber,
+            "סטטוס חבית": barrel.barrelStatus,
+            "משקל חבית": barrel.barrelWeight,
+            "תאריך ייצור": barrel.productionDate,
+            "תאריך תפוגה": barrel.expirationDate,
+            pH: barrel.ph,
+          });
+        }
+      } else {
+        orders.push({
+          "מספר הזמנה": order.orderNumber,
+          "שם הלקוח": order.customerName,
+          "מקט פריט": order.itemNumber,
+          פורמולה: order.formuleNumber,
+          "פורמולת אב": order.parentFormule,
+          "סוג הפורמולה": order.formuleType,
+          "תאריך הזמנה": order.orderDate,
+          "תאריך אספקה (משוער)": order.orderDeliveryDate,
+          "משקל פריט": order.netWeightGr,
+          "כמות מוזמנת": order.qtyOrdered,
+          "כמות שיוצרה": order.quantityProduced,
+          "סטטוס ייצור": order.oiStatus,
+          "סטטוס שורה": order.orderItemStatus,
+          חבית: null,
+          "מיועד להזמנה": null,
+          "סטטוס חבית": null,
+          "משקל חבית": null,
+          "תאריך ייצור": null,
+          "תאריך תפוגה": null,
+          pH: null,
+        });
+      }
+    }
+    this.excelService.exportAsExcelFile(
+      orders,
+      `Open Order Items Report ${new Date().toString().slice(0, 10)}`
     );
   }
 }
