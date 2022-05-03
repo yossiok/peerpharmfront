@@ -92,6 +92,8 @@ import { CustomersComponent } from "./customers/customers.component";
 import { ProposalsComponent } from "./customers/proposals/proposals.component";
 import { CreamBarrelComponent } from "./inventory/creamBarrel/creamBarrel.component";
 import { OpenOrderitemsComponent } from "./allorders/open-orderitems/open-orderitems.component";
+import {TemperaturesLogsComponent} from './qa/temperaturesLogs/temperaturesLogs.component'
+
 export const PeerPharmRputs: Routes = [
   {
     path: "user/user-settings",
@@ -594,6 +596,14 @@ export const PeerPharmRputs: Routes = [
       title: "QA Logs",
     },
     component: QaLogsComponent,
+  },
+  {
+    path: "qa/temperaturesLogs/:pageNumber",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Temperatures Logs",
+    },
+    component: TemperaturesLogsComponent,
   },
   {
     path: "forms/first-aid",

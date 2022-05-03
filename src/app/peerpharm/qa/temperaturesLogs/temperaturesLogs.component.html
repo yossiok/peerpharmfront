@@ -1,0 +1,47 @@
+<section *ngIf="isLogin" dir="rtl">
+  <div class="search">
+    <label for="searchByDate" class="search-label">חיפוש לפי תאריך:</label>
+    <input type="date" id="searchByDate" name="searchByDate" class="search-input" [(ngModel)]="dateSearch" (change)="changeDate()"/>
+  </div>
+  <table class="styled-table">
+    <thead>
+      <tr>
+        <th>טמפרטורה</th>
+        <th>
+          מכשיר
+        </th>
+        <th>
+          לחות
+        </th>
+        <th>
+         זמן
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let log of temperatures">
+        <td style="width: 1%">
+          {{log.temp}}
+        </td>
+        <td style="width: 3%">
+          {{ log.device }}
+        </td>
+        <td style="width: 5%">
+          {{ log.humidity }}
+        </td>
+        <td style="width: 12%">
+          {{ log.time | date: 'hh:mm dd/MM/YYYY' }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="container">
+    <div class="buttons-container">
+
+      <button class="btn btn-success buttons-container-item" (click)="previousPage()">הקודם</button>
+      <button class="btn btn-success buttons-container-item" (click)="nextPage()">הבא</button>
+  
+    </div>
+
+  </div>
+</section>

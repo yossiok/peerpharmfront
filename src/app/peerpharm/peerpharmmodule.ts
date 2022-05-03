@@ -196,6 +196,7 @@ import { ProposalsComponent } from "./customers/proposals/proposals.component";
 import { ProposalsListComponent } from "./customers/proposals-list/proposals-list.component";
 import { CreamBarrelComponent } from "./inventory/creamBarrel/creamBarrel.component";
 import { BulksReportComponent } from "./batches/bulks-inventory/bulks-report/bulks-report.component";
+import { TemperaturesLogsComponent } from "./qa/temperaturesLogs/temperaturesLogs.component";
 
 @NgModule({
   exports: [
@@ -268,6 +269,7 @@ import { BulksReportComponent } from "./batches/bulks-inventory/bulks-report/bul
     BarcodePrintComponent,
     ItemslistComponent,
     QaPalletsComponent,
+    TemperaturesLogsComponent,
     PlateComponent,
     StockComponent,
     ContentComponent,
