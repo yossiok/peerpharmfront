@@ -87,6 +87,23 @@
           עם חביות
         </button>
       </form>
+      <form
+        novalidate=""
+        class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
+      >
+        <button
+          type="button"
+          id="btnCreateWP"
+          class="btn btn-success border-dark flex-shrink-0"
+          (click)="exportAsXLSX()"
+          ngbTooltip="יצא לקובץ אקסל"
+        >
+          <img
+            style="width: 35px; height: 35px"
+            src="../../../assets/images/excel.png"
+          />
+        </button>
+      </form>
     </div>
 
     <table class="table table-striped table_01">

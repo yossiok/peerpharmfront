@@ -4,6 +4,7 @@ import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
 import { ItemsService } from "src/app/services/items.service";
 import { CreamBarrelService } from "src/app/services/cream-barrel.service";
+import { ExcelService } from "src/app/services/excel.service";
 
 @Component({
   selector: "app-bulks-report",
@@ -18,12 +19,14 @@ export class BulksReportComponent implements OnInit {
   barrelsLoader: boolean = false;
 
   @ViewChild("barrelFilter") barrelFilter: ElementRef;
+  @ViewChild("barrelFilterTwo") barrelFilterTwo: ElementRef;
   constructor(
     private itemService: ItemsService,
     private authService: AuthService,
     private batchService: BatchesService,
     private toastSrv: ToastrService,
-    private creamBarrelService: CreamBarrelService
+    private creamBarrelService: CreamBarrelService,
+    private excelService: ExcelService
   ) {}
 
   ngOnInit(): void {
@@ -65,9 +68,37 @@ export class BulksReportComponent implements OnInit {
       );
     }
   }
+  filterBarrelsTwo(e) {
+    console.log(e.target.value);
+    let value = e.target.value;
+    console.log(value);
+    value = String(value).toLowerCase().trim();
+    if (value == "") {
+      this.clearBarrelsList();
+    } else {
+      let barrels = [];
+      for (let barrel of this.filteredBarrelsList) {
+        if (barrel.relevantOrders.length > 0) {
+          for (let order of barrel.relevantOrders) {
+            if (
+              String(order.orderNumber).includes(value) ||
+              order.itemNumber.includes(value)
+            ) {
+              barrels.push(barrel);
+            }
+          }
+        }
+      }
+      this.filteredBarrelsList = barrels;
+    }
+  }
 
   clearBarrelsList() {
     this.barrelFilter.nativeElement.value = "";
+    this.filteredBarrelsList = this.allBarrels;
+  }
+  clearBarrelsListTwo() {
+    this.barrelFilterTwo.nativeElement.value = "";
     this.filteredBarrelsList = this.allBarrels;
   }
   filterOrders() {
@@ -90,5 +121,53 @@ export class BulksReportComponent implements OnInit {
     this.filteredBarrelsList = this.filteredBarrelsList.filter((b) => {
       return !b.orderNumber;
     });
+  }
+  exportAsXLSX() {
+    let barrels = [];
+    console.log("barrels: ", this.allBarrels);
+    for (let barrel of this.allBarrels) {
+      if (barrel.relevantOrders.length > 0) {
+        for (let order of barrel.relevantOrders) {
+          barrels.push({
+            חבית: barrel.barrelNumber,
+            "מיועד להזמנה": barrel.orderlNumber,
+            "סטטוס חבית": barrel.barrelStatus,
+            "משקל חבית": barrel.barrelWeight,
+            "תאריך ייצור": barrel.productionDate,
+            "תאריך תפוגה": barrel.expirationDate,
+            pH: barrel.ph,
+            "מספר הזמנה": order.orderNumber,
+            "שם הלקוח": order.customerName,
+            "מקט פריט": order.itemNumber,
+            פורמולה: order.formuleNumber,
+            "פורמולת אב": order.parentFormule,
+            "סוג הפורמולה": order.formuleType,
+            "תאריך הזמנה": order.orderDate,
+            "תאריך אספקה (משוער)": order.orderDeliveryDate,
+            "משקל פריט": order.netWeightGr,
+            "כמות מוזמנת": order.qtyOrdered,
+            "כמות שיוצרה": order.quantityProduced,
+            "סטטוס ייצור": order.oiStatus,
+            "סטטוס שורה": order.orderItemStatus,
+          });
+        }
+      } else {
+        barrels.push({
+          חבית: barrel.barrelNumber,
+          "מיועד להזמנה": barrel.orderlNumber,
+          "סטטוס חבית": barrel.barrelStatus,
+          "משקל חבית": barrel.barrelWeight,
+          "תאריך ייצור": barrel.productionDate,
+          "תאריך תפוגה": barrel.expirationDate,
+          pH: barrel.ph,
+          "פורמולת אב": barrel.parentFormule,
+        });
+      }
+    }
+
+    this.excelService.exportAsExcelFile(
+      barrels,
+      `Barels Stock Report ${new Date().toString().slice(0, 10)}`
+    );
   }
 }
