@@ -174,10 +174,10 @@ export class InvArrivalsComponent implements OnInit {
         .getCmptByitemNumber(this.componentArrival.value.item)
         .subscribe((data) => {
           if (data.length > 0) {
-            if (data[0].itemType == "material") {
-              reject("לא ניתן להכניס חומרי גלם דרך טופס זה");
-              return;
-            }
+            // if (data[0].itemType == "material") {
+            //   reject("לא ניתן להכניס חומרי גלם דרך טופס זה");
+            //   return;
+            // }
             this.noItem = false;
             this.itemNames = data;
             resolve(data);
