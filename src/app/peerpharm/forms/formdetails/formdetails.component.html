@@ -348,7 +348,7 @@
                 <td>
                   {{ barrel.barrelNumber }}
                 </td>
-                <td>{{ barrel.barrelWeight }}</td>
+                <td>{{ barrel.barrelWeight | number: "1.0-2" }}</td>
                 <td>
                   <input
                     type="number"
@@ -862,7 +862,7 @@
       <tr>
         <th>Batch</th>
         <td class="myFont wrap">{{ form.batchN }}</td>
-        <th >Total Quantity of cartons</th>
+        <th>Total Quantity of cartons</th>
         <td class="myFont">
           {{
             QAPallet.kartonQuantity * QAPallet.floorNumber +
@@ -1981,11 +1981,10 @@
 <p id="reason" style="display: none"></p>
 
 <div *ngIf="isTube && tubeAlart" class="alert">
-  <span dir="rtl" class="closebtn"
-    >&times;</span
-  >
+  <span dir="rtl" class="closebtn">&times;</span>
   <i class="fa fa-times" (click)="tubeAlart = !tubeAlart"></i>
-  <strong>הערה חשובה:</strong> שים לב המוצר שלפניך נשלח באריזה אישית !!! יש לבדוק את גובה חיתוך !!
+  <strong>הערה חשובה:</strong> שים לב המוצר שלפניך נשלח באריזה אישית !!! יש
+  לבדוק את גובה חיתוך !!
 </div>
 
 <!-- <button printSectionId="print-section" ngxPrint>Print</button> -->
