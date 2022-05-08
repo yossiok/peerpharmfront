@@ -59,7 +59,6 @@ export class AllPlanningComponent implements OnInit {
       }
     })
 
-    this.producedToDone()
   }
 
   getWorkPlans() {
@@ -94,18 +93,6 @@ export class AllPlanningComponent implements OnInit {
       this.ngOnInit()
     })
 
-
-  }
-  producedToDone(){
-    let producedArray = this.workPlans.filter((wp)=> wp.status == 6)
-
-    for(let wp of producedArray){
-      wp.status = 7;
-    }
-
-    this.productionService.multiUpdateWorkPlans(producedArray).subscribe((res)=>{
-      console.log(res)
-    })
 
   }
 
