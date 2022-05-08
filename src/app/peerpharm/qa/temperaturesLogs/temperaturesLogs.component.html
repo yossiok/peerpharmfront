@@ -8,7 +8,7 @@
       <tr>
         <th>טמפרטורה</th>
         <th>
-          מכשיר
+        מיקום
         </th>
         <th>
           לחות
@@ -24,7 +24,7 @@
           {{log.temp}}
         </td>
         <td style="width: 3%">
-          {{ log.device }}
+          {{ log.device == "peer1" ? "חדר אריזה" : "חדר מכונות" }}
         </td>
         <td style="width: 5%">
           {{ log.humidity }}
