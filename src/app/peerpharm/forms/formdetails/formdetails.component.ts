@@ -57,7 +57,7 @@ export class FormdetailsComponent implements OnInit {
   kindOfPalletUpdate = null;
   qaStatusUpdate = null;
   isTube = false;
-  tubeAlart:boolean = true;
+  tubeAlart: boolean = true;
   barrelsList: any[] = [];
 
   // usedBarrels: any[] = [];
@@ -149,8 +149,6 @@ export class FormdetailsComponent implements OnInit {
     else this.getForms(true, formID1);
   }
 
- 
-
   getIsTubeState(itemNumber) {
     this.itemService.getItemData(itemNumber).subscribe((data) => {
       this.isTube = data[0].isTube;
@@ -160,13 +158,21 @@ export class FormdetailsComponent implements OnInit {
   getBarrelsByBatchList() {
     let batchNumbers = this.form.batchN.trim();
     if (batchNumbers == "") return;
-
+    let batchList = [];
     let batches = batchNumbers.split("+");
+    for (let batch of batches) {
+      batch = batch.trim();
+      if (batch != "") {
+        batchList.push(batch);
+      }
+    }
 
-    this.creamBarrelService.getBarrelsByBatchList(batches).subscribe((data) => {
-      console.log(data);
-      this.barrelsList = data;
-    });
+    this.creamBarrelService
+      .getBarrelsByBatchList({ batchList })
+      .subscribe((data) => {
+        console.log(data);
+        this.barrelsList = data;
+      });
   }
 
   getBarrelsList() {
@@ -485,17 +491,26 @@ export class FormdetailsComponent implements OnInit {
   }
 
   getFormsDetailsByBatch() {
-    if (this.form.batchN.trim() == "") {
+    let batchNumbers = this.form.batchN.trim();
+    if (batchNumbers == "") {
       this.additionalForms = [];
       return;
     }
-    // let batches = this.form.batchN.split("+");
-    // console.log(batches);
+
+    let batchList = [];
+    let batches = batchNumbers.split("+");
+    for (let batch of batches) {
+      batch = batch.trim();
+      if (batch != "") {
+        batchList.push(batch);
+      }
+    }
+
     // this.numberOfFormsWithSameBatch = 0;
 
-    console.log(this.form.batchN);
+    console.log(batchList);
     this.formsService
-      .getFormDetailsByBatch(this.form.batchN)
+      .getFormDetailsByBatch({ batchList })
       .subscribe((forms) => {
         console.log("forms: ", forms);
         for (let form of forms) {
