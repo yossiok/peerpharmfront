@@ -16,6 +16,7 @@ import { InventoryService } from "src/app/services/inventory.service";
 import { ItemsService } from "src/app/services/items.service";
 import { ExcelService } from "src/app/services/excel.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { EEXIST } from "constants";
 
 @Component({
   selector: "app-qa-pallets",
@@ -856,6 +857,108 @@ export class QaPalletsComponent implements OnInit {
     if (language == "EN") {
       this.showProductsBeforeDeliveryEN = true;
       this.showProductsBeforeDeliveryHE = false;
+    }
+  }
+
+  exportAsXLSX2() {
+    const pkList = [];
+    if(this.showProductsBeforeDeliveryHE){
+      pkList.push({
+        "מספר טופס": this.currPLNumber,
+        "שם לקוח": `${this.currCustomer} ${this.currCustomerNumber ? this.currCustomerNumber : ""}`,
+      });
+      pkList.push({
+        "סהכ משטחים":this.selectedArr.length,
+        "סהכ משקל":this.currPLWeight,
+      })
+      let counter = 0;
+      for(let pallet of this.selectedArr){
+        counter++
+        for(let line of pallet.lines){
+          pkList.push({
+            משטח: counter,
+            פריט: line.itemNumber,
+            "שם הפריט": line.itemName,
+            הזמנה: line.orderNumber,
+            "כמות שהוזמנה": line.orderAmount,
+            אצוווה: line.batchNumber,
+            "מספר קרטונים": line.fullKartons,
+            "מס' יח' בקרטון": line.unitsInKarton,
+            "קרטון חלקי": line.unitsQuantityPartKarton,
+            "משקל משטח": pallet.palletWeight,
+            "מידות משטח": pallet.palletSize,
+            "סהכ יחידות": line.unitsToCombine,
+          });
+        }
+      }
+      
+      const summary = []
+      for(let pallet of this.combinedPallets){
+        summary.push({
+          "מקט פריט":pallet.itemNumber,
+          "סהכ כמות":pallet.quantity,
+        })
+      }
+  
+      
+          
+  
+      this.excelService.exportAsExcelFile(
+        [pkList,summary],
+        `רשימת אריזה ${this.currPLNumber}`,
+        null,
+        [`רשימת אריזה ${this.currPLNumber}`,`סיכום כמויות`],
+        true
+      );
+
+    }else{
+
+      pkList.push({
+        "Form Number": this.currPLNumber,
+        "Customer Name": `${this.currCustomer} ${this.currCustomerNumber ? this.currCustomerNumber : ""}`,
+      });
+      pkList.push({
+        "Sum of pallets amount":this.selectedArr.length,
+        "Sum of weight":this.currPLWeight,
+      })
+      let counter = 0;
+      for(let pallet of this.selectedArr){
+        counter++
+        for(let line of pallet.lines){
+          pkList.push({
+            Pallet: counter,
+            Item: line.itemNumber,
+            "Item Name": line.itemName,
+            Order: line.orderNumber,
+            "Order Amount": line.orderAmount,
+            Batch: line.batchNumber,
+            "Num' of Cartons": line.fullKartons,
+            "Qty in Carton": line.unitsInKarton,
+            "Part Carton": line.unitsQuantityPartKarton,
+            "Pallet Weight": pallet.palletWeight,
+            "Pallet Size": pallet.palletSize,
+            "Sum": line.unitsToCombine,
+          });
+        }
+      }
+
+      const summary = []
+      for(let pallet of this.combinedPallets){
+        summary.push({
+          "Item Number":pallet.itemNumber,
+          "Sum of amount":pallet.quantity,
+        })
+      }
+          
+  
+      this.excelService.exportAsExcelFile(
+        [pkList,summary],
+        `Packing List ${this.currPLNumber}`,
+        null,
+        [`Packing List ${this.currPLNumber}`,"Amount summary"],
+        true
+      );
+
     }
   }
 
