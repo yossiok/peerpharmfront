@@ -468,7 +468,7 @@ export class StockComponent implements OnInit {
     });
 
     this.filterParams = fb.group({
-      componentN: new FormControl("", Validators.pattern("^[a-zA-Z]+$")),
+      componentN: new FormControl("", Validators.minLength(3)),
       componentName: new FormControl("", Validators.pattern("^[a-zA-Z]+$")),
       componentType: new FormControl(""),
       componentCategory: new FormControl(""),
@@ -681,6 +681,7 @@ export class StockComponent implements OnInit {
       component.purchaseOrders = [];
     }
     this.procuretServ.getPurchasesForMulti(numbers).subscribe((purchases) => {
+      console.log(purchases);
       for (let component of this.components) {
         for (let purchase of purchases) {
           for (let item of purchase.stockitems) {
@@ -1210,14 +1211,16 @@ export class StockComponent implements OnInit {
     this.inventoryService
       .getAmountsForMulti(allNumbers)
       .subscribe((itemsAmounts) => {
+        console.log(itemsAmounts);
         for (let component of this.components) {
           let itemWithTotal = itemsAmounts.find(
             (item) => item._id == component.componentN
           );
           if (itemWithTotal) {
-            let amount = itemWithTotal.total;
-            let roundedAmount = Math.round(amount);
-            component.amount = roundedAmount ? roundedAmount : 0;
+            component.amount = itemWithTotal.total ? itemWithTotal.total : 0;
+            //   let amount = itemWithTotal.total;
+            //   let roundedAmount = Math.round(amount);
+            //   component.amount = roundedAmount ? roundedAmount : 0;
           } else component.amount = 0;
         }
         this.loadingText = "(3/4) מייבא הזמנות רכש...";
@@ -1779,6 +1782,23 @@ export class StockComponent implements OnInit {
     query.componentN = query.componentN.trim();
     query.componentName = query.componentName.trim();
     console.log(query);
+
+    if (
+      query.componentName == "" &&
+      query.componentCategory == "" &&
+      query.componentType == "" &&
+      query.componentN.length < 3
+    ) {
+      alert(
+        "יש למלא לפחות שדה חיפוש אחד, במידה והחיפוש לפי מקט, יש להכניס לפחות 3 ספרות."
+      );
+      this.smallLoader = false;
+      return;
+    }
+
+    query.componentN = query.componentN.trim();
+    query.componentName = query.componentName.trim();
+    console.log(query);
     query.itemType = this.stockType;
     this.loadingText = "(1/4) מייבא פריטים...";
 
@@ -1793,19 +1813,24 @@ export class StockComponent implements OnInit {
       .getFilteredComponents(query)
       .subscribe((filteredComponents) => {
         console.log(filteredComponents);
-        this.components = filteredComponents.filter(
-          (s) => s.itemType == this.stockType
-        );
-        this.componentsUnFiltered = filteredComponents.filter(
-          (s) => s.itemType == this.stockType
-        );
+        this.components = filteredComponents;
+        this.componentsUnFiltered = filteredComponents;
+
+        // not needed as the query is filtering out the by item type
+        // this.components = filteredComponents.filter(
+        //   (s) => s.itemType == this.stockType
+        // );
+        // this.componentsUnFiltered = filteredComponents.filter(
+        //   (s) => s.itemType == this.stockType
+        // );
+
         if (this.components.length > 0) {
           try {
             console.log(this.components);
             this.loadingText = "(2/4) מחשב כמויות... ";
             this.getAmountsFromShelfs();
             this.getItemPurchases(false);
-            this.getAllocations();
+            // this.getAllocations();
             this.getAllocationsNew();
           } catch (e) {
             this.smallLoader = false;
@@ -1822,33 +1847,50 @@ export class StockComponent implements OnInit {
 
   getAllocationsNew() {
     if (this.components.length > 0) {
-      for (let component of this.components) {
-        if (component.itemType == "product") {
-          this.inventoryService
-            .getAllocatedOrdersByNumber(component.componentN)
-            .subscribe((data) => {
-              console.log(data);
-              let productAllocation = [];
-              let allocatedAmount = 0;
-              for (let orderItem of data) {
-                allocatedAmount += +orderItem.quantity;
-                productAllocation.push({
-                  orderNumber: orderItem.orderNumber,
-                  allocatedQuantity: orderItem.quantity,
-                });
+      let itemNumbers = this.components.map((c) => c.componentN);
+
+      if (this.stockType == "product") {
+        this.inventoryService
+          .getAllocatedOrdersByNumbers(itemNumbers)
+          .subscribe((data) => {
+            console.log(data);
+            if (data.msg) {
+              this.toastSrv.error(data.msg);
+              return;
+            } else if (data) {
+              for (let itemNumber of data) {
+                let idx = this.components.findIndex(
+                  (c) => c.componentN == itemNumber.itemNumber
+                );
+                if (idx > -1) {
+                  this.components[idx].allocatedAmount = itemNumber.orderAmount;
+                }
               }
-              component.productAllocation = productAllocation;
-              component.allocatedAmount = allocatedAmount;
-            });
-        } else if (component.itemType == "component") {
-          this.inventoryService
-            .getCmptPPCDetails(component.componentN)
-            .subscribe((data) => {
-              console.log(data);
-              component.allocations = data.allocations;
-              component.allocationsAmount = data.allocationsAmount;
-            });
-        }
+              console.log(this.components);
+            }
+          });
+      } else if (this.stockType == "--component") {
+        this.inventoryService
+          .getCmptPPCDetails(itemNumbers)
+          .subscribe((data) => {
+            console.log(data);
+            if (data.msg) {
+              this.toastSrv.error(data.msg);
+              return;
+            } else if (data) {
+              for (let item of data.allocations) {
+                let idx = this.components.findIndex(
+                  (c) => c.componentN == item.itemNumber
+                );
+                if (idx > -1) {
+                  this.components[idx].allocatedAmount = item.orderAmount;
+                }
+              }
+              console.log(this.components);
+            }
+            // component.allocations = data.allocations;
+            // component.allocationsAmount = data.allocationsAmount;
+          });
       }
     }
   }
@@ -2043,15 +2085,26 @@ export class StockComponent implements OnInit {
    */
 
   openAllocatedOrders(component) {
+    this.allocatedOrders = [];
+    this.alloAmountsLoading = true;
+    console.log(component);
+    console.log(component.compnentN);
     this.openModalHeader = "הקצאות מלאי";
+
     this.openOrderAmountsModal = true;
-    this.allocatedOrders = component.allocations;
+    this.inventoryService
+      .getCmptPPCDetails(component.componentN)
+      .subscribe((data) => {
+        this.alloAmountsLoading = false;
+        console.log(data);
+        this.allocatedOrders = data.allocations;
+      });
   }
 
   getAllocations() {
     let allNumbers = this.components.map((c) => c.componentN);
     this.orderService
-      .getAllOrdersForComponents(allNumbers)
+      .getAllOrdersForComponentsNew(allNumbers)
       .subscribe((allComponentsOrders) => {
         console.log(allComponentsOrders);
         for (let component of this.components) {
@@ -2066,9 +2119,10 @@ export class StockComponent implements OnInit {
   }
 
   async openAllocatedProducts(componentN) {
+    this.allocatedProducts = [];
+    this.alloAmountsLoading = true;
     this.openModalHeader = "הקצאות מלאי";
     this.openProductAmountModal = true;
-    this.alloAmountsLoading = true;
     this.inventoryService
       .getAllocatedOrdersByNumber(componentN)
       .subscribe((data) => {
@@ -2081,6 +2135,7 @@ export class StockComponent implements OnInit {
           productAllocation.push({
             orderNumber: orderItem.orderNumber,
             allocatedQuantity: orderItem.quantity,
+            ...orderItem,
           });
         }
         this.allocatedProducts = productAllocation;
