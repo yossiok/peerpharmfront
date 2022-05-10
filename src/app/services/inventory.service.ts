@@ -247,10 +247,16 @@ export class InventoryService {
       .pipe(map((res) => res.json()));
   }
 
-  getAllocatedOrdersByNumber(componentN): Observable<any> {
+  getAllocatedOrdersByNumber(itemNumber): Observable<any> {
     let url =
-      this.baseUrl + "component/allocatedOrders?itemNumber=" + componentN;
+      this.baseUrl + "component/allocatedOrders?itemNumber=" + itemNumber;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  getAllocatedOrdersByNumbers(itemNumbers): Observable<any> {
+    let url = this.baseUrl + "component/allocatedOrders";
+    return this.http
+      .post(url, itemNumbers)
+      .pipe(map((reponse) => reponse.json()));
   }
 
   getMaterialtByComponentN(componentN): Observable<any> {
