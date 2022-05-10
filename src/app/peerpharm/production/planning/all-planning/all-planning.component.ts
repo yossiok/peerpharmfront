@@ -27,6 +27,8 @@ export class AllPlanningComponent implements OnInit {
   currentWorkPlan: WorkPlan;
   materialsForFormules: Array<any>
   fetchingWorkPlans: boolean = false
+  fetchingWorkPlans2: boolean = false
+  fetchingWorkPlans3: boolean = false
   disableCheckBox: boolean = false
   showMaterialsForFormules: boolean = false
   showWorkPlan: boolean = false
@@ -129,8 +131,28 @@ export class AllPlanningComponent implements OnInit {
 
   filterByStatus(event) {
     let status = event.target.value
-    if (status == 0) this.workPlans = this.workPlansCopy.filter(wp => wp.status != 8 && wp.status != 7)
-    else this.workPlans = this.workPlansCopy.filter(wp => wp.status == status)
+    if(status == 7){
+    this.fetchingWorkPlans2 = true
+      this.productionService.getDoneWorkPlans().subscribe((workPlans)=>{
+        this.workPlans = workPlans
+      this.fetchingWorkPlans2 = false
+      })
+      return
+    }
+    if(status == 8){
+    this.fetchingWorkPlans3 = true
+      this.productionService.getCancelWorkPlans().subscribe((workPlans)=>{
+        this.workPlans = workPlans
+    this.fetchingWorkPlans3 = false
+
+      })
+      return
+    }
+    if(status == 0){
+      this.workPlans = this.workPlansCopy
+      return
+    }
+    this.workPlans = this.workPlansCopy.filter(wp => wp.status == status)
   }
 
   filterByItemOrOrder(event) {

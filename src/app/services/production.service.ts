@@ -90,6 +90,14 @@ export class ProductionService {
     const url = this.baseUrl + `productionSchedule/workplans`;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+  getDoneWorkPlans() {
+    const url = this.baseUrl + `productionSchedule/getDoneWorkplans`;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  getCancelWorkPlans() {
+    const url = this.baseUrl + `productionSchedule/getCancelWorkplans`;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
 
   editWorkPlan(workPlan, orderItemToDelete?) {
     let url =

@@ -200,16 +200,18 @@
               [(ngModel)]="orderItem.remarks"
             />
           </td>
-          <td>
+          <td style="width: 10%;">
             <!-- cancel edit button -->
             <!-- if enableEdit == true and enableEditIndex == index(i) display the cancel button -->
             <button
               *ngIf="enableEdit && enableEditIndex == i"
               (click)="enableEdit = false; enableEditIndex = null;editWeightInput = null"
               class="btn btn-danger"
+              style="margin-right: 1rem ;"
             >
-              ביטול
+            <i class="fa fa-times-circle fa-2x" aria-hidden="true"></i>
             </button>
+            
             <!-- <img
               *ngIf="edit == i && authorized"
               ngbTooltip="שמור שינויים"
@@ -219,7 +221,7 @@
               alt=""
             /> -->
             <img
-            *ngIf="enableEdit && enableEditIndex == i authorized"
+            *ngIf="enableEdit && enableEditIndex == i && authorized"
             ngbTooltip="שמור שינויים"
             (click)="saveChanges(i)"
             class="img click"
