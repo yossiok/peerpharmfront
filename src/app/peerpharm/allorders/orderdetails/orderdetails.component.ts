@@ -553,7 +553,12 @@ export class OrderdetailsComponent implements OnInit {
   }
 
   exportAsXLSX(data) {
+    // this is the data
+    console.log(this.orderItemsComponents);
+    console.log("eran grady: ", this.internalNumArr);
+    console.log("eran grady: ", data);
     let orderItemsExplosion = [...data];
+    
 
     const sortOrder = [
       "orderNumber",
@@ -568,6 +573,7 @@ export class OrderdetailsComponent implements OnInit {
       "sealNumber",
       "sealAmount",
       "boxNumber",
+      "stage",
       "boxAmount",
       "cartonNumber",
       "cartonAmount",
@@ -587,6 +593,7 @@ export class OrderdetailsComponent implements OnInit {
       delete orderItem._id;
       delete orderItem.pallet2;
       delete orderItem.pallet3;
+      orderItem.stage = orderItem.boxTypeK
       delete orderItem.boxTypeK;
       delete orderItem.proRemarks;
       delete orderItem.impRemarks;
@@ -2586,7 +2593,7 @@ export class OrderdetailsComponent implements OnInit {
                 }
               }
             }
-
+            // boxbox
             if (item.boxNumber != "" && item.boxNumber != "---") {
               let newCmpt = true;
               if (
@@ -2609,6 +2616,7 @@ export class OrderdetailsComponent implements OnInit {
                 }
               }
             }
+            // boxbox
             if (item.boxTypeK != "" && item.boxTypeK != "---") {
               let newCmpt = true;
               if (
