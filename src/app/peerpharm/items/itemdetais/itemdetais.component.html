@@ -54,6 +54,14 @@
       </div>
       <div
         style="margin: 3px"
+        ngbTooltip="Check only if License is required. סמן את האפשרות אם יש צורך ברישיון של משרד הבריאות. שים לב מוצרים המשווקים לחול לא צריכים רישיון"
+      >
+        <label [ngClass]="checkItemStatus()" style="font-weight: bold"
+          >{{ "License" | translate }} {{ "required" | translate }}</label
+        >
+      </div>
+      <div
+        style="margin: 3px"
         ngbTooltip="Check only if cooking is not required.
          סמן את האפשרות רק אם המוצר מגיע מוכן למילוי בלבד"
       >
@@ -151,6 +159,15 @@
         </button>
       </div>
 
+      <div>
+        <input
+          [ngClass]="itemBackgroundByStatus()"
+          type="checkbox"
+          class="checkbox"
+          id="licenseRequired"
+          [(ngModel)]="itemShown.licenseRequired"
+        />
+      </div>
       <div>
         <input
           [ngClass]="itemBackgroundByStatus()"
@@ -1814,12 +1831,12 @@
                   </select>
                 </div>
                 <div class="col-3">
-                  <label>למילוי בלבד</label>
+                  <!-- <label>למילוי בלבד</label>
                   <input
                     class="form-control"
                     type="checkbox"
                     [(ngModel)]="itemShown.fillOnly"
-                  />
+                  /> -->
                 </div>
               </div>
 

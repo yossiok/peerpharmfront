@@ -132,6 +132,7 @@ export class ItemdetaisComponent implements OnInit {
     name: "",
     subName: "",
     discriptionK: "",
+    licenseRequired: false,
     fillingOnly: false,
     isTube: false,
     proRemarks: "",
