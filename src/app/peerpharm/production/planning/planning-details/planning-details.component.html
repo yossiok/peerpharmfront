@@ -200,16 +200,11 @@
               [(ngModel)]="orderItem.remarks"
             />
           </td>
-          <td>
+          <td style="width: 10%;">
             <!-- cancel edit button -->
             <!-- if enableEdit == true and enableEditIndex == index(i) display the cancel button -->
-            <button
-              *ngIf="enableEdit && enableEditIndex == i"
-              (click)="enableEdit = false; enableEditIndex = null;editWeightInput = null"
-              class="btn btn-danger"
-            >
-              ביטול
-            </button>
+            
+            
             <!-- <img
               *ngIf="edit == i && authorized"
               ngbTooltip="שמור שינויים"
@@ -218,14 +213,33 @@
               src="../../../../../assets/images/aprroved.png"
               alt=""
             /> -->
-            <img
-            *ngIf="enableEdit && enableEditIndex == i authorized"
-            ngbTooltip="שמור שינויים"
-            (click)="saveChanges(i)"
+            <!-- <img
+            
+            
+            
             class="img click"
             src="../../../../../assets/images/aprroved.png"
             alt=""
-          />
+          /> -->
+          <button
+          *ngIf="enableEdit && enableEditIndex == i && authorized"
+          (click)="saveChanges(i)"
+          ngbTooltip="שמור שינויים"
+              class="btn btn-success"
+
+            >
+          <i    class="fa fa-check-square fa-2x" aria-hidden="true"></i>
+          </button>
+
+          <button
+              *ngIf="enableEdit && enableEditIndex == i"
+              (click)="enableEdit = false; enableEditIndex = null;editWeightInput = null"
+              class="btn btn-danger"
+              style="margin-left: 3rem ;"
+
+            >
+            <i class="fa fa-undo" aria-hidden="true"></i>
+            </button>
             <button
               [disabled]="orderItem.hasFormule"
               *ngIf="!enableEdit && authorized"

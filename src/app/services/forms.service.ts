@@ -289,7 +289,7 @@ export class FormsService {
       .post(url, JSON.stringify(pallet), this.options)
       .pipe(map((res) => res.json()));
   }
-  // Eran
+
   editQAPallet(qaPallet) {
     let url = this.baseUrl + "formDetails/editQAPallet";
     return this.http
@@ -306,6 +306,11 @@ export class FormsService {
   getAllForms(year?: string) {
     let url = this.baseUrl + "formDetails";
     if (year) url = this.baseUrl + "formDetails?year=" + year;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
+  getAllYearsForms(pageNumber?){
+    let url = this.baseUrl + `formDetails/getAllForms?pageNumber=${pageNumber}`;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
@@ -351,7 +356,19 @@ export class FormsService {
   }
 
   getFormDetailsByOrder(orderNumber) {
-    let url = this.baseUrl + "formDetails?formDetailsByOrder=" + orderNumber;
+    let url = this.baseUrl + "formDetails?orderNumber=" + orderNumber;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  getFormDetailsByItem(itemNumber) {
+    let url = this.baseUrl + "formDetails?itemNumber=" + itemNumber;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  getFormDetailsByBatchNumber(batchNumber) {
+    let url = this.baseUrl + "formDetails?batch=" + batchNumber;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  getFormDetailsByStatus(status) {
+    let url = this.baseUrl + "formDetails?status=" + status;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 

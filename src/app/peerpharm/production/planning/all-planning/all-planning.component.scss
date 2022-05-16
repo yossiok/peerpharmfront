@@ -1,10 +1,12 @@
 * {
   font-size: large;
+  box-sizing: border-box;
 }
+
 
 .close {
   cursor: pointer;
-  padding: 5px;
+  padding: 0.3125rem;
 }
 
 .close:hover {
@@ -18,25 +20,25 @@
 
 .wrapper {
   display: grid;
-  grid-template-columns: 100px 100px 100px 100px 100px;
-  grid-gap: 285px;
-  grid-row-gap: 53px;
+  grid-template-columns: 6.25rem 6.25rem 6.25rem 6.25rem 6.25rem;
+  grid-gap: 17.81rem;
+  grid-row-gap: 3.31rem;
   color: rgb(236, 117, 117);
 }
 
 .box {
   background-color: rgb(115, 181, 235);
   color: rgb(22, 6, 6);
-  border-radius: 5px;
-  padding: 20px;
+  border-radius: 0.3125rem;
+  padding: 1.25rem;
   font-size: 150%;
   width: 291%;
-  height: 200px;
+  height: 12.5rem;
 }
 
 .checkbox {
-  width: 28px;
-  height: 28px;
+  width: 1.75rem;
+  height: 1.75rem;
   color: aliceblue;
 }
 
@@ -45,11 +47,11 @@
 }
 
 .smallerLoader {
-  border: 6px solid #f3f3f3;
+  border: 0.375rem solid #f3f3f3;
   border-radius: 50%;
-  border-top: 5px solid #3498db;
-  width: 50px;
-  height: 50px;
+  border-top: 0.3125rem solid #3498db;
+  width: 3.125rem;
+  height: 3.125rem;
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }
@@ -60,26 +62,28 @@
 }
 
 .work-plan {
-  top: 135px;
-  left: 15%;
+  top: 10vh;
+  left:10vw;
   background-color: #d4e3e4;
-  width: 70%;
+  width: 88%;
   border-radius: 10px;
-  overflow-y: auto;
-  height: 800px;
+  overflow-y: scroll;
+  height: 90vh;
 }
+
 
 .index {
   border: 1px solid black;
   border-radius: 10px;
 }
 
+
 .status-index-item {
-  padding: 20px;
+  padding: 1.25rem;
 }
 
 .remark {
-  max-height: 30px;
+  max-height: 1.875rem;
   overflow-y: auto;
 }
 
@@ -88,12 +92,12 @@
 }
 
 .img {
-  width: 35px;
+  width: 2.1875rem;
   cursor: pointer;
 }
 
 .img2 {
-  width: 50px;
+  width: 3.125rem;
   cursor: pointer;
 }
 
@@ -102,8 +106,8 @@
   border: 5px solid #f3f3f3;
   border-radius: 50%;
   border-top: 5px solid #0d10b8;
-  width: 150px;
-  height: 150px;
+  width: 9.375rem;
+  height: 9.375rem;
   -webkit-animation: spin 2s linear infinite;
   /* Safari */
   animation: spin 2s linear infinite;
@@ -115,7 +119,7 @@
 
 /******************Scroll Bar********************************************/
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 0.625rem;
 }
 
 /* Track */
@@ -135,3 +139,31 @@
   background: #363638;
 }
 /*********************************************************************/
+.flexContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-evenly;
+}
+.sideFlex{
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+
+  
+}
+.sidebarItemsContainer{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+.sidebarItem{
+  margin-bottom: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}

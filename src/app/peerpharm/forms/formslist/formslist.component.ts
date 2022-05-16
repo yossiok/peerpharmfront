@@ -3,6 +3,8 @@ import { FormsService } from "../../../services/forms.service";
 import { ExcelService } from "src/app/services/excel.service";
 import { AuthService } from "src/app/services/auth.service";
 import { Router } from "@angular/router";
+import { ToastrService } from "ngx-toastr";
+
 
 @Component({
   selector: "app-formslist",
@@ -10,32 +12,154 @@ import { Router } from "@angular/router";
   styleUrls: ["./formslist.component.scss"],
 })
 export class FormslistComponent implements OnInit {
+
   myRefresh: any = null;
   forms: any[] = [];
   formsCopy: any[];
   sortByFillingDate: Boolean = false;
   showLoader: Boolean = true;
-  year: string = "2022";
+  year: string = new Date().getFullYear().toString();
+  
+  searchType:string="";
+  searchInput:string="";
+  statusSearch:string="";
+
   constructor(
     private formsService: FormsService,
     private excelService: ExcelService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastrService,
   ) {}
 
   ngOnInit() {
     this.getForms();
-    this.startInterval();
+    // this.startInterval();
   }
+
+
+
+
+  searchByStatus(){
+    this.forms = []
+    this.formsCopy = []
+    this.showLoader = true;
+    switch (this.statusSearch) {
+      case "done":
+        this.formsService.getFormDetailsByStatus(this.statusSearch).subscribe((forms)=>{
+          this.forms = forms
+          this.formsCopy = forms
+          this.searchInput = "";
+          this.statusSearch="";
+          this.showLoader = false;
+
+
+        })
+        break;
+      case "package":
+        this.formsService.getFormDetailsByStatus(this.statusSearch).subscribe((forms)=>{
+          this.forms = forms
+          this.formsCopy = forms
+          this.searchInput = "";
+          this.statusSearch="";
+          this.showLoader = false;
+          
+        })
+        break;
+      case "filling":
+        this.formsService.getFormDetailsByStatus(this.statusSearch).subscribe((forms)=>{
+          this.forms = forms
+          this.formsCopy = forms
+          this.searchInput = "";
+          this.statusSearch="";
+          this.showLoader = false;
+
+
+        })
+        break;
+      case "fillingPackage":
+        this.formsService.getFormDetailsByStatus(this.statusSearch).subscribe((forms)=>{
+          this.forms = forms
+          this.formsCopy = forms
+          this.searchInput = "";
+          this.statusSearch="";
+          this.showLoader = false;
+
+        })
+        break;
+    
+      default:
+        this.searchInput = "";
+        this.statusSearch="";
+        this.showLoader = false;
+
+        break;
+    }
+    this.searchInput = "";
+    this.statusSearch="";
+
+    
+
+  }
+
+  search(){
+    this.forms = []
+    this.formsCopy = []
+    this.showLoader = true;
+    switch (this.searchType) {
+      case "itemN":
+        this.formsService.getFormDetailsByItem(this.searchInput).subscribe((forms)=>{
+          this.forms = forms
+          this.formsCopy = forms
+          this.searchInput = "";
+          this.showLoader = false;
+
+
+        })
+        
+        break;
+      case "orderNumber":
+
+        this.formsService.getFormDetailsByOrder(this.searchInput).subscribe((forms)=>{
+          this.forms = forms
+          this.formsCopy = forms
+          this.searchInput = "";
+          this.showLoader = false;
+
+
+        })
+        
+        break;
+      case "batchN":
+        this.formsService.getFormDetailsByBatchNumber(this.searchInput).subscribe((forms)=>{
+          this.forms = forms
+          this.formsCopy = forms
+          this.searchInput = "";
+          this.showLoader = false;
+
+
+        })
+        
+        break;
+    
+      default:
+        this.searchInput = "";
+        this.showLoader = false;
+        break;
+    }
+    this.searchInput = "";
+
+  }
+
+
 
   checkPermission() {
     return this.authService.loggedInUser.screenPermission == "5";
   }
-
   getForms() {
     this.showLoader = true;
 
-    if (this.year == "2021" || this.year == "2022") {
+    if (this.year == "2021" || this.year == "2022" || this.year == "2020") {
       this.formsService.getAllForms(this.year).subscribe((forms) => {
         console.log(forms);
         if (forms) {
@@ -61,7 +185,7 @@ export class FormslistComponent implements OnInit {
           this.formsCopy = forms;
         }
       });
-    } else if (this.year == "2019" || this.year == "2020") {
+    } else if (this.year == "2019" || this.year == "2018") {
       this.formsService.getFormsFromArchive(this.year).subscribe((forms) => {
         if (forms) {
           forms.map((form) => {
@@ -96,27 +220,6 @@ export class FormslistComponent implements OnInit {
     this.excelService.exportAsExcelFile(this.forms, "form");
   }
 
-  exportAsXLSX2() {
-    let orders = [];
-    // console.log(data)
-
-    //       orders.push({
-    //         "הלקוח": order.openOrder.costumer,
-    //         "מס' הזמנה": order.openOrder.orderNumber,
-    //         "לקוח": order.openOrder.costumer,
-    //         'מק"ט לקוח (פנימי)': order.openOrder.costumerInternalId,
-    //         "תאריך הזמנה": order.openOrder.orderDate,
-    //         "תאריך אספקה (משוער)": order.openOrder.deliveryDate,
-    //         "סוג הזמנה": order.openOrder.type,
-    //         "משתמש": order.openOrder.user,
-    //         "הערות": order.openOrder.orderRemarks,
-    //         "סטטוס": order.openOrder.status,
-    //         "שלב": order.openOrder.stage,
-    //         "מוצרים":items
-    //       })
-
-    //     this.excelService.exportAsExcelFile(orders, `דו"ח הזמנות תקועות ${new Date().toString().slice(0, 10)}`);
-  }
 
   sortFormsByFillingDate() {
     // NOT WOTKING WELL !! NEED TO DIVIDE YEAR/MONTH/DAY
@@ -133,15 +236,15 @@ export class FormslistComponent implements OnInit {
     });
   }
 
-  stopInterval() {
-    clearInterval(this.myRefresh);
-  }
+  // stopInterval() {
+  //   clearInterval(this.myRefresh);
+  // }
 
-  startInterval() {
-    this.myRefresh = setInterval(() => {
-      this.getForms();
-    }, 1000 * 60 * 3);
-  }
+  // startInterval() {
+  //   this.myRefresh = setInterval(() => {
+  //     this.getForms();
+  //   }, 1000 * 60 * 3);
+  // }
 
   // exportAsXLSX() {
   //   let arrToExcel=this.forms.map(f=>f);
@@ -166,7 +269,7 @@ export class FormslistComponent implements OnInit {
   //         [checkNetoWeight_filedName]:x.checkNetoWeight[i],
   //         [checkBox_stickerPrinting_filedName]:x.checkBox_stickerPrinting[i],
   //       });
-  //
+  
   //     }
   //     arrToExcel.push(newObj);
   //   });
@@ -187,35 +290,35 @@ export class FormslistComponent implements OnInit {
     if (enteredValue !== "") {
       switch (field) {
         case "costumer": {
-          this.forms = this.forms.filter((x) =>
+          this.forms = this.formsCopy.filter((x) =>
             x.costumerName.includes(enteredValue)
           );
           break;
         }
         case "batch": {
-          this.forms = this.forms.filter((x) =>
+          this.forms = this.formsCopy.filter((x) =>
             x.batchN.includes(enteredValue)
           );
           break;
         }
         case "item": {
-          this.forms = this.forms.filter((x) => x.itemN.includes(enteredValue));
+          this.forms = this.formsCopy.filter((x) => x.itemN.includes(enteredValue));
           break;
         }
         case "fill": {
-          this.forms = this.forms.filter((x) =>
+          this.forms = this.formsCopy.filter((x) =>
             x.fillingDate.includes(enteredValue)
           );
           break;
         }
         case "order": {
-          this.forms = this.forms.filter((x) =>
+          this.forms = this.formsCopy.filter((x) =>
             x.orderNumber.includes(enteredValue)
           );
           break;
         }
         case "productionLine": {
-          this.forms = this.forms.filter(
+          this.forms = this.formsCopy.filter(
             (x) => x.productionLine == enteredValue
           );
           break;
@@ -228,7 +331,7 @@ export class FormslistComponent implements OnInit {
         }
       }
     } else {
-      this.getForms();
+      this.forms = this.formsCopy;
     }
   }
 }
