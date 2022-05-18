@@ -25,14 +25,19 @@ export class ShelfChangeComponent implements OnInit {
   today = new Date();
   sending: boolean = false;
   disabled: boolean = false;
+  shelfChangeLog: any = null;
 
   shelfChange: FormGroup = new FormGroup({
     itemType: new FormControl("component", Validators.required),
     item: new FormControl(null, Validators.required),
+    itemName: new FormControl(""),
     amount: new FormControl(null, Validators.min(0.001)),
     old_shell_id_in_whareHouse: new FormControl(null, Validators.required),
+    oldPosition: new FormControl(""),
+    newPosition: new FormControl(""),
     new_shell_id_in_whareHouse: new FormControl(null, Validators.required),
     whareHouseID: new FormControl(null, Validators.required),
+    whName: new FormControl(""),
     user: new FormControl(""),
   });
 
@@ -64,12 +69,14 @@ export class ShelfChangeComponent implements OnInit {
       .subscribe((data) => {
         if (data.length > 0) {
           this.itemNames = data;
+          this.shelfChange.controls.itemType.setValue(data[0].itemType);
+          this.shelfChange.controls.itemName.setValue(data[0].componentName);
         }
       });
 
-    if (this.shelfChange.value.whareHouseID == "5c31bb6f91ca6b2510349ce9") {
-      this.shelfChange.controls.itemType.setValue("product");
-    }
+    // if (this.shelfChange.value.whareHouseID == "5c31bb6f91ca6b2510349ce9") {
+    //   this.shelfChange.controls.itemType.setValue("product");
+    // }
     if (!this.shelfChange.value.whareHouseID)
       this.toastr.error("אנא בחר מחסן.");
     else if (!this.shelfChange.value.item)
@@ -90,9 +97,13 @@ export class ShelfChangeComponent implements OnInit {
           } else {
             this.shelfsWithItem = res;
             //stupid bug:
-            this.shelfChange.controls.old_shell_id_in_whareHouse.setValue(
-              this.shelfsWithItem[0].shell_id_in_whareHouse
-            );
+
+            // this.shelfChange.controls.old_shell_id_in_whareHouse.setValue(
+            //   this.shelfsWithItem[0].shell_id_in_whareHouse
+            // );
+            // this.shelfChange.controls.oldPosition.setValue(
+            //   this.shelfsWithItem[0].position
+            // );
           }
         });
   }
@@ -104,6 +115,9 @@ export class ShelfChangeComponent implements OnInit {
         this.shellNums = res;
         this.shelfChange.controls.new_shell_id_in_whareHouse.setValue(
           this.shellNums[0]._id
+        );
+        this.shelfChange.controls.newposition.setValue(
+          this.shellNums[0].position
         );
       });
   }
@@ -126,6 +140,22 @@ export class ShelfChangeComponent implements OnInit {
     this.shelfChange.controls.user.setValue(
       this.authService.loggedInUser.userName
     );
+    let whName = this.allWhareHouses.find(
+      (wh) => wh._id == this.shelfChange.value.whareHouseID
+    );
+    this.shelfChange.controls.whName.setValue(whName.name);
+
+    let newPosition = this.shellNums.find(
+      (sh) => sh._id == this.shelfChange.value.new_shell_id_in_whareHouse
+    );
+    this.shelfChange.controls.newPosition.setValue(newPosition.position);
+    let oldPosition = this.shelfsWithItem.find(
+      (sh) =>
+        sh.shell_id_in_whareHouse ==
+        this.shelfChange.value.old_shell_id_in_whareHouse
+    );
+    this.shelfChange.controls.oldPosition.setValue(oldPosition.position);
+
     console.log(this.shelfChange.value);
     this.sending = true;
     setTimeout(() => (this.sending = false), 7000); //if something goes wrong
@@ -136,12 +166,13 @@ export class ShelfChangeComponent implements OnInit {
         if (data.msg) {
           this.toastr.error(data.msg, "שגיאה");
           this.shelfsWithItem = [];
-        } else {
+        } else if (data[3].savedWhActionlog) {
           //set certificate data
+          this.shelfChangeLog = data[3].savedWhActionlog;
           this.sending = false;
           this.toastr.success("שינויים נשמרו בהצלחה", "נשמר");
           this.shelfChange.reset();
-          this.shelfChange.controls.itemType.setValue("component");
+          // this.shelfChange.controls.itemType.setValue("component");
           this.first.nativeElement.focus();
           this.shelfsWithItem;
         }
