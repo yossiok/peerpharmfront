@@ -1,5 +1,6 @@
 table{
     border-collapse: collapse;
+    direction: rtl;
 }
 th{
     border: 1px solid; border-collapse: collapse; padding: 0.5rem; width: 25%;

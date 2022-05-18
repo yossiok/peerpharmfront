@@ -109,6 +109,21 @@
         novalidate=""
         class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
       >
+
+      <button
+        type="button"
+        printSectionId="printBulksReport"
+        styleSheetFile="../../../../assets/stylesheets/palletPrint.css"
+        class="btn btn-success form-control flex-shrink-0"
+        ngxPrint
+      >
+        הדפסה <i class="fa fa-print"></i>
+      </button>
+      </form>
+      <form
+        novalidate=""
+        class="d-flex align-items-center ml-auto ng-pristine ng-valid ng-touched"
+      >
         <button
           type="button"
           id="btnCreateWP"
@@ -124,57 +139,63 @@
       </form>
     </div>
 
-    <table class="table table-striped">
-      <thead class="bg-secondary text-white">
-        <tr>
-          <td>#</td>
-          <th style="min-width: 150px; font-weight: bold; padding: 5px">
-            שם החבית
-          </th>
-          <th>מקט פריט</th>
-          <th>תאור פריט</th>
-          <th>משקל</th>
-          <th>סטטוס</th>
-          <th>משויך להזמנה</th>
-          <th>מתאים להזמנות</th>
-          <th>תאריך ייצור</th>
-          <th>תאריך תפוגה</th>
-        </tr>
-      </thead>
+    <div id="printBulksReport" dir="ltr">
 
-      <tbody class="bg-light text-align">
-        <tr
-          *ngFor="let barrel of filteredBarrelsList; let i = index"
-          class="border-bottom border-dark"
-        >
-          <td>{{ i + 1 }}</td>
-          <td style="min-width: 150px; font-weight: bold; padding: 5px">
-            {{ barrel.barrelNumber }}
-          </td>
-          <td>{{ barrel.itemNumber }}</td>
-          <td>{{ barrel.itemName }}</td>
-          <!-- <td *ngIf="barrel.children.length > 0">
-            <span *ngFor="let child of barrel.children"
-            >{{ child.childNumber }},
-          </span>
-        </td> -->
-          <!-- <td *ngIf="barrel.children.length == 0">
-          {{ barrel.formuleNumber }}
-        </td> -->
-          <td>Kg {{ barrel.barrelWeight | number: "1.0-2" }}</td>
-          <td>{{ barrel.barrelStatus }}</td>
-          <td>{{ barrel.orderNumber }}</td>
-          <td>
-            <span *ngFor="let order of barrel.relevantOrders"
-              ><span style="font-weight: bold">{{ order.orderNumber }} :</span
-              >{{ order.itemNumber }},
+      <table class="table table-striped">
+        <thead class="bg-secondary text-white">
+          <tr>
+            <td>#</td>
+            <th style="min-width: 150px; font-weight: bold; padding: 5px">
+              שם החבית
+            </th>
+            <th>מקט פריט</th>
+            <th>תאור פריט</th>
+            <th>משקל</th>
+            <th>סטטוס</th>
+            <th>משויך להזמנה</th>
+            <th>מתאים להזמנות</th>
+            <th>תאריך ייצור</th>
+            <th>תאריך תפוגה</th>
+          </tr>
+        </thead>
+  
+        <tbody class="bg-light text-align">
+          <tr
+            *ngFor="let barrel of filteredBarrelsList; let i = index"
+            class="border-bottom border-dark"
+          >
+            <td>{{ i + 1 }}</td>
+            <td style="min-width: 150px; font-weight: bold; padding: 5px">
+              {{ barrel.barrelNumber }}
+            </td>
+            <td>{{ barrel.itemNumber }}</td>
+            <td>{{ barrel.itemName }}</td>
+            <!-- <td *ngIf="barrel.children.length > 0">
+              <span *ngFor="let child of barrel.children"
+              >{{ child.childNumber }},
             </span>
-          </td>
-          <td>{{ barrel.productionDate | date: "dd/MM/yyyy" }}</td>
-          <td>{{ barrel.expirationDate | date: "dd/MM/yyyy" }}</td>
-        </tr>
-      </tbody>
-    </table>
+          </td> -->
+            <!-- <td *ngIf="barrel.children.length == 0">
+            {{ barrel.formuleNumber }}
+          </td> -->
+            <td>Kg {{ barrel.barrelWeight | number: "1.0-2" }}</td>
+            <td>{{ barrel.barrelStatus }}</td>
+            <td>{{ barrel.orderNumber }}</td>
+            <td>
+              <span *ngFor="let order of barrel.relevantOrders"
+                ><span style="font-weight: bold">{{ order.orderNumber }} :</span
+                >{{ order.itemNumber }},
+              </span>
+            </td>
+            <td>{{ barrel.productionDate | date: "dd/MM/yyyy" }}</td>
+            <td>{{ barrel.expirationDate | date: "dd/MM/yyyy" }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+    
     <div *ngIf="barrelsLoader" class="loading">Loading&#8230;</div>
   </div>
 </div>
