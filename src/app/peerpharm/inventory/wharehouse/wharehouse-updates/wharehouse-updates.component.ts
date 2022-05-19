@@ -1,9 +1,9 @@
 import {
-    Component,
-    ElementRef,
-    HostListener,
-    OnInit,
-    ViewChild,
+  Component,
+  ElementRef,
+  HostListener,
+  OnInit,
+  ViewChild,
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
@@ -17,423 +17,446 @@ import { YearCount } from "../../shelf-list/YearCount";
 import * as XLSX from "xlsx";
 
 @Component({
-    selector: "app-wharehouse-updates",
-    templateUrl: "./wharehouse-updates.component.html",
-    styleUrls: ["./wharehouse-updates.component.scss"],
+  selector: "app-wharehouse-updates",
+  templateUrl: "./wharehouse-updates.component.html",
+  styleUrls: ["./wharehouse-updates.component.scss"],
 })
 export class WhareHouseUpdatesComponent implements OnInit {
-    allShelfs: any;
-    allCostumers: any;
-    EditRow: any;
-    materialShelfs: any;
-    allShelfsCopy: any;
-    itemType: string = "";
-    whareHouse: string = "";
-    shelfId: any = {}
-    allowedWHS: string[];
-    allowedCountYear: boolean = false;
-    sortPositionOrder: number = 1
-    sortItemNumberOrder: number = 1
-    sortAmountOrder: number = 1
-    sortBatchOrder: number = 1
-    updates: any = []
+  allShelfs: any;
+  allCostumers: any;
+  EditRow: any;
+  materialShelfs: any;
+  allShelfsCopy: any;
+  itemType: string = "";
+  whareHouse: string = "";
+  shelfId: any = {};
+  allowedWHS: string[];
+  allowedCountYear: boolean = false;
+  sortPositionOrder: number = 1;
+  sortItemNumberOrder: number = 1;
+  sortAmountOrder: number = 1;
+  sortBatchOrder: number = 1;
+  updates: any = [];
 
-    @ViewChild("shelfPosition") shelfPosition: ElementRef;
-    @ViewChild("shelfAmount") shelfAmount: ElementRef;
-    @ViewChild("countInput") countInput: ElementRef;
-    @ViewChild("updatesModal") updatesModal: ElementRef;
-    @ViewChild("printStocktake") printStocktake: ElementRef;
-    updatingAmount: boolean;
-    fetchingShelfs: boolean;
+  @ViewChild("shelfPosition") shelfPosition: ElementRef;
+  @ViewChild("shelfAmount") shelfAmount: ElementRef;
+  @ViewChild("countInput") countInput: ElementRef;
+  @ViewChild("updatesModal") updatesModal: ElementRef;
+  @ViewChild("printStocktake") printStocktake: ElementRef;
+  updatingAmount: boolean;
+  fetchingShelfs: boolean;
 
-    newShelfForm: FormGroup = new FormGroup({
-        item: new FormControl(null, Validators.required),
-        whareHouse: new FormControl(null, Validators.required),
-        position: new FormControl(null, Validators.required),
-        amount: new FormControl(null, Validators.required),
+  newShelfForm: FormGroup = new FormGroup({
+    item: new FormControl(null, Validators.required),
+    whareHouse: new FormControl(null, Validators.required),
+    position: new FormControl(null, Validators.required),
+    amount: new FormControl(null, Validators.required),
+  });
+  shellNums: any;
+  printing: boolean = false;
+  validItem: boolean = false;
+
+  @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
+    event: KeyboardEvent
+  ) {
+    this.edit("");
+    this.editShelfAmount("");
+  }
+
+  constructor(
+    private costumerSrv: CostumersService,
+    private toastSrv: ToastrService,
+    private itemService: ItemsService,
+    private inventorySrv: InventoryService,
+    private xlSrv: ExcelService,
+    private authService: AuthService,
+    private modalService: NgbModal
+  ) {}
+
+  ngOnInit() {
+    this.getAllCostumers();
+    this.allowedWHS = this.authService.loggedInUser.allowedWH;
+    this.allowedCountYear =
+      this.authService.loggedInUser.authorization.includes("allowedCountYear");
+  }
+
+  getAllWhShelfs() {
+    this.inventorySrv.getWhareHousesList().subscribe((res) => {
+      let whid = res.find((wh) => wh.name == this.whareHouse)._id;
+      if (this.allowedWHS.includes(whid)) {
+        this.inventorySrv.getWhareHouseShelfList(whid).subscribe((res) => {
+          this.shellNums = res.map((shell) => {
+            shell.shell_id_in_whareHouse = shell._id;
+            return shell;
+          });
+        });
+      } else this.toastSrv.error("אינך מורשה למחסן זה!");
     });
-    shellNums: any;
-    printing: boolean = false
-    validItem: boolean = false
+  }
 
-    @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
-        event: KeyboardEvent
-    ) {
-        this.edit("");
-        this.editShelfAmount("");
+  getShelfsByWH(ev) {
+    this.fetchingShelfs = true;
+    let whareHouse = ev.target ? ev.target.value : ev;
+    this.newShelfForm.controls.whareHouse = whareHouse;
+    // this.whareHouse = ev.target.value;
+    this.getAllWhShelfs();
+    switch (whareHouse) {
+      case "material":
+        this.itemType = whareHouse;
+        this.whareHouse = "Rosh HaAyin";
+        break;
+      case "component":
+        this.itemType = whareHouse;
+        this.whareHouse = "Rosh HaAyin";
+        break;
+      case "Rosh HaAyin products":
+        this.itemType = "product";
+        this.whareHouse = whareHouse;
+        break;
+      case "Rosh HaAyin C":
+        this.itemType = "component";
+        this.whareHouse = whareHouse;
+        break;
+      case "NEW KASEM":
+        this.itemType = "component";
+        this.whareHouse = whareHouse;
+        break;
+      case "Kasem":
+        this.itemType = "component";
+        this.whareHouse = whareHouse;
+        break;
+      case "Labels":
+        this.itemType = "component";
+        this.whareHouse = whareHouse;
+        break;
+      case "Filling":
+        this.itemType = "component";
+        this.whareHouse = whareHouse;
     }
+    // console.log(whareHouse, this.itemType);
+    this.inventorySrv
+      .shelfListByWH(this.whareHouse, this.itemType)
+      .subscribe((data) => {
+        this.fetchingShelfs = false;
+        if (data) {
+          // let allShelfsWithOrWithoutItems = data.emptyShells.concat(data.itemShells)
+          // allShelfsWithOrWithoutItems.sort((a, b) => (a._id.position > b._id.position ? 1 : -1));
+          // let emptyLines = []
+          // for (let i = 0; i < 50; i++) {
+          //     emptyLines.push({ _id: {} })
+          // }
+          // allShelfsWithOrWithoutItems = allShelfsWithOrWithoutItems.concat(emptyLines)
+          this.allShelfs = data.itemShells;
+          this.allShelfsCopy = data.itemShells;
+        } else this.toastSrv.error("No Shelfs in Wharehouse");
+      });
+  }
 
-    constructor(
-        private costumerSrv: CostumersService,
-        private toastSrv: ToastrService,
-        private itemService: ItemsService,
-        private inventorySrv: InventoryService,
-        private xlSrv: ExcelService,
-        private authService: AuthService,
-        private modalService: NgbModal
-    ) { }
-
-    ngOnInit() {
-        this.getAllCostumers();
-        this.allowedWHS = this.authService.loggedInUser.allowedWH;
-        this.allowedCountYear =
-            this.authService.loggedInUser.authorization.includes("allowedCountYear");
+  sortByPosition() {
+    if (this.sortPositionOrder == 1) {
+      this.allShelfs = this.allShelfs.sort((a, b) =>
+        a._id.position > b._id.position ? 1 : -1
+      );
+      this.sortPositionOrder = -1;
+    } else {
+      this.allShelfs = this.allShelfs.sort((a, b) =>
+        a._id.position < b._id.position ? 1 : -1
+      );
+      this.sortPositionOrder = 1;
     }
+  }
 
+  sortByItem() {
+    if (this.sortItemNumberOrder == 1) {
+      this.allShelfs = this.allShelfs.sort((a, b) =>
+        a._id.item > b._id.item ? 1 : -1
+      );
+      this.sortItemNumberOrder = -1;
+    } else {
+      this.allShelfs = this.allShelfs.sort((a, b) =>
+        a._id.item < b._id.item ? 1 : -1
+      );
+      this.sortItemNumberOrder = 1;
+    }
+  }
 
+  sortByAmount() {
+    if (this.sortAmountOrder == 1) {
+      this.allShelfs = this.allShelfs.sort((a, b) =>
+        a.total > b.total ? 1 : -1
+      );
+      this.sortAmountOrder = -1;
+    } else {
+      this.allShelfs = this.allShelfs.sort((a, b) =>
+        a.total < b.total ? 1 : -1
+      );
+      this.sortAmountOrder = 1;
+    }
+  }
 
-    getAllWhShelfs() {
-        this.inventorySrv.getWhareHousesList().subscribe((res) => {
-            let whid = res.find((wh) => wh.name == this.whareHouse)._id;
-            if (this.allowedWHS.includes(whid)) {
-                this.inventorySrv.getWhareHouseShelfList(whid).subscribe((res) => {
-                    this.shellNums = res.map((shell) => {
-                        shell.shell_id_in_whareHouse = shell._id;
-                        return shell;
-                    });
-                });
-            } else this.toastSrv.error("אינך מורשה למחסן זה!");
+  sortByBatch() {
+    if (this.sortBatchOrder == 1) {
+      this.allShelfs = this.allShelfs.sort((a, b) =>
+        a._id.supplierBatchNumber > b._id.supplierBatchNumber ? 1 : -1
+      );
+      this.sortBatchOrder = -1;
+    } else {
+      this.allShelfs = this.allShelfs.sort((a, b) =>
+        a._id.supplierBatchNumber < b._id.supplierBatchNumber ? 1 : -1
+      );
+      this.sortBatchOrder = 1;
+    }
+  }
+
+  filterByIetmNumber(ev) {
+    this.allShelfs = this.allShelfsCopy;
+    let itemNumber = ev.target.value;
+    // console.log(itemNumber);
+    if (itemNumber != "") {
+      this.allShelfs = this.allShelfs
+        .filter((shelf) => shelf._id.item == itemNumber)
+        .sort((a, b) => (a._id.itemNumber > b._id.itemNumber ? 1 : -1));
+    } else {
+      this.allShelfs = this.allShelfsCopy;
+    }
+  }
+
+  // filterByCostumer(ev) {
+  //   this.allShelfs = this.allShelfsCopy;
+  //   let costumer = ev.target.value;
+
+  //   if (costumer != "") {
+  //     this.allShelfs = this.allShelfs.filter((s) => s.costumer == costumer);
+  //   } else {
+  //     this.allShelfs = this.allShelfsCopy;
+  //   }
+  // }
+
+  filterByShelf(ev) {
+    this.allShelfs = this.allShelfsCopy;
+    let position = ev.target.value.toUpperCase();
+    // console.log(position);
+    let regExp = new RegExp(position);
+    if (position != "") {
+      if (position == "QC ROOM") {
+        this.allShelfs = this.allShelfs.filter((s) =>
+          s._id.position.includes(position)
+        );
+      } else {
+        this.allShelfs = this.allShelfs.filter((s) =>
+          regExp.test(s._id.position)
+        );
+      }
+    } else {
+      this.allShelfs = this.allShelfsCopy;
+    }
+  }
+
+  searchForShelfs(ev) {
+    if (ev.target.value != "") {
+      this.inventorySrv
+        .getShelfListForMaterial(ev.target.value)
+        .subscribe((data) => {
+          if (data.msg == "noShelf") {
+            this.toastSrv.error("חומר גלם לא נמצא על מדף מסוים");
+          } else {
+            this.materialShelfs = data;
+          }
         });
     }
+  }
 
-    getShelfsByWH(ev) {
-        this.fetchingShelfs = true;
-        let whareHouse = ev.target ? ev.target.value : ev;
-        this.newShelfForm.controls.whareHouse = whareHouse
-        // this.whareHouse = ev.target.value;
-        this.getAllWhShelfs();
-        switch (whareHouse) {
-            case "material":
-                this.itemType = whareHouse;
-                this.whareHouse = "Rosh HaAyin";
-                break;
-            case "component":
-                this.itemType = whareHouse;
-                this.whareHouse = "Rosh HaAyin";
-                break;
-            case "Rosh HaAyin products":
-                this.itemType = "product";
-                this.whareHouse = whareHouse
-                break;
-            case "Rosh HaAyin C":
-                this.itemType = "component";
-                this.whareHouse = whareHouse
-                break;
-            case "NEW KASEM":
-                this.itemType = "component";
-                this.whareHouse = whareHouse
-                break;
-            case "Kasem":
-                this.itemType = "component";
-                this.whareHouse = whareHouse
-                break;
-            case "Labels":
-                this.itemType = "component";
-                this.whareHouse = whareHouse
-                break;
-            case "Filling":
-                this.itemType = "component";
-                this.whareHouse = whareHouse
-        }
-        // console.log(whareHouse, this.itemType);
+  editShelfAmount(shelf) {
+    if (shelf != "") {
+      if (this.itemType == "material")
+        alert("שים לב! יש לעדכן חומרי גלם לפי באטץ!");
+      this.shelfId = shelf._id;
+    } else this.shelfId = {};
+    setTimeout(() => this.countInput.nativeElement.focus(), 500);
+  }
+
+  setShelfs() {
+    this.shelfId = {};
+  }
+
+  calculateDifference(shelf) {
+    shelf.difference = -1 * (shelf.total - shelf.countedAmount);
+  }
+
+  takeStock() {
+    this.allShelfs = this.allShelfsCopy;
+    this.updates = this.allShelfs.filter((s) => s.countedAmount != null);
+    console.log("updates before sending: ", this.updates);
+    this.modalService.open(this.updatesModal);
+  }
+
+  printStocktakeForm() {
+    this.printing = true;
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        this.printStocktake.nativeElement.click();
+        resolve(true);
+      }, 500);
+    });
+  }
+
+  update() {
+    this.printStocktakeForm().then((result) => {
+      if (result) {
+        this.modalService.dismissAll();
         this.inventorySrv
+          .takeStock({
+            itemType: this.itemType,
+            updates: this.updates,
+            whareHouse: this.whareHouse,
+          })
+          .subscribe((data) => {
+            console.log("response: ", data);
+            if (data.messages.length > 0) {
+              for (let message of data.messages) {
+                alert(message.msg);
+                this.toastSrv.error(message.msg);
+                console.log(message);
+              }
+              this.toastSrv.warning(
+                "צור קשר במיידי עם צוות מחשוב",
+                "ייתכן כי היתה בעיה"
+              );
+            } else {
+              this.toastSrv.success("אנא וודא כמויות", "עודכן בהצלחה!");
+              // fetch updated shelfs
+              if (this.whareHouse == "Rosh HaAyin")
+                this.getShelfsByWH(this.itemType);
+              else this.getShelfsByWH(this.whareHouse);
+            }
+            setTimeout(() => (this.printing = false), 2000);
+          });
+      } else this.toastSrv.error("משהו השתבש");
+    });
+  }
+
+  exportShelfListToXl() {
+    let shelfs = [...this.allShelfs];
+    this.xlSrv.exportAsExcelFile(shelfs, "Shelf Report");
+  }
+
+  // updateShelfAmount(shelf) {
+  //   this.updatingAmount = true;
+  //   if (confirm("האם לעדכן מדף ?")) {
+  //     this.inventorySrv.updateShelfAmount(shelf).subscribe((data) => {
+  //       this.updatingAmount = false;
+  //       if (data) {
+  //         let UIShelf = this.allShelfs.find(
+  //           (s) => s._id == data.item && s.position == data.position
+  //         );
+  //         if (UIShelf) {
+  //           UIShelf.total = data.amount;
+  //           this.toastSrv.success("פריט עודכן בהצלחה !");
+  //         } else this.toastSrv.error("משהו השתבש");
+  //         this.editShelfAmount("");
+  //       }
+  //     });
+  //   }
+  // }
+
+  validateItem() {
+    if (!this.itemType) this.toastSrv.error("", "יש להגדיר מחסן");
+    else {
+      this.inventorySrv
+        .getCmptByNumber(this.newShelfForm.value.item, this.itemType)
+        .subscribe((data) => {
+          if (data.length == 0) {
+            this.toastSrv.error("", "!פריט לא קיים");
+            this.validItem = false;
+          } else this.validItem = true;
+        });
+    }
+  }
+
+  addNewItemShelf() {
+    this.inventorySrv
+      .newShelfYearCount(this.newShelfForm.value, this.whareHouse)
+      .subscribe((data) => {
+        if (data._id) {
+          this.toastSrv.success("מדף הוקם בהצלחה");
+          this.newShelfForm.reset();
+          this.validItem = false;
+          this.inventorySrv
             .shelfListByWH(this.whareHouse, this.itemType)
             .subscribe((data) => {
-                this.fetchingShelfs = false;
-                if (data) {
-                    // let allShelfsWithOrWithoutItems = data.emptyShells.concat(data.itemShells)
-                    // allShelfsWithOrWithoutItems.sort((a, b) => (a._id.position > b._id.position ? 1 : -1));
-                    // let emptyLines = []
-                    // for (let i = 0; i < 50; i++) {
-                    //     emptyLines.push({ _id: {} })
-                    // }
-                    // allShelfsWithOrWithoutItems = allShelfsWithOrWithoutItems.concat(emptyLines)
-                    this.allShelfs = data.itemShells;
-                    this.allShelfsCopy = data.itemShells;
-                } else this.toastSrv.error("No Shelfs in Wharehouse");
+              this.fetchingShelfs = false;
+              if (data) {
+                // let allShelfsWithOrWithoutItems = data.emptyShells.concat(data.itemShells)
+                // allShelfsWithOrWithoutItems.sort((a, b) => (a._id.position > b._id.position ? 1 : -1));
+                // let emptyLines = []
+                // for (let i = 0; i < 50; i++) {
+                //     emptyLines.push({ _id: {} })
+                // }
+                // allShelfsWithOrWithoutItems = allShelfsWithOrWithoutItems.concat(emptyLines)
+                this.allShelfs = data.itemShells;
+                this.allShelfsCopy = data.itemShells;
+              } else this.toastSrv.error("No Shelfs in Wharehouse");
             });
+        } else this.toastSrv.error("משהו השתבש");
+      });
+  }
+
+  edit(id) {
+    if (id != "") {
+      this.EditRow = id;
+    } else {
+      this.EditRow = "";
     }
+  }
 
-    sortByPosition() {
-        if (this.sortPositionOrder == 1) {
-            this.allShelfs = this.allShelfs.sort((a, b) => a._id.position > b._id.position ? 1 : -1);
-            this.sortPositionOrder = -1
-        }
-        else {
-            this.allShelfs = this.allShelfs.sort((a, b) => a._id.position < b._id.position ? 1 : -1);
-            this.sortPositionOrder = 1
-        }
-    }
+  // updateShelfCostumer(shelf) {
+  //   this.inventorySrv
+  //     .updateShelfCostumer(shelf, this.item.costumer)
+  //     .subscribe((data) => {
+  //       if (data) {
+  //         let shelf = this.allShelfs.find(
+  //           (s) => s.item == data.item && s.position == data.position
+  //         );
+  //         if (shelf) {
+  //           shelf.costumer = data.tempCostumer;
+  //           this.toastSrv.success("לקוח עודכן בהצלחה !");
+  //           this.editShelfAmount("", "");
+  //         }
+  //       }
+  //     });
+  // }
 
-    sortByItem() {
-        if (this.sortItemNumberOrder == 1) {
-            this.allShelfs = this.allShelfs.sort((a, b) => a._id.item > b._id.item ? 1 : -1);
-            this.sortItemNumberOrder = -1
-        }
-        else {
-            this.allShelfs = this.allShelfs.sort((a, b) => a._id.item < b._id.item ? 1 : -1);
-            this.sortItemNumberOrder = 1
-        }
-    }
+  updateShelf(id) {
+    let amount = this.shelfAmount.nativeElement.value;
+    let position = this.shelfPosition.nativeElement.value;
 
-    sortByAmount() {
-        if (this.sortAmountOrder == 1) {
-            this.allShelfs = this.allShelfs.sort((a, b) => a.total > b.total ? 1 : -1);
-            this.sortAmountOrder = -1
-        }
-        else {
-            this.allShelfs = this.allShelfs.sort((a, b) => a.total < b.total ? 1 : -1);
-            this.sortAmountOrder = 1
-        }
-    }
+    let shelfToUpdate = this.materialShelfs.find((s) => s._id == id);
+    shelfToUpdate.amount = amount;
+    shelfToUpdate.position = position;
 
-    sortByBatch() {
-        if (this.sortBatchOrder == 1) {
-            this.allShelfs = this.allShelfs.sort((a, b) => a._id.supplierBatchNumber > b._id.supplierBatchNumber ? 1 : -1);
-            this.sortBatchOrder = -1
-        }
-        else {
-            this.allShelfs = this.allShelfs.sort((a, b) => a._id.supplierBatchNumber < b._id.supplierBatchNumber ? 1 : -1);
-            this.sortBatchOrder = 1
-        }
-    }
+    this.inventorySrv.updateShelf(shelfToUpdate).subscribe((data) => {
+      if (data) {
+        this.toastSrv.success("מדף עודכן בהצלחה !");
+        this.edit("");
+      }
+    });
+  }
 
-    filterByIetmNumber(ev) {
-        this.allShelfs = this.allShelfsCopy;
-        let itemNumber = ev.target.value;
-        // console.log(itemNumber);
-        if (itemNumber != "") {
-            this.allShelfs = this.allShelfs.filter(
-                (shelf) => shelf._id.item == itemNumber
-            ).sort((a, b) => a._id.itemNumber > b._id.itemNumber ? 1 : -1)
-        } else {
-            this.allShelfs = this.allShelfsCopy;
-        }
-    }
+  getAllCostumers() {
+    this.costumerSrv.getAllCostumers().subscribe((data) => {
+      this.allCostumers = data;
+    });
+  }
 
-    // filterByCostumer(ev) {
-    //   this.allShelfs = this.allShelfsCopy;
-    //   let costumer = ev.target.value;
+  formatDate(date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
 
-    //   if (costumer != "") {
-    //     this.allShelfs = this.allShelfs.filter((s) => s.costumer == costumer);
-    //   } else {
-    //     this.allShelfs = this.allShelfsCopy;
-    //   }
-    // }
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
 
-    filterByShelf(ev) {
-        this.allShelfs = this.allShelfsCopy;
-        let position = ev.target.value.toUpperCase();
-        // console.log(position);
-        let regExp = new RegExp(position);
-        if (position != "") {
-            if (position == "QC ROOM") {
-                this.allShelfs = this.allShelfs.filter((s) =>
-                    s._id.position.includes(position)
-                );
-            } else {
-                this.allShelfs = this.allShelfs.filter((s) => regExp.test(s._id.position));
-            }
-        } else {
-            this.allShelfs = this.allShelfsCopy;
-        }
-    }
-
-    searchForShelfs(ev) {
-        if (ev.target.value != "") {
-            this.inventorySrv
-                .getShelfListForMaterial(ev.target.value)
-                .subscribe((data) => {
-                    if (data.msg == "noShelf") {
-                        this.toastSrv.error("חומר גלם לא נמצא על מדף מסוים");
-                    } else {
-                        this.materialShelfs = data;
-                    }
-                });
-        }
-    }
-
-    editShelfAmount(shelf) {
-        if (shelf != "") {
-            if (this.itemType == 'material') alert('שים לב! יש לעדכן חומרי גלם לפי באטץ!')
-            this.shelfId = shelf._id
-        } else this.shelfId = {}
-        setTimeout(() => this.countInput.nativeElement.focus(), 500)
-    }
-
-    setShelfs() {
-        this.shelfId = {}
-    }
-
-    calculateDifference(shelf) {
-        shelf.difference = -1 * (shelf.total - shelf.countedAmount)
-    }
-
-    takeStock() {
-        this.allShelfs = this.allShelfsCopy
-        this.updates = this.allShelfs.filter(s => s.countedAmount != null)
-        console.log('updates before sending: ', this.updates)
-        this.modalService.open(this.updatesModal)
-    }
-
-    printStocktakeForm() {
-        this.printing = true
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                this.printStocktake.nativeElement.click()
-                resolve(true)
-            }, 500)
-        })
-    }
-
-    update() {
-        this.printStocktakeForm().then(result => {
-            if (result) {
-                this.modalService.dismissAll()
-                this.inventorySrv.takeStock({ itemType: this.itemType, updates: this.updates, whareHouse: this.whareHouse }).subscribe(data => {
-                    console.log('response: ', data)
-                    if (data.messages.length > 0) {
-                        this.toastSrv.warning('צור קשר במיידי עם צוות מחשוב', 'ייתכן כי היתה בעיה')
-                        console.log(data.messages)
-                    }
-                    else {
-                        this.toastSrv.success('אנא וודא כמויות', 'עודכן בהצלחה!')
-                        // fetch updated shelfs
-                        if (this.whareHouse == 'Rosh HaAyin') this.getShelfsByWH(this.itemType)
-                        else this.getShelfsByWH(this.whareHouse)
-                    }
-                    setTimeout(() => this.printing = false, 2000)
-                })
-            }
-            else this.toastSrv.error('משהו השתבש')
-        })
-    }
-
-    exportShelfListToXl() {
-        let shelfs = [...this.allShelfs];
-        this.xlSrv.exportAsExcelFile(shelfs, "Shelf Report");
-    }
-
-    // updateShelfAmount(shelf) {
-    //   this.updatingAmount = true;
-    //   if (confirm("האם לעדכן מדף ?")) {
-    //     this.inventorySrv.updateShelfAmount(shelf).subscribe((data) => {
-    //       this.updatingAmount = false;
-    //       if (data) {
-    //         let UIShelf = this.allShelfs.find(
-    //           (s) => s._id == data.item && s.position == data.position
-    //         );
-    //         if (UIShelf) {
-    //           UIShelf.total = data.amount;
-    //           this.toastSrv.success("פריט עודכן בהצלחה !");
-    //         } else this.toastSrv.error("משהו השתבש");
-    //         this.editShelfAmount("");
-    //       }
-    //     });
-    //   }
-    // }
-
-    validateItem() {
-        if (!this.itemType) this.toastSrv.error("", "יש להגדיר מחסן");
-        else {
-            this.inventorySrv
-                .getCmptByNumber(this.newShelfForm.value.item, this.itemType)
-                .subscribe((data) => {
-                    if (data.length == 0) {
-                        this.toastSrv.error("", "!פריט לא קיים");
-                        this.validItem = false    
-                    } 
-                    else this.validItem = true
-                });
-        }
-    }
-
-    addNewItemShelf() {
-        this.inventorySrv
-            .newShelfYearCount(this.newShelfForm.value, this.whareHouse)
-            .subscribe((data) => {
-                if (data._id) {
-                    this.toastSrv.success("מדף הוקם בהצלחה");
-                    this.newShelfForm.reset()
-                    this.validItem = false
-                    this.inventorySrv
-                    .shelfListByWH(this.whareHouse, this.itemType)
-                    .subscribe((data) => {
-                        this.fetchingShelfs = false;
-                        if (data) {
-                            // let allShelfsWithOrWithoutItems = data.emptyShells.concat(data.itemShells)
-                            // allShelfsWithOrWithoutItems.sort((a, b) => (a._id.position > b._id.position ? 1 : -1));
-                            // let emptyLines = []
-                            // for (let i = 0; i < 50; i++) {
-                            //     emptyLines.push({ _id: {} })
-                            // }
-                            // allShelfsWithOrWithoutItems = allShelfsWithOrWithoutItems.concat(emptyLines)
-                            this.allShelfs = data.itemShells;
-                            this.allShelfsCopy = data.itemShells;
-                        } else this.toastSrv.error("No Shelfs in Wharehouse");
-                    });
-                } else this.toastSrv.error("משהו השתבש");
-            });
-    }
-
-    edit(id) {
-        if (id != "") {
-            this.EditRow = id;
-        } else {
-            this.EditRow = "";
-        }
-    }
-
-
-    // updateShelfCostumer(shelf) {
-    //   this.inventorySrv
-    //     .updateShelfCostumer(shelf, this.item.costumer)
-    //     .subscribe((data) => {
-    //       if (data) {
-    //         let shelf = this.allShelfs.find(
-    //           (s) => s.item == data.item && s.position == data.position
-    //         );
-    //         if (shelf) {
-    //           shelf.costumer = data.tempCostumer;
-    //           this.toastSrv.success("לקוח עודכן בהצלחה !");
-    //           this.editShelfAmount("", "");
-    //         }
-    //       }
-    //     });
-    // }
-
-    updateShelf(id) {
-        let amount = this.shelfAmount.nativeElement.value;
-        let position = this.shelfPosition.nativeElement.value;
-
-        let shelfToUpdate = this.materialShelfs.find((s) => s._id == id);
-        shelfToUpdate.amount = amount;
-        shelfToUpdate.position = position;
-
-        this.inventorySrv.updateShelf(shelfToUpdate).subscribe((data) => {
-            if (data) {
-                this.toastSrv.success("מדף עודכן בהצלחה !");
-                this.edit("");
-            }
-        });
-    }
-
-    getAllCostumers() {
-        this.costumerSrv.getAllCostumers().subscribe((data) => {
-            this.allCostumers = data;
-        });
-    }
-
-    formatDate(date) {
-        var d = new Date(date),
-            month = "" + (d.getMonth() + 1),
-            day = "" + d.getDate(),
-            year = d.getFullYear();
-
-        if (month.length < 2) month = "0" + month;
-        if (day.length < 2) day = "0" + day;
-
-        return [year, month, day].join("-");
-    }
+    return [year, month, day].join("-");
+  }
 }
