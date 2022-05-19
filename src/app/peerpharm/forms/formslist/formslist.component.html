@@ -7,7 +7,7 @@
       <img
         src="../../../../assets/images/excel.png"
         alt="export to excel"
-        style="width: 2.5rem;"
+        style="width: 2.5rem"
         (click)="exportAsXLSX()"
       />
     </div>
@@ -18,8 +18,12 @@
   </div>
 
   <div class="row center">
-    <div class="col-2" >
-      <select  class="form-control" [(ngModel)]="searchType"  style="display:inline;">
+    <div class="col-2">
+      <select
+        class="form-control"
+        [(ngModel)]="searchType"
+        style="display: inline"
+      >
         <option value="" disabled>Select search filed</option>
         <option value="itemN">Item Number</option>
         <option value="orderNumber">Order Number</option>
@@ -28,28 +32,36 @@
       </select>
     </div>
 
-      <div class="col-2" *ngIf="searchType == 'status'">
-        <select class="form-control" [(ngModel)]="statusSearch">
-          <option value="" disabled>status</option>
-          <option value="done">done</option>
-          <option value="fillingPackage">fillingPackage</option>
-          <option value="filling">filling</option>
-          <option value="package">package</option>
-        </select>
-      </div>
+    <div class="col-2" *ngIf="searchType == 'status'">
+      <select class="form-control" [(ngModel)]="statusSearch">
+        <option value="" disabled>status</option>
+        <option value="done">done</option>
+        <option value="fillingPackage">fillingPackage</option>
+        <option value="filling">filling</option>
+        <option value="package">package</option>
+      </select>
+    </div>
 
-      <div class="col-1" *ngIf="searchType != 'status'">
-        <input placeholder="Enter Number" type="text" [(ngModel)]="searchInput"/>
+    <div class="col-1" *ngIf="searchType != 'status'">
+      <input placeholder="Enter Number" type="text" [(ngModel)]="searchInput" />
+    </div>
 
-
-      </div>
-
-      <div class="col-1">
-        <button *ngIf="searchType != 'status'" class="btn btn-primary" (click)="search()">Search <i class="fa fa-search" aria-hidden="true"></i></button>
-        <button *ngIf="searchType == 'status'" class="btn btn-primary" (click)="searchByStatus()">Search <i class="fa fa-search" aria-hidden="true"></i></button>
-      </div>
-
-
+    <div class="col-1">
+      <button
+        *ngIf="searchType != 'status'"
+        class="btn btn-primary"
+        (click)="search()"
+      >
+        Search <i class="fa fa-search" aria-hidden="true"></i>
+      </button>
+      <button
+        *ngIf="searchType == 'status'"
+        class="btn btn-primary"
+        (click)="searchByStatus()"
+      >
+        Search <i class="fa fa-search" aria-hidden="true"></i>
+      </button>
+    </div>
   </div>
 
   <div class="row center mt-2">
@@ -58,14 +70,19 @@
 
   <div class="row mt-2 center">
     <div class="col-1">
-      <select [(ngModel)]="year" (change)="getForms()" class="form-control" style="display:inline;">
+      <select
+        [(ngModel)]="year"
+        (change)="getForms()"
+        class="form-control"
+        style="display: inline"
+      >
         <option value="2022">2022</option>
         <option value="2021">2021</option>
         <option value="2020">2020</option>
         <option value="2019">2019</option>
         <option value="2018">2018</option>
       </select>
-  </div>
+    </div>
     <div class="col-2">
       <input
         matInput
