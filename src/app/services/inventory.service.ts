@@ -1,3 +1,4 @@
+import { NONE_TYPE } from "@angular/compiler";
 import { EventEmitter, Injectable, Output } from "@angular/core";
 import { Http, Headers, RequestOptions, Jsonp } from "@angular/http";
 import { Observable, BehaviorSubject, ReplaySubject } from "rxjs";
@@ -662,6 +663,19 @@ export class InventoryService {
       "&whareHouse=" +
       whareHouse;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
+  getWhActionsReport(startDate?,endDate?){
+    let url;
+    if(startDate && endDate){
+      url = `${this.baseUrl}whareHouse/getActionsReport?startDate=${startDate}&endDate=${endDate}`
+
+    }else{
+      url = `${this.baseUrl}whareHouse/getActionsReport`
+
+    }
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+
   }
 
   addComponentsToStock(allArrivals) {
