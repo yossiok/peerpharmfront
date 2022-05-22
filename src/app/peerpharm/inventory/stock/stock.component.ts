@@ -176,6 +176,7 @@ export class StockComponent implements OnInit {
   allowUserEditItem = false;
   updateSupplier = false;
   check = false;
+  itemShellUpdates: any[] = [];
 
   resCmpt: any = defaultCmpt;
 
@@ -3023,6 +3024,16 @@ export class StockComponent implements OnInit {
 
         this.lastYearOutAmount = sumOutMovements;
         this.itemMovements = data;
+        this.inventoryService
+          .getItemShellsAfterUpdateByNumber(componentN)
+          .subscribe((itemShells) => {
+            console.log(itemShells);
+            if (itemShells.msg) {
+              this.toastSrv.error(itemShells.msg);
+            } else if (itemShells.length > 0) {
+              this.itemShellUpdates = itemShells;
+            }
+          });
         this.loadingMovements = false;
       }
     });

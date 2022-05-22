@@ -697,6 +697,14 @@ export class InventoryService {
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
+  getItemShellsAfterUpdateByNumber(ItemNumber) {
+    let url =
+      this.baseUrl +
+      "itemShell/getYearCountsByItemNumber?itemNumber=" +
+      ItemNumber;
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+
   getComplexItemMovements(itemForm: Object) {
     let url = this.baseUrl + "itemmovement/complexMovements";
     return this.http
@@ -1013,6 +1021,16 @@ export class InventoryService {
   }
   getLastReception() {
     let url = this.baseUrl + "itemShell/getLastReception";
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  // For warehouse reception from another warehouse
+  getWhActionLogsByWhName(whName, whOriginName) {
+    let url =
+      this.baseUrl +
+      "itemShell/getWhActionLogsByWhName?whName=" +
+      whName +
+      "&whOriginName=" +
+      whOriginName;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 }
