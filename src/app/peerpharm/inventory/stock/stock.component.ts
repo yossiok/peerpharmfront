@@ -2068,6 +2068,17 @@ export class StockComponent implements OnInit {
     //   this.resMaterial.price = mainSupplier.price + mainSupplier.coin;
     // }
     this.getLastOrdersItem(10, "material");
+    this.inventoryService
+      .getItemShellsAfterUpdateByNumber(materNum)
+      .subscribe((itemShells) => {
+        console.log(itemShells);
+        if (itemShells.msg) {
+          this.toastSrv.error(itemShells.msg);
+        } else if (itemShells.length > 0) {
+          this.itemShellUpdates = itemShells;
+        }
+      });
+
     // this.resMaterial.finalPrice = this.resMaterial.shippingPrice ? Number(this.resMaterial.price) + Number(this.resMaterial.shippingPrice) : this.resMaterial.price
 
     this.linkDownload =
@@ -3010,6 +3021,7 @@ export class StockComponent implements OnInit {
         //     data[i].originShelfQntBefore = data[i].originShelfQntBefore + Math.abs(data[i].amount)
         //    }
         //  }
+        console.log(data);
         data.forEach((component) => {
           if (component.movementType) {
             component.originShelfQntBefore =
