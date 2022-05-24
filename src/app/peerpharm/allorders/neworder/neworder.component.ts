@@ -321,6 +321,8 @@ export class NeworderComponent implements OnInit {
             this.shippingMethod = [];
             this.orderItemForm.reset();
             this.orderItemForm.controls.quantity.setValue(0);
+            // eran
+            this.orderItemForm.controls.batch.setValue("");
             this.orderItemForm.controls.hasLicense.setValue(false);
             this.orderItemForm.controls.exploded.setValue(false);
             this.orderItemForm.controls.productionApproved.setValue(false);

@@ -257,6 +257,10 @@
           class="bg-info text-white"
         >
           <tr>
+            <th>
+              <input (change)="selectAll()" type="checkbox">
+              <label > בחר הכל</label><br>
+            </th>
             <th class="hideInTablet">
               <img
                 (click)="makeFillingReport()"
@@ -504,6 +508,7 @@
             <ng-container *ngIf="line !== undefined && line.mkp === typeShown">
               <td class="hideInTablet">
                 <input
+                  name="selectLine"
                   class="form-control"
                   type="checkbox"
                   (change)="isSelected($event, line)"
