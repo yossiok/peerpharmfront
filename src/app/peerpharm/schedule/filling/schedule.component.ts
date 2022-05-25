@@ -491,7 +491,6 @@ export class ScheduleComponent implements OnInit {
         if(ele[i].type=='checkbox'){
           ele[i].checked=true;
           this.isSelected(ele[i],this.scheduleData[i])
-          console.log(this.selectedArr.length);
         }
             
     }
@@ -504,7 +503,6 @@ export class ScheduleComponent implements OnInit {
         if(ele[i].type=='checkbox'){
           ele[i].checked=false;
           this.isSelected(ele[i],this.scheduleData[i])
-          console.log(this.selectedArr.length);
         }
     }  
 } 
