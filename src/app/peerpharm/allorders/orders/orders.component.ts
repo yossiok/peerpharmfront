@@ -512,6 +512,7 @@ export class OrdersComponent implements OnInit {
               orderFromServer.orderNumber == orderFromTable.orderNumber
           )
         );
+        console.log(this.orders);
       });
   }
 

@@ -1510,12 +1510,14 @@
                   <table class="table table-striped table-hover">
                     <thead class="bg-success text-white">
                       <tr>
-                        <th>Amount</th>
-                        <th>In Stock</th>
-                        <th>Movement Type</th>
-                        <th>Date</th>
-                        <th>Shelf</th>
-                        <th>WhareHouse</th>
+                        <th>מחסן מקור</th>
+                        <th>מיקום מקורי</th>
+                        <th>כמות</th>
+                        <th>סוג התנועה</th>
+                        <th>מחסן יעד</th>
+                        <th>מדף יעד</th>
+                        <th>תאריך</th>
+                        <th>שם משתמש</th>
                       </tr>
                     </thead>
                     <div
@@ -1529,18 +1531,22 @@
                     <tbody>
                       <ng-container *ngFor="let itemMovement of itemMovements">
                         <tr *ngIf="itemMovement.WH_originName != 'Filling'">
-                          <td>{{ itemMovement.amount }}</td>
-                          <td>{{ itemMovement.destShelfQntBefore }}</td>
-                          <td>{{ itemMovement.movementType }}</td>
-                          <td>
-                            {{ itemMovement.movementDate | date: "dd/MM/yyyy" }}
-                          </td>
+                          <td>{{ itemMovement.WH_originName }}</td>
                           <td>
                             {{
                               itemMovement.shell_position_in_whareHouse_Origin
                             }}
                           </td>
-                          <td>{{ itemMovement.WH_originName }}</td>
+                          <td>{{ itemMovement.amount }}</td>
+                          <td>{{ itemMovement.movementType }}</td>
+                          <td>{{ itemMovement.WH_destName }}</td>
+                          <td>
+                            {{ itemMovement.shell_position_in_whareHouse_Dest }}
+                          </td>
+                          <td>
+                            {{ itemMovement.movementDate | date: "dd/MM/yyyy" }}
+                          </td>
+                          <td>{{ itemMovement.userName }}</td>
                         </tr>
                       </ng-container>
                     </tbody>
@@ -2507,6 +2513,7 @@
   </div>
 
   <div
+    style="top: 20px; max-width: 80%"
     class="container bg-light rounded shadow fixed-top mx-auto my-auto border border-success"
     *ngIf="openModal == true && stockType == 'material'"
   >
@@ -3083,7 +3090,173 @@
           </div>
   
         </mat-tab> -->
+      <mat-tab selected label="עדכוני מלאי">
+        <div class="container modal-inner" style="max-width: 100%">
+          <div class="row fixNoaStupidStuff text-center p-2">
+            <div class="col-1 fixNoaStupidStuff">
+              <img
+                class="w-50 h-100"
+                (click)="switchModalView(resCmpt.componentN)"
+                src="../../../../assets/images/refreshData.png"
+              />
+            </div>
+            <div class="col-10 fixNoaStupidStuff text-center">
+              <h3 class="text-success">עדכוני מלאי {{ resCmpt.componentN }}</h3>
+            </div>
+            <div class="col-1 fixNoaStupidStuff">
+              <span
+                class="close text-success"
+                id="closeId2"
+                (click)="openModal = false; newItem = ''; lastOrdersOfItem = []"
+                >&times;</span
+              >
+            </div>
+          </div>
 
+          <div dir="rtl" class="row fixNoaStupidStuff text-center">
+            <div class="col-2"></div>
+            <div class="col-2">
+              <label>מלאי מינימום:</label>
+            </div>
+            <div class="col-2">
+              <input
+                class="form-control"
+                type="number"
+                [(ngModel)]="resCmpt.minimumStock"
+              />
+            </div>
+            <div class="col-2">
+              <button
+                class="btn btn-success form-control"
+                id="updateDataBtn"
+                (click)="editStockItemDetails()"
+                *ngIf="newItem != 'new'"
+              >
+                עדכן מלאי מינימום
+              </button>
+            </div>
+            <div class="col-2"></div>
+          </div>
+          <div dir="rtl" class="row fixNoaStupidStuff text-center">
+            <div class="col-2"></div>
+            <div class="col-2">
+              <label>הוצאות שנה אחרונה:</label>
+            </div>
+            <div class="col-2">
+              <label class="form-control"
+                ><b>{{ lastYearOutAmount }}</b></label
+              >
+            </div>
+            <div class="col-4"></div>
+          </div>
+
+          <div
+            class="row fixNoaStupidStuff text-center p-2"
+            style="max-width: 100%"
+          >
+            <div class="col-12 fixNoaStupidStuff">
+              <div col-6>
+                <table class="table table-striped table-hover">
+                  <thead class="bg-success text-white">
+                    <tr>
+                      <th colspan="4">מדף לפני העדכון</th>
+                    </tr>
+                    <tr>
+                      <th>תאריך</th>
+                      <th>מחסן</th>
+                      <th>מיקום</th>
+                      <th>כמות לפני העדכון</th>
+                    </tr>
+                  </thead>
+                  <div
+                    class="fixNoaStupidStuff row text-center"
+                    *ngIf="itemShellUpdates.length == 0"
+                  >
+                    <div class="col-12 text-center">
+                      <h4>No Updates for Item.</h4>
+                    </div>
+                  </div>
+                  <tbody>
+                    <ng-container
+                      *ngFor="let itemShellUpdate of itemShellUpdates"
+                    >
+                      <tr
+                        *ngFor="
+                          let shelf of itemShellUpdate.itemShellsBeforeUpdate
+                        "
+                      >
+                        <td>
+                          {{ itemShellUpdate.date | date: "dd/MM/yyyy HH:mm" }}
+                        </td>
+                        <td>
+                          {{ shelf.whareHouse }}
+                        </td>
+                        <td>
+                          {{ shelf.position }}
+                        </td>
+                        <td>
+                          {{ shelf.amount }}
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+              <div class="col-6">
+                <table class="table table-striped table-hover">
+                  <thead class="bg-success text-white">
+                    <tr>
+                      <th colspan="5">אחרי עדכון המלאי</th>
+                    </tr>
+                    <tr>
+                      <th>תאריך</th>
+                      <th>מחסן</th>
+                      <th>מיקום</th>
+                      <th>כמות אחרי</th>
+                      <th>עודכן על ידי</th>
+                    </tr>
+                  </thead>
+                  <div
+                    class="fixNoaStupidStuff row text-center"
+                    *ngIf="itemShellUpdates.length == 0"
+                  >
+                    <div class="col-12 text-center">
+                      <h4>No Updates for Item.</h4>
+                    </div>
+                  </div>
+                  <tbody>
+                    <ng-container
+                      *ngFor="let itemShellUpdate of itemShellUpdates"
+                    >
+                      <tr
+                        *ngFor="
+                          let shelf of itemShellUpdate.itemShellsAfterUpdate
+                        "
+                      >
+                        <td>
+                          {{ itemShellUpdate.date | date: "dd/MM/yyyy HH:mm" }}
+                        </td>
+                        <td>
+                          {{ shelf.whareHouse }}
+                        </td>
+                        <td>
+                          {{ shelf.position }}
+                        </td>
+                        <td>
+                          {{ shelf.amount }}
+                        </td>
+                        <td>
+                          {{ itemShellUpdate.userName }}
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
       <mat-tab label="Material Arrivals">
         <div class="container-fluid text-center modal-inner">
           <div class="row fixNoaStupidStuff">

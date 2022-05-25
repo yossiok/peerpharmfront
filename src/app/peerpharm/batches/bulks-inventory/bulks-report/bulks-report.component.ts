@@ -5,6 +5,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { ItemsService } from "src/app/services/items.service";
 import { CreamBarrelService } from "src/app/services/cream-barrel.service";
 import { ExcelService } from "src/app/services/excel.service";
+import { FormulesService } from "src/app/services/formules.service";
 
 @Component({
   selector: "app-bulks-report",
@@ -26,7 +27,8 @@ export class BulksReportComponent implements OnInit {
     private batchService: BatchesService,
     private toastSrv: ToastrService,
     private creamBarrelService: CreamBarrelService,
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    private formuleService: FormulesService
   ) {}
 
   ngOnInit(): void {
@@ -69,27 +71,21 @@ export class BulksReportComponent implements OnInit {
     }
   }
   filterBarrelsTwo(e) {
-    console.log(e.target.value);
-    let value = e.target.value;
-    console.log(value);
-    value = String(value).toLowerCase().trim();
+    let value = String(e.value).toLowerCase().trim();
     if (value == "") {
       this.clearBarrelsList();
     } else {
-      let barrels = [];
-      for (let barrel of this.filteredBarrelsList) {
-        if (barrel.relevantOrders.length > 0) {
-          for (let order of barrel.relevantOrders) {
-            if (
-              String(order.orderNumber).includes(value) ||
-              order.itemNumber.includes(value)
-            ) {
-              barrels.push(barrel);
-            }
-          }
-        }
-      }
-      this.filteredBarrelsList = barrels;
+      this.formuleService.getFormuleByNumber(value).subscribe((data) => {
+        console.log(data);
+        let parentFormule = data.parentNumber ? data.parentNumber : value;
+        console.log(parentFormule);
+
+        this.filteredBarrelsList = this.filteredBarrelsList.filter((ba) => {
+          ba.parentFormule;
+          return ba.parentFormule == parentFormule;
+        });
+        console.log(this.filteredBarrelsList);
+      });
     }
   }
 

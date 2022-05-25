@@ -261,8 +261,9 @@
               <th>Item<span class="red">*</span></th>
               <th>Description <span class="red">*</span></th>
               <th>neto Weight (Gr)<span class="red">*</span></th>
-              <th>Quantity<span class="red">*</span></th>
-              <th>Weight</th>
+              <th>Order QTY<span class="red">*</span></th>
+              <th>Stock QTY</th>
+              <th>Used Stock Qty</th>
               <th>Item Order Date</th>
               <th>Delivery Date</th>
               <th>Remarks</th>
@@ -295,8 +296,10 @@
                   (blur)="calcQuantity()"
                 />
               </td>
+              <td *ngIf="stockAmount">{{ stockAmount }}</td>
+              <td *ngIf="!stockAmount"></td>
               <td>
-                <input formControlName="qtyKg" class="form-control" />
+                <input formControlName="stockUsage" class="form-control" />
               </td>
               <td>
                 <input
@@ -353,6 +356,36 @@
     </div>
   </form>
   <br />
+  <h1
+    dir="rtl"
+    style="color: red"
+    class="mt-2"
+    *ngIf="stockItem && stockItem.length > 0"
+  >
+    <i class="far fa-clipboard"></i> פריט זה קיים במלאי במחסן מוצרים, ניתן
+    להשתמש לצורך ההזמנה.
+  </h1>
+
+  <div style="width: 100%" *ngIf="stockItem && stockItem.length > 0" dir="rtl">
+    <table class="table table-striped" style="table-layout: auto; width: 75%">
+      <thead>
+        <tr style="text-align: center">
+          <th>פריט</th>
+          <th>כמות</th>
+          <th>מיקום</th>
+          <th>מחסן</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="text-align: center" *ngFor="let item of stockItem">
+          <td>{{ item.item }}</td>
+          <td>{{ item.amount }}</td>
+          <td>{{ item.position }}</td>
+          <td>{{ item.whareHouse }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   <h1 dir="rtl" style="color: red" class="mt-2" *ngIf="existOrderItem">
     <i class="far fa-clipboard"></i> פריט זה קיים בהזמנות קודמות ,ייתכן ותוכל
     לשלוח אותם ביחד לייצור
@@ -526,6 +559,50 @@
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="c('Saved')">
       Save
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #itemInStock let-c="close" let-d="dismiss" dir="rtl">
+  <div class="modal-header">
+    <h4 class="modal-title text-center" id="modal-basic-title">
+      מלאי של פריט מספר {{ stockItem[0].item }}
+    </h4>
+    <!--<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">-->
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="c('Cross click')"
+    >
+      <!--  <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">-->
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table>
+      <thead>
+        <tr>
+          <th>מחסן</th>
+          <th>מיקום</th>
+          <th>כמות</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of stockItem">
+          <td>{{ item.whareHouse }}</td>
+          <td>{{ item.position }}</td>
+          <td>{{ item.amount }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="c('saved')">
+      השתמש במלאי להזמנה
+    </button>
+    <button type="button" class="btn btn-outline-dark" (click)="c('dismiss')">
+      אל תשתמש במוצר מהמלאי להזמנה
     </button>
   </div>
 </ng-template>

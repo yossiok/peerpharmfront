@@ -561,11 +561,13 @@ export class WharehouseComponent implements OnInit {
                 " " +
                 this.authService.loggedInUser.lastName,
               movementType: this.dir,
+              deliveryNote: res.reception,
             };
 
             this.inventoryService
               .addToWHActionLogs(actionLogObj)
               .subscribe((res) => {
+                console.log(res);
                 this.toastSrv.success("פעולות מחסנאי נשמרו");
               });
             this.inventoryService.deleteZeroStockAmounts().subscribe((x) => {

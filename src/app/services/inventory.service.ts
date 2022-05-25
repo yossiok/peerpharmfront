@@ -31,6 +31,16 @@ export class InventoryService {
       `itemShell/shelfsByWareHouse?whareHouse=${whareHouseId}&type=${type}&db=${db}`;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+
+  getItemShellsByWhouseName(warehouseName): Observable<any> {
+    let url =
+      this.baseUrl +
+      "itemShell/getItemShellsByWhouseName?warehouseName=" +
+      warehouseName;
+
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+
   getShelvesByWHName(name): Observable<any> {
     let url = this.baseUrl + "shell?warehouseName=" + name;
     return this.http.get(url).pipe(
@@ -381,6 +391,14 @@ export class InventoryService {
   getLastYearCount(): Observable<YearCount> {
     let url = `${this.baseUrl}itemShell/lastYearCount`;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
+  addNewItemShelf(itemShelf) {
+    let url = this.baseUrl + "itemShell/addNewItemShelf";
+
+    return this.http
+      .post(url, JSON.stringify(itemShelf), this.options)
+      .pipe(map((response) => response.json()));
   }
 
   // ספירת מלאי - עדכון מדף ספציפי

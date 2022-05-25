@@ -27,6 +27,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { InventoryService } from "src/app/services/inventory.service";
 import { ItemsService } from "src/app/services/items.service";
 import { Location } from "@angular/common";
+import { initial } from "lodash";
 
 @Component({
   selector: "app-neworder",
@@ -37,6 +38,7 @@ export class NeworderComponent implements OnInit {
   @Output() closed: EventEmitter<any> = new EventEmitter<any>();
   @ViewChild("amounts") amounts;
   @ViewChild("problematics") problematics: ElementRef;
+  @ViewChild("itemInStock") itemInStock: ElementRef;
 
   orderNumber: string;
   orderId: string;
@@ -68,6 +70,8 @@ export class NeworderComponent implements OnInit {
   isTooOld: boolean = false;
   noNeto: boolean = false;
   today: Date = new Date();
+  stockItem: any[] = [];
+  stockAmount: number = null;
 
   orderForm: FormGroup = new FormGroup({
     //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
@@ -107,6 +111,7 @@ export class NeworderComponent implements OnInit {
     shippingMethod: new FormControl([]),
     itemOrderDate: new FormControl(new Date(), Validators.required),
     batch: new FormControl(""),
+    stockUsage: new FormControl(null),
   });
 
   constructor(
@@ -356,6 +361,7 @@ export class NeworderComponent implements OnInit {
     this.itemName = "";
     this.existOrderItem = [];
     if (itemNumber != "") {
+      this.getStockItem(itemNumber);
       this.orderSer.getItemByNumber(itemNumber).subscribe((res) => {
         console.log(res);
         this.orderItemForm.controls.discription.setValue(
@@ -428,6 +434,30 @@ export class NeworderComponent implements OnInit {
           });
       });
     }
+  }
+
+  getStockItem(itemNumber) {
+    this.orderSer.getItemStock(itemNumber).subscribe((data) => {
+      console.log(data);
+      if (data.msg) {
+        this.toastSrv.error(data.msg);
+        return;
+      } else if (data.length > 0) {
+        this.stockItem = data;
+        this.stockAmount = 0;
+        for (let item of this.stockItem) {
+          this.stockAmount += item.amount;
+        }
+
+        console.log(this.stockAmount);
+        this.modalService.open(this.itemInStock).result.then((result) => {
+          console.log(result);
+          if (result == "saved") {
+            console.log(this.stockItem);
+          }
+        });
+      }
+    });
   }
 
   getLastOrderNumber() {
@@ -572,6 +602,7 @@ export class NeworderComponent implements OnInit {
           this.orderItemForm.controls.quantity.value) /
         1000;
       this.orderItemForm.controls.qtyKg.setValue(totalWeight);
+      let itemNumber = this.orderItemForm.controls.itemNumber.value;
     }
   }
 }
