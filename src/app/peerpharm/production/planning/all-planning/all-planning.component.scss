@@ -3,7 +3,6 @@
   box-sizing: border-box;
 }
 
-
 .close {
   cursor: pointer;
   padding: 0.3125rem;
@@ -20,7 +19,7 @@
 
 .wrapper {
   display: grid;
-  grid-template-columns: 6.25rem 6.25rem 6.25rem 6.25rem 6.25rem;
+  grid-template-columns: 6.25rem 6.25rem 6.25rem 6.25rem;
   grid-gap: 17.81rem;
   grid-row-gap: 3.31rem;
   color: rgb(236, 117, 117);
@@ -56,14 +55,18 @@
   animation: spin 2s linear infinite;
 }
 
-.form-control {
+.form-control-1 {
   display: inline !important;
-  width: 50% !important;
+  width: 75% !important;
+}
+.form-control-2 {
+  display: inline !important;
+  width: 90% !important;
 }
 
 .work-plan {
   top: 10vh;
-  left:10vw;
+  left: 10vw;
   background-color: #d4e3e4;
   width: 88%;
   border-radius: 10px;
@@ -71,12 +74,10 @@
   height: 90vh;
 }
 
-
 .index {
   border: 1px solid black;
   border-radius: 10px;
 }
-
 
 .status-index-item {
   padding: 1.25rem;
@@ -112,7 +113,7 @@
   /* Safari */
   animation: spin 2s linear infinite;
 }
-.toDoneBtn{
+.toDoneBtn {
   z-index: 100;
   position: fixed;
 }
@@ -139,28 +140,26 @@
   background: #363638;
 }
 /*********************************************************************/
-.flexContainer{
+.flexContainer {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
   justify-content: space-evenly;
 }
-.sideFlex{
+.sideFlex {
   justify-content: center;
   align-items: center;
   text-align: center;
   padding: 1rem;
-
-  
 }
-.sidebarItemsContainer{
+.sidebarItemsContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
   text-align: center;
 }
-.sidebarItem{
+.sidebarItem {
   margin-bottom: 1rem;
   flex-direction: column;
   justify-content: center;

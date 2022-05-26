@@ -8,10 +8,8 @@ import { ProductionService } from "src/app/services/production.service";
 import { WorkPlan } from "../WorkPlan";
 import { OrdersService } from "../../../../services/orders.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { NextPartNumberMarker } from "@aws-amplify/core/node_modules/aws-sdk/clients/s3";
-import { isNgContent, isNgTemplate } from "@angular/compiler";
 import { ActivatedRoute } from "@angular/router";
-import { connectableObservableDescriptor } from "rxjs/internal/observable/ConnectableObservable";
+import { FormulesService } from "src/app/services/formules.service";
 @Component({
   selector: "app-all-items",
   templateUrl: "./all-items.component.html",
@@ -69,6 +67,8 @@ export class AllItemsComponent implements OnInit {
   @ViewChild("oiFilter") oiFilter: ElementRef;
   @ViewChild("wpFilter") wpFilter: ElementRef;
   @ViewChild("wpList") invstck: ElementRef;
+  @ViewChild("itemFilter") itemFilter: ElementRef;
+  @ViewChild("familyFilter") familyFilter: ElementRef;
 
   constructor(
     private productionService: ProductionService,
@@ -79,7 +79,8 @@ export class AllItemsComponent implements OnInit {
     private authService: AuthService,
     private ordersService: OrdersService,
     private modalService: NgbModal,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private formuleService: FormulesService
   ) {}
 
   ngOnInit(): void {
@@ -694,5 +695,50 @@ export class AllItemsComponent implements OnInit {
   clearWorkPlans() {
     this.viewWP(this.currentWPView);
     this.wpFilter.nativeElement.value = "";
+    this.itemFilter.nativeElement.value = "";
+    this.familyFilter.nativeElement.value = "";
+  }
+
+  filterByItem() {
+    let value = this.itemFilter.nativeElement.value;
+    value = String(value).toLowerCase();
+    value = value.trim();
+    console.log(value);
+    if (value == "") {
+      this.clearWorkPlans();
+    } else {
+      this.filteredWorkPlans = this.filteredWorkPlansCopy.filter((wp) => {
+        console.log(wp.orderItems);
+        let idx = wp.orderItems.findIndex((oi) =>
+          oi.parentFormule.includes(value)
+        );
+        // let idx = wp.orderItems.findIndex((oi) => oi.parentFormule== value) ;
+        return idx > -1;
+      });
+      console.log(this.filteredWorkPlans);
+    }
+  }
+  filterByFamily() {
+    let value = String(this.familyFilter.nativeElement.value)
+      .toLowerCase()
+      .trim();
+    if (value == "") {
+      this.clearWorkPlans();
+    } else {
+      this.formuleService.getFormuleByNumber(value).subscribe((data) => {
+        console.log(data);
+        let parentFormule = data.parentNumber ? data.parentNumber : value;
+        console.log(parentFormule);
+
+        this.filteredWorkPlans = this.filteredWorkPlansCopy.filter((wp) => {
+          let idx = wp.orderItems.findIndex(
+            (oi) => oi.parentFormule == parentFormule
+          );
+          console.log(idx);
+          return idx > -1;
+        });
+        console.log(this.filteredWorkPlans);
+      });
+    }
   }
 }

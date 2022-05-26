@@ -1,92 +1,176 @@
 <div>
   <h1>Work Plans</h1>
-  <button *ngIf="toDoneArray.length>0" class="btn btn-danger toDoneBtn" (click)="toDone()">done העבר לסטטוס</button>
+  <button
+    *ngIf="toDoneArray.length > 0"
+    class="btn btn-danger toDoneBtn"
+    (click)="toDone()"
+  >
+    done העבר לסטטוס
+  </button>
   <i class="fas fa-check-double"></i>
   <!-- container -->
-  <div class="flexContainer">
+  <div class="flexContainer justify-content-start">
     <!--side bar-->
-    <div [ngClass]="fetchingWorkPlans ? 'disabled' : ''" class="index sideFlex"
-      style="height: fit-content;">
+    <div
+      [ngClass]="fetchingWorkPlans ? 'disabled' : ''"
+      class="index sideFlex"
+      style="height: fit-content"
+    >
       <div class="sidebarItemsContainer">
         <div class="sidebarItem">
-          <img class="click" ngbTooltip="רענן תכניות" (click)="getWorkPlans()" style="width: 50px"
-            src="../../../../../assets/images/update2.png" alt=""> 
-            <p>רענן</p>
+          <img
+            class="click"
+            ngbTooltip="רענן תכניות"
+            (click)="getWorkPlans()"
+            style="width: 50px"
+            src="../../../../../assets/images/update2.png"
+            alt=""
+          />
+          <p>רענן</p>
         </div>
         <div class="sidebarItem">
-          <img class="click" (click)="exportAll()" ngbTooltip="ייצוא לאקסל" src="../../../../../assets/images/excel.png"
-            style="width: 50px;" alt="">  
-            <p>ייצא לאקסל</p>
-
+          <img
+            class="click"
+            (click)="exportAll()"
+            ngbTooltip="ייצוא לאקסל"
+            src="../../../../../assets/images/excel.png"
+            style="width: 50px"
+            alt=""
+          />
+          <p>ייצא לאקסל</p>
         </div>
         <div class="sidebarItem">
-          <button ngbTooltip="בחירת תכניות" (click)="showHideCheckBox()" class="btn btn-secondary" style="width: 52px;">
+          <button
+            ngbTooltip="בחירת תכניות"
+            (click)="showHideCheckBox()"
+            class="btn btn-secondary"
+            style="width: 52px"
+          >
             <i class="fas fa-check-circle"></i>
           </button>
-          <p> בחירה מרובה</p>
+          <p>בחירה מרובה</p>
         </div>
         <div *ngIf="!loadData && authorized" class="sidebarItem">
-          <img class="click" (click)="loadMaterialsForFormule()" ngbTooltip="כתב כמויות" style="width: 50px"
-            src="../../../../../assets/images/allOrder.png" alt=""> 
+          <img
+            class="click"
+            (click)="loadMaterialsForFormule()"
+            ngbTooltip="כתב כמויות"
+            style="width: 50px"
+            src="../../../../../assets/images/allOrder.png"
+            alt=""
+          />
           <p>כתב כמויות</p>
         </div>
         <div *ngIf="loadData" class="smallerLoader"></div>
-
       </div>
       <!-- index -->
-    <div>
-      <div class="status-index-item"><b>Index:</b></div>
-      <div class="status-index-item" [style.background]="'#68e37d'">PP&C <i class="fa fa-pencil-alt"></i>
+      <div>
+        <div class="status-index-item"><b>Index:</b></div>
+        <div class="status-index-item" [style.background]="'#68e37d'">
+          PP&C <i class="fa fa-pencil-alt"></i>
+        </div>
+        <div class="status-index-item" [style.background]="'#5B9BD5'">
+          Formula <i class="fa fa-flask"></i>
+        </div>
+        <div class="status-index-item" [style.background]="'#ED7D31'">
+          Scheduled <i class="far fa-calendar-alt"></i>
+        </div>
+        <div class="status-index-item" [style.background]="'#C48170'">
+          Materials <i class="fas fa-tint"></i>
+        </div>
+        <div class="status-index-item" [style.background]="'#A5A5A5'">
+          Produced <i class="fas fa-archive"></i>
+        </div>
+        <div class="status-index-item" [style.background]="'#c93682'">
+          Canceled <i class="fas fa-times"></i>
+        </div>
+        <div class="status-index-item" [style.background]="'#d1c9c9'">
+          Partial Produce <i class="fa fa-spinner"></i>
+        </div>
+        <div class="status-index-item" [style.background]="'#1A8A22'">
+          Done<i class="fa fa-check"></i>
+        </div>
       </div>
-      <div class="status-index-item" [style.background]="'#5B9BD5'">Formula <i class="fa fa-flask"></i></div>
-      <div class="status-index-item" [style.background]="'#ED7D31'">Scheduled <i class="far fa-calendar-alt"></i>
-      </div>
-      <div class="status-index-item" [style.background]="'#C48170'">Materials <i class="fas fa-tint"></i>
-      </div>
-      <div class="status-index-item" [style.background]="'#A5A5A5'">Produced <i class="fas fa-archive"></i>
-      </div>
-      <div class="status-index-item" [style.background]="'#c93682'">Canceled <i class="fas fa-times"></i>
-      </div>
-      <div class="status-index-item" [style.background]="'#d1c9c9'">Partial Produce <i class="fa fa-spinner"></i>
-      </div>
-      <div class="status-index-item" [style.background]="'#1A8A22'">Done<i class="fa fa-check"></i>
-      </div>
-    </div>
     </div>
     <!--work plans-->
-    <div *ngIf="showWorkPlan || showMaterialsForFormules" class="d-flex flex-column"></div>
-    <div *ngIf="!showWorkPlan && !showMaterialsForFormules" class="">
+    <div
+      *ngIf="showWorkPlan || showMaterialsForFormules"
+      class="d-flex flex-column"
+    ></div>
+    <div *ngIf="!showWorkPlan && !showMaterialsForFormules" class="ml-5">
       <div [ngClass]="fetchingWorkPlans ? 'disabled' : ''" class="row mt-4">
-        <div class="col-2">
-          <input type="text" placeholder="PAKA Name / Num." (keyup)="filterWorkPlans($event)">
-        </div>
-        <div class="col-2">
-          <input type="text" (keyup)="filterByItemOrOrder($event)" placeholder="Item / Order">
-        </div>
-        <div class="col-2">
-          <label>Status: &nbsp;&nbsp;</label>
-          <select class="form-control" (change)="filterByStatus($event)">
-            <option value="0">All</option>
-            <option value="2">PP&C</option>
-            <option value="3">Formula</option>
-            <option value="4">Scheduled</option>
-            <option value="6">Produced</option>
-            <option value="7">Done</option>
-            <option value="8">Canceled</option>
-            <option value="5">Materials</option>
-            <option value="9">Partial produced</option>
-          </select>
-        </div>
-        <div class="col-2">
-          <button class="btn btn-outline-primary" (click)="clearFilter()">All</button>
-        </div>
+        <form class="form-inline">
+          <div class="col-2 px-1">
+            <select
+              class="form-control form-control-1"
+              (change)="filterByStatus($event)"
+            >
+              <option value="0">All</option>
+              <option value="2">PP&C</option>
+              <option value="3">Formula</option>
+              <option value="4">Scheduled</option>
+              <option value="6">Produced</option>
+              <option value="7">Done</option>
+              <option value="8">Canceled</option>
+              <option value="5">Materials</option>
+              <option value="9">Partial produced</option>
+            </select>
+
+            <button class="btn btn-outline-primary" (click)="clearFilter()">
+              All
+            </button>
+          </div>
+          <div class="col-2 px-2">
+            <input
+              class="form-control form-control-2"
+              type="text"
+              placeholder="PAKA Name / Num."
+              (keyup)="filterWorkPlans($event)"
+            />
+            <!-- <button class="btn btn-outline-danger" (clear)="clearFilter()">
+              Clear
+            </button> -->
+          </div>
+          <div class="col-2 px-2">
+            <input
+              class="form-control form-control-2"
+              type="text"
+              (keyup)="filterByItemOrOrder($event)"
+              placeholder="Item / Order"
+            />
+            <!-- <button class="btn btn-outline-danger" (click)="clearFilter()">
+              Clear
+            </button> -->
+          </div>
+          <div class="col-4 px-1">
+            <input
+              class="form-control"
+              type="text"
+              placeholder="Item by Family"
+              aria-label="Item By Family"
+              #familyFilter
+            />
+            <button
+              class="btn btn-outline-primary"
+              type="button"
+              (click)="filterByFamily()"
+            >
+              Search
+            </button>
+          </div>
+          <div class="col-2">
+            <button class="btn btn-outline-danger" (click)="clearFilter()">
+              Clear All
+            </button>
+          </div>
+        </form>
       </div>
       <div class="mt-5 d-flex flex-column" *ngIf="fetchingWorkPlans">
         <div class="row">
           <div class="col-3"></div>
           <div class="col-3">
             <h2 class="text-info">Getting All PAKA, Please wait...</h2>
-            <br><br>
+            <br /><br />
             <div class="smallLoader"></div>
           </div>
           <div class="col-3"></div>
@@ -97,7 +181,7 @@
           <div class="col-3"></div>
           <div class="col-3">
             <h2 class="text-info">Getting Done PAKA, Please wait...</h2>
-            <br><br>
+            <br /><br />
             <div class="smallLoader"></div>
           </div>
           <div class="col-3"></div>
@@ -108,28 +192,39 @@
           <div class="col-3"></div>
           <div class="col-3">
             <h2 class="text-info">Getting Cancel PAKA, Please wait...</h2>
-            <br><br>
+            <br /><br />
             <div class="smallLoader"></div>
           </div>
           <div class="col-3"></div>
         </div>
       </div>
-      <div *ngIf="!fetchingWorkPlans && !fetchingWorkPlans2 && !fetchingWorkPlans3" class="wrapper mt-5 mr-5">
+      <div
+        *ngIf="!fetchingWorkPlans && !fetchingWorkPlans2 && !fetchingWorkPlans3"
+        class="wrapper mt-5 mr-5"
+      >
         <ng-container *ngFor="let workPlan of workPlans; let i = index">
-
-          <div class="box click" [style.background]="workPlan.status | orderItemBatchStatusColor"
-            *ngIf="filterByRole(workPlan.status)">
-            <input *ngIf="showCheckbox" [disabled]="disableCheckBox" class="checkbox" type="checkbox"
-              (change)="updateToDoneArray(workPlan)" [checked]="toDoneArray.includes(workPlan)">
+          <div
+            class="box click"
+            [style.background]="workPlan.status | orderItemBatchStatusColor"
+            *ngIf="filterByRole(workPlan.status)"
+          >
+            <input
+              *ngIf="showCheckbox"
+              [disabled]="disableCheckBox"
+              class="checkbox"
+              type="checkbox"
+              (change)="updateToDoneArray(workPlan)"
+              [checked]="toDoneArray.includes(workPlan)"
+            />
             <div (click)="openWorkPlan(workPlan.serialNumber)">
               <div class="service-line mt-4">
-                <h3>{{workPlan.serialNumber}}</h3>
+                <h3>{{ workPlan.serialNumber }}</h3>
               </div>
               <div class="service-line">
-                <h4>{{workPlan.date | date: 'dd/MM/yy'}}</h4>
+                <h4>{{ workPlan.date | date: "dd/MM/yy" }}</h4>
               </div>
               <div class="service-line remark">
-                <h4>{{workPlan.remark}}</h4>
+                <h4>{{ workPlan.remark }}</h4>
               </div>
               <div class="service-line status">
                 <!-- <h4>{{workPlan.status | orderItemBatchStatus}}</h4> -->
@@ -142,75 +237,112 @@
             </div>
           </div>
         </ng-container>
-
       </div>
     </div>
   </div>
-
 </div>
-    
 
 <!--Work Plan modal-->
 <div class="position-fixed work-plan" *ngIf="showWorkPlan">
-  <app-planning-details (updateWorkPlans)="getWorkPlans()" (closeWorkPlanEmitter)="closeWorkPlan($event)"
-    [workPlan]="currentWorkPlan">
+  <app-planning-details
+    (updateWorkPlans)="getWorkPlans()"
+    (closeWorkPlanEmitter)="closeWorkPlan($event)"
+    [workPlan]="currentWorkPlan"
+  >
   </app-planning-details>
 </div>
 
 <!--כתבי כמויות-->
-<div *ngIf="showMaterialsForFormules" class="position-fixed work-plan w-75 p-5 rounded">
-  <button style="visibility: hidden" #printAmounts ngxPrint printSectionId="print-amounts"></button>
-  <i (click)="showMaterialsForFormules = false" class="fa fa-times float-right h3 close"></i>
+<div
+  *ngIf="showMaterialsForFormules"
+  class="position-fixed work-plan w-75 p-5 rounded"
+>
+  <button
+    style="visibility: hidden"
+    #printAmounts
+    ngxPrint
+    printSectionId="print-amounts"
+  ></button>
+  <i
+    (click)="showMaterialsForFormules = false"
+    class="fa fa-times float-right h3 close"
+  ></i>
   <h1 class="text-center">כתב כמויות</h1>
   <h2 dir="rtl">
-    <img (click)="exportExplosion(materialsForFormules, 'כתב כמויות')" src="../../../../../assets/images/excel.png"
-      class="img" alt="">
-    <img (click)="printAmounts.click()" src="../../../../../assets/images/print.png" class="img2" alt="">
+    <img
+      (click)="exportExplosion(materialsForFormules, 'כתב כמויות')"
+      src="../../../../../assets/images/excel.png"
+      class="img"
+      alt=""
+    />
+    <img
+      (click)="printAmounts.click()"
+      src="../../../../../assets/images/print.png"
+      class="img2"
+      alt=""
+    />
   </h2>
   <div id="print-amounts">
-
-    <h2 dir="rtl"> כתב כמויות לתכניות עבודה: <span *ngFor="let workPlan of checkedWorkPlans">{{workPlan.serialNumber}},
-      </span></h2>
-    <br>
+    <h2 dir="rtl">
+      כתב כמויות לתכניות עבודה:
+      <span *ngFor="let workPlan of checkedWorkPlans"
+        >{{ workPlan.serialNumber }},
+      </span>
+    </h2>
+    <br />
     <table class="table table-striped mt-4">
       <thead class="bg-success text-white">
         <tr>
-
           <th>Material Number</th>
           <th>Material Name</th>
           <th>Required</th>
           <th>In Stock</th>
-
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let material of materialsForFormules">
-
-          <td>{{material.itemNumber}}</td>
-          <td>{{material.itemName}}</td>
-          <td>{{material.kgProduction}}</td>
+          <td>{{ material.itemNumber }}</td>
+          <td>{{ material.itemName }}</td>
+          <td>{{ material.kgProduction }}</td>
           <td
-            [style.backgroundColor]="checkAmountsForMaterial(material.kgProduction, material.materialArrivals[0].amount) < 0 ? 'red' : 'lightgreen'">
-            {{material.materialArrivals[0].amount | number}}</td>
-
+            [style.backgroundColor]="
+              checkAmountsForMaterial(
+                material.kgProduction,
+                material.materialArrivals[0].amount
+              ) < 0
+                ? 'red'
+                : 'lightgreen'
+            "
+          >
+            {{ material.materialArrivals[0].amount | number }}
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
-
 </div>
 
 <ng-template #produced let-modal>
   <div class="p-5 bg-info">
-    <i type="button" class="float-left fas fa-times h1 m-2 text-warning" aria-label="Close"
-      (click)="modal.dismiss('Cross click')"></i>
-      <br><br><br>
+    <i
+      type="button"
+      class="float-left fas fa-times h1 m-2 text-warning"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></i>
+    <br /><br /><br />
     <h1 dir="rtl" class="text-warning">
-     שים לב! הפק"עות הבאות סיימו בישול. יש לבדוק ולהעבירן למצב <strong>"DONE"</strong> במידת הצורך
+      שים לב! הפק"עות הבאות סיימו בישול. יש לבדוק ולהעבירן למצב
+      <strong>"DONE"</strong> במידת הצורך
     </h1>
-    <br><br><br>
+    <br /><br /><br />
     <ul class="list-group">
-      <li class="list-group-item text-warning bg-info" *ngFor="let wp of producedWorkPlans"><h1>{{wp}}</h1></li>
+      <li
+        class="list-group-item text-warning bg-info"
+        *ngFor="let wp of producedWorkPlans"
+      >
+        <h1>{{ wp }}</h1>
+      </li>
     </ul>
   </div>
 </ng-template>
