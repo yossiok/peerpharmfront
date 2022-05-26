@@ -922,6 +922,7 @@ export class ScheduleComponent implements OnInit {
           this.today = moment(this.today).format("YYYY-MM-DD");
           this.getAllSchedule(this.today);
           this.selectedArr = [];
+          
         }
       });
     } else {

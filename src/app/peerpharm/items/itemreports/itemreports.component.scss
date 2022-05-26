@@ -156,5 +156,142 @@
       transform: rotate(360deg);
     }
   }
-  
+
+  section {
+    direction: rtl;
+}
+.styled-table {
+    border-collapse: collapse;
+    margin: 1.5625rem 0;
+    font-size: 1.4em;
+    font-family: sans-serif;
+    min-width: 25rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    width: 100%;
+}
+
+.styled-table thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: center;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 0.75rem 0.9375rem;
+    text-align: center;
+
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+    
+
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+.styled-table tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+.main{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.mark{
+  background-color: rgb(235, 192, 52);
+  -webkit-border-radius: 1rem;
+  border-radius: 1rem;
+  border: none;
+  color: #eeeeee;
+  padding: 0.3125rem 0.9375rem;
+  margin-right: 1rem;
+}
+
+.expired{
+  display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.smallerLoader {
+  border: 6px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #3498db;
+  width: 50px;
+  height: 50px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
+.tableContainer{
+  width:50vw;
+}
+.heading{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  width:40%;
+}
+.filter{
+  margin-left: 2rem;
+  padding: 0.6rem;
+  font-weight:600 ;
+}
+
+.printContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: center;
+  width:50%;
+}
+.printItem{
+  display: inline;
+  margin-left: 1rem;
+}
+.expiredAlert {
+  background-color: #1c87c9;
+  -webkit-border-radius: 1rem;
+  border-radius: 1rem;
+  border: none;
+  color: #eeeeee;
+  padding: 0.3125rem 0.9375rem;
+  margin-right: 1rem;
+}
+@keyframes glowing {
+  0% {
+    background-color: #bd0524;
+    box-shadow: 0 0 5px #bd0524;
+  }
+  50% {
+    background-color: #e81919;
+    box-shadow: 0 0 20px #e81919;
+  }
+  100% {
+    background-color: #bd0524;
+    box-shadow: 0 0 5px #bd0524;
+  }
+}
+.expiredAlert {
+  animation: glowing 1300ms infinite;
+}
+
+
+
+
   

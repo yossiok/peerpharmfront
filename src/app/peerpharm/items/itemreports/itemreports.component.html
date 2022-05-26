@@ -1,92 +1,191 @@
+<!-- Old Report -->
+<section *ngIf="false">
+  <div
+    (click)="setType('arrivals')"
+    class="navtab"
+    style="cursor: pointer; box-shadow: black 0px -1px 3px inset; float: left"
+  >
+    Components Arrivals
+  </div>
+  <div
+    (click)="setType('movements')"
+    class="navtab"
+    style="cursor: pointer; box-shadow: black 0px -1px 3px inset; float: left"
+  >
+    Components Movements
+  </div>
 
-<div (click)='setType("arrivals")'   class="navtab"
-style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;">Components Arrivals</div>
-<div (click)='setType("movements")'   class="navtab"
-style="cursor:pointer;box-shadow: black 0px -1px 3px inset;float:left;">Components Movements</div>
+  <div *ngIf="tableType == 'arrivals'" class="col-3">
+    <input
+      style="box-shadow: black 0px -1px 3px inset; width: 200px"
+      placeholder="Search By Number"
+      (change)="changeText($event, 'itemNumber')"
+      class="form-control"
+    />
+  </div>
 
-<div *ngIf="tableType=='arrivals'"  class="col-3">
-  <input  style="box-shadow: black 0px -1px 3px inset;width:200px"  placeholder="Search By Number" (change)="changeText($event,'itemNumber')" class="form-control" >
-</div>
+  <div *ngIf="tableType == 'arrivals'">
+    From: <input (change)="dateChange()" #fromDateStr type="date" /> To:
+    <input (change)="dateChange()" #toDateStr type="date" />
+  </div>
 
-<div *ngIf="tableType=='arrivals'">
-  From: <input (change)="dateChange()" #fromDateStr type="date"> To: <input (change)="dateChange()" #toDateStr type="date">
-</div>
+  <div *ngIf="tableType == 'movements'" class="col-3">
+    <input
+      style="box-shadow: black 0px -1px 3px inset; width: 200px"
+      placeholder="Search By Item Number"
+      (change)="changeText($event, 'itemMovementNumber')"
+      class="form-control"
+    />
+  </div>
 
-<div *ngIf="tableType=='movements'" class="col-3">
-  <input style="box-shadow: black 0px -1px 3px inset;width:200px;"  placeholder="Search By Item Number" (change)="changeText($event,'itemMovementNumber')" class="form-control">
-</div>
+  <div *ngIf="tableType == 'movements'">
+    From:
+    <input (change)="dateChangeMovements()" #fromDateStr type="date" /> To:
+    <input (change)="dateChangeMovements()" #toDateStr type="date" />
+  </div>
 
-<div *ngIf="tableType=='movements'">
-  From: <input (change)="dateChangeMovements()" #fromDateStr type="date"> To: <input (change)="dateChangeMovements()" #toDateStr type="date">
-</div>
+  <img
+    *ngIf="tableType == 'arrivals'"
+    src="../../../../assets/images/excel.png"
+    alt="export to excel"
+    style="width: 40px; margin-left: 20px"
+    (click)="exportAsXLSX()"
+  />
 
-<img *ngIf="tableType=='arrivals'" src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;margin-left:20px;"
-  (click)="exportAsXLSX()">
+  <img
+    *ngIf="tableType == 'movements'"
+    src="../../../../assets/images/excel.png"
+    alt="export to excel"
+    style="width: 40px; margin-left: 20px"
+    (click)="exportAsXLSXmovements()"
+  />
 
-<img *ngIf="tableType=='movements'" src="../../../../assets/images/excel.png" alt="export to excel" style="width: 40px;margin-left:20px;"
-  (click)="exportAsXLSXmovements()">
+  <div
+    *ngIf="hasMoreItemsToload"
+    style="position: absolute; left: 50%; bottom: 40%"
+  >
+    <div class="loader">Loading More Items...</div>
+    <br />
+  </div>
 
+  <!-- TABLE START -->
 
-    <div *ngIf="hasMoreItemsToload" style="position: absolute; left:50%; bottom: 40%;" >
-        <div class="loader">Loading More Items...</div>
-        <br/> 
-      </div>
-   
+  <table *ngIf="tableType == 'arrivals'" class="table stockTable table-fixed">
+    <thead style="background: rgb(69, 69, 202)" class="tableHeader text-white">
+      <tr style="text-align: center">
+        <th style="width: 3%; padding: 5px">#</th>
+        <th style="width: 15%; padding: 5px"><b>כמות</b></th>
+        <th style="width: 15%; padding: 5px"><b>תאריך הגעה</b></th>
+        <th style="width: 15%; padding: 5px"><b>מספר פריט</b></th>
+        <th style="width: 15%; padding: 5px"><b>מיקום</b></th>
+      </tr>
+    </thead>
 
-
-<!-- TABLE START -->
-
-
-<table *ngIf="tableType=='arrivals'" class='table stockTable table-fixed'>
-<thead style="background: rgb(69, 69, 202)" class='tableHeader text-white'>
-
-  <tr style="text-align: center">
-
-    <th style="width:3%; padding:5px">#</th>
-    <th style="width:15%; padding:5px"><b>כמות</b></th>
-    <th style="width:15%; padding:5px"><b>תאריך הגעה</b></th>
-    <th style="width:15%; padding:5px"><b>מספר פריט</b></th>
-    <th style="width:15%; padding:5px"><b>מיקום</b></th>
-  </tr>
-
-</thead>
-
-
-<tbody id="table_body" class="componentTable">
-  <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
-    *ngFor="let item of itemsShell; let i = index">
-    <td style="width:3%;">{{i+1}}</td>
-    <td style="width:15%;">{{item.amount}}</td>
-    <td style="width:15%;">{{item.arrivalDate | date : 'yyyy-MM-dd'}}</td>
-    <td style="width:15%;">{{item.item}}</td>
-    <td style="width:15%;;">{{item.position}}</td>
-  </tr>
-</tbody>
-</table>
-
-<table *ngIf="tableType=='movements'" class='table stockTable table-fixed'>
-  <thead style="background: rgb(69, 69, 202)" class='tableHeader text-white'>
-  
-    <tr style="text-align: center">
-  
-      <th style="width:3%; padding:5px">#</th>
-      <th style="width:15%; padding:5px"><b>כמות</b></th>
-      <th style="width:15%; padding:5px"><b>תאריך שינוי</b></th>
-      <th style="width:15%; padding:5px"><b>מספר פריט</b></th>
-      <th style="width:15%; padding:5px"><b>סוג שינוי</b></th>
-    </tr>
-  
-  </thead>
-  
-  
-  <tbody id="table_body" class="componentTable">
-    <tr style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px;"
-      *ngFor="let item of itemShellMovements; let i = index">
-      <td style="width:3%;">{{i+1}}</td>
-      <td style="width:15%;">{{item.amount}}</td>
-      <td style="width:15%;">{{item.movementDate | date : 'yyyy-MM-dd'}}</td>
-      <td style="width:15%;">{{item.item}}</td>
-      <td style="width:15%;;">{{item.movementType}}</td>
-    </tr>
-  </tbody>
+    <tbody id="table_body" class="componentTable">
+      <tr
+        style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px"
+        *ngFor="let item of itemsShell; let i = index"
+      >
+        <td style="width: 3%">{{ i + 1 }}</td>
+        <td style="width: 15%">{{ item.amount }}</td>
+        <td style="width: 15%">{{ item.arrivalDate | date: "yyyy-MM-dd" }}</td>
+        <td style="width: 15%">{{ item.item }}</td>
+        <td style="width: 15%">{{ item.position }}</td>
+      </tr>
+    </tbody>
   </table>
+
+  <table *ngIf="tableType == 'movements'" class="table stockTable table-fixed">
+    <thead style="background: rgb(69, 69, 202)" class="tableHeader text-white">
+      <tr style="text-align: center">
+        <th style="width: 3%; padding: 5px">#</th>
+        <th style="width: 15%; padding: 5px"><b>כמות</b></th>
+        <th style="width: 15%; padding: 5px"><b>תאריך שינוי</b></th>
+        <th style="width: 15%; padding: 5px"><b>מספר פריט</b></th>
+        <th style="width: 15%; padding: 5px"><b>סוג שינוי</b></th>
+      </tr>
+    </thead>
+
+    <tbody id="table_body" class="componentTable">
+      <tr
+        style="box-shadow: inset 1px -1px 2px 0px black; margin-top: 1px"
+        *ngFor="let item of itemShellMovements; let i = index"
+      >
+        <td style="width: 3%">{{ i + 1 }}</td>
+        <td style="width: 15%">{{ item.amount }}</td>
+        <td style="width: 15%">{{ item.movementDate | date: "yyyy-MM-dd" }}</td>
+        <td style="width: 15%">{{ item.item }}</td>
+        <td style="width: 15%">{{ item.movementType }}</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+<!-- New report -->
+<section *ngIf="isLogin" class="main">
+  <h1>דו"ח תוקף רישיונות</h1>
+  <h5>תוקף רישיונות לחצי השנה הקרובה</h5>
+  <div class="heading">
+
+    <div class="buttonsContainer">
+      <button (click)="expiredFilter()" class="btn btn-outline-primary filter">פגי תוקף</button>
+      <button (click)="beforeExpiredFilter()" class="btn btn-outline-primary filter">עומדים לפוג</button>
+      <button (click)="noFilter()" class="btn btn-outline-primary filter">כולם</button>
+    </div>
+
+    <div class="printContainer">
+      <img
+        src="../../../../assets/images/excel.png"
+        alt="export to excel"
+        class="printItem"
+        (click)="exportAsXLSX2()"
+        style="width: 3rem;"
+      />
+      <button
+        type="button"
+        printSectionId="printTable"
+        styleSheetFile="../../../../assets/stylesheets/palletPrint.css"
+        class="btn btn-success form-control printItem"
+        style="width: 7rem;"
+        ngxPrint
+      >
+        הדפסה <i class="fa fa-print"></i>
+      </button>
+    </div>
+
+  </div>
+
+  <div *ngIf="loader" class="loader"></div>
+  <div id="printTable" class="tableContainer">
+    <table
+      *ngIf="!loader && products && products.length > 0"
+      class="styled-table"
+    >
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>מק"ט</th>
+          <th>שם</th>
+          <th>תאריך</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>
+            {{ product.itemNumber }}
+          </td>
+          <td>
+            {{ product.name }}
+          </td>
+          <td class="expired">
+            <p>{{ product.licenseDate | date: "dd/MM/yyyy" }}</p>
+            <p *ngIf="product.expiredDays > 0" class="mark">
+              יפגוג בעוד {{ product.expiredDays }} ימים
+            </p>
+            <p *ngIf="product.expiredDays <= 0" class="expiredAlert">פג תוקף</p>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
