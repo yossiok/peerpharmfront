@@ -25,6 +25,12 @@ export class ItemsService {
     return this.http.get(url).pipe(map((res) => res.json()));
   }
 
+  getLicenseItems(): Observable<any> {
+    let url = this.baseUrl + "item/licenseRequired"
+
+    return this.http.get(url).pipe(map((res) => res.json()));
+  }
+
   setNewProductionSchedule(schedule): Observable<any> {
     let url = this.baseUrl + "schedule/addSchedule";
 
