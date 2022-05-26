@@ -136,6 +136,11 @@ export class OrdersService {
     let url = this.baseUrl + "orderitem?customer=" + customer;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+  getOrdersByCustomerId(customerId): Observable<any> {
+    let url =
+      this.baseUrl + "orderitem/getOrdersByCustomerId?customerId=" + customerId;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
   getOrderItemsByCustomerId(customerId): Observable<any> {
     let url =
       this.baseUrl +

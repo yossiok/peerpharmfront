@@ -276,6 +276,19 @@ export class WhareHouseUpdatesComponent implements OnInit {
     }
   }
 
+  filterByArea(e) {
+    let area = String(e.target.value).trim().toUpperCase();
+
+    this.allShelfs = this.allShelfsCopy;
+    this.allShelfs = this.allShelfs.filter((sh) => {
+      let secChar = sh.position.charAt(area.length);
+      let isDigit = Number.isInteger(Number(secChar));
+      isDigit = Number.isInteger(Number(area)) ? isDigit : !isDigit;
+      // let isDigit = isNaN(Number(secChar));
+      console.log(isNaN(Number(secChar)));
+      return sh.position.toUpperCase().indexOf(area) == 0 && !isDigit;
+    });
+  }
   searchForShelfs(ev) {
     if (ev.target.value != "") {
       this.inventorySrv

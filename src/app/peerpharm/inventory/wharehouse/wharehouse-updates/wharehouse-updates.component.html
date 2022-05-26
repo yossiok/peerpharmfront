@@ -49,11 +49,15 @@
         <option value="Filling">Filling</option>
       </select>
     </div>
-    <div class="col-3">
+    <div class="col-2">
       <label>Position</label>
       <input class="form-control" (keyup)="filterByShelf($event)" />
     </div>
-    <div class="col-3">
+    <div class="col-2">
+      <label>Area</label>
+      <input class="form-control" (blur)="filterByArea($event)" />
+    </div>
+    <div class="col-2">
       <label>Item Number</label>
       <input
         list="itemNumbers"
@@ -202,7 +206,7 @@
           <th class="sortable" (click)="sortByItemType()">
             <i class="fas fa-filter"></i> Item Type
           </th>
-          <th class="sortable" (click)="sortByItem()">
+          <th class="sortable small-cell" (click)="sortByItem()">
             <i class="fas fa-filter"></i> INCI Name
           </th>
           <!--1-->
@@ -238,7 +242,7 @@
           <td>{{ shelf.item }}</td>
           <td>{{ shelf.componentName }}</td>
           <td>{{ shelf.itemType }}</td>
-          <td>{{ shelf.inciName }}</td>
+          <td class="small-cell">{{ shelf.inciName }}</td>
           <!--1-->
           <td>
             {{ shelf.supplierBatchNumber }}
