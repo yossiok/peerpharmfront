@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ExcelService } from "src/app/services/excel.service";
 import { InventoryService } from "src/app/services/inventory.service";
 import { Procurementservice } from "src/app/services/procurement.service";
+import { Router } from '@angular/router';
 
 @Component({
   selector: "app-inventory-reports",
@@ -16,6 +17,7 @@ export class InventoryReportsComponent implements OnInit {
   allWarehouses: any[] = [];
   reportData: any[] = [];
   shelvesList: any[] = [];
+  showWareHousesActions:boolean = false
 
   reportForm = new FormGroup({
     cmptType: new FormControl(""),
@@ -31,7 +33,8 @@ export class InventoryReportsComponent implements OnInit {
   constructor(
     private inventorySer: InventoryService,
     private excelService: ExcelService,
-    private purchaseService: Procurementservice
+    private purchaseService: Procurementservice,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
