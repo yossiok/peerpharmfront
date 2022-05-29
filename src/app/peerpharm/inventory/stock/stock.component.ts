@@ -1746,8 +1746,10 @@ export class StockComponent implements OnInit {
       let ppcReport = [];
       let ppcIndex = 1;
       for (let cmpt of components) {
+        console.log(cmpt);
         if (cmpt.openOrders) {
           for (let order of cmpt.openOrders) {
+            console.log(order);
             ppcReport.push({
               "No.": ppcIndex,
               "Comp. Number": cmpt.componentN,
@@ -1757,6 +1759,7 @@ export class StockComponent implements OnInit {
               Item: order.itemNumber,
               "Item Description": order.discriptionK,
               Order: order.orderNumberInt,
+              PcsCarton:order.PcsCarton,
               Customer:
                 order.orders.costumerInternalId + " - " + order.orders.costumer,
               amount: Number(order.orderItems.quantity),
