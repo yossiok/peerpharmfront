@@ -1,27 +1,31 @@
-import { Component, OnInit, ViewChild, ElementRef, HostListener } from '@angular/core';
-import { OrdersService } from '../../../services/orders.service'
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
-import { Router } from '@angular/router';
-import * as moment from 'moment';
-import { ToastrService } from 'ngx-toastr';
-import { ChatService } from 'src/app/shared/chat.service';
-import { AuthService } from 'src/app/services/auth.service';
-
-
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  HostListener,
+} from "@angular/core";
+import { OrdersService } from "../../../services/orders.service";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { Router } from "@angular/router";
+import * as moment from "moment";
+import { ToastrService } from "ngx-toastr";
+import { ChatService } from "src/app/shared/chat.service";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
-  selector: 'app-allorders',
-  templateUrl: './allorders.component.html',
-  styleUrls: ['./allorders.component.scss']
+  selector: "app-allorders",
+  templateUrl: "./allorders.component.html",
+  styleUrls: ["./allorders.component.scss"],
 })
 export class AllordersComponent implements OnInit {
-
   constructor(
     private ordersService: OrdersService,
-    private router: Router, private toastSrv: ToastrService,
+    private router: Router,
+    private toastSrv: ToastrService,
     private chat: ChatService,
-    private authService: AuthService) { }
-
+    private authService: AuthService
+  ) {}
 
   orders: any[];
   ordersCopy: any[];
@@ -31,120 +35,113 @@ export class AllordersComponent implements OnInit {
   numberSortDir: string = "oldFirst";
   // stageSortDir:string="done";
   selectAllOrders: boolean = false;
-
-
-
-
-
-
-
+  limit: Number = 1000;
 
   //private orderSrc = new BehaviorSubject<Array<string>>(["3","4","5"]);
   //private orderSrc = new BehaviorSubject<string>("");
 
-  @ViewChild('orderRemarks') orderRemarks: ElementRef;
-  @ViewChild('orderType') orderType: ElementRef;
-  @ViewChild('deliveryDate') deliveryDate: ElementRef;
-  @ViewChild('orderDate') orderDate: ElementRef;
-  @ViewChild('costumer') costumer: ElementRef;
-  @ViewChild('orderNumber') orderNumber: ElementRef;
-  @ViewChild('id') id: ElementRef;
-  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    console.log(event);
-    this.edit('');
-  }
+  @ViewChild("orderRemarks") orderRemarks: ElementRef;
+  @ViewChild("orderType") orderType: ElementRef;
+  @ViewChild("deliveryDate") deliveryDate: ElementRef;
+  @ViewChild("orderDate") orderDate: ElementRef;
+  @ViewChild("costumer") costumer: ElementRef;
+  @ViewChild("orderNumber") orderNumber: ElementRef;
+  @ViewChild("id") id: ElementRef;
+  @ViewChild("filterSatatus") filterStatus: ElementRef;
+  @ViewChild("orderFilter") orderFilter: ElementRef;
+  @ViewChild("itemFilter") itemFilter: ElementRef;
+  @ViewChild("orderNum") orderNum: ElementRef;
 
+  @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
+    event: KeyboardEvent
+  ) {
+    console.log(event);
+    this.edit("");
+  }
 
   ngOnInit() {
     this.today = new Date();
     this.today = moment(this.today).format("DD/MM/YYYY");
     this.getAllOrders();
     this.chat.joinroom("orders");
-    this.chat.messages.subscribe(data => {
+    this.chat.messages.subscribe((data) => {
       console.log(data);
 
       if (data.msg == "order_refresh" && data.to == "allusers") {
         this.getAllOrders();
       }
-    })
-
+    });
   }
 
   checkPermission() {
-    return this.authService.loggedInUser.screenPermission == '5'
+    return this.authService.loggedInUser.screenPermission == "5";
   }
-
 
   getAllOrders() {
-    this.ordersService.getAllOrders()
-      .subscribe(orders => {
-        orders.map(order => {
-          order.color = 'white'
-          if (this.today > order.deliveryDate) {
-            order.color = '#ff9999';
-          }
-          Object.assign({ isSelected: false }, order);
-          order.NumberCostumer = order.orderNumber + " " + order.costumer;
-        })
-        this.orders = orders;
-        this.ordersCopy = orders;
-      })
+    this.ordersService.getLastAllOrders(this.limit).subscribe((orders) => {
+      orders.map((order) => {
+        if (order.msg) {
+          this.toastSrv.error(order.msg);
+          return;
+        }
+        order.color = "white";
+        if (this.today > order.deliveryDate) {
+          order.color = "#ff9999";
+        }
+        Object.assign({ isSelected: false }, order);
+        order.NumberCostumer = order.orderNumber + " " + order.costumer;
+      });
+      this.orders = orders;
+      this.ordersCopy = orders;
+      console.log(this.orders);
+    });
   }
-
-
 
   edit(id) {
     this.EditRowId = id;
   }
 
-
-
-
   saveEdit(a, orderId) {
-
     let orderToUpdate = {};
     // a - is if the request is to set order - ready
     if (!a) {
       orderToUpdate = {
-        'orderId': this.id.nativeElement.value,
-        'orderNumber': this.orderNumber.nativeElement.value,
-        "orderDate": this.orderDate.nativeElement.value,
-        "costumer": this.costumer.nativeElement.value,
-        "deliveryDate": this.deliveryDate.nativeElement.value,
-        "orderRemarks": this.orderRemarks.nativeElement.value,
-        "orderType": this.orderType.nativeElement.value,
-      }
-      this.ordersService.editOrder(orderToUpdate).subscribe(res => {
-        let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
-        orderToUpdate['status'] = "";
+        orderId: this.id.nativeElement.value,
+        orderNumber: this.orderNumber.nativeElement.value,
+        orderDate: this.orderDate.nativeElement.value,
+        costumer: this.costumer.nativeElement.value,
+        deliveryDate: this.deliveryDate.nativeElement.value,
+        orderRemarks: this.orderRemarks.nativeElement.value,
+        orderType: this.orderType.nativeElement.value,
+      };
+      this.ordersService.editOrder(orderToUpdate).subscribe((res) => {
+        let i = this.orders.findIndex((elemnt) => elemnt._id == orderId);
+        orderToUpdate["status"] = "";
         this.orders[i] = orderToUpdate;
-        this.EditRowId = '';
-        console.log(res)
+        this.EditRowId = "";
+        console.log(res);
       });
-
-    }
-    else {
-      orderToUpdate = { status: 'close', orderId: orderId }
+    } else {
+      orderToUpdate = { status: "close", orderId: orderId };
       if (confirm("Close Order?")) {
         console.log(orderToUpdate);
-        this.ordersService.editOrder(orderToUpdate).subscribe(res => {
-          let i = this.orders.findIndex(elemnt => elemnt._id == orderId);
-          orderToUpdate['status'] = "";
+        this.ordersService.editOrder(orderToUpdate).subscribe((res) => {
+          let i = this.orders.findIndex((elemnt) => elemnt._id == orderId);
+          orderToUpdate["status"] = "";
           this.orders[i] = orderToUpdate;
-          this.EditRowId = '';
-          console.log(res)
+          this.EditRowId = "";
+          console.log(res);
         });
       }
     }
   }
 
-
   deleteOrder(order) {
     if (confirm("Delete Order?")) {
-      this.ordersService.deleteOrder(order).subscribe(res => {
+      this.ordersService.deleteOrder(order).subscribe((res) => {
         //  let i = this.orders.findIndex(elemnt => elemnt._id == order._id);
         //  delete this.orders[i];
-        this.orders = this.orders.filter(elem => elem._id != order._id);
+        this.orders = this.orders.filter((elem) => elem._id != order._id);
       });
     }
   }
@@ -163,14 +160,15 @@ export class AllordersComponent implements OnInit {
     let word = ev.target.value;
     if (word == "") {
       this.orders = this.ordersCopy.slice();
-    }
-    else {
-      this.orders = this.orders.filter(x => x.NumberCostumer.toLowerCase().includes(word.toLowerCase()));
+    } else {
+      this.orders = this.orders.filter((x) =>
+        x.NumberCostumer.toLowerCase().includes(word.toLowerCase())
+      );
     }
   }
 
   checkboxAllOrders(ev) {
-    this.orders.filter(e => e.isSelected = ev.target.checked);
+    this.orders.filter((e) => (e.isSelected = ev.target.checked));
   }
 
   sortOrdersByOrderNumber() {
@@ -182,25 +180,25 @@ export class AllordersComponent implements OnInit {
       this.orders = this.orders.reverse();
       this.numberSortDir = "oldFirst";
     }
-    this.sortCurrType = "orderNumber"
+    this.sortCurrType = "orderNumber";
   }
-
-
 
   loadCheckedOrders() {
     console.log(this.orders);
     // let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e._id);
-    let tempArr = this.orders.filter(e => e.isSelected == true).map(e => e = e.orderNumber);
+    let tempArr = this.orders
+      .filter((e) => e.isSelected == true)
+      .map((e) => (e = e.orderNumber));
     if (tempArr.length > 0) {
       this.ordersService.sendOrderData(tempArr);
       this.ordersService.getAllOpenOrdersItems(false);
       let tempArrStr = "";
-      tempArr.forEach(number => {
+      tempArr.forEach((number) => {
         tempArrStr = tempArrStr + "," + number;
       });
 
       let urlPrefixIndex = window.location.href.indexOf("#");
-      let urlPrefix = window.location.href.substring(0, urlPrefixIndex)
+      let urlPrefix = window.location.href.substring(0, urlPrefixIndex);
 
       window.open(urlPrefix + "#/peerpharm/allorders/orderitems/" + tempArrStr);
       // this.router.navigate(["/peerpharm/allorders/orderitems/"+tempArrStr]); // working good but in the same tab
@@ -217,6 +215,90 @@ export class AllordersComponent implements OnInit {
     // this.router.navigate(["/peerpharm/allorders/orderitems/00"]);
   }
 
+  filterByStatus(value) {
+    value = value.toLowerCase();
+    console.log(value);
+    if (value != "all") {
+      this.orders = this.ordersCopy.filter((o) => o.status == value);
+      console.log(this.orders);
+    } else if (value == "all") {
+      this.clearFilter();
+    }
+  }
+  filterByOrder() {
+    this.itemFilter.nativeElement.value = "";
+    this.orderNum.nativeElement.value = "";
+    let value = this.orderFilter.nativeElement.value.toLowerCase().trim();
+    console.log(value);
+    if (value.length > 0) {
+      this.orders = this.orders.filter((o) =>
+        o.NumberCostumer.toLowerCase().includes(value)
+      );
+    }
+  }
+  filterByItem() {
+    this.orderFilter.nativeElement.value = "";
+    this.orderNum.nativeElement.value = "";
+    let value = this.itemFilter.nativeElement.value.toLowerCase().trim();
+    console.log(value);
 
+    //////// add the
+    this.ordersService.getOrdersByItemNumber(value).subscribe((data) => {
+      console.log(data);
+      if (data.msg) {
+        this.toastSrv.error(data.msg);
+        return;
+      } else if (data) {
+        data.map((oi) => {
+          oi.costumer = oi.customerName;
 
+          oi.color = "white";
+          if (this.today > oi.deliveryDate) {
+            oi.color = "#ff9999";
+          }
+          oi.isSelected = false;
+          oi.NumberCostumer = oi.orderNumber + " " + oi.customerName;
+        });
+        this.orders = data;
+      } else {
+        this.toastSrv.error("הפריט לא נמצא בהזמנות");
+        return;
+      }
+    });
+  }
+
+  findByOrder() {
+    this.orderFilter.nativeElement.value = "";
+    this.itemFilter.nativeElement.value = "";
+    let orderNumber = this.orderNum.nativeElement.value;
+    this.ordersService.getOrderByNumber(orderNumber).subscribe((data) => {
+      console.log(data);
+      if (data.msg) {
+        this.toastSrv.error(data.msg);
+        return;
+      } else if (data.length > 0) {
+        data.map((oi) => {
+          oi.costumer = oi.customerName;
+
+          oi.color = "white";
+          if (this.today > oi.deliveryDate) {
+            oi.color = "#ff9999";
+          }
+          oi.isSelected = false;
+          oi.NumberCostumer = oi.orderNumber + " " + oi.customerName;
+        });
+        this.orders = data;
+      } else if (data.length == 0) {
+        this.toastSrv.error("מספר הזמנה לא קיים");
+        return;
+      }
+    });
+  }
+
+  clearFilter() {
+    this.orders = this.ordersCopy;
+    this.orderFilter.nativeElement.value = "";
+    this.itemFilter.nativeElement.value = "";
+    this.orderNum.nativeElement.value = "";
+  }
 }

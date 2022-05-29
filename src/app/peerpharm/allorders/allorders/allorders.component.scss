@@ -1,50 +1,48 @@
-
-button, input {
+button,
+input {
   border-radius: 5px;
 }
 
 .table-fixed thead {
-    width: 100%;
-    display: block;
-    }
+  width: 100%;
+  display: block;
+}
 .table-fixed tbody {
-    height: 700px;
-    overflow-y: auto;
-    width: 100%;
-    display: block;
+  height: 700px;
+  overflow-y: auto;
+  width: 100%;
+  display: block;
 }
 
 .read-only {
   pointer-events: none;
 }
 
-.table-fixed th{
-    width:10%;
-    display: inline-block;
-    border: none;
-  }
-  .table-fixed td{
-    width:10%;
-    display: inline-block;
-    border-bottom: none;
-    /* border-left: 1px black solid;     */
-  }
-  .table-fixed tr{
-    width: 100%;
-    display: block;
-    font-size: 18px;
-  }
-  
-
-  .table-fixed[_ngcontent-c4] td[_ngcontent-c4] {
-    width: 10%;
-    display: inline-block;
-    border-bottom: none;
-    font-family: "Times New Roman", Times, serif;
+.table-fixed th {
+  width: 10%;
+  display: inline-block;
+  border: none;
+}
+.table-fixed td {
+  width: 10%;
+  display: inline-block;
+  border-bottom: none;
+  /* border-left: 1px black solid;     */
+}
+.table-fixed tr {
+  width: 100%;
+  display: block;
+  font-size: 18px;
 }
 
-input[type=checkbox]
-{
+.table-fixed[_ngcontent-c4] td[_ngcontent-c4] {
+  width: 10%;
+  display: inline-block;
+  border-bottom: none;
+  font-family: "Times New Roman", Times, serif;
+}
+
+input[type="checkbox"] {
   /* Double-sized Checkboxes */
   -ms-transform: scale(2); /* IE */
   -moz-transform: scale(2); /* FF */
@@ -53,44 +51,47 @@ input[type=checkbox]
   padding: 10px;
 }
 
+.subHeader {
+  background-color: #d6d6d6;
+  padding: 3px;
+  width: 250px;
+  font-weight: bold;
+}
+.subMain {
+  background-color: white;
+  width: 250px;
+  text-align: center;
+  padding: 20px;
+}
+.subContainer {
+  border-radius: 4px;
+  border: 3px solid #d6d6d6;
+  width: 256px;
+  margin-right: 95px;
+}
+.mainDiv {
+  display: inline-flex;
+}
+i {
+  font-size: 20px;
+}
+table {
+  color: black;
+  font-size: 16px;
+}
 
-.subHeader{
-    background-color: #d6d6d6;
-    padding: 3px;
-    width:250px;
-    font-weight: bold;
-}
-.subMain{
-    background-color:white;
-    width:250px;
-    text-align: center;
-    padding: 20px;
-}
-.subContainer{
-    border-radius: 4px;
-    border: 3px solid  #d6d6d6;
-    width:256px;
-    margin-right: 95px;
-}
-.mainDiv{
-    display:inline-flex;
-}
-i{
-    font-size: 20px;
-}
-table{
-    color:black;
-    font-size: 16px;
-  }
-  
 td {
-      /* background-color: white; */
-      border-bottom: 1px solid #ddd;
-      font-family: "Berlin Sans FB";
+  /* background-color: white; */
+  border-bottom: 1px solid #ddd;
+  font-family: "Berlin Sans FB";
+}
 
-  }
+.tableHeader {
+  box-shadow: 1px 1px 3px 1px black !important;
+  background: rgb(69, 69, 202);
+}
 
-  .tableHeader {
-    box-shadow: 1px 1px 3px 1px black !important;
-    background: rgb(69, 69, 202);
-  }
+.form-control-2 {
+  display: inline !important;
+  width: 250px !important;
+}
