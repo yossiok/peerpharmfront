@@ -1,0 +1,82 @@
+<section *ngIf="isLogin" dir="rtl" class="flex-container parent">
+    <h1>דו"ח תנועות מחסנים</h1>
+    <h3 *ngIf="!loader && startDateDisplay && endDateDisplay">מתאריך {{startDateDisplay | date:"dd/MM/yyy"}} עד לתאריך {{endDateDisplay | date:"dd/MM/yyy"}}</h3>
+    <div class="searchBox">
+        <p>תאריך התחלה: </p>
+        <input [(ngModel)]="startDate" class="searchBox-item" id="startDate" name="startDate" type="date"/>
+        <p>תאריך סיום: </p>
+        <input [(ngModel)]="endDate" class="searchBox-item" id="endDate" name="endDate" type="date"/>
+        <button class="btn btn-warning searchBox-item" (click)="getReport()">חיפוש</button>
+        <img
+                        src="../../../../assets/images/excel.png"
+                        alt="export to excel"
+                        style="width: 40px"
+                        (click)="exportAsXLSX()"
+                      />
+    </div>
+    <div *ngIf="loader" class="smallerLoader"></div>
+    <table *ngIf="!loader && sums['summary']" class="styled-table">
+        <thead>
+            <tr>
+                <th></th>
+                <!-- Names loop -->
+                <th *ngFor="let log of logs | keyvalue">
+                    {{log.key}}
+                </th>
+                <th>כולם ביחד</th>
+            </tr>
+            <tr>
+                <th>כניסות</th>
+                <!-- In Actions loop -->
+                <td *ngFor="let log of logs | keyvalue">
+                    {{log.value.in || 0}}
+                </td>
+                <!-- Sum of In Actions -->
+                <td>{{sums.in}}</td>
+
+            </tr>
+            <tr>
+                <th>יציאות</th>
+                <!-- Out action loop -->
+                <td *ngFor="let log of logs | keyvalue">
+                    {{log.value.out || 0}}
+                </td>
+                <!-- Sum of Out action-->
+                <td>{{sums.out}}</td>
+
+            </tr>
+            <tr>
+                <th>בין מחסנים</th>
+                <!-- between whorehouses loop -->
+                <td *ngFor="let log of logs | keyvalue">
+                    {{log.value.wareHouseChange || 0}}
+                </td>
+                <!-- Sum of between whorehouses action -->
+                <td>{{sums.whChange}}</td>
+
+            </tr>
+            <tr>
+                <th>שינוי מדף</th>
+                <!-- Change shelf loop -->
+                <td *ngFor="let log of logs | keyvalue">
+                    {{log.value.shelfChange || 0}}
+                </td>
+                <!-- Sum of Change shelf action -->
+                <td>{{sums.shelf}}</td>
+
+            </tr>
+            <tr>
+                <th>סיכום</th>
+                <!-- Summary loop -->
+                <td *ngFor="let log of logs | keyvalue">
+                    {{log.value.summary || 0}}
+                </td>
+                <!-- Sum of Summary-->
+                <td>{{sums.summary}}</td>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+</section>

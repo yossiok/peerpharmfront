@@ -68,6 +68,7 @@ import { ProcurementOrdersComponent } from "./procurement/procumentOrders/procur
 import { ProcurementOrderItemComponent } from "./procurement/procumentOrderItem/procurementOrderItem.component";
 import { NewProcurementComponent } from "./procurement/new-procurement/new-procurement.component";
 import { FinanceReportComponent } from "./finance-reports/financereport.component";
+import {WarehousesActionsReportsComponent} from './inventory/inventory-reports/warehousesActionsReports/warehousesActionsReports.component'
 import { MAT_DIALOG_DEFAULT_OPTIONS } from "@angular/material/dialog";
 
 import { MatSelectModule } from "@angular/material/select";
@@ -240,6 +241,7 @@ import { TemperaturesLogsComponent } from "./qa/temperaturesLogs/temperaturesLog
     ItemMovementReportsComponent,
     FormuleProductionComponent,
     FormuleComponent,
+    WarehousesActionsReportsComponent,
     CalendarComponent,
     AddFormuleComponent,
     MaterialsComponent,
