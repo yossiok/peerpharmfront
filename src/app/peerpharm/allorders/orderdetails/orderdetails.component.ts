@@ -554,9 +554,8 @@ export class OrderdetailsComponent implements OnInit {
 
   exportAsXLSX(data) {
     // this is the data
+    console.log(data);
     console.log(this.orderItemsComponents);
-    console.log("eran grady: ", this.internalNumArr);
-    console.log("eran grady: ", data);
     let orderItemsExplosion = [...data];
     
 
@@ -573,8 +572,9 @@ export class OrderdetailsComponent implements OnInit {
       "sealNumber",
       "sealAmount",
       "boxNumber",
-      "stage",
       "boxAmount",
+      "stage",
+      "stageAmount",
       "cartonNumber",
       "cartonAmount",
       "PcsCarton",
@@ -589,12 +589,14 @@ export class OrderdetailsComponent implements OnInit {
     ];
 
     orderItemsExplosion.map((orderItem) => {
+      console.log(orderItem);
       orderItem.orderNumber = this.number;
       delete orderItem._id;
       delete orderItem.pallet2;
       delete orderItem.pallet3;
       orderItem.stage = orderItem.boxTypeK
-      delete orderItem.boxTypeK;
+      orderItem.stageAmount = orderItem.boxTypeKAmount
+      // delete orderItem.boxTypeK;
       delete orderItem.proRemarks;
       delete orderItem.impRemarks;
       return orderItem;
@@ -2422,6 +2424,7 @@ export class OrderdetailsComponent implements OnInit {
           let temp = [...this.ordersItems];
           //res = all items(products) from order
           await res.forEach(async (item) => {
+            console.log(item);
             // orderItem = orderItem from current order
             let orderItem = temp.find((o) => o.itemNumber == item.itemNumber);
             let orderItemIndex = temp.findIndex(
@@ -2633,6 +2636,7 @@ export class OrderdetailsComponent implements OnInit {
                   this.boxList.push({
                     boxNumber: item.boxTypeK,
                     qnt: item.quantity,
+                    amount: item.boxTypeKAnount,
                   });
                   newCmpt = false;
                 }
