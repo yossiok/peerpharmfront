@@ -1669,6 +1669,113 @@ export class ItemdetaisComponent implements OnInit {
 
         return;
       }
+      // valid for triming:
+
+      this.itemShown.itemNumber = this.itemShown.itemNumber.trim()
+      this.itemShown.batchN = this.itemShown.batchN.trim()
+
+      this.itemShown.numberOfPcs = this.itemShown.numberOfPcs.trim()
+      this.itemShown.numberOfPcsTwo = this.itemShown.numberOfPcsTwo.trim()
+      this.itemShown.numberOfPcsThree = this.itemShown.numberOfPcsThree.trim()
+      this.itemShown.numberOfPcsFour = this.itemShown.numberOfPcsFour.trim()
+      this.itemShown.numberOfPcsFive = this.itemShown.numberOfPcsFive.trim()
+      this.itemShown.numberOfPcsSix = this.itemShown.numberOfPcsSix.trim()
+      this.itemShown.numberOfPcsSeven = this.itemShown.numberOfPcsSeven.trim()
+      this.itemShown.numberOfPcsEight = this.itemShown.numberOfPcsEight.trim()
+
+
+      this.itemShown.versionNumber = this.itemShown.versionNumber.trim()
+
+
+      this.itemShown.stickerNumber = this.itemShown.stickerNumber.trim()
+      this.itemShown.sticker2Number = this.itemShown.sticker2Number.trim()
+      this.itemShown.boxNumber = this.itemShown.boxNumber.trim()
+      this.itemShown.barcodeK = this.itemShown.barcodeK.trim()
+      this.itemShown.volumeKey = this.itemShown.volumeKey.trim()
+      this.itemShown.netWeightK = this.itemShown.netWeightK.trim()
+      this.itemShown.grossUnitWeightK = this.itemShown.grossUnitWeightK.trim()
+      this.itemShown.peerPharmTone = this.itemShown.peerPharmTone.trim()
+
+
+      this.itemShown.productionInput = this.itemShown.productionInput.trim()
+      this.itemShown.productionTwoInput = this.itemShown.productionTwoInput.trim()
+      this.itemShown.productionThreeInput = this.itemShown.productionThreeInput.trim()
+      this.itemShown.productionFourInput = this.itemShown.productionFourInput.trim()
+      this.itemShown.productionFiveInput = this.itemShown.productionFiveInput.trim()
+      this.itemShown.productionSixInput = this.itemShown.productionSixInput.trim()
+      this.itemShown.productionSevenInput = this.itemShown.productionSevenInput.trim()
+      this.itemShown.productionEightInput = this.itemShown.productionEightInput.trim()
+
+
+      this.itemShown.netCtnWeightK = this.itemShown.netCtnWeightK.trim()
+      this.itemShown.grossCtnWeightK = this.itemShown.grossCtnWeightK.trim()
+
+
+      this.itemShown.cartonNumber = this.itemShown.cartonNumber.trim()
+      this.itemShown.PcsCarton = this.itemShown.PcsCarton.trim()
+      this.itemShown.cartonNumber2 = this.itemShown.cartonNumber2.trim()
+      this.itemShown.PcsCarton2 = this.itemShown.PcsCarton2.trim()
+
+
+      this.itemShown.st1layerCarton = this.itemShown.st1layerCarton.trim()
+      this.itemShown.totalCartonPalette = this.itemShown.totalCartonPalette.trim()
+
+
+      this.itemShown.costumerId = this.itemShown.costumerId.trim()
+
+
+      this.itemShown.cbm = this.itemShown.cbm.trim()
+      this.itemShown.motherP = this.itemShown.motherP.trim()
+
+
+      this.itemShown.item1w = this.itemShown.item1w.trim()
+      this.itemShown.item2w = this.itemShown.item2w.trim()
+      this.itemShown.item3w = this.itemShown.item3w.trim()
+      this.itemShown.item4w = this.itemShown.item4w.trim()
+      this.itemShown.itemStickerW = this.itemShown.itemStickerW.trim()
+      this.itemShown.itemBoxW = this.itemShown.itemBoxW.trim()
+      this.itemShown.itemCtnW = this.itemShown.itemCtnW.trim()
+
+
+      this.itemShown.euSt1layerCarton = this.itemShown.euSt1layerCarton.trim()
+      this.itemShown.usSt1layerCarton = this.itemShown.usSt1layerCarton.trim()
+      this.itemShown.euTotalCartonPalette = this.itemShown.euTotalCartonPalette.trim()
+      this.itemShown.usTotalCartonPalette = this.itemShown.usTotalCartonPalette.trim()
+      this.itemShown.usCbm = this.itemShown.usCbm.trim()
+      this.itemShown.euCbm = this.itemShown.euCbm.trim()
+
+
+      this.itemShown.bottleNumber = this.itemShown.bottleNumber.trim()
+      this.itemShown.capNumber = this.itemShown.capNumber.trim()
+      this.itemShown.pumpNumber = this.itemShown.pumpNumber.trim()
+      this.itemShown.sealNumber = this.itemShown.sealNumber.trim()
+
+
+      this.itemShown.pallet = this.itemShown.pallet.trim()
+      this.itemShown.pallet1x = this.itemShown.pallet1x.trim()
+      this.itemShown.pallet1y = this.itemShown.pallet1y.trim()
+      this.itemShown.pallet2 = this.itemShown.pallet2.trim()
+      this.itemShown.pallet2x = this.itemShown.pallet2x.trim()
+      this.itemShown.pallet2y = this.itemShown.pallet2y.trim()
+      this.itemShown.pallet3 = this.itemShown.pallet3.trim()
+      this.itemShown.pallet3x = this.itemShown.pallet3x.trim()
+      this.itemShown.pallet3y = this.itemShown.pallet3y.trim()
+
+
+      this.itemShown.phLimitsMin = this.itemShown.phLimitsMin.trim()
+      this.itemShown.phLimitsMax = this.itemShown.phLimitsMax.trim()
+      this.itemShown.densityLimitsMin = this.itemShown.densityLimitsMin.trim()
+      this.itemShown.densityLimitsMax = this.itemShown.densityLimitsMax.trim()
+      this.itemShown.viscosityLimitsMin = this.itemShown.viscosityLimitsMin.trim()
+      this.itemShown.viscosityLimitsMax = this.itemShown.viscosityLimitsMax.trim()
+      this.itemShown.spinFieldNum = this.itemShown.spinFieldNum.trim()
+      this.itemShown.spinSpeed = this.itemShown.spinSpeed.trim()
+      this.itemShown.percentageResult = this.itemShown.percentageResult.trim()
+      this.itemShown.testTemp = this.itemShown.testTemp.trim()
+
+
+
+
       this.itemsService.updateItem(this.itemShown).subscribe((res) => {
         console.log(res);
 
