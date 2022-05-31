@@ -707,6 +707,7 @@ export class BatchesComponent implements OnInit {
           orders: orders,
           itemNumber: this.batchToPrint.item,
           weightKg: totalWeight,
+          user:`${this.user.firstName} ${this.user.lastName}`
         };
         console.log(batchSticker);
         this.allStickers.push(batchSticker);

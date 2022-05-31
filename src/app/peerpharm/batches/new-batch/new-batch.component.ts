@@ -88,6 +88,8 @@ export class NewBatchComponent implements OnInit {
     formule: new FormControl(""),
   });
 
+  user:any;
+
   constructor(
     private inventorySrv: InventoryService,
     private toastSrv: ToastrService,
@@ -108,6 +110,7 @@ export class NewBatchComponent implements OnInit {
       ? true
       : false;
     this.getWorkPlan();
+    this.getUserInfo();
   }
 
   getWorkPlan() {
@@ -297,6 +300,13 @@ export class NewBatchComponent implements OnInit {
     return invalid;
   }
 
+  async getUserInfo() {
+    if (this.authService.loggedInUser) {
+
+    }
+    this.user = await this.authService.loggedInUser;
+  }
+
   addNewBatch(justStickers: boolean) {
     console.log(this.newBatchForm.value);
     console.log(this.newBatchForm.status);
@@ -359,6 +369,8 @@ export class NewBatchComponent implements OnInit {
             x +
             "/" +
             parseInt(this.newBatchForm.controls["barrels"].value),
+          user:`${this.user.firstName} ${this.user.lastName}`,
+            
         };
         this.allStickers.push(batchSticker);
       }
@@ -371,6 +383,8 @@ export class NewBatchComponent implements OnInit {
         bcValue: barcode,
         batch: this.newBatchForm.value,
         printNum: "1/1",
+        user:`${this.user.firstName} ${this.user.lastName}`,
+
       };
       this.allStickers.push(batchSticker);
     }
