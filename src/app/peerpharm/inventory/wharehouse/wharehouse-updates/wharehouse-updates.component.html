@@ -17,7 +17,7 @@
           td: { border: 'solid 1px black' }
         }"
         style="visibility: visible"
-        printSectionId="print-section"
+        printSectionId="print-section-1"
         #printStocktake
         ngxPrint
       >
@@ -35,18 +35,36 @@
       />
     </div>
 
-    <div class="col-3">
+    <div class="col-2">
       <label>Warehouse</label>
       <select (change)="getShelfsByWH($event)" class="form-control">
         <option selected="true" disabled="disabled">WhareHouse</option>
         <option value="Kasem">Kasem</option>
-        <option value="material">Rosh HaAyin - Materials</option>
-        <option value="component">Rosh HaAyin - Components</option>
-        <option value="Rosh HaAyin C">Rosh HaAyin - Components (NEW!)</option>
+        <option value="Rosh HaAyin">Rosh HaAyin - Materials</option>
+        <option value="component">Rosh HaAyin Factory - Components</option>
+        <option value="Rosh HaAyin C">Rosh HaAyin C- Components</option>
         <option value="Rosh HaAyin products">Rosh HaAyin - Products</option>
         <option value="NEW KASEM">New Kasem</option>
+        <option value="ARIEL 1">ARIEL 1</option>
+        <option value="ARIEL 2">ARIEL 2</option>
+        <option value="ARIEL 3">ARIEL 3</option>
+        <option value="ARIEL 4">ARIEL 4</option>
         <option value="Labels">Labels</option>
         <option value="Filling">Filling</option>
+      </select>
+    </div>
+    <div class="col-2">
+      <label for="">Item Type</label>
+      <select
+        class="form-control"
+        name="ItemType"
+        (change)="filterByItemType($event)"
+      >
+        <option value="" disbled>Choose</option>
+        <option value="all">All</option>
+        <option value="component">Component</option>
+        <option value="material">Material</option>
+        <option value="product">Product</option>
       </select>
     </div>
     <div class="col-2">
@@ -70,6 +88,37 @@
           {{ shelf.item }}
         </option>
       </datalist>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-12">
+      <h2 class="text-align-cneter">ספירת מלאי</h2>
+    </div>
+  </div>
+  <div class="row mt-2" dir="rtl">
+    <div class="col-2">
+      <button
+        [printStyle]="{
+          table: { 'border-collapse': 'collapse', border: 'solid 2px black' },
+          th: { border: 'solid 2px black' },
+          tr: { border: 'solid 1px black' },
+          td: { border: 'solid 1px black' }
+        }"
+        style="visibility: visible"
+        printSectionId="print-section"
+        class="btn btn-outline-primary"
+        ngxPrint
+      >
+        הדפס דפי ספירה
+      </button>
+    </div>
+    <div class="col-2">
+      <button
+        class="btn btn-outline-primary"
+        (click)="modalService.open(this.diffReportModal)"
+      >
+        דו"ח הפרשים
+      </button>
     </div>
   </div>
 
@@ -190,10 +239,177 @@
     </form>
   </div>
 
-  <div id="print-section" class="row mt-4">
-    <h1 dir="rtl" *ngIf="whareHouse">ספירת מלאי {{ whareHouse }}</h1>
+  <div id="print-section-1" class="row mt-4">
     <table class="table table-bordered table-hover">
       <thead>
+        <tr>
+          <th colspan="3" *ngIf="pageType == 'diffReport'">
+            <h1>דו"ח הפרשים</h1>
+          </th>
+          <th colspan="3" *ngIf="pageType == 'countPage'">
+            <h1>דפי ספירה</h1>
+          </th>
+          <th colspan="8">
+            <h1 *ngIf="whareHouse">
+              {{ whareHouse }} - {{ today | date: "dd/MM/yyyy" }}
+            </h1>
+          </th>
+        </tr>
+
+        <tr>
+          <th>#</th>
+          <!--1-->
+          <th class="sortable" (click)="sortByItem()">
+            <i class="fas fa-filter"></i> Item Number
+          </th>
+          <th class="sortable" (click)="sortByItem()">
+            <i class="fas fa-filter"></i> Item Name
+          </th>
+          <th class="sortable" (click)="sortByItemType()">
+            <i class="fas fa-filter"></i> Item Type
+          </th>
+          <th class="sortable small-cell" (click)="sortByItem()">
+            <i class="fas fa-filter"></i> Price
+          </th>
+          <th class="sortable small-cell" (click)="sortByItem()">
+            <i class="fas fa-filter"></i> Coin
+          </th>
+          <!--1-->
+          <th class="sortable" (click)="sortByBatch()">
+            <i class="fas fa-filter"></i> Total Value
+          </th>
+          <th class="sortable" (click)="sortByBatch()">
+            <i class="fas fa-filter"></i> Batch
+          </th>
+          <!--3.5-->
+          <th
+            *ngIf="pageType != 'diffReport'"
+            class="sortable"
+            (click)="sortByPosition()"
+          >
+            <i class="fas fa-filter"></i> Position
+          </th>
+          <!--2-->
+          <th class="sortable" (click)="sortByAmount()">
+            <i class="fas fa-filter"></i> Amount
+          </th>
+          <!--3-->
+          <!-- <th>Last Count Date</th> -->
+          <!-- <th>Last Counted Amount</th> -->
+          <th>Counted</th>
+          <!--4-->
+          <th>Difference</th>
+          <th>Value Diff</th>
+          <!--4.5-->
+          <th *ngIf="allowedCountYear && !printing && pageType != 'diffReport'">
+            Count
+          </th>
+          <!--5-->
+        </tr>
+      </thead>
+      <ng-container *ngIf="fetchingShelfs">
+        <div class="bigLoader"></div>
+      </ng-container>
+      <tbody *ngIf="!fetchingShelfs">
+        <tr *ngFor="let shelf of allShelfs; let i = index">
+          <td>{{ i + 1 }}</td>
+          <!--1-->
+          <td>{{ shelf.item }}</td>
+          <td>{{ shelf.componentName }}</td>
+          <td>{{ shelf.itemType }}</td>
+          <td class="small-cell">{{ shelf.actualPrice | number: "1.2" }}</td>
+          <td class="small-cell">{{ shelf.actualCoin }}</td>
+          <td class="small-cell">{{ shelf.value | number: "1.2" }}</td>
+
+          <!--1-->
+          <td>
+            {{ shelf.supplierBatchNumber }}
+          </td>
+          <!--3.5-->
+          <td *ngIf="pageType != 'diffReport'">{{ shelf.position }}</td>
+          <!--2-->
+          <td>{{ shelf.amount | number: "1.0-2" }}</td>
+          <!--3-->
+          <!-- <td>{{shelf.lastCount.date}}</td> -->
+          <!-- <td>{{shelf.lastCount.amount}}</td> -->
+
+          <td *ngIf="shelfId != shelf._id">{{ shelf.countedAmount }}</td>
+          <!--4-->
+          <td *ngIf="shelfId == shelf._id && pageType == 'countPage'">
+            <input
+              #countInput
+              type="number"
+              class="form-control"
+              (keyup)="calculateDifference(shelf)"
+              [(ngModel)]="shelf.countedAmount"
+            />
+          </td>
+
+          <td
+            [style.background-color]="
+              -shelf.difference > shelf.amount * 0.2 ? 'red' : null
+            "
+          >
+            <span *ngIf="shelf.difference">{{ shelf.difference }}</span>
+          </td>
+          <td
+            [style.background-color]="
+              shelf.difference * shelf.actualPrice < -1000 ? 'red' : null
+            "
+          >
+            <span *ngIf="shelf.difference">
+              {{ shelf.difference * shelf.actualPrice | number: "1.2" }}</span
+            >
+          </td>
+          <!--4.5-->
+
+          <td
+            *ngIf="
+              allowedCountYear &&
+              shelfId != shelf._id &&
+              !printing &&
+              pageType == 'countPage'
+            "
+          >
+            <!--5-->
+            <button (click)="editShelfAmount(shelf)" class="btn">
+              <i class="click fa fa-pencil-alt"></i> Count
+            </button>
+          </td>
+
+          <td *ngIf="allowedCountYear && shelfId == shelf._id && !printing">
+            <!--1-->
+            <button
+              [disabled]="updatingAmount"
+              [style.cursor]="updatingAmount ? 'progress' : 'pointer'"
+              (click)="setShelfs()"
+              class="btn btn-danger"
+            >
+              Save to Form
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div id="print-section" class="row mt-4" style="display: none">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th colspan="9">
+            <h1 dir="rtl" *ngIf="whareHouse">
+              ספירת מלאי {{ whareHouse }} - {{ today | date: "dd/MM/yyyy" }}
+            </h1>
+          </th>
+        </tr>
+        <tr>
+          <th colspan="3"></th>
+          <th colspan="2" dir="rtl">שם המקליד:</th>
+          <th colspan="2"></th>
+          <th colspan="2" dir="rtl">שם הסופר:</th>
+          <!-- <th colspan="1">{{ today | date: "dd/MM/yyyy" }}</th>
+          <th colspan="2" dir="rtl">תאריך:</th> -->
+        </tr>
         <tr>
           <th>#</th>
           <!--1-->
@@ -218,9 +434,9 @@
             <i class="fas fa-filter"></i> Position
           </th>
           <!--2-->
-          <th class="sortable" (click)="sortByAmount()">
+          <!-- <th class="sortable" (click)="sortByAmount()">
             <i class="fas fa-filter"></i> Amount
-          </th>
+          </th> -->
           <!--3-->
           <!-- <th>Last Count Date</th> -->
           <!-- <th>Last Counted Amount</th> -->
@@ -228,7 +444,7 @@
           <!--4-->
           <th>Difference</th>
           <!--4.5-->
-          <th *ngIf="allowedCountYear && !printing">Count</th>
+          <!-- <th *ngIf="allowedCountYear && !printing">Count</th> -->
           <!--5-->
         </tr>
       </thead>
@@ -250,7 +466,7 @@
           <!--3.5-->
           <td>{{ shelf.position }}</td>
           <!--2-->
-          <td>{{ shelf.amount | number: "1.0-2" }}</td>
+          <!-- <td>{{ shelf.amount | number: "1.0-2" }}</td> -->
           <!--3-->
           <!-- <td>{{shelf.lastCount.date}}</td> -->
           <!-- <td>{{shelf.lastCount.amount}}</td> -->
@@ -272,15 +488,13 @@
           </td>
           <!--4.5-->
 
-          <td *ngIf="allowedCountYear && shelfId != shelf._id && !printing">
-            <!--5-->
+          <!-- <td *ngIf="allowedCountYear && shelfId != shelf._id && !printing">
             <button (click)="editShelfAmount(shelf)" class="btn">
               <i class="click fa fa-pencil-alt"></i> Count
             </button>
           </td>
 
           <td *ngIf="allowedCountYear && shelfId == shelf._id && !printing">
-            <!--1-->
             <button
               [disabled]="updatingAmount"
               [style.cursor]="updatingAmount ? 'progress' : 'pointer'"
@@ -289,7 +503,7 @@
             >
               Save to Form
             </button>
-          </td>
+          </td> -->
         </tr>
       </tbody>
     </table>
@@ -304,64 +518,6 @@
     </div>
     <div class="col-3"></div>
   </div>
-
-  <!-- <div class="row mt-3">
-      <div class="col-2"></div>
-      <div class="col-2"></div>
-      <div class="col-2">
-        <label class="form-control">Material</label>
-      </div>
-      <div class="col-2">
-        <input class="form-control" (blur)="searchForShelfs($event)">
-      </div>
-      <div class="col-2"></div>
-      <div class="col-2"></div>
-    </div> -->
-
-  <!-- <div class="row mt-2">
-      <div class="col-12">
-        <table style="font-size: 25px;" class="table table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Position</th>
-              <th>Amount</th>
-              <th>Expire Date</th>
-              <th>Arrival Date</th>
-              <th>Batch</th>
-              <th>Supplier Batch</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let shelf of materialShelfs;let i = index">
-              <td>{{i+1}}</td>
-              <td>{{shelf.materialName}}</td>
-              <td (click)="edit(shelf._id)" *ngIf="EditRow != shelf._id">{{shelf.position}}</td>
-              <td *ngIf="EditRow == shelf._id">
-                <input #shelfPosition class="form-control" [value]="shelf.position">
-              </td>
-  
-              <td (click)="edit(shelf._id)" *ngIf="EditRow != shelf._id">{{shelf.amount}}</td>
-              <td *ngIf="EditRow == shelf._id">
-                <input #shelfAmount class="form-control" [value]="shelf.amount">
-              </td>
-  
-              <td>{{shelf.expirationDate | date: 'dd/MM/yyyy'}}</td>
-              <td>{{shelf.arrivalDate | date: 'dd/MM/yyyy'}}</td>
-  
-              <td>{{shelf.batchNumber}}</td>
-  
-              <td>{{shelf.supplierBatchNumber}}</td>
-              <td><i *ngIf="EditRow == shelf._id" (click)="updateShelf(shelf._id)" class="fa fa-save text-success"></i>
-              </td>
-  
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div> -->
 </div>
 
 <ng-template #updatesModal let-modal>
@@ -401,6 +557,64 @@
         <h4>האם ברצונך להמשיך?</h4>
         <div class="m-4 d-flex flex-row justify-content-around w-75">
           <button class="btn btn-danger" (click)="update()">כן</button>
+          <button class="btn btn-secondary" (click)="modalService.dismissAll()">
+            ביטול
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer"></div>
+  </div>
+</ng-template>
+<ng-template #diffReportModal let-modal>
+  <div dir="rtl" class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">דוח הפרשים</h4>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="diffReportForm">
+        <div class="row mt-2">
+          <div class="col-5">
+            <label for="">שם המחסן</label>
+            <select class="form-control" formControlName="warehouseName">
+              <option value="" disabled selected value="">בחר מחסן</option>
+              <option *ngFor="let wh of authWarehouses" [value]="wh.name">
+                {{ wh.name }}
+              </option>
+            </select>
+          </div>
+          <div class="col-2"></div>
+          <div class="col-5">
+            <label for="">סוג הפריט</label>
+            <select class="form-control" formControlName="itemType">
+              <option value="" disabled selected>בחר סוג</option>
+              <option value="all">All</option>
+              <option value="component">Component</option>
+              <option value="material">Material</option>
+              <option value="product">Product</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-5">
+            <label for="">מתאריך</label>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="fromDate"
+            />
+          </div>
+          <div class="col-2"></div>
+          <div class="col-5">
+            <label for="">עד תאריך</label>
+            <input type="date" class="form-control" formControlName="toDate" />
+          </div>
+        </div>
+      </form>
+      <div class="row mt-4">
+        <h4>הצג דו"ח</h4>
+        <div class="m-4 d-flex flex-row justify-content-around w-75">
+          <button class="btn btn-danger" (click)="getDiffReport()">הצג</button>
           <button class="btn btn-secondary" (click)="modalService.dismissAll()">
             ביטול
           </button>

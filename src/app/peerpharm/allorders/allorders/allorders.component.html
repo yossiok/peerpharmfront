@@ -17,10 +17,10 @@
           (change)="filterByStatus($event.target.value)"
           #filterStatus
         >
-          <option [ngValue]="" selected>סטטוס</option>
-          <option [ngValue]="all">All</option>
-          <option [ngValue]="open">Open</option>
-          <option [ngValue]="close">Close</option>
+          <option value="" selected>סטטוס</option>
+          <option value="all">All</option>
+          <option value="open">Open</option>
+          <option value="close">Close</option>
         </select>
 
         <!-- <button class="btn btn-outline-primary" (click)="clearFilter()">
