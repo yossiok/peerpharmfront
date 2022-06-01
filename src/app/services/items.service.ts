@@ -114,6 +114,18 @@ export class ItemsService {
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
+  getComponentsForMultiItems(itemsNumbersArray) {
+
+    const obj = {
+      itemsNumbers:itemsNumbersArray
+    }
+
+    console.log(obj);
+
+    let url = this.baseUrl + "item/componentsForMultiItems";
+    return this.http.post(url,obj).pipe(map((reponse) => reponse.json()));
+  }
+
   addItem(itemObj) {
     let url = this.baseUrl + "item/add";
     return this.http

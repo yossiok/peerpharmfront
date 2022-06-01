@@ -114,7 +114,12 @@ export class ScheduleComponent implements OnInit {
     itemImpRemark: "",
     editLineReason: "",
   };
+
   typeShown: String = "basic";
+
+  itemsNumbers:Array<any>=[];
+  itemsComponentsByItemNumber:any={};
+
   constructor(
     private scheduleService: ScheduleService,
     private itemSer: ItemsService,
@@ -136,6 +141,7 @@ export class ScheduleComponent implements OnInit {
     this.fillingDate = this.today;
     this.getAllSchedule(this.today);
 
+
     this.printScheduleFillingForm = new FormGroup({
       position: new FormControl("", [Validators.required]),
       orderN: new FormControl("", [Validators.required]),
@@ -154,11 +160,17 @@ export class ScheduleComponent implements OnInit {
       volumeK: new FormControl("", [Validators.required]),
       barcodeK: new FormControl("", [Validators.required]),
     });
+    
+
     this.intervalId = setInterval(() => {
       this.myDate = new Date();
     }, 1000);
 
+
+
+
   }
+
 
 
 
@@ -200,9 +212,30 @@ export class ScheduleComponent implements OnInit {
   }
 
   exportAsXLSX(): void {
-    let tempArr = this.scheduleData.filter((s) => s.mkp == this.typeShown);
+    try {
+
+      let tempArr = this.scheduleData.filter((s) => s.mkp == this.typeShown);
+    tempArr.forEach((x)=>{
+      // console.log(x);
+      let str = ""
+     let componentsArray = this.itemsComponentsByItemNumber[Number(x.item)]
+    //  console.log(this.itemsComponentsByItemNumber[84]);
+     componentsArray.map((compo)=>{
+       str+= String(compo) + ", "
+     })
+      x.components = str
+      delete x._id
+      delete x._v
+      delete x.color
+      delete x.shift
+    })
 
     this.excelService.exportAsExcelFile(tempArr, "data");
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
   }
 
   writeScheduleData() {
@@ -321,6 +354,12 @@ export class ScheduleComponent implements OnInit {
 
         this.scheduleData = res;
         this.scheduleDataCopy = res;
+        this.scheduleData.forEach((row)=>{
+          this.itemsNumbers.push(row.item)
+        })
+        this.itemSer.getComponentsForMultiItems(this.itemsNumbers).subscribe((res2)=>{
+          this.itemsComponentsByItemNumber = res2
+        })
         this.selectedArr = [];
 
         //get batch specifications status
@@ -338,6 +377,8 @@ export class ScheduleComponent implements OnInit {
           }
         });
         setTimeout(() => (this.scheduleDataCopy = this.scheduleDataCopy), 5000);
+        
+        
       });
     }
   }
@@ -395,6 +436,12 @@ export class ScheduleComponent implements OnInit {
       console.log(res);
       this.scheduleData = res;
       this.scheduleDataCopy = res;
+      this.scheduleData.forEach((row)=>{
+          this.itemsNumbers.push(row.item)
+        })
+        this.itemSer.getComponentsForMultiItems(this.itemsNumbers).subscribe((res2)=>{
+          this.itemsComponentsByItemNumber = res2
+        })
 
       //get batch specifications status
       this.scheduleData.map((sced) => {
@@ -411,6 +458,7 @@ export class ScheduleComponent implements OnInit {
         }
       });
       setTimeout(() => (this.scheduleDataCopy = this.scheduleDataCopy), 5000);
+      
     });
   }
 
@@ -430,6 +478,7 @@ export class ScheduleComponent implements OnInit {
   isSelected(ev, item) {
     try {
       console.log(ev.checked);
+
 
       if ((ev.target && ev.target.checked == true) || ev.checked == true) {
         var isSelected = this.selectedArr;
@@ -476,6 +525,7 @@ export class ScheduleComponent implements OnInit {
   }
   
   selectAll(){
+    console.log(this.scheduleData[0]);
     this.chkAll = !this.chkAll
     if(this.chkAll){
       this.selects()

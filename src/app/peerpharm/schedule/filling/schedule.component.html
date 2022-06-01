@@ -515,6 +515,8 @@
                   (change)="isSelected($event, line)"
                 />
               </td>
+              <td></td>
+
               <td
                 class="positionClass"
                 *ngIf="line._id !== EditRowId"
@@ -558,7 +560,14 @@
                   routerLink="/peerpharm/items/itemDetails/{{ line.item }}"
                 >
                   {{ line.item }}
-                </a>
+                </a><br>
+                components:
+                <ul>
+                  <li *ngFor="let component of itemsComponentsByItemNumber[line.item] | keyvalue" style="margin: 0.2rem;">
+                    {{component.value}}
+                        
+                  </li>
+                </ul>
               </td>
               <td *ngIf="line._id === EditRowId">
                 <input
@@ -1285,6 +1294,12 @@
           </td>
           <td>
             {{ line.item }}
+            components:
+                <ul>
+                  <li *ngFor="let component of itemsComponentsByItemNumber[line.item] | keyvalue" style="margin: 0.2rem;">
+                    {{component.value}}
+                  </li>
+                </ul>
           </td>
           <td>
             {{ line.itemImpRemark }}
