@@ -15,7 +15,10 @@ export class TemperaturesLogsComponent implements OnInit {
   pageNumber: number = 1;
   pages: number;
   temperatures: Array<any> = [];
+  temperaturesCopy: Array<any> = [];
   dateSearch: Date = null;
+  position: string = "";
+  resultAlert: boolean = false;
 
   constructor(
     private reportsService: ReportsService,
@@ -44,6 +47,7 @@ export class TemperaturesLogsComponent implements OnInit {
         .getTemperaturesLogs(String(this.pageNumber))
         .subscribe((res) => {
           this.temperatures = res.temperatures;
+          this.temperaturesCopy = res.temperatures;
           this.pageNumber = res.page;
           this.pages = res.pages;
           this.router.navigate([
@@ -55,6 +59,23 @@ export class TemperaturesLogsComponent implements OnInit {
     }
   }
 
+  positionFilter() {
+    if (this.position == "") {
+      return;
+    }
+    if (this.position == "all") {
+      this.temperatures = this.temperaturesCopy;
+      return;
+    } else {
+      this.temperatures = this.temperaturesCopy.filter(
+        (x) => x.device == this.position
+      );
+      if (this.temperatures.length < 1) {
+        this.resultAlert = true;
+      }
+    }
+  }
+
   previousPage() {
     if (this.dateSearch) {
       if (this.pageNumber > 1) {
@@ -62,7 +83,24 @@ export class TemperaturesLogsComponent implements OnInit {
         this.reportsService
           .getTemperaturesLogsByDate(this.dateSearch, String(this.pageNumber))
           .subscribe((res) => {
-            this.temperatures = res.temperatures;
+            this.temperaturesCopy = res.temperatures;
+            if (this.position != "" && this.position != "all") {
+              this.temperatures = this.temperaturesCopy.filter(
+                (x) => x.device == this.position
+              );
+              if (this.temperatures.length < 1) {
+                this.resultAlert = true;
+              } else {
+                this.resultAlert = false;
+              }
+            } else {
+              this.temperatures = res.temperatures;
+              if (this.temperatures.length < 1) {
+                this.resultAlert = true;
+              } else {
+                this.resultAlert = false;
+              }
+            }
             this.pageNumber = res.page;
             this.pages = res.pages;
             this.router.navigate([
@@ -79,7 +117,24 @@ export class TemperaturesLogsComponent implements OnInit {
       this.reportsService
         .getTemperaturesLogs(String(this.pageNumber))
         .subscribe((res) => {
-          this.temperatures = res.temperatures;
+          this.temperaturesCopy = res.temperatures;
+          if (this.position != "" && this.position != "all") {
+            this.temperatures = this.temperaturesCopy.filter(
+              (x) => x.device == this.position
+            );
+            if (this.temperatures.length < 1) {
+              this.resultAlert = true;
+            } else {
+              this.resultAlert = false;
+            }
+          } else {
+            this.temperatures = res.temperatures;
+            if (this.temperatures.length < 1) {
+              this.resultAlert = true;
+            } else {
+              this.resultAlert = false;
+            }
+          }
           this.pageNumber = res.page;
           this.pages = res.pages;
           this.router.navigate([
@@ -98,7 +153,24 @@ export class TemperaturesLogsComponent implements OnInit {
         this.reportsService
           .getTemperaturesLogsByDate(this.dateSearch, String(this.pageNumber))
           .subscribe((res) => {
-            this.temperatures = res.temperatures;
+            this.temperaturesCopy = res.temperatures;
+            if (this.position != "" && this.position != "all") {
+              this.temperatures = this.temperaturesCopy.filter(
+                (x) => x.device == this.position
+              );
+              if (this.temperatures.length < 1) {
+                this.resultAlert = true;
+              } else {
+                this.resultAlert = false;
+              }
+            } else {
+              this.temperatures = res.temperatures;
+              if (this.temperatures.length < 1) {
+                this.resultAlert = true;
+              } else {
+                this.resultAlert = false;
+              }
+            }
             this.pageNumber = res.page;
             this.pages = res.pages;
             this.router.navigate([
@@ -115,7 +187,24 @@ export class TemperaturesLogsComponent implements OnInit {
       this.reportsService
         .getTemperaturesLogs(String(this.pageNumber))
         .subscribe((res) => {
-          this.temperatures = res.temperatures;
+          this.temperaturesCopy = res.temperatures;
+          if (this.position != "" && this.position != "all") {
+            this.temperatures = this.temperaturesCopy.filter(
+              (x) => x.device == this.position
+            );
+            if (this.temperatures.length < 1) {
+              this.resultAlert = true;
+            } else {
+              this.resultAlert = false;
+            }
+          } else {
+            this.temperatures = res.temperatures;
+            if (this.temperatures.length < 1) {
+              this.resultAlert = true;
+            } else {
+              this.resultAlert = false;
+            }
+          }
           this.pageNumber = res.page;
           this.pages = res.pages;
           this.router.navigate([
@@ -134,7 +223,24 @@ export class TemperaturesLogsComponent implements OnInit {
       this.reportsService
         .getTemperaturesLogsByDate(this.dateSearch, String(this.pageNumber))
         .subscribe((res) => {
-          this.temperatures = res.temperatures;
+          this.temperaturesCopy = res.temperatures;
+          if (this.position != "" && this.position != "all") {
+            this.temperatures = this.temperaturesCopy.filter(
+              (x) => x.device == this.position
+            );
+            if (this.temperatures.length < 1) {
+              this.resultAlert = true;
+            } else {
+              this.resultAlert = false;
+            }
+          } else {
+            this.temperatures = res.temperatures;
+            if (this.temperatures.length < 1) {
+              this.resultAlert = true;
+            } else {
+              this.resultAlert = false;
+            }
+          }
           this.pageNumber = 1;
           this.pages = res.pages;
           this.router.navigate([

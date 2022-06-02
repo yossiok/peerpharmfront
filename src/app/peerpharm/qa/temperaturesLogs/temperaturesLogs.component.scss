@@ -50,12 +50,15 @@ section {
     justify-content: space-between;
     align-items: center;
     width: 25%;
+
 }
 
 .container{
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 30vh;
+
 }
 
 .search{
@@ -66,4 +69,22 @@ section {
 
 .search-input{
     margin-right: 1rem;
+}
+.resultAlert{
+    position: absolute;
+    top: 20vh;
+    right: 45vw;
+    background-color: #009879;
+    height: 5%;
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 5px;
+
+}
+.resultAlert-msg{
+    color: rgb(255, 255, 255);
+
 }
