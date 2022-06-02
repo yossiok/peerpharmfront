@@ -3,7 +3,19 @@
     <label for="searchByDate" class="search-label">חיפוש לפי תאריך:</label>
     <input type="date" id="searchByDate" name="searchByDate" class="search-input" [(ngModel)]="dateSearch" (change)="changeDate()"/>
   </div>
-  <table class="styled-table">
+  <div class="search">
+    <label for="positionFilter" class="search-label">סינון לפי מיקום:</label>
+    <select name="positionFilter" id="positionFilter" (change)="positionFilter()" [(ngModel)]="position">
+      <option disabled>בחר/י מיקום</option>
+      <option value="peer2">חדר מכונות</option>
+      <option value="peer1">חדר אריזה</option>
+      <option value="all">כולם</option>
+    </select>
+  </div>
+  <div class="resultAlert" *ngIf="resultAlert">
+    <h4 class="resultAlert-msg">אין תוצאת בדף זה</h4>
+  </div>
+  <table class="styled-table" *ngIf="!resultAlert">
     <thead>
       <tr>
         <th>טמפרטורה</th>
@@ -30,17 +42,15 @@
           {{ log.humidity }}
         </td>
         <td style="width: 12%">
-          {{ log.time | date: 'hh:mm dd/MM/YYYY' }}
+          {{ log.time | date: 'HH:mm dd/MM/YYYY' }}
         </td>
       </tr>
     </tbody>
   </table>
   <div class="container">
     <div class="buttons-container">
-
       <button class="btn btn-success buttons-container-item" (click)="previousPage()">הקודם</button>
       <button class="btn btn-success buttons-container-item" (click)="nextPage()">הבא</button>
-  
     </div>
 
   </div>
