@@ -13,6 +13,7 @@ import { CostumersService } from "src/app/services/costumers.service";
 import { ExcelService } from "src/app/services/excel.service";
 import { InventoryService } from "src/app/services/inventory.service";
 import { ItemsService } from "src/app/services/items.service";
+import { Procurementservice } from "src/app/services/procurement.service";
 import { YearCount } from "../../shelf-list/YearCount";
 import * as XLSX from "xlsx";
 
@@ -37,11 +38,16 @@ export class WhareHouseUpdatesComponent implements OnInit {
   sortAmountOrder: number = 1;
   sortBatchOrder: number = 1;
   updates: any = [];
+  today: Date = new Date();
+  currencies: any = {};
+  authWarehouses: any = [];
+  pageType: string = "";
 
   @ViewChild("shelfPosition") shelfPosition: ElementRef;
   @ViewChild("shelfAmount") shelfAmount: ElementRef;
   @ViewChild("countInput") countInput: ElementRef;
   @ViewChild("updatesModal") updatesModal: ElementRef;
+  @ViewChild("diffReportModal") diffReportModal: ElementRef;
   @ViewChild("printStocktake") printStocktake: ElementRef;
   updatingAmount: boolean;
   fetchingShelfs: boolean;
@@ -58,6 +64,13 @@ export class WhareHouseUpdatesComponent implements OnInit {
     productionDate: new FormControl(new Date()),
     expirationDate: new FormControl(new Date()),
     userName: new FormControl(""),
+  });
+
+  diffReportForm: FormGroup = new FormGroup({
+    warehouseName: new FormControl(""),
+    itemType: new FormControl(""),
+    fromDate: new FormControl(null),
+    toDate: new FormControl(new Date()),
   });
   shellNums: any;
   printing: boolean = false;
@@ -77,14 +90,33 @@ export class WhareHouseUpdatesComponent implements OnInit {
     private inventorySrv: InventoryService,
     private xlSrv: ExcelService,
     private authService: AuthService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private procurementService: Procurementservice
   ) {}
 
   ngOnInit() {
     this.getAllCostumers();
+    this.getCurrencies();
+    this.getAuthWarehouses();
     this.allowedWHS = this.authService.loggedInUser.allowedWH;
     this.allowedCountYear =
       this.authService.loggedInUser.authorization.includes("allowedCountYear");
+  }
+
+  getCurrencies() {
+    this.procurementService.getCurrencies().subscribe((data) => {
+      this.currencies = data[0];
+      console.log(this.currencies);
+    });
+  }
+
+  getAuthWarehouses() {
+    this.inventorySrv.getWhareHousesList().subscribe((data) => {
+      this.authWarehouses = data.filter((wh) =>
+        this.allowedWHS.includes(wh._id)
+      );
+      console.log(this.authWarehouses);
+    });
   }
 
   getAllWhShelfs() {
@@ -110,47 +142,45 @@ export class WhareHouseUpdatesComponent implements OnInit {
     this.newShelfForm.controls.userName.setValue(
       this.authService.loggedInUser.userName
     );
-    // this.whareHouse = ev.target.value;
+    this.whareHouse = whareHouse;
     this.getAllWhShelfs();
-    switch (whareHouse) {
-      case "material":
-        // this.itemType = whareHouse;
-        this.whareHouse = "Rosh HaAyin";
-        break;
-      case "component":
-        // this.itemType = whareHouse;
-        this.whareHouse = "Rosh HaAyin";
-        break;
-      case "Rosh HaAyin products":
-        // this.itemType = "product";
-        this.whareHouse = whareHouse;
-        break;
-      case "Rosh HaAyin C":
-        // this.itemType = "component";
-        this.whareHouse = whareHouse;
-        break;
-      case "NEW KASEM":
-        // this.itemType = "component";
-        this.whareHouse = whareHouse;
-        break;
-      case "Kasem":
-        // this.itemType = "component";
-        this.whareHouse = whareHouse;
-        break;
-      case "Labels":
-        // this.itemType = "component";
-        this.whareHouse = whareHouse;
-        break;
-      case "Filling":
-        // this.itemType = "component";
-        this.whareHouse = whareHouse;
+    if (this.whareHouse == "Rosh HaAyin products") {
+      this.itemType = "product";
+      this.getProductsItemShellByWHName();
+      return;
     }
-    // console.log(whareHouse, this.itemType);
     this.inventorySrv
       .getItemShellsByWhouseName(this.whareHouse)
       .subscribe((data) => {
         this.fetchingShelfs = false;
         if (data) {
+          // for (let item of data) {
+          //   item.actualPrice = item.price
+          //     ? item.price
+          //     : item.manualPrice
+          //     ? item.manualPrice
+          //     : 0;
+          //   item.actualCoin = item.coin
+          //     ? item.coin
+          //     : item.manualCoin
+          //     ? item.manualCoin
+          //     : "ILS";
+          //   if (item.actualPrice == 0) {
+          //     let maxPrice = 0;
+          //     for (let sup of item.alternativeSuppliers) {
+          //       if (sup.price && sup.price > maxPrice) {
+          //         maxPrice = sup.price;
+          //         item.actualPrice = sup.price;
+          //         item.actualCoin = sup.coin;
+          //       }
+          //     }
+          //   }
+          //   item.actualCoin = item.actualCoin.toUpperCase();
+
+          //   item.rate = this.currencies[item.actualCoin];
+
+          //   item.value = item.actualPrice * item.amount * item.rate;
+          // }
           // let allShelfsWithOrWithoutItems = data.emptyShells.concat(data.itemShells)
           // allShelfsWithOrWithoutItems.sort((a, b) => (a._id.position > b._id.position ? 1 : -1));
           // let emptyLines = []
@@ -160,10 +190,23 @@ export class WhareHouseUpdatesComponent implements OnInit {
           // allShelfsWithOrWithoutItems = allShelfsWithOrWithoutItems.concat(emptyLines)
           this.allShelfs = data;
           this.allShelfsCopy = data;
+          this.pageType = "countPage";
           console.log(this.allShelfs);
         } else this.toastSrv.error("No Shelfs in Wharehouse");
       });
   }
+
+  getProductsItemShellByWHName() {
+    this.inventorySrv
+      .getProductsItemShellByWHName(this.whareHouse)
+      .subscribe((data) => {
+        console.log(data);
+        this.allShelfs = data;
+        this.fetchingShelfs = false;
+      });
+  }
+
+  printCountingForm() {}
 
   sortByPosition() {
     if (this.sortPositionOrder == 1) {
@@ -258,6 +301,15 @@ export class WhareHouseUpdatesComponent implements OnInit {
   //   }
   // }
 
+  filterByItemType(ev) {
+    let type = ev.target.value;
+    if (type != "all") {
+      this.allShelfs = this.allShelfsCopy.filter((sh) => sh.itemType == type);
+    } else {
+      this.allShelfs = this.allShelfsCopy;
+    }
+  }
+
   filterByShelf(ev) {
     this.allShelfs = this.allShelfsCopy;
     let position = ev.target.value.toUpperCase();
@@ -314,6 +366,8 @@ export class WhareHouseUpdatesComponent implements OnInit {
   }
 
   setShelfs() {
+    console.log(this.shelfId);
+    console.log(this.allShelfs.find((sh) => sh._id == this.shelfId));
     this.shelfId = {};
   }
 
@@ -341,6 +395,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
   update() {
     this.printStocktakeForm().then((result) => {
       if (result) {
+        this.exportShelfListToXl();
         this.modalService.dismissAll();
         this.inventorySrv
           .takeStock({
@@ -370,7 +425,32 @@ export class WhareHouseUpdatesComponent implements OnInit {
   }
 
   exportShelfListToXl() {
-    let shelfs = [...this.allShelfs];
+    let shelfs = [];
+    for (let shelf of this.allShelfs) {
+      let xlLine = {
+        "Item Number": shelf.item,
+        "Item Name": shelf.componentName,
+        "Item Type": shelf.itemType,
+        Price: shelf.actualPrice,
+        Coin: shelf.actualCoin,
+        Rate: shelf.rate,
+        Position: shelf.position,
+        Amount: shelf.amount,
+        "Value (ILS)": shelf.value,
+        Counted: shelf.countedAmount,
+        Difference: shelf.countedAmount
+          ? shelf.countedAmount - shelf.amount
+          : 0,
+        "Value Difference": shelf.countedAmount
+          ? (shelf.countedAmount - shelf.amount) *
+            shelf.actualPrice *
+            shelf.rate
+          : 0,
+      };
+
+      shelfs.push(xlLine);
+    }
+
     this.xlSrv.exportAsExcelFile(shelfs, "Shelf Report");
   }
 
@@ -526,5 +606,27 @@ export class WhareHouseUpdatesComponent implements OnInit {
     if (day.length < 2) day = "0" + day;
 
     return [year, month, day].join("-");
+  }
+
+  getDiffReport() {
+    console.log(this.diffReportForm);
+
+    this.inventorySrv
+      .getDiffReport(this.diffReportForm.value)
+      .subscribe((data) => {
+        if (data.msg) {
+          this.toastSrv.error(data.msg);
+          return;
+        } else if (data && data.length > 0) {
+          console.log(data);
+          this.whareHouse = this.diffReportForm.value.warehouseName;
+          this.allShelfs = data;
+          this.pageType = "diffReport";
+          this.modalService.dismissAll();
+          this.diffReportForm.reset();
+        } else {
+          this.toastSrv.error("לא נמצאו נתונים המתאימים לחיפוש");
+        }
+      });
   }
 }

@@ -40,6 +40,14 @@ export class InventoryService {
 
     return this.http.get(url).pipe(map((response) => response.json()));
   }
+  getProductsItemShellByWHName(warehouseName): Observable<any> {
+    let url =
+      this.baseUrl +
+      "itemShell/getProductsItemShellByWHName?warehouseName=" +
+      warehouseName;
+
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
 
   getShelvesByWHName(name): Observable<any> {
     let url = this.baseUrl + "shell?warehouseName=" + name;
@@ -424,6 +432,11 @@ export class InventoryService {
       .pipe(map((res) => res.json()));
   }
 
+  getDiffReport(match) {
+    let url = this.baseUrl + "itemShell/getDiffReport";
+    return this.http.post(url, match).pipe(map((response) => response.json()));
+  }
+
   updateShelfAmount(shelf): Observable<any> {
     let url = this.baseUrl + "itemShell/updateShelfAmount";
     return this.http
@@ -683,17 +696,14 @@ export class InventoryService {
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
-  getWhActionsReport(startDate?,endDate?){
+  getWhActionsReport(startDate?, endDate?) {
     let url;
-    if(startDate && endDate){
-      url = `${this.baseUrl}whareHouse/getActionsReport?startDate=${startDate}&endDate=${endDate}`
-
-    }else{
-      url = `${this.baseUrl}whareHouse/getActionsReport`
-
+    if (startDate && endDate) {
+      url = `${this.baseUrl}whareHouse/getActionsReport?startDate=${startDate}&endDate=${endDate}`;
+    } else {
+      url = `${this.baseUrl}whareHouse/getActionsReport`;
     }
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
-
   }
 
   addComponentsToStock(allArrivals) {
