@@ -1331,4 +1331,9 @@
     </tbody>
   </table>
 </div>
+<div *ngIf="sameLineAlert" class="alert">
+  <span dir="rtl" class="closebtn">&times;</span>
+  <i class="fa fa-times" (click)="sameLineAlert = false"></i>
+  <strong>הערה חשובה:</strong> שים לב: קיימת שורה עם אותם נתונים
+</div>
 

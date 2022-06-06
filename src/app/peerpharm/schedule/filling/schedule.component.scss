@@ -147,6 +147,30 @@ td {
   padding:0
 }
 
+tr { 
+  margin-top: 10px !important;
+}
+
+ td { 
+   text-align: center;
+ }
+ .reason{
+   text-align: right;
+   margin-left: -6rem;
+ }
+ .alert {
+  padding: 70px;
+  background-color: #f44336;
+  color: white;
+  position: absolute;
+  z-index: 9999;
+  width: 500px;
+  font-size: 22px;
+  top:50vh;
+  right: 40vw;
+}
+
+
 @media only screen and (max-width: 1024px) {
 
 }
@@ -164,16 +188,5 @@ td {
   }
 }
 
-tr { 
-  margin-top: 10px !important;
-}
-
- td { 
-   text-align: center;
- }
- .reason{
-   text-align: right;
-   margin-left: -6rem;
- }
 
  

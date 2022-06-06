@@ -85,6 +85,7 @@ export class ScheduleComponent implements OnInit {
   @ViewChild("id") id: ElementRef;
   @ViewChild("batchSpecStatus") batchSpecStatus: ElementRef;
   openingPrintModal: boolean;
+  sameLineAlert:boolean = false;
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
     event: KeyboardEvent
@@ -239,6 +240,17 @@ export class ScheduleComponent implements OnInit {
   }
 
   writeScheduleData() {
+    this.scheduleData.map((line)=>{
+      if(
+        line.orderN == this.scheduleLine.orderN &&
+        line.item == this.scheduleLine.item &&
+        line.qty == this.scheduleLine.qty &&
+        line.date3 == this.scheduleLine.date &&
+        line.mkp == this.scheduleLine.mkp
+      ){
+        this.sameLineAlert =true;
+      }
+    })
     if (this.scheduleLine.orderN != "") {
       if (this.scheduleLine.mkp == "sachet") {
         this.scheduleLine.productionLine = "10";
@@ -294,6 +306,7 @@ export class ScheduleComponent implements OnInit {
                 "Schedule not Saved! Please check all fields"
               );
             else {
+              console.log(this.scheduleLine.date);
               this.scheduleData.push(res);
               this.scheduleLine.scheduleId = "";
               this.scheduleLine.positionN = "";
@@ -353,6 +366,7 @@ export class ScheduleComponent implements OnInit {
         });
 
         this.scheduleData = res;
+        console.log(this.scheduleData[0]);
         this.scheduleDataCopy = res;
         this.scheduleData.forEach((row)=>{
           this.itemsNumbers.push(row.item)
