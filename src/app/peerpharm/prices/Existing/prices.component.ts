@@ -95,17 +95,23 @@ export class PricesComponent implements OnInit {
         this.getFormulePrice().then((formulePrice) => {
           console.log(formulePrice);
           this.waitingText = "Calculating product price...";
-          this.calculateProductPricing().then((result) => {
-            this.totalItemPrice = this.item.formulePrice
-              ? result.itemPrice + this.item.formulePrice
-              : result.itemPrice;
-            this.totalShippingPrice = result.shippingPrice;
-            this.calculating = false;
-            this.loadingCustomers = true;
-            this.getCustomersForItem(this.item.itemNumber);
-            this.getSuppliersForComponents();
-            this.getStockAmounts();
-          });
+          this.calculateProductPricing()
+            .then((result) => {
+              this.totalItemPrice = this.item.formulePrice
+                ? result.itemPrice + this.item.formulePrice
+                : result.itemPrice;
+              this.totalShippingPrice = result.shippingPrice
+                ? result.shippingPrice
+                : 0;
+              this.calculating = false;
+              this.loadingCustomers = true;
+              this.getCustomersForItem(this.item.itemNumber);
+              this.getSuppliersForComponents();
+              this.getStockAmounts();
+            })
+            .catch((error) => {
+              this.toastr.error(error.msg);
+            });
         });
       });
   }
@@ -118,25 +124,33 @@ export class PricesComponent implements OnInit {
         .getFormulePriceByNumber(this.item.itemNumber)
         .subscribe((response) => {
           console.log(response);
-          if (response.msg) this.toastr.error(response.msg);
-          for (let item of response.formulePrices) {
-            if (!item.price) {
-              this.partialFormulePrice = true;
-              this.itemsMissingPrice.push(item.itemNumber);
+          if (response.msg) {
+            this.toastr.error(response.msg);
+            this.item.formulePrice = 0;
+            resolve(this.item.formulePrice);
+          } else if (response && response.length > 0) {
+            for (let item of response.formulePrices) {
+              if (!item.price) {
+                this.partialFormulePrice = true;
+                this.itemsMissingPrice.push(item.itemNumber);
+              }
             }
-          }
-          if (this.item.netWeightK) {
-            this.item.formulePrice = response.formulePrice
-              ? response.formulePrice * (this.item.netWeightK / 1000)
-              : null;
+            if (this.item.netWeightK) {
+              this.item.formulePrice = response.formulePrice
+                ? response.formulePrice * (this.item.netWeightK / 1000)
+                : null;
+            } else {
+              this.formulePriceProblem =
+                "משקל המוצר לא מוגדר ולכן אין חישוב עלות. יש להכניס את המשקל בעץ המוצר.";
+              this.toastr.warning(
+                "The weight of the product is not defiened. Please update in the product tree."
+              );
+            }
+            resolve(this.item.formulePrice);
           } else {
-            this.formulePriceProblem =
-              "משקל המוצר לא מוגדר ולכן אין חישוב עלות. יש להכניס את המשקל בעץ המוצר.";
-            this.toastr.warning(
-              "The weight of the product is not defiened. Please update in the product tree."
-            );
+            this.item.formulePrice = 0;
+            resolve(this.item.formulePrice);
           }
-          resolve(this.item.formulePrice);
         });
     });
   }

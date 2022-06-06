@@ -120,6 +120,16 @@
         דו"ח הפרשים
       </button>
     </div>
+    <div class="col-2">
+      <button class="btn btn-outline-primary" (click)="currentStockReport()">
+        דו"ח מלאי נוכחי
+      </button>
+    </div>
+    <div class="col-2">
+      <button class="btn btn-outline-primary" (click)="previousStockReport()">
+        דו"ח מלאי קודם
+      </button>
+    </div>
   </div>
 
   <div
@@ -350,7 +360,9 @@
               -shelf.difference > shelf.amount * 0.2 ? 'red' : null
             "
           >
-            <span *ngIf="shelf.difference">{{ shelf.difference }}</span>
+            <span *ngIf="shelf.difference">{{
+              shelf.difference | number: "1.0-2"
+            }}</span>
           </td>
           <td
             [style.background-color]="
@@ -484,7 +496,9 @@
           </td>
 
           <td>
-            <span *ngIf="shelf.difference">{{ shelf.difference }}</span>
+            <span *ngIf="shelf.difference">{{
+              shelf.difference | number: "1.0-2"
+            }}</span>
           </td>
           <!--4.5-->
 
@@ -509,7 +523,7 @@
     </table>
   </div>
 
-  <div *ngIf="allowedCountYear" class="row mt-4">
+  <div *ngIf="allowedCountYear && pageType != 'diffReport'" class="row mt-4">
     <div class="col-3"></div>
     <div class="col-6">
       <button (click)="takeStock()" class="btn save-form w-50">

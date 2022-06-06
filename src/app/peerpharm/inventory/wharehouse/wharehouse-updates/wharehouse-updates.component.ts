@@ -629,4 +629,12 @@ export class WhareHouseUpdatesComponent implements OnInit {
         }
       });
   }
+
+  currentStockReport() {
+    this.toastSrv.success("Report is under construction");
+  }
+
+  previousStockReport() {
+    this.toastSrv.success("Report is under construction");
+  }
 }
