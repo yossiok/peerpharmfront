@@ -81,7 +81,7 @@ export class MaterialArrivalTableComponent implements OnInit {
   format = 'CODE128';
   lineColor = '#000000';
   width = 2;
-  height = 150;
+  height = 75;
   displayValue = false; // true=display bcValue under barcode
   fontOptions = '';
   font = 'monospace';
