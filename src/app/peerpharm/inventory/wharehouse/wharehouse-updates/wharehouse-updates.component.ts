@@ -16,6 +16,8 @@ import { ItemsService } from "src/app/services/items.service";
 import { Procurementservice } from "src/app/services/procurement.service";
 import { YearCount } from "../../shelf-list/YearCount";
 import * as XLSX from "xlsx";
+import { difference } from "lodash";
+import { Subject } from "rxjs";
 
 @Component({
   selector: "app-wharehouse-updates",
@@ -37,6 +39,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
   sortItemNumberOrder: number = 1;
   sortAmountOrder: number = 1;
   sortBatchOrder: number = 1;
+  sortPriceOrder: number = 1;
   updates: any = [];
   today: Date = new Date();
   currencies: any = {};
@@ -48,6 +51,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
   @ViewChild("countInput") countInput: ElementRef;
   @ViewChild("updatesModal") updatesModal: ElementRef;
   @ViewChild("diffReportModal") diffReportModal: ElementRef;
+  @ViewChild("previousStockModal") previousStockModal: ElementRef;
   @ViewChild("printStocktake") printStocktake: ElementRef;
   updatingAmount: boolean;
   fetchingShelfs: boolean;
@@ -67,6 +71,12 @@ export class WhareHouseUpdatesComponent implements OnInit {
   });
 
   diffReportForm: FormGroup = new FormGroup({
+    warehouseName: new FormControl(""),
+    itemType: new FormControl(""),
+    fromDate: new FormControl(null),
+    toDate: new FormControl(new Date()),
+  });
+  previousStockForm: FormGroup = new FormGroup({
     warehouseName: new FormControl(""),
     itemType: new FormControl(""),
     fromDate: new FormControl(null),
@@ -202,7 +212,9 @@ export class WhareHouseUpdatesComponent implements OnInit {
       .subscribe((data) => {
         console.log(data);
         this.allShelfs = data;
+        this.allShelfsCopy = data;
         this.fetchingShelfs = false;
+        this.pageType = "countPage";
       });
   }
 
@@ -261,6 +273,13 @@ export class WhareHouseUpdatesComponent implements OnInit {
       );
       this.sortAmountOrder = 1;
     }
+  }
+
+  sortByPrice() {
+    this.allShelfs = this.allShelfs.sort((a, b) =>
+      a.actualPrice > b.actualPrice ? this.sortPriceOrder : -this.sortPriceOrder
+    );
+    this.sortPriceOrder *= -1;
   }
 
   sortByBatch() {
@@ -404,7 +423,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
             whareHouse: this.whareHouse,
           })
           .subscribe((data) => {
-            console.log("response: ", data);
+            console.log(data);
             if (data.messages.length > 0) {
               this.toastSrv.warning(
                 "צור קשר במיידי עם צוות מחשוב",
@@ -426,29 +445,84 @@ export class WhareHouseUpdatesComponent implements OnInit {
 
   exportShelfListToXl() {
     let shelfs = [];
-    for (let shelf of this.allShelfs) {
-      let xlLine = {
-        "Item Number": shelf.item,
-        "Item Name": shelf.componentName,
-        "Item Type": shelf.itemType,
-        Price: shelf.actualPrice,
-        Coin: shelf.actualCoin,
-        Rate: shelf.rate,
-        Position: shelf.position,
-        Amount: shelf.amount,
-        "Value (ILS)": shelf.value,
-        Counted: shelf.countedAmount,
-        Difference: shelf.countedAmount
-          ? shelf.countedAmount - shelf.amount
-          : 0,
-        "Value Difference": shelf.countedAmount
-          ? (shelf.countedAmount - shelf.amount) *
-            shelf.actualPrice *
-            shelf.rate
-          : 0,
-      };
+    let index = 1;
 
-      shelfs.push(xlLine);
+    if (this.pageType == "countPage") {
+      for (let shelf of this.allShelfs) {
+        let xlLine = {
+          "No.": index,
+          "Item Number": shelf.item,
+          "Item Name": shelf.componentName,
+          "Batch Number": shelf.supplierBatchNumber,
+          "Item Type": shelf.itemType,
+          Price: shelf.actualPrice,
+          Coin: shelf.actualCoin,
+          // Rate: shelf.rate,
+          // "Previous Amount": shelf.previousAmount,
+          "Stock Amount": shelf.amount,
+          "Value (ILS)": shelf.value,
+          Counted: shelf.countedAmount,
+          "Diff - Units": shelf.difference,
+          "Diff - Value": shelf.countedAmount
+            ? (shelf.countedAmount - shelf.amount) *
+              shelf.actualPrice *
+              shelf.rate
+            : 0,
+          Position: shelf.position,
+          Warehouse: shelf.whareHouse,
+        };
+
+        shelfs.push(xlLine);
+        index++;
+      }
+    } else if (this.pageType == "diffReport") {
+      for (let shelf of this.allShelfs) {
+        let xlLine = {
+          "No.": index,
+          "Item Number": shelf.item,
+          "Item Name": shelf.componentName,
+          // "Batch Number": shelf.supplierBatchNumber,
+          "Item Type": shelf.itemType,
+          Price: shelf.actualPrice,
+          Coin: shelf.actualCoin,
+          // Rate: shelf.rate,
+          // "Previous Amount": shelf.previousAmount,
+          "Current Amount": shelf.amount,
+          "Current Value (ILS)": shelf.value,
+          Counted: shelf.countedAmount,
+          "Diff - Units": shelf.difference,
+          "Diff - Value (ILS)": shelf.difference
+            ? shelf.difference * shelf.actualPrice * shelf.rate
+            : 0,
+          Warehouse: shelf.whareHouse,
+        };
+        index++;
+        shelfs.push(xlLine);
+      }
+    } else if (this.pageType == "previousStock") {
+      for (let shelf of this.allShelfs) {
+        let xlLine = {
+          "No.": index,
+          "Item Number": shelf.item,
+          "Item Name": shelf.componentName,
+          // "Batch Number": shelf.supplierBatchNumber,
+          "Item Type": shelf.itemType,
+          Price: shelf.actualPrice,
+          Coin: shelf.actualCoin,
+          // Rate: shelf.rate,
+          "Previous Amount": shelf.previousAmount,
+          "Current Amount": shelf.amount,
+          "Diff - Units": shelf.difference,
+          "Previous Value": shelf.previousValue,
+          "Current Value": shelf.value,
+          "Diff - Value (ILS)": shelf.difference
+            ? shelf.difference * shelf.actualPrice * shelf.rate
+            : 0,
+          Warehouse: shelf.whareHouse,
+        };
+        index++;
+        shelfs.push(xlLine);
+      }
     }
 
     this.xlSrv.exportAsExcelFile(shelfs, "Shelf Report");
@@ -610,6 +684,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
 
   getDiffReport() {
     console.log(this.diffReportForm);
+    this.whareHouse = this.diffReportForm.controls.warehouseName.value;
 
     this.inventorySrv
       .getDiffReport(this.diffReportForm.value)
@@ -635,6 +710,47 @@ export class WhareHouseUpdatesComponent implements OnInit {
   }
 
   previousStockReport() {
-    this.toastSrv.success("Report is under construction");
+    this.fetchingShelfs;
+    console.log(this.previousStockForm.value);
+    if (this.previousStockForm.controls.itemType.value != "product") {
+      this.inventorySrv
+        .getPreviousStockReport(this.previousStockForm.value)
+        .subscribe((data) => {
+          console.log(data);
+          for (let item of data) {
+            if (item.previousAmount) {
+              console.log(item);
+            }
+          }
+          if (data.msg) {
+            this.toastSrv.error(data.msg);
+          } else if (data && data.length > 0) {
+            this.pageType = "previousStock";
+            this.allShelfs = data;
+          } else {
+            this.toastSrv.error("לא נמצאו נתונים המתאימים לתנאי החיפוש");
+          }
+          this.fetchingShelfs = false;
+          this.modalService.dismissAll();
+          this.previousStockForm.reset();
+        });
+    } else {
+      this.inventorySrv
+        .getPreviousProductsReport(this.previousStockForm.value)
+        .subscribe((data) => {
+          console.log(data);
+          if (data.msg) {
+            this.toastSrv.error(data.msg);
+          } else if (data && data.length > 0) {
+            this.pageType = "previousStock";
+            this.allShelfs = data;
+          } else {
+            this.toastSrv.error("לא נמצאו נתונים המתאימים לתנאי החיפוש");
+          }
+          this.fetchingShelfs = false;
+          this.modalService.dismissAll();
+          this.previousStockForm.reset();
+        });
+    }
   }
 }

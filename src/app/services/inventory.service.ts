@@ -436,6 +436,14 @@ export class InventoryService {
     let url = this.baseUrl + "itemShell/getDiffReport";
     return this.http.post(url, match).pipe(map((response) => response.json()));
   }
+  getPreviousStockReport(match) {
+    let url = this.baseUrl + "itemShell/getPreviousStockReport";
+    return this.http.post(url, match).pipe(map((response) => response.json()));
+  }
+  getPreviousProductsReport(match) {
+    let url = this.baseUrl + "itemShell/getPreviousProductsReport";
+    return this.http.post(url, match).pipe(map((response) => response.json()));
+  }
 
   updateShelfAmount(shelf): Observable<any> {
     let url = this.baseUrl + "itemShell/updateShelfAmount";
