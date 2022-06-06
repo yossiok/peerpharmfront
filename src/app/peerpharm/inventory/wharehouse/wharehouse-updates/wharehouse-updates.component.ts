@@ -40,6 +40,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
   sortAmountOrder: number = 1;
   sortBatchOrder: number = 1;
   sortPriceOrder: number = 1;
+  sortValueOrder: number = 1;
   updates: any = [];
   today: Date = new Date();
   currencies: any = {};
@@ -100,7 +101,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
     private inventorySrv: InventoryService,
     private xlSrv: ExcelService,
     private authService: AuthService,
-    private modalService: NgbModal,
+    public modalService: NgbModal,
     private procurementService: Procurementservice
   ) {}
 
@@ -294,6 +295,12 @@ export class WhareHouseUpdatesComponent implements OnInit {
       );
       this.sortBatchOrder = 1;
     }
+  }
+  sortByValue() {
+    this.allShelfs = this.allShelfs.sort((a, b) =>
+      a.value > b.value ? this.sortValueOrder : -this.sortValueOrder
+    );
+    this.sortValueOrder *= -1;
   }
 
   filterByIetmNumber(ev) {
