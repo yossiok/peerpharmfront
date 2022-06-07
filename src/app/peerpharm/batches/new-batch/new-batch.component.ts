@@ -88,7 +88,7 @@ export class NewBatchComponent implements OnInit {
     formule: new FormControl(""),
   });
 
-  user:any;
+  user: any;
 
   constructor(
     private inventorySrv: InventoryService,
@@ -138,7 +138,7 @@ export class NewBatchComponent implements OnInit {
             while (isNaN(finalWeight)) finalWeight = prompt("הכנס משקל כולל");
             this.finalWeight = finalWeight;
             while (isNaN(barrelsWeight))
-              barrelsWeight = prompt("הכנס משקל חביות");
+              barrelsWeight = prompt("הכנס משקל חומר ישן");
             this.newBatchForm.controls.weightKg.setValue(this.finalWeight);
             this.newBatchForm.controls.newWeight.setValue(
               finalWeight - barrelsWeight
@@ -302,7 +302,6 @@ export class NewBatchComponent implements OnInit {
 
   async getUserInfo() {
     if (this.authService.loggedInUser) {
-
     }
     this.user = await this.authService.loggedInUser;
   }
@@ -369,8 +368,7 @@ export class NewBatchComponent implements OnInit {
             x +
             "/" +
             parseInt(this.newBatchForm.controls["barrels"].value),
-          user:`${this.user.firstName} ${this.user.lastName}`,
-            
+          user: `${this.user.firstName} ${this.user.lastName}`,
         };
         this.allStickers.push(batchSticker);
       }
@@ -383,8 +381,7 @@ export class NewBatchComponent implements OnInit {
         bcValue: barcode,
         batch: this.newBatchForm.value,
         printNum: "1/1",
-        user:`${this.user.firstName} ${this.user.lastName}`,
-
+        user: `${this.user.firstName} ${this.user.lastName}`,
       };
       this.allStickers.push(batchSticker);
     }

@@ -237,8 +237,10 @@ export class QaPalletsComponent implements OnInit {
         }
         console.log(this.selectedArr);
         // this.showProductsBeforeDeliveryHE = false;
-
         this.toastr.success("הרשימה עודכנה בהצלחה");
+        this.getAllqaPallets();
+        this.getAllPackedLists();
+        this.getAllReadyForBill();
       }
     });
   }
@@ -862,19 +864,21 @@ export class QaPalletsComponent implements OnInit {
 
   exportAsXLSX2() {
     const pkList = [];
-    if(this.showProductsBeforeDeliveryHE){
+    if (this.showProductsBeforeDeliveryHE) {
       pkList.push({
         "מספר טופס": this.currPLNumber,
-        "שם לקוח": `${this.currCustomer} ${this.currCustomerNumber ? this.currCustomerNumber : ""}`,
+        "שם לקוח": `${this.currCustomer} ${
+          this.currCustomerNumber ? this.currCustomerNumber : ""
+        }`,
       });
       pkList.push({
-        "סהכ משטחים":this.selectedArr.length,
-        "סהכ משקל":this.currPLWeight,
-      })
+        "סהכ משטחים": this.selectedArr.length,
+        "סהכ משקל": this.currPLWeight,
+      });
       let counter = 0;
-      for(let pallet of this.selectedArr){
-        counter++
-        for(let line of pallet.lines){
+      for (let pallet of this.selectedArr) {
+        counter++;
+        for (let line of pallet.lines) {
           pkList.push({
             משטח: counter,
             פריט: line.itemNumber,
@@ -891,40 +895,37 @@ export class QaPalletsComponent implements OnInit {
           });
         }
       }
-      
-      const summary = []
-      for(let pallet of this.combinedPallets){
+
+      const summary = [];
+      for (let pallet of this.combinedPallets) {
         summary.push({
-          "מקט פריט":pallet.itemNumber,
-          "סהכ כמות":pallet.quantity,
-        })
+          "מקט פריט": pallet.itemNumber,
+          "סהכ כמות": pallet.quantity,
+        });
       }
-  
-      
-          
-  
+
       this.excelService.exportAsExcelFile(
-        [pkList,summary],
+        [pkList, summary],
         `רשימת אריזה ${this.currPLNumber}`,
         null,
-        [`רשימת אריזה ${this.currPLNumber}`,`סיכום כמויות`],
+        [`רשימת אריזה ${this.currPLNumber}`, `סיכום כמויות`],
         true
       );
-
-    }else{
-
+    } else {
       pkList.push({
         "Form Number": this.currPLNumber,
-        "Customer Name": `${this.currCustomer} ${this.currCustomerNumber ? this.currCustomerNumber : ""}`,
+        "Customer Name": `${this.currCustomer} ${
+          this.currCustomerNumber ? this.currCustomerNumber : ""
+        }`,
       });
       pkList.push({
-        "Sum of pallets amount":this.selectedArr.length,
-        "Sum of weight":this.currPLWeight,
-      })
+        "Sum of pallets amount": this.selectedArr.length,
+        "Sum of weight": this.currPLWeight,
+      });
       let counter = 0;
-      for(let pallet of this.selectedArr){
-        counter++
-        for(let line of pallet.lines){
+      for (let pallet of this.selectedArr) {
+        counter++;
+        for (let line of pallet.lines) {
           pkList.push({
             Pallet: counter,
             Item: line.itemNumber,
@@ -937,28 +938,26 @@ export class QaPalletsComponent implements OnInit {
             "Part Carton": line.unitsQuantityPartKarton,
             "Pallet Weight": pallet.palletWeight,
             "Pallet Size": pallet.palletSize,
-            "Sum": line.unitsToCombine,
+            Sum: line.unitsToCombine,
           });
         }
       }
 
-      const summary = []
-      for(let pallet of this.combinedPallets){
+      const summary = [];
+      for (let pallet of this.combinedPallets) {
         summary.push({
-          "Item Number":pallet.itemNumber,
-          "Sum of amount":pallet.quantity,
-        })
+          "Item Number": pallet.itemNumber,
+          "Sum of amount": pallet.quantity,
+        });
       }
-          
-  
+
       this.excelService.exportAsExcelFile(
-        [pkList,summary],
+        [pkList, summary],
         `Packing List ${this.currPLNumber}`,
         null,
-        [`Packing List ${this.currPLNumber}`,"Amount summary"],
+        [`Packing List ${this.currPLNumber}`, "Amount summary"],
         true
       );
-
     }
   }
 
