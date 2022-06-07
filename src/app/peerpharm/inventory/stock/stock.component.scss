@@ -554,3 +554,23 @@ h2.peerLoader {
     opacity: 0;
   }
 }
+.searchBox{
+  justify-self: start;
+  direction: rtl;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+.eContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.searchBox-item{
+  margin-left: 1rem;
+}

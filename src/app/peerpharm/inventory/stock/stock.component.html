@@ -3274,11 +3274,17 @@
             </div>
           </div>
 
-          <div class="row fixNoaStupidStuff">
-            <div class="col-12 fixNoaStupidStuff">
-              <h5 class="text-danger">
-                Since 01.01.2019 - 01.01.2020 we ordered {{ totalQuantity }}
-              </h5>
+        <div class="row fixNoaStupidStuff eContainer">
+        <div class="fixNoaStupidStuff">
+        <h4>חיפוש כמות מוזמנת</h4>
+          <div class="searchBox">
+            <b>תאריך התחלה: </b>
+            <input [(ngModel)]="MaterialArrivalStartDate" class="searchBox-item" id="MaterialArrivalStartDate" name="MaterialArrivalStartDate" type="date"/>
+            <b>תאריך סיום: </b>
+            <input [(ngModel)]="MaterialArrivalEndDate" class="searchBox-item" id="MaterialArrivalEndDate" name="MaterialArrivalEndDate" type="date"/>
+            <button class="btn btn-success searchBox-item" (click)="searchData()">מצא</button>
+            </div>
+            <h5 *ngIf="MaterialArrivalStartDate && MaterialArrivalEndDate && measure"> {{measure}} {{totalQuantity}} מתאריך {{MaterialArrivalStartDate | date:"dd/MM/yyy"}} עד לתאריך {{MaterialArrivalEndDate | date:"dd/MM/yyy"}} הוזמנו  </h5>
             </div>
           </div>
 

@@ -313,6 +313,9 @@ export class StockComponent implements OnInit {
   allPurchases: any[];
   totalComponentsValue: number = 0;
   allocatedAmount: number = null;
+  MaterialArrivalStartDate: Date;
+  MaterialArrivalEndDate: Date;
+  measure:string;
 
   @ViewChild("filterByItem") filterByItem: ElementRef; //this.filterBySupplierN.nativeElement.value
   // @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
@@ -393,6 +396,7 @@ export class StockComponent implements OnInit {
   allowPriceUpdate: boolean = false;
   dir: string;
   PPCLoading: boolean = false;
+  searchBarcode:any;
 
   // currentFileUpload: File; //for img upload creating new component
 
@@ -1930,7 +1934,22 @@ export class StockComponent implements OnInit {
     }
   }
 
+  searchData(){
+    this.inventoryService.getMaterialArrivalByDate(this.MaterialArrivalStartDate,this.MaterialArrivalEndDate,this.searchBarcode).subscribe((res)=>{
+      if(res && res.qty > 0){
+        this.totalQuantity = String(res.qty)
+        this.measure = res.measure
+
+      }else{
+        this.totalQuantity = "0"
+      }
+    })
+
+  }
+
   async openData(cmptNumber) {
+
+    
     this.sixMonth = 0;
     this.switchModalView(cmptNumber);
     this.showItemDetails = true;
@@ -2027,6 +2046,7 @@ export class StockComponent implements OnInit {
   }
 
   async openDataMaterial(materNum) {
+    this.searchBarcode  = materNum;
     this.materialArrivals = [];
     this.inventoryService
       .getMaterialArrivalByNumber(materNum)
