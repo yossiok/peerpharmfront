@@ -984,13 +984,14 @@ export class ItemdetaisComponent implements OnInit {
           this.invtSer.getCmptByitemNumber(compNumber).subscribe((data) => {
             this.itemShown.stickerImage = data[0].img;
             this.itemShown.stickerVersion = data[0].versionNumber;
-            this.itemsService
-              .updateStickerImage(this.itemShown)
-              .subscribe((data) => {
-                if (data) {
-                  console.log("sticker image updated");
-                }
-              });
+
+            // this.itemsService
+            //   .updateStickerImage(this.itemShown)
+            //   .subscribe((data) => {
+            //     if (data) {
+            //       console.log("sticker image updated");
+            //     }
+            //   });
           });
         } else {
           this.productionType = "";
@@ -1670,97 +1671,199 @@ export class ItemdetaisComponent implements OnInit {
         return;
       }
       try {
+        this.itemShown.itemNumber = this.itemShown.itemNumber
+          ? this.itemShown.itemNumber.trim()
+          : this.itemShown.itemNumber;
+        this.itemShown.batchN = this.itemShown.batchN
+          ? this.itemShown.batchN.trim()
+          : this.itemShown.batchN;
 
-        this.itemShown.itemNumber = this.itemShown.itemNumber ?  this.itemShown.itemNumber.trim() : this.itemShown.itemNumber
-      this.itemShown.batchN = this.itemShown.batchN ? this.itemShown.batchN.trim() : this.itemShown.batchN
+        this.itemShown.numberOfPcs = this.itemShown.numberOfPcs
+          ? this.itemShown.numberOfPcs.trim()
+          : this.itemShown.numberOfPcs;
+        this.itemShown.numberOfPcsTwo = this.itemShown.numberOfPcsTwo
+          ? this.itemShown.numberOfPcsTwo.trim()
+          : this.itemShown.numberOfPcsTwo;
+        this.itemShown.numberOfPcsThree = this.itemShown.numberOfPcsThree
+          ? this.itemShown.numberOfPcsThree.trim()
+          : this.itemShown.numberOfPcsThree;
+        this.itemShown.numberOfPcsFour = this.itemShown.numberOfPcsFour
+          ? this.itemShown.numberOfPcsFour.trim()
+          : this.itemShown.numberOfPcsFour;
+        this.itemShown.numberOfPcsFive = this.itemShown.numberOfPcsFive
+          ? this.itemShown.numberOfPcsFive.trim()
+          : this.itemShown.numberOfPcsFive;
+        this.itemShown.numberOfPcsSix = this.itemShown.numberOfPcsSix
+          ? this.itemShown.numberOfPcsSix.trim()
+          : this.itemShown.numberOfPcsSix;
+        this.itemShown.numberOfPcsSeven = this.itemShown.numberOfPcsSeven
+          ? this.itemShown.numberOfPcsSeven.trim()
+          : this.itemShown.numberOfPcsSeven;
+        this.itemShown.numberOfPcsEight = this.itemShown.numberOfPcsEight
+          ? this.itemShown.numberOfPcsEight.trim()
+          : this.itemShown.numberOfPcsEight;
 
-      this.itemShown.numberOfPcs = this.itemShown.numberOfPcs ? this.itemShown.numberOfPcs.trim() :this.itemShown.numberOfPcs
-      this.itemShown.numberOfPcsTwo = this.itemShown.numberOfPcsTwo ? this.itemShown.numberOfPcsTwo.trim() : this.itemShown.numberOfPcsTwo
-      this.itemShown.numberOfPcsThree = this.itemShown.numberOfPcsThree ? this.itemShown.numberOfPcsThree.trim() :this.itemShown.numberOfPcsThree
-      this.itemShown.numberOfPcsFour = this.itemShown.numberOfPcsFour ? this.itemShown.numberOfPcsFour.trim() : this.itemShown.numberOfPcsFour
-      this.itemShown.numberOfPcsFive =  this.itemShown.numberOfPcsFive ? this.itemShown.numberOfPcsFive.trim() : this.itemShown.numberOfPcsFive
-      this.itemShown.numberOfPcsSix =  this.itemShown.numberOfPcsSix ? this.itemShown.numberOfPcsSix.trim() : this.itemShown.numberOfPcsSix
-      this.itemShown.numberOfPcsSeven = this.itemShown.numberOfPcsSeven ? this.itemShown.numberOfPcsSeven.trim() : this.itemShown.numberOfPcsSeven
-      this.itemShown.numberOfPcsEight = this.itemShown.numberOfPcsEight ? this.itemShown.numberOfPcsEight.trim() : this.itemShown.numberOfPcsEight
+        this.itemShown.stickerNumber = this.itemShown.stickerNumber
+          ? this.itemShown.stickerNumber.trim()
+          : this.itemShown.stickerNumber;
+        this.itemShown.sticker2Number = this.itemShown.sticker2Number
+          ? this.itemShown.sticker2Number.trim()
+          : this.itemShown.sticker2Number;
+        this.itemShown.boxNumber = this.itemShown.boxNumber
+          ? this.itemShown.boxNumber.trim()
+          : this.itemShown.boxNumber;
+        this.itemShown.barcodeK = this.itemShown.barcodeK
+          ? this.itemShown.barcodeK.trim()
+          : this.itemShown.barcodeK;
+        this.itemShown.peerPharmTone = this.itemShown.peerPharmTone
+          ? this.itemShown.peerPharmTone.trim()
+          : this.itemShown.peerPharmTone;
 
+        this.itemShown.productionInput = this.itemShown.productionInput
+          ? this.itemShown.productionInput.trim()
+          : this.itemShown.productionInput;
+        this.itemShown.productionTwoInput = this.itemShown.productionTwoInput
+          ? this.itemShown.productionTwoInput.trim()
+          : this.itemShown.productionTwoInput;
+        this.itemShown.productionThreeInput = this.itemShown
+          .productionThreeInput
+          ? this.itemShown.productionThreeInput.trim()
+          : this.itemShown.productionThreeInput;
+        this.itemShown.productionFourInput = this.itemShown.productionFourInput
+          ? this.itemShown.productionFourInput.trim()
+          : this.itemShown.productionFourInput;
+        this.itemShown.productionFiveInput = this.itemShown.productionFiveInput
+          ? this.itemShown.productionFiveInput.trim()
+          : this.itemShown.productionFiveInput;
+        this.itemShown.productionSixInput = this.itemShown.productionSixInput
+          ? this.itemShown.productionSixInput.trim()
+          : this.itemShown.productionSixInput;
+        this.itemShown.productionSevenInput = this.itemShown
+          .productionSevenInput
+          ? this.itemShown.productionSevenInput.trim()
+          : this.itemShown.productionSevenInput;
+        this.itemShown.productionEightInput = this.itemShown
+          .productionEightInput
+          ? this.itemShown.productionEightInput.trim()
+          : this.itemShown.productionEightInput;
 
-      this.itemShown.stickerNumber = this.itemShown.stickerNumber ? this.itemShown.stickerNumber.trim() : this.itemShown.stickerNumber
-      this.itemShown.sticker2Number = this.itemShown.sticker2Number ? this.itemShown.sticker2Number.trim() : this.itemShown.sticker2Number
-      this.itemShown.boxNumber = this.itemShown.boxNumber ? this.itemShown.boxNumber.trim() : this.itemShown.boxNumber
-      this.itemShown.barcodeK = this.itemShown.barcodeK ? this.itemShown.barcodeK.trim() : this.itemShown.barcodeK
-      this.itemShown.peerPharmTone = this.itemShown.peerPharmTone ? this.itemShown.peerPharmTone.trim() : this.itemShown.peerPharmTone
+        this.itemShown.cartonNumber = this.itemShown.cartonNumber
+          ? this.itemShown.cartonNumber.trim()
+          : this.itemShown.cartonNumber;
+        this.itemShown.PcsCarton = this.itemShown.PcsCarton
+          ? this.itemShown.PcsCarton.trim()
+          : this.itemShown.PcsCarton;
+        this.itemShown.cartonNumber2 = this.itemShown.cartonNumber2
+          ? this.itemShown.cartonNumber2.trim()
+          : this.itemShown.cartonNumber2;
+        this.itemShown.PcsCarton2 = this.itemShown.PcsCarton2
+          ? this.itemShown.PcsCarton2.trim()
+          : this.itemShown.PcsCarton2;
 
+        this.itemShown.costumerId = this.itemShown.costumerId
+          ? this.itemShown.costumerId.trim()
+          : this.itemShown.costumerId;
+        this.itemShown.motherP = this.itemShown.motherP
+          ? this.itemShown.motherP.trim()
+          : this.itemShown.motherP;
 
-      this.itemShown.productionInput = this.itemShown.productionInput ? this.itemShown.productionInput.trim() : this.itemShown.productionInput
-      this.itemShown.productionTwoInput =  this.itemShown.productionTwoInput ? this.itemShown.productionTwoInput.trim() : this.itemShown.productionTwoInput
-      this.itemShown.productionThreeInput = this.itemShown.productionThreeInput ? this.itemShown.productionThreeInput.trim() : this.itemShown.productionThreeInput
-      this.itemShown.productionFourInput = this.itemShown.productionFourInput ? this.itemShown.productionFourInput.trim() : this.itemShown.productionFourInput
-      this.itemShown.productionFiveInput =  this.itemShown.productionFiveInput ? this.itemShown.productionFiveInput.trim() : this.itemShown.productionFiveInput
-      this.itemShown.productionSixInput = this.itemShown.productionSixInput ? this.itemShown.productionSixInput.trim() : this.itemShown.productionSixInput
-      this.itemShown.productionSevenInput = this.itemShown.productionSevenInput ? this.itemShown.productionSevenInput.trim() : this.itemShown.productionSevenInput 
-      this.itemShown.productionEightInput = this.itemShown.productionEightInput ? this.itemShown.productionEightInput.trim() : this.itemShown.productionEightInput
+        this.itemShown.item1w = this.itemShown.item1w
+          ? this.itemShown.item1w.trim()
+          : this.itemShown.item1w;
+        this.itemShown.item2w = this.itemShown.item2w
+          ? this.itemShown.item2w.trim()
+          : this.itemShown.item2w;
+        this.itemShown.item3w = this.itemShown.item3w
+          ? this.itemShown.item3w.trim()
+          : this.itemShown.item3w;
+        this.itemShown.item4w = this.itemShown.item4w
+          ? this.itemShown.item4w.trim()
+          : this.itemShown.item4w;
+        this.itemShown.itemStickerW = this.itemShown.itemStickerW
+          ? this.itemShown.itemStickerW.trim()
+          : this.itemShown.itemStickerW;
+        this.itemShown.itemBoxW = this.itemShown.itemBoxW
+          ? this.itemShown.itemBoxW.trim()
+          : this.itemShown.itemBoxW;
+        this.itemShown.itemCtnW = this.itemShown.itemCtnW
+          ? this.itemShown.itemCtnW.trim()
+          : this.itemShown.itemCtnW;
 
+        this.itemShown.bottleNumber = this.itemShown.bottleNumber
+          ? this.itemShown.bottleNumber.trim()
+          : this.itemShown.bottleNumber;
+        this.itemShown.capNumber = this.itemShown.capNumber
+          ? this.itemShown.capNumber.trim()
+          : this.itemShown.capNumber;
+        this.itemShown.pumpNumber = this.itemShown.pumpNumber
+          ? this.itemShown.pumpNumber.trim()
+          : this.itemShown.pumpNumber;
+        this.itemShown.sealNumber = this.itemShown.sealNumber
+          ? this.itemShown.sealNumber.trim()
+          : this.itemShown.sealNumber;
 
-      this.itemShown.cartonNumber = this.itemShown.cartonNumber ? this.itemShown.cartonNumber.trim() : this.itemShown.cartonNumber
-      this.itemShown.PcsCarton = this.itemShown.PcsCarton ? this.itemShown.PcsCarton.trim() : this.itemShown.PcsCarton 
-      this.itemShown.cartonNumber2 = this.itemShown.cartonNumber2 ? this.itemShown.cartonNumber2.trim() : this.itemShown.cartonNumber2
-      this.itemShown.PcsCarton2 = this.itemShown.PcsCarton2 ? this.itemShown.PcsCarton2.trim() : this.itemShown.PcsCarton2
+        this.itemShown.pallet = this.itemShown.pallet
+          ? this.itemShown.pallet.trim()
+          : this.itemShown.pallet;
+        this.itemShown.pallet1x = this.itemShown.pallet1x
+          ? this.itemShown.pallet1x.trim()
+          : this.itemShown.pallet1x;
+        this.itemShown.pallet1y = this.itemShown.pallet1y
+          ? this.itemShown.pallet1y.trim()
+          : this.itemShown.pallet1y;
+        this.itemShown.pallet2 = this.itemShown.pallet2
+          ? this.itemShown.pallet2.trim()
+          : this.itemShown.pallet2;
+        this.itemShown.pallet2x = this.itemShown.pallet2x
+          ? this.itemShown.pallet2x.trim()
+          : this.itemShown.pallet2x;
+        this.itemShown.pallet2y = this.itemShown.pallet2y
+          ? this.itemShown.pallet2y.trim()
+          : this.itemShown.pallet2y;
+        this.itemShown.pallet3 = this.itemShown.pallet3
+          ? this.itemShown.pallet3.trim()
+          : this.itemShown.pallet3;
+        this.itemShown.pallet3x = this.itemShown.pallet3x
+          ? this.itemShown.pallet3x.trim()
+          : this.itemShown.pallet3x;
+        this.itemShown.pallet3y = this.itemShown.pallet3y
+          ? this.itemShown.pallet3y.trim()
+          : this.itemShown.pallet3y;
 
-
-
-
-
-
-      this.itemShown.costumerId = this.itemShown.costumerId ? this.itemShown.costumerId.trim() : this.itemShown.costumerId
-      this.itemShown.motherP = this.itemShown.motherP ? this.itemShown.motherP.trim() : this.itemShown.motherP
-
-
-      this.itemShown.item1w = this.itemShown.item1w ? this.itemShown.item1w.trim() : this.itemShown.item1w
-      this.itemShown.item2w = this.itemShown.item2w ?  this.itemShown.item2w.trim() : this.itemShown.item2w
-      this.itemShown.item3w =  this.itemShown.item3w ? this.itemShown.item3w.trim() : this.itemShown.item3w
-      this.itemShown.item4w = this.itemShown.item4w ? this.itemShown.item4w.trim() : this.itemShown.item4w
-      this.itemShown.itemStickerW = this.itemShown.itemStickerW ? this.itemShown.itemStickerW.trim() :this.itemShown.itemStickerW 
-      this.itemShown.itemBoxW = this.itemShown.itemBoxW ? this.itemShown.itemBoxW.trim() : this.itemShown.itemBoxW
-      this.itemShown.itemCtnW = this.itemShown.itemCtnW ? this.itemShown.itemCtnW.trim() : this.itemShown.itemCtnW
-
-
-      this.itemShown.bottleNumber = this.itemShown.bottleNumber ? this.itemShown.bottleNumber.trim() : this.itemShown.bottleNumber
-      this.itemShown.capNumber = this.itemShown.capNumber ? this.itemShown.capNumber.trim() : this.itemShown.capNumber
-      this.itemShown.pumpNumber = this.itemShown.pumpNumber ? this.itemShown.pumpNumber.trim() : this.itemShown.pumpNumber
-      this.itemShown.sealNumber = this.itemShown.sealNumber ? this.itemShown.sealNumber.trim() : this.itemShown.sealNumber
-
-
-      this.itemShown.pallet = this.itemShown.pallet ? this.itemShown.pallet.trim() : this.itemShown.pallet
-      this.itemShown.pallet1x = this.itemShown.pallet1x ? this.itemShown.pallet1x.trim() :this.itemShown.pallet1x
-      this.itemShown.pallet1y = this.itemShown.pallet1y ? this.itemShown.pallet1y.trim() : this.itemShown.pallet1y
-      this.itemShown.pallet2 = this.itemShown.pallet2 ? this.itemShown.pallet2.trim() : this.itemShown.pallet2
-      this.itemShown.pallet2x = this.itemShown.pallet2x ? this.itemShown.pallet2x.trim() : this.itemShown.pallet2x
-      this.itemShown.pallet2y =  this.itemShown.pallet2y ? this.itemShown.pallet2y.trim() : this.itemShown.pallet2y
-      this.itemShown.pallet3 = this.itemShown.pallet3 ? this.itemShown.pallet3.trim() : this.itemShown.pallet3
-      this.itemShown.pallet3x = this.itemShown.pallet3x ? this.itemShown.pallet3x.trim() : this.itemShown.pallet3x
-      this.itemShown.pallet3y = this.itemShown.pallet3y ? this.itemShown.pallet3y.trim() : this.itemShown.pallet3y
-
-
-      this.itemShown.phLimitsMin = this.itemShown.phLimitsMin ? this.itemShown.phLimitsMin.trim() : this.itemShown.phLimitsMin
-      this.itemShown.phLimitsMax = this.itemShown.phLimitsMax ? this.itemShown.phLimitsMax.trim() : this.itemShown.phLimitsMax
-      this.itemShown.densityLimitsMin = this.itemShown.densityLimitsMin ? this.itemShown.densityLimitsMin.trim() : this.itemShown.densityLimitsMin
-      this.itemShown.densityLimitsMax = this.itemShown.densityLimitsMax  ? this.itemShown.densityLimitsMax.trim() : this.itemShown.densityLimitsMax 
-      this.itemShown.viscosityLimitsMin = this.itemShown.viscosityLimitsMin ? this.itemShown.viscosityLimitsMin.trim() : this.itemShown.viscosityLimitsMin
-      this.itemShown.viscosityLimitsMax = this.itemShown.viscosityLimitsMax ? this.itemShown.viscosityLimitsMax.trim()  : this.itemShown.viscosityLimitsMax
-      this.itemShown.spinFieldNum = this.itemShown.spinFieldNum ? this.itemShown.spinFieldNum.trim()  : this.itemShown.spinFieldNum
-      this.itemShown.spinSpeed =  this.itemShown.spinSpeed ? this.itemShown.spinSpeed.trim()  : this.itemShown.spinSpeed
-      this.itemShown.percentageResult =  this.itemShown.percentageResult ? this.itemShown.percentageResult.trim() : this.itemShown.percentageResult
-      this.itemShown.testTemp = this.itemShown.testTemp ? this.itemShown.testTemp.trim() : this.itemShown.testTemp
-        
+        this.itemShown.phLimitsMin = this.itemShown.phLimitsMin
+          ? this.itemShown.phLimitsMin.trim()
+          : this.itemShown.phLimitsMin;
+        this.itemShown.phLimitsMax = this.itemShown.phLimitsMax
+          ? this.itemShown.phLimitsMax.trim()
+          : this.itemShown.phLimitsMax;
+        this.itemShown.densityLimitsMin = this.itemShown.densityLimitsMin
+          ? this.itemShown.densityLimitsMin.trim()
+          : this.itemShown.densityLimitsMin;
+        this.itemShown.densityLimitsMax = this.itemShown.densityLimitsMax
+          ? this.itemShown.densityLimitsMax.trim()
+          : this.itemShown.densityLimitsMax;
+        this.itemShown.viscosityLimitsMin = this.itemShown.viscosityLimitsMin
+          ? this.itemShown.viscosityLimitsMin.trim()
+          : this.itemShown.viscosityLimitsMin;
+        this.itemShown.viscosityLimitsMax = this.itemShown.viscosityLimitsMax
+          ? this.itemShown.viscosityLimitsMax.trim()
+          : this.itemShown.viscosityLimitsMax;
+        this.itemShown.spinFieldNum = this.itemShown.spinFieldNum
+          ? this.itemShown.spinFieldNum.trim()
+          : this.itemShown.spinFieldNum;
+        this.itemShown.spinSpeed = this.itemShown.spinSpeed
+          ? this.itemShown.spinSpeed.trim()
+          : this.itemShown.spinSpeed;
+        this.itemShown.percentageResult = this.itemShown.percentageResult
+          ? this.itemShown.percentageResult.trim()
+          : this.itemShown.percentageResult;
+        this.itemShown.testTemp = this.itemShown.testTemp
+          ? this.itemShown.testTemp.trim()
+          : this.itemShown.testTemp;
       } catch (error) {
         console.log(error);
-        
       }
       // valid for triming:
-      
-
-
-
 
       this.itemsService.updateItem(this.itemShown).subscribe((res) => {
         console.log(res);
