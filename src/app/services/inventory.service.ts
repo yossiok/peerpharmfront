@@ -1047,6 +1047,11 @@ export class InventoryService {
       this.baseUrl + "material?getMaterialArrivalByNumber=" + internalNumber;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+  getMaterialArrivalByDate(startDate,endDate,barcode): Observable<any> {
+    let url =
+      this.baseUrl + `material/getArrivalByDateRange?startDate=${startDate}&endDate=${endDate}&barcode=${barcode}`
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
   getMaterialArrivalByName(materialName): Observable<any> {
     let url =
       this.baseUrl + "material?getMaterialArrivalByName=" + materialName;
