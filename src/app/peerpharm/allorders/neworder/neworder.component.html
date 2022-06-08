@@ -326,7 +326,7 @@
 
               <td>
                 <button
-                  [disabled]="!orderItemForm.valid"
+                  [disabled]="!orderItemForm.valid || !active"
                   type="submit"
                   [style.cursor]="
                     orderItemForm.valid ? 'pointer' : 'not-allowed'
@@ -606,3 +606,8 @@
     </button>
   </div>
 </ng-template>
+<div *ngIf="activeAlert" class="alert">
+  <span dir="rtl" class="closebtn">&times;</span>
+  <i class="fa fa-times" (click)="activeAlert = false"></i>
+  <strong>הערה חשובה:</strong> שים לב: מוצר זה אינו פעיל. אי אפשר להוסיף אותו להזמנה
+</div>
