@@ -113,6 +113,8 @@ export class NeworderComponent implements OnInit {
     batch: new FormControl(""),
     stockUsage: new FormControl(null),
   });
+  active:boolean=false;
+  activeAlert:boolean=false;
 
   constructor(
     private modalService: NgbModal,
@@ -363,6 +365,12 @@ export class NeworderComponent implements OnInit {
     if (itemNumber != "") {
       this.getStockItem(itemNumber);
       this.orderSer.getItemByNumber(itemNumber).subscribe((res) => {
+        if(res[0].status != "notActive"){
+          this.active = true
+        }else{
+          this.activeAlert =true
+        }
+
         console.log(res);
         this.orderItemForm.controls.discription.setValue(
           res[0].name + " " + res[0].subName + " " + res[0].discriptionK

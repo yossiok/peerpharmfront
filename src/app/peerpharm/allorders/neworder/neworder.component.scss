@@ -26,6 +26,17 @@ input {
 .red {
   color: lightcoral;
 }
+.alert {
+  padding: 70px;
+  background-color: #f44336;
+  color: white;
+  position: absolute;
+  z-index: 9999;
+  width: 500px;
+  font-size: 22px;
+  top:30vh;
+  right: 25vw;
+}
 
 .spc {
   margin: 18px
