@@ -128,7 +128,7 @@ export class PricesComponent implements OnInit {
             this.toastr.error(response.msg);
             this.item.formulePrice = 0;
             resolve(this.item.formulePrice);
-          } else if (response && response.length > 0) {
+          } else if (response && response.formulePrices.length > 0) {
             for (let item of response.formulePrices) {
               if (!item.price) {
                 this.partialFormulePrice = true;
@@ -202,12 +202,12 @@ export class PricesComponent implements OnInit {
         };
         let coin;
         //Calculate component pricing
-        if (component.manualPrice && component.manualCoin) {
+        if (component.manualPrice) {
           componentPricing.price = Number(component.manualPrice);
-          coin = component.manualCoin;
-        } else if (component.price && component.manualCoin) {
+          coin = component.manualCoin ? component.manualCoin : "ILS";
+        } else if (component.price) {
           componentPricing.price = Number(component.price);
-          coin = component.coin;
+          coin = component.coin ? component.coin : "ILS";
         } else {
           let suppliers = component.alternativeSuppliers;
           if (!suppliers || suppliers.length == 0) componentPricing.price = NaN;
@@ -219,7 +219,7 @@ export class PricesComponent implements OnInit {
                 suppliers[i].price != undefined
               ) {
                 componentPricing.price = Number(suppliers[i].price);
-                coin = suppliers[i].coin;
+                coin = suppliers[i].coin ? suppliers[i].coin : "ILS";
                 i = suppliers.length;
               } else {
                 componentPricing.price = NaN;
