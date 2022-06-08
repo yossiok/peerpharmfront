@@ -789,12 +789,15 @@ export class FormdetailsComponent implements OnInit {
     this.form.leftBatchWeight = 0;
     this.formsService.createFormDetails(this.form).subscribe((data) => {
       if (data) {
-        console.log(data);
+
+          console.log(data);
         //this.getBarrelsList(data.batchN);
         this.toastService.success("טופס נוצר בהצלחה")!;
         this.newForm = false;
         this.formid = data._id;
         this.form.fillingDate = data.fillingDate;
+        this.ngOnInit();
+
       }
     });
   }
