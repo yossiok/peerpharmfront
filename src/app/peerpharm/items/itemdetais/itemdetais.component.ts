@@ -1297,11 +1297,13 @@ export class ItemdetaisComponent implements OnInit {
 
       this.loadingItem = false;
       if (res.length == 0) {
+        this.itemExist = false;
         this.toastr.error(item, "Item Not found");
         this.itemShown = Object.assign({}, this.itemCopy);
         this.dataDiv = ["", ""];
         this.showGoddet();
       } else if (res.msg == "noItem") {
+        this.itemExist = false;
         this.toastr.error("No such ITEM !!!!!!");
       } else {
         this.itemExist = true;
