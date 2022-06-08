@@ -143,8 +143,6 @@
       <div>
         <input
           [ngClass]="itemBackgroundByStatus()"
-          (change)="checkIfItemExist(itemShown.itemNumber)"
-          (keyup)="checkIfItemExist(itemShown.itemNumber)"
           type="text"
           [(ngModel)]="itemShown.itemNumber"
           #itemNum
