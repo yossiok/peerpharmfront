@@ -1304,6 +1304,7 @@ export class ItemdetaisComponent implements OnInit {
       } else if (res.msg == "noItem") {
         this.toastr.error("No such ITEM !!!!!!");
       } else {
+        this.itemExist = true;
         this.item = res[0];
         this.itemShown = res[0];
         if (this.itemShown.bottleNumber != "") {
