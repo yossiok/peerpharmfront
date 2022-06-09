@@ -315,7 +315,7 @@ export class StockComponent implements OnInit {
   allocatedAmount: number = null;
   MaterialArrivalStartDate: Date;
   MaterialArrivalEndDate: Date;
-  measure:string;
+  measure: string;
 
   @ViewChild("filterByItem") filterByItem: ElementRef; //this.filterBySupplierN.nativeElement.value
   // @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
@@ -396,7 +396,7 @@ export class StockComponent implements OnInit {
   allowPriceUpdate: boolean = false;
   dir: string;
   PPCLoading: boolean = false;
-  searchBarcode:any;
+  searchBarcode: any;
 
   // currentFileUpload: File; //for img upload creating new component
 
@@ -1763,7 +1763,7 @@ export class StockComponent implements OnInit {
               Item: order.itemNumber,
               "Item Description": order.discriptionK,
               Order: order.orderNumberInt,
-              PcsCarton:order.PcsCarton,
+              PcsCarton: order.PcsCarton,
               Customer:
                 order.orders.costumerInternalId + " - " + order.orders.costumer,
               amount: Number(order.orderItems.quantity),
@@ -1795,10 +1795,10 @@ export class StockComponent implements OnInit {
       query.componentName == "" &&
       query.componentCategory == "" &&
       query.componentType == "" &&
-      query.componentN.length < 3
+      query.componentN.length < 2
     ) {
       alert(
-        "יש למלא לפחות שדה חיפוש אחד, במידה והחיפוש לפי מקט, יש להכניס לפחות 3 ספרות."
+        "יש למלא לפחות שדה חיפוש אחד, במידה והחיפוש לפי מקט, יש להכניס לפחות 2 ספרות."
       );
       this.smallLoader = false;
       return;
@@ -1934,22 +1934,24 @@ export class StockComponent implements OnInit {
     }
   }
 
-  searchData(){
-    this.inventoryService.getMaterialArrivalByDate(this.MaterialArrivalStartDate,this.MaterialArrivalEndDate,this.searchBarcode).subscribe((res)=>{
-      if(res && res.qty > 0){
-        this.totalQuantity = String(res.qty)
-        this.measure = res.measure
-
-      }else{
-        this.totalQuantity = "0"
-      }
-    })
-
+  searchData() {
+    this.inventoryService
+      .getMaterialArrivalByDate(
+        this.MaterialArrivalStartDate,
+        this.MaterialArrivalEndDate,
+        this.searchBarcode
+      )
+      .subscribe((res) => {
+        if (res && res.qty > 0) {
+          this.totalQuantity = String(res.qty);
+          this.measure = res.measure;
+        } else {
+          this.totalQuantity = "0";
+        }
+      });
   }
 
   async openData(cmptNumber) {
-
-    
     this.sixMonth = 0;
     this.switchModalView(cmptNumber);
     this.showItemDetails = true;
@@ -2046,7 +2048,7 @@ export class StockComponent implements OnInit {
   }
 
   async openDataMaterial(materNum) {
-    this.searchBarcode  = materNum;
+    this.searchBarcode = materNum;
     this.materialArrivals = [];
     this.inventoryService
       .getMaterialArrivalByNumber(materNum)
