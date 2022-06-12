@@ -997,8 +997,13 @@ export class ProcurementOrdersComponent implements OnInit {
   exportAsXLSX(expression): void {
     switch (expression) {
       case "purchaseData":
+        let temp = this.procurementData;
+        temp.sort((a,b)=>{
+          return new Date(a.creationDate).getTime() - new Date(b.creationDate).getTime()
+        })
+        console.log(temp);
         let exelData = [];
-        for (let purchase of this.procurementData) {
+        for (let purchase of temp) {
           exelData.push({
             Order: purchase.orderNumber,
             Supplier: purchase.supplierNumber,
