@@ -55,7 +55,7 @@
           class="form-control"
           formControlName="old_shell_id_in_whareHouse"
         >
-          <option disabled value="">בחר מדף</option>
+          <option disabled selected value="">בחר מדף</option>
           <option
             *ngFor="let shellNum of shelfsWithItem"
             [disabled]="shellNum.position == 'MINUS'"
@@ -84,30 +84,6 @@
           * הכמות חייבת להיות גדולה מאפס
         </div>
       </div>
-
-      <div class="col-2 d-flex flex-column justify-content-around">
-        <div *ngIf="sending" class="smallerLoader"></div>
-        <button
-          type="submit"
-          *ngIf="!sending"
-          [disabled]="!shelfChange.valid"
-          [style.cursor]="shelfChange.valid ? 'pointer' : 'not-allowed'"
-          class="btn btn-info"
-        >
-          העבר
-        </button>
-        <button
-          type="button"
-          class="btn btn-secondary"
-          (click)="shelfChange.reset()"
-        >
-          נקה נתונים
-        </button>
-      </div>
-    </div>
-
-    <div class="row mt-4">
-      <div class="col-6"></div>
       <div class="col-2">
         <label>מדף חדש *</label>
         <select
@@ -124,6 +100,66 @@
           </option>
         </select>
       </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-2 d-flex flex-column justify-content-around">
+        <div *ngIf="sending" class="smallerLoader"></div>
+        <button
+          type="submit"
+          *ngIf="!sending"
+          [disabled]="!shelfChange.valid"
+          [style.cursor]="shelfChange.valid ? 'pointer' : 'not-allowed'"
+          class="btn btn-info"
+        >
+          העבר
+        </button>
+        <!-- <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="shelfChange.reset()"
+        >
+          נקה נתונים
+        </button> -->
+      </div>
+      <div class="col-2 d-flex flex-column justify-content-around">
+        <!-- <div *ngIf="sending" class="smallerLoader"></div>
+        <button
+          type="submit"
+          *ngIf="!sending"
+          [disabled]="!shelfChange.valid"
+          [style.cursor]="shelfChange.valid ? 'pointer' : 'not-allowed'"
+          class="btn btn-info"
+        >
+          העבר
+        </button> -->
+        <button
+          type="button"
+          class="btn btn-danger"
+          (click)="shelfChange.reset()"
+        >
+          נקה נתונים
+        </button>
+      </div>
+
+      <!-- <div class="col-6"></div>
+      <div class="col-2">
+        <label>מדף חדש *</label>
+        <select
+          class="form-control"
+          formControlName="new_shell_id_in_whareHouse"
+        >
+          <option disabled value="">בחר מדף</option>
+          <option
+            *ngFor="let shellNum of shellNums"
+            [disabled]="shellNum.position == 'MINUS'"
+            [value]="shellNum._id"
+          >
+            {{ shellNum.position }}
+          </option>
+        </select>
+      </div> -->
+      <div class="col-2"></div>
       <div *ngIf="itemNames" class="col-2">
         <img
           [src]="itemNames[0].img"
@@ -134,28 +170,28 @@
     </div>
   </form>
 
-    
-    <button
-      #print
-      printSectionId="printCertificate"
-      ngxPrint
-      hidden="true"
-      [printStyle]="{body : {'text-align': 'right', 'direction':'rtl'}, 
-      header : {'border-bottom': 'solid 1px'},
-      main : {'border-bottom': 'solid 1px' },
-      table :{ 'text-align': 'right' },
-      footer : { 'position': 'absolute' , 'width': '100%' },
-      h2 : {'text-align': 'center'},
-      '.originDestWh':{'text-align':'right'},
-      th : {'width': '16%' },
-      td : {'width': '16%' },
-      '.itemNamePrint' : {'width': '35%'},
-      '.signatures' : { 'margin' : '50px'},
-      '.cellPadding' : { 'padding' : '15px 0px'}
-      }"
-      printTitle="תעודת מעבר בין מחסנים"
-    ></button>
-  <div id="printCertificate" style="display:none;" class="flex-continer">
+  <button
+    #print
+    printSectionId="printCertificate"
+    ngxPrint
+    hidden="true"
+    [printStyle]="{
+      body: { 'text-align': 'right', direction: 'rtl' },
+      header: { 'border-bottom': 'solid 1px' },
+      main: { 'border-bottom': 'solid 1px' },
+      table: { 'text-align': 'right' },
+      footer: { position: 'absolute', width: '100%' },
+      h2: { 'text-align': 'center' },
+      '.originDestWh': { 'text-align': 'right' },
+      th: { width: '16%' },
+      td: { width: '16%' },
+      '.itemNamePrint': { width: '35%' },
+      '.signatures': { margin: '50px' },
+      '.cellPadding': { padding: '15px 0px' }
+    }"
+    printTitle="תעודת מעבר בין מחסנים"
+  ></button>
+  <div id="printCertificate" style="display: none" class="flex-continer">
     <header>
       <h1>פאר פארם בע"מ</h1>
       <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256</p>
@@ -168,7 +204,7 @@
     </header>
     <hr />
     <main class="main-certificate">
-      <h2>תעודת שינוי מדף מס' {{shelfChangeLog.deliveryNote}}</h2>
+      <h2>תעודת שינוי מדף מס' {{ shelfChangeLog.deliveryNote }}</h2>
       <h3>מחסן: {{ shelfChange.value.whName }}</h3>
       <h4>תאריך: {{ printDate | date: "dd/MM/yyyy hh:mm" }}</h4>
       <h5>שם משתמש: {{ shelfChange.value.user }}</h5>

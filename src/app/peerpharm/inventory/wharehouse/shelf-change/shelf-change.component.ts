@@ -27,8 +27,7 @@ export class ShelfChangeComponent implements OnInit {
   sending: boolean = false;
   disabled: boolean = false;
   shelfChangeLog: any = null;
-  printDate:Date;
-  
+  printDate: Date;
 
   shelfChange: FormGroup = new FormGroup({
     itemType: new FormControl("component", Validators.required),
@@ -43,8 +42,6 @@ export class ShelfChangeComponent implements OnInit {
     whName: new FormControl(""),
     user: new FormControl(""),
   });
-
-
 
   constructor(
     private inventoryService: InventoryService,
@@ -93,6 +90,7 @@ export class ShelfChangeComponent implements OnInit {
           this.shelfChange.value.whareHouseID
         )
         .subscribe((res) => {
+          console.log(res);
           if (res.msg) {
             this.toastr.error("בעיה בהזנת הנתונים.");
             this.shelfsWithItem = [];
@@ -100,20 +98,12 @@ export class ShelfChangeComponent implements OnInit {
             this.toastr.error("הפריט לא נמצא על אף אחד מהמדפים במחסן זה.");
             this.shelfsWithItem = [];
           } else {
+            console.log(res);
             this.shelfsWithItem = res;
-            //stupid bug:
-
-            // this.shelfChange.controls.old_shell_id_in_whareHouse.setValue(
-            //   this.shelfsWithItem[0].shell_id_in_whareHouse
-            // );
-            // this.shelfChange.controls.oldPosition.setValue(
-            //   this.shelfsWithItem[0].position
-            // );
+            console.log(this.shelfsWithItem);
           }
         });
   }
-
-
 
   getAllShellsOfWhareHouse() {
     this.inventoryService
@@ -144,9 +134,6 @@ export class ShelfChangeComponent implements OnInit {
   }
 
   changeShelf() {
-    
-      
-    
     this.shelfChange.controls.user.setValue(
       `${this.authService.loggedInUser.firstName} ${this.authService.loggedInUser.lastName}`
     );
@@ -168,30 +155,37 @@ export class ShelfChangeComponent implements OnInit {
 
     console.log(this.shelfChange.value);
     this.sending = true;
-    setTimeout(() => (this.sending = false), 7000); 
-    this.printDate = new Date()
+    setTimeout(() => (this.sending = false), 7000);
+    this.printDate = new Date();
     this.inventoryService
       .changeItemPosition(this.shelfChange.value)
-      .subscribe( (data) => {
+      .subscribe((data) => {
         console.log(data);
         if (data.msg) {
-          this.toastr.error(data.msg, "שגיאה");
+          this.toastr.error(data.msg);
           this.shelfsWithItem = [];
-        } else if (data[3].savedWhActionlog) {
+        } else if (data.savedWhActionlog) {
           //set certificate data
           this.sending = false;
-          this.shelfChangeLog = data[3].savedWhActionlog;
+          this.shelfChangeLog = data.savedWhActionlog;
           console.log(this.shelfChangeLog);
-          
-          setTimeout(()=>{this.print.nativeElement.click()
-          this.shelfChange.reset()
-          },2000)
-          this.first.nativeElement.focus();
+          let user = this.shelfChange.value.user;
+          let whName = this.shelfChange.value.whName;
+          let warehouseId = this.shelfChange.value.whareHouseID;
+
+          setTimeout(() => {
+            this.print.nativeElement.click();
+            this.shelfChange.reset();
+            this.shelfChange.controls.user.setValue(user);
+            this.shelfChange.controls.whName.setValue(whName);
+            this.shelfChange.controls.whareHouseID.setValue(warehouseId);
+            this.shelfsWithItem = [];
+            this.first.nativeElement.focus();
+            console.log(this.shelfChange.value);
+            this.toastr.success("שינויים נשמרו בהצלחה", "נשמר");
+          }, 2000);
           // this.shelfsWithItem;
           // this.shelfChange.controls.itemType.setValue("component");
-          this.toastr.success("שינויים נשמרו בהצלחה", "נשמר");
-
-
         }
       });
   }
