@@ -1,0 +1,30 @@
+.main{
+    direction: rtl;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.upload{
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+}
+.input-value{
+    border-radius: 10px;
+}
+.form{
+   position: absolute;
+   top:20%;
+   right: 43%;
+   border: 1px solid;
+   height: 30rem ;
+   width: 20rem;
+   border-radius: 5px;
+   box-shadow: 10px 10px 5px rgba(65, 62, 62, 0.493);
+}
+.input-value{
+    margin-bottom: 3rem;
+}
+.input{
+    margin-top: 7rem;
+    
+}

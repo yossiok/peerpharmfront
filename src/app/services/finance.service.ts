@@ -1,6 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
+
 
 @Injectable({
   providedIn: "root",
@@ -30,5 +32,10 @@ export class FinanceService {
 
   getLastPricing(): Observable<any> {
     return <Observable<any>>this.http.get(`${this.url}/getLast`);
+  }
+
+  updateCMXPriceList(priceList) {
+    let url = "/finance";
+    return <Observable<any>>(this.http.post(url,priceList))
   }
 }
