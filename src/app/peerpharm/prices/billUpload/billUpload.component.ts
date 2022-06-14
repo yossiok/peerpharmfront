@@ -49,7 +49,6 @@ export class BillUploadComponent implements OnInit {
                 discount:price["הנחה"] ? price["הנחה"] : null
               }
             })
-            console.log(this.priceList);
           }
       };
       this.uploadExFile = undefined
@@ -67,6 +66,8 @@ export class BillUploadComponent implements OnInit {
     this.financeService.updateCMXPriceList(priceList).subscribe((res)=>{
       if(res && res.msg && res.msg == "ok"){
         this.toastSrv.success("מחירון עלה בהצלחה")
+        this.customerNumber = "";
+        this.uploadExFile = undefined
       }else{
         this.toastSrv.error("משהו השתבש, נס שנית")
       }
