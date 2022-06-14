@@ -1802,25 +1802,28 @@ export class OrderdetailsComponent implements OnInit {
                       scheduleLine.productionLine = "15";
 
                     var date = moment(scheduleLine.date);
-                    if (!date.isValid())
+                    if (!date.isValid()) {
                       this.toastSrv.error(
                         "אנא הזיני תאריך תקין",
                         "תאריך לא תקין!"
                       );
-                    else {
+                      return;
+                    } else {
                       this.scheduleService
                         .setNewProductionSchedule(scheduleLine)
                         .subscribe((res) => {
-                          if (res.msg == "Failed")
+                          if (res.msg == "Failed") {
                             this.toastSrv.error(
                               "Schedule not saved! Please check all fields."
                             );
-                          else {
-                            if (res.errors.length > 0) {
+                          } else {
+                            if (res.errors && res.errors.length > 0) {
                               for (let msg of res.errors) {
                                 this.toastSrv.warning(msg.msg);
                               }
                             }
+
+                            this.scheduleLines.push(res);
                             this.toastSrv.success("Schedule Saved.");
                             // this.getFillingSchedule(item);
                             this.getDetails(item.itemNumber, item._id);
