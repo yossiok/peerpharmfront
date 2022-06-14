@@ -198,6 +198,7 @@ import { ProposalsListComponent } from "./customers/proposals-list/proposals-lis
 import { CreamBarrelComponent } from "./inventory/creamBarrel/creamBarrel.component";
 import { BulksReportComponent } from "./batches/bulks-inventory/bulks-report/bulks-report.component";
 import { TemperaturesLogsComponent } from "./qa/temperaturesLogs/temperaturesLogs.component";
+import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
 
 @NgModule({
   exports: [
@@ -251,6 +252,7 @@ import { TemperaturesLogsComponent } from "./qa/temperaturesLogs/temperaturesLog
     CreamBarrelComponent,
     AllordersComponent,
     OrderdetailsComponent,
+    BillUploadComponent,
     NewFormuleComponent,
     NeworderComponent,
     NeworderComponent,

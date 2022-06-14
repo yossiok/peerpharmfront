@@ -516,6 +516,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
       },
+      {
+        path: "/peerpharm/pricing/billUpload",
+        title: "Bill Upload",
+        icon: "fas fa-list-ol",
+        class: "",
+        extralink: false,
+        submenu: [],
+      },
     ],
   },
   {

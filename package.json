@@ -42,6 +42,7 @@
     "bootstrap": "^4.5.3",
     "core-js": "^2.6.11",
     "date-fns": "^2.16.1",
+    "excel-date-to-js": "^1.1.4",
     "file-saver": "^2.0.5",
     "flatpickr": "^4.6.6",
     "html-pdf": "^2.2.0",

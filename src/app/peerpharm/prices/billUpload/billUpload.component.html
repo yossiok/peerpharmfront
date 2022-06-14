@@ -1,0 +1,15 @@
+<section class="main">
+  <div class="heading">
+    <h1>עדכון מחירון</h1>
+  </div>
+  <div class="form">
+    <div class="input">
+      <b class="input-text">אנא הכנס את מספר הלקוח:</b>
+      <input [(ngModel)]="customerNumber" type="text" class="input-value" />
+    </div>
+    <div class="upload">
+      <input class="upload-value" type="file" multiple="false" id="excelFile" (change)="sendExcelToData($event)" #uploadExFile>
+    </div>
+    <button (click)="uploadToServer()" class="btn btn-primary">אישור</button>
+  </div>
+</section>

@@ -93,6 +93,7 @@ import { ProposalsComponent } from "./customers/proposals/proposals.component";
 import { CreamBarrelComponent } from "./inventory/creamBarrel/creamBarrel.component";
 import { OpenOrderitemsComponent } from "./allorders/open-orderitems/open-orderitems.component";
 import {TemperaturesLogsComponent} from './qa/temperaturesLogs/temperaturesLogs.component'
+import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
 
 export const PeerPharmRputs: Routes = [
   {
@@ -769,6 +770,14 @@ export const PeerPharmRputs: Routes = [
       title: "Bidding Index",
     },
     component: AllPricingComponent,
+  },
+  {
+    path: "pricing/billUpload",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Bill Upload",
+    },
+    component: BillUploadComponent,
   },
   {
     path: "itemindex",
