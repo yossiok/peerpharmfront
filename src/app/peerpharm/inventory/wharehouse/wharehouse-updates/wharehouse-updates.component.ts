@@ -42,6 +42,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
   sortBatchOrder: number = 1;
   sortPriceOrder: number = 1;
   sortValueOrder: number = 1;
+  sortCoinOrder: number = 1;
   updates: any = [];
   today: Date = new Date();
   currencies: any = {};
@@ -312,6 +313,13 @@ export class WhareHouseUpdatesComponent implements OnInit {
       a.value > b.value ? this.sortValueOrder : -this.sortValueOrder
     );
     this.sortValueOrder *= -1;
+  }
+
+  sortByCoin() {
+    this.allShelfs = this.allShelfs.sort((a, b) =>
+      a.coin > b.coin ? this.sortCoinOrder : -this.sortCoinOrder
+    );
+    this.sortCoinOrder *= -1;
   }
 
   filterByIetmNumber(ev) {
