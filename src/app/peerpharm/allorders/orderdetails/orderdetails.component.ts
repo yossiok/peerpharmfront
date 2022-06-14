@@ -557,7 +557,6 @@ export class OrderdetailsComponent implements OnInit {
     console.log(data);
     console.log(this.orderItemsComponents);
     let orderItemsExplosion = [...data];
-    
 
     const sortOrder = [
       "orderNumber",
@@ -594,8 +593,8 @@ export class OrderdetailsComponent implements OnInit {
       delete orderItem._id;
       delete orderItem.pallet2;
       delete orderItem.pallet3;
-      orderItem.stage = orderItem.boxTypeK
-      orderItem.stageAmount = orderItem.boxTypeKAmount
+      orderItem.stage = orderItem.boxTypeK;
+      orderItem.stageAmount = orderItem.boxTypeKAmount;
       // delete orderItem.boxTypeK;
       delete orderItem.proRemarks;
       delete orderItem.impRemarks;
@@ -1715,12 +1714,17 @@ export class OrderdetailsComponent implements OnInit {
 
   async setSchedule(item, type) {
     if (this.scheduleLines.length > 0) {
+      let confLines = confirm("קיים כבר לוז למילוי, האם להמשיך?");
+      if (!confLines) return;
+
       let qtyProduced = 0;
       for (let line of this.scheduleLines) {
-        qtyProduced += line.qtyProduced;
+        line.qtyProduced = line.qtyProduced ? +line.qtyProduced : 0;
+        qtyProduced = qtyProduced + line.qtyProduced;
       }
-      if (qtyProduced > item.quantity) {
-        alert("הכמות שהוזמנה יוצרה כבר, האם להמשיך?");
+      if (qtyProduced > item.quantity * 0.95) {
+        let conf = confirm("הכמות שהוזמנה יוצרה כבר, האם להמשיך?");
+        if (!conf) return;
       }
     }
 
