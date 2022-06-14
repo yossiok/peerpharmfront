@@ -108,15 +108,17 @@ export class FormsService {
       .post(url, JSON.stringify(qaPallet), this.options)
       .pipe(map((res) => res.json()));
   }
+  addProductToQaPallets(checkoutList) {
+    let url = this.baseUrl + "formDetails/addProductToQaPallets";
+    return this.http
+      .post(url, JSON.stringify(checkoutList), this.options)
+      .pipe(map((res) => res.json()));
+  }
 
   removeLineFromPL(ID) {
     let url = this.baseUrl + "formDetails/removeLine?id=" + ID;
     return this.http.get(url).pipe(map((res) => res.json()));
   }
-  // createNewQaPersonalPallet(qaPallet){
-  //   let url = this.baseUrl + "formDetails/addNewQAPallet";
-  //   return this.http.post(url, JSON.stringify(qaPallet), this.options).pipe(map(res => res.json()));
-  // }
 
   movePalletToPL(packedList) {
     let url = this.baseUrl + "formDetails/movePalletToPL";
@@ -309,7 +311,7 @@ export class FormsService {
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
-  getAllYearsForms(pageNumber?){
+  getAllYearsForms(pageNumber?) {
     let url = this.baseUrl + `formDetails/getAllForms?pageNumber=${pageNumber}`;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }

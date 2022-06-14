@@ -731,6 +731,7 @@ export class QaPalletsComponent implements OnInit {
           this.getAllqaPallets();
           this.getAllPackedLists();
           this.selectedArr = [];
+          this.combineModal = false;
         }
       });
     }

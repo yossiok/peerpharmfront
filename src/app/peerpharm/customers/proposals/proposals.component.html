@@ -21,17 +21,20 @@
         <input
           type="text"
           class="form-control"
-          formControlName="customerNum"
+          formControlName="customerId"
           (blur)="getCustomerByNumber()"
         />
       </div>
       <div class="col-4">
         <label>שם הלקוח</label>
-        <select
+        <input
           class="form-control"
+          type="select"
+          list="customers"
           formControlName="customerName"
           (change)="getCustomerByName()"
-        >
+        />
+        <datalist id="customers">
           <option value="null" disabled>בחר לקוח</option>
           <ng-container *ngIf="allCustomersList.length > 0">
             <option
@@ -41,12 +44,12 @@
               {{ customer.costumerId }} - {{ customer.costumerName }}
             </option>
           </ng-container>
-        </select>
+        </datalist>
       </div>
 
       <div class="col-2">
         <label>ארץ יעד</label>
-        <select formControlName="destination" class="form-control">
+        <select formControlName="country" class="form-control">
           <option disabled value="null">בחר יעד</option>
           <option value="israel">Israel - ישראל</option>
           <option value="abroad">Abroad - חו"ל</option>
@@ -59,7 +62,10 @@
         <label>שם הסוכן</label>
         <select class="form-control" formControlName="agent">
           <option value="null" disabled>בחר סוכן</option>
-          <option [value]="agent.userName" *ngFor="let agent of allUsers">
+          <option
+            [value]="agent.firstName + ' ' + agent.lastName"
+            *ngFor="let agent of allUsers"
+          >
             {{ agent.firstName }} {{ agent.lastName }}
           </option>
         </select>
@@ -91,16 +97,26 @@
       <div class="col-1"></div>
       <div class="col-6">
         <label> כתובת למשלוח:</label>
-        <div *ngIf="currentCustomer.delivery">
-          {{ currentCustomer.delivery }}
-        </div>
+        <textarea
+          name=""
+          id=""
+          cols="30"
+          rows="3"
+          class="form-control"
+          formControlName="shippingAddress"
+        ></textarea>
       </div>
     </div>
     <div class="row mt-4">
       <div class="col-1"></div>
       <div class="col-6">
         <label> כתובת חשבונית:</label>
-        <div *ngIf="currentCustomer.invoice">{{ currentCustomer.invoice }}</div>
+        <textarea
+          colls="30"
+          rows="3"
+          class="form-control"
+          formControlName="invoiceAddress"
+        ></textarea>
       </div>
     </div>
     <div class="row mt-4">
@@ -113,15 +129,76 @@
               <th>שם איש קשר</th>
               <th>טלפון</th>
               <th>אימייל</th>
+              <th>
+                <i
+                  class="fa fa-plus text-success click"
+                  ngbTooltip="New Contact"
+                  (click)="addContact()"
+                ></i>
+              </th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let contact of currentCustomer.contact; index as i">
-              <td>{{ i + 1 }}</td>
-              <td>{{ contact.name }}</td>
-              <td>{{ contact.phone }}</td>
-              <td>{{ contact.mail }}</td>
-            </tr>
+            <ng-container formArrayName="contacts">
+              <tr *ngFor="let contactForm of contacts.controls; let i = index">
+                <ng-container [formGroup]="contactForm">
+                  <td>{{ i + 1 }}</td>
+                  <td *ngIf="i == editContact">
+                    <input
+                      type="text"
+                      formControlName="name"
+                      value="{{ contactForm.value.name }}"
+                    />
+                  </td>
+                  <td *ngIf="i != editContact">{{ contactForm.value.name }}</td>
+                  <td *ngIf="i != editContact">
+                    {{ contactForm.value.phone }}
+                  </td>
+                  <td *ngIf="i == editContact">
+                    <input
+                      type="text"
+                      formControlName="phone"
+                      value="{{ contactForm.value.phone }}"
+                    />
+                  </td>
+                  <td *ngIf="i != editContact">{{ contactForm.value.mail }}</td>
+                  <td *ngIf="i == editContact">
+                    <input
+                      type="text"
+                      formControlName="mail"
+                      value="{{ contactForm.value.mail }}"
+                    />
+                  </td>
+                  <td *ngIf="i != editContact">
+                    <i
+                      class="fa fa-pencil-alt text-primary click"
+                      ngbTooltip="Edit contact"
+                      (click)="editContact = i"
+                    ></i
+                    >&nbsp;&nbsp;
+                    <i
+                      class="fa fa-trash text-danger"
+                      ngbTooltip="Delete contact"
+                      (click)="removeContact(i)"
+                    ></i>
+                  </td>
+                  <td *ngIf="i == editContact">
+                    <i
+                      class="fa fa-save text-success click"
+                      ngbTooltip="Save"
+                      (click)="saveContact(i, $event)"
+                    >
+                      &nbsp;</i
+                    >
+                    <i
+                      class="fa fa-arrow-left text-danger click"
+                      ngbTooltip="Clear"
+                      (click)="clearContact(i)"
+                    ></i>
+                  </td>
+                </ng-container>
+              </tr>
+            </ng-container>
           </tbody>
         </table>
       </div>
