@@ -1,12 +1,19 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from "@angular/core";
-import { FormControl, FormGroup, Validators } from "@angular/forms";
+import {
+  FormArray,
+  FormControl,
+  FormGroup,
+  FormGroupName,
+  Validators,
+} from "@angular/forms";
+import { faCoffee } from "@fortawesome/free-solid-svg-icons";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { getDate } from "date-fns";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
 import { UsersService } from "src/app/services/users.service";
 import { Procurementservice } from "src/app/services/procurement.service";
-
+import { SalesService } from "src/app/services/sales.service";
 @Component({
   selector: "app-proposals",
   templateUrl: "./proposals.component.html",
@@ -15,17 +22,20 @@ import { Procurementservice } from "src/app/services/procurement.service";
 export class ProposalsComponent implements OnInit {
   @Input("allCustomersList") allCustomersList: any[];
 
+  faCoffee = faCoffee;
   user: any;
   authorized: boolean = false;
+  userName: String;
   filteredCustomersList: any[] = [];
   currentDate: string = "";
   allUsers: any[] = [];
   allCurrencies: any[] = [];
   currentCustomer: any;
+  editContact: number = null;
 
   newProposalForm: FormGroup = new FormGroup({
     customerName: new FormControl("", Validators.required),
-    customerNum: new FormControl("", Validators.required),
+    customerId: new FormControl("", Validators.required),
     agent: new FormControl("", Validators.required),
     customerDetails: new FormControl(""),
     priceList: new FormControl("", Validators.required),
@@ -33,7 +43,12 @@ export class ProposalsComponent implements OnInit {
     proposalDate: new FormControl(new Date(), Validators.required),
     currency: new FormControl("", Validators.required),
     proposalNumber: new FormControl(null),
-    destination: new FormControl("", Validators.required),
+    country: new FormControl("", Validators.required),
+    shippingAddress: new FormControl(""),
+    invoiceAddress: new FormControl(""),
+    contacts: new FormArray([]),
+    user: new FormControl(""),
+    companyNumber: new FormControl(""),
   });
 
   constructor(
@@ -41,7 +56,8 @@ export class ProposalsComponent implements OnInit {
     private modalService: NgbModal,
     private authService: AuthService,
     private userService: UsersService,
-    private procuremetnService: Procurementservice
+    private procuremetnService: Procurementservice,
+    private salesService: SalesService
   ) {}
 
   ngOnInit(): void {
@@ -60,8 +76,14 @@ export class ProposalsComponent implements OnInit {
     currentDay += currentDay < 10 ? 1 : null;
     this.currentDate = currentYear + "-" + currentMonth + "-" + currentDay;
   }
+
+  get contacts() {
+    return this.newProposalForm.controls["contacts"] as FormArray;
+  }
+
   getUser() {
     this.user = this.authService.loggedInUser;
+    this.userName = this.user.userName;
     this.authorized = this.user.authorization.includes("newProposal");
     console.log(this.user.authorization);
     console.log(this.user.userName);
@@ -88,34 +110,55 @@ export class ProposalsComponent implements OnInit {
   }
 
   getCustomerByName() {
+    this.currentCustomer = {};
     let cusName = this.newProposalForm.controls.customerName.value;
     console.log(cusName);
-    let customer = this.allCustomersList.find((cus) => {
+    this.currentCustomer = this.allCustomersList.find((cus) => {
       return cus.costumerName == cusName;
     });
-    console.log(customer);
-    this.newProposalForm.controls.customerNum.setValue(customer.costumerId);
-    this.newProposalForm.controls.priceList.setValue(customer.costumerId);
+    if (this.currentCustomer) this.setFormData();
+  }
+
+  setFormData() {
+    this.newProposalForm.controls.customerId.setValue(
+      this.currentCustomer.costumerId
+    );
+    this.newProposalForm.controls.customerName.setValue(
+      this.currentCustomer.costumerName
+    );
+    this.newProposalForm.controls.priceList.setValue(
+      this.currentCustomer.costumerId
+    );
+    this.newProposalForm.controls.shippingAddress.setValue(
+      this.currentCustomer.delivery
+    );
+    this.newProposalForm.controls.invoiceAddress.setValue(
+      this.currentCustomer.invoice
+    );
+    this.newProposalForm.controls.companyNumber.setValue(
+      this.currentCustomer.companyNumber
+    );
+    this.newProposalForm.controls.user.setValue(this.userName);
     console.log(this.newProposalForm.value);
-    this.currentCustomer = customer;
-    console.log(this.currentCustomer.contact);
+    for (let contact of this.currentCustomer.contact) {
+      let contactForm = new FormGroup({
+        name: new FormControl(contact.name),
+        mail: new FormControl(contact.mail),
+        phone: new FormControl(contact.phone),
+      });
+      this.contacts.push(contactForm);
+    }
+    console.log(this.newProposalForm.value);
   }
 
   getCustomerByNumber() {
-    let cusNum = this.newProposalForm.controls.customerNum.value;
+    let cusNum = this.newProposalForm.controls.customerId.value;
     let customer = this.allCustomersList.filter(
       (cus) => cus.costumerId == cusNum
     );
     console.log(customer);
     this.currentCustomer = customer[0];
-    this.newProposalForm.controls.customerName.setValue(
-      customer[0].costumerName
-    );
-    this.newProposalForm.controls.priceList.setValue(customer[0].costumerId);
-    console.log(this.currentCustomer.contact);
-    console.log(this.currentCustomer.costumerName);
-    console.log(this.currentCustomer.delivery);
-    console.log(this.currentCustomer.invoice);
+    if (this.currentCustomer) this.setFormData();
   }
 
   getCustomer() {
@@ -140,9 +183,60 @@ export class ProposalsComponent implements OnInit {
   createProposal() {
     console.log(this.newProposalForm.value);
     console.log(this.newProposalForm.controls);
+    console.log(this.currentCustomer.contact);
+    if (this.newProposalForm.valid) {
+      this.salesService
+        .addNewProposal(this.newProposalForm.value)
+        .subscribe((data) => {
+          console.log(data);
+          if (data.msg) {
+            console.log(data.msg);
+            this.toastr.error(data.msg);
+            return;
+          } else if (data) {
+            this.toastr.success(
+              "טיוטת הצעת מחיר נשמרה יש להוסיף מוצרים ושרותים להצעה."
+            );
+          }
+        });
+    }
   }
 
   resetForm() {
     this.newProposalForm.reset();
+  }
+  saveContact(i) {
+    // console.log(this.newProposalForm.value);
+    // console.log(this.contacts.at(i).value);
+    this.currentCustomer.contact[i] = this.contacts.at(i).value;
+    this.editContact = -1;
+  }
+  clearContact(i) {
+    let contact = this.currentCustomer.contact[i];
+    let formContact = new FormGroup({
+      name: new FormControl(contact.name),
+      mail: new FormControl(contact.mail),
+      phone: new FormControl(contact.phone),
+    });
+    this.editContact = -1;
+    console.log(contact);
+    this.contacts.setControl(i, formContact);
+    // this.contacts.removeAt(i);
+    // this.contacts.insert(i, formContact);
+    console.log(this.newProposalForm.value);
+  }
+
+  removeContact(i) {
+    this.contacts.removeAt(i);
+  }
+
+  addContact() {
+    let contactForm = new FormGroup({
+      name: new FormControl(""),
+      mail: new FormControl(""),
+      phone: new FormControl(""),
+    });
+    this.contacts.push(contactForm);
+    this.editContact = this.contacts.length - 1;
   }
 }

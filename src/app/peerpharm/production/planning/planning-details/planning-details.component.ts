@@ -143,9 +143,12 @@ export class PlanningDetailsComponent implements OnInit {
     // build a formule list from which we search for relevant barrels: same formule, status returned
 
     for (let oi of this.workPlan.orderItems) {
+      oi.parentFormule = oi.parentFormule
+        ? oi.parentFormule
+        : oi.formule.formuleNumber;
       formulesList.push({
         orderNumber: oi.orderNumber,
-        formuleNumber: oi.formule.formuleNumber,
+        formuleNumber: oi.parentFormule,
       });
       for (let barrel of oi.barrels) {
         barrel.selected = true;
@@ -163,7 +166,7 @@ export class PlanningDetailsComponent implements OnInit {
         // we  filter out barrels that already assigned to the order item in the workplan
         for (let bList of data) {
           let idx = this.workPlan.orderItems.findIndex(
-            (oi) => oi.itemNumber == bList.formuleNumber
+            (oi) => oi.parentFormule == bList.formuleNumber
           );
           if (idx > -1) {
             for (let barrel of this.workPlan.orderItems[idx].barrels) {
@@ -378,7 +381,10 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   saveChanges(oderItemToDelete?): Promise<string> {
-    if (oderItemToDelete && this.editWeightInput || oderItemToDelete === 0 && this.editWeightInput) {
+    if (
+      (oderItemToDelete && this.editWeightInput) ||
+      (oderItemToDelete === 0 && this.editWeightInput)
+    ) {
       // Vars for ranges calculation
       const itemNetWeightGr =
         this.workPlan.orderItems[oderItemToDelete].netWeightGr;

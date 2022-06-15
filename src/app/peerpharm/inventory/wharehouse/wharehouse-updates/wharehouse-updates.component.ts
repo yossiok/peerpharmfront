@@ -36,11 +36,13 @@ export class WhareHouseUpdatesComponent implements OnInit {
   allowedWHS: string[];
   allowedCountYear: boolean = false;
   sortPositionOrder: number = 1;
+  sortItemNameOrder: number = 1;
   sortItemNumberOrder: number = 1;
   sortAmountOrder: number = 1;
   sortBatchOrder: number = 1;
   sortPriceOrder: number = 1;
   sortValueOrder: number = 1;
+  sortCoinOrder: number = 1;
   updates: any = [];
   today: Date = new Date();
   currencies: any = {};
@@ -224,12 +226,12 @@ export class WhareHouseUpdatesComponent implements OnInit {
   sortByPosition() {
     if (this.sortPositionOrder == 1) {
       this.allShelfs = this.allShelfs.sort((a, b) =>
-        a._id.position > b._id.position ? 1 : -1
+        a.position > b.position ? 1 : -1
       );
       this.sortPositionOrder = -1;
     } else {
       this.allShelfs = this.allShelfs.sort((a, b) =>
-        a._id.position < b._id.position ? 1 : -1
+        a.position < b.position ? 1 : -1
       );
       this.sortPositionOrder = 1;
     }
@@ -247,6 +249,16 @@ export class WhareHouseUpdatesComponent implements OnInit {
       );
       this.sortItemNumberOrder = 1;
     }
+  }
+
+  sortByName() {
+    this.allShelfs = this.allShelfs.sort((a, b) =>
+      a.componentName.trim().toLowerCase() >
+      b.componentName.trim().toLowerCase()
+        ? this.sortItemNameOrder
+        : -this.sortItemNameOrder
+    );
+    this.sortItemNameOrder *= -1;
   }
   sortByItemType() {
     if (this.sortItemNumberOrder == 1) {
@@ -301,6 +313,13 @@ export class WhareHouseUpdatesComponent implements OnInit {
       a.value > b.value ? this.sortValueOrder : -this.sortValueOrder
     );
     this.sortValueOrder *= -1;
+  }
+
+  sortByCoin() {
+    this.allShelfs = this.allShelfs.sort((a, b) =>
+      a.coin > b.coin ? this.sortCoinOrder : -this.sortCoinOrder
+    );
+    this.sortCoinOrder *= -1;
   }
 
   filterByIetmNumber(ev) {
