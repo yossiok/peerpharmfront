@@ -1,0 +1,68 @@
+<section class="main" dir="rtl">
+  <div class="heading">
+    <h1>אינדקס מוצרים</h1>
+  </div>
+  <div class="secondary">
+    <div class="filter">
+      <p class="secondary-header">סינון:</p>
+      <p class="filter-type">שם:</p>
+      <input class="filter-input" type="text" [(ngModel)]="nameInputFilter" (keyup)="filterByName()" />
+      <p class="filter-type">מק"ט:</p>
+      <input class="filter-input" type="text" [(ngModel)]="barcodeInputFilter" (keyup)="filterByBarcode()" />
+      <p class="filter-type">לקוח:</p>
+      <input class="filter-input" type="text" [(ngModel)]="customerInputFilter" (keyup)="filterByCustomer()" />
+    </div>
+    <div class="export">
+      <p class="secondary-header">ייצוא והדפסה:</p>
+      <button class="export-exl" (click)="exportAsXLSX()">
+        <img
+          src="../../../assets/images/excel.png"
+          class="export-exl-img"
+        />
+      </button>
+      <button
+        type="button"
+        styleSheetFile="../../../../assets/stylesheets/palletPrint.css"
+        class="btn btn-success"
+        printSectionId="printTable"
+        ngxPrint
+      >
+        הדפסה <i class="fa fa-print"></i>
+      </button>
+    </div>
+  </div>
+  <div *ngIf="loader || items.length == 0" class="loader"></div>
+  <div *ngIf="!loader && items.length > 0" id="printTable">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>מק"ט</th>
+          <th>שם</th>
+          <th>לקוח</th>
+          <th>פעיל</th>
+          <th>צריך רישיון</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items; index as i">
+          <td>{{i+1}}</td>
+          <td>{{item.barcode}}</td>
+          <td>{{item.name}}</td>
+          <td>
+            <span *ngIf="item.customer != '' && item.customer.length > 2">{{item.customer}}</span>
+            <span *ngIf="!(item.customer != '' && item.customer.length > 2)">לא קיים מספר לקוח</span>
+          </td>
+          <td>
+            <i *ngIf="item.status" class="fa fa-check" aria-hidden="true"> כן</i>
+            <i *ngIf="!item.status"  class="fa fa-times" aria-hidden="true"> לא</i>
+          </td>
+          <td>
+            <i *ngIf="item.licenseRequired" class="fa fa-check" aria-hidden="true"> כן</i>
+            <i *ngIf="!item.licenseRequired" class="fa fa-times" aria-hidden="true"> לא</i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

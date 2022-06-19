@@ -199,7 +199,7 @@ import { CreamBarrelComponent } from "./inventory/creamBarrel/creamBarrel.compon
 import { BulksReportComponent } from "./batches/bulks-inventory/bulks-report/bulks-report.component";
 import { TemperaturesLogsComponent } from "./qa/temperaturesLogs/temperaturesLogs.component";
 import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
-
+import {ItemIndexNewComponent} from "./item-index-new/item-index-new.component"
 @NgModule({
   exports: [
     // MatInputModule,
@@ -247,6 +247,7 @@ import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
     AddFormuleComponent,
     MaterialsComponent,
     StoragesComponent,
+    ItemIndexNewComponent,
     ShelfListComponent,
     OrdersComponent,
     CreamBarrelComponent,

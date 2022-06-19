@@ -94,6 +94,7 @@ import { CreamBarrelComponent } from "./inventory/creamBarrel/creamBarrel.compon
 import { OpenOrderitemsComponent } from "./allorders/open-orderitems/open-orderitems.component";
 import {TemperaturesLogsComponent} from './qa/temperaturesLogs/temperaturesLogs.component'
 import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
+import { ItemIndexNewComponent } from "./item-index-new/item-index-new.component";
 
 export const PeerPharmRputs: Routes = [
   {
@@ -786,6 +787,14 @@ export const PeerPharmRputs: Routes = [
       title: "Item Index",
     },
     component: ItemIndexComponent,
+  },
+  {
+    path: "itemIndexNew",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Item Index New",
+    },
+    component: ItemIndexNewComponent,
   },
   {
     path: "pricing/reports",
