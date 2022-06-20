@@ -67,6 +67,15 @@ export class ScheduleService {
     let url = this.baseUrl + "schedule?date=" + date;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+
+  
+  getScheduleRemarks() {
+    let url = this.baseUrl + "schedule/getRemarks";
+    return this.http.get(url).pipe(map((res) => res.json()));
+  }
+
+
+
   getScheduleByOrderNumber(orderNumber) {
     let url = this.baseUrl + "schedule?orderNumber=" + orderNumber;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
