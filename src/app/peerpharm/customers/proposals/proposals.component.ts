@@ -32,6 +32,7 @@ export class ProposalsComponent implements OnInit {
   allCurrencies: any[] = [];
   currentCustomer: any;
   editContact: number = null;
+  comaxCustomer: any = {};
 
   newProposalForm: FormGroup = new FormGroup({
     customerName: new FormControl("", Validators.required),
@@ -111,35 +112,51 @@ export class ProposalsComponent implements OnInit {
 
   getCustomerByName() {
     this.currentCustomer = {};
+    this.comaxCustomer = {};
+
     let cusName = this.newProposalForm.controls.customerName.value;
     console.log(cusName);
     this.currentCustomer = this.allCustomersList.find((cus) => {
       return cus.costumerName == cusName;
     });
-    if (this.currentCustomer) this.setFormData();
+    this.salesService
+      .getCustomerById(this.currentCustomer.costumerId)
+      .subscribe((data) => {
+        console.log(data);
+        if (data.msg) {
+          this.toastr.error(data.msg);
+          return;
+        } else if (data.ID == this.currentCustomer.costumerId) {
+          this.comaxCustomer = data;
+          this.setFormData();
+          return;
+        } else {
+          this.toastr.error("Customer wasn't found");
+          return;
+        }
+      });
   }
 
   setFormData() {
-    this.newProposalForm.controls.customerId.setValue(
-      this.currentCustomer.costumerId
+    let proposal = this.newProposalForm.controls;
+    let cmx = this.comaxCustomer;
+    proposal.customerId.setValue(cmx.ID);
+    proposal.customerName.setValue(
+      cmx.ForeignName ? cmx.ForeignName : cmx.Name
     );
-    this.newProposalForm.controls.customerName.setValue(
-      this.currentCustomer.costumerName
-    );
-    this.newProposalForm.controls.priceList.setValue(
-      this.currentCustomer.costumerId
-    );
-    this.newProposalForm.controls.shippingAddress.setValue(
-      this.currentCustomer.delivery
-    );
-    this.newProposalForm.controls.invoiceAddress.setValue(
-      this.currentCustomer.invoice
+    proposal.priceList.setValue(this.comaxCustomer.PriceListID);
+    proposal.shippingAddress.setValue(this.currentCustomer.delivery);
+    proposal.invoiceAddress.setValue(
+      cmx.Street + " " + cmx.Street_No + ", " + cmx.City + ", " + cmx.Zip
     );
     this.newProposalForm.controls.companyNumber.setValue(
       this.currentCustomer.companyNumber
     );
     this.newProposalForm.controls.user.setValue(this.userName);
     console.log(this.newProposalForm.value);
+    while (this.contacts.length > 0) {
+      this.contacts.removeAt(0);
+    }
     for (let contact of this.currentCustomer.contact) {
       let contactForm = new FormGroup({
         name: new FormControl(contact.name),
@@ -148,6 +165,14 @@ export class ProposalsComponent implements OnInit {
       });
       this.contacts.push(contactForm);
     }
+
+    let contactForm = new FormGroup({
+      name: new FormControl(cmx.Name),
+      mail: new FormControl(cmx.Email),
+      phone: new FormControl(cmx.Phone),
+    });
+    this.contacts.push(contactForm);
+
     console.log(this.newProposalForm.value);
   }
 
@@ -158,7 +183,23 @@ export class ProposalsComponent implements OnInit {
     );
     console.log(customer);
     this.currentCustomer = customer[0];
-    if (this.currentCustomer) this.setFormData();
+
+    this.salesService
+      .getCustomerById(this.currentCustomer.costumerId)
+      .subscribe((data) => {
+        console.log(data);
+        if (data.msg) {
+          this.toastr.error(data.msg);
+          return;
+        } else if (data.ID == this.currentCustomer.costumerId) {
+          this.comaxCustomer = data;
+          this.setFormData();
+          return;
+        } else {
+          this.toastr.error("Customer wasn't found");
+          return;
+        }
+      });
   }
 
   getCustomer() {

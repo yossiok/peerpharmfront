@@ -789,15 +789,13 @@ export class FormdetailsComponent implements OnInit {
     this.form.leftBatchWeight = 0;
     this.formsService.createFormDetails(this.form).subscribe((data) => {
       if (data) {
-
-          console.log(data);
+        console.log(data);
         //this.getBarrelsList(data.batchN);
         this.toastService.success("טופס נוצר בהצלחה")!;
         this.newForm = false;
         this.formid = data._id;
         this.form.fillingDate = data.fillingDate;
         this.ngOnInit();
-
       }
     });
   }
@@ -868,8 +866,9 @@ export class FormdetailsComponent implements OnInit {
   checkFormStatus() {
     if (
       this.form.checkSignature &&
-      this.form.directorBackSignature &&
-      !this.authService.loggedInUser.authorization.includes("QAAdmin")
+      this.form.directorBackSignature
+      //disable the feature to update afted form is closed
+      // && !this.authService.loggedInUser.authorization.includes("QAAdmin")
     ) {
       this.disabledValue = true;
       console.log(this.disabledValue);
@@ -931,9 +930,9 @@ export class FormdetailsComponent implements OnInit {
           this.disabledValue = false;
           console.log(this.disabledValue);
         }
-        if (this.authService.loggedInUser.authorization.includes("QAAdmin")) {
-          this.disableRemarkEditAfterSave = false;
-        }
+        // if (this.authService.loggedInUser.authorization.includes("QAAdmin")) {
+        //   this.disableRemarkEditAfterSave = false;
+        // }
       }
     }
     // else {
