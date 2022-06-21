@@ -876,7 +876,7 @@ export class ScheduleComponent implements OnInit {
             qtyProduced: "",
             date: this.date.nativeElement.value,
             marks: this.marks.nativeElement.value,
-            shift: strHe + "\n" + strRs + "\n" + strAr + "\n" + strEn + "\n",
+            shift: this.shift.nativeElement.value + "/n" + strHe + "\n" + strRs + "\n" + strAr + "\n" + strEn + "\n",
             mkp: this.currentType,
             itemImpRemark: scdLneInfo[0].itemImpRemark,
             whatIsMissing: this.whatIsMissing.nativeElement.value,
