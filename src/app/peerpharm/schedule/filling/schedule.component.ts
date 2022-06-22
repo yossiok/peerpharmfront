@@ -121,6 +121,11 @@ export class ScheduleComponent implements OnInit {
   itemsNumbers:Array<any>=[];
   itemsComponentsByItemNumber:any={};
 
+  remarks: Array<any> = []
+  expanded: boolean = false
+  remarksToAdd: Array<any>=[]
+  remarksLangues: Array<any>=[]
+
   constructor(
     private scheduleService: ScheduleService,
     private itemSer: ItemsService,
@@ -167,9 +172,46 @@ export class ScheduleComponent implements OnInit {
       this.myDate = new Date();
     }, 1000);
 
+    this.scheduleService.getScheduleRemarks().subscribe((res)=>{
+      if(res && !res.msg && res.length > 0){
+        this.remarks = res
+      }
+    })
 
+  }
 
+  showCheckboxes() {
+    var checkboxes = document.getElementById("checkboxes");
+    if (!this.expanded) {
+      checkboxes.style.display = "block";
+      this.expanded = true;
+    } else {
+      checkboxes.style.display = "none";
+      this.expanded = false;
+    }
+  }
 
+  addRemarks(id){
+    const temp = this.remarks.find(rem => rem._id == id)
+    if(!temp){
+      return
+    }else{
+      if(this.remarksToAdd.includes(temp)){
+        this.remarksToAdd = this.remarksToAdd.filter((rem)=> rem._id != id)
+      }else{
+        this.remarksToAdd.push(temp)
+      }
+    }
+  }
+
+  addLangues(lang){
+    console.log("ERAN GRADY THE KING",lang);
+    if(this.remarksLangues.includes(lang)){
+      this.remarksLangues = this.remarksLangues.filter((x)=> x != lang)
+    }else{
+      this.remarksLangues.push(lang)
+    }
+    console.log("ERAN GRADY THE KING2",this.remarksLangues);
   }
 
 
@@ -771,6 +813,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   async updateSchedule(line) {
+
     const today = new Date();
     const year = today.getFullYear();
     const mount = today.getMonth();
@@ -792,6 +835,34 @@ export class ScheduleComponent implements OnInit {
           let updateOrderItemDate =
             scdLneInfo[0].date == this.date.nativeElement.value;
 
+          
+
+          let strHe=""
+          let strEn=""
+          let strAr=""
+          let strRs=""
+          if(this.remarksLangues.length > 0){
+            if(this.remarksToAdd.length > 0){
+              this.remarksToAdd.map((rem)=>{
+                if(this.remarksLangues.includes('heb')){
+                  strHe += rem.heb + ", "
+                }
+                if(this.remarksLangues.includes('eng')){
+                  strEn += rem.eng + ", "
+                }
+                if(this.remarksLangues.includes('arab')){
+                  strAr += rem.arab + ", "
+                }
+                if(this.remarksLangues.includes('rus')){
+                  strRs += rem.rus + ", "
+                }
+              })
+            }
+            this.remarksLangues = []
+            this.remarksToAdd = []
+          }
+          
+
           let scheduleToUpdate: any = {
             _id: line._id,
             positionN: this.positionN.nativeElement.value,
@@ -805,7 +876,7 @@ export class ScheduleComponent implements OnInit {
             qtyProduced: "",
             date: this.date.nativeElement.value,
             marks: this.marks.nativeElement.value,
-            shift: this.shift.nativeElement.value,
+            shift: this.shift.nativeElement.value + "\n" + strHe + "\n" + strRs + "\n" + strAr + "\n" + strEn + "\n",
             mkp: this.currentType,
             itemImpRemark: scdLneInfo[0].itemImpRemark,
             whatIsMissing: this.whatIsMissing.nativeElement.value,
@@ -849,6 +920,32 @@ export class ScheduleComponent implements OnInit {
         let updateOrderItemDate =
           scdLneInfo[0].date == this.date.nativeElement.value;
 
+          let strHe=""
+          let strEn=""
+          let strAr=""
+          let strRs=""
+
+          if(this.remarksLangues.length > 0){
+            if(this.remarksToAdd.length > 0){
+              this.remarksToAdd.map((rem)=>{
+                if(this.remarksLangues.includes('heb')){
+                  strHe += rem.heb + ", "
+                }
+                if(this.remarksLangues.includes('eng')){
+                  strEn += rem.eng + ", "
+                }
+                if(this.remarksLangues.includes('arab')){
+                  strAr += rem.arab + ", "
+                }
+                if(this.remarksLangues.includes('rus')){
+                  strRs += rem.rus + ", "
+                }
+              })
+            }
+            this.remarksLangues = []
+            this.remarksToAdd = []
+          }
+
         let scheduleToUpdate: any = {
           _id: line._id,
           positionN: this.positionN.nativeElement.value,
@@ -862,7 +959,7 @@ export class ScheduleComponent implements OnInit {
           qtyProduced: "",
           date: this.date.nativeElement.value,
           marks: this.marks.nativeElement.value,
-          shift: this.shift.nativeElement.value,
+          shift: this.shift.nativeElement.value + "\n" + strHe + "\n" + strRs + "\n" + strAr + "\n" + strEn + "\n",
           mkp: this.currentType,
           itemImpRemark: scdLneInfo[0].itemImpRemark,
           whatIsMissing: this.whatIsMissing.nativeElement.value,

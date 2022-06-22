@@ -703,6 +703,7 @@
                   [value]="line.marks"
                   class="form-control"
                 ></textarea>
+
               </td>
 
               <td
@@ -732,6 +733,23 @@
                   [value]="line.shift"
                   class="form-control"
                 />
+                <form>
+                  <div class="multiselect">
+                    <div class="selectBox" (click)="showCheckboxes()">
+                      בחר הערות ושפות
+                      <div id="checkboxes2">
+                        <label class="lang" for="heb"><input type="checkbox" id="heb" (change)="addLangues('heb')" />עברית</label>
+                        <label class="lang" for="eng"><input type="checkbox" id="eng" (change)="addLangues('eng')" />אנגלית</label>
+                        <label class="lang" for="arab"><input type="checkbox" id="arab" (change)="addLangues('arab')" />ערבית</label>
+                        <label class="lang" for="rus"><input type="checkbox" id="rus" (change)="addLangues('rus')" />רוסית</label>
+                      </div>
+                    </div>
+                    <div id="checkboxes">
+                      <label *ngFor="let remark of remarks; index as i" for="remark._id"><input type="checkbox" id="remark._id" (change)="addRemarks(remark._id)" />{{remark.heb}}</label>
+                    </div>
+                  </div>
+                </form>
+                  
               </td>
               <td
                 class="mkpClass"

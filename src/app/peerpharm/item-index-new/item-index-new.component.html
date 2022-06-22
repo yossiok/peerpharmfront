@@ -1,0 +1,123 @@
+<section class="main" dir="rtl">
+  <div class="heading">
+    <h1>אינדקס מוצרים</h1>
+  </div>
+  <div class="secondary">
+    <div class="filter">
+      <p class="secondary-header">סינון:</p>
+      <p class="filter-type">שם:</p>
+      <input class="filter-input" type="text" [(ngModel)]="nameInputFilter" (keyup)="filterByName()" placeholder="שם המוצר" />
+      <p class="filter-type">מק"ט:</p>
+      <input class="filter-input" type="text" [(ngModel)]="barcodeInputFilter" (keyup)="filterByBarcode()" placeholder='מספר מק"ט' />
+      <p class="filter-type">לקוח:</p>
+      <input class="filter-input" type="text" [(ngModel)]="customerInputFilter" (keyup)="filterByCustomer()" placeholder="מספר/שם לקוח" />
+    </div>
+    <div class="export">
+      <p class="secondary-header">ייצוא והדפסה:</p>
+      <button class="export-exl" (click)="exportAsXLSX()">
+        <img
+          src="../../../assets/images/excel.png"
+          class="export-exl-img"
+        />
+      </button>
+      <button
+        type="button"
+        styleSheetFile="../../../../assets/stylesheets/palletPrint.css"
+        class="btn btn-print"
+        printSectionId="printTable"
+        ngxPrint
+      >
+        הדפסה <i class="fa fa-print"></i>
+      </button>
+    </div>
+  </div>
+  <div class="dateFilter">
+    <p class="filter-type">טווח תאריכי עדכון:</p>
+    <p class="filter-type">תאריך התחלה</p>
+    <input class="filter-input" type="date" [(ngModel)]="startDateInputFilter" (change)="filterByUpdateDate()"  />
+    <p class="filter-type">תאריך סיום</p>
+    <input class="filter-input" type="date" [(ngModel)]="endDateInputFilter" (change)="filterByUpdateDate()" />
+    <button class="btn btn-clear" (click)="clear()">ניקוי</button>
+  </div>
+  <div *ngIf="loader" class="loaderText">מייבא את כל המוצרים...</div>
+  <div *ngIf="loader" class="loader"></div>
+  <div *ngIf="items.length == 0 && !loader" class="notFoundAlert">
+    לא נמצאו מוצרים עם הפרטים הנ"ל
+  </div>
+  <div *ngIf="!loader && items.length > 0" id="printTable">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>
+            <button class="btn btn-sort" (click)="sortByBarcode()">
+              <i class="fa fa-arrow-up" aria-hidden="true"></i>
+              <i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </button>
+            מק"ט
+          </th>
+          <th>
+            <button class="btn btn-sort" (click)="sortByName()">
+              <i class="fa fa-arrow-up" aria-hidden="true"></i>
+              <i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </button>
+            שם
+          </th>
+          <th>
+            <button class="btn btn-sort" (click)="sortByCustomer()">
+              <i class="fa fa-arrow-up" aria-hidden="true"></i>
+              <i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </button>
+            לקוח
+          </th>
+          <th>
+            <button class="btn btn-sort" (click)="sortByStatus()">
+              <i class="fa fa-arrow-up" aria-hidden="true"></i>
+              <i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </button>
+            פעיל
+          </th>
+          <th>
+            <button class="btn btn-sort" (click)="sortByLicense()">
+              <i class="fa fa-arrow-up" aria-hidden="true"></i>
+              <i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </button>
+            צריך רישיון
+          </th>
+          <th>
+            <button class="btn btn-sort" (click)="sortByUpdateDate()">
+              <i class="fa fa-arrow-up" aria-hidden="true"></i>
+              <i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </button>
+            עודכן לאחרונה
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of items; index as i">
+          <td>{{i+1}}</td>
+          <td>
+            <a target="_blank"
+                routerLink="/peerpharm/items/itemDetails/{{ item.barcode }}">
+                {{ item.barcode }}
+              </a>
+          </td>
+          <td>{{item.name}}</td>
+          <td>
+            <span *ngIf="item.customer != '' && item.customer.length > 2">{{item.customer}}</span>
+            <span *ngIf="!(item.customer != '' && item.customer.length > 2)">---</span>
+          </td>
+          <td>
+            <i *ngIf="item.status" class="fa fa-check" aria-hidden="true"> כן</i>
+            <i *ngIf="!item.status"  class="fa fa-times" aria-hidden="true"> לא</i>
+          </td>
+          <td>
+            <i *ngIf="item.licenseRequired" class="fa fa-check" aria-hidden="true"> כן</i>
+            <i *ngIf="!item.licenseRequired" class="fa fa-times" aria-hidden="true"> לא</i>
+          </td>
+          <td>{{item.updateDate | date: "dd/MM/yyyy"}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
