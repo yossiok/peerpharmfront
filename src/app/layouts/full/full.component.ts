@@ -110,14 +110,17 @@ export class FullComponent implements OnInit {
 
   getTheme() {
     this.utilsService.getTheme().subscribe((theme) => {
+      console.log(theme);
       this.themeColor =
         theme.database == "testing"
           ? "rgb(30, 240, 81)"
-          : "dev1"
-          ? "#ffe500"
-          : "rgb(19, 19, 95)";
+          : theme.database == "dev1"
+          ? "#75b9d8"
+          : "#13135f";
       this.databaseName =
-        theme.database == "testing" || "dev1" ? "DEV ENVIRONMENT!!!!" : "";
+        theme.database == "testing" || theme.database == "dev1"
+          ? "DEV ENVIRONMENT!!!!"
+          : "";
       this.testing = theme.database == "testing" || "dev1" ? true : false;
     });
   }
