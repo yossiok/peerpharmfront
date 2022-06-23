@@ -13,6 +13,14 @@ export class SalesService {
 
   constructor(private http: Http) {}
 
+  getCustomerById(customerId) {
+    let url =
+      this.baseUrl +
+      "proposals/getCustomerDetailsById?customerId=" +
+      customerId;
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+
   addNewProposal(proposal) {
     let url = this.baseUrl + "proposals/addProposal";
     return this.http

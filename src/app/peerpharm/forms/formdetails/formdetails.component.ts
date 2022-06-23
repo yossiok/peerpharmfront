@@ -739,16 +739,19 @@ export class FormdetailsComponent implements OnInit {
         if (data.msg) {
           this.toastService.error(data.msg);
           return;
-        } else if (data.errors.length > 0) {
+        } else if (data.errors && data.errors.length > 0) {
           for (let error of data.errors) {
             this.toastService.error(error.msg);
           }
         } else if (data) {
-          this.getFormData(this.formid, false);
-          this.getFormData(this.formid, false);
+          this.getFormData(false, this.formid);
           this.toastService.success("טופס עודכן בהצלחה !");
           this.showQAPalletsModal = false;
-          if (this.form.checkSignature && this.form.directorBackSignature) {
+          if (
+            this.form.checkSignature &&
+            this.form.directorBackSignature &&
+            this.form.directorFrontSignature
+          ) {
             this.disabledValue = true;
             console.log(this.disabledValue);
           }
@@ -789,15 +792,13 @@ export class FormdetailsComponent implements OnInit {
     this.form.leftBatchWeight = 0;
     this.formsService.createFormDetails(this.form).subscribe((data) => {
       if (data) {
-
-          console.log(data);
+        console.log(data);
         //this.getBarrelsList(data.batchN);
         this.toastService.success("טופס נוצר בהצלחה")!;
         this.newForm = false;
         this.formid = data._id;
         this.form.fillingDate = data.fillingDate;
         this.ngOnInit();
-
       }
     });
   }
@@ -869,7 +870,9 @@ export class FormdetailsComponent implements OnInit {
     if (
       this.form.checkSignature &&
       this.form.directorBackSignature &&
-      !this.authService.loggedInUser.authorization.includes("QAAdmin")
+      this.form.directorFrontSignature
+      //disable the feature to update afted form is closed
+      // && !this.authService.loggedInUser.authorization.includes("QAAdmin")
     ) {
       this.disabledValue = true;
       console.log(this.disabledValue);
@@ -931,9 +934,9 @@ export class FormdetailsComponent implements OnInit {
           this.disabledValue = false;
           console.log(this.disabledValue);
         }
-        if (this.authService.loggedInUser.authorization.includes("QAAdmin")) {
-          this.disableRemarkEditAfterSave = false;
-        }
+        // if (this.authService.loggedInUser.authorization.includes("QAAdmin")) {
+        //   this.disableRemarkEditAfterSave = false;
+        // }
       }
     }
     // else {
