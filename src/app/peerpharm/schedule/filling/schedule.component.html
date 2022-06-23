@@ -83,6 +83,54 @@
     <div class="col-2"></div>
   </div>
 
+
+    <p *ngIf="showBatchesAlert" class="batchAlert" (click)="showBatchesList=true">קיימות אצוות שלא משוייכות ללו"ז</p>
+    <div *ngIf="showBatchesList" class="batchesList">
+      <p (click)="showBatchesList=false" class="close">סגירה</p>
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>
+              מספר אצווה
+            </th>
+            <th>
+              מק"ט פריט
+            </th>
+            <th>
+              מספר הזמנה
+            </th>
+            <th>
+              תאריך ייצור
+            </th>
+            <th>
+              תאריך תפוגה
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let batch of unscheduledBatches;index as i">
+            <td>{{i+1}}</td>
+            <td>
+              {{batch.batchNumber}}
+            </td>
+            <td>
+              <p *ngIf="batch.item && batch.item != ''">{{batch.item }}</p>
+              <p *ngIf="!(batch.item && batch.item != '')">---</p>
+            </td>
+            <td>
+              <p *ngIf="batch.order && batch.order != ''">{{batch.order }}</p>
+              <p *ngIf="!(batch.order && batch.order != '')">---</p>
+            </td>
+            <td>{{batch.produced | date: "dd/MM/yyyy"}}</td>
+            <td>{{batch.expration | date: "dd/MM/yyyy"}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+
   <br />
 
   <div class="row mt-4 fixNoaStupidStuff">
