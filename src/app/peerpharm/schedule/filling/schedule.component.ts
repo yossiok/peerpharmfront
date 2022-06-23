@@ -125,6 +125,10 @@ export class ScheduleComponent implements OnInit {
   expanded: boolean = false
   remarksToAdd: Array<any>=[]
   remarksLangues: Array<any>=[]
+  unscheduledBatches:Array<any> =[]
+  showBatchesAlert:boolean = false
+  showBatchesList:boolean = false
+
 
   constructor(
     private scheduleService: ScheduleService,
@@ -178,6 +182,19 @@ export class ScheduleComponent implements OnInit {
       }
     })
 
+    this.getUnscheduledBatches()
+
+  }
+
+  getUnscheduledBatches(){
+    this.batchService.getTenDaysUnscheduledBatches().subscribe((res)=>{
+      if(res){
+        this.unscheduledBatches = res
+        if(this.unscheduledBatches.length > 0){
+          this.showBatchesAlert = true
+        }
+      }
+    })
   }
 
   showCheckboxes() {

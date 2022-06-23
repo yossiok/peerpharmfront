@@ -219,6 +219,87 @@ tr {
 .lang{
   margin-left: .5rem;
 }
+.batchAlert {
+  background-color: #1c87c9;
+  -webkit-border-radius: 1rem;
+  border-radius: 1rem;
+  border: none;
+  color: #eeeeee;
+  padding: 0.3125rem 0.9375rem;
+  margin-right: 1rem;
+  width: 10rem;
+  position: absolute;
+  right: 10%;
+  z-index: 99999;
+}
+.styled-table {
+  border-collapse: collapse;
+  margin: 1.5625rem 0;
+  font-size: 1em;
+  font-family: sans-serif;
+  min-width: 25rem;
+  box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.15);
+  width:100%;
+
+}
+.batchesList{
+  position: absolute;
+  right: 50vh;
+  width: 50%;
+  z-index: 9999999999999999;
+  overflow: scroll;
+  direction: rtl;
+}
+.styled-table thead tr {
+  background-color: #bd0524;
+  color: #ffffff;
+  text-align: center;
+}
+.styled-table th,
+.styled-table td {
+    padding: 0.75rem 0.9375rem;
+}
+.styled-table tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #bd0524;
+}
+.styled-table tbody tr.active-row {
+  font-weight: bold;
+  color: #bd0524;
+}
+.close{
+  color: #ddddddc5;
+  font-weight: bold;
+  font-size: medium;
+  background-color: #b6001e;
+  width: 10%;
+  height: 2rem;
+
+}
+@keyframes glowing {
+  0% {
+    background-color: #bd0524;
+    box-shadow: 0 0 5px #bd0524;
+  }
+  50% {
+    background-color: #e81919;
+    box-shadow: 0 0 20px #e81919;
+  }
+  100% {
+    background-color: #bd0524;
+    box-shadow: 0 0 5px #bd0524;
+  }
+}
+.batchAlert {
+  animation: glowing 1300ms infinite;
+}
 
 
 @media only screen and (max-width: 1024px) {

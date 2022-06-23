@@ -35,6 +35,11 @@ export class BatchesService {
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
+  getTenDaysUnscheduledBatches(): Observable<any> {
+    let url = this.baseUrl + "batch/getTenDaysUnscheduledBatches";
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
   getBatchBySearchName(name) {
     let url = this.baseUrl + "batch/search?name=" + name;
     return this.http.get(url).pipe(map((res) => res.json()));
