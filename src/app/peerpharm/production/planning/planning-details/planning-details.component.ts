@@ -143,6 +143,9 @@ export class PlanningDetailsComponent implements OnInit {
     // build a formule list from which we search for relevant barrels: same formule, status returned
 
     for (let oi of this.workPlan.orderItems) {
+      if (oi.hasFormule) {
+        continue;
+      }
       oi.parentFormule = oi.parentFormule
         ? oi.parentFormule
         : oi.formule.formuleNumber;
@@ -151,7 +154,7 @@ export class PlanningDetailsComponent implements OnInit {
         formuleNumber: oi.parentFormule,
       });
       for (let barrel of oi.barrels) {
-        barrel.selected = true;
+        barrel.selected = false;
       }
       oi.addedBarrelsWeight = 0;
     }
@@ -165,6 +168,8 @@ export class PlanningDetailsComponent implements OnInit {
       } else if (data) {
         // we  filter out barrels that already assigned to the order item in the workplan
         for (let bList of data) {
+          console.log(this.workPlan.orderItems);
+          console.log(bList);
           let idx = this.workPlan.orderItems.findIndex(
             (oi) => oi.parentFormule == bList.formuleNumber
           );
@@ -175,7 +180,9 @@ export class PlanningDetailsComponent implements OnInit {
               );
             }
             if (bList.barrels.length > 0) {
-              this.workPlan.orderItems[idx].barrels = [...bList.barrels];
+              this.workPlan.orderItems[idx].barrels = this.workPlan.orderItems[
+                idx
+              ].barrels.concat(bList.barrels);
             }
 
             // we calculate again the total weight by the new list of barrels per order item
@@ -191,39 +198,46 @@ export class PlanningDetailsComponent implements OnInit {
       }
     });
   }
-  viewBarrels(orderItem) {
-    console.log(orderItem);
+  viewBarrels(orderItem, i) {
+    // console.log(orderItem);
     this.currentOrderItem = { addedBarrelsWeight: 0, ...orderItem };
-    console.log(this.currentOrderItem);
+    // console.log(this.currentOrderItem);
     this.openBarrelsView = true;
-    console.log(this.openBarrelsView);
+    // console.log(this.openBarrelsView);
   }
 
-  addBarrelToBatch(e, barrel) {
-    console.log(e);
-    console.log(barrel);
+  addBarrelToBatch(e, barrel, i) {
+    // console.log(e);
+    // console.log(barrel);
+    // console.log(this.workPlan.orderItems);
+    let orderItem = this.workPlan.orderItems.find((oi) => {
+      return (
+        oi.orderNumber == this.currentOrderItem.orderNumber &&
+        oi.itemNumber == this.currentOrderItem.itemNumber
+      );
+    });
+    // console.log(orderItem);
 
     if (e) {
-      this.currentOrderItem.addedBarrelsWeight += barrel.barrelWeight;
+      orderItem.addedBarrelsWeight += barrel.barrelWeight;
+      orderItem.barrels[i].selected = true;
+      // console.log(orderItem);
       barrel.selected = true;
+
       this.barrelsList.push(barrel);
     } else {
-      this.currentOrderItem.addedBarrelsWeight -= barrel.barrelWeight;
-      // this.barrelsList = this.barrelsList.filter(
-      //   (bn) => bn.barrelNumber != barrel.barrelNumber
-      // );
+      orderItem.addedBarrelsWeight -= barrel.barrelWeight;
+      barrel.selected = false;
+      orderItem.barrels[i].selected = false;
     }
-    console.log(this.barrelsList);
-    // this.currentOrderItem.barrels = this.currentOrderItem.barrels.filter(
-    //   (bn) => bn.barrelNumber != barrel.barrelNumber
-    // );
-    console.log(this.currentOrderItem.addedBarrelsWeight);
   }
+
+  //obsolete - don't use
   cancelBarrelsList() {
     this.barrelsList = [];
     this.openBarrelsView = false;
   }
-
+  //obsolete - don't use
   updateProductionFormules() {
     let idx = this.workPlan.orderItems.findIndex(
       (oi) => oi.itemNumber == this.currentOrderItem.itemNumber
@@ -231,7 +245,8 @@ export class PlanningDetailsComponent implements OnInit {
     this.workPlan.orderItems[idx].addedBarrelsWeight =
       this.currentOrderItem.addedBarrelsWeight;
     this.workPlan.orderItems[idx].barrels = [...this.barrelsList];
-    this.cancelBarrelsList();
+    // this.cancelBarrelsList();
+    this.openBarrelsView = false;
     console.log(this.workPlan);
   }
 
@@ -292,6 +307,12 @@ export class PlanningDetailsComponent implements OnInit {
       );
 
       for (let element of orderItemsChecked) {
+        //remove the unchecked barrels
+
+        let barrels = element.barrels.filter(
+          (barrel) => barrel.selected == true
+        );
+
         if (element.formule.parentNumber)
           element.parentFormule = element.formule.parentNumber;
         else element.parentFormule = element.formule.formuleNumber;
@@ -309,7 +330,7 @@ export class PlanningDetailsComponent implements OnInit {
           this.workPlan.productionFormules[allreadyExist].barrelsWeight +=
             element.addedBarrelsWeight;
           this.workPlan.productionFormules[allreadyExist].barrels = [
-            element.barrels,
+            barrels,
             ...this.workPlan.productionFormules[allreadyExist].barrels,
           ];
           this.workPlan.productionFormules[allreadyExist].ordersAndItems.push({
@@ -335,7 +356,7 @@ export class PlanningDetailsComponent implements OnInit {
             totalKG: element.totalKG,
             enoughMaterials: element.enoughMaterials,
             batchNumber: "",
-            barrels: element.barrels,
+            barrels: barrels,
             barrelsWeight: element.addedBarrelsWeight,
           });
         element.hasFormule = true;
