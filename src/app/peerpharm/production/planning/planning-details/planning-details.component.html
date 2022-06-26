@@ -111,7 +111,7 @@
           <th>פורמולת אב</th>
           <th>הזמנה</th>
           <th style="min-width: 100px">תאור</th>
-          <th>משקל</th>
+          <th>משקל יחידה</th>
           <th>כמות</th>
           <th>סה"כ ק"ג</th>
           <th>משקל לייצור חדש</th>
@@ -160,7 +160,7 @@
               [(ngModel)]="editWeightInput"
             />
           </td>
-          <td>
+          <td class="text-center text-primary font-weight-bold font-italic">
             {{
               orderItem.totalKG - orderItem.addedBarrelsWeight | number: "1.0-2"
             }}
@@ -170,7 +170,7 @@
             <button
               type="button"
               class="btn btn-primary"
-              (click)="viewBarrels(orderItem)"
+              (click)="viewBarrels(orderItem, i)"
             >
               הצג פרטים
             </button>
@@ -178,7 +178,9 @@
           <td class="text-center" *ngIf="!orderItem.enoughMaterials">
             {{ orderItem.barrelsWeight | number: "1.0-2" }} Kg
           </td>
-          <td>{{ orderItem.addedBarrelsWeight }}</td>
+          <td class="text-center text-primary font-weight-bold font-italic">
+            {{ orderItem.addedBarrelsWeight }} Kg
+          </td>
           <!-- <td class="text-center" *ngIf="orderItem.enoughComponents">
             <i ngbTooltip="כמות מלאי תקינה" class="far fa-thumbs-up"></i>
           </td>
@@ -200,11 +202,10 @@
               [(ngModel)]="orderItem.remarks"
             />
           </td>
-          <td style="width: 10%;">
+          <td style="width: 10%">
             <!-- cancel edit button -->
             <!-- if enableEdit == true and enableEditIndex == index(i) display the cancel button -->
-            
-            
+
             <!-- <img
               *ngIf="edit == i && authorized"
               ngbTooltip="שמור שינויים"
@@ -221,24 +222,26 @@
             src="../../../../../assets/images/aprroved.png"
             alt=""
           /> -->
-          <button
-          *ngIf="enableEdit && enableEditIndex == i && authorized"
-          (click)="saveChanges(i)"
-          ngbTooltip="שמור שינויים"
+            <button
+              *ngIf="enableEdit && enableEditIndex == i && authorized"
+              (click)="saveChanges(i)"
+              ngbTooltip="שמור שינויים"
               class="btn btn-success"
-
             >
-          <i    class="fa fa-check-square fa-2x" aria-hidden="true"></i>
-          </button>
+              <i class="fa fa-check-square fa-2x" aria-hidden="true"></i>
+            </button>
 
-          <button
+            <button
               *ngIf="enableEdit && enableEditIndex == i"
-              (click)="enableEdit = false; enableEditIndex = null;editWeightInput = null"
+              (click)="
+                enableEdit = false;
+                enableEditIndex = null;
+                editWeightInput = null
+              "
               class="btn btn-danger"
-              style="margin-left: 3rem ;"
-
+              style="margin-left: 3rem"
             >
-            <i class="fa fa-undo" aria-hidden="true"></i>
+              <i class="fa fa-undo" aria-hidden="true"></i>
             </button>
             <button
               [disabled]="orderItem.hasFormule"
@@ -805,25 +808,37 @@
                 <th>מספר החבית</th>
                 <th>משקל החבית</th>
                 <th>פורמולה</th>
+                <th>הזמנה מקורית</th>
                 <th>תאריך ייצור</th>
                 <th>תאריך תפוגה</th>
                 <th>הוסף לבישול</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let barrel of currentOrderItem.barrels">
+              <tr
+                *ngFor="let barrel of currentOrderItem.barrels; let i = index"
+              >
                 <td>{{ barrel.barrelNumber }}</td>
                 <td>{{ barrel.barrelWeight }}</td>
                 <td>{{ barrel.formuleNumber }}</td>
+                <td style="text-decoration: underline">
+                  <a
+                    target="_blank"
+                    routerLink="/peerpharm/allorders/orderitems/{{
+                      barrel.orderNumber
+                    }}"
+                    >{{ barrel.orderNumber }}</a
+                  >
+                </td>
                 <td>{{ barrel.productionDate | date: "dd/MM/yyyy" }}</td>
                 <td>{{ barrel.expirationDate | date: "dd/MM/yyyy" }}</td>
                 <td>
                   <input
-                    [disabled]="barrel.selected"
+                    [disabled]="currentOrderItem.hasFormule"
                     [checked]="barrel.selected"
                     type="checkbox"
                     class="check-box"
-                    (click)="addBarrelToBatch($event.target.checked, barrel)"
+                    (click)="addBarrelToBatch($event.target.checked, barrel, i)"
                   />
                 </td>
               </tr>
@@ -833,15 +848,15 @@
       </div>
       <div class="row mt-2">
         <div class="col-2">
-          <button class="btn btn-info" (click)="updateProductionFormules()">
-            אשר
+          <button class="btn btn-info" (click)="openBarrelsView = false">
+            סגור
           </button>
         </div>
-        <div class="col-2">
+        <!-- <div class="col-2">
           <button class="btn btn-secondary" (click)="cancelBarrelsList()">
             בטל
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
