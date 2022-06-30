@@ -243,24 +243,39 @@ export class WhareHouseUpdatesComponent implements OnInit {
     let reN = /[^0-9]/g;
     let i = this.sortPositionOrder;
     let firstWall = this.allShelfs.filter((sh) => {
-      return sh.position.substr(0, 1) == 1;
+      return (
+        sh.position.substr(0, 1) == 1 &&
+        isNaN(sh.position.substr(1, 1)) &&
+        sh.position.length > 2
+      );
     });
     let secondWall = this.allShelfs.filter((sh) => {
-      return sh.position.substr(0, 1) == 2;
+      return (
+        sh.position.substr(0, 1) == 2 &&
+        isNaN(sh.position.substr(1, 1)) &&
+        sh.position.length > 2
+      );
     });
     let thirdWall = this.allShelfs.filter((sh) => {
-      return sh.position.substr(0, 1) == 3;
+      return (
+        sh.position.substr(0, 1) == 3 &&
+        isNaN(sh.position.substr(1, 1)) &&
+        sh.position.length > 2
+      );
     });
     let fourthWall = this.allShelfs.filter((sh) => {
-      return sh.position.substr(0, 1) == 4;
+      return (
+        sh.position.substr(0, 1) == 4 &&
+        isNaN(sh.position.substr(1, 1)) &&
+        sh.position.length > 2
+      );
     });
 
     let lastWall = this.allShelfs.filter((sh) => {
       return (
-        sh.position.substr(0, 1) != 1 &&
-        sh.position.substr(0, 1) != 2 &&
-        sh.position.substr(0, 1) != 3 &&
-        sh.position.substr(0, 1) != 4
+        !isNaN(sh.position.substr(1, 1)) ||
+        (isNaN(sh.position.substr(1, 1)) &&
+          (sh.position.length < 3 || sh.position.length > 4))
       );
     });
     let walls = [];
