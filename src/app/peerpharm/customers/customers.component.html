@@ -17,8 +17,7 @@
             class="task-item pr-2 py-1 d-flex incomplete border-bottom heb-menu"
             (click)="newProposalMenu()"
           >
-            הצעת מחיר חדשה
-            <span
+            חשבונית עסקה (Proforma Invoice)<span
               class="badge badge-danger ml-auto pr-2 pt-1"
               [style.background]="1 | orderItemBatchStatusColor"
               >&nbsp; 1 &nbsp;
@@ -29,7 +28,7 @@
             class="task-item d-flex complete pr-2 border-bottom heb-menu"
             (click)="proposalsListMenu()"
           >
-            רשימת הצעות מחיר<span
+            רשימת חשבוניות עסקה<span
               class="badge badge-success ml-auto pt-1"
               [style.background]="2 | orderItemBatchStatusColor"
             >
@@ -81,13 +80,13 @@
         <div class="text-center shadow bg-white w-75 mx-auto rounded p-2">
           <div class="row mt-4" *ngIf="newProposalView">
             <div class="col-12">
-              <h3>הצעת מחיר חדשה - New Proposal</h3>
+              <h3>חשבונית עסקה - Proform Invoice</h3>
             </div>
           </div>
           <div class="row mt-4" *ngIf="proposalsListView">
             <div class="col-12">
               <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
-                רשימת הצעות מחיר - Proposals List
+                רשימת חשבוניות עסקה - Proforma Invoices List
               </h1>
             </div>
           </div>

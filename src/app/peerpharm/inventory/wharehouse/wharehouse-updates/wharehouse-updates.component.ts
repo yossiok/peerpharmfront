@@ -18,6 +18,7 @@ import { YearCount } from "../../shelf-list/YearCount";
 import * as XLSX from "xlsx";
 import { difference } from "lodash";
 import { Subject } from "rxjs";
+import { IoTThingsGraph } from "aws-sdk";
 
 @Component({
   selector: "app-wharehouse-updates",
@@ -68,8 +69,8 @@ export class WhareHouseUpdatesComponent implements OnInit {
     shelfId: new FormControl(""),
     amount: new FormControl(null, Validators.required),
     batchNumber: new FormControl(""),
-    productionDate: new FormControl(new Date()),
-    expirationDate: new FormControl(new Date()),
+    productionDate: new FormControl(null),
+    expirationDate: new FormControl(null),
     userName: new FormControl(""),
   });
 
@@ -235,6 +236,26 @@ export class WhareHouseUpdatesComponent implements OnInit {
       );
       this.sortPositionOrder = 1;
     }
+  }
+
+  sortByPositionNew() {
+    let reA = /[^a-zA-Z]/g;
+    let reN = /[^0-9]/g;
+    let i = this.sortPositionOrder;
+
+    this.allShelfs = this.allShelfs.sort((a, b) => {
+      let aA = a.position.replace(reA, "");
+      let bA = b.position.replace(reA, "");
+      if (aA === bA) {
+        let aN = parseInt(a.position.replace(reN, ""), 10);
+        let bN = parseInt(b.position.replace(reN, ""), 10);
+        return aN === bN ? 0 : aN > bN ? i : -i;
+      } else {
+        return aA > bA ? i : -i;
+      }
+    });
+
+    this.sortPositionOrder *= -1;
   }
 
   sortByItem() {
@@ -618,10 +639,10 @@ export class WhareHouseUpdatesComponent implements OnInit {
         } else if (data.itemShelf) {
           this.toastSrv.success("מדף הוקם בהצלחה");
           console.log(this.newShelfForm.value);
-          //   this.newShelfForm.controls.position.setValue("");
-          //   this.newShelfForm.controls.amount.setValue(0);
-          //   this.newShelfForm.controls.item.setValue("");
-          this.newShelfForm.reset();
+          this.newShelfForm.controls.position.setValue("");
+          this.newShelfForm.controls.amount.setValue(0);
+          this.newShelfForm.controls.item.setValue("");
+          // this.newShelfForm.reset();
           this.itemType = "";
 
           this.validItem = false;

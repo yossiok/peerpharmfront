@@ -27,4 +27,22 @@ export class SalesService {
       .post(url, proposal)
       .pipe(map((response) => response.json()));
   }
+
+  updateProposal(proposal) {
+    let url = this.baseUrl + "proposals/updateProposal";
+    return this.http
+      .post(url, proposal)
+      .pipe(map((response) => response.json()));
+  }
+
+  getAllProposals() {
+    let url = this.baseUrl + "proposals/getAllProposals";
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+
+  getItemsByPriceList(priceId) {
+    let url = this.baseUrl + "proposals/getItemsByPriceList?priceId=" + priceId;
+
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
 }
