@@ -175,6 +175,7 @@ export class ProposalsComponent implements OnInit {
       }
     });
   }
+
   editView() {
     if (this.editMode) {
       let conf = confirm(
@@ -327,7 +328,7 @@ export class ProposalsComponent implements OnInit {
     if (cmx.Currency == "ש''ח") {
       currency = "ILS";
     } else if (cmx.Currency == "אירו") {
-      currency = "EURO";
+      currency = "EUR";
     } else if (cmx.Currency == "דולר אמריקאי") {
       currency = "USD";
     } else if ((cmx.Currency = "לירה שטרלינג")) {
@@ -372,7 +373,6 @@ export class ProposalsComponent implements OnInit {
       });
       this.contacts.push(contactForm);
     }
-
     let contactForm = new FormGroup({
       name: new FormControl(cmx.Name),
       mail: new FormControl(cmx.Email),
@@ -699,5 +699,10 @@ export class ProposalsComponent implements OnInit {
     this.printView = true;
     this.editMode = false;
     this.searchMode = true;
+  }
+  draftView() {
+    this.printView = false;
+    this.editMode = true;
+    this.searchMode = false;
   }
 }
