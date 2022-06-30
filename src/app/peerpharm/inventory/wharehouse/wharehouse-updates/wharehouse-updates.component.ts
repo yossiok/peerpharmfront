@@ -242,19 +242,63 @@ export class WhareHouseUpdatesComponent implements OnInit {
     let reA = /[^a-zA-Z]/g;
     let reN = /[^0-9]/g;
     let i = this.sortPositionOrder;
-
-    this.allShelfs = this.allShelfs.sort((a, b) => {
-      let aA = a.position.replace(reA, "");
-      let bA = b.position.replace(reA, "");
-      if (aA === bA) {
-        let aN = parseInt(a.position.replace(reN, ""), 10);
-        let bN = parseInt(b.position.replace(reN, ""), 10);
-        return aN === bN ? 0 : aN > bN ? i : -i;
-      } else {
-        return aA > bA ? i : -i;
-      }
+    let firstWall = this.allShelfs.filter((sh) => {
+      return sh.position.substr(0, 1) == 1;
+    });
+    let secondWall = this.allShelfs.filter((sh) => {
+      return sh.position.substr(0, 1) == 2;
+    });
+    let thirdWall = this.allShelfs.filter((sh) => {
+      return sh.position.substr(0, 1) == 3;
+    });
+    let fourthWall = this.allShelfs.filter((sh) => {
+      return sh.position.substr(0, 1) == 4;
     });
 
+    let lastWall = this.allShelfs.filter((sh) => {
+      return (
+        sh.position.substr(0, 1) != 1 &&
+        sh.position.substr(0, 1) != 2 &&
+        sh.position.substr(0, 1) != 3 &&
+        sh.position.substr(0, 1) != 4
+      );
+    });
+    let walls = [];
+    if (i == 1) {
+      walls = [firstWall, secondWall, thirdWall, fourthWall, lastWall];
+    } else {
+      walls = [lastWall, fourthWall, thirdWall, secondWall, firstWall];
+    }
+    let newWalls = [];
+    for (let wall of walls) {
+      wall = wall.sort((a, b) => {
+        let aA = a.position.replace(reA, "");
+        let bA = b.position.replace(reA, "");
+        if (aA === bA) {
+          let aN = parseInt(a.position.replace(reN, ""), 10);
+          let bN = parseInt(b.position.replace(reN, ""), 10);
+          return aN === bN ? 0 : aN > bN ? i : -i;
+        } else {
+          return aA > bA ? i : -i;
+        }
+      });
+      newWalls = newWalls.concat(wall);
+    }
+
+    console.log(walls);
+    // this.allShelfs = this.allShelfs.sort((a, b) => {
+    //   let aA = a.position.replace(reA, "");
+    //   let bA = b.position.replace(reA, "");
+    //   if (aA === bA) {
+    //     let aN = parseInt(a.position.replace(reN, ""), 10);
+    //     let bN = parseInt(b.position.replace(reN, ""), 10);
+    //     return aN === bN ? 0 : aN > bN ? i : -i;
+    //   } else {
+    //     return aA > bA ? i : -i;
+    //   }
+    // });
+
+    this.allShelfs = newWalls;
     this.sortPositionOrder *= -1;
   }
 
