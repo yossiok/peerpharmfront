@@ -135,6 +135,7 @@ export class BulksReportComponent implements OnInit {
             "מספר הזמנה": order.orderNumber,
             "שם הלקוח": order.customerName,
             "מקט פריט": order.itemNumber,
+            "תיאור הפריט": barrel.itemName,
             פורמולה: order.formuleNumber,
             "פורמולת אב": order.parentFormule,
             "סוג הפורמולה": order.formuleType,
