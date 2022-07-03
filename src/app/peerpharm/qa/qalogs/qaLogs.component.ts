@@ -48,6 +48,17 @@ export class QaLogsComponent implements OnInit {
     }
   }
 
+  
+
+  ngOnInit() {
+    this.table = new Array<any>();
+    this.router.navigate([`/peerpharm/qa/qaLogs/page/${String(this.pageNumber)}`]);
+    this.getUserInfo();
+    this.logService.getQaLogs(String(this.pageNumber)).subscribe((res)=>{
+      this.table = res.table;
+    });    
+  }
+
   paginateNext(){
     this.pageNumber+=1;
 
@@ -89,15 +100,6 @@ export class QaLogsComponent implements OnInit {
       }
     });
 
-  }
-
-  ngOnInit() {
-    this.table = new Array<any>();
-    this.router.navigate([`/peerpharm/qa/qaLogs/page/${String(this.pageNumber)}`]);
-    this.getUserInfo();
-    this.logService.getQaLogs(String(this.pageNumber)).subscribe((res)=>{
-      this.table = res.table;
-    });    
   }
 
   sortByLine(){
@@ -142,17 +144,20 @@ export class QaLogsComponent implements OnInit {
       this.closeSort = -1;
       this.table.sort((a,b)=>{
 
+        // return (
+        //   Number(a.closeLot.split(",")[0].split("-")[0]) - Number(b.closeLot.split(",")[0].split("-")[0])
+        //   ||
+        //   Number(a.closeLot.split(",")[0].split("-")[1]) - Number(b.closeLot.split(",")[0].split("-")[1])
+        //   ||
+        //   Number(a.closeLot.split(",")[0].split("-")[2]) - Number(b.closeLot.split(",")[0].split("-")[2])
+        //   ||
+        //   Number(a.closeLot.split(",")[1].trim().split(":")[0]) - Number(b.closeLot.split(",")[1].trim().split(":")[0])
+        //   ||
+        //   Number(a.closeLot.split(",")[1].trim().split(":")[1]) - Number(b.closeLot.split(",")[1].trim().split(":")[1])
+        //   )
         return (
-          Number(a.closeLot.split(",")[0].split("-")[0]) - Number(b.closeLot.split(",")[0].split("-")[0])
-          ||
-          Number(a.closeLot.split(",")[0].split("-")[1]) - Number(b.closeLot.split(",")[0].split("-")[1])
-          ||
-          Number(a.closeLot.split(",")[0].split("-")[2]) - Number(b.closeLot.split(",")[0].split("-")[2])
-          ||
-          Number(a.closeLot.split(",")[1].trim().split(":")[0]) - Number(b.closeLot.split(",")[1].trim().split(":")[0])
-          ||
-          Number(a.closeLot.split(",")[1].trim().split(":")[1]) - Number(b.closeLot.split(",")[1].trim().split(":")[1])
-          )
+          new Date(a.closeLot).getTime() - new Date(b.closeLot).getTime()
+        )
       })
       return
 
@@ -161,16 +166,19 @@ export class QaLogsComponent implements OnInit {
       this.table.sort((a,b)=>{
 
 
+        // return (
+        //   Number(b.closeLot.split(",")[0].split("-")[0]) - Number(a.closeLot.split(",")[0].split("-")[0])
+        //   ||
+        //   Number(b.closeLot.split(",")[0].split("-")[1]) - Number(a.closeLot.split(",")[0].split("-")[1])
+        //   ||
+        //   Number(b.closeLot.split(",")[0].split("-")[2]) - Number(a.closeLot.split(",")[0].split("-")[2])
+        //   ||
+        //   Number(b.closeLot.split(",")[1].trim().split(":")[0]) - Number(a.closeLot.split(",")[1].trim().split(":")[0])
+        //   ||
+        //   Number(b.closeLot.split(",")[1].trim().split(":")[1]) - Number(a.closeLot.split(",")[1].trim().split(":")[1])
+        // )
         return (
-          Number(b.closeLot.split(",")[0].split("-")[0]) - Number(a.closeLot.split(",")[0].split("-")[0])
-          ||
-          Number(b.closeLot.split(",")[0].split("-")[1]) - Number(a.closeLot.split(",")[0].split("-")[1])
-          ||
-          Number(b.closeLot.split(",")[0].split("-")[2]) - Number(a.closeLot.split(",")[0].split("-")[2])
-          ||
-          Number(b.closeLot.split(",")[1].trim().split(":")[0]) - Number(a.closeLot.split(",")[1].trim().split(":")[0])
-          ||
-          Number(b.closeLot.split(",")[1].trim().split(":")[1]) - Number(a.closeLot.split(",")[1].trim().split(":")[1])
+          new Date(b.closeLot).getTime() - new Date(a.closeLot).getTime()
         )
       })
       return
