@@ -1,21 +1,41 @@
 <section *ngIf="isLogin" dir="rtl">
-  <div class="search">
-    <label for="searchByDate" class="search-label">חיפוש לפי תאריך:</label>
-    <input type="date" id="searchByDate" name="searchByDate" class="search-input" [(ngModel)]="dateSearch" (change)="changeDate()"/>
+  <div class="heading">
+    <div class="search">
+      <div class="dateRange">
+        <div class="tittle">חיפוש לפי טווח תאריכים:
+          <div class="line">&nbsp;</div>
+        </div>
+        <label for="startDate" class="search-label">תאריך התחלה:</label>
+        <input type="date" id="startDate" name="startDate" class="search-input" [(ngModel)]="startDate"/>
+        <label for="endDate" class="search-label">תאריך סיום:</label>
+        <input type="date" id="endDate" name="endDate" class="search-input" [(ngModel)]="endDate"/>
+      </div>
+      <div class="timeRange">
+        <div class="tittle">הוספת טווח זמנים:
+          <div class="line">&nbsp;</div>
+        </div>
+        <label for="startTime" class="search-label">זמן התחלה:</label>
+        <input type="time" id="startTime" name="startTime" class="search-input" [(ngModel)]="startTime"/>
+        <label for="endTime" class="search-label">זמן סיום:</label>
+        <input type="time" id="endTime" name="endTime" class="search-input" [(ngModel)]="endTime"/>
+      </div>
+      <button class="btn btn-success" (click)="search()">חיפוש <i class="fas fa-search"></i></button>
+    </div>
+    <div class="filter">
+      <label for="positionFilter" class="search-label">סינון לפי מיקום:</label>
+      <select name="positionFilter" id="positionFilter" (change)="positionFilter()" [(ngModel)]="position">
+        <option disabled>בחר/י מיקום</option>
+        <option value="חדר מכונות">חדר מכונות</option>
+        <option value="חדר אריזה">חדר אריזה</option>
+        <option value="all">כולם</option>
+      </select>
+    </div>
   </div>
-  <div class="search">
-    <label for="positionFilter" class="search-label">סינון לפי מיקום:</label>
-    <select name="positionFilter" id="positionFilter" (change)="positionFilter()" [(ngModel)]="position">
-      <option disabled>בחר/י מיקום</option>
-      <option value="peer2">חדר מכונות</option>
-      <option value="peer1">חדר אריזה</option>
-      <option value="all">כולם</option>
-    </select>
-  </div>
-  <div class="resultAlert" *ngIf="resultAlert">
+  <div *ngIf="loader" class="loader"></div>
+  <div class="resultAlert" *ngIf="resultAlert && !loader">
     <h4 class="resultAlert-msg">אין תוצאת בדף זה</h4>
   </div>
-  <table class="styled-table" *ngIf="!resultAlert">
+  <table class="styled-table" *ngIf="!resultAlert && !loader">
     <thead>
       <tr>
         <th>טמפרטורה</th>
@@ -31,12 +51,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let log of temperatures">
+      <tr *ngFor="let log of temperatures" [ngStyle]="{'background-color': log.temp < 15 || log.temp > 30? 'red' : '','color': log.temp < 15 || log.temp > 30? 'white' : ''}">
         <td style="width: 1%">
           {{log.temp}}
         </td>
         <td style="width: 3%">
-          {{ log.device == "peer1" ? "חדר אריזה" : "חדר מכונות" }}
+          {{ log.device }}
         </td>
         <td style="width: 5%">
           {{ log.humidity }}
@@ -47,11 +67,10 @@
       </tr>
     </tbody>
   </table>
-  <div class="container">
+  <!-- <div class="container">
     <div class="buttons-container">
       <button class="btn btn-success buttons-container-item" (click)="previousPage()">הקודם</button>
       <button class="btn btn-success buttons-container-item" (click)="nextPage()">הבא</button>
     </div>
-
-  </div>
+  </div> -->
 </section>

@@ -14,18 +14,29 @@ export class ReportsService {
   private baseUri = "/";
 
   // Fetch temperatures logs
-  getTemperaturesLogs(pageNumber?):Observable<any> {
-    const uri = `${this.baseUri}report/getAllTemperatures?pageNumber=${pageNumber}`
+  getTemperaturesLogs():Observable<any> {
+    const uri = `${this.baseUri}report/getAllTemperatures`
     return this.http.get(uri);
   }
 
 
   // Fetch temperatures logs by date
-  getTemperaturesLogsByDate(dateSearch,pageNumber?):Observable<any> {
-    const obj = {
-      dateSearch:dateSearch
+  getTemperaturesLogsByDate(startDate?,endDate?,startTime?,endTime?):Observable<any> {
+    let obj
+    if(startTime && endTime){
+      obj = {
+        startDate:startDate,
+        endDate:endDate,
+        startTime:startTime,
+        endTime:endTime
+      }
+    }else{
+      obj = {
+        startDate:startDate,
+        endDate:endDate,
+      }
     }
-    const uri = `${this.baseUri}report/getTemperaturesByDate?pageNumber=${pageNumber}`
+    const uri = `${this.baseUri}report/getTemperaturesByDate`
     return this.http.post(uri,obj);
   }
 

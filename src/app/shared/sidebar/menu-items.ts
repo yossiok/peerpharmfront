@@ -375,7 +375,7 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
       },
       {
-        path: "/peerpharm/qa/temperaturesLogs/:pageNumber",
+        path: "/peerpharm/qa/temperaturesLogs",
         title: "Temperatures Logs",
         icon: "fas fa-list-ol",
         class: "",

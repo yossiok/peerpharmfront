@@ -12,13 +12,15 @@ import { Router } from "@angular/router";
 export class TemperaturesLogsComponent implements OnInit {
   user: any;
   isLogin: boolean = false;
-  pageNumber: number = 1;
-  pages: number;
   temperatures: Array<any> = [];
   temperaturesCopy: Array<any> = [];
-  dateSearch: Date = null;
   position: string = "";
   resultAlert: boolean = false;
+  startDate:string=""
+  endDate:string=""
+  startTime:string=""
+  endTime:string=""
+  loader:boolean = false
 
   constructor(
     private reportsService: ReportsService,
@@ -43,16 +45,18 @@ export class TemperaturesLogsComponent implements OnInit {
   ngOnInit() {
     this.getUserInfo();
     if (this.isLogin) {
+      this.loader = true;
       this.reportsService
-        .getTemperaturesLogs(String(this.pageNumber))
+        .getTemperaturesLogsByDate()
         .subscribe((res) => {
+          this.loader = false
           this.temperatures = res.temperatures;
           this.temperaturesCopy = res.temperatures;
-          this.pageNumber = res.page;
-          this.pages = res.pages;
-          this.router.navigate([
-            `/peerpharm/qa/temperaturesLogs/${this.pageNumber}`,
-          ]);
+          if(this.temperatures.length < 1){
+            this.resultAlert = true
+          }else{
+            this.resultAlert = false
+          }
         });
     } else {
       this.router.navigate([`/peerpharm/login`]);
@@ -72,183 +76,54 @@ export class TemperaturesLogsComponent implements OnInit {
       );
       if (this.temperatures.length < 1) {
         this.resultAlert = true;
+      }else{
+        this.resultAlert = false
       }
     }
   }
 
-  previousPage() {
-    if (this.dateSearch) {
-      if (this.pageNumber > 1) {
-        this.pageNumber--;
-        this.reportsService
-          .getTemperaturesLogsByDate(this.dateSearch, String(this.pageNumber))
-          .subscribe((res) => {
-            this.temperaturesCopy = res.temperatures;
-            if (this.position != "" && this.position != "all") {
-              this.temperatures = this.temperaturesCopy.filter(
-                (x) => x.device == this.position
-              );
-              if (this.temperatures.length < 1) {
-                this.resultAlert = true;
-              } else {
-                this.resultAlert = false;
-              }
-            } else {
-              this.temperatures = res.temperatures;
-              if (this.temperatures.length < 1) {
-                this.resultAlert = true;
-              } else {
-                this.resultAlert = false;
-              }
-            }
-            this.pageNumber = res.page;
-            this.pages = res.pages;
-            this.router.navigate([
-              `/peerpharm/qa/temperaturesLogs/${this.pageNumber}`,
-            ]);
-          });
-      } else {
-        this.toastService.warning("זה הדף הראשון");
+  search(){
+    if(!this.startDate || !this.endDate){
+      if(!this.startDate){
+      this.toastService.warning("נא להזין תאריך התחלה");
       }
-      return;
-    }
-    if (this.pageNumber > 1) {
-      this.pageNumber--;
-      this.reportsService
-        .getTemperaturesLogs(String(this.pageNumber))
-        .subscribe((res) => {
-          this.temperaturesCopy = res.temperatures;
-          if (this.position != "" && this.position != "all") {
-            this.temperatures = this.temperaturesCopy.filter(
-              (x) => x.device == this.position
-            );
-            if (this.temperatures.length < 1) {
-              this.resultAlert = true;
-            } else {
-              this.resultAlert = false;
-            }
-          } else {
-            this.temperatures = res.temperatures;
-            if (this.temperatures.length < 1) {
-              this.resultAlert = true;
-            } else {
-              this.resultAlert = false;
-            }
-          }
-          this.pageNumber = res.page;
-          this.pages = res.pages;
-          this.router.navigate([
-            `/peerpharm/qa/temperaturesLogs/${this.pageNumber}`,
-          ]);
-        });
-    } else {
-      this.toastService.warning("זה הדף הראשון");
-    }
-  }
-
-  nextPage() {
-    if (this.dateSearch) {
-      if (this.pageNumber < this.pages) {
-        this.pageNumber++;
-        this.reportsService
-          .getTemperaturesLogsByDate(this.dateSearch, String(this.pageNumber))
-          .subscribe((res) => {
-            this.temperaturesCopy = res.temperatures;
-            if (this.position != "" && this.position != "all") {
-              this.temperatures = this.temperaturesCopy.filter(
-                (x) => x.device == this.position
-              );
-              if (this.temperatures.length < 1) {
-                this.resultAlert = true;
-              } else {
-                this.resultAlert = false;
-              }
-            } else {
-              this.temperatures = res.temperatures;
-              if (this.temperatures.length < 1) {
-                this.resultAlert = true;
-              } else {
-                this.resultAlert = false;
-              }
-            }
-            this.pageNumber = res.page;
-            this.pages = res.pages;
-            this.router.navigate([
-              `/peerpharm/qa/temperaturesLogs/${this.pageNumber}`,
-            ]);
-          });
-      } else {
-        this.toastService.warning("זה הדף האחרון");
+      if(!this.endDate){
+      this.toastService.warning("נא להזין תאריך סיום");
       }
-      return;
+      return
     }
-    if (this.pageNumber < this.pages) {
-      this.pageNumber++;
-      this.reportsService
-        .getTemperaturesLogs(String(this.pageNumber))
-        .subscribe((res) => {
-          this.temperaturesCopy = res.temperatures;
-          if (this.position != "" && this.position != "all") {
-            this.temperatures = this.temperaturesCopy.filter(
-              (x) => x.device == this.position
-            );
-            if (this.temperatures.length < 1) {
-              this.resultAlert = true;
-            } else {
-              this.resultAlert = false;
-            }
-          } else {
-            this.temperatures = res.temperatures;
-            if (this.temperatures.length < 1) {
-              this.resultAlert = true;
-            } else {
-              this.resultAlert = false;
-            }
-          }
-          this.pageNumber = res.page;
-          this.pages = res.pages;
-          this.router.navigate([
-            `/peerpharm/qa/temperaturesLogs/${this.pageNumber}`,
-          ]);
-        });
-    } else {
-      this.toastService.warning("זה הדף האחרון");
+    if(this.startTime && !this.endTime){
+      this.toastService.warning("נא להזין זמן התחלה");
+      return
     }
-  }
-
-  changeDate() {
-    if (this.dateSearch) {
-      this.temperatures = null;
-      this.pageNumber = 1;
-      this.reportsService
-        .getTemperaturesLogsByDate(this.dateSearch, String(this.pageNumber))
-        .subscribe((res) => {
-          this.temperaturesCopy = res.temperatures;
-          if (this.position != "" && this.position != "all") {
-            this.temperatures = this.temperaturesCopy.filter(
-              (x) => x.device == this.position
-            );
-            if (this.temperatures.length < 1) {
-              this.resultAlert = true;
-            } else {
-              this.resultAlert = false;
-            }
-          } else {
-            this.temperatures = res.temperatures;
-            if (this.temperatures.length < 1) {
-              this.resultAlert = true;
-            } else {
-              this.resultAlert = false;
-            }
-          }
-          this.pageNumber = 1;
-          this.pages = res.pages;
-          this.router.navigate([
-            `/peerpharm/qa/temperaturesLogs/${this.pageNumber}`,
-          ]);
-        });
-    } else {
-      this.toastService.error("אנא בחר/י תאריך");
+    if(!this.startTime && this.endTime){
+      this.toastService.warning("נא להזין זמן סיום");
+      return
+    }
+    if(this.startTime && this.endTime){
+      this.loader = true;
+      this.reportsService.getTemperaturesLogsByDate(this.startDate,this.endDate,this.startTime,this.endTime).subscribe((res)=>{
+        this.loader = false;
+        this.temperatures = res.temperatures;
+        this.temperaturesCopy = res.temperatures;
+        if(this.temperatures.length < 1){
+          this.resultAlert = true;
+        }else{
+          this.resultAlert = false;
+        }
+      })
+    }else{
+      this.loader = true;
+      this.reportsService.getTemperaturesLogsByDate(this.startDate,this.endDate).subscribe((res)=>{
+        this.loader = false;
+        this.temperatures = res.temperatures;
+        this.temperaturesCopy = res.temperatures;
+        if(this.temperatures.length < 1){
+          this.resultAlert = true;
+        }else{
+          this.resultAlert = false;
+        }
+      })
     }
   }
 }
