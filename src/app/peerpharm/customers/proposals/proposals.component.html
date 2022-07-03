@@ -1,219 +1,817 @@
 <div *ngIf="!authorized">אינך מורשה לראות מסך זה</div>
 <div dir="rtl" *ngIf="authorized">
-  <form [formGroup]="newProposalForm" class="form_1">
-    <div class="row mt-2">
-      <div class="col-1"></div>
-      <div class="col-6"><h3>פרטי הלקוח</h3></div>
-      <div class="col-2">
-        <label>מתאריך</label>
-        <input
-          type="date"
-          class="form-control"
-          formControlName="proposalDate"
-          [value]="currentDate | date: 'YYYY-MM-dd'"
-        />
-      </div>
+  <div class="row mt-2 form_01">
+    <div class="col-1"></div>
+    <div class="col-2">
+      <button class="btn btn-outline-success" (click)="editView()">New</button>
     </div>
-    <div class="row mt-2">
-      <div class="col-1"></div>
-      <div class="col-2">
-        <label>מספר הלקוח</label>
-        <input
-          type="text"
-          class="form-control"
-          formControlName="customerId"
-          (blur)="getCustomerByNumber()"
-        />
-      </div>
-      <div class="col-4">
-        <label>שם הלקוח</label>
-        <input
-          class="form-control"
-          type="select"
-          list="customers"
-          formControlName="customerName"
-          (change)="getCustomerByName()"
-        />
-        <datalist id="customers">
-          <option value="null" disabled>בחר לקוח</option>
-          <ng-container *ngIf="allCustomersList.length > 0">
+    <div class="col-1"></div>
+    <div class="col-2">
+      <button class="btn btn-outline-primary" (click)="searchView()">
+        Edit
+      </button>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-2">
+      <button
+        *ngIf="!printView"
+        class="btn btn-outline-info"
+        (click)="printDisplay()"
+      >
+        Print Preview
+      </button>
+      <button
+        *ngIf="printView"
+        class="btn btn-outline-info"
+        (click)="draftView()"
+      >
+        Edit View
+      </button>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-2" *ngIf="printView">
+      <button
+        class="btn btn-outline-danger"
+        #printBtn2
+        [useExistingCss]="true"
+        printTitle="חשבונית עיסקה"
+        printSectionId="print-section"
+        ngxPrint
+      >
+        Print
+      </button>
+    </div>
+  </div>
+  <ng-container *ngIf="searchMode">
+    <form action="" [formGroup]="searchForm" class="form_1">
+      <div class="row mt-2">
+        <div class="col-1"></div>
+        <div class="col-2">
+          <label for="">מספר חשבונית</label>
+          <select
+            formControlName="proposalNumber"
+            class="form-control"
+            (change)="showProposal()"
+          >
+            <option value="" disabled>בחר מספר</option>
             <option
-              *ngFor="let customer of allCustomersList"
-              [value]="customer.costumerName"
+              *ngFor="let proposal of proposalsList"
+              [value]="proposal.proposalNumber"
             >
-              {{ customer.costumerId }} - {{ customer.costumerName }}
+              {{ proposal.proposalNumber }}
             </option>
-          </ng-container>
-        </datalist>
+          </select>
+        </div>
       </div>
+    </form>
+  </ng-container>
+  <form [formGroup]="newProposalForm" class="form_1">
+    <ng-container *ngIf="editMode && !printView">
+      <div *ngIf="loading" class="loading">Loading&#8230;</div>
+      <ng-container *ngIf="currentPriceList.length < 1">
+        <div class="row mt-2">
+          <div class="col-1"></div>
+          <div class="col-6"><h3>פרטי הלקוח</h3></div>
+          <div class="col-2">
+            <label>תאריך</label>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="proposalDate"
+              [value]="
+                proposalDate.value
+                  ? proposalDate.value
+                  : (currentDate | date: 'yyyy-MM-dd')
+              "
+            />
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-1"></div>
+          <div class="col-2">
+            <label>מספר הלקוח</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="customerId"
+              (blur)="getCustomerByNumber()"
+            />
+            <div *ngIf="customerId.errors" class="text-danger">*שדה חובה</div>
+          </div>
+          <div class="col-4">
+            <label>שם הלקוח</label>
+            <input
+              class="form-control"
+              type="select"
+              list="customers"
+              formControlName="customerName"
+              (change)="getCustomerByName()"
+            />
+            <datalist id="customers">
+              <option value="null" disabled>בחר לקוח</option>
+              <ng-container *ngIf="allCustomersList.length > 0">
+                <option
+                  *ngFor="let customer of allCustomersList"
+                  [value]="customer.costumerName"
+                >
+                  {{ customer.costumerId }} - {{ customer.costumerName }}
+                </option>
+              </ng-container>
+            </datalist>
+            <div *ngIf="customerName.errors" class="text-danger">*שדה חובה</div>
+          </div>
 
-      <div class="col-2">
-        <label>ארץ יעד</label>
-        <select formControlName="country" class="form-control">
-          <option disabled value="null">בחר יעד</option>
-          <option value="israel">Israel - ישראל</option>
-          <option value="abroad">Abroad - חו"ל</option>
-        </select>
+          <div class="col-2">
+            <label>ארץ יעד</label>
+            <select formControlName="country" class="form-control">
+              <option disabled value="null">בחר יעד</option>
+              <option value="israel">Israel - ישראל</option>
+              <option value="abroad">Abroad - חו"ל</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-1"></div>
+          <div class="col-3">
+            <label>שם הסוכן</label>
+            <select class="form-control" formControlName="agent">
+              <option value="null" disabled>בחר סוכן</option>
+              <option
+                [value]="agent.firstName + ' ' + agent.lastName"
+                *ngFor="let agent of allUsers"
+              >
+                {{ agent.firstName }} {{ agent.lastName }}
+              </option>
+            </select>
+            <div *ngIf="agent.errors" class="text-danger">*שדה חובה</div>
+          </div>
+          <div class="col-1"></div>
+          <div class="col-2">
+            <label>מחירון:</label>
+            <input
+              class="form-control"
+              type="text"
+              formControlName="priceList"
+              [value]="currentCustomer?.costumerId"
+            />
+          </div>
+          <div class="col-2">
+            <label>מטבע</label>
+            <select class="form-control" formControlName="currency">
+              <option value="null" disabled>בחר מטבע</option>
+              <option
+                [value]="currency.name"
+                *ngFor="let currency of allCurrencies"
+              >
+                {{ currency.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-1"></div>
+          <div class="col-6"><h3>פרטי הזמנת הלקוח</h3></div>
+          <div class="col-5"></div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-2">
+            <label for="">מספר הזמנת הלקוח</label>
+            <input
+              type="text"
+              formControlName="customerOrder"
+              class="form-control"
+            />
+          </div>
+          <div class="col-1"></div>
+          <div class="col-2">
+            <label for="">הזמנה הוקלדה ע"י</label>
+            <input
+              type="text"
+              formControlName="customerTyper"
+              class="form-control"
+            />
+          </div>
+          <div class="col-1"></div>
+          <div class="col-2">
+            <label for="">תאריך ההזמנה</label>
+            <input
+              type="date"
+              formControlName="customerOrderDate"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div *ngIf="obligoDeviated" class="mt-4">
+          <div class="col-12">
+            <p class="text-danger font-weight-bold blockquote text-center heb">
+              שים לב! ישנה חריגה באשראי, נא לפנות לכספים לאישור הזמנה.
+            </p>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-6">
+            <label> כתובת למשלוח:</label>
+            <textarea
+              name=""
+              id=""
+              cols="30"
+              rows="3"
+              class="form-control"
+              formControlName="shippingAddress"
+            ></textarea>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-6">
+            <label> כתובת חשבונית:</label>
+            <textarea
+              colls="30"
+              rows="3"
+              class="form-control"
+              formControlName="invoiceAddress"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-8">
+            <table class="table striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>שם איש קשר</th>
+                  <th>טלפון</th>
+                  <th>אימייל</th>
+                  <th>
+                    <i
+                      class="fa fa-plus text-success click"
+                      ngbTooltip="New Contact"
+                      (click)="addContact()"
+                    ></i>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container formArrayName="contacts">
+                  <tr
+                    *ngFor="let contactForm of contacts.controls; let i = index"
+                  >
+                    <ng-container [formGroup]="contactForm">
+                      <td>{{ i + 1 }}</td>
+                      <td *ngIf="i == editContact">
+                        <input
+                          type="text"
+                          formControlName="name"
+                          value="{{ contactForm.value.name }}"
+                        />
+                      </td>
+                      <td *ngIf="i != editContact">
+                        {{ contactForm.value.name }}
+                      </td>
+                      <td *ngIf="i != editContact">
+                        {{ contactForm.value.phone }}
+                      </td>
+                      <td *ngIf="i == editContact">
+                        <input
+                          type="text"
+                          formControlName="phone"
+                          value="{{ contactForm.value.phone }}"
+                        />
+                      </td>
+                      <td *ngIf="i != editContact">
+                        {{ contactForm.value.mail }}
+                      </td>
+                      <td *ngIf="i == editContact">
+                        <input
+                          type="text"
+                          formControlName="mail"
+                          value="{{ contactForm.value.mail }}"
+                        />
+                      </td>
+                      <td *ngIf="i != editContact">
+                        <i
+                          class="fa fa-pencil-alt text-primary click"
+                          ngbTooltip="Edit contact"
+                          (click)="editContact = i"
+                        ></i
+                        >&nbsp;&nbsp;
+                        <i
+                          class="fa fa-trash text-danger"
+                          ngbTooltip="Delete contact"
+                          (click)="removeContact(i)"
+                        ></i>
+                      </td>
+                      <td *ngIf="i == editContact">
+                        <i
+                          class="fa fa-save text-success click"
+                          ngbTooltip="Save"
+                          (click)="saveContact(i)"
+                        >
+                          &nbsp;</i
+                        >
+                        <i
+                          class="fa fa-arrow-left text-danger click"
+                          ngbTooltip="Clear"
+                          (click)="clearContact(i)"
+                        ></i>
+                      </td>
+                    </ng-container>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-1"></div>
+          <div class="col-2">
+            <button
+              *ngIf="!proposalNumber.value"
+              class="btn btn-outline-primary"
+              (click)="createProposal()"
+            >
+              אשר והמשך
+            </button>
+            <button
+              *ngIf="proposalNumber.value"
+              class="btn btn-outline-primary"
+              (click)="createProposal()"
+            >
+              עדכן והמשך
+            </button>
+          </div>
+
+          <div class="col-2">
+            <button class="btn btn-outline-danger" (click)="resetForm()">
+              בטל ונקה
+            </button>
+          </div>
+          <div class="col-4">
+            <button class="btn btn-outline-info" (click)="printDisplay()">
+              הצג לפני הדפסה
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="currentPriceList.length > 0 && !printView">
+        <div class="row mt-4">
+          <div class="col-12">
+            <h2 class="text-center">פרוט פריטים וכמויות</h2>
+            <h3 *ngIf="currentProposal" class="text-center">
+              הזמנה מספר: {{ currentProposal.proposalNumber }}
+            </h3>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-11">
+            <table class="table striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>מספר פריט</th>
+                  <th>ברקוד</th>
+                  <th>תאור</th>
+                  <th>כמות</th>
+                  <th>מחיר יחידה</th>
+                  <th>הנחה</th>
+                  <th>סה"כ</th>
+                  <th>
+                    <i
+                      class="fa fa-plus text-success click"
+                      ngbTooltip="New Item"
+                      (click)="addItem()"
+                    ></i>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container formArrayName="items">
+                  <tr *ngFor="let itemForm of items.controls; let i = index">
+                    <ng-container [formGroup]="itemForm">
+                      <td>{{ i + 1 }}</td>
+                      <td *ngIf="i == editItem">
+                        <select
+                          (change)="getItemName(i)"
+                          formControlName="itemNumber"
+                          class="form-control"
+                          value="{{ itemForm.value.itemNumber }}"
+                        >
+                          <option value="" disabled>בחר פריט</option>
+                          <option
+                            *ngFor="let itemN of currentPriceList"
+                            [value]="itemN.itemNumber"
+                          >
+                            {{ itemN.itemNumber }}
+                          </option>
+                        </select>
+                      </td>
+                      <td *ngIf="i != editItem">
+                        {{ itemForm.value.itemNumber }}
+                      </td>
+                      <td *ngIf="i == editItem">
+                        <input
+                          type="text"
+                          [value]="itemForm.value.barcode"
+                          formControlName="barcode"
+                          class="form-control"
+                        />
+                      </td>
+                      <td *ngIf="i != editItem">
+                        {{ itemForm.value.barcode }}
+                      </td>
+                      <td *ngIf="i == editItem">
+                        <input
+                          type="select"
+                          list="itemsNames"
+                          formControlName="itemName"
+                          (change)="getItemByName(i)"
+                          class="form-control"
+                          [value]="itemForm.value.itemName"
+                        />
+                        <datalist id="itemsNames">
+                          <option value="" disabled>בחר שם פריט</option>
+                          <option
+                            *ngFor="let itemN of currentPriceList"
+                            [value]="itemN.itemName"
+                          >
+                            {{ itemN.itemName }}-{{ itemN.itemNumber }}
+                          </option>
+                        </datalist>
+                      </td>
+                      <td *ngIf="i != editItem">
+                        {{ itemForm.value.itemName }}
+                      </td>
+                      <td *ngIf="i == editItem">
+                        <input
+                          type="number"
+                          [value]="itemForm.value.quantity"
+                          formControlName="quantity"
+                          class="form-control"
+                        />
+                      </td>
+                      <td *ngIf="i != editItem">
+                        {{ itemForm.value.quantity }}
+                      </td>
+                      <td *ngIf="i == editItem">
+                        <input
+                          type="number"
+                          [value]="itemForm.value.price"
+                          formControlName="price"
+                          class="form-control"
+                        />
+                      </td>
+                      <td *ngIf="i != editItem">{{ itemForm.value.price }}</td>
+                      <td *ngIf="i == editItem">
+                        <input
+                          type="number"
+                          [value]="itemForm.value.discount"
+                          formControlName="discount"
+                          class="form-control"
+                        />
+                      </td>
+                      <td *ngIf="i != editItem">
+                        {{ itemForm.value.discount }}
+                      </td>
+                      <td *ngIf="i == editItem">
+                        <input
+                          type="number"
+                          [value]="
+                            itemForm.value.price *
+                            itemForm.value.quantity *
+                            (1 - itemForm.value.discount / 100)
+                          "
+                          formControlName="total"
+                          class="form-control"
+                        />
+                      </td>
+                      <td *ngIf="i != editItem">
+                        {{ itemForm.value.total | number: "1.0-2" }}
+                      </td>
+                      <td *ngIf="i != editItem">
+                        <i
+                          class="fa fa-pencil-alt text-primary click"
+                          ngbTooltip="Edit Item"
+                          (click)="editItem = i"
+                        ></i
+                        >&nbsp;&nbsp;
+                        <i
+                          class="fa fa-trash text-danger"
+                          ngbTooltip="Delete Item"
+                          (click)="removeItem(i)"
+                        ></i>
+                      </td>
+                      <td *ngIf="i == editItem">
+                        <i
+                          class="fa fa-save text-success click"
+                          ngbTooltip="Save Item"
+                          (click)="saveItem(i)"
+                        >
+                          &nbsp;</i
+                        >
+                        <i
+                          class="fa fa-arrow-left text-danger click"
+                          ngbTooltip="Clear Item"
+                          (click)="editItem = -1"
+                        ></i>
+                      </td>
+                    </ng-container>
+                  </tr>
+                  <tr>
+                    <td colspan="8" class="text-center">
+                      <i
+                        class="fa fa-plus text-success click"
+                        ngbTooltip="New Item"
+                        (click)="addItem()"
+                      ></i>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-6">
+            <label> הערות:</label>
+            <textarea
+              colls="30"
+              rows="3"
+              class="form-control"
+              formControlName="remark"
+              dir="rtl"
+            ></textarea>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-6">
+            <label> תוספות:</label>
+            <textarea
+              colls="30"
+              rows="3"
+              class="form-control"
+              formControlName="additions"
+              dir="rtl"
+            ></textarea>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-6">
+            <label>תנאי תשלום:</label>
+            <textarea
+              colls="30"
+              rows="3"
+              class="form-control"
+              formControlName="paymentTerms"
+              dir="rtl"
+            ></textarea>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-2">
+            <label>תאריך מוכנות הזמנה משוער:</label>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="estimatedArrivalDate"
+              [value]="estimatedArrivalDate | date: 'YYYY-MM-dd'"
+            />
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-2">
+            <button class="btn btn-info" (click)="updateProposal()">
+              אשר והמשך
+            </button>
+          </div>
+          <div class="col-2">
+            <button class="btn btn-danger" (click)="resetItems()">נקה</button>
+          </div>
+          <div class="col-4">
+            <button class="btn btn-outline-info" (click)="printDisplay()">
+              הצג לפני הדפסה
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </form>
+
+  <div *ngIf="printView" id="print-section">
+    <header>
+      <div class="row mt-4 form_1" dir="rtl">
+        <div class="col-1"></div>
+        <div class="col-7">
+          <h2>פאר פארם בע"מ</h2>
+          <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256</p>
+          <p>
+            <span>טלפון 03-9024055</span>&nbsp;&nbsp;
+            <span>פקס 03-9024015</span>&nbsp;&nbsp;
+            <span>דואר אלקטרוני peerpharm@barak.net.il</span>&nbsp;&nbsp;<span
+              >ח.פ: 511899023</span
+            >
+          </p>
+        </div>
+        <div class="col-3">
+          <img
+            style="width: 270px"
+            src="../../../assets/images/peerpharm.png"
+          />
+        </div>
+      </div>
+      <hr
+        style="
+          height: 2px;
+          border-width: 0;
+          width: 85%;
+          color: gray;
+          background-color: gray;
+          text-align: left;
+        "
+      />
+      <div class="row mt-2" dir="rtl">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <h4 class="text-center">חשבונית עסקה</h4>
+          <h4 class="text-center">(Proforma Invoice)</h4>
+          <h4 class="text-center">{{ currentProposal.proposalNumber }}</h4>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-2">
+          <h6>
+            תאריך: {{ newProposalForm.value.proposalDate | date: "dd/MM/yyyy" }}
+          </h6>
+        </div>
+      </div>
+      <div class="row mt-2" dir="rtl">
+        <div class="col-1"></div>
+        <div class="col-10">
+          <p>לכבוד,</p>
+          <h5>{{ newProposalForm.value.customerName }}</h5>
+          <p>{{ newProposalForm.value.invoiceAddress }}</p>
+          <p>הזמנתכם: {{ newProposalForm.value.customerOrder }}</p>
+          <p>
+            מתאריך:
+            {{ newProposalForm.value.customerOrderDate | date: "dd/MM/yyyy" }}
+          </p>
+          <p>
+            לידי:
+            {{ newProposalForm.value.contacts[0].name }}
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <div class="row mt-2" dir="rtl">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <main>
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th>#</th>
+                <th>מספר פריט</th>
+                <th>תאור</th>
+                <th>כמות</th>
+                <th>מחיר יחידה</th>
+                <th>הנחה %</th>
+                <th>סה"כ</th>
+              </tr>
+              <ng-container *ngIf="items">
+                <tr *ngFor="let item of items.value; let i = index">
+                  <td class="cellPadding">{{ i + 1 }}</td>
+                  <td>{{ item.itemNumber }}</td>
+                  <td>{{ item.itemName }}</td>
+                  <td>{{ item.quantity | number }}</td>
+                  <td>
+                    {{ item.price | currency: newProposalForm.value.currency }}
+                  </td>
+                  <td>{{ item.discount }}%</td>
+                  <td>
+                    {{ item.total | currency: newProposalForm.value.currency }}
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3"></td>
+                  <td>{{ findTotalQty() | number }}</td>
+                  <td></td>
+                  <td>סה"כ לפני מע"מ</td>
+                  <td>
+                    {{ findSum() | currency: newProposalForm.value.currency }}
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="5"></td>
+                  <td>17.00% מע"מ</td>
+                  <td>
+                    {{
+                      findSum() * 0.17
+                        | currency: newProposalForm.value.currency
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="5"></td>
+                  <td>סה"כ כולל מע"מ</td>
+                  <td>
+                    {{
+                      findSum() * 1.17
+                        | currency: newProposalForm.value.currency
+                    }}
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </main>
+      </div>
+    </div>
+    <div class="row mt-2" dir="rtl">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <h5>הערות:</h5>
+        <p>{{ newProposalForm.value.remark }}</p>
+      </div>
+    </div>
+    <div class="row mt-2" dir="rtl">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <h5>תוספות:</h5>
+        <p>{{ newProposalForm.value.additions }}</p>
+      </div>
+    </div>
+    <div class="row mt-2" dir="rtl">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <h5>תנאי תשלום:</h5>
+        <p>{{ newProposalForm.value.paymentTerms }}</p>
+      </div>
+    </div>
+    <div class="row mt-2" dir="rtl">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <h5>מועד משוער למוכנות לאיסוף :</h5>
+        <p>
+          {{ newProposalForm.value.estimatedArrivalDate | date: "dd/MM/yyyy" }}
+        </p>
+      </div>
+    </div>
+
+    <div class="row mt-4" dir="rtl">
+      <div class="col-1"></div>
+      <div class="col-4">
+        <p>בכבוד רב,</p>
+        <h5>חביב פאר</h5>
+        <h5>פארפארם בע"מ</h5>
       </div>
     </div>
     <div class="row mt-2">
+      <div class="col-1"></div>
+
+      <div class="col-3">
+        <p>
+          <span>שם המאשר:</span>&nbsp;&nbsp;
+          <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u>
+          </span>
+        </p>
+      </div>
       <div class="col-1"></div>
       <div class="col-3">
-        <label>שם הסוכן</label>
-        <select class="form-control" formControlName="agent">
-          <option value="null" disabled>בחר סוכן</option>
-          <option
-            [value]="agent.firstName + ' ' + agent.lastName"
-            *ngFor="let agent of allUsers"
-          >
-            {{ agent.firstName }} {{ agent.lastName }}
-          </option>
-        </select>
+        <p>
+          &nbsp;&nbsp; <span>תאריך:</span>&nbsp;&nbsp;
+          <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u> </span
+          >&nbsp;&nbsp;
+        </p>
       </div>
       <div class="col-1"></div>
-      <div class="col-2">
-        <label>מחירון:</label>
-        <input
-          class="form-control"
-          type="text"
-          formControlName="priceList"
-          [value]="currentCustomer.costumerId"
-        />
-      </div>
-      <div class="col-2">
-        <label>מטבע</label>
-        <select class="form-control" formControlName="currency">
-          <option value="null" disabled>בחר מטבע</option>
-          <option
-            [value]="currency.name"
-            *ngFor="let currency of allCurrencies"
-          >
-            {{ currency.name }}
-          </option>
-        </select>
+      <div class="col-3">
+        <p>
+          <span>חתימה:</span>
+          <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u> </span
+          >&nbsp;&nbsp; &nbsp;&nbsp;
+        </p>
       </div>
     </div>
-    <div class="row mt-4">
-      <div class="col-1"></div>
-      <div class="col-6">
-        <label> כתובת למשלוח:</label>
-        <textarea
-          name=""
-          id=""
-          cols="30"
-          rows="3"
-          class="form-control"
-          formControlName="shippingAddress"
-        ></textarea>
-      </div>
-    </div>
-    <div class="row mt-4">
-      <div class="col-1"></div>
-      <div class="col-6">
-        <label> כתובת חשבונית:</label>
-        <textarea
-          colls="30"
-          rows="3"
-          class="form-control"
-          formControlName="invoiceAddress"
-        ></textarea>
-      </div>
-    </div>
-    <div class="row mt-4">
-      <div class="col-1"></div>
-      <div class="col-8">
-        <table class="table striped">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>שם איש קשר</th>
-              <th>טלפון</th>
-              <th>אימייל</th>
-              <th>
-                <i
-                  class="fa fa-plus text-success click"
-                  ngbTooltip="New Contact"
-                  (click)="addContact()"
-                ></i>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container formArrayName="contacts">
-              <tr *ngFor="let contactForm of contacts.controls; let i = index">
-                <ng-container [formGroup]="contactForm">
-                  <td>{{ i + 1 }}</td>
-                  <td *ngIf="i == editContact">
-                    <input
-                      type="text"
-                      formControlName="name"
-                      value="{{ contactForm.value.name }}"
-                    />
-                  </td>
-                  <td *ngIf="i != editContact">{{ contactForm.value.name }}</td>
-                  <td *ngIf="i != editContact">
-                    {{ contactForm.value.phone }}
-                  </td>
-                  <td *ngIf="i == editContact">
-                    <input
-                      type="text"
-                      formControlName="phone"
-                      value="{{ contactForm.value.phone }}"
-                    />
-                  </td>
-                  <td *ngIf="i != editContact">{{ contactForm.value.mail }}</td>
-                  <td *ngIf="i == editContact">
-                    <input
-                      type="text"
-                      formControlName="mail"
-                      value="{{ contactForm.value.mail }}"
-                    />
-                  </td>
-                  <td *ngIf="i != editContact">
-                    <i
-                      class="fa fa-pencil-alt text-primary click"
-                      ngbTooltip="Edit contact"
-                      (click)="editContact = i"
-                    ></i
-                    >&nbsp;&nbsp;
-                    <i
-                      class="fa fa-trash text-danger"
-                      ngbTooltip="Delete contact"
-                      (click)="removeContact(i)"
-                    ></i>
-                  </td>
-                  <td *ngIf="i == editContact">
-                    <i
-                      class="fa fa-save text-success click"
-                      ngbTooltip="Save"
-                      (click)="saveContact(i, $event)"
-                    >
-                      &nbsp;</i
-                    >
-                    <i
-                      class="fa fa-arrow-left text-danger click"
-                      ngbTooltip="Clear"
-                      (click)="clearContact(i)"
-                    ></i>
-                  </td>
-                </ng-container>
-              </tr>
-            </ng-container>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="row mt-2">
-      <div class="col-1"></div>
-      <div class="col-2">
-        <button class="btn btn-info" (click)="createProposal()">
-          אשר והמשך
-        </button>
-      </div>
-      <div class="col-4"></div>
-      <div class="col-2">
-        <button class="btn btn-danger" (click)="resetForm()">בטל ונקה</button>
-      </div>
-    </div>
-  </form>
+  </div>
 </div>

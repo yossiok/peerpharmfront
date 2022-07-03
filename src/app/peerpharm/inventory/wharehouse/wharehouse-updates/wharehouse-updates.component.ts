@@ -18,6 +18,7 @@ import { YearCount } from "../../shelf-list/YearCount";
 import * as XLSX from "xlsx";
 import { difference } from "lodash";
 import { Subject } from "rxjs";
+import { IoTThingsGraph } from "aws-sdk";
 
 @Component({
   selector: "app-wharehouse-updates",
@@ -68,8 +69,8 @@ export class WhareHouseUpdatesComponent implements OnInit {
     shelfId: new FormControl(""),
     amount: new FormControl(null, Validators.required),
     batchNumber: new FormControl(""),
-    productionDate: new FormControl(new Date()),
-    expirationDate: new FormControl(new Date()),
+    productionDate: new FormControl(null),
+    expirationDate: new FormControl(null),
     userName: new FormControl(""),
   });
 
@@ -235,6 +236,85 @@ export class WhareHouseUpdatesComponent implements OnInit {
       );
       this.sortPositionOrder = 1;
     }
+  }
+
+  sortByPositionNew() {
+    let reA = /[^a-zA-Z]/g;
+    let reN = /[^0-9]/g;
+    let i = this.sortPositionOrder;
+    let firstWall = this.allShelfs.filter((sh) => {
+      return (
+        sh.position.substr(0, 1) == 1 &&
+        isNaN(sh.position.substr(1, 1)) &&
+        sh.position.length > 2
+      );
+    });
+    let secondWall = this.allShelfs.filter((sh) => {
+      return (
+        sh.position.substr(0, 1) == 2 &&
+        isNaN(sh.position.substr(1, 1)) &&
+        sh.position.length > 2
+      );
+    });
+    let thirdWall = this.allShelfs.filter((sh) => {
+      return (
+        sh.position.substr(0, 1) == 3 &&
+        isNaN(sh.position.substr(1, 1)) &&
+        sh.position.length > 2
+      );
+    });
+    let fourthWall = this.allShelfs.filter((sh) => {
+      return (
+        sh.position.substr(0, 1) == 4 &&
+        isNaN(sh.position.substr(1, 1)) &&
+        sh.position.length > 2
+      );
+    });
+
+    let lastWall = this.allShelfs.filter((sh) => {
+      return (
+        !isNaN(sh.position.substr(1, 1)) ||
+        (isNaN(sh.position.substr(1, 1)) &&
+          (sh.position.length < 3 || sh.position.length > 4))
+      );
+    });
+    let walls = [];
+    if (i == 1) {
+      walls = [firstWall, secondWall, thirdWall, fourthWall, lastWall];
+    } else {
+      walls = [lastWall, fourthWall, thirdWall, secondWall, firstWall];
+    }
+    let newWalls = [];
+    for (let wall of walls) {
+      wall = wall.sort((a, b) => {
+        let aA = a.position.replace(reA, "");
+        let bA = b.position.replace(reA, "");
+        if (aA === bA) {
+          let aN = parseInt(a.position.replace(reN, ""), 10);
+          let bN = parseInt(b.position.replace(reN, ""), 10);
+          return aN === bN ? 0 : aN > bN ? i : -i;
+        } else {
+          return aA > bA ? i : -i;
+        }
+      });
+      newWalls = newWalls.concat(wall);
+    }
+
+    console.log(walls);
+    // this.allShelfs = this.allShelfs.sort((a, b) => {
+    //   let aA = a.position.replace(reA, "");
+    //   let bA = b.position.replace(reA, "");
+    //   if (aA === bA) {
+    //     let aN = parseInt(a.position.replace(reN, ""), 10);
+    //     let bN = parseInt(b.position.replace(reN, ""), 10);
+    //     return aN === bN ? 0 : aN > bN ? i : -i;
+    //   } else {
+    //     return aA > bA ? i : -i;
+    //   }
+    // });
+
+    this.allShelfs = newWalls;
+    this.sortPositionOrder *= -1;
   }
 
   sortByItem() {
@@ -618,10 +698,10 @@ export class WhareHouseUpdatesComponent implements OnInit {
         } else if (data.itemShelf) {
           this.toastSrv.success("מדף הוקם בהצלחה");
           console.log(this.newShelfForm.value);
-          //   this.newShelfForm.controls.position.setValue("");
-          //   this.newShelfForm.controls.amount.setValue(0);
-          //   this.newShelfForm.controls.item.setValue("");
-          this.newShelfForm.reset();
+          this.newShelfForm.controls.position.setValue("");
+          this.newShelfForm.controls.amount.setValue(0);
+          this.newShelfForm.controls.item.setValue("");
+          // this.newShelfForm.reset();
           this.itemType = "";
 
           this.validItem = false;
