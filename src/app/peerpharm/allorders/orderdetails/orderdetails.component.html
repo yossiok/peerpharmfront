@@ -2209,7 +2209,19 @@
           <tbody>
             <ng-container *ngFor="let item of similarFormules">
               <tr>
-                <td>{{ item.orderNumber }}</td>
+                <td>
+                  <a
+                    class="pointer"
+                    target="_blank"
+                    routerLink="/peerpharm/allorders/orderitems/{{
+                      item.orderNumber
+                    }}"
+                  >
+                    <u>
+                      {{ item.orderNumber }}
+                    </u>
+                  </a>
+                </td>
                 <td>{{ item.itemNumber }}</td>
               </tr>
             </ng-container>
