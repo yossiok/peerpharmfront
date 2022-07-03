@@ -1,4 +1,4 @@
-<div *ngIf="user.userName == 'dani' || user.userName == 'testuser2'">
+<div *ngIf="user.screenPermission < 4">
   <!-- <a
       href="javascript:void(0)"
       class="btn btn-success show-left-part d-block d-md-none ti-menu"
@@ -80,7 +80,7 @@
         <div class="text-center shadow bg-white w-75 mx-auto rounded p-2">
           <div class="row mt-4" *ngIf="newProposalView">
             <div class="col-12">
-              <h3>חשבונית עסקה - Proform Invoice</h3>
+              <h3>חשבונית עסקה - Proforma Invoice</h3>
             </div>
           </div>
           <div class="row mt-4" *ngIf="proposalsListView">
