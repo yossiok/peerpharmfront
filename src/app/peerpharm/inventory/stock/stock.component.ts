@@ -316,6 +316,7 @@ export class StockComponent implements OnInit {
   MaterialArrivalStartDate: Date;
   MaterialArrivalEndDate: Date;
   measure: string;
+  component: any = null;
 
   @ViewChild("filterByItem") filterByItem: ElementRef; //this.filterBySupplierN.nativeElement.value
   // @ViewChild('filterbyNum') filterbyNum: ElementRef; //this.filterbyNum.nativeElement.value
@@ -2123,9 +2124,10 @@ export class StockComponent implements OnInit {
 
   openAllocatedOrders(component) {
     this.allocatedOrders = [];
+    this.component = null;
     this.alloAmountsLoading = true;
     console.log(component);
-    console.log(component.compnentN);
+    console.log(component.componentN);
     this.openModalHeader = "הקצאות מלאי";
 
     this.openOrderAmountsModal = true;
@@ -2134,6 +2136,7 @@ export class StockComponent implements OnInit {
       .subscribe((data) => {
         this.alloAmountsLoading = false;
         console.log(data);
+        this.component = data;
         this.allocatedOrders = data.allocations;
       });
   }

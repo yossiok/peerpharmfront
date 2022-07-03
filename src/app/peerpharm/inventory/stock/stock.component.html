@@ -3274,17 +3274,42 @@
             </div>
           </div>
 
-        <div class="row fixNoaStupidStuff eContainer">
-        <div class="fixNoaStupidStuff">
-        <h4>חיפוש כמות מוזמנת</h4>
-          <div class="searchBox">
-            <b>תאריך התחלה: </b>
-            <input [(ngModel)]="MaterialArrivalStartDate" class="searchBox-item" id="MaterialArrivalStartDate" name="MaterialArrivalStartDate" type="date"/>
-            <b>תאריך סיום: </b>
-            <input [(ngModel)]="MaterialArrivalEndDate" class="searchBox-item" id="MaterialArrivalEndDate" name="MaterialArrivalEndDate" type="date"/>
-            <button class="btn btn-success searchBox-item" (click)="searchData()">מצא</button>
-            </div>
-            <h5 *ngIf="MaterialArrivalStartDate && MaterialArrivalEndDate && measure"> {{measure}} {{totalQuantity}} מתאריך {{MaterialArrivalStartDate | date:"dd/MM/yyy"}} עד לתאריך {{MaterialArrivalEndDate | date:"dd/MM/yyy"}} הוזמנו  </h5>
+          <div class="row fixNoaStupidStuff eContainer">
+            <div class="fixNoaStupidStuff">
+              <h4>חיפוש כמות מוזמנת</h4>
+              <div class="searchBox">
+                <b>תאריך התחלה: </b>
+                <input
+                  [(ngModel)]="MaterialArrivalStartDate"
+                  class="searchBox-item"
+                  id="MaterialArrivalStartDate"
+                  name="MaterialArrivalStartDate"
+                  type="date"
+                />
+                <b>תאריך סיום: </b>
+                <input
+                  [(ngModel)]="MaterialArrivalEndDate"
+                  class="searchBox-item"
+                  id="MaterialArrivalEndDate"
+                  name="MaterialArrivalEndDate"
+                  type="date"
+                />
+                <button
+                  class="btn btn-success searchBox-item"
+                  (click)="searchData()"
+                >
+                  מצא
+                </button>
+              </div>
+              <h5
+                *ngIf="
+                  MaterialArrivalStartDate && MaterialArrivalEndDate && measure
+                "
+              >
+                {{ measure }} {{ totalQuantity }} מתאריך
+                {{ MaterialArrivalStartDate | date: "dd/MM/yyy" }} עד לתאריך
+                {{ MaterialArrivalEndDate | date: "dd/MM/yyy" }} הוזמנו
+              </h5>
             </div>
           </div>
 
@@ -3527,6 +3552,27 @@
             </tr>
           </tbody>
         </table>
+        <div class="row mt-2" dir="rtl" style="width: 100%">
+          <div class="col-1"></div>
+          <div class="col-4 heb background-light">
+            <p>
+              Required Aount - סה"כ כמות דרושה:
+              {{ component.allocationsAmount | number }}
+            </p>
+            <p>
+              Stock Aount - סה"כ כמות במלאי:
+              {{ component.stock[0].stock | number }}
+            </p>
+            <p
+              [ngClass]="
+                component.realAmount >= 0 ? 'text-success' : 'text-danger'
+              "
+            >
+              Difference - הפרש:
+              {{ component.realAmount | number }}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
