@@ -84,14 +84,13 @@ export class FormulesService {
     return this.http
       .post(url, JSON.stringify(childNumbers), this.options)
       .pipe(map((reponse) => reponse.json()));
-    }
-    
-    getOpenItemWithSimilarFormulePArent(formuleNumbers) {
+  }
+
+  getOpenItemWithSimilarFormulePArent(formuleNumbers) {
     let url = this.baseUrl + "formules/getSimilarFathersInOrderITems";
     return this.http
       .post(url, JSON.stringify({ formuleNumbers }), this.options)
       .pipe(map((reponse) => reponse.json()));
-
   }
 
   getFormuleByParent(parent) {
@@ -351,5 +350,14 @@ export class FormulesService {
     return this.http
       .put(url, JSON.stringify(form), this.options)
       .pipe(map((res) => res.json()));
+  }
+
+  findMatchesByNumber(formuleNumber) {
+    let url =
+      this.baseUrl +
+      "formules/findMatchesByNumber?formuleNumber=" +
+      formuleNumber;
+
+    return this.http.get(url).pipe(map((response) => response.json()));
   }
 }

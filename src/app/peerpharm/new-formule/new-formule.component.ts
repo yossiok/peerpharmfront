@@ -36,6 +36,9 @@ export class NewFormuleComponent implements OnInit {
   hasMixedMaterial: boolean = false;
   currentFormule: any;
   childrenToAdd: any;
+  match: any = {};
+  formuleToCompare: string = "";
+  loading: boolean = false;
 
   user: any;
   EditRowId: any = "";
@@ -709,5 +712,32 @@ export class NewFormuleComponent implements OnInit {
     if (day.length < 2) day = "0" + day;
 
     return [year, month, day].join("-");
+  }
+
+  findMatches() {
+    if (!this.formuleToCompare || this.formuleToCompare.length < 3) {
+      alert("The number of the formule is too short");
+      return;
+    }
+    this.match = {};
+    this.loading = true;
+    this.formuleService
+      .findMatchesByNumber(this.formuleToCompare)
+      .subscribe((data) => {
+        if (data.msg) {
+          this.Toastr.error(data.msg);
+          this.loading = false;
+          return;
+        } else if (data) {
+          this.loading = false;
+          this.match = data.formuleToCheck;
+          if (!this.match.matches.length) {
+            this.Toastr.warning("No mathces were found for this formule");
+          }
+        } else if (!data) {
+          this.loading = false;
+          this.Toastr.error("No data found");
+        }
+      });
   }
 }
