@@ -1036,11 +1036,14 @@
         </div>
         <div class="col-3"></div>
       </div>
-      <div *ngIf="loading" style="position: absolute; left: 50%; top: 50%">
-        <div class="spinnerLoader">Looking for Matches....</div>
-        <br />
+      <div class="row mt-2" *ngIf="loading">
+        <div class="col-5"></div>
+        <div class="col-2">
+          Looking for Matches....
+          <div class="spinnerLoader"></div>
+        </div>
       </div>
-      <div class="row mt-5">
+      <div class="row mt-2">
         <div class="col-1"></div>
         <div class="col-10">
           <table class="table table-striped">
