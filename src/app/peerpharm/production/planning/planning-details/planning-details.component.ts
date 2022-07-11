@@ -793,7 +793,6 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   sortByOrder() {
-    console.log(this.workPlan.orderItems);
     this.workPlan.orderItems = this.workPlan.orderItems.sort((a, b) =>
       a.orderNumber.trim().toLowerCase() > b.orderNumber.trim().toLowerCase()
         ? this.orderNumberSort
