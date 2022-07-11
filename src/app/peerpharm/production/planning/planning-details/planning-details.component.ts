@@ -103,6 +103,9 @@ export class PlanningDetailsComponent implements OnInit {
     29,
     30,
   ];
+  orderNumberSort: number = 1;
+  itemNumberSort: number = 1;
+  parentNumberSort: number = 1;
 
   constructor(
     private authService: AuthService,
@@ -768,5 +771,34 @@ export class PlanningDetailsComponent implements OnInit {
 
   checkAmountsForMaterial(prod, stock) {
     return Number(stock) - Number(prod);
+  }
+
+  sortByItem() {
+    console.log(this.workPlan.orderItems);
+    this.workPlan.orderItems = this.workPlan.orderItems.sort((a, b) =>
+      a.itemNumber.trim().toLowerCase() > b.itemNumber.trim().toLowerCase()
+        ? this.orderNumberSort
+        : -this.orderNumberSort
+    );
+    this.orderNumberSort *= -1;
+  }
+  sortByParent() {
+    this.workPlan.orderItems = this.workPlan.orderItems.sort((a, b) =>
+      a.parentFormule.trim().toLowerCase() >
+      b.parentFormule.trim().toLowerCase()
+        ? this.parentNumberSort
+        : -this.parentNumberSort
+    );
+    this.parentNumberSort *= -1;
+  }
+
+  sortByOrder() {
+    console.log(this.workPlan.orderItems);
+    this.workPlan.orderItems = this.workPlan.orderItems.sort((a, b) =>
+      a.orderNumber.trim().toLowerCase() > b.orderNumber.trim().toLowerCase()
+        ? this.orderNumberSort
+        : -this.orderNumberSort
+    );
+    this.orderNumberSort *= -1;
   }
 }
