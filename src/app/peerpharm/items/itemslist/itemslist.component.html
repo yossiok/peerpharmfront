@@ -1,16 +1,95 @@
-<div class="container-fluid bg-light text-center">
-  <div class="row">
-    <div class="col-12">
-      <h1 style="text-shadow: 2px 2px 4px #000000;" class="text-info p-2">Products</h1>
+<div class="container-fluid bg-light">
+  <div class="row mt-2">
+    <div class="col-12 text-center">
+      <h3>Product Search Menu - תפריט חיפוש מוצרים</h3>
     </div>
   </div>
-
-  <div *ngIf="complete" class="row">
+  <form [formGroup]="searchMenu">
+    <div class="row mt-2">
+      <div class="col-1">
+        <label for="">Item Number</label>
+        <input type="text" class="form-control" formControlName="itemNumber" />
+      </div>
+      <div class="col-2">
+        <label for="">Item Name</label>
+        <input type="text" formControlName="itemName" class="form-control" />
+      </div>
+      <div class="col-1">
+        <label for="">Component Number</label>
+        <input type="text" formControlName="componentN" class="form-control" />
+      </div>
+      <div class="col-1">
+        <label for="">Barcode</label>
+        <input type="text" formControlName="barcode" class="form-control" />
+      </div>
+      <div class="col-1">
+        <label for="">Min Volume</label>
+        <input
+          type="number"
+          formControlName="minVolume"
+          min="0"
+          class="form-control"
+        />
+      </div>
+      <div class="col-1">
+        <label for="">Max Volume</label>
+        <input type="number" formControlName="maxVolume" class="form-control" />
+      </div>
+      <div class="col-1">
+        <br />
+        <button class="btn btn-outline-success mt-2" (click)="search()">
+          <i class="fas fa-search"></i>&nbsp;Search
+        </button>
+      </div>
+      <div class="col-1">
+        <br />
+        <button class="btn btn-outline-danger mt-2" (click)="clearFields()">
+          <i class="fas fa-eraser"></i>&nbsp;Clear Menu
+        </button>
+      </div>
+      <div class="col-1">
+        <br />
+        <button class="btn btn-outline-secondary mt-2" (click)="resetResults()">
+          <i class="fas fa-eraser"></i>&nbsp;Reset Results
+        </button>
+      </div>
+      <div class="col-1"></div>
+      <div class="col-1">
+        <br />
+        <button class="btn btn-outline-primary mt-2" (click)="getAllItems()">
+          All Products
+        </button>
+      </div>
+    </div>
+  </form>
+  <!-- <div class="row mt-5" *ngIf="!getAllProducts">
+    <div class="col-12 text-center">
+      <button class="btn btn-outline-primary p-2" (click)="getAllItems()">
+        All Products
+      </button>
+    </div>
+  </div> -->
+  <div *ngIf="complete" class="row mt-3">
+    <div class="col-12 text-center">
+      <h3>Products Filter - סנן את התוצאות</h3>
+    </div>
+  </div>
+  <div *ngIf="complete" class="row mt-4">
     <div class="col-2">
-      <input (keyup)="filterByNumber($event)" type="text" class="form-control" placeholder="Search By Name / Number">
+      <input
+        (keyup)="filterByNumber($event)"
+        type="text"
+        class="form-control"
+        placeholder="Filter By Name / Number"
+      />
     </div>
     <div class="col-2">
-      <input (keyup)="filterByComponent($event)" type="text" class="form-control" placeholder="Search By Component">
+      <input
+        (keyup)="filterByComponent($event)"
+        type="text"
+        class="form-control"
+        placeholder="Filter By Component Number"
+      />
     </div>
     <!-- <div class="col-2">
       <input matInput class="form-control" (change)="changeText($event)" placeholder="Search By Name">
@@ -33,106 +112,130 @@
       </select>
     </div>
     <div [class.read-only]="checkPermission()" class="col-3">
-      <button style="float: right; background: none;" (click)="getCurrListToExcel()" data-toggle="tooltip"
-        title="get cuurent item list">
-        <label style="float: right; line-height: 30px; margin-left: 5px"><b>Export List</b></label>
-        <img src="../../../assets/images/excel.png" alt="excel export" style="width: 35px; float: right;" />
+      <button
+        style="float: right; background: none"
+        (click)="getCurrListToExcel()"
+        data-toggle="tooltip"
+        title="get cuurent item list"
+      >
+        <label style="float: right; line-height: 30px; margin-left: 5px"
+          ><b>Export List</b></label
+        >
+        <img
+          src="../../../assets/images/excel.png"
+          alt="excel export"
+          style="width: 35px; float: right"
+        />
       </button>
     </div>
   </div>
 
-
-
-  <div *ngIf="!complete" class="row">
+  <div *ngIf="getAllProducts && !complete" class="row mt-2">
     <div class="col-12">
-      <span class="text-info h5"><b>Loading Products , Please Wait..</b></span> <img style="width:50px"
-        src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
+      <span class="text-info h5"><b>Loading Products , Please Wait..</b></span>
+      <img
+        style="width: 50px"
+        src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif"
+      />
     </div>
   </div>
 
-  <div class="row mt-3">
+  <div class="row mt-3" *ngIf="getAllProducts">
     <div class="col-12">
-
-      <span class="text-info h5"><b>Showing {{ items.length }} Products</b></span>
-
-      <table class="table table-hover table-striped table-fixed mt-2">
-        <thead style="box-shadow: inset 0px 0px 4px 1px black;" class="bg-info text-white">
+      <span class="text-info h5"
+        ><b>Showing {{ items.length }} Products</b></span
+      >
+      <img
+        *ngIf="filtering"
+        style="width: 50px"
+        src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif"
+      />
+      <table
+        class="table table-hover table-striped mt-2"
+        style="table-layout: auto"
+      >
+        <thead
+          style="box-shadow: inset 0px 0px 4px 1px black"
+          class="bg-primary text-white"
+        >
           <tr>
             <th>#</th>
             <th>Product number</th>
             <th>Name</th>
             <th>Volume/Net Weight</th>
-            <th>Sticker</th>
             <th>Barcode</th>
-            <th>Limited License</th>
-            <th>licsense Number</th>
-            <th>licsense Date</th>
-            <th>Pallet 1</th>
-            <th>Pallet 2</th>
-            <th>Pallet 3</th>
-            <th></th>
+            <th>Bottle Number</th>
+            <th>Cap Number</th>
+            <th>Pump Number</th>
+            <th>Box Number</th>
+            <th>Sticker Number</th>
+            <th>Carton 1 Number</th>
+            <th>Carton 2 Number</th>
           </tr>
         </thead>
-        <img *ngIf="filtering" style="width:50px"
-        src="http://avacdn.com/wp-content/uploads/2018/05/motosha-spinner.gif" />
+
         <tbody *ngIf="!filtering" id="table_body">
-          <tr [class.read-only]="checkPermission()" style="box-shadow: inset 0px 0px 4px 1px black; margin-top: 1px;"
-            *ngFor="let item of items; let i = index">
-            <td style="color:black">{{ i + 1 }}</td>
-            <td style="color:black">
-              <a style="color:black;text-decoration: underline;" target="_blank"
-                routerLink="/peerpharm/items/itemDetails/{{ item.itemNumber }}">
+          <tr
+            style="
+              box-shadow: inset 0px 0px 4px 1px black;
+              margin-top: 1px;
+              color: black;
+            "
+            *ngFor="let item of items; let i = index"
+          >
+            <td>{{ i + 1 }}</td>
+            <td>
+              <a
+                style="color: black; text-decoration: underline"
+                target="_blank"
+                routerLink="/peerpharm/items/itemDetails/{{ item.itemNumber }}"
+              >
                 {{ item.itemNumber }}
               </a>
             </td>
-            <td style="color:black">{{ item.itemFullName }}</td>
-            <td style="color:black">
+            <td>{{ item.itemFullName }}</td>
+            <td style="color: black">
               <div *ngIf="item.volumeKey">{{ item.volumeKey }} ml</div>
               <div *ngIf="item.volumeKey == null && item.netWeightK">
                 {{ item.netWeightK }} gr
               </div>
             </td>
-            <td style="word-wrap:normal;color:black">
-              {{ item.stickerNumber }}<br /><span style="word-break: break-word;">{{
-                item.StickerLanguageK
-                }}</span>
+            <td style="word-wrap: break-word; color: black">
+              {{ item.barcodeK }}
             </td>
-            <td style="word-wrap: break-word;color:black">{{ item.barcodeK }}</td>
-            <td>
-
-
+            <td style="word-wrap: break-word; color: black">
+              {{ item.bottleNumber }}
             </td>
-            <td style="color:black" (click)="edit(item._id)" *ngIf="item._id != EditRowId">{{ item.licsensNumber }}</td>
-            <td style="color:black" (click)="edit(item._id)" *ngIf="item._id == EditRowId">
-              <input #itemLicenseNum [value]="item.licsensNumber" style="width:150px" type="text">
+            <td style="word-wrap: break-word; color: black">
+              {{ item.capNumber }}
             </td>
-
-            <td style="color:black" (click)="edit(item._id)" *ngIf="item._id != EditRowId">{{ item.licsensDate}}</td>
-            <td style="color:black" (click)="edit(item._id)" *ngIf="item._id == EditRowId">
-              <input #itemLicenseDate [value]="item.licsensDate" style="width:150px" type="date">
+            <td style="word-wrap: break-word; color: black">
+              {{ item.pumpNumber }}
             </td>
-
-            <td style="color:black">{{ item.pallet }}</td>
-            <td style="color:black">{{ item.pallet2 }}</td>
-            <td style="color:black">{{ item.pallet3 }}</td>
-            <td *ngIf="item._id == EditRowId" style="width:3%"><i (click)="saveEdit(item._id)" class="fa fa-check"></i>
+            <td style="word-wrap: break-word; color: black">
+              {{ item.boxNumber }}
+            </td>
+            <td style="word-wrap: normal; color: black">
+              {{ item.stickerNumber }}<br /><span
+                style="word-break: break-word"
+                >{{ item.StickerLanguageK }}</span
+              >
+            </td>
+            <td style="word-wrap: break-word; color: black">
+              {{ item.cartonNumber }}
+            </td>
+            <td style="word-wrap: break-word; color: black">
+              {{ item.cartonNumber2 }}
             </td>
           </tr>
         </tbody>
       </table>
-
-
     </div>
   </div>
-
 </div>
-<div>
-
-
-
-</div>
+<div></div>
 <div class="curtain" *ngIf="showCurtain">
-  <h1 style="color:#FFF; margin:0px">
+  <h1 style="color: #fff; margin: 0px">
     PLEASE WAIT...
     <br />
     A database backup is being made before the update.

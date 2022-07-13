@@ -1,106 +1,178 @@
-import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
-import { ItemsService } from '../../../services/items.service'
-import * as moment from 'moment';
-import { Observable } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
-import { ExcelService } from '../../../services/excel.service';
-import { AuthService } from 'src/app/services/auth.service';
-
-
+import {
+  Component,
+  OnInit,
+  HostListener,
+  ViewChild,
+  ElementRef,
+} from "@angular/core";
+import { ItemsService } from "../../../services/items.service";
+import * as moment from "moment";
+import { Observable } from "rxjs";
+import { ToastrService } from "ngx-toastr";
+import { ExcelService } from "../../../services/excel.service";
+import { AuthService } from "src/app/services/auth.service";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 
 @Component({
-  selector: 'app-itemslist',
-  templateUrl: './itemslist.component.html',
-  styleUrls: ['./itemslist.component.scss']
+  selector: "app-itemslist",
+  templateUrl: "./itemslist.component.html",
+  styleUrls: ["./itemslist.component.scss"],
 })
 export class ItemslistComponent implements OnInit {
-
-  @ViewChild('itemLicenseNum') itemLicenseNum: ElementRef;
-  @ViewChild('itemLicenseDate') itemLicenseDate: ElementRef;
+  @ViewChild("itemLicenseNum") itemLicenseNum: ElementRef;
+  @ViewChild("itemLicenseDate") itemLicenseDate: ElementRef;
 
   items: any[] = [];
   itemsCopy: any = [];
   excelToUpload: any;
   subscription: any;
-  EditRowId: String = '';
+  EditRowId: String = "";
   hasMoreItemsToload: boolean = true;
   showCurtain: boolean = false;
-  complete: boolean = false
-  filtering: boolean = false
+  complete: boolean = false;
+  filtering: boolean = false;
+  getAllProducts: boolean = false;
 
-  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+  searchMenu: FormGroup = new FormGroup({
+    itemNumber: new FormControl(""),
+    itemName: new FormControl(""),
+    componentN: new FormControl(""),
+    minVolume: new FormControl(null, Validators.min(0)),
+    maxVolume: new FormControl(null, Validators.min(1)),
+    barcode: new FormControl(""),
+  });
+
+  @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
+    event: KeyboardEvent
+  ) {
     console.log(event);
 
-    this.edit('')
+    this.edit("");
   }
   constructor(
     private itemsService: ItemsService,
     private toastSrv: ToastrService,
     private excelService: ExcelService,
-    private authService: AuthService) { }
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
-    this.getAllItems();
+    // this.getAllItems();
   }
 
   getAllItems() {
+    this.complete = false;
+    this.getAllProducts = true;
+    this.searchMenu.reset();
+    this.items = [];
+    this.itemsCopy = [];
+    this.subscription = this.itemsService.startNewItemObservable().subscribe(
+      (items) => {
+        // map items
 
-    this.subscription = this.itemsService.startNewItemObservable().subscribe((items) => {
-      // map items
-      items.map(item => {
-        item.itemFullName = item.name + " " + item.subName + " " + item.discriptionK
-        item.licsensDate = moment(item.licsensDate).format("DD/MM/YYYY");
-        if (item.StickerLanguageK != null) {
-          item.StickerLanguageK = item.StickerLanguageK.split("/").join(" ");
-        }
-      })
-      items.sort(function (a, b) {
-        return a.itemNumber - b.itemNumber;
-      })
-      this.items.push(...items);
-      // if (items.length < 1500) {
-      //   this.hasMoreItemsToload = false;
-      // }
-      this.itemsCopy = this.items.slice();
-    }, null, () => {
-      debugger
-      this.complete = true
-    });
+        items.map((item) => {
+          item.itemFullName =
+            item.name + " " + item.subName + " " + item.discriptionK;
+          item.licsensDate = moment(item.licsensDate).format("DD/MM/YYYY");
+          if (item.StickerLanguageK != null) {
+            item.StickerLanguageK = item.StickerLanguageK.split("/").join(" ");
+          }
+        });
+        items.sort(function (a, b) {
+          return a.itemNumber - b.itemNumber;
+        });
+        this.items.push(...items);
+        // if (items.length < 1500) {
+        //   this.hasMoreItemsToload = false;
+        // }
+        this.itemsCopy = this.items.slice();
+      },
+      null,
+      () => {
+        this.complete = true;
+      }
+    );
+  }
+  search() {
+    console.log(this.searchMenu.value);
+    let fields = false;
+    for (let key in this.searchMenu.value) {
+      fields = this.searchMenu.value[key] ? true : fields;
+    }
+    if (!fields) {
+      alert("יש להכניס לפחות ערך אחחד בשדות החיפוש");
+      return;
+    }
 
+    this.complete = false;
+    this.getAllProducts = false;
+    this.filtering = true;
+    this.items = [];
+    this.itemsService
+      .getProductsByQuery(this.searchMenu.value)
+      .subscribe((items) => {
+        console.log(items);
+        items.map((item) => {
+          item.itemFullName =
+            item.name + " " + item.subName + " " + item.discriptionK;
+          item.licsensDate = moment(item.licsensDate).format("DD/MM/YYYY");
+          if (item.StickerLanguageK != null) {
+            item.StickerLanguageK = item.StickerLanguageK.split("/").join(" ");
+          }
+        });
+        items.sort(function (a, b) {
+          return a.itemNumber - b.itemNumber;
+        });
+        this.items = items;
+        this.itemsCopy = items;
+        this.complete = true;
+        this.getAllProducts = true;
+        this.filtering = false;
+      });
+  }
+
+  clearFields() {
+    this.searchMenu.reset();
+  }
+  resetResults() {
+    this.searchMenu.reset();
+    this.complete = false;
+    this.getAllProducts = false;
+    this.filtering = true;
+    this.items = [];
   }
 
   checkPermission() {
-    return this.authService.loggedInUser.screenPermission == '5'
+    return this.authService.loggedInUser.screenPermission == "5";
   }
 
   exportToExcel() {
-    this.itemsService.getItemsWithoutBoxOrStickerFields().subscribe(data => {
-      this.excelService.exportAsExcelFile(data, "items without boxNumber or StickerNumber");
-
+    this.itemsService.getItemsWithoutBoxOrStickerFields().subscribe((data) => {
+      this.excelService.exportAsExcelFile(
+        data,
+        "items without boxNumber or StickerNumber"
+      );
     });
   }
 
   saveEdit(id) {
-
-
     var obj = {
       licenseNumber: this.itemLicenseNum.nativeElement.value,
       licenseDate: this.itemLicenseDate.nativeElement.value,
-      itemId: id
-    }
+      itemId: id,
+    };
 
-    this.itemsService.updateItemDetails(obj).subscribe(data => {
-      ;
-      data
+    this.itemsService.updateItemDetails(obj).subscribe((data) => {
+      data;
       if (data) {
-        var item = this.items.find(i => i._id == data._id)
-        item.licsensNumber = data.licsensNumber
-        item.licsensDate = data.licsensDate
-        this.edit('');
-        this.toastSrv.success('Item Updated Successfuly')
+        var item = this.items.find((i) => i._id == data._id);
+        item.licsensNumber = data.licsensNumber;
+        item.licsensDate = data.licsensDate;
+        this.edit("");
+        this.toastSrv.success("Item Updated Successfuly");
         this.getAllItems();
       }
-    })
+    });
   }
 
   onDestroy() {
@@ -108,66 +180,80 @@ export class ItemslistComponent implements OnInit {
   }
 
   sendExcelToData(ev) {
-
     if (confirm("האם אתה בטוח שבחרת בקובץ הנכון ?") == true) {
       this.showCurtain = true;
       var reader = new FileReader();
 
       reader.readAsDataURL(ev.files[0]); // read file as data url
 
-      reader.onload = (event) => { // called once readAsDataURL is completed
+      reader.onload = (event) => {
+        // called once readAsDataURL is completed
 
-        var excelToSend = event.target["result"]
+        var excelToSend = event.target["result"];
         // excelToSend = excelToSend.replace("data:application/pdf;base64,","");
-        this.itemsService.sendExcel({ data: excelToSend }).subscribe(data => {
+        this.itemsService.sendExcel({ data: excelToSend }).subscribe((data) => {
           this.showCurtain = false;
           alert(data.msg);
-        })
-      }
-
+        });
+      };
     }
   }
 
-
-
   filterByNumber(ev) {
-    this.filtering = true
-    if (ev.target.value == "") this.items = this.itemsCopy
+    this.filtering = true;
+    if (ev.target.value == "") this.items = this.itemsCopy;
     this.items = this.itemsCopy
-      .filter(i => i.itemNumber.includes(ev.target.value) || i.itemFullName.toLowerCase().includes(ev.target.value.toLowerCase()))
+      .filter(
+        (i) =>
+          i.itemNumber.includes(ev.target.value) ||
+          i.itemFullName.toLowerCase().includes(ev.target.value.toLowerCase())
+      )
       .sort((a, b) => a.itemNumber.length - b.itemNumber.length);
-    setTimeout(() => this.filtering = false, 500)
+    setTimeout(() => (this.filtering = false), 500);
   }
 
   filterByComponent(ev) {
-    this.filtering = true
-    let compNumber = ev.target.value
-    if (ev.target.value == '') this.items = this.itemsCopy
-    this.items = this.itemsCopy.filter(i => i.sealNumber == compNumber || i.bottleNumber == compNumber || i.capNumber == compNumber
-      || i.tubeNumber == compNumber || i.cartonNumber == compNumber || i.stickerNumber == compNumber || i.boxNumber == compNumber || i.pumpNumber == compNumber)
-      setTimeout(() => this.filtering = false, 500)
+    if (!ev.target.value || ev.target.value.length < 4) {
+      return;
+    }
+
+    this.filtering = true;
+    let compNumber = ev.target.value;
+    if (ev.target.value == "") this.items = this.itemsCopy;
+    this.items = this.itemsCopy.filter(
+      (i) =>
+        i.sealNumber == compNumber ||
+        i.bottleNumber == compNumber ||
+        i.capNumber == compNumber ||
+        i.tubeNumber == compNumber ||
+        i.cartonNumber == compNumber ||
+        i.stickerNumber == compNumber ||
+        i.boxNumber == compNumber ||
+        i.pumpNumber == compNumber
+    );
+    setTimeout(() => (this.filtering = false), 500);
   }
 
   filterByStatus(ev) {
-    this.filtering = true
+    this.filtering = true;
     var status = ev.target.value;
     if (status != "all") {
-      this.items = this.itemsCopy.filter(i => i.status == status)
+      this.items = this.itemsCopy.filter((i) => i.status == status);
     } else {
-      this.items = this.itemsCopy
+      this.items = this.itemsCopy;
     }
-    setTimeout(() => this.filtering = false, 500)
+    setTimeout(() => (this.filtering = false), 500);
   }
 
   filterByLanguage(ev) {
-    this.filtering = true
+    this.filtering = true;
     var language = ev.target.value;
     if (language != "all") {
-      this.items = this.itemsCopy.filter(i => i.StickerLanguageK == language)
+      this.items = this.itemsCopy.filter((i) => i.StickerLanguageK == language);
     } else {
-      this.items = this.itemsCopy
+      this.items = this.itemsCopy;
     }
-    setTimeout(() => this.filtering = false, 500)
+    setTimeout(() => (this.filtering = false), 500);
   }
 
   // changeText(ev) {
@@ -195,7 +281,17 @@ export class ItemslistComponent implements OnInit {
   //   }
   // }
 
-  updateLicenseQuotaLimitation(myevent, itemNumber, licsensNumber, licenceCurrItemsQnt, licenceExprationDate, licenceFileLink, licenceLastUpdateDate, licenceLastUpdateUser, licenceNotifaction) {
+  updateLicenseQuotaLimitation(
+    myevent,
+    itemNumber,
+    licsensNumber,
+    licenceCurrItemsQnt,
+    licenceExprationDate,
+    licenceFileLink,
+    licenceLastUpdateDate,
+    licenceLastUpdateUser,
+    licenceNotifaction
+  ) {
     console.log(myevent);
     let QuotaVal;
     let hasLimition;
@@ -207,8 +303,13 @@ export class ItemslistComponent implements OnInit {
     //   QuotaVal= myevent.target.nextSibling.nextElementSibling.valueAsNumber ;
     //   if(QuotaVal==NaN) QuotaVal=null;
     //   hasLimition= myevent.target.checked;
-    // } else 
-    if (licsensNumber != null && licsensNumber != undefined && licsensNumber != "" && myevent.target.value > -1) {
+    // } else
+    if (
+      licsensNumber != null &&
+      licsensNumber != undefined &&
+      licsensNumber != "" &&
+      myevent.target.value > -1
+    ) {
       QuotaVal = parseInt(myevent.target.value);
       if (myevent.target.value != "") {
         hasLimition = true;
@@ -221,20 +322,21 @@ export class ItemslistComponent implements OnInit {
         licenceItemsQuotaLimit: QuotaVal,
         licenceHasItemsQuotaLimition: hasLimition,
         licenceCurrItemsQnt: licenceCurrItemsQnt,
-      }
-      this.itemsService.updateLicenseLimition(docObj).subscribe(res => {
+      };
+      this.itemsService.updateLicenseLimition(docObj).subscribe((res) => {
         if (res.nModified > 0) {
           let itemNumArr = [];
-          this.items.filter(item => {
+          this.items.filter((item) => {
             if (item.licsensNumber == licsensNumber) {
               item.licenceItemsQuotaLimit = QuotaVal;
               item.licenceHasItemsQuotaLimition = hasLimition;
               item.licenceCurrItemsQnt = res.n;
-              itemNumArr.push(item.itemNumber)
+              itemNumArr.push(item.itemNumber);
             }
           });
-          this.toastSrv.success("License limitation updated in items number: " + itemNumArr.join());
-
+          this.toastSrv.success(
+            "License limitation updated in items number: " + itemNumArr.join()
+          );
         }
       });
     } else if (myevent.target.value < 0) {
@@ -244,19 +346,13 @@ export class ItemslistComponent implements OnInit {
       this.toastSrv.error("No license number in item number: " + itemNumber);
       myevent.target.value = "";
     }
-
-
-
   }
 
-
   edit(id) {
-    if (id != '') {
+    if (id != "") {
       this.EditRowId = id;
-
     } else {
-      this.EditRowId = '';
-
+      this.EditRowId = "";
     }
   }
 
@@ -265,7 +361,7 @@ export class ItemslistComponent implements OnInit {
     this.exportAsXLSX(this.items);
   }
   exportAsXLSX(data) {
-    this.excelService.exportAsExcelFile(data, 'items');
+    this.excelService.exportAsExcelFile(data, "items");
   }
   // ----------------------------------------------------------------------------
 }
