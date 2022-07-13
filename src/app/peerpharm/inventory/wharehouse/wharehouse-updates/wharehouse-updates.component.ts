@@ -713,7 +713,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
           this.toastSrv.success("מדף הוקם בהצלחה");
           console.log(this.newShelfForm.value);
           this.newShelfForm.controls.position.setValue("");
-          this.newShelfForm.controls.amount.setValue(0);
+          this.newShelfForm.controls.amount.setValue(null);
           this.newShelfForm.controls.item.setValue("");
           // this.newShelfForm.reset();
           this.itemType = "";
