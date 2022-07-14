@@ -68,7 +68,7 @@ import { ProcurementOrdersComponent } from "./procurement/procumentOrders/procur
 import { ProcurementOrderItemComponent } from "./procurement/procumentOrderItem/procurementOrderItem.component";
 import { NewProcurementComponent } from "./procurement/new-procurement/new-procurement.component";
 import { FinanceReportComponent } from "./finance-reports/financereport.component";
-import {WarehousesActionsReportsComponent} from './inventory/inventory-reports/warehousesActionsReports/warehousesActionsReports.component'
+import { WarehousesActionsReportsComponent } from "./inventory/inventory-reports/warehousesActionsReports/warehousesActionsReports.component";
 import { MAT_DIALOG_DEFAULT_OPTIONS } from "@angular/material/dialog";
 
 import { MatSelectModule } from "@angular/material/select";
@@ -199,7 +199,6 @@ import { CreamBarrelComponent } from "./inventory/creamBarrel/creamBarrel.compon
 import { BulksReportComponent } from "./batches/bulks-inventory/bulks-report/bulks-report.component";
 import { TemperaturesLogsComponent } from "./qa/temperaturesLogs/temperaturesLogs.component";
 import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
-import {ItemIndexNewComponent} from "./item-index-new/item-index-new.component"
 @NgModule({
   exports: [
     // MatInputModule,
@@ -247,7 +246,6 @@ import {ItemIndexNewComponent} from "./item-index-new/item-index-new.component"
     AddFormuleComponent,
     MaterialsComponent,
     StoragesComponent,
-    ItemIndexNewComponent,
     ShelfListComponent,
     OrdersComponent,
     CreamBarrelComponent,

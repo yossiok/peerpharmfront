@@ -2198,9 +2198,10 @@
   <ng-template #similarFormulesEref>
     <div class="p-5">
       <h1 class="border border-black bg-info text-white rounded">
-        Similar Formule:
+        Similar Formules and Barrels
       </h1>
       <div class="mt-5">
+        <h3>Formules</h3>
         <table class="table table-hover">
           <thead class="bg-dark text-white">
             <th class="text-center">Order</th>
@@ -2225,6 +2226,47 @@
                 <td>{{ item.itemNumber }}</td>
               </tr>
             </ng-container>
+          </tbody>
+        </table>
+        <h3>Barrels - חביות</h3>
+        <table class="table table-striped" dir="rtl">
+          <thead>
+            <tr>
+              <th>מספר חבית</th>
+              <th>מספר פריט</th>
+              <th>משקל</th>
+              <th>מיועד להזמנה</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let barrel of similarBarrels">
+              <td>
+                <a
+                  class="pointer"
+                  target="_blank"
+                  routerLink="/peerpharm/batches/bulksInventory"
+                >
+                  <u>
+                    {{ barrel.barrelNumber }}
+                  </u>
+                </a>
+              </td>
+              <td>{{ barrel.itemNumber }}</td>
+              <td>{{ barrel.barrelWeight }}</td>
+              <td>
+                <a
+                  class="pointer"
+                  target="_blank"
+                  routerLink="/peerpharm/allorders/orderitems/{{
+                    barrel.orderNumber
+                  }}"
+                >
+                  <u>
+                    {{ barrel.orderNumber }}
+                  </u>
+                </a>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>

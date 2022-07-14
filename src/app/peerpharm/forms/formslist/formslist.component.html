@@ -181,6 +181,8 @@
             <th>Order Number</th>
             <th>Production Line</th>
             <th>Costumer</th>
+            <th>Quantity Produced</th>
+            <th>Quantity Packed</th>
             <th>Batch</th>
             <th>Status</th>
           </tr>
@@ -209,6 +211,8 @@
             <td>{{ form.orderNumber }}</td>
             <td>{{ form.productionLine }}</td>
             <td>{{ form.costumerName }}</td>
+            <td>{{ form.quantity_Produced }}</td>
+            <td>{{ form.totalUnits }}</td>
             <td>{{ form.batchN }}</td>
             <td [ngClass]="{ statusDone: form.status == 'done' }">
               {{ form.status }}

@@ -37,6 +37,7 @@ const defaultCmpt = {
   alternativeSuppliers: [],
   price: "",
   connectedProducts: [],
+  manufcaturerName: "",
 };
 
 const defaultMaterial = {
@@ -45,6 +46,7 @@ const defaultMaterial = {
   remarks: "",
   img: "",
   minimumStock: "",
+  manufcaturerName: "",
   packageWeight: "",
   itemType: "material",
   barcode: "",
@@ -380,7 +382,20 @@ export class ItemIndexComponent implements OnInit {
       .subscribe((item) => {
         if (item.msg) this.toastSrv.error(item.msg);
         else {
+          // update price
+          if (item.price && item.coin) {
+            item.priceILS = (
+              Number(item.price) * this.currencies[item.coin.toUpperCase()]
+            ).toFixed(2);
+          } else if (item.manualPrice && item.manualCoin) {
+            item.priceILS = (
+              Number(item.manualPrice) *
+              this.currencies[item.manualCoin.toUpperCase()]
+            ).toFixed(2);
+          }
+
           this.item = item;
+
           this.getLastOrdersItem(20);
           this.getProductsWithItem();
         }
@@ -539,6 +554,8 @@ export class ItemIndexComponent implements OnInit {
       importFrom: "",
       lastModified: "",
       minimumStock: "",
+      minimumPurchaseAmount: 0,
+      manufcaturerName: "",
       needPrint: "",
       packageType: "",
       packageWeight: "",

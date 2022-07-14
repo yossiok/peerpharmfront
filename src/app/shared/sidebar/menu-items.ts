@@ -557,14 +557,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
       },
-      {
-        path: "/peerpharm/itemIndexNew",
-        title: "Item Index New",
-        icon: "fas fa-address-book",
-        class: "",
-        extralink: false,
-        submenu: [],
-      },
+      // {
+      //   path: "/peerpharm/itemIndexNew",
+      //   title: "Item Index New",
+      //   icon: "fas fa-address-book",
+      //   class: "",
+      //   extralink: false,
+      //   submenu: [],
+      // },
     ],
   },
   {

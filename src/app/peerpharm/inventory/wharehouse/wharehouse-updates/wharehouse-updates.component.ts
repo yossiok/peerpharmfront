@@ -242,6 +242,13 @@ export class WhareHouseUpdatesComponent implements OnInit {
     let reA = /[^a-zA-Z]/g;
     let reN = /[^0-9]/g;
     let i = this.sortPositionOrder;
+
+    // this can be done also by regex pattern (^[1-3]{1}[A-Z]{1}[0-9].*) - mayb next time :)
+    // let pattern = /^[1-3]{1}[A-Z]{1}[0-9].*/;
+    // let firstPart = this.allShelfs.filter((sh) => pattern.test(sh.position));
+    // let lastPart = this.allShelfs.filter((sh) => !pattern.test(sh.position));
+    // console.log(firstPart);
+    // console.log(lastPart);
     let firstWall = this.allShelfs.filter((sh) => {
       return (
         sh.position.substr(0, 1) == 1 &&
@@ -284,6 +291,13 @@ export class WhareHouseUpdatesComponent implements OnInit {
     } else {
       walls = [lastWall, fourthWall, thirdWall, secondWall, firstWall];
     }
+    // let walls = [];
+    // if (i == 1) {
+    //   walls = [firstPart, lastPart];
+    // } else {
+    //   walls = [lastPart, firstPart];
+    // }
+
     let newWalls = [];
     for (let wall of walls) {
       wall = wall.sort((a, b) => {
@@ -699,7 +713,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
           this.toastSrv.success("מדף הוקם בהצלחה");
           console.log(this.newShelfForm.value);
           this.newShelfForm.controls.position.setValue("");
-          this.newShelfForm.controls.amount.setValue(0);
+          this.newShelfForm.controls.amount.setValue(null);
           this.newShelfForm.controls.item.setValue("");
           // this.newShelfForm.reset();
           this.itemType = "";

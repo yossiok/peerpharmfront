@@ -172,6 +172,11 @@ export class FormdetailsComponent implements OnInit {
       .subscribe((data) => {
         console.log(data);
         this.barrelsList = data;
+        for (let barrel of this.form.barrelsList) {
+          this.barrelsList = this.barrelsList.filter(
+            (ba) => ba.barrelNumber != barrel.barrelNumber
+          );
+        }
       });
   }
 

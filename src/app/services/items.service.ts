@@ -26,7 +26,7 @@ export class ItemsService {
   }
 
   getLicenseItems(): Observable<any> {
-    let url = this.baseUrl + "item/licenseRequired"
+    let url = this.baseUrl + "item/licenseRequired";
 
     return this.http.get(url).pipe(map((res) => res.json()));
   }
@@ -142,15 +142,14 @@ export class ItemsService {
   }
 
   getComponentsForMultiItems(itemsNumbersArray) {
-
     const obj = {
-      itemsNumbers:itemsNumbersArray
-    }
+      itemsNumbers: itemsNumbersArray,
+    };
 
     console.log(obj);
 
     let url = this.baseUrl + "item/componentsForMultiItems";
-    return this.http.post(url,obj).pipe(map((reponse) => reponse.json()));
+    return this.http.post(url, obj).pipe(map((reponse) => reponse.json()));
   }
 
   addItem(itemObj) {
@@ -270,5 +269,12 @@ export class ItemsService {
   getItemsWithoutBoxOrStickerFields() {
     let url = this.baseUrl + "item/reports?noBox=yes&noSticker=yes";
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
+  getProductsByQuery(query) {
+    let url = this.baseUrl + "item/getProductsByQuery";
+    return this.http
+      .post(url, query, this.options)
+      .pipe(map((response) => response.json()));
   }
 }

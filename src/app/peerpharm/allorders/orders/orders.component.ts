@@ -118,6 +118,7 @@ export class OrdersComponent implements OnInit {
         "הזמנה+לקוח": order.NumberCostumer,
         "מס' הזמנה": order.orderNumber,
         לקוח: order.costumer,
+        "מס' הזמנת לקוח": order.customerOrderNum,
         'מק"ט לקוח (פנימי)': order.costumerInternalId,
         "תאריך הזמנה": order.orderDate,
         "תאריך אספקה (משוער)": order.deliveryDate,
@@ -157,6 +158,7 @@ export class OrdersComponent implements OnInit {
           "מס' הזמנה": order.openOrder.orderNumber,
           לקוח: order.openOrder.costumer,
           'מק"ט לקוח (פנימי)': order.openOrder.costumerInternalId,
+          "מס' הזמנת לקוח": order.customerOrderNum,
           "תאריך הזמנה": order.openOrder.orderDate,
           "תאריך אספקה (משוער)": order.openOrder.deliveryDate,
           "סוג הזמנה": order.openOrder.type,
@@ -711,43 +713,50 @@ export class OrdersComponent implements OnInit {
     this.loadingUri = true;
     this.ordersService.getUriReport().subscribe((data) => {
       this.loadingUri = false;
+      console.log(data);
       let excel = [];
       for (let item of data) {
         try {
-          let quantitySupplied = 0;
-          if (item.orderItem.billing && item.orderItem.billing > 0) {
-            quantitySupplied = item.orderItem.billing
-              .map((b) => b.billQty)
-              .reduce((a, b) => a + b, 0);
-          }
-          item.quantityRemained =
-            Number(item.orderItem.quantity) - quantitySupplied;
-          let missingComponents = [];
-          if (item.componentsExplosion) {
-            for (let component of item.componentsExplosion) {
-              if (component.amount < 0) missingComponents.push(component._id);
-            }
-          }
-          let stringifiedMissingComponents = JSON.stringify(missingComponents);
+          // let quantitySupplied = 0;
+          // if (item.orderItem.billing && item.orderItem.billing > 0) {
+          //   quantitySupplied = item.orderItem.billing
+          //     .map((b) => b.billQty)
+          //     .reduce((a, b) => a + b, 0);
+          // }
+          // item.quantityRemained =
+          //   Number(item.orderItem.quantity) - quantitySupplied;
+          // let missingComponents = [];
+          // if (item.componentsExplosion) {
+          //   for (let component of item.componentsExplosion) {
+          //     if (component.amount < 0) missingComponents.push(component._id);
+          //   }
+          // }
+          // let stringifiedMissingComponents = JSON.stringify(missingComponents);
           excel.push({
             "מס' הזמנה": item.orderNumberString,
+            לקוח: item.customer,
+            'מק"ט': item.itemNumber,
+            תאור: item.description,
             "סוג הזמנה": item.type,
-            לקוח: item.costumer,
             "תאריך הזמנה": item.orderDate,
             "צפי שניתן": item.deliveryDate,
-            'מק"ט': item.orderItem.itemNumber,
-            תאור: item.orderItem.discription,
-            משקל: item.orderItem.netWeightGr,
+            סטטוס: item.itemStatus,
+            "סטטוס אספקה": item.oiStatus,
+            משקל: item.netWeightGr,
             "כמות במלאי": item.amountEffi,
-            "כמות בהזמנה": Number(item.orderItem.quantity),
-            סופק: Number(item.orderItem.quantity) - item.quantityRemained,
-            "יתרה לאספקה": item.quantityRemained,
-            אצווה: item.batch,
+            "כמות בהזמנה": Number(item.quantity),
+            "כמות שיוצרה": item.quantityProduced,
+            "כמות שסופקה": item.quantitySupplied,
+            "יתרה לאספקה": item.quantity - item.quantityProduced,
+            אצווה: item.batchNumber,
             "2אצווה": item.batch2,
             "3אצווה": item.batch3,
             "4אצווה": item.batch4,
-            "קו מילוי ראשי": item.itemTree[0].primaryLine,
-            "קו מילוי משני": item.itemTree[0].secondaryLine,
+            "קו מילוי ראשי": item.primaryLine,
+            "קו מילוי משני": item.secondaryLine,
+            // "תאריך מילוי צפוי": item.expectedFillingDate
+            //   ? item.expectedFillingDate.substring(0, 10)
+            //   : "",
             "תאריך מילוי צפוי": item.expectedFillingDate
               ? `${new Date(item.expectedFillingDate).getDate()}/${new Date(
                   item.expectedFillingDate
@@ -755,6 +764,7 @@ export class OrdersComponent implements OnInit {
                   item.expectedFillingDate
                 ).getFullYear()}`
               : "",
+
             "תאריך מילוי סופי": item.fillingDate
               ? `${new Date(item.fillingDate).getDate()}/${new Date(
                   item.fillingDate
@@ -765,13 +775,27 @@ export class OrdersComponent implements OnInit {
               : Number(item.quantity_Produced),
             "סטטוס מילוי": item.fillingStatus,
             // "קומפוננטים חסרים": stringifiedMissingComponents,
-            "Main Component": item.itemTree[0].bottleAmount[0]._id,
-            "Main Component Inventory": item.itemTree[0].bottleAmount[0].amount,
-            "Sticker 1": item.itemTree[0].stickerAmount[0]._id,
-            "Sticker 1 Inventory": item.itemTree[0].stickerAmount[0].amount,
-            "Sticker 2": item.itemTree[0].sticker2Amount[0]._id,
-            "Sticker 2 Inventory": item.itemTree[0].sticker2Amount[0].amount,
-            הערות: item.orderItem.itemRemarks,
+            "Bottle Number": item.bottleNumber,
+            "Bottle Stock": item.bottleAmount,
+            "Box Number": item.boxNumber,
+            "Box Stock": item.boxAmount,
+            "Cap Number": item.capNumber,
+            "Cap Stock": item.capAmount,
+            "Carton Number": item.cartonNumber,
+            "Pcs/Carton": item.PcsCarton,
+            "Carton Stock": item.cartonAmount,
+            "Carton2 Number": item.cartonNumber2,
+            "Pcs/Carton2": item.PcsCarton2,
+            "Carton2 Stock": item.cartonAmount2,
+            "Pump Number": item.pumpNumber,
+            "Pump Stock": item.pumpAmount,
+            "Seal Number": item.sealNumber,
+            "Seal Stock": item.sealAmount,
+            "Sticker Number": item.stickerNumber,
+            "Sticker Stock": item.stickerAmount,
+            "Sticker2 Number": item.sticker2Number,
+            "Sticker2 Stock": item.sticker2Amount,
+            הערות: item.itemRemarks,
             // "מדבקות": ""
           });
         } catch (e) {

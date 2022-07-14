@@ -107,9 +107,17 @@
               class="check-box"
             />
           </th>
-          <th>מק"ט</th>
-          <th>פורמולת אב</th>
-          <th>הזמנה</th>
+          <th class="click" (click)="sortByItem()">
+            <i class="fas fa-filter"> מק"ט</i>
+          </th>
+          <th class="click" (click)="sortByParent()">
+            פורמולת אב
+            <i class="fas fa-filter"></i>
+          </th>
+          <th class="click" (click)="sortByOrder()">
+            <i class="fas fa-filter"></i>
+            הזמנה
+          </th>
           <th style="min-width: 100px">תאור</th>
           <th>משקל יחידה</th>
           <th>כמות</th>

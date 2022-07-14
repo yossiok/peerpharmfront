@@ -243,6 +243,7 @@ export class OrderdetailsComponent implements OnInit {
   customerOrderNum: string;
   iAmHaviv: boolean = false;
   orderItemEditApprove: boolean = false;
+  similarBarrels: Array<any> = [];
 
   @ViewChild("weight") weight: ElementRef;
   @ViewChild("itemRemarks") itemRemarks: ElementRef;
@@ -748,8 +749,9 @@ export class OrderdetailsComponent implements OnInit {
               .getOpenItemWithSimilarFormulePArent(itemNumbers)
               .subscribe((data) => {
                 console.log("similar formule: ", data);
-                if (data.length > 0) {
-                  this.similarFormules = data;
+                if (data.openItemsWithSimilarFathers || data.similarBarrels) {
+                  this.similarFormules = data.openItemsWithSimilarFathers;
+                  this.similarBarrels = data.similarBarrels;
                   this.modalService.open(this.similarFormulesEref);
                 }
                 this.selectedArr = [];
