@@ -679,6 +679,11 @@ export class StockComponent implements OnInit {
     }
     this.getColor(new Date());
     this.numberSearchInput.nativeElement.focus();
+    // const itemNumber = this.route.snapshot.paramMap.get('itemNumber');
+    // if(itemNumber){
+    //   this.setType("product")
+    //   this.filterComponents(itemNumber)
+    // }
   }
 
   getItemPurchases(component) {
@@ -1784,13 +1789,17 @@ export class StockComponent implements OnInit {
     });
   }
 
-  filterComponents() {
+  filterComponents(productNumber?) {
     console.log("filter parameters: ", this.filterParams.value);
     this.smallLoader = true;
     let query = this.filterParams.value;
     query.componentN = query.componentN.trim();
     query.componentName = query.componentName.trim();
     console.log(query);
+    if(productNumber){
+      query.componentN = productNumber
+      // query.componentCategory = "product"
+    }
 
     if (
       query.componentName == "" &&

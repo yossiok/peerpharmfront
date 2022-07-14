@@ -356,6 +356,14 @@ export const PeerPharmRputs: Routes = [
     },
     component: AllocatedOrdersComponent,
   },
+  // {
+  //   path: "inventory/stock/:itemNumber",
+  //   canActivate: [ScreenGuard],
+  //   data: {
+  //     title: "Inventory",
+  //   },
+  //   component: StockComponent,
+  // },
   {
     path: "taskboard/main",
     data: {

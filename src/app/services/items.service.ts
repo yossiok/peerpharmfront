@@ -49,11 +49,34 @@ export class ItemsService {
     let url = this.baseUrl + "item";
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
-  getIndexItems(){
-    let url = this.baseUrl + "item/itemIndex";
+
+  // For new Items index:
+  getAllItemsGroups() {
+    let url = this.baseUrl + "itemGroup/getGroups";
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
-
+  getAllItemsSubGroups() {
+    let url = this.baseUrl + "itemSubGroup/getSubGroups";
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  getAllItemDepartments() {
+    let url = this.baseUrl + "itemDepartment/get";
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  getIndexItems(page?){
+    let url = this.baseUrl
+    if(page){
+      url += `item/itemIndex?pageNumber=${page}`;
+    }else{
+      url += "item/itemIndex";
+    }
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  getIndexQuery(query){
+    let url = this.baseUrl + `item/itemIndexByQuery?name=${query.name}&itemCode=${query.itemCode}&barcode=${query.barCode}&department=${query.department}&group=${query.group}&subGroup=${query.subGroup}`;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  //////////////////////////////
   getAllItemsTwo() {
     let url = this.baseUrl + "item/getAllItems";
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
