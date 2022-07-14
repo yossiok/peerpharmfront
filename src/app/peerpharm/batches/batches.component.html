@@ -498,8 +498,17 @@
                 (click)="openTableValues(batch.item, batch.batchNumber)"
                 class="btn btn-info"
               >
-                Spec Values
+                Spec Values - HE
               </button>
+              <button
+                [style.background-color]="
+                  batch.specStatus ? batch.specStatus.color : '#2962FF'
+                "
+                (click)="openTableValues2(batch.item, batch.batchNumber)"
+                class="btn btn-info"
+              >
+                Spec Values - EN
+              </button>    
             </td>
             <td style="width: 3%">
               <i
@@ -875,6 +884,325 @@
   </div>
 </ng-template>
 
+<!-- EN EN EN EN EN EN EN EN EN EN EN EN EN EN EN EN EN EN -->
+
+<div
+  id="specSectionEN"
+  *ngIf="specValuesModalEN"
+  style="top: 50px; max-height: 800px; overflow-y: auto"
+  class="container px-5 py-2 bg-white text-center my-auto rounded shadow-lg fixed-top"
+  
+>
+  <i
+    (click)="specValuesModalEN = !specValuesModalEN"
+    class="fa fa-times h2 float-right click"
+  ></i>
+  <div class="row mt-3">
+    <div class="col-12">
+      <table>
+        <tr style="border: none !important">
+          <td style="border: none !important">
+            <img
+              style="width: 300px"
+              src="../../../assets/images/peerpharm.png"
+            />
+          </td>
+          <td style="border: none !important; width: 50px"></td>
+          <td style="border: none !important; width: 50px"></td>
+          <td style="border: none !important">
+            <b>
+              <h1>C.O.A</h1>
+            </b>
+          </td>
+        </tr>
+      </table>
+
+      <table class="mt-3">
+        <tr style="border: none !important">
+          <td style="border: none !important"><b>Date: </b></td>
+          <td style="border: none !important">
+            <b>{{ currBatch.produced | date: "dd/MM/yyyy" }}</b>
+          </td>
+        </tr>
+        <tr style="border: none !important">
+          <td style="border: none !important"><b>Product Name: </b></td>
+          <td style="border: none !important">
+            <b>{{ currBatch.itemName }}</b>
+          </td>
+        </tr>
+        <tr style="border: none !important">
+          <td style="border: none !important"><b>Lot: </b></td>
+          <td style="border: none !important">
+            <b>{{ currBatch.batchNumber }}</b>
+          </td>
+        </tr>
+        <tr style="border: none !important">
+          <td style="border: none !important"><b>Quantity: </b></td>
+          <td style="border: none !important">
+            <b>{{ currBatch.weightKg }}</b>
+          </td>
+        </tr>
+        <tr style="border: none !important">
+          <td style="border: none !important"><b>Exp: </b></td>
+          <td style="border: none !important">
+            <b>{{ currBatch.expration | date: "dd/MM/yyyy" }}</b>
+          </td>
+        </tr>
+        <tr style="border: none !important">
+          <td style="border: none !important"><b>Item Number: </b></td>
+          <td style="border: none !important">
+            <b>{{ currBatch.itemNumber }}</b>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="col-2"></div>
+    <div class="col-1">
+      <img
+        *ngIf="showRemarks"
+        style="height: 50px; display: none"
+        (click)="printSpecValues()"
+        src="../../../assets/images/print.jpg"
+      />
+    </div>
+  </div>
+  <div class="row mt-5">
+    <div class="col-4"></div>
+    <div class="col-4">
+      <button
+        #printValueBtn
+        style="border: none"
+        (click)="printSpecValues()"
+        class="text-info"
+        printSectionId="specSection"
+        ngxPrint
+        [printStyle]="{
+          td: { border: 'solid 1px black' },
+          tr: { border: 'solid 1px black' },
+          th: { border: 'solid 1px black' }
+        }"
+      >
+        <h2>Specification Values</h2>
+      </button>
+    </div>
+    <div class="col-3"></div>
+    <div class="col-1"></div>
+  </div>
+  <div class="row text-center">
+    <div class="col-12">
+      <div class="modal-content">
+        <div id="print-section" class="modal-body">
+          <table class="table table-bordered table-hover" dir="rtl">
+            <thead class="bg-light">
+              <tr>
+                <th *ngIf="showRemarks">Remarks</th>
+                <th>Spec Limits Min</th>
+                <th>Spec Limits Max</th>
+                <th>Values</th>
+                <th class="bg-light">Test</th>
+              </tr>
+            </thead>
+            <tbody style="text-align: center">
+              <tr>
+                <td *ngIf="showRemarks">{{ item.phRemarks }}</td>
+                <td>{{ item.phLimitsMin }}</td>
+                <td>{{ item.phLimitsMax }}</td>
+
+                <td *ngIf="editValues == false">{{ currBatch.phValue }}</td>
+                <td *ngIf="editValues == true">
+                  <input [value]="currBatch.phValue" #phValue type="text" />
+                </td>
+                <td class="bg-light">PH</td>
+              </tr>
+              <tr>
+                <td *ngIf="showRemarks">{{ item.densityRemarks }}</td>
+                <td>{{ item.densityLimitsMin }}</td>
+                <td>{{ item.densityLimitsMax }}</td>
+                <td *ngIf="editValues == false">
+                  {{ currBatch.densityValue }}
+                </td>
+                <td *ngIf="editValues == true">
+                  <input
+                    [value]="currBatch.densityValue"
+                    #densityValue
+                    type="text"
+                  />
+                </td>
+                <td class="bg-light">Density (g/ml)</td>
+              </tr>
+              <tr>
+                <td *ngIf="showRemarks">{{ item.viscosityRemarks }}</td>
+                <td>{{ item.viscosityLimitsMin }}</td>
+                <td>{{ item.viscosityLimitsMax }}</td>
+                <td *ngIf="editValues == false">
+                  {{ currBatch.viscosityValue }}
+                </td>
+                <td *ngIf="editValues == true">
+                  <input
+                    [value]="currBatch.viscosityValue"
+                    #viscosityValue
+                    type="text"
+                  />
+                </td>
+                <td class="bg-light" dir="auto" style="justify-content:center;align-items: center;text-align: center;">
+                  <table class="bg-light" dir="auto" style="justify-content:center;align-items: center;text-align: center;">
+                    <tbody class="bg-light" dir="auto" style="justify-content:center;align-items: center;text-align: center;">
+                      <tr style="padding: 0rem !important">
+                        <td style="padding: 0rem !important">viscosity</td>
+                        <td style="padding: 0rem !important">(mPa*5)</td>
+                      </tr>
+
+                      <tr style="padding: 0rem !important">
+                        <td style="padding: 0rem !important">Viscometer model</td>
+                        <td>{{ item.modelType }}</td>
+                      </tr>
+
+                      <tr style="padding: 0rem !important">
+                        <td style="padding: 0rem !important"># Spindle</td>
+                        <td>{{ item.spinFieldNum }}</td>
+                      </tr>
+
+                      <tr style="padding: 0rem !important">
+                        <td style="padding: 0rem !important; font-size: 11px">
+                          RPM
+                        </td>
+                        <td>{{ item.spinSpeed }}</td>
+                      </tr>
+
+                      <tr style="padding: 0rem !important">
+                        <td style="padding: 0rem !important">%</td>
+                        <td>{{ item.percentageResult }}</td>
+                      </tr>
+
+                      <tr style="padding: 0rem !important">
+                        <td style="padding: 0rem !important">Test's temperature</td>
+                        <td>{{ item.testTemp }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+              <tr>
+                <td *ngIf="showRemarks">{{ item.colorRemarks }}</td>
+                <td colspan="2">{{ item.color }}</td>
+                <td *ngIf="editValues == false">{{ currBatch.colorValue }}</td>
+                <td *ngIf="editValues == true">
+                  <input
+                    [value]="currBatch.colorValue"
+                    #colorValue
+                    type="text"
+                  />
+                </td>
+                <td class="bg-light">Color</td>
+              </tr>
+              <tr>
+                <td *ngIf="showRemarks">{{ item.textureRemarks }}</td>
+                <td colspan="2">{{ item.textureSpec }}</td>
+                <td *ngIf="editValues == false">
+                  {{ currBatch.textureValue }}
+                </td>
+                <td *ngIf="editValues == true">
+                  <input
+                    [value]="currBatch.textureValue"
+                    #textureValue
+                    type="text"
+                  />
+                </td>
+                <td class="bg-light">State</td>
+              </tr>
+              <tr>
+                <td *ngIf="showRemarks">{{ item.scentRemarks }}</td>
+                <td colspan="2">{{ item.scentSpec }}</td>
+                <td *ngIf="editValues == false">{{ currBatch.scentValue }}</td>
+                <td *ngIf="editValues == true">
+                  <select
+                    selected="currBatch.scentValue"
+                    #scentValue
+                    [value]="item.scentValue"
+                  >
+                    <option value="normal">Normal</option>
+                    <option value="notNormal">Not Normal</option>
+                  </select>
+                </td>
+                <td class="bg-light">Scent</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          *ngIf="showRemarks"
+          style="text-align: center"
+          class="modal-footer"
+        >
+          <button
+            *ngIf="editValues == false && alowUserEditBatches == true"
+            (click)="editValues = true"
+            class="btn btn-info form-control"
+          >
+            Edit
+          </button>
+          <button
+            *ngIf="editValues == true && alowUserEditBatches == true"
+            (click)="saveSpecValues(item.itemNumber)"
+            class="btn btn-info form-control"
+            [disabled]="savingSpecValues"
+            [style.cursor]="savingSpecValues ? 'progress' : 'pointer'"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="editValues == true && alowUserEditBatches == true"
+    class="row p-2 text-center"
+  >
+    <div class="col-4"></div>
+    <div class="col-2 bg-light">
+      <label style="margin-bottom: 0" class="form-control">Date</label>
+      <label style="margin-bottom: 0" class="form-control">User</label>
+      <label style="margin-bottom: 0" class="form-control">Confirm</label>
+    </div>
+    <div class="col-3 bg-light">
+      <input
+        disabled
+        class="form-control"
+        [(ngModel)]="lastValueUpdate"
+        type="date"
+      />
+      <input
+        disabled
+        class="form-control"
+        [(ngModel)]="userValueUpdate"
+        type="text"
+      />
+      <select
+        [disabled]="ifConfirmed"
+        class="form-control"
+        [(ngModel)]="item.valueStatus"
+      >
+        <option value="confirm">Confirm</option>
+        <option value="noConfirm">Not Confirm</option>
+        <option value="hold">Hold</option>
+      </select>
+    </div>
+    <div class="col-3"></div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-3">
+      <p>Q. C. Department</p>
+      <p>Peerpharm Ltd.</p>
+    </div>
+    <div class="col-3"></div>
+    <div class="col-3"></div>
+    <div class="col-3"></div>
+  </div>
+</div>
+
+<!-- HE HE HE HE HE HE HE HE HE HE HE HE HE HE HE HE HE HE -->
 <div
   id="specSection"
   *ngIf="specValuesModal == true"

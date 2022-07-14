@@ -7,8 +7,10 @@ table {
   font-size: 16px;
 
 }
-
-
+.tableEn{
+  width: 100%;
+  direction: ltr;
+}
 
 button,
 input {
@@ -30,15 +32,18 @@ td {
   font-family: "Berlin Sans FB";
   padding: 3px 3px;
   font-size: 1rem;
+  
+  
 }
+
 
 .table-fixed thead {
   width: 100%;
   display: block;
   text-align: center;
-
-
-
+}
+.toLtr{
+  direction: ltr;
 }
 
 .read-only {

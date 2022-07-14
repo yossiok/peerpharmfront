@@ -127,6 +127,8 @@ export class BatchesComponent implements OnInit {
   @ViewChild("printValueBtn") printValueBtn: ElementRef;
   @ViewChild("printBtn") printBtn: ElementRef;
 
+  specValuesModalEN:boolean = false
+
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
     event: KeyboardEvent
   ) {
@@ -352,6 +354,18 @@ export class BatchesComponent implements OnInit {
     });
 
     this.specValuesModal = true;
+    this.loadSpecTable(itemNumber);
+  }
+  openTableValues2(itemNumber, batchNumber) {
+    this.batchService.getBatchData(batchNumber).subscribe((data) => {
+      this.currBatch = data[0];
+      this.currBatch.itemNumber = itemNumber;
+
+      this.currBatch.kgProduced =
+        Number(this.currBatch.weightKg) - Number(this.currBatch.weightQtyLeft);
+    });
+
+    this.specValuesModalEN = true;
     this.loadSpecTable(itemNumber);
   }
 
