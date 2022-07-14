@@ -64,6 +64,7 @@ export class ItemslistComponent implements OnInit {
     this.complete = false;
     this.getAllProducts = true;
     this.searchMenu.reset();
+    this.filtering = false;
     this.items = [];
     this.itemsCopy = [];
     this.subscription = this.itemsService.startNewItemObservable().subscribe(
@@ -105,7 +106,7 @@ export class ItemslistComponent implements OnInit {
     }
 
     this.complete = false;
-    this.getAllProducts = false;
+    this.getAllProducts = true;
     this.filtering = true;
     this.items = [];
     this.itemsService

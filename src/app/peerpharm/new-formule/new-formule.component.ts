@@ -715,7 +715,7 @@ export class NewFormuleComponent implements OnInit {
   }
 
   findMatches() {
-    if (!this.formuleToCompare || this.formuleToCompare.length < 3) {
+    if (!this.formuleToCompare || this.formuleToCompare.length < 2) {
       alert("The number of the formule is too short");
       return;
     }
