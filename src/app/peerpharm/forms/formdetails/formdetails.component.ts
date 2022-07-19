@@ -755,7 +755,7 @@ export class FormdetailsComponent implements OnInit {
           if (
             this.form.checkSignature &&
             this.form.directorBackSignature &&
-            this.form.directorFrontSignature
+            this.form.cleanFillMachineSignature
           ) {
             this.disabledValue = true;
             console.log(this.disabledValue);
@@ -875,7 +875,7 @@ export class FormdetailsComponent implements OnInit {
     if (
       this.form.checkSignature &&
       this.form.directorBackSignature &&
-      this.form.directorFrontSignature
+      this.form.cleanFillMachineSignature
       //disable the feature to update afted form is closed
       // && !this.authService.loggedInUser.authorization.includes("QAAdmin")
     ) {
