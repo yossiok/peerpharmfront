@@ -123,6 +123,12 @@
               [allCustomersList]="allCustomersList"
             ></app-proposals-list>
           </div>
+          <div dir="rtl" class="row mt-4">
+            <app-price-lists
+              *ngIf="priceListsView"
+              [allCustomersList]="allCustomersList"
+            ></app-price-lists>
+          </div>
         </div>
       </div>
     </div>

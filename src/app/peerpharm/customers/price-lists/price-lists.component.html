@@ -1,0 +1,140 @@
+<div *ngIf="!authorized">אינך מורשה לראות מסך זה</div>
+<div dir="rtl" *ngIf="authorized">
+  <form action="" [formGroup]="searchForm">
+    <div class="row mt-2">
+      <div class="col-1"></div>
+      <div class="col-4">
+        <h4>בחר לקוח - Choose a Customer</h4>
+      </div>
+    </div>
+    <div class="row mt-2 form_02">
+      <div class="col-1"></div>
+      <div class="col-2">
+        <label>מספר הלקוח</label>
+        <input
+          type="text"
+          class="form-control btn-outline-secondary border-primary"
+          formControlName="customerId"
+          (blur)="getCustomerByNumber()"
+        />
+      </div>
+      <div class="col-4">
+        <label>שם הלקוח</label>
+        <input
+          class="form-control btn-outline-secondary border-primary"
+          type="select"
+          list="customers"
+          formControlName="customerName"
+          (change)="getCustomerByName()"
+        />
+        <datalist id="customers">
+          <option value="null" disabled>בחר לקוח</option>
+          <ng-container *ngIf="allCustomersList.length > 0">
+            <option
+              *ngFor="let customer of allCustomersList"
+              [value]="customer.costumerName"
+            >
+              {{ customer.costumerId }} - {{ customer.costumerName }}
+            </option>
+          </ng-container>
+        </datalist>
+      </div>
+    </div>
+    <div *ngIf="loading" class="loading">Loading&#8230;</div>
+  </form>
+  <ng-container *ngIf="isPriceList">
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="text-center">
+          <h2>Customer Price List - מחירון לקוח</h2>
+          <h3>{{ searchForm.value.customerName }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-1"></div>
+      <div class="col-4"><h4>סנן תוצאות - Filter Results</h4></div>
+    </div>
+    <form action="" [formGroup]="filterForm" class="form_02">
+      <div class="row mt-4" dir="ltr">
+        <div class="col-1"></div>
+        <div class="col-2">
+          <label for="">Filter By Item Number</label>
+          <input
+            type="text"
+            formControlName="itemNumber"
+            class="form-control btn-outline-secondary border-primary"
+            (change)="filterByItem()"
+            placeholder="Item Number"
+          />
+        </div>
+        <!-- <div class="col-1"></div> -->
+        <div class="col-4">
+          <label for="">Filter By Item Name</label>
+          <input
+            type="text"
+            formControlName="itemName"
+            class="form-control btn-outline-secondary border-primary"
+            (change)="filterByName()"
+            placeholder="Item Name"
+          />
+        </div>
+        <!-- <div class="col-1"></div> -->
+        <div class="col-2">
+          <label for="">Filter By Barcode</label>
+          <input
+            type="text"
+            formControlName="barcode"
+            class="form-control btn-outline-secondary border-primary"
+            (change)="filterByBarcode()"
+            placeholder="Barcode"
+          />
+        </div>
+        <div class="col-2">
+          <br />
+          <btton class="btn btn-outline-danger mt-2" (click)="cancelFilter()"
+            >Clear Filter</btton
+          >
+        </div>
+      </div>
+    </form>
+    <div class="row mt-4">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <table class="table table-stripe">
+          <thead>
+            <tr>
+              <th class="click" (click)="sortByItemNumber()">
+                Item Number&nbsp;
+                <i class="fas fa-filter"></i>
+              </th>
+              <th class="click" (click)="sortByBarcode()">
+                Barcode&nbsp;<i class="fas fa-filter"></i>
+              </th>
+              <th class="click" (click)="sortByItemName()">
+                Item Name&nbsp; <i class="fas fa-filter"></i>
+              </th>
+              <th>Item Size</th>
+              <th>Department</th>
+              <th class="click" (click)="sortByPrice()">
+                Price&nbsp; <i class="fas fa-filter"></i>
+              </th>
+              <th>Currency</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of priceList">
+              <td>{{ item.itemNumber }}</td>
+              <td>{{ item.barcode }}</td>
+              <td>{{ item.itemName }}</td>
+              <td>{{ item.attribute2 }}</td>
+              <td>{{ item.department }}</td>
+              <td>{{ item.price }}</td>
+              <td>{{ comaxCustomer?.Currency }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-container>
+</div>
