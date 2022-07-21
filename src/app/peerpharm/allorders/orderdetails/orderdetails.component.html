@@ -194,12 +194,18 @@
           <th>O.I. Status</th>
           <th>Batch Status</th>
           <th>
-            <img
+            <button
+          ngxPrint
+          printSectionId="print-order"
+          styleSheetFile="../../../../assets/stylesheets/orderPrint.css"
+          style="background-color:inherit;border:none"
+        >
+        <img
               src="../../../../assets/images/print.png"
               ngbTooltip="Print Order Details"
               class="reportImg click"
-              (click)="printOrder = true"
             />
+        </button>
           </th>
           <th *ngIf="showingAllOrders || multi">Order Number</th>
           <th style="width: 200px" class="header">Item Number</th>
@@ -2057,32 +2063,18 @@
       </main>
     </div>
   </ng-template>
-
-  <div id="print-order" *ngIf="printOrder" class="bg-light modal-inner rounded">
-    <br /><br />
+  <!-- PRINT START -->
+  <div id="print-order" style="display:none;" class="bg-light printTable">    
     <div class="row">
-      <div class="col-4"></div>
       <div class="col-4">
-        <button
-          style="
-            border: none;
-            background: none;
-            margin-left: 100px;
-            font-size: 25px;
-          "
-          ngxPrint
-          printSectionId="print-order"
-          [printStyle]="{
-            th: { border: '1px solid black' },
-            td: { border: '1px solid black' },
-            tr: { border: '1px solid black' }
-          }"
-        >
-          <b>Order {{ number }}</b>
-        </button>
+        <img
+              style="width: 300px;"
+              src="../../../assets/images/peerpharm.png"
+            />
+            <div class="orderNumber">
+              <h3>Order {{ number }}</h3>
+            </div>
       </div>
-      <div class="col-4"></div>
-    </div>
     <br /><br />
     <div class="row">
       <span class="spanTitle">Total Items: {{ totalOrderQty }}</span>
@@ -2109,57 +2101,56 @@
       ><span class="orderSpanDetails">{{ remarks }}</span>
     </div>
     <br /><br />
-    <table class="table table-striped">
+    <table class="table table-striped" style="border-collapse: collapse;">
       <thead>
         <tr>
-          <th colspan="2">Item</th>
-          <th>Barcode</th>
-          <th>Netto Weight</th>
-          <th>Required Quantity</th>
-          <th>Remaining Quantity</th>
-          <th>Item Order Date</th>
-          <th>Item Packing Date</th>
-          <th>Item Delivery Date</th>
-          <th>Printed?</th>
-          <th>Filled?</th>
-          <th>Filling Status</th>
-          <th colspan="2">Remarks</th>
+          <th colspan="2" style="border: 1px solid; border-collapse: collapse;">Item</th>
+          <th style="border: 1px solid; border-collapse: collapse;">Barcode</th>
+          <th style="border: 1px solid; border-collapse: collapse;">Netto Weight</th>
+          <th style="border: 1px solid; border-collapse: collapse;">Required Quantity</th>
+          <th style="border: 1px solid; border-collapse: collapse;">Remaining Quantity</th>
+          <th style="border: 1px solid; border-collapse: collapse;">Item Order Date</th>
+          <th style="border: 1px solid; border-collapse: collapse;">Item Packing Date</th>
+          <th style="border: 1px solid; border-collapse: collapse;">Item Delivery Date</th>
+          <th style="border: 1px solid; border-collapse: collapse;">Printed?</th>
+          <th style="border: 1px solid; border-collapse: collapse;">Filling Status</th>
+          <th colspan="2" style="border: 1px solid; border-collapse: collapse;">Remarks</th>
         </tr>
       </thead>
       <tbody>
         <ng-container *ngFor="let item of ordersItems; let i = index">
           <tr>
-            <td>{{ item.itemNumber }}</td>
-            <td>{{ item.discription }}</td>
-            <td>{{ item.barcodeK }}</td>
-            <td>{{ item.netWeightGr }}</td>
-            <td>{{ item.quantity }}</td>
-            <td>{{item.quantityRemained}</td>
-            <td>{{ item.itemOrderDate | date: "dd/MM/yyyy" }}</td>
-            <td>{{ item.packingDate | date: "dd/MM/yyyy" }}</td>
-            <td>{{ item.itemDeliveryDate | date: "dd/MM/yyyy" }}</td>
-            <td>
+            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.itemNumber }}</td>
+            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.discription }}</td>
+            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.barcodeK }}</td>
+            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.netWeightGr }}</td>
+            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.quantity }}</td>
+            <td style="border: 1px solid; border-collapse: collapse; ">{{item.quantityRemained}}</td>
+            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.itemOrderDate | date: "dd/MM/yyyy" }}</td>
+            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.packingDate | date: "dd/MM/yyyy" }}</td>
+            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.itemDeliveryDate | date: "dd/MM/yyyy" }}</td>
+            <td style="border: 1px solid; border-collapse: collapse; ">
               <img
                 *ngIf="item.printStatus === 'printed'"
                 style="width: 15px"
                 src="../../../../assets/images/aprroved.png"
               />
             </td>
-            <td>
+            <td style="border: 1px solid; border-collapse: collapse; ">
               <img
                 *ngIf="item.fillingStatus === 'filled'"
                 style="width: 15px"
                 src="../../../../assets/images/aprroved.png"
               />
             </td>
-            <td>{{ item.fillingStatus }}</td>
-            <td>{{ item.itemImpRemark }}</td>
-            <td>{{ item.itemRemarks }}</td>
+            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.itemImpRemark }}</td>
+            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.itemRemarks }}</td>
           </tr>
         </ng-container>
       </tbody>
     </table>
   </div>
+  <!-- PRINT end -->
 
   <ng-template #pakaStatus>
     <div class="p-5">

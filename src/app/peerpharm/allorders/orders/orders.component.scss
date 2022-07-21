@@ -12,6 +12,42 @@ input {
   min-width: 1600px;
   right: 0px !important;
 }
+.filterContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  width: 80%;
+  padding: 2rem;
+  border-radius: 9999999px;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+.filterDates{
+  direction: rtl;
+}
+.dateLabel{
+  color: #ffffff;
+}
+.date-input{
+  margin-left: 1rem;
+}
+.buttonsContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.filter-title{
+  color: #ffffff;
+}
+.filter-input{
+  text-align: center;
+  margin-bottom: 1rem;
+  border-radius: 99999999px;
+}
 
 .batches-modal {
   height: 700px;

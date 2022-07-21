@@ -85,6 +85,27 @@ export class OrdersService {
     let url = this.baseUrl + "order?allOpenOrderItemsByItemValue=" + itemValue;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+  getAllOpenOrdersByIncludeNumber(number){
+    let url = this.baseUrl + "order/getOpenOrdersByIncludeNumber?number=" + number;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  getAllOpenOrdersByIncludeCustomer(number){
+    let url = this.baseUrl + "order/getOpenOrdersByIncludeCustomer?number=" + number;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  getAllOpenOrdersByOrderDate(startDate,endDate){
+    let url = this.baseUrl + `order/getOpenOrdersByOrderDate?startDate=${startDate}&endDate=${endDate}`
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  getAllOpenOrderByStage(stage){
+    let url = this.baseUrl + `order/getOpenOrdersByStage?stage=${stage}`
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+
+  }
+  // getAllOpenOrdersByDeliveryDate(startDate,endDate){
+  //   let url = this.baseUrl + `order/getOpenOrdersByDeliveryDate?startDate=${startDate}&endDate=${endDate}`
+  //   return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  // }
 
   // getOrderCompileData(orderNumber): Observable<any> {
   //   let url = this.baseUrl + 'packingPallltItems?getAmounts=yes&orderNumber=' + orderNumber;
