@@ -23,6 +23,9 @@ main {
 }
 .td {
   border: 1px solid black;
+  .hidden {
+    visibility: block;
+  }
 }
 
 .zeroUnits {
@@ -48,8 +51,12 @@ main {
   // max-height: 150%;
   padding: 20px;
 }
-.scroll{
-  top:150px;
-  overflow:scroll;
-  height:62.5rem;
+.scroll {
+  top: 100px;
+  overflow: scroll;
+  height: 62.5rem;
+}
+
+.hidden {
+  visibility: block;
 }

@@ -857,7 +857,7 @@
 
   <div id="print-sectionHE">
     <div
-      class="modal3 bg-white scroll"
+      class="modal3 bg-white scroll w-75 ml-5"
       *ngIf="showProductsBeforeDeliveryHE == true"
     >
       <!-- Modal content -->
@@ -885,7 +885,7 @@
         <div class="col-1">
           <img
             src="../../../../assets/images/excel.png"
-            ngbTooltip='ייצוא אקסל'
+            ngbTooltip="ייצוא אקסל"
             class="click"
             alt="export to excel"
             style="width: 40px"
@@ -941,7 +941,7 @@
         </table>
       </div>
       <div class="container-fluid" id="material-body" class="modal-body">
-        <table class="table table-bordered">
+        <table class="table table-bordered w-75">
           <thead style="background: lightgray !important">
             <tr>
               <th></th>
@@ -976,14 +976,14 @@
                 </td>
                 <td>{{ line.itemName }}</td>
                 <td>{{ line.orderNumber }}</td>
-                <td>{{ line.orderAmount }}</td>
+                <td>{{ line.orderAmount | number }}</td>
                 <td>{{ line.batchNumber }}</td>
                 <td>{{ line.fullKartons }}</td>
                 <td>{{ line.unitsInKarton }}</td>
                 <td>{{ line.unitsQuantityPartKarton }}</td>
-                <td>{{ pallet.palletWeight }}</td>
+                <td>{{ pallet.palletWeight | number }}</td>
                 <td>{{ pallet.palletSize }}</td>
-                <td>{{ line.unitsToCombine }}</td>
+                <td>{{ line.unitsToCombine | number }}</td>
               </tr>
             </ng-container>
           </tbody>
@@ -1010,7 +1010,9 @@
           <thead>
             <tr>
               <th><b>מק"ט פריט</b></th>
-              <th><b>סה"כ כמות</b></th>
+              <th><b>כמות שהוזמנה</b></th>
+              <th><b>כמות במשלוח</b></th>
+              <th><b>הפרש</b></th>
             </tr>
           </thead>
           <tbody>
@@ -1019,7 +1021,18 @@
                 <b>{{ pallet.itemNumber }}</b>
               </td>
               <td>
-                <b>{{ pallet.quantity }}</b>
+                <b>{{ pallet.orderAmount | number }}</b>
+              </td>
+              <td>
+                <b>{{ pallet.quantity | number }}</b>
+              </td>
+              <td>
+                <b
+                  [style.color]="
+                    pallet.quantity - pallet.orderAmount < 0 ? 'red' : 'black'
+                  "
+                  >{{ pallet.quantity - pallet.orderAmount | number }}</b
+                >
               </td>
             </tr>
           </tbody>
@@ -1044,7 +1057,7 @@
     <div
       *ngIf="showProductsBeforeDeliveryEN == true"
       id="myModal3"
-      class="modal3 bg-white scroll"
+      class="modal3 bg-white scroll w-75 ml-5"
     >
       <!-- Modal content -->
       <div class="row">
@@ -1056,13 +1069,14 @@
             printSectionId="print-sectionEN"
             ngxPrint
             [printStyle]="{
-              table: { 'font-size': '20px' },
+              table: { 'font-size': '20px', 'border-collapse': collapse },
               td: { border: 'solid 1px black' },
               tr: { border: 'solid 1px black' },
               thead: { background: 'lightgray' },
               td: { padding: '5px' },
               th: { border: 'solid 1px black' },
-              button: { visibility: 'hidden' }
+              button: { visibility: 'hidden' },
+              hidden: { visibility: 'hidden' }
             }"
           >
             Print
@@ -1071,7 +1085,7 @@
         <div class="col-1">
           <img
             src="../../../../assets/images/excel.png"
-            ngbTooltip='Eexcel export'
+            ngbTooltip="Eexcel export"
             class="click"
             alt="export to excel"
             style="width: 40px"
@@ -1089,7 +1103,7 @@
         </div>
       </div>
       <div class="row">
-        <table>
+        <table class="table w-75">
           <tbody>
             <tr style="border: none">
               <td style="border: none">
@@ -1129,10 +1143,10 @@
         </table>
       </div>
       <div class="container" id="material-body" class="modal-body">
-        <table class="table table-bordered">
+        <table class="table table-bordered w-75">
           <thead>
             <tr>
-              <th></th>
+              <th class="hidden"></th>
               <th scope="col">Pallet</th>
               <th scope="col">Item</th>
               <th scope="col">Item Name</th>
@@ -1150,7 +1164,7 @@
           <tbody>
             <ng-container *ngFor="let pallet of selectedArr; let i = index">
               <tr *ngFor="let line of pallet.lines">
-                <td>
+                <td class="hidden">
                   <button btn (click)="removeLine(line)">
                     <i class="fa fa-times text-danger"></i>
                   </button>
@@ -1164,39 +1178,71 @@
                 </td>
                 <td>{{ line.itemName }}</td>
                 <td>{{ line.orderNumber }}</td>
-                <td>{{ line.orderAmount }}</td>
+                <td>{{ line.orderAmount | number }}</td>
                 <td>{{ line.batchNumber }}</td>
                 <td>{{ line.fullKartons }}</td>
                 <td>{{ line.unitsInKarton }}</td>
                 <td>{{ line.unitsQuantityPartKarton }}</td>
                 <td>{{ pallet.palletWeight }}</td>
                 <td>{{ pallet.palletSize }}</td>
-                <td>{{ line.unitsToCombine }}</td>
+                <td>{{ line.unitsToCombine | number }}</td>
               </tr>
             </ng-container>
           </tbody>
         </table>
-
-        <table class="table table-bordered mt-3">
+        <h3>Shipment Summary</h3>
+        <table class="table table-bordered mt-3 w-50">
           <thead>
             <th><b>Total Pallets</b></th>
             <th><b>Total Weight</b></th>
-            <th><b>Item</b></th>
-            <th><b>Total Quantity</b></th>
+            <!-- <th><b>Item</b></th>
+            <th><b>Total Quantity</b></th> -->
           </thead>
           <tbody>
-            <tr *ngFor="let pallet of combinedPallets">
+            <!-- <tr *ngFor="let pallet of combinedPallets"> -->
+            <tr>
               <td>
                 <b>{{ selectedArr.length }}</b>
               </td>
               <td>
                 <b>{{ currPLWeight }}</b>
               </td>
-              <td>
+              <!-- <td>
                 <b>{{ pallet.itemNumber }}</b>
               </td>
               <td>
                 <b>{{ pallet.quantity }}</b>
+              </td> -->
+            </tr>
+          </tbody>
+        </table>
+        <table class="table table-bordered mt-3 w-75">
+          <thead>
+            <tr>
+              <th><b>Item Number</b></th>
+              <th><b>Order Amount</b></th>
+              <th><b>Supplied Amount</b></th>
+              <th><b>Difference</b></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pallet of combinedPallets">
+              <td>
+                <b>{{ pallet.itemNumber }}</b>
+              </td>
+              <td>
+                <b>{{ pallet.orderAmount | number }}</b>
+              </td>
+              <td>
+                <b>{{ pallet.quantity | number }}</b>
+              </td>
+              <td>
+                <b
+                  [style.color]="
+                    pallet.quantity - pallet.orderAmount < 0 ? 'red' : 'black'
+                  "
+                  >{{ pallet.quantity - pallet.orderAmount | number }}</b
+                >
               </td>
             </tr>
           </tbody>
