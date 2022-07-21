@@ -1,0 +1,21 @@
+table{
+    border-collapse: collapse;
+}
+th{
+    border: 1px solid; border-collapse: collapse; 
+}
+td{
+    border: 1px solid; border-collapse: collapse; 
+}
+.orderNumber{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+}
+/* .orderNumber h3{
+    
+    align-self: center;
+} */
