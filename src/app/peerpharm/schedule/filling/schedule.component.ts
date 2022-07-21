@@ -61,9 +61,9 @@ export class ScheduleComponent implements OnInit {
   batchesSpecifications: any[];
   fillingDate: any;
 
-  myDate:Date = new Date();
-  intervalId:any;
-  chkAll:boolean = false;
+  myDate: Date = new Date();
+  intervalId: any;
+  chkAll: boolean = false;
 
   closeResult: string;
   public printScheduleFillingForm: FormGroup;
@@ -85,7 +85,7 @@ export class ScheduleComponent implements OnInit {
   @ViewChild("id") id: ElementRef;
   @ViewChild("batchSpecStatus") batchSpecStatus: ElementRef;
   openingPrintModal: boolean;
-  sameLineAlert:boolean = false;
+  sameLineAlert: boolean = false;
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
     event: KeyboardEvent
@@ -118,17 +118,16 @@ export class ScheduleComponent implements OnInit {
 
   typeShown: String = "basic";
 
-  itemsNumbers:Array<any>=[];
-  itemsComponentsByItemNumber:any={};
+  itemsNumbers: Array<any> = [];
+  itemsComponentsByItemNumber: any = {};
 
-  remarks: Array<any> = []
-  expanded: boolean = false
-  remarksToAdd: Array<any>=[]
-  remarksLangues: Array<any>=[]
-  unscheduledBatches:Array<any> =[]
-  showBatchesAlert:boolean = false
-  showBatchesList:boolean = false
-
+  remarks: Array<any> = [];
+  expanded: boolean = false;
+  remarksToAdd: Array<any> = [];
+  remarksLangues: Array<any> = [];
+  unscheduledBatches: Array<any> = [];
+  showBatchesAlert: boolean = false;
+  showBatchesList: boolean = false;
 
   constructor(
     private scheduleService: ScheduleService,
@@ -151,7 +150,6 @@ export class ScheduleComponent implements OnInit {
     this.fillingDate = this.today;
     this.getAllSchedule(this.today);
 
-
     this.printScheduleFillingForm = new FormGroup({
       position: new FormControl("", [Validators.required]),
       orderN: new FormControl("", [Validators.required]),
@@ -170,31 +168,29 @@ export class ScheduleComponent implements OnInit {
       volumeK: new FormControl("", [Validators.required]),
       barcodeK: new FormControl("", [Validators.required]),
     });
-    
 
     this.intervalId = setInterval(() => {
       this.myDate = new Date();
     }, 1000);
 
-    this.scheduleService.getScheduleRemarks().subscribe((res)=>{
-      if(res && !res.msg && res.length > 0){
-        this.remarks = res
+    this.scheduleService.getScheduleRemarks().subscribe((res) => {
+      if (res && !res.msg && res.length > 0) {
+        this.remarks = res;
       }
-    })
+    });
 
-    this.getUnscheduledBatches()
-
+    this.getUnscheduledBatches();
   }
 
-  getUnscheduledBatches(){
-    this.batchService.getTenDaysUnscheduledBatches().subscribe((res)=>{
-      if(res){
-        this.unscheduledBatches = res
-        if(this.unscheduledBatches.length > 0){
-          this.showBatchesAlert = true
+  getUnscheduledBatches() {
+    this.batchService.getTenDaysUnscheduledBatches().subscribe((res) => {
+      if (res) {
+        this.unscheduledBatches = res;
+        if (this.unscheduledBatches.length > 0) {
+          this.showBatchesAlert = true;
         }
       }
-    })
+    });
   }
 
   showCheckboxes() {
@@ -208,31 +204,28 @@ export class ScheduleComponent implements OnInit {
     }
   }
 
-  addRemarks(id){
-    const temp = this.remarks.find(rem => rem._id == id)
-    if(!temp){
-      return
-    }else{
-      if(this.remarksToAdd.includes(temp)){
-        this.remarksToAdd = this.remarksToAdd.filter((rem)=> rem._id != id)
-      }else{
-        this.remarksToAdd.push(temp)
+  addRemarks(id) {
+    const temp = this.remarks.find((rem) => rem._id == id);
+    if (!temp) {
+      return;
+    } else {
+      if (this.remarksToAdd.includes(temp)) {
+        this.remarksToAdd = this.remarksToAdd.filter((rem) => rem._id != id);
+      } else {
+        this.remarksToAdd.push(temp);
       }
     }
   }
 
-  addLangues(lang){
-    console.log("ERAN GRADY THE KING",lang);
-    if(this.remarksLangues.includes(lang)){
-      this.remarksLangues = this.remarksLangues.filter((x)=> x != lang)
-    }else{
-      this.remarksLangues.push(lang)
+  addLangues(lang) {
+    console.log("ERAN GRADY THE KING", lang);
+    if (this.remarksLangues.includes(lang)) {
+      this.remarksLangues = this.remarksLangues.filter((x) => x != lang);
+    } else {
+      this.remarksLangues.push(lang);
     }
-    console.log("ERAN GRADY THE KING2",this.remarksLangues);
+    console.log("ERAN GRADY THE KING2", this.remarksLangues);
   }
-
-
-
 
   checkPermission() {
     if (this.authService.loggedInUser.screenPermission != "3") {
@@ -245,7 +238,7 @@ export class ScheduleComponent implements OnInit {
     return false; // Permission granted
   }
 
-  goToProductTree(){
+  goToProductTree() {
     this.router.navigate([`/peerpharm/items/itemDetails`]);
   }
 
@@ -273,43 +266,40 @@ export class ScheduleComponent implements OnInit {
 
   exportAsXLSX(): void {
     try {
-
       let tempArr = this.scheduleData.filter((s) => s.mkp == this.typeShown);
-    tempArr.forEach((x)=>{
-      // console.log(x);
-      let str = ""
-     let componentsArray = this.itemsComponentsByItemNumber[Number(x.item)]
-    //  console.log(this.itemsComponentsByItemNumber[84]);
-     componentsArray.map((compo)=>{
-       str+= String(compo) + ", "
-     })
-      x.components = str
-      delete x._id
-      delete x._v
-      delete x.color
-      delete x.shift
-    })
+      tempArr.forEach((x) => {
+        // console.log(x);
+        let str = "";
+        let componentsArray = this.itemsComponentsByItemNumber[Number(x.item)];
+        //  console.log(this.itemsComponentsByItemNumber[84]);
+        componentsArray.map((compo) => {
+          str += String(compo) + ", ";
+        });
+        x.components = str;
+        delete x._id;
+        delete x._v;
+        delete x.color;
+        delete x.shift;
+      });
 
-    this.excelService.exportAsExcelFile(tempArr, "data");
-      
+      this.excelService.exportAsExcelFile(tempArr, "data");
     } catch (error) {
       console.log(error);
-      
     }
   }
 
   writeScheduleData() {
-    this.scheduleData.map((line)=>{
-      if(
+    this.scheduleData.map((line) => {
+      if (
         line.orderN == this.scheduleLine.orderN &&
         line.item == this.scheduleLine.item &&
         line.qty == this.scheduleLine.qty &&
         line.date3 == this.scheduleLine.date &&
         line.mkp == this.scheduleLine.mkp
-      ){
-        this.sameLineAlert =true;
+      ) {
+        this.sameLineAlert = true;
       }
-    })
+    });
     if (this.scheduleLine.orderN != "") {
       if (this.scheduleLine.mkp == "sachet") {
         this.scheduleLine.productionLine = "10";
@@ -427,12 +417,14 @@ export class ScheduleComponent implements OnInit {
         this.scheduleData = res;
         console.log(this.scheduleData[0]);
         this.scheduleDataCopy = res;
-        this.scheduleData.forEach((row)=>{
-          this.itemsNumbers.push(row.item)
-        })
-        this.itemSer.getComponentsForMultiItems(this.itemsNumbers).subscribe((res2)=>{
-          this.itemsComponentsByItemNumber = res2
-        })
+        this.scheduleData.forEach((row) => {
+          this.itemsNumbers.push(row.item);
+        });
+        this.itemSer
+          .getComponentsForMultiItems(this.itemsNumbers)
+          .subscribe((res2) => {
+            this.itemsComponentsByItemNumber = res2;
+          });
         this.selectedArr = [];
 
         //get batch specifications status
@@ -450,8 +442,6 @@ export class ScheduleComponent implements OnInit {
           }
         });
         setTimeout(() => (this.scheduleDataCopy = this.scheduleDataCopy), 5000);
-        
-        
       });
     }
   }
@@ -509,12 +499,14 @@ export class ScheduleComponent implements OnInit {
       console.log(res);
       this.scheduleData = res;
       this.scheduleDataCopy = res;
-      this.scheduleData.forEach((row)=>{
-          this.itemsNumbers.push(row.item)
-        })
-        this.itemSer.getComponentsForMultiItems(this.itemsNumbers).subscribe((res2)=>{
-          this.itemsComponentsByItemNumber = res2
-        })
+      this.scheduleData.forEach((row) => {
+        this.itemsNumbers.push(row.item);
+      });
+      this.itemSer
+        .getComponentsForMultiItems(this.itemsNumbers)
+        .subscribe((res2) => {
+          this.itemsComponentsByItemNumber = res2;
+        });
 
       //get batch specifications status
       this.scheduleData.map((sced) => {
@@ -531,7 +523,6 @@ export class ScheduleComponent implements OnInit {
         }
       });
       setTimeout(() => (this.scheduleDataCopy = this.scheduleDataCopy), 5000);
-      
     });
   }
 
@@ -552,10 +543,9 @@ export class ScheduleComponent implements OnInit {
     try {
       console.log(ev.checked);
 
-
       if ((ev.target && ev.target.checked == true) || ev.checked == true) {
         var isSelected = this.selectedArr;
-  
+
         this.itemSer.createFillingReport(item.item).subscribe((data) => {
           item.impRemarks = data[0].impRemarks;
           item.bottleNumber = data[0].bottleNumber;
@@ -580,57 +570,54 @@ export class ScheduleComponent implements OnInit {
           item.boxImage = data[0].boxImage;
           item.proRemarks = data[0].proRemarks;
         });
-  
+
         isSelected.push(item);
         this.selectedArr = isSelected;
       }
-  
+
       if ((ev.target && ev.target.checked == false) || ev.checked == false) {
         var isSelected = this.selectedArr;
         var tempArr = isSelected.filter((x) => x.item != item.item);
         this.selectedArr = tempArr;
       }
-      
     } catch (error) {
       console.log(error);
-      
     }
   }
-  
-  selectAll(){
+
+  selectAll() {
     console.log(this.scheduleData[0]);
-    this.chkAll = !this.chkAll
-    if(this.chkAll){
-      this.selects()
-    }else{
-      this.deSelect()
+    this.chkAll = !this.chkAll;
+    if (this.chkAll) {
+      this.selects();
+    } else {
+      this.deSelect();
     }
-
   }
 
-  selects(){  
-    var ele= <HTMLInputElement[]><any> document.getElementsByName('selectLine'); 
-    for(var i=0; i<ele.length; i++){  
-        if(ele[i].type=='checkbox'){
-          ele[i].checked=true;
-          this.isSelected(ele[i],this.scheduleData[i])
-        }
-            
+  selects() {
+    var ele = <HTMLInputElement[]>(
+      (<any>document.getElementsByName("selectLine"))
+    );
+    for (var i = 0; i < ele.length; i++) {
+      if (ele[i].type == "checkbox") {
+        ele[i].checked = true;
+        this.isSelected(ele[i], this.scheduleData[i]);
+      }
     }
-    
-}
+  }
 
-  deSelect(){  
-    var ele=  <HTMLInputElement[]><any>  document.getElementsByName('selectLine');  
-    for(var i=0; i<ele.length; i++){  
-        if(ele[i].type=='checkbox'){
-          ele[i].checked=false;
-          this.isSelected(ele[i],this.scheduleData[i])
-        }
-    }  
-} 
-
-  
+  deSelect() {
+    var ele = <HTMLInputElement[]>(
+      (<any>document.getElementsByName("selectLine"))
+    );
+    for (var i = 0; i < ele.length; i++) {
+      if (ele[i].type == "checkbox") {
+        ele[i].checked = false;
+        this.isSelected(ele[i], this.scheduleData[i]);
+      }
+    }
+  }
 
   makeFillingReport() {
     this.fillingReport = true;
@@ -830,7 +817,6 @@ export class ScheduleComponent implements OnInit {
   }
 
   async updateSchedule(line) {
-
     const today = new Date();
     const year = today.getFullYear();
     const mount = today.getMonth();
@@ -852,33 +838,30 @@ export class ScheduleComponent implements OnInit {
           let updateOrderItemDate =
             scdLneInfo[0].date == this.date.nativeElement.value;
 
-          
-
-          let strHe=""
-          let strEn=""
-          let strAr=""
-          let strRs=""
-          if(this.remarksLangues.length > 0){
-            if(this.remarksToAdd.length > 0){
-              this.remarksToAdd.map((rem)=>{
-                if(this.remarksLangues.includes('heb')){
-                  strHe += rem.heb + ", "
+          let strHe = "";
+          let strEn = "";
+          let strAr = "";
+          let strRs = "";
+          if (this.remarksLangues.length > 0) {
+            if (this.remarksToAdd.length > 0) {
+              this.remarksToAdd.map((rem) => {
+                if (this.remarksLangues.includes("heb")) {
+                  strHe += rem.heb + ", ";
                 }
-                if(this.remarksLangues.includes('eng')){
-                  strEn += rem.eng + ", "
+                if (this.remarksLangues.includes("eng")) {
+                  strEn += rem.eng + ", ";
                 }
-                if(this.remarksLangues.includes('arab')){
-                  strAr += rem.arab + ", "
+                if (this.remarksLangues.includes("arab")) {
+                  strAr += rem.arab + ", ";
                 }
-                if(this.remarksLangues.includes('rus')){
-                  strRs += rem.rus + ", "
+                if (this.remarksLangues.includes("rus")) {
+                  strRs += rem.rus + ", ";
                 }
-              })
+              });
             }
-            this.remarksLangues = []
-            this.remarksToAdd = []
+            this.remarksLangues = [];
+            this.remarksToAdd = [];
           }
-          
 
           let scheduleToUpdate: any = {
             _id: line._id,
@@ -893,7 +876,17 @@ export class ScheduleComponent implements OnInit {
             qtyProduced: "",
             date: this.date.nativeElement.value,
             marks: this.marks.nativeElement.value,
-            shift: this.shift.nativeElement.value + "\n" + strHe + "\n" + strRs + "\n" + strAr + "\n" + strEn + "\n",
+            shift:
+              this.shift.nativeElement.value +
+              "\n" +
+              strHe +
+              "\n" +
+              strRs +
+              "\n" +
+              strAr +
+              "\n" +
+              strEn +
+              "\n",
             mkp: this.currentType,
             itemImpRemark: scdLneInfo[0].itemImpRemark,
             whatIsMissing: this.whatIsMissing.nativeElement.value,
@@ -937,31 +930,31 @@ export class ScheduleComponent implements OnInit {
         let updateOrderItemDate =
           scdLneInfo[0].date == this.date.nativeElement.value;
 
-          let strHe=""
-          let strEn=""
-          let strAr=""
-          let strRs=""
+        let strHe = "";
+        let strEn = "";
+        let strAr = "";
+        let strRs = "";
 
-          if(this.remarksLangues.length > 0){
-            if(this.remarksToAdd.length > 0){
-              this.remarksToAdd.map((rem)=>{
-                if(this.remarksLangues.includes('heb')){
-                  strHe += rem.heb + ", "
-                }
-                if(this.remarksLangues.includes('eng')){
-                  strEn += rem.eng + ", "
-                }
-                if(this.remarksLangues.includes('arab')){
-                  strAr += rem.arab + ", "
-                }
-                if(this.remarksLangues.includes('rus')){
-                  strRs += rem.rus + ", "
-                }
-              })
-            }
-            this.remarksLangues = []
-            this.remarksToAdd = []
+        if (this.remarksLangues.length > 0) {
+          if (this.remarksToAdd.length > 0) {
+            this.remarksToAdd.map((rem) => {
+              if (this.remarksLangues.includes("heb")) {
+                strHe += rem.heb + ", ";
+              }
+              if (this.remarksLangues.includes("eng")) {
+                strEn += rem.eng + ", ";
+              }
+              if (this.remarksLangues.includes("arab")) {
+                strAr += rem.arab + ", ";
+              }
+              if (this.remarksLangues.includes("rus")) {
+                strRs += rem.rus + ", ";
+              }
+            });
           }
+          this.remarksLangues = [];
+          this.remarksToAdd = [];
+        }
 
         let scheduleToUpdate: any = {
           _id: line._id,
@@ -976,7 +969,17 @@ export class ScheduleComponent implements OnInit {
           qtyProduced: "",
           date: this.date.nativeElement.value,
           marks: this.marks.nativeElement.value,
-          shift: this.shift.nativeElement.value + "\n" + strHe + "\n" + strRs + "\n" + strAr + "\n" + strEn + "\n",
+          shift:
+            this.shift.nativeElement.value +
+            "\n" +
+            strHe +
+            "\n" +
+            strRs +
+            "\n" +
+            strAr +
+            "\n" +
+            strEn +
+            "\n",
           mkp: this.currentType,
           itemImpRemark: scdLneInfo[0].itemImpRemark,
           whatIsMissing: this.whatIsMissing.nativeElement.value,
@@ -1060,7 +1063,7 @@ export class ScheduleComponent implements OnInit {
         mount == scheduleMount &&
         day == scheduleDay
       ) {
-        let reason = prompt("אנא הכנס סיבה למחיקת הקו", "");
+        let reason = prompt("אנא הכנס סיבה למחיקת השורה", "");
         reason = reason.trim();
         if (reason != null && reason != "") {
           document.getElementById("deleteReason").innerHTML = reason;
@@ -1074,6 +1077,15 @@ export class ScheduleComponent implements OnInit {
         }
       } else {
         this.scheduleService.deleteSchedule(id).subscribe((res) => {
+          if (res.msg) {
+            this.toastSrv.error(res.msg);
+            alert("השורה לא נמחקה, קיים טופס לשורה זו.");
+            return;
+          } else if (res) {
+            console.log(res);
+            this.toastSrv.success("שורת הלוז נמחקה");
+          }
+
           this.scheduleData = this.scheduleData.filter(
             (elem) => elem._id != id
           );
@@ -1100,7 +1112,6 @@ export class ScheduleComponent implements OnInit {
           this.today = moment(this.today).format("YYYY-MM-DD");
           this.getAllSchedule(this.today);
           this.selectedArr = [];
-          
         }
       });
     } else {

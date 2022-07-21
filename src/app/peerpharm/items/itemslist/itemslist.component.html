@@ -164,6 +164,8 @@
             <th>Name</th>
             <th>Volume/Net Weight</th>
             <th>Barcode</th>
+            <th>License Number</th>
+            <th>License Date</th>
             <th>Bottle Number</th>
             <th>Cap Number</th>
             <th>Pump Number</th>
@@ -202,6 +204,21 @@
             </td>
             <td style="word-wrap: break-word; color: black">
               {{ item.barcodeK }}
+            </td>
+            <td style="word-wrap: break-word; color: black">
+              {{ item.licsensNumber }}
+            </td>
+            <td
+              *ngIf="item.licensDate == 'Invalid date'"
+              style="word-wrap: break-word; color: black"
+            >
+              {{ item.licsensDate }}
+            </td>
+            <td
+              *ngIf="item.licensDate != 'Invalid date'"
+              style="word-wrap: break-word; color: black"
+            >
+              {{ item.licsensDate | date: "dd/MM/yyyy" }}
             </td>
             <td style="word-wrap: break-word; color: black">
               {{ item.bottleNumber }}

@@ -138,10 +138,10 @@ export class ProcurementOrdersComponent implements OnInit {
     origin: new FormControl(null),
   });
   purchaseRecommendationToPrint: any = {};
-  loadingProblematics: boolean =false
-  problematicsModal: boolean = false
-  problematicsModalSelect: boolean = false
-  problematicItems: any[]
+  loadingProblematics: boolean = false;
+  problematicsModal: boolean = false;
+  problematicsModalSelect: boolean = false;
+  problematicItems: any[];
   problematicsType: string;
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
@@ -196,7 +196,7 @@ export class ProcurementOrdersComponent implements OnInit {
     private route: ActivatedRoute,
     private modalService: NgbModal,
     private userService: UsersService,
-    private ordersService: OrdersService,
+    private ordersService: OrdersService
   ) {}
 
   ngOnInit() {
@@ -873,20 +873,20 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   getProblematicsReport(type) {
-    this.problematicsModalSelect = false
-    this.problematicsType = type.value
-    this.loadingProblematics = true
-    this.ordersService.getProblematicsReportForPurchase(this.problematicsType).subscribe(problematicItems => {
-      this.problematicItems = problematicItems
-      this.problematicsModal = true
-      
+    this.problematicsModalSelect = false;
+    this.problematicsType = type.value;
+    this.loadingProblematics = true;
+    this.ordersService
+      .getProblematicsReportForPurchase(this.problematicsType)
+      .subscribe((problematicItems) => {
+        this.problematicItems = problematicItems;
+        this.problematicsModal = true;
 
-      console.log(problematicItems)
+        console.log(problematicItems);
 
-      //
-      this.loadingProblematics = false
-
-    })
+        //
+        this.loadingProblematics = false;
+      });
   }
 
   getAllPurchaseRecommends() {
@@ -998,9 +998,12 @@ export class ProcurementOrdersComponent implements OnInit {
     switch (expression) {
       case "purchaseData":
         let temp = this.procurementData;
-        temp.sort((a,b)=>{
-          return new Date(a.creationDate).getTime() - new Date(b.creationDate).getTime()
-        })
+        temp.sort((a, b) => {
+          return (
+            new Date(a.creationDate).getTime() -
+            new Date(b.creationDate).getTime()
+          );
+        });
         console.log(temp);
         let exelData = [];
         for (let purchase of temp) {
@@ -1044,39 +1047,53 @@ export class ProcurementOrdersComponent implements OnInit {
         break;
 
       case "purchaseItems":
+        let conf = confirm("האם להוציא מהדוח שורות שסופקו?");
         let allItems = [];
         for (let purchaseOrder of this.procurementData) {
           if (purchaseOrder.stockitems)
             purchaseOrder.stockitems.map((item) => {
-              allItems.push({
-                Supplier:
-                  purchaseOrder.supplierNumber +
-                  " - " +
-                  purchaseOrder.supplierName,
-                origin: purchaseOrder.origin,
-                PONum: purchaseOrder.orderNumber,
-                POstatus: purchaseOrder.status,
-                POstatusChange: new Date(purchaseOrder.statusChange),
-                itemNum: item.number,
-                itemName: item.name,
-                Type: item.componentType,
-                Price: item.price,
-                coin: item.coin,
-                Po_Amount: item.quantity,
-                Po_Delivered: item.arrivedAmount,
-                PO_Date: new Date(purchaseOrder.creationDate),
-                PO_Requested_Date: purchaseOrder.requestedDate
-                  ? new Date(purchaseOrder.requestedDate)
-                  : null,
-                PO_Approval_Date: purchaseOrder.arrivalDate
-                  ? new Date(purchaseOrder.arrivalDate)
-                  : null,
-                measurement: item.measurement,
-                totalPriceNIS: item.localTotal,
-                supplierItemNum: item.supplierItemNum,
-                shippingPrice: item.shippingPrice,
-                remarks: item.remarks,
-              });
+              let includeLine = true;
+              if (conf) {
+                if (item.arrivedAmount) {
+                  let leftover = item.arrivedAmount - item.quantity;
+                  console.log(item.arrivedAmount);
+                  console.log(item.quantity);
+                  if (leftover >= 0 && leftover < item.quantity * 0.2) {
+                    includeLine = false;
+                  }
+                }
+              }
+              if (includeLine) {
+                allItems.push({
+                  Supplier:
+                    purchaseOrder.supplierNumber +
+                    " - " +
+                    purchaseOrder.supplierName,
+                  origin: purchaseOrder.origin,
+                  PONum: purchaseOrder.orderNumber,
+                  POstatus: purchaseOrder.status,
+                  POstatusChange: new Date(purchaseOrder.statusChange),
+                  itemNum: item.number,
+                  itemName: item.name,
+                  Type: item.componentType,
+                  Price: item.price,
+                  coin: item.coin,
+                  Po_Amount: item.quantity,
+                  Po_Delivered: item.arrivedAmount,
+                  PO_Date: new Date(purchaseOrder.creationDate),
+                  PO_Requested_Date: purchaseOrder.requestedDate
+                    ? new Date(purchaseOrder.requestedDate)
+                    : null,
+                  PO_Approval_Date: purchaseOrder.arrivalDate
+                    ? new Date(purchaseOrder.arrivalDate)
+                    : null,
+                  measurement: item.measurement,
+                  totalPriceNIS: item.localTotal,
+                  supplierItemNum: item.supplierItemNum,
+                  shippingPrice: item.shippingPrice,
+                  remarks: item.remarks,
+                });
+              }
             });
         }
         this.excelService.exportAsExcelFile(allItems, "purchase items");
