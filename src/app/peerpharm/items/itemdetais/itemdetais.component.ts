@@ -95,6 +95,7 @@ export class ItemdetaisComponent implements OnInit {
   notActiveAlert: Boolean = false;
   editSpecTable: Boolean = false;
   productPriceModal: Boolean = false;
+  PAO:Boolean = false;
 
   itemLockedForEdit: Boolean = false;
   productionType: "";
@@ -396,6 +397,8 @@ export class ItemdetaisComponent implements OnInit {
     textureSpec: "",
     scentRemarks: "",
     scentSpec: "",
+
+    PAO:0,
   };
 
   selectedFiles: FileList;
@@ -2139,6 +2142,13 @@ export class ItemdetaisComponent implements OnInit {
           this.laserAndExp = true;
         }
         break;
+
+        case "PAO":
+          if(this.PAO == true){
+            this.PAO = false
+          }else{
+            this.PAO = true
+          }
     }
   }
 

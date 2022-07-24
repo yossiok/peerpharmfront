@@ -450,6 +450,7 @@ $(document).ready(()=>{
 		document.getElementById('id_volume').value=s_volumeKey;
 		document.getElementById('id_netWeight').value=s_netWeightK;
 		document.getElementById('id_grossUnitInput').value=s_grossUnitWeightK;
+		document.getElementById('id_PAO').value=s_PAO;
 		
 		document.getElementById('id_grossCtnInput').value=s_grossCtnK;
 		document.getElementById('id_netCtnInput').value=s_netCtnK;
@@ -799,6 +800,7 @@ $(document).ready(()=>{
 		document.getElementById('id_volume').value=s_volumeKey;
 		document.getElementById('id_netWeight').value=s_netWeightK;
 		document.getElementById('id_grossUnitInput').value=s_grossUnitWeightK;
+		document.getElementById('id_PAO').value=s_PAO;
 		
 		document.getElementById('id_grossCtnInput').value=s_grossCtnK;
 		document.getElementById('id_netCtnInput').value=s_netCtnK;
@@ -1037,6 +1039,7 @@ $(document).ready(()=>{
 		volume= document.getElementById('id_volume').value;
 		netWeight= document.getElementById('id_netWeight').value;
 		grossUnitWeight=  document.getElementById('id_grossUnitInput').value;
+		PAO =  document.getElementById('id_PAO').value;
 		
 		netCtnWeightK=  document.getElementById('id_netCtnInput').value;
 		grossCtnWeightK=  document.getElementById('id_grossCtnInput').value;
@@ -1416,6 +1419,10 @@ function textToBase64Barcode(text){
                                 <tr>
                                     <td><b>Gross unit Weight------</td>
                                     <td colspan="2"><input type="text" id="id_grossUnitInput"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>PAO</td>
+                                    <td colspan="2"><input type="text" id="id_PAO"></td>
                                 </tr>
 							</table>
 					<br>
