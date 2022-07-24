@@ -833,6 +833,7 @@ export class QaPalletsComponent implements OnInit {
         let obj = {
           itemNumber: line.itemNumber,
           quantity: line.unitsToCombine,
+          orderAmount: line.orderAmount,
         };
 
         result.push(obj);
@@ -843,14 +844,28 @@ export class QaPalletsComponent implements OnInit {
       const key = val.itemNumber;
       const { quantity } = val;
       const totalSoFar = acc[key] || 0;
-      return { ...acc, [key]: totalSoFar + quantity };
+      return {
+        ...acc,
+        [key]: totalSoFar + quantity,
+      };
     }, {});
-
+    console.log(totals);
     const combinedResult = Object.entries(totals).map(
-      ([itemNumber, quantity]) => ({ itemNumber, quantity })
+      ([itemNumber, quantity]) => ({
+        itemNumber,
+        quantity,
+      })
     );
+    console.log(combinedResult);
     console.log(result);
+    combinedResult.forEach((obj) => {
+      let orderAmount = result.find(
+        (item) => item.itemNumber == obj.itemNumber
+      ).orderAmount;
+      obj["orderAmount"] = orderAmount;
+    });
     this.currCustomerId = packlist._id;
+
     this.combinedPallets = combinedResult;
 
     if (language == "HE") {
@@ -861,6 +876,8 @@ export class QaPalletsComponent implements OnInit {
       this.showProductsBeforeDeliveryEN = true;
       this.showProductsBeforeDeliveryHE = false;
     }
+    console.log(this.selectedArr);
+    console.log(this.combinedPallets);
   }
 
   exportAsXLSX2() {
