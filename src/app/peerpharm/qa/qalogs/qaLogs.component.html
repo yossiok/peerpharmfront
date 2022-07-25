@@ -1,4 +1,4 @@
-<section *ngIf="isLogin">
+<section>
   <button
     *ngIf="logsArray.length > 0"
     class="btn btn-danger border border-dark"
@@ -6,98 +6,115 @@
   >
     Show logs
   </button>
-  <table class="styled-table">
-    <thead>
-      <tr>
-        <th>Select</th>
-        <th>#</th>
-        <th>
-          <button
-            class="btn btn-warning border border-dark"
-            (click)="sortByLine()"
-          >
+  <div class="content">
+    <h2 class="heading">Logs</h2>
+    <div class="dateSearch">
+      <div class="searchBox">
+        <label for="startDate" class="dateLabel">Start Date: </label>
+        <input type="date" name="startDate" id="startDate" class="dateInput" [(ngModel)]="startDate">
+      </div>
+      <div class="searchBox">
+        <label for="endDate" class="dateLabel">End Date: </label>
+        <input type="date" name="endDate" id="endDate" class="dateInput" [(ngModel)]="endDate">
+      </div>
+      <button class="btn btn-search" (click)="getLogs(startDate,endDate)">Search <i class="fa fa-search" aria-hidden="true"></i></button>
+    </div>
+    <div *ngIf="loader" class="loader"></div>
+    <table *ngIf="!loader" class="styled-table">
+      <thead>
+        <tr>
+          <th>Select</th>
+          <th>#</th>
+          <th>
             Line
-          </button>
-        </th>
-        <th>
-          <button
-            class="btn btn-warning border border-dark"
-            (click)="sortByBatch()"
-          >
+            <button
+              (click)="sortByLine()"
+              class="btn btn-sort"
+            >
+            <i class="fa fa-arrow-up" aria-hidden="true"></i>
+            <i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </button>
+          </th>
+          <th>
             batch
-          </button>
-        </th>
-        <th>
-          <button
-            class="btn btn-warning border border-dark"
-            (click)="sortByOpenLot()"
-          >
+            <button
+              (click)="sortByBatch()"
+              class="btn btn-sort"
+            >
+            <i class="fa fa-arrow-up" aria-hidden="true"></i>
+            <i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </button>
+          </th>
+          <th>
             Open Lot
-          </button>
-        </th>
-        <th>
-          <button
-            class="btn btn-warning border border-dark"
-            (click)="sortByCloseLot()"
-          >
+            <button
+              (click)="sortByOpenLot()"
+              class="btn btn-sort"
+            >
+            <i class="fa fa-arrow-up" aria-hidden="true"></i>
+            <i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </button>
+          </th>
+          <th>
             Close Lot
-          </button>
-        </th>
-        <th>Total Work Time</th>
-        <th>Order Quantity</th>
-        <th>Produced Quantity</th>
-        <th>Percentage Quantity</th>
-        <th>Single Unit Filling Time</th>
-        <th>Remarks</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let row of table; index as i">
-        <td style="width: 1%">
-          <input
-            type="checkbox"
-            value="{{ row }}"
-            [checked]="logsArray.includes(row)"
-            (change)="updateLogsArray(row)"
-          />
-        </td>
-        <td style="width: 3%">{{i+1}})</td>
-        <td style="width: 3%">
-          {{ row.line }}
-        </td>
-        <td style="width: 5%">
-          {{ row.batch }}
-        </td>
-        <td style="width: 12%">
-          {{ row.openLot }}
-        </td>
-        <td style="width: 12%">{{ row.closeLot | date: "dd/MM/yyyy, hh:mm"}}</td>
-        <td style="width: 12%">{{ row.totalWorkTime }}</td>
-        <td style="width: 7%">{{ row.orderQuantity }}</td>
-        <td style="width: 7%">{{ row.producedQuantity }}</td>
-        <td style="width: 7%">{{ row.percentageQuantity }}%</td>
-        <td style="width: 12%">{{ row.unitFillingTime }} seconds</td>
-        <td style="width: 7%">
-          <span *ngIf="row.remarksFront != ''">
-            {{ row.remarksFront }}
-          </span>
-          <span *ngIf="row.remarksFront != '' && row.remarksBack != ''">
-            ,
-          </span>
-          <span *ngIf="row.remarksBack != ''">
-            {{ row.remarksBack }}
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <button (click)="paginatePrevious()" class="btn btn-info border border-dark">
-    Next Week
-  </button>
-  ...........
-  <button (click)="paginateNext()" class="btn btn-info border border-dark">
-    Previous Week
-  </button>
+            <button
+              (click)="sortByCloseLot()"
+              class="btn btn-sort"
+            >
+            <i class="fa fa-arrow-up" aria-hidden="true"></i>
+            <i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </button>
+          </th>
+          <th>Total Work Time</th>
+          <th>Order Quantity</th>
+          <th>Produced Quantity</th>
+          <th>Percentage Quantity</th>
+          <th>Single Unit Filling Time</th>
+          <th>Remarks</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of table; index as i">
+          <td style="width: 1%">
+            <input
+              type="checkbox"
+              value="{{ row }}"
+              [checked]="logsArray.includes(row)"
+              (change)="updateLogsArray(row)"
+            />
+          </td>
+          <td style="width: 3%">{{i+1}})</td>
+          <td style="width: 3%">
+            {{ row.line }}
+          </td>
+          <td style="width: 5%">
+            {{ row.batch }}
+          </td>
+          <td style="width: 12%">
+            {{ row.openLot }}
+          </td>
+          <td style="width: 12%">{{ row.closeLot | date: "dd/MM/yyyy, hh:mm"}}</td>
+          <td style="width: 12%">{{ row.totalWorkTime }}</td>
+          <td style="width: 7%">{{ row.orderQuantity }}</td>
+          <td style="width: 7%">{{ row.producedQuantity }}</td>
+          <td style="width: 7%">{{ row.percentageQuantity }}%</td>
+          <td style="width: 12%">{{ row.unitFillingTime }} seconds</td>
+          <td style="width: 7%">
+            <span *ngIf="row.remarksFront != ''">
+              {{ row.remarksFront }}
+            </span>
+            <span *ngIf="row.remarksFront != '' && row.remarksBack != ''">
+              ,
+            </span>
+            <span *ngIf="row.remarksBack != ''">
+              {{ row.remarksBack }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
 
   <div
     *ngIf="showLogsModal == true"

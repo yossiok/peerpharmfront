@@ -12,22 +12,18 @@ import { LogsService } from "src/app/services/logs.service";
 export class QaLogsComponent implements OnInit {
 
   user: any;
-  isLogin:boolean = false;
-  table:Array<any>;
-  pageNumber:number = 1;
+  table:Array<any> = [];
   showLogsModal:boolean = false;
+  loader = true;
 
   lineSort:number =1;
   batchSort:number =1;
   openSort:number =1;
   closeSort:number =1;
-  workTimeSort:number =1;
-  qtySort:number =1;
-  produceSort:number =1;
-  PercentageSort:number =1;
-  unitSort:number =1;
-
   logsArray:Array<any> = [];
+
+  startDate:string="";
+  endDate:string="";
   
 
   constructor(
@@ -39,67 +35,10 @@ export class QaLogsComponent implements OnInit {
   ) {}
 
 
-  getUserInfo() {
-    if (this.authService.loggedInUser) {
-      this.user = this.authService.loggedInUser;
-      if (this.user && this.user.authorization && Number(this.user.screenPermission) <= 6 ) {
-        this.isLogin = true;
-      }
-    }
-  }
-
   
 
   ngOnInit() {
-    this.table = new Array<any>();
-    this.router.navigate([`/peerpharm/qa/qaLogs/page/${String(this.pageNumber)}`]);
-    this.getUserInfo();
-    this.logService.getQaLogs(String(this.pageNumber)).subscribe((res)=>{
-      this.table = res.table;
-    });    
-  }
-
-  paginateNext(){
-    this.pageNumber+=1;
-
-    this.logService.getQaLogs(String(this.pageNumber)).subscribe((res)=>{
-      this.table = res.table;
-      if(this.table.length < 1){
-        this.pageNumber-=1;
-        this.logService.getQaLogs(String(this.pageNumber)).subscribe((res)=>{
-          this.table = res.table;
-          this.toastService.warning("אין תוצאות חזרנו לדף הקודם");
-          return;
-        });  
-      }
-    });
-
-  }
-
-  paginatePrevious(){
-
-    if(this.pageNumber < 2){
-
-      this.toastService.warning("אלו התוצאות של הדף הראשון");
-      return;
-
-    }
-
-    this.pageNumber-=1;
-
-    this.logService.getQaLogs(String(this.pageNumber)).subscribe((res)=>{
-      this.table = res.table;
-      if(this.table.length < 1){
-
-        this.pageNumber+=1;
-        this.logService.getQaLogs(String(this.pageNumber)).subscribe((res)=>{
-          this.table = res.table;
-          this.toastService.warning("אין תוצאות חזרנו לדף הקודם");
-          return;
-        });
-      }
-    });
-
+    this.getLogs();   
   }
 
   sortByLine(){
@@ -138,23 +77,10 @@ export class QaLogsComponent implements OnInit {
     }
   }
 
-
   sortByCloseLot(){
     if(this.closeSort == 1){
       this.closeSort = -1;
       this.table.sort((a,b)=>{
-
-        // return (
-        //   Number(a.closeLot.split(",")[0].split("-")[0]) - Number(b.closeLot.split(",")[0].split("-")[0])
-        //   ||
-        //   Number(a.closeLot.split(",")[0].split("-")[1]) - Number(b.closeLot.split(",")[0].split("-")[1])
-        //   ||
-        //   Number(a.closeLot.split(",")[0].split("-")[2]) - Number(b.closeLot.split(",")[0].split("-")[2])
-        //   ||
-        //   Number(a.closeLot.split(",")[1].trim().split(":")[0]) - Number(b.closeLot.split(",")[1].trim().split(":")[0])
-        //   ||
-        //   Number(a.closeLot.split(",")[1].trim().split(":")[1]) - Number(b.closeLot.split(",")[1].trim().split(":")[1])
-        //   )
         return (
           new Date(a.closeLot).getTime() - new Date(b.closeLot).getTime()
         )
@@ -164,19 +90,6 @@ export class QaLogsComponent implements OnInit {
     }else{
       this.closeSort = 1;
       this.table.sort((a,b)=>{
-
-
-        // return (
-        //   Number(b.closeLot.split(",")[0].split("-")[0]) - Number(a.closeLot.split(",")[0].split("-")[0])
-        //   ||
-        //   Number(b.closeLot.split(",")[0].split("-")[1]) - Number(a.closeLot.split(",")[0].split("-")[1])
-        //   ||
-        //   Number(b.closeLot.split(",")[0].split("-")[2]) - Number(a.closeLot.split(",")[0].split("-")[2])
-        //   ||
-        //   Number(b.closeLot.split(",")[1].trim().split(":")[0]) - Number(a.closeLot.split(",")[1].trim().split(":")[0])
-        //   ||
-        //   Number(b.closeLot.split(",")[1].trim().split(":")[1]) - Number(a.closeLot.split(",")[1].trim().split(":")[1])
-        // )
         return (
           new Date(b.closeLot).getTime() - new Date(a.closeLot).getTime()
         )
@@ -233,6 +146,15 @@ export class QaLogsComponent implements OnInit {
       this.logsArray.push(row)
     }
     console.log(this.logsArray.length);
+  }
+
+  getLogs(startDate?,endDate?){
+    console.log(startDate,endDate);
+    this.loader = true
+    this.logService.getQaLogs(startDate,endDate).subscribe((res)=>{
+      this.table = res.table;
+      this.loader = false
+    });
   }
  
 

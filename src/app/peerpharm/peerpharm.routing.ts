@@ -600,7 +600,7 @@ export const PeerPharmRputs: Routes = [
     component: PackingListComponent,
   },
   {
-    path: "qa/qaLogs/page/:pageNumber",
+    path: "qa/qaLogs",
     canActivate: [ScreenGuard],
     data: {
       title: "QA Logs",

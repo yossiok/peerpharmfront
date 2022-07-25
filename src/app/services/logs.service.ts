@@ -17,8 +17,13 @@ export class LogsService {
     return this.http.get('/logs');
   }
 
-  getQaLogs(pageNumber):Observable<any> {
-    const uri = `${this.baseUri}logs/getQaLogs?pageNumber=${pageNumber}`;
+  getQaLogs(startDate?, endDate?):Observable<any> {
+    let uri
+    if(startDate && endDate){
+      uri = `${this.baseUri}logs/getQaLogs?startDate=${startDate}&endDate=${endDate}`;
+    }else{
+      uri = `${this.baseUri}logs/getQaLogs`;
+    }
     return this.http.get(uri);
   }
 
