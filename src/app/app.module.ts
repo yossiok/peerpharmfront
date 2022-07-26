@@ -194,6 +194,7 @@ export class AppModule {
       Upload: "העלאת",
       Wgt: "משקל",
       Title: "כותרת",
+      PAO:"חודשים לשימוש לאחר פתיחה"
     });
 
     translate.setTranslation("en", {
@@ -255,6 +256,7 @@ export class AppModule {
       Upload: "Upload",
       Wgt: "Wgt",
       Title: "Title",
+      PAO:"PAO"
     });
 
     translate.addLangs(["en", "he"]);

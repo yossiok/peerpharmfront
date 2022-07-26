@@ -367,7 +367,7 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
       },
       {
-        path: "/peerpharm/qa/qaLogs/page/1",
+        path: "/peerpharm/qa/qaLogs",
         title: "QA Logs",
         icon: "fas fa-list-ol",
         class: "",
