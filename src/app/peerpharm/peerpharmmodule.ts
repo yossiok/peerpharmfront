@@ -195,10 +195,12 @@ import { BulksCheckoutComponent } from "./batches/bulks-inventory/bulks-checkout
 import { CustomersComponent } from "./customers/customers.component";
 import { ProposalsComponent } from "./customers/proposals/proposals.component";
 import { ProposalsListComponent } from "./customers/proposals-list/proposals-list.component";
+import { PriceListsComponent } from "./customers/price-lists/price-lists.component";
 import { CreamBarrelComponent } from "./inventory/creamBarrel/creamBarrel.component";
 import { BulksReportComponent } from "./batches/bulks-inventory/bulks-report/bulks-report.component";
 import { TemperaturesLogsComponent } from "./qa/temperaturesLogs/temperaturesLogs.component";
 import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
+
 @NgModule({
   exports: [
     // MatInputModule,
@@ -371,6 +373,7 @@ import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
     CustomersComponent,
     ProposalsComponent,
     ProposalsListComponent,
+    PriceListsComponent,
     BulksReportComponent,
     OpenOrderitemsComponent,
   ],
