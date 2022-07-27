@@ -520,4 +520,11 @@ export class WeightProductionComponent implements OnInit {
       formuleNumber: "",
     };
   }
+
+  materialMrpReport() {
+    console.log("MRP Report");
+    this.inventorySrv.getMaterialMrpReport().subscribe((data) => {
+      console.log(data);
+    });
+  }
 }
