@@ -45,4 +45,16 @@ export class SalesService {
 
     return this.http.get(url).pipe(map((response) => response.json()));
   }
+
+  getOrdersBySearch(query) {
+    let url = this.baseUrl + "proposals/getOrdersBySearch";
+    return this.http.post(url, query).pipe(map((response) => response.json()));
+  }
+
+  updateSalesOrderStatus(salesOrder) {
+    let url = this.baseUrl + "proposal/updateSalesOrdersStatus";
+    return this.http
+      .post(url, salesOrder)
+      .pipe(map((response) => response.json()));
+  }
 }

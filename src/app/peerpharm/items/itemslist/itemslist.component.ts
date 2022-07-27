@@ -12,6 +12,7 @@ import { ToastrService } from "ngx-toastr";
 import { ExcelService } from "../../../services/excel.service";
 import { AuthService } from "src/app/services/auth.service";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { ReturnStatement } from "@angular/compiler";
 
 @Component({
   selector: "app-itemslist",
@@ -40,6 +41,7 @@ export class ItemslistComponent implements OnInit {
     minVolume: new FormControl(null, Validators.min(0)),
     maxVolume: new FormControl(null, Validators.min(1)),
     barcode: new FormControl(""),
+    customerName: new FormControl(""),
   });
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
@@ -60,6 +62,40 @@ export class ItemslistComponent implements OnInit {
     // this.getAllItems();
   }
 
+  getAllItemsNew() {
+    let conf = confirm(
+      "פעולה זו מעמיסה על המערכת, ממומלץ להשתמש בשדות החיפוש. האם להמשיך?"
+    );
+    if (!conf) return;
+    this.complete = false;
+    this.getAllProducts = true;
+    this.searchMenu.reset();
+    this.filtering = true;
+    this.items = [];
+    this.itemsCopy = [];
+
+    this.itemsService.getAllproductsNew().subscribe((data) => {
+      console.log(data);
+      if (data.msg) {
+        this.toastSrv.error(data.msg);
+        return;
+      } else if (data && data.length > 0) {
+        data.map((item) => {
+          item.itemFullName =
+            item.name + " " + item.subName + " " + item.discriptionK;
+          // item.licsensDate = moment(item.licsensDate).format("DD/MM/YYYY");
+          if (item.StickerLanguageK != null) {
+            item.StickerLanguageK = item.StickerLanguageK.split("/").join(" ");
+          }
+        });
+        this.items = data;
+        this.itemsCopy = data;
+        this.filtering = false;
+        this.complete = true;
+      }
+    });
+  }
+  // using skip and limit
   getAllItems() {
     this.complete = false;
     this.getAllProducts = true;
@@ -70,7 +106,7 @@ export class ItemslistComponent implements OnInit {
     this.subscription = this.itemsService.startNewItemObservable().subscribe(
       (items) => {
         // map items
-
+        this.filtering = true;
         items.map((item) => {
           item.itemFullName =
             item.name + " " + item.subName + " " + item.discriptionK;
@@ -83,14 +119,17 @@ export class ItemslistComponent implements OnInit {
           return a.itemNumber - b.itemNumber;
         });
         this.items.push(...items);
-        // if (items.length < 1500) {
-        //   this.hasMoreItemsToload = false;
-        // }
+        if (items.length < 1500) {
+          this.hasMoreItemsToload = false;
+        }
         this.itemsCopy = this.items.slice();
+        console.log(this.items.length);
+        setTimeout(() => (this.filtering = false), 500);
       },
       null,
       () => {
         this.complete = true;
+        console.log(this.items.length);
       }
     );
   }

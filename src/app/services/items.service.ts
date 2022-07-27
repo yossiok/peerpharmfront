@@ -63,17 +63,19 @@ export class ItemsService {
     let url = this.baseUrl + "itemDepartment/get";
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
-  getIndexItems(page?){
-    let url = this.baseUrl
-    if(page){
+  getIndexItems(page?) {
+    let url = this.baseUrl;
+    if (page) {
       url += `item/itemIndex?pageNumber=${page}`;
-    }else{
+    } else {
       url += "item/itemIndex";
     }
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
-  getIndexQuery(query){
-    let url = this.baseUrl + `item/itemIndexByQuery?name=${query.name}&itemCode=${query.itemCode}&barcode=${query.barCode}&department=${query.department}&group=${query.group}&subGroup=${query.subGroup}`;
+  getIndexQuery(query) {
+    let url =
+      this.baseUrl +
+      `item/itemIndexByQuery?name=${query.name}&itemCode=${query.itemCode}&barcode=${query.barCode}&department=${query.department}&group=${query.group}&subGroup=${query.subGroup}`;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
   //////////////////////////////
@@ -276,5 +278,10 @@ export class ItemsService {
     return this.http
       .post(url, query, this.options)
       .pipe(map((response) => response.json()));
+  }
+
+  getAllproductsNew() {
+    let url = this.baseUrl + "item/getAllproductsNew";
+    return this.http.get(url).pipe(map((response) => response.json()));
   }
 }
