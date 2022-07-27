@@ -63,9 +63,9 @@ export class OrdersComponent implements OnInit {
   loadingProblematics: boolean = false;
   orderEditApprove: boolean = false;
 
-  sortByOrderDateFlag:boolean = false
-  sortByDeliveryDateFlag:boolean = false
-  stageFilter:string=""
+  sortByOrderDateFlag: boolean = false;
+  sortByDeliveryDateFlag: boolean = false;
+  stageFilter: string = "";
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
     event: KeyboardEvent
@@ -264,7 +264,7 @@ export class OrdersComponent implements OnInit {
       orders.map((order) => {
         order.color = "white";
         let deliveryDateArr;
-        if (order.deliveryDate.includes("/")) {
+        if (order.deliveryDate && order.deliveryDate.includes("/")) {
           deliveryDateArr = order.deliveryDate.split("/");
           if (deliveryDateArr[0].length == 1) {
             deliveryDateArr[0] = "0" + deliveryDateArr[0];
@@ -272,7 +272,7 @@ export class OrdersComponent implements OnInit {
           if (deliveryDateArr[1].length == 1) {
             deliveryDateArr[1] = "0" + deliveryDateArr[1];
           }
-        } else {
+        } else if (order.deliveryDate) {
           deliveryDateArr = order.deliveryDate.split("-");
           let tempV = deliveryDateArr[0];
           deliveryDateArr[0] = deliveryDateArr[2];
@@ -506,19 +506,19 @@ export class OrdersComponent implements OnInit {
   // }
 
   filterByItem(value) {
-    if(value.length < 3){
-      this.toastSrv.warning('שם/מק"ט צריכים להיות מעל 2 תווים')
-      return
+    if (value.length < 3) {
+      this.toastSrv.warning('שם/מק"ט צריכים להיות מעל 2 תווים');
+      return;
     }
     this.lodingOrders = true;
     this.ordersService
       .getAllOpenOrderItemsByItemValue(value)
       .subscribe((data) => {
         this.lodingOrders = false;
-        if(value.match(/[a-z, A-Z]/)){
-          value = `Item name: ${value}`
-        }else{
-          value = `Item number: ${value}`
+        if (value.match(/[a-z, A-Z]/)) {
+          value = `Item name: ${value}`;
+        } else {
+          value = `Item number: ${value}`;
         }
         this.filterValue = value;
         this.orders = this.ordersCopy.filter((orderFromTable) =>
@@ -531,9 +531,9 @@ export class OrdersComponent implements OnInit {
       });
   }
   filterByOrderNumber(value) {
-    if(value.length < 3){
-      this.toastSrv.warning('מספר ההזמנה חייב להיות מעל 2 תווים')
-      return
+    if (value.length < 3) {
+      this.toastSrv.warning("מספר ההזמנה חייב להיות מעל 2 תווים");
+      return;
     }
     this.lodingOrders = true;
     this.ordersService
@@ -541,14 +541,14 @@ export class OrdersComponent implements OnInit {
       .subscribe((data) => {
         this.lodingOrders = false;
         this.filterValue = `Order Number: ${value}`;
-        this.orders = data
+        this.orders = data;
       });
   }
 
-  filterByCustomer(value){
-    if(value.length < 3){
-      this.toastSrv.warning('מספר ההזמנת הלקוח חייב להיות מעל 2 תווים')
-      return
+  filterByCustomer(value) {
+    if (value.length < 3) {
+      this.toastSrv.warning("מספר ההזמנת הלקוח חייב להיות מעל 2 תווים");
+      return;
     }
     this.lodingOrders = true;
     this.ordersService
@@ -556,34 +556,36 @@ export class OrdersComponent implements OnInit {
       .subscribe((data) => {
         this.lodingOrders = false;
         this.filterValue = value;
-        this.orders = data
+        this.orders = data;
       });
   }
-  filterByOrderDate(startDate,endDate){
-    if(!startDate || !endDate){
-      if(!startDate){
-        this.toastSrv.warning("נא להכניס תאריך התחלה הזמנה")
+  filterByOrderDate(startDate, endDate) {
+    if (!startDate || !endDate) {
+      if (!startDate) {
+        this.toastSrv.warning("נא להכניס תאריך התחלה הזמנה");
       }
-      if(!endDate){
-        this.toastSrv.warning("נא להכניס תאריך סיום הזמנה")
+      if (!endDate) {
+        this.toastSrv.warning("נא להכניס תאריך סיום הזמנה");
       }
-      return
+      return;
     }
     this.lodingOrders = true;
-    this.ordersService.getAllOpenOrdersByOrderDate(startDate,endDate).subscribe((res)=>{
-      this.orders = res
-      let startYear = startDate.split("-")[0]
-      let startMonth = startDate.split("-")[1]
-      let startDay = startDate.split("-")[2]
-      let startStr = startDay + "/" + startMonth + "/" + startYear
+    this.ordersService
+      .getAllOpenOrdersByOrderDate(startDate, endDate)
+      .subscribe((res) => {
+        this.orders = res;
+        let startYear = startDate.split("-")[0];
+        let startMonth = startDate.split("-")[1];
+        let startDay = startDate.split("-")[2];
+        let startStr = startDay + "/" + startMonth + "/" + startYear;
 
-      let endYear = endDate.split("-")[0]
-      let endMonth = endDate.split("-")[1]
-      let endDay = endDate.split("-")[2]
-      let endStr = endDay + "/" + endMonth + "/" + endYear
-      this.filterValue = `תאריכי הזמנה מ ${startStr} ועד ${endStr}`
-      this.lodingOrders = false;
-    })
+        let endYear = endDate.split("-")[0];
+        let endMonth = endDate.split("-")[1];
+        let endDay = endDate.split("-")[2];
+        let endStr = endDay + "/" + endMonth + "/" + endYear;
+        this.filterValue = `תאריכי הזמנה מ ${startStr} ועד ${endStr}`;
+        this.lodingOrders = false;
+      });
   }
   // filterByDeliveryDate(startDate,endDate){
   //   if(!startDate || !endDate){
@@ -610,55 +612,55 @@ export class OrdersComponent implements OnInit {
   //     this.filterValue = `תאריכי משלוח מ${startStr} ועד ${endStr}`
   //     this.lodingOrders = false;
   //   })
-    
 
   // }
 
-  filterByStage(){
-    if(this.stageFilter == ""){
-      this.toastSrv.warning("לא נבחר Stage")
-      return
+  filterByStage() {
+    if (this.stageFilter == "") {
+      this.toastSrv.warning("לא נבחר Stage");
+      return;
     }
-    let stage = ""
+    let stage = "";
     switch (this.stageFilter) {
       case "new":
-        stage = "חדש"
+        stage = "חדש";
         break;
       case "done":
-        stage = "הזמנה סגורה"
+        stage = "הזמנה סגורה";
         break;
       case "allCmpt":
-        stage = "כל הרכיבים קיימים"
+        stage = "כל הרכיבים קיימים";
         break;
       case "production":
-        stage = "נשלח לייצור"
+        stage = "נשלח לייצור";
         break;
       case "prodFinish":
-        stage = "עבר ייצור"
+        stage = "עבר ייצור";
         break;
       case "partialCmpt":
-        stage = "רכיבים קיימים חלקית"
+        stage = "רכיבים קיימים חלקית";
         break;
-    
+
       default:
         break;
     }
     this.lodingOrders = true;
-    this.ordersService.getAllOpenOrderByStage(this.stageFilter).subscribe((res)=>{
-      this.orders = res
-      this.filterValue = `Stage: ${stage}`
-      this.lodingOrders = false;
-    })
+    this.ordersService
+      .getAllOpenOrderByStage(this.stageFilter)
+      .subscribe((res) => {
+        this.orders = res;
+        this.filterValue = `Stage: ${stage}`;
+        this.lodingOrders = false;
+      });
   }
-  
 
-  allOrders(elements:Array<any>) {
+  allOrders(elements: Array<any>) {
     this.orders = this.ordersCopy;
     this.filterValue = "";
-    this.stageFilter = ""
-    elements.forEach((elm)=>{
+    this.stageFilter = "";
+    elements.forEach((elm) => {
       elm.value = "";
-    })
+    });
   }
 
   searchByType(ev) {
@@ -688,59 +690,119 @@ export class OrdersComponent implements OnInit {
 
   filterOrdersByDate(type) {
     try {
-
       this.orders = this.ordersCopy;
       console.log(this.orders[20]);
 
       if (type == "order") {
-        if(this.sortByOrderDateFlag){
+        if (this.sortByOrderDateFlag) {
           this.orders.sort(function (a, b) {
-            if(new Date(a.orderDate).getTime() > new Date(b.orderDate).getTime()){return -1}
-            if(new Date(a.orderDate).getTime() < new Date(b.orderDate).getTime()){return 1}
+            if (
+              new Date(a.orderDate).getTime() > new Date(b.orderDate).getTime()
+            ) {
+              return -1;
+            }
+            if (
+              new Date(a.orderDate).getTime() < new Date(b.orderDate).getTime()
+            ) {
+              return 1;
+            }
           });
-          this.sortByOrderDateFlag = !this.sortByOrderDateFlag
-        }else{
+          this.sortByOrderDateFlag = !this.sortByOrderDateFlag;
+        } else {
           this.orders.sort(function (a, b) {
-            if(new Date(a.orderDate).getTime() > new Date(b.orderDate).getTime()){return 1}
-            if(new Date(a.orderDate).getTime() < new Date(b.orderDate).getTime()){return -1}
+            if (
+              new Date(a.orderDate).getTime() > new Date(b.orderDate).getTime()
+            ) {
+              return 1;
+            }
+            if (
+              new Date(a.orderDate).getTime() < new Date(b.orderDate).getTime()
+            ) {
+              return -1;
+            }
           });
-          this.sortByOrderDateFlag = !this.sortByOrderDateFlag
+          this.sortByOrderDateFlag = !this.sortByOrderDateFlag;
         }
       }
 
       if (type == "delivery") {
-        if(this.sortByDeliveryDateFlag){
-          this.orders.sort(function (a,b){
-            if(Number(a.deliveryDate.split("/")[2]) > Number(b.deliveryDate.split("/")[2])){return -1}
-            else if(Number(a.deliveryDate.split("/")[2]) == Number(b.deliveryDate.split("/")[2])){
-              if(Number(a.deliveryDate.split("/")[1]) > Number(b.deliveryDate.split("/")[1])){return -1}
-              else if(Number(a.deliveryDate.split("/")[1]) == Number(b.deliveryDate.split("/"))[1]){
-                if(Number(a.deliveryDate.split("/")[0]) > Number(b.deliveryDate.split("/")[0])){return -1}
-                else{return 1}
-              }else {return 1}
-            }else {return 1}
-          })
-          this.sortByDeliveryDateFlag = !this.sortByDeliveryDateFlag
-        }else{
-          this.orders.sort(function (a,b){
-            if(Number(a.deliveryDate.split("/")[2]) > Number(b.deliveryDate.split("/")[2])){return 1}
-            else if(Number(a.deliveryDate.split("/")[2]) == Number(b.deliveryDate.split("/")[2])){
-              if(Number(a.deliveryDate.split("/")[1]) > Number(b.deliveryDate.split("/")[1])){return 1}
-              else if(Number(a.deliveryDate.split("/")[1]) == Number(b.deliveryDate.split("/")[1])){
-                if(Number(a.deliveryDate.split("/")[0]) > Number(b.deliveryDate.split("/")[0])){return 1}
-                else{return -1}
-              }else {return -1}
-            }else {return -1}
-          })
-          this.sortByDeliveryDateFlag = !this.sortByDeliveryDateFlag
+        if (this.sortByDeliveryDateFlag) {
+          this.orders.sort(function (a, b) {
+            if (
+              Number(a.deliveryDate.split("/")[2]) >
+              Number(b.deliveryDate.split("/")[2])
+            ) {
+              return -1;
+            } else if (
+              Number(a.deliveryDate.split("/")[2]) ==
+              Number(b.deliveryDate.split("/")[2])
+            ) {
+              if (
+                Number(a.deliveryDate.split("/")[1]) >
+                Number(b.deliveryDate.split("/")[1])
+              ) {
+                return -1;
+              } else if (
+                Number(a.deliveryDate.split("/")[1]) ==
+                Number(b.deliveryDate.split("/"))[1]
+              ) {
+                if (
+                  Number(a.deliveryDate.split("/")[0]) >
+                  Number(b.deliveryDate.split("/")[0])
+                ) {
+                  return -1;
+                } else {
+                  return 1;
+                }
+              } else {
+                return 1;
+              }
+            } else {
+              return 1;
+            }
+          });
+          this.sortByDeliveryDateFlag = !this.sortByDeliveryDateFlag;
+        } else {
+          this.orders.sort(function (a, b) {
+            if (
+              Number(a.deliveryDate.split("/")[2]) >
+              Number(b.deliveryDate.split("/")[2])
+            ) {
+              return 1;
+            } else if (
+              Number(a.deliveryDate.split("/")[2]) ==
+              Number(b.deliveryDate.split("/")[2])
+            ) {
+              if (
+                Number(a.deliveryDate.split("/")[1]) >
+                Number(b.deliveryDate.split("/")[1])
+              ) {
+                return 1;
+              } else if (
+                Number(a.deliveryDate.split("/")[1]) ==
+                Number(b.deliveryDate.split("/")[1])
+              ) {
+                if (
+                  Number(a.deliveryDate.split("/")[0]) >
+                  Number(b.deliveryDate.split("/")[0])
+                ) {
+                  return 1;
+                } else {
+                  return -1;
+                }
+              } else {
+                return -1;
+              }
+            } else {
+              return -1;
+            }
+          });
+          this.sortByDeliveryDateFlag = !this.sortByDeliveryDateFlag;
         }
       }
-      
     } catch (error) {
-      console.log(error)
-      
+      console.log(error);
     }
-    
   }
 
   checkboxAllOrders(ev) {
