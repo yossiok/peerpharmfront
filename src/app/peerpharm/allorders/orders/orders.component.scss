@@ -237,3 +237,41 @@ td {
 ::-webkit-scrollbar-thumb:hover {
   background: #4e3bcf;
 }
+@media 
+  (min-device-width: 700px) 
+  and (max-device-width: 1100px) {
+    .filterContainer{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      width: 80%;
+      padding: 2rem;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+      margin-top: 1rem;
+    }
+    .buttonsContainer{
+      margin-bottom: 1rem;
+    }
+}
+@media 
+  (min-device-width: 1100px) 
+  and (max-device-width: 1800px) {
+    .filterContainer{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      padding: 2rem;
+      border-radius: 20px;
+      margin-bottom: 1rem;
+      margin-top: 1rem;
+    }
+    .filter{
+      margin-right: 0.3rem;
+    }
+}
