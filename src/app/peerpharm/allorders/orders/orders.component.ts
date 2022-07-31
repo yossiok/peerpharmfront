@@ -316,9 +316,10 @@ export class OrdersComponent implements OnInit {
         this.returnStageColor(order);
         Object.assign({ isSelected: false }, order);
         order.NumberCostumer = order.orderNumber + " " + order.costumer;
+        this.orders = orders;
+        this.ordersCopy = orders;
       });
-      this.orders = orders;
-      this.ordersCopy = orders;
+      
     });
   }
 
