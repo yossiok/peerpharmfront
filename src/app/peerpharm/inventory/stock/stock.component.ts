@@ -554,6 +554,8 @@ export class StockComponent implements OnInit {
   }
 
   addStockItemToRecommend() {
+    console.log(this.recommendStockItem);
+
     if (
       this.recommendStockItem.quantity == "" ||
       this.recommendStockItem.name == "" ||
@@ -713,7 +715,7 @@ export class StockComponent implements OnInit {
   }
 
   getLastCustomerOrders() {
-    this.orderService.getOpenOrdersLimit(100).subscribe((data) => {
+    this.orderService.getOpenOrdersLimit(200).subscribe((data) => {
       this.lastCustomerOrders = data;
     });
   }
@@ -1119,17 +1121,26 @@ export class StockComponent implements OnInit {
 
   // start
   getStockItemByNumber(ev) {
-    if (ev.target.value != "") {
+    let componentN = "";
+    if (typeof ev == "string") {
+      componentN = ev;
+    } else if (typeof ev == "object") {
+      componentN = ev.target.value;
+    }
+
+    if (componentN) {
+      this.recommendStockItem.number = componentN;
+      console.log(this.recommendStockItem.number);
       //get existing amounts of and locations on shelfs
       this.inventoryService
-        .getAmountOnShelfs(ev.target.value)
+        .getAmountOnShelfs(componentN)
         .subscribe(async (res) => {
           this.itemAmountsData = res.data;
           this.itemAmountsWh = res.whList;
         });
 
       this.inventoryService
-        .getCmptByitemNumber(ev.target.value)
+        .getCmptByitemNumber(componentN)
         .subscribe((data) => {
           if (data) {
             this.recommendStockItem.name = data[0].componentName;
@@ -1163,6 +1174,7 @@ export class StockComponent implements OnInit {
             this.newPurchaseRecommendModal = false;
             this.newPurchaseRecommendation.reset();
             this.newPurchaseRecommendation.controls.stockitems.setValue([]);
+            this.newSpecificPurchaseRecommendModal = false;
             alert("מספר הבקשה: " + data.recommendNumber);
           }
         });
@@ -1796,8 +1808,8 @@ export class StockComponent implements OnInit {
     query.componentN = query.componentN.trim();
     query.componentName = query.componentName.trim();
     console.log(query);
-    if(productNumber){
-      query.componentN = productNumber
+    if (productNumber) {
+      query.componentN = productNumber;
       // query.componentCategory = "product"
     }
 
