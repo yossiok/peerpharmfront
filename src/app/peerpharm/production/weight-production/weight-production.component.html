@@ -37,7 +37,7 @@
       style="display: none"
     ></button>
   </div>
-  <div class="col-2"></div>
+
   <div class="col-1">
     <button
       *ngIf="showBOM"
@@ -55,6 +55,11 @@
   <div class="col-1">
     <button class="btn btn-warning" *ngIf="workPlanId" (click)="backToWP()">
       Back to PAKA {{ workPlanId }} <i class="fas fa-arrow-right"></i>
+    </button>
+  </div>
+  <div class="col-2">
+    <button class="btn btn-primary rounded-pill" (click)="materialMrpReport()">
+      MRP Report
     </button>
   </div>
 </div>

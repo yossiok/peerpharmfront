@@ -1047,9 +1047,10 @@ export class InventoryService {
       this.baseUrl + "material?getMaterialArrivalByNumber=" + internalNumber;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
-  getMaterialArrivalByDate(startDate,endDate,barcode): Observable<any> {
+  getMaterialArrivalByDate(startDate, endDate, barcode): Observable<any> {
     let url =
-      this.baseUrl + `material/getArrivalByDateRange?startDate=${startDate}&endDate=${endDate}&barcode=${barcode}`
+      this.baseUrl +
+      `material/getArrivalByDateRange?startDate=${startDate}&endDate=${endDate}&barcode=${barcode}`;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
   getMaterialArrivalByName(materialName): Observable<any> {
@@ -1074,6 +1075,13 @@ export class InventoryService {
       .post(url, JSON.stringify(objToUpdate), this.options)
       .pipe(map((res) => res.json()));
   }
+
+  getMaterialMrpReport() {
+    let url = this.baseUrl + "material/materialsMRPReport";
+
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+
   getLastReception() {
     let url = this.baseUrl + "itemShell/getLastReception";
     return this.http.get(url).pipe(map((reponse) => reponse.json()));

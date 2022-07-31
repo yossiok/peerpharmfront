@@ -782,47 +782,35 @@
                   </div>
                   <!-- new -->
                   <div>
-                    <div
-                      *ngIf="PAO == true"
-                      class="productionLabel"
-                    >
+                    <div *ngIf="PAO == true" class="productionLabel">
                       <i
                         (click)="addRemoveInputs('PAO')"
                         style="margin-right: 2px; cursor: pointer"
                         class="fa fa-minus"
-                        *ngIf="
-                          PAO == true &&
-                          alowUserEditItemTree == true
-                        "
+                        *ngIf="PAO == true && alowUserEditItemTree == true"
                       ></i>
                       <img
-                          style="width: 3rem;"
-                          src="../../../assets/images/signs.png"
-                        />
-                      <label style="font-weight: bold"
-                        >{{ "PAO" | translate }}</label
-                      >
+                        style="width: 3rem"
+                        src="../../../assets/images/signs.png"
+                      />
+                      <label style="font-weight: bold">{{
+                        "PAO" | translate
+                      }}</label>
                     </div>
-                    <div
-                      *ngIf="PAO == false"
-                      class="productionLabel"
-                    >
+                    <div *ngIf="PAO == false" class="productionLabel">
                       <i
                         (click)="addRemoveInputs('PAO')"
                         style="margin-right: 2px; cursor: pointer"
                         class="fa fa-plus"
-                        *ngIf="
-                          PAO == false &&
-                          alowUserEditItemTree == true
-                        "
+                        *ngIf="PAO == false && alowUserEditItemTree == true"
                       ></i>
                       <img
-                          style="width: 3rem;"
-                          src="../../../assets/images/signs.png"
-                        />
-                      <label style="font-weight: bold"
-                        >{{ "PAO" | translate }}</label
-                      >
+                        style="width: 3rem"
+                        src="../../../assets/images/signs.png"
+                      />
+                      <label style="font-weight: bold">{{
+                        "PAO" | translate
+                      }}</label>
                     </div>
                   </div>
                 </div>
@@ -3600,7 +3588,7 @@
                         </td>
                         <td *ngIf="editSpecTable == true">
                           <input
-                            [ngModel]="itemShown.scentRemarks"
+                            [(ngModel)]="itemShown.scentRemarks"
                             class="form-control"
                             type="text"
                           />

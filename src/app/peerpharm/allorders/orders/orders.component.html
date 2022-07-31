@@ -109,7 +109,7 @@
     </div>
   </div>
 
-  <div class="row mt-4" style="margin-bottom:0%;">
+  <div class="row mt-4" style="margin-bottom: 0%">
     <div class="col-1"></div>
     <div class="col-2"></div>
     <div class="col-2">
@@ -165,46 +165,92 @@
         ngbTooltip='דו"ח הזמנות תקועות'
         class="click"
         alt="export to excel"
-        style="width: 40px;margin-left: 2rem;"
+        style="width: 40px; margin-left: 2rem"
         (click)="exportAsXLSX2()"
       />
     </div>
   </div>
 
   <div class="bg-primary filterContainer container-fluid">
-  <!-- Filter By Item -->
+    <!-- Filter By Item -->
     <div class="filter">
       <h5 class="filter-title">Item Name/Number</h5>
-      <input class="filter-input" type="text" placeholder='הכנס/י שם / מק"ט'  #filterItem>
+      <input
+        class="filter-input"
+        type="text"
+        placeholder='הכנס/י שם / מק"ט'
+        #filterItem
+      />
       <div class="buttonsContainer">
-        <button class="itshak-rabin" (click)="filterByItem(filterItem.value)" *ngIf="!lodingOrders">Filter</button>
+        <button
+          class="itshak-rabin"
+          (click)="filterByItem(filterItem.value)"
+          *ngIf="!lodingOrders"
+        >
+          Filter
+        </button>
       </div>
     </div>
-  <!-- Filter By Order Number-->
+    <!-- Filter By Order Number-->
     <div class="filter">
       <h5 class="filter-title">Order Number</h5>
-      <input class="filter-input" type="text" placeholder="הכנס/י מספר הזמנה"  #filterByOrder>
+      <input
+        class="filter-input"
+        type="text"
+        placeholder="הכנס/י מספר הזמנה"
+        #filterByOrder
+      />
       <div class="buttonsContainer" *ngIf="!lodingOrders">
-        <button class="itshak-rabin" (click)="filterByOrderNumber(filterByOrder.value)">Filter</button>
+        <button
+          class="itshak-rabin"
+          (click)="filterByOrderNumber(filterByOrder.value)"
+        >
+          Filter
+        </button>
       </div>
     </div>
-  <!-- Filter By Customer-->
+    <!-- Filter By Customer-->
     <div class="filter">
       <h5 class="filter-title">Customer Order</h5>
-      <input class="filter-input" type="text" placeholder="הכנס/י מספר הזמנת לקוח"  #filterByCustomerIn>
+      <input
+        class="filter-input"
+        type="text"
+        placeholder="הכנס/י מספר הזמנת לקוח"
+        #filterByCustomerIn
+      />
       <div class="buttonsContainer" *ngIf="!lodingOrders">
-        <button class="itshak-rabin" (click)="filterByCustomer(filterByCustomerIn.value)">Filter</button>
+        <button
+          class="itshak-rabin"
+          (click)="filterByCustomer(filterByCustomerIn.value)"
+        >
+          Filter
+        </button>
       </div>
     </div>
     <!-- Filter by order date range -->
     <div class="filterDates">
       <h5 class="filter-title">Order Date</h5>
       <label for="startOrder" class="dateLabel">תאריך התחלה:</label>
-      <input name="startOrder" class="filter-input date-input" type="date" #startOrderDate>
+      <input
+        name="startOrder"
+        class="filter-input date-input"
+        type="date"
+        #startOrderDate
+      />
       <label for="endOrder" class="dateLabel">תאריך סיום:</label>
-      <input name="endOrder" class="filter-input date-input" type="date" #endOrderDate>
+      <input
+        name="endOrder"
+        class="filter-input date-input"
+        type="date"
+        #endOrderDate
+      />
       <div class="buttonsContainer" *ngIf="!lodingOrders">
-        <button class="itshak-rabin" (click)="filterByOrderDate(startOrderDate.value,endOrderDate.value)">Filter</button>
+        <button
+          class="itshak-rabin"
+          (click)="filterByOrderDate(startOrderDate.value, endOrderDate.value)"
+        >
+          Filter
+        </button>
       </div>
     </div>
     <!-- Filter by delivery date range -->
@@ -221,7 +267,11 @@
     <!-- Filter By Stage-->
     <div class="filter">
       <h5 class="filter-title">Stage</h5>
-      <select class="ml-3 filter-input" [(ngModel)]="stageFilter" (change)="filterByStage()">
+      <select
+        class="ml-3 filter-input"
+        [(ngModel)]="stageFilter"
+        (change)="filterByStage()"
+      >
         <option value="" disabled>Stage</option>
         <option value="new">חדש</option>
         <option value="done">הזמנה סגורה</option>
@@ -328,8 +378,6 @@
     </div>
   </div> -->
 
-
-  
   <h4 class="text-center text-success">
     Showing {{ orders.length }} orders
     <span *ngIf="filterValue != ''"
