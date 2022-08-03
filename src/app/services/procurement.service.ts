@@ -84,6 +84,7 @@ export class Procurementservice {
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
+  
   getLastOrdersForItem(itemNum, numOfOrders) {
     const url =
       this.baseUrl +
@@ -91,6 +92,15 @@ export class Procurementservice {
       itemNum +
       "&orderRetrieve=" +
       numOfOrders;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+  // My New One
+  getLastOrdersForItemByDates(itemNum, startDate, endDate) {
+    const url =
+      this.baseUrl +
+      "procurementOrderController/getLastOrdersForItemByDates?itemNum=" +
+      itemNum +
+      "&startDate="+startDate + "&endDate="+endDate
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
