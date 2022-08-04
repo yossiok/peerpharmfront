@@ -1067,25 +1067,27 @@
     <tr>
       <th>מס' פריט</th>
       <th>שם פריט</th>
-      <th>מף</th>
+      <th>מדף</th>
       <th>כמות</th>
-      <th>מס' בקשות מלאי</th>
       <th>מס' הזמנה</th>
       <th>הערות</th>
     </tr>
 
 
     <span *ngFor="let reqItem of multiLinesArr; let i = index">
-      <tr *ngFor="let shelf of reqItem.currItemShelfs">
+      <tr >
         <td>{{ reqItem.itemNumber }}</td>
         <td class="itemNamePrint">{{ reqItem.itemName }}</td>
         <td>
-          <span>
+          <span *ngFor="let shelf of reqItem.currItemShelfs; index as i">
             {{shelf.position}}
+            <span *ngIf="i < (reqItem.currItemShelfs.length-1)">,</span>
+            <span *ngIf="i == (reqItem.currItemShelfs.length-1)">.</span>
           </span>
         </td>
-        <td>{{ reqItem.amount }}</td>
-        <td>{{ reqItem.reqNum }}</td>
+        <td >
+          {{ reqItem.amount }}
+        </td>
         <td>{{ reqItem.relatedOrder }}</td>
         <td class="remarks">{{ reqItem.remarks }}</td>
 

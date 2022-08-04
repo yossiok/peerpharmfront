@@ -23,6 +23,7 @@ import { Procurementservice } from "src/app/services/procurement.service";
   styleUrls: ["./wharehouse.component.scss"],
 })
 export class WharehouseComponent implements OnInit {
+
   // new ----------------------
   newReqNumber: number;
   inventoryReqForm: FormGroup;
