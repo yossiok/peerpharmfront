@@ -610,7 +610,7 @@ export class OrdersComponent implements OnInit {
       let endMonth = endDate.split("-")[1]
       let endDay = endDate.split("-")[2]
       let endStr = endDay + "/" + endMonth + "/" + endYear
-      this.filterValue = `תאריכי הזמנה מ ${startStr} ועד ${endStr}`
+      this.filterValue = `תאריכי שילוח מ ${startStr} ועד ${endStr}`
       this.lodingOrders = false;
     })
 
