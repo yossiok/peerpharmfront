@@ -711,6 +711,60 @@
                       >
                     </div>
                   </div>
+                  <!-- new2 -->
+                  <div>
+                    <div *ngIf="setUnits == true" class="productionLabel">
+                      <i
+                        (click)="addRemoveInputs('setUnits')"
+                        style="margin-right: 2px; cursor: pointer"
+                        class="fa fa-minus"
+                        *ngIf="setUnits == true && alowUserEditItemTree == true"
+                      ></i>
+                      <label
+                        >{{ "Units" | translate }} {{ "In" | translate }}{{ "Set" | translate }}</label
+                      >
+                    </div>
+                    <div *ngIf="setUnits == false" class="productionLabel">
+                      <i
+                        (click)="addRemoveInputs('setUnits')"
+                        style="margin-right: 2px; cursor: pointer"
+                        class="fa fa-plus"
+                        *ngIf="
+                        setUnits == false && alowUserEditItemTree == true
+                        "
+                      ></i>
+                      <label
+                        >{{ "Units" | translate }} {{ "In" | translate }}{{ "Set" | translate }}</label
+                      >
+                    </div>
+                  </div>
+                  <!--  -->
+                  <div>
+                    <div *ngIf="unitWeight == true" class="productionLabel">
+                      <i
+                        (click)="addRemoveInputs('unitWeight')"
+                        style="margin-right: 2px; cursor: pointer"
+                        class="fa fa-minus"
+                        *ngIf="unitWeight == true && alowUserEditItemTree == true"
+                      ></i>
+                      <label
+                        >{{"Net" | translate}} {{ "Weight" | translate }} {{"Of" | translate}} {{ "Unit" | translate }} {{"gr" | translate}}</label
+                      >
+                    </div>
+                    <div *ngIf="unitWeight == false" class="productionLabel">
+                      <i
+                        (click)="addRemoveInputs('unitWeight')"
+                        style="margin-right: 2px; cursor: pointer"
+                        class="fa fa-plus"
+                        *ngIf="
+                        unitWeight == false && alowUserEditItemTree == true
+                        "
+                      ></i>
+                      <label
+                        >{{"Net" | translate}} {{ "Weight" | translate }} {{"Of" | translate}} {{ "Unit" | translate }} {{"gr" | translate}}</label
+                      >
+                    </div>
+                  </div>
 
                   <div>
                     <div *ngIf="netWeightK == true" class="productionLabel">
@@ -723,7 +777,7 @@
                         "
                       ></i>
                       <label
-                        >{{ "Net" | translate }} {{ "Weight" | translate }}
+                        >{{ "Net" | translate }} {{ "Weight" | translate }} {{"Total" | translate}}
                         {{ "gr" | translate }}</label
                       >
                     </div>
@@ -737,7 +791,7 @@
                         "
                       ></i>
                       <label
-                        >{{ "Net" | translate }} {{ "Weight" | translate }}
+                        >{{ "Net" | translate }} {{ "Weight" | translate }} {{"Total" | translate}}
                         {{ "gr" | translate }}</label
                       >
                     </div>
@@ -781,7 +835,7 @@
                       >
                     </div>
                   </div>
-                  <!-- new -->
+                  <!-- PAO -->
                   <div>
                     <div *ngIf="PAO == true" class="productionLabel">
                       <i
@@ -793,7 +847,6 @@
                       <img
                         style="width: 3rem"
                         src="../../../assets/images/signs.png"
-                        class="noneTrans"
                       />
                       <label style="font-weight: bold">{{
                         "PAO" | translate
@@ -828,17 +881,44 @@
                   <div *ngIf="volumeMl == false">
                     <p>---</p>
                   </div>
+                  <!--  -->
+                  <div *ngIf="setUnits == true">
+                    <input
+                      type="number"
+                      id="id_setUnits"
+                      [(ngModel)]="itemShown.setUnits"
+                      class="productionInput"
+                    />
+                  </div>
+                  <div *ngIf="setUnits == false">
+                    <p>---</p>
+                  </div>
+                  <!--  -->
+                  <div *ngIf="unitWeight == true">
+                    <input
+                      type="number"
+                      id="id_unitWeight"
+                      [(ngModel)]="itemShown.unitWeight"
+                      class="productionInput"
+                    />
+                  </div>
+                  <div *ngIf="unitWeight == false">
+                    <p>---</p>
+                  </div>
+                  <!--  -->
                   <div *ngIf="netWeightK == true">
                     <input
                       type="number"
                       id="id_netWeight"
                       [(ngModel)]="itemShown.netWeightK"
                       class="productionInput"
+                      disabled
                     />
                   </div>
                   <div *ngIf="netWeightK == false">
                     <p>---</p>
                   </div>
+                  <!--  -->
                   <div *ngIf="grossWeightUnit == true">
                     <input
                       type="number"
@@ -850,6 +930,8 @@
                   <div *ngIf="grossWeightUnit == false">
                     <p>---</p>
                   </div>
+                  <!--  -->
+                  
                   <div *ngIf="PAO == true">
                     <input
                       type="number"
@@ -861,8 +943,10 @@
                   <div *ngIf="PAO == false">
                     <p>---</p>
                   </div>
+                  <!--  -->
                 </div>
               </div>
+              
               <div class="row">
                 <div class="col-2">
                   <div>

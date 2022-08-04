@@ -95,7 +95,10 @@ export class ItemdetaisComponent implements OnInit {
   notActiveAlert: Boolean = false;
   editSpecTable: Boolean = false;
   productPriceModal: Boolean = false;
+
   PAO:Boolean = false;
+  setUnits:Boolean=true;
+  unitWeight:Boolean=true;
 
   itemLockedForEdit: Boolean = false;
   productionType: "";
@@ -399,6 +402,8 @@ export class ItemdetaisComponent implements OnInit {
     scentSpec: "",
 
     PAO:0,
+    setUnits:1,
+    unitWeight:0
   };
 
   selectedFiles: FileList;
@@ -546,6 +551,10 @@ export class ItemdetaisComponent implements OnInit {
       pallet3: [null, Validators.required],
       pallet3x: [null, Validators.required],
       pallet3y: [null, Validators.required],
+
+      PAO:[null,Validators.required],
+      setUnits:[null,Validators.required],
+      unitWeight:[null,Validators.required]
     });
   }
 
@@ -1246,6 +1255,15 @@ export class ItemdetaisComponent implements OnInit {
           this.itemExist = true;
           this.item = res[0];
           this.itemShown = res[0];
+            // !this.itemShown.netWeightK && !this.itemShown.unitWeight
+          if(this.item.netWeightK && !this.item.unitWeight){
+            this.item.unitWeight = Number(this.item.netWeightK)
+          }
+          if(this.itemShown.netWeightK && !this.itemShown.unitWeight){
+            this.itemShown.unitWeight = Number(this.itemShown.netWeightK)
+          }
+          this.PAO = res[0].PAO ? true : false
+          this.setUnits = res[0].setUnits ? true : false
 
           this.itemShown.updateDate = moment(this.itemShown.updateDate).format(
             "YYYY-MM-DD"
@@ -1303,6 +1321,11 @@ export class ItemdetaisComponent implements OnInit {
         this.itemExist = false;
         this.toastr.error(item, "Item Not found");
         this.itemShown = Object.assign({}, this.itemCopy);
+        if(this.itemShown.netWeightK && !this.itemShown.unitWeight){
+          this.itemShown.unitWeight = Number(this.itemShown.netWeightK) 
+        }
+        this.PAO = this.itemShown.PAO ? true : false
+        this.setUnits = this.itemShown.setUnits ? true : false
         this.dataDiv = ["", ""];
         this.showGoddet();
       } else if (res.msg == "noItem") {
@@ -1312,6 +1335,14 @@ export class ItemdetaisComponent implements OnInit {
         this.itemExist = true;
         this.item = res[0];
         this.itemShown = res[0];
+        if(this.itemShown.netWeightK && !this.itemShown.unitWeight){
+          this.itemShown.unitWeight = Number(this.itemShown.netWeightK)
+        }
+        if(this.item.netWeightK && !this.item.unitWeight){
+          this.item.unitWeight = Number(this.item.netWeightK)
+        }
+        this.PAO = res[0].PAO ? true : false
+        this.setUnits = res[0].setUnits ? true : false
         if (this.itemShown.bottleNumber != "") {
           this.fillBottle(this.itemShown.bottleNumber);
           this.searchCompNumberByComp(
@@ -1651,7 +1682,28 @@ export class ItemdetaisComponent implements OnInit {
               : "";
           }
         }
-
+        let errors = []
+        if(!this.itemShown.unitWeight || this.itemShown.unitWeight < 1){
+          errors.push({msg:"משקל יחידה הוא חובה וחייב להיות גדול מאפס"})
+        }
+        if(this.itemShown.setUnits < 1){
+          errors.push({msg:"יחידות בסט גם אם הוא יחיד חייב להיות גדול מאפס"})
+        }
+        if(this.itemShown.unitWeight < 0){
+          errors.push({msg:"משקל יחידה לא יכול להיות קטן מאפס"})
+        }
+        if(errors.length > 0){
+          errors.forEach((err)=>{
+            this.toastr.warning(err.msg)
+          })
+          return
+        }
+        if(this.itemShown.setUnits > 1){
+            this.itemShown.netWeightK = String(this.itemShown.setUnits * this.itemShown.unitWeight)
+        }else{
+          this.itemShown.netWeightK ? this.itemShown.netWeightK : this.itemShown.unitWeight ? String(this.itemShown.unitWeight) : null
+        }
+        
         this.itemsService.addItem(this.itemShown).subscribe((data) => {
           this.toastr.success("" + data.message);
           location.reload();
@@ -1661,10 +1713,21 @@ export class ItemdetaisComponent implements OnInit {
   }
 
   updateBtn() {
-    if (!this.itemShown.netWeightK) {
-      alert("Net Weight Gr must have a value. Fill the unit net weight");
-
+    if (!this.itemShown.netWeightK && !this.itemShown.unitWeight) {
+      alert("Net Weight Of Unit gr must have a value. Fill the unit net weight");
       return;
+    }
+    if (!this.itemShown.unitWeight || this.itemShown.unitWeight < 1) {
+      alert("Net Weight Of Unit gr must have a value more than 0. Fill the unit net weight");
+      return;
+    }
+    if(this.itemShown.setUnits < 1){
+      this.toastr.error("יחידות בסט גם אם הוא יחיד חייב להיות גדול מאפס")
+      return
+    }
+    if(this.itemShown.unitWeight < 0){
+      this.toastr.error("משקל יחידה לא יכול להיות קטן מאפס")
+      return
     }
     this.modalService.open(this.editItemModal);
   }
@@ -1674,16 +1737,32 @@ export class ItemdetaisComponent implements OnInit {
       alert("item is used in open ordres! cant edit. contact system admin!");
       return;
     }
+    if (!this.itemShown.unitWeight || this.itemShown.unitWeight < 1) {
+      alert("Net Weight Of Unit gr must have a value more than 0. Fill the unit net weight");
+      return;
+    }
+    if(this.itemShown.setUnits < 1){
+      this.toastr.error("יחידות בסט גם אם הוא יחיד חייב להיות גדול מאפס")
+      return
+    }
+    if(this.itemShown.unitWeight < 0){
+      this.toastr.error("משקל יחידה לא יכול להיות קטן מאפס")
+      return
+    }
+    if(this.itemShown.setUnits > 1){
+      this.itemShown.netWeightK = String(this.itemShown.setUnits * this.itemShown.unitWeight)
+    }else{
+      this.itemShown.netWeightK = this.itemShown.netWeightK ? this.itemShown.netWeightK : this.itemShown.unitWeight ? String(this.itemShown.unitWeight) : null
+    }
     this.lookingForItem = true;
     if (this.itemShown.itemNumber != "") {
       this.itemShown.nameOfupdating = this.user.userName;
       console.log(this.itemShown);
-      if (!this.itemShown.netWeightK) {
+      if ((!this.itemShown.netWeightK && !this.itemShown.unitWeight) || (!this.itemShown.unitWeight || this.itemShown.unitWeight < 1)) {
         this.toastr.error(
-          "Net Weight Gr must have a value. Fill the unit net weight"
+          "Net Weight Of Unit gr must have a value more than 0. Fill the unit net weight"
         );
-        alert("Net Weight Gr must have a value. Fill the unit net weight");
-
+        alert("Net Weight Of Unit gr must have a value more than 0. Fill the unit net weight");
         return;
       }
       try {
@@ -1696,200 +1775,9 @@ export class ItemdetaisComponent implements OnInit {
               : "";
           }
         }
-
-        // this.itemShown.itemNumber = this.itemShown.itemNumber
-        //   ? this.itemShown.itemNumber.trim()
-        //   : this.itemShown.itemNumber;
-        // this.itemShown.batchN = this.itemShown.batchN
-        //   ? this.itemShown.batchN.trim()
-        //   : this.itemShown.batchN;
-
-        // this.itemShown.numberOfPcs = this.itemShown.numberOfPcs
-        //   ? this.itemShown.numberOfPcs.trim()
-        //   : this.itemShown.numberOfPcs;
-        // this.itemShown.numberOfPcsTwo = this.itemShown.numberOfPcsTwo
-        //   ? this.itemShown.numberOfPcsTwo.trim()
-        //   : this.itemShown.numberOfPcsTwo;
-        // this.itemShown.numberOfPcsThree = this.itemShown.numberOfPcsThree
-        //   ? this.itemShown.numberOfPcsThree.trim()
-        //   : this.itemShown.numberOfPcsThree;
-        // this.itemShown.numberOfPcsFour = this.itemShown.numberOfPcsFour
-        //   ? this.itemShown.numberOfPcsFour.trim()
-        //   : this.itemShown.numberOfPcsFour;
-        // this.itemShown.numberOfPcsFive = this.itemShown.numberOfPcsFive
-        //   ? this.itemShown.numberOfPcsFive.trim()
-        //   : this.itemShown.numberOfPcsFive;
-        // this.itemShown.numberOfPcsSix = this.itemShown.numberOfPcsSix
-        //   ? this.itemShown.numberOfPcsSix.trim()
-        //   : this.itemShown.numberOfPcsSix;
-        // this.itemShown.numberOfPcsSeven = this.itemShown.numberOfPcsSeven
-        //   ? this.itemShown.numberOfPcsSeven.trim()
-        //   : this.itemShown.numberOfPcsSeven;
-        // this.itemShown.numberOfPcsEight = this.itemShown.numberOfPcsEight
-        //   ? this.itemShown.numberOfPcsEight.trim()
-        //   : this.itemShown.numberOfPcsEight;
-
-        // this.itemShown.stickerNumber = this.itemShown.stickerNumber
-        //   ? this.itemShown.stickerNumber.trim()
-        //   : this.itemShown.stickerNumber;
-        // this.itemShown.sticker2Number = this.itemShown.sticker2Number
-        //   ? this.itemShown.sticker2Number.trim()
-        //   : this.itemShown.sticker2Number;
-        // this.itemShown.boxNumber = this.itemShown.boxNumber
-        //   ? this.itemShown.boxNumber.trim()
-        //   : this.itemShown.boxNumber;
-        // this.itemShown.barcodeK = this.itemShown.barcodeK
-        //   ? this.itemShown.barcodeK.trim()
-        //   : this.itemShown.barcodeK;
-        // this.itemShown.peerPharmTone = this.itemShown.peerPharmTone
-        //   ? this.itemShown.peerPharmTone.trim()
-        //   : this.itemShown.peerPharmTone;
-
-        // this.itemShown.productionInput = this.itemShown.productionInput
-        //   ? this.itemShown.productionInput.trim()
-        //   : this.itemShown.productionInput;
-        // this.itemShown.productionTwoInput = this.itemShown.productionTwoInput
-        //   ? this.itemShown.productionTwoInput.trim()
-        //   : this.itemShown.productionTwoInput;
-        // this.itemShown.productionThreeInput = this.itemShown
-        //   .productionThreeInput
-        //   ? this.itemShown.productionThreeInput.trim()
-        //   : this.itemShown.productionThreeInput;
-        // this.itemShown.productionFourInput = this.itemShown.productionFourInput
-        //   ? this.itemShown.productionFourInput.trim()
-        //   : this.itemShown.productionFourInput;
-        // this.itemShown.productionFiveInput = this.itemShown.productionFiveInput
-        //   ? this.itemShown.productionFiveInput.trim()
-        //   : this.itemShown.productionFiveInput;
-        // this.itemShown.productionSixInput = this.itemShown.productionSixInput
-        //   ? this.itemShown.productionSixInput.trim()
-        //   : this.itemShown.productionSixInput;
-        // this.itemShown.productionSevenInput = this.itemShown
-        //   .productionSevenInput
-        //   ? this.itemShown.productionSevenInput.trim()
-        //   : this.itemShown.productionSevenInput;
-        // this.itemShown.productionEightInput = this.itemShown
-        //   .productionEightInput
-        //   ? this.itemShown.productionEightInput.trim()
-        //   : this.itemShown.productionEightInput;
-
-        // this.itemShown.cartonNumber = this.itemShown.cartonNumber
-        //   ? this.itemShown.cartonNumber.trim()
-        //   : this.itemShown.cartonNumber;
-        // this.itemShown.PcsCarton = this.itemShown.PcsCarton
-        //   ? this.itemShown.PcsCarton.trim()
-        //   : this.itemShown.PcsCarton;
-        // this.itemShown.cartonNumber2 = this.itemShown.cartonNumber2
-        //   ? this.itemShown.cartonNumber2.trim()
-        //   : this.itemShown.cartonNumber2;
-        // this.itemShown.PcsCarton2 = this.itemShown.PcsCarton2
-        //   ? this.itemShown.PcsCarton2.trim()
-        //   : this.itemShown.PcsCarton2;
-
-        // this.itemShown.costumerId = this.itemShown.costumerId
-        //   ? this.itemShown.costumerId.trim()
-        //   : this.itemShown.costumerId;
-        // this.itemShown.motherP = this.itemShown.motherP
-        //   ? this.itemShown.motherP.trim()
-        //   : this.itemShown.motherP;
-
-        // this.itemShown.item1w = this.itemShown.item1w
-        //   ? this.itemShown.item1w.trim()
-        //   : this.itemShown.item1w;
-        // this.itemShown.item2w = this.itemShown.item2w
-        //   ? this.itemShown.item2w.trim()
-        //   : this.itemShown.item2w;
-        // this.itemShown.item3w = this.itemShown.item3w
-        //   ? this.itemShown.item3w.trim()
-        //   : this.itemShown.item3w;
-        // this.itemShown.item4w = this.itemShown.item4w
-        //   ? this.itemShown.item4w.trim()
-        //   : this.itemShown.item4w;
-        // this.itemShown.itemStickerW = this.itemShown.itemStickerW
-        //   ? this.itemShown.itemStickerW.trim()
-        //   : this.itemShown.itemStickerW;
-        // this.itemShown.itemBoxW = this.itemShown.itemBoxW
-        //   ? this.itemShown.itemBoxW.trim()
-        //   : this.itemShown.itemBoxW;
-        // this.itemShown.itemCtnW = this.itemShown.itemCtnW
-        //   ? this.itemShown.itemCtnW.trim()
-        //   : this.itemShown.itemCtnW;
-
-        // this.itemShown.bottleNumber = this.itemShown.bottleNumber
-        //   ? this.itemShown.bottleNumber.trim()
-        //   : this.itemShown.bottleNumber;
-        // this.itemShown.capNumber = this.itemShown.capNumber
-        //   ? this.itemShown.capNumber.trim()
-        //   : this.itemShown.capNumber;
-        // this.itemShown.pumpNumber = this.itemShown.pumpNumber
-        //   ? this.itemShown.pumpNumber.trim()
-        //   : this.itemShown.pumpNumber;
-        // this.itemShown.sealNumber = this.itemShown.sealNumber
-        //   ? this.itemShown.sealNumber.trim()
-        //   : this.itemShown.sealNumber;
-
-        // this.itemShown.pallet = this.itemShown.pallet
-        //   ? this.itemShown.pallet.trim()
-        //   : this.itemShown.pallet;
-        // this.itemShown.pallet1x = this.itemShown.pallet1x
-        //   ? this.itemShown.pallet1x.trim()
-        //   : this.itemShown.pallet1x;
-        // this.itemShown.pallet1y = this.itemShown.pallet1y
-        //   ? this.itemShown.pallet1y.trim()
-        //   : this.itemShown.pallet1y;
-        // this.itemShown.pallet2 = this.itemShown.pallet2
-        //   ? this.itemShown.pallet2.trim()
-        //   : this.itemShown.pallet2;
-        // this.itemShown.pallet2x = this.itemShown.pallet2x
-        //   ? this.itemShown.pallet2x.trim()
-        //   : this.itemShown.pallet2x;
-        // this.itemShown.pallet2y = this.itemShown.pallet2y
-        //   ? this.itemShown.pallet2y.trim()
-        //   : this.itemShown.pallet2y;
-        // this.itemShown.pallet3 = this.itemShown.pallet3
-        //   ? this.itemShown.pallet3.trim()
-        //   : this.itemShown.pallet3;
-        // this.itemShown.pallet3x = this.itemShown.pallet3x
-        //   ? this.itemShown.pallet3x.trim()
-        //   : this.itemShown.pallet3x;
-        // this.itemShown.pallet3y = this.itemShown.pallet3y
-        //   ? this.itemShown.pallet3y.trim()
-        //   : this.itemShown.pallet3y;
-
-        // this.itemShown.phLimitsMin = this.itemShown.phLimitsMin
-        //   ? this.itemShown.phLimitsMin.trim()
-        //   : this.itemShown.phLimitsMin;
-        // this.itemShown.phLimitsMax = this.itemShown.phLimitsMax
-        //   ? this.itemShown.phLimitsMax.trim()
-        //   : this.itemShown.phLimitsMax;
-        // this.itemShown.densityLimitsMin = this.itemShown.densityLimitsMin
-        //   ? this.itemShown.densityLimitsMin.trim()
-        //   : this.itemShown.densityLimitsMin;
-        // this.itemShown.densityLimitsMax = this.itemShown.densityLimitsMax
-        //   ? this.itemShown.densityLimitsMax.trim()
-        //   : this.itemShown.densityLimitsMax;
-        // this.itemShown.viscosityLimitsMin = this.itemShown.viscosityLimitsMin
-        //   ? this.itemShown.viscosityLimitsMin.trim()
-        //   : this.itemShown.viscosityLimitsMin;
-        // this.itemShown.viscosityLimitsMax = this.itemShown.viscosityLimitsMax
-        //   ? this.itemShown.viscosityLimitsMax.trim()
-        //   : this.itemShown.viscosityLimitsMax;
-        // this.itemShown.spinFieldNum = this.itemShown.spinFieldNum
-        //   ? this.itemShown.spinFieldNum.trim()
-        //   : this.itemShown.spinFieldNum;
-        // this.itemShown.spinSpeed = this.itemShown.spinSpeed
-        //   ? this.itemShown.spinSpeed.trim()
-        //   : this.itemShown.spinSpeed;
-        // this.itemShown.percentageResult = this.itemShown.percentageResult
-        //   ? this.itemShown.percentageResult.trim()
-        //   : this.itemShown.percentageResult;
-        // this.itemShown.testTemp = this.itemShown.testTemp
-        //   ? this.itemShown.testTemp.trim()
-        //   : this.itemShown.testTemp;
       } catch (error) {
         console.log(error);
       }
-      // valid for triming:
 
       this.itemsService.updateItem(this.itemShown).subscribe((res) => {
         console.log(res);
@@ -2149,6 +2037,23 @@ export class ItemdetaisComponent implements OnInit {
           }else{
             this.PAO = true
           }
+          break;
+
+        case "setUnits":
+          if(this.setUnits == true){
+              this.setUnits = false
+          }else{
+            this.setUnits = true
+          }
+          break;
+        case "unitWeight":
+          if(this.unitWeight == true){
+              this.unitWeight = false
+          }else{
+            this.unitWeight = true
+          }
+          break;
+
     }
   }
 

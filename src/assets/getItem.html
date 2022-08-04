@@ -451,6 +451,8 @@ $(document).ready(()=>{
 		document.getElementById('id_netWeight').value=s_netWeightK;
 		document.getElementById('id_grossUnitInput').value=s_grossUnitWeightK;
 		document.getElementById('id_PAO').value=s_PAO;
+		document.getElementById('id_setUnits').value=s_setUnits;
+		document.getElementById('id_unitWeight').value=s_unitWeight;
 		
 		document.getElementById('id_grossCtnInput').value=s_grossCtnK;
 		document.getElementById('id_netCtnInput').value=s_netCtnK;
@@ -801,6 +803,8 @@ $(document).ready(()=>{
 		document.getElementById('id_netWeight').value=s_netWeightK;
 		document.getElementById('id_grossUnitInput').value=s_grossUnitWeightK;
 		document.getElementById('id_PAO').value=s_PAO;
+		document.getElementById('id_setUnits').value=s_setUnits;
+		document.getElementById('id_unitWeight').value=s_unitWeight;
 		
 		document.getElementById('id_grossCtnInput').value=s_grossCtnK;
 		document.getElementById('id_netCtnInput').value=s_netCtnK;
@@ -1040,6 +1044,8 @@ $(document).ready(()=>{
 		netWeight= document.getElementById('id_netWeight').value;
 		grossUnitWeight=  document.getElementById('id_grossUnitInput').value;
 		PAO =  document.getElementById('id_PAO').value;
+		PAO =  document.getElementById('id_setUnits').value;
+		PAO =  document.getElementById('id_unitWeight').value;
 		
 		netCtnWeightK=  document.getElementById('id_netCtnInput').value;
 		grossCtnWeightK=  document.getElementById('id_grossCtnInput').value;
@@ -1422,7 +1428,15 @@ function textToBase64Barcode(text){
                                 </tr>
                                 <tr>
                                     <td><b>PAO</td>
-                                    <td colspan="2"><input type="text" id="id_PAO"></td>
+                                    <td colspan="2"><input type="number" id="id_PAO"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>setUnits</td>
+                                    <td colspan="2"><input type="number" id="id_PAO"></td>
+                                </tr>
+                                <tr>
+                                    <td><b>unitWeight</td>
+                                    <td colspan="2"><input type="number" id="id_unitWeight"></td>
                                 </tr>
 							</table>
 					<br>

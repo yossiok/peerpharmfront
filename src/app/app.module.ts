@@ -162,6 +162,7 @@ export class AppModule {
       gr: "(גר)",
       Gross: "ברוטו",
       Unit: "יחידה",
+      Units: "יחידות",
       Status: "סטטוס",
       Carton: "קרטונים",
       Pallet: "משטח",
@@ -194,7 +195,11 @@ export class AppModule {
       Upload: "העלאת",
       Wgt: "משקל",
       Title: "כותרת",
-      PAO:"חודשים לשימוש לאחר פתיחה"
+      PAO:"חודשים לשימוש לאחר פתיחה",
+      Single:"בודדה",
+      Set:"סט",
+      In:"ב",
+      Of:"של"
     });
 
     translate.setTranslation("en", {
@@ -224,6 +229,7 @@ export class AppModule {
       gr: "gr",
       Gross: "Gross",
       Unit: "Unit",
+      Units: "Units",
       Status: "Status",
       Carton: "Carton",
       Pallet: "Pallet",
@@ -256,7 +262,12 @@ export class AppModule {
       Upload: "Upload",
       Wgt: "Wgt",
       Title: "Title",
-      PAO:"PAO"
+      PAO:"PAO",
+      Single:"Single",
+      Set:"Set",
+      In:"In",
+      Of:"Of"
+
     });
 
     translate.addLangs(["en", "he"]);
