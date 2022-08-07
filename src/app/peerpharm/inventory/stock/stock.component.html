@@ -1778,6 +1778,47 @@
               </div>
               <div class="col-6"></div>
             </div>
+            <div class="row fixNoaStupidStuff eContainer">
+          </div>
+          <!-- Start -->
+          <div class="row fixNoaStupidStuff eContainer">
+            <div class="fixNoaStupidStuff">
+              <h4>חיפוש לפי תאריכי הזמנה</h4>
+              <div class="searchBox">
+                <b>תאריך התחלה: </b>
+                <input
+                  [(ngModel)]="purchaseStartDate"
+                  class="searchBox-item"
+                  id="purchaseStartDate"
+                  name="purchaseStartDate"
+                  type="date"
+                />
+                <b>תאריך סיום: </b>
+                <input
+                  [(ngModel)]="purchaseEndDate"
+                  class="searchBox-item"
+                  id="purchaseEndDate"
+                  name="purchaseEndDate"
+                  type="date"
+                />
+                <button
+                  class="btn btn-success searchBox-item"
+                  (click)="getLastOrdersItemByDates('component')"
+                >
+                  מצא
+                </button>
+              </div>
+              <h5
+                *ngIf="
+                  MaterialArrivalStartDate && MaterialArrivalEndDate && measure
+                "
+              >
+                {{ measure }} {{ totalQuantity }} מתאריך
+                {{ MaterialArrivalStartDate | date: "dd/MM/yyy" }} עד לתאריך
+                {{ MaterialArrivalEndDate | date: "dd/MM/yyy" }} הוזמנו
+              </h5>
+            </div>
+          </div>
             <div class="smallLoader" *ngIf="fetchingOrders"></div>
             <div
               *ngIf="lastOrdersOfItem.length > 0"

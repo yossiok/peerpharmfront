@@ -253,6 +253,17 @@
         </button>
       </div>
     </div>
+    <!-- Filter by delivery date range -->
+    <div class="filterDates">
+      <h5 class="filter-title">Delivery Date</h5>
+      <label for="startDelivery" class="dateLabel">תאריך התחלה:</label>
+      <input name="startDelivery" class="filter-input date-input" type="date" #startDeliveryDate>
+      <label for="endDelivery" class="dateLabel">תאריך סיום:</label>
+      <input name="endDelivery" class="filter-input date-input" type="date" #endDeliveryDate>
+      <div class="buttonsContainer" *ngIf="!lodingOrders">
+        <button class="itshak-rabin" (click)="filterByDeliveryDate(startDeliveryDate.value,endDeliveryDate.value)">Filter</button>
+      </div>
+    </div>
     <!-- Filter By Stage-->
     <div class="filter">
       <h5 class="filter-title">Stage</h5>
@@ -270,32 +281,8 @@
         <option value="partialCmpt">רכיבים קיימים חלקית</option>
       </select>
     </div>
-    <!-- Filter by delivery date range -->
-    <!-- <div class="filterDates">
-      <h5 class="filter-title">Delivery Date</h5>
-      <label for="startDelivery" class="dateLabel">תאריך התחלה:</label>
-      <input name="startDelivery" class="filter-input date-input" type="date" #startDeliveryDate>
-      <label for="endDelivery" class="dateLabel">תאריך סיום:</label>
-      <input name="endDelivery" class="filter-input date-input" type="date" #endDeliveryDate>
-      <div class="buttonsContainer" *ngIf="!lodingOrders">
-        <button class="itshak-rabin" (click)="filterByDeliveryDate(startDeliveryDate.value,endDeliveryDate.value)">Filter</button>
-      </div>
-    </div> -->
     <div *ngIf="lodingOrders" class="smallerLoader"></div>
-    <button
-      class="shimon-peres"
-      (click)="
-        allOrders([
-          filterItem,
-          filterByOrder,
-          filterByCustomerIn,
-          startOrderDate,
-          endOrderDate
-        ])
-      "
-    >
-      Reset
-    </button>
+    <button class="shimon-peres" (click)="allOrders([filterItem,filterByOrder,filterByCustomerIn,startOrderDate,endOrderDate,startDeliveryDate,endDeliveryDate])">Reset</button>
   </div>
   <!-- <div class="bg-primary filterContainer">
     
@@ -531,7 +518,7 @@
           <td *ngIf="order._id === EditRowId">
             <input
               #orderDate
-              type="text"
+              type="date"
               [value]="order.orderDate"
               style="width: 170px"
             />
@@ -543,14 +530,16 @@
           <td *ngIf="order._id === EditRowId">
             <input
               #deliveryDate
-              type="text"
+              type="date"
               [value]="order.deliveryDate"
               style="width: 170px"
             />
           </td>
+
           <td *ngIf="order._id !== EditRowId" (click)="edit(order._id)">
             {{ order.deliveryDate | date: "dd/MM/yyyy" }}
           </td>
+
           <td *ngIf="order._id !== EditRowId" (click)="edit(order._id)">
             {{ order.customerOrderNum }}
           </td>

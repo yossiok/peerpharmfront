@@ -97,15 +97,15 @@ export class OrdersService {
     let url = this.baseUrl + `order/getOpenOrdersByOrderDate?startDate=${startDate}&endDate=${endDate}`
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+  getAllOpenOrdersByDeliveryDate(startDate,endDate){
+    let url = this.baseUrl + `order/getOpenOrdersByDeliveryDate?startDate=${startDate}&endDate=${endDate}`
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
   getAllOpenOrderByStage(stage){
     let url = this.baseUrl + `order/getOpenOrdersByStage?stage=${stage}`
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
 
   }
-  // getAllOpenOrdersByDeliveryDate(startDate,endDate){
-  //   let url = this.baseUrl + `order/getOpenOrdersByDeliveryDate?startDate=${startDate}&endDate=${endDate}`
-  //   return this.http.get(url).pipe(map((reponse) => reponse.json()));
-  // }
 
   // getOrderCompileData(orderNumber): Observable<any> {
   //   let url = this.baseUrl + 'packingPallltItems?getAmounts=yes&orderNumber=' + orderNumber;

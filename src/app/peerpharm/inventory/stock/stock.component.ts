@@ -313,8 +313,13 @@ export class StockComponent implements OnInit {
   allPurchases: any[];
   totalComponentsValue: number = 0;
   allocatedAmount: number = null;
+
   MaterialArrivalStartDate: Date;
   MaterialArrivalEndDate: Date;
+
+  purchaseStartDate: string = "";
+  purchaseEndDate: string = "";
+
   measure: string;
   component: any = null;
 
@@ -1698,6 +1703,44 @@ export class StockComponent implements OnInit {
           ];
       });
   }
+  // My new one
+  getLastOrdersItemByDates(type) {
+    this.fetchingOrders = true;
+    let componentN;
+    switch (type) {
+      case "material":
+        componentN = this.resMaterial.componentN;
+        break;
+      case "component":
+        componentN = this.resCmpt.componentN;
+    }
+    this.procuretServ
+      .getLastOrdersForItemByDates(componentN, this.purchaseStartDate, this.purchaseEndDate)
+      .subscribe((orders) => {
+        this.fetchingOrders = false;
+        if (orders && orders.length > 0) {
+          orders.map((order) => {
+            if (order.coin) order.coin = order.coin.toUpperCase();
+            if (order.price)
+              order.localPrice = order.price * this.currencies[order.coin];
+            return order;
+          });
+          this.lastOrdersOfItem = orders;
+        } else
+          this.lastOrdersOfItem = [
+            {
+              orderNumber: "Sorry.",
+              price: "There",
+              coin: "are no",
+              supplierName: "orders",
+              quantity: "for this",
+              date: "item.",
+            },
+          ];
+      });
+  }
+  
+  
 
   getSearchReport() {
     let invReport = [];
