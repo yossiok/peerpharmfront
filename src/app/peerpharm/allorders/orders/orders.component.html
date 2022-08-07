@@ -549,7 +549,7 @@
             />
           </td>
           <td *ngIf="order._id !== EditRowId" (click)="edit(order._id)">
-            {{ order.deliveryDate }}
+            {{ order.deliveryDate | date: "dd/MM/yyyy" }}
           </td>
           <td *ngIf="order._id !== EditRowId" (click)="edit(order._id)">
             {{ order.customerOrderNum }}

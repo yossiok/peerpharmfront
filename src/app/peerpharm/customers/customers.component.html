@@ -17,7 +17,7 @@
             class="task-item pr-2 py-1 d-flex incomplete border-bottom heb-menu"
             (click)="newProposalMenu()"
           >
-            חשבונית עסקה (Proforma Invoice)<span
+            הזמנת לקוח<span
               class="badge badge-danger ml-auto pr-2 pt-1"
               [style.background]="1 | orderItemBatchStatusColor"
               >&nbsp; 1 &nbsp;
@@ -28,7 +28,7 @@
             class="task-item d-flex complete pr-2 border-bottom heb-menu"
             (click)="proposalsListMenu()"
           >
-            רשימת חשבוניות עסקה<span
+            רשימת הזמנות<span
               class="badge badge-success ml-auto pt-1"
               [style.background]="2 | orderItemBatchStatusColor"
             >
@@ -61,9 +61,9 @@
           <li
             style="cursor: pointer"
             class="task-item d-flex complete border-bottom heb-menu pr-2"
-            (click)="emptyMenu()"
+            (click)="stockProposal()"
           >
-            מקום ריק<span
+            הזמנה למלאי<span
               class="badge badge-success ml-auto pt-1"
               [style.background]="5 | orderItemBatchStatusColor"
               >&nbsp; 5 &nbsp;
@@ -80,13 +80,15 @@
         <div class="text-center shadow bg-white w-75 mx-auto rounded p-2">
           <div class="row mt-4" *ngIf="newProposalView">
             <div class="col-12">
-              <h3>חשבונית עסקה - Proforma Invoice</h3>
+              <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
+                הזמנת מוצרים ללקוח
+              </h1>
             </div>
           </div>
           <div class="row mt-4" *ngIf="proposalsListView">
             <div class="col-12">
               <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
-                רשימת חשבוניות עסקה - Proforma Invoices List
+                הזמנות לקוחות
               </h1>
             </div>
           </div>
@@ -104,10 +106,10 @@
               </h1>
             </div>
           </div>
-          <div class="row mt-4" *ngIf="emptyView">
+          <div class="row mt-4" *ngIf="stockPropsalView">
             <div class="col-12">
               <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
-                Empty Place
+                הזמנת מוצרים למלאי
               </h1>
             </div>
           </div>
@@ -128,6 +130,12 @@
               *ngIf="priceListsView"
               [allCustomersList]="allCustomersList"
             ></app-price-lists>
+          </div>
+          <div dir="rtl" class="row mt-4">
+            <app-stock-proposal
+              *ngIf="stockPropsalView"
+              [allCustomersList]="allCustomersList"
+            ></app-stock-proposal>
           </div>
         </div>
       </div>

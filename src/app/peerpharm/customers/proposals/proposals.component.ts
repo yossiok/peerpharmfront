@@ -14,6 +14,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { UsersService } from "src/app/services/users.service";
 import { Procurementservice } from "src/app/services/procurement.service";
 import { SalesService } from "src/app/services/sales.service";
+import { ItemsService } from "src/app/services/items.service";
 @Component({
   selector: "app-proposals",
   templateUrl: "./proposals.component.html",
@@ -21,6 +22,7 @@ import { SalesService } from "src/app/services/sales.service";
 })
 export class ProposalsComponent implements OnInit {
   @Input("allCustomersList") allCustomersList: any[];
+  @ViewChild("printBtn2") printBtn2: ElementRef;
 
   faCoffee = faCoffee;
   user: any;
@@ -47,6 +49,7 @@ export class ProposalsComponent implements OnInit {
 
   newProposalForm: FormGroup = new FormGroup({
     customerName: new FormControl("", Validators.required),
+    customerTaxId: new FormControl(""),
     customerId: new FormControl("", Validators.required),
     agent: new FormControl("", Validators.required),
     customerDetails: new FormControl(""),
@@ -68,7 +71,9 @@ export class ProposalsComponent implements OnInit {
     customerOrderDate: new FormControl(new Date()),
     additions: new FormControl(""),
     paymentTerms: new FormControl(""),
-    estimatedArrivalDate: new FormControl(new Date()),
+    requestedDate: new FormControl(new Date()),
+    orderType: new FormControl("", Validators.required),
+    orderNumber: new FormControl(null),
   });
 
   searchForm: FormGroup = new FormGroup({
@@ -85,7 +90,8 @@ export class ProposalsComponent implements OnInit {
     private authService: AuthService,
     private userService: UsersService,
     private procuremetnService: Procurementservice,
-    private salesService: SalesService
+    private salesService: SalesService,
+    private itemsService: ItemsService
   ) {}
 
   ngOnInit(): void {
@@ -132,19 +138,26 @@ export class ProposalsComponent implements OnInit {
   get proposalDate() {
     return this.newProposalForm.controls["proposalDate"];
   }
+  get orderType() {
+    return this.newProposalForm.controls["orderType"];
+  }
 
   getUser() {
     this.user = this.authService.loggedInUser;
     this.userName = this.user.userName;
-    this.authorized = this.user.authorization.includes("newProposal");
+    this.authorized =
+      this.user.authorization.includes("newProposal") ||
+      this.user.authorization.includes("adminPanel");
     console.log(this.user.authorization);
     console.log(this.user.userName);
     console.log(this.authorized);
   }
   getAllUsers() {
     this.userService.getAllUsers().subscribe((data) => {
-      console.log(data);
-      this.allUsers = data;
+      this.allUsers = data.filter((user) =>
+        user.authorization.includes("agent")
+      );
+      console.log(this.allUsers);
     });
   }
 
@@ -229,8 +242,7 @@ export class ProposalsComponent implements OnInit {
       (pro) => pro.proposalNumber == this.searchForm.value.proposalNumber
     );
     this.currentProposal = proposal;
-    this.currentProposal.x = 15;
-    console.log(proposal);
+
     proposal.proposalDate = proposal.proposalDate
       ? proposal.proposalDate.substr(0, 10)
       : null;
@@ -240,39 +252,47 @@ export class ProposalsComponent implements OnInit {
     proposal.customerOrderDate = proposal.customerOrderDate
       ? proposal.customerOrderDate.substr(0, 10)
       : null;
-
-    let proposalValue = this.newProposalForm.value;
+    proposal.requestedDate = proposal.requestedDate
+      ? proposal.requestedDate.substr(0, 10)
+      : null;
 
     for (let key in this.newProposalForm.controls) {
       if (key != "contacts" && key != "items") {
         this.newProposalForm.controls[key].setValue(proposal[key]);
       }
     }
-    for (let contact of proposal.contacts) {
-      let contactForm = new FormGroup({
-        name: new FormControl(contact.name),
-        phone: new FormControl(contact.phone),
-        mail: new FormControl(contact.mail),
-      });
-      this.contacts.push(contactForm);
+
+    if (proposal.contacts && proposal.contacts.length > 0) {
+      for (let contact of proposal.contacts) {
+        let contactForm = new FormGroup({
+          name: new FormControl(contact.name),
+          phone: new FormControl(contact.phone),
+          mail: new FormControl(contact.mail),
+        });
+        this.contacts.push(contactForm);
+      }
     }
-    for (let item of proposal.items) {
-      let itemForm = new FormGroup({
-        itemNumber: new FormControl(item.itemNumber),
-        barcode: new FormControl(item.barcode),
-        itemName: new FormControl(item.itemName),
-        quantity: new FormControl(item.quantity),
-        price: new FormControl(item.price),
-        discount: new FormControl(item.discount),
-        total: new FormControl(item.total),
-      });
-      this.items.push(itemForm);
+    if (proposal.items && proposal.items.length > 0) {
+      for (let item of proposal.items) {
+        let itemForm = new FormGroup({
+          itemNumber: new FormControl(item.itemNumber),
+          barcode: new FormControl(item.barcode),
+          itemName: new FormControl(item.itemName),
+          quantity: new FormControl(item.quantity),
+          price: new FormControl(item.price),
+          discount: new FormControl(item.discount),
+          total: new FormControl(item.total),
+          deliveryDate: new FormControl(item.deliveryDate),
+          itemStatus: new FormControl(item.itemStatus),
+        });
+        this.items.push(itemForm);
+      }
     }
 
     console.log(this.newProposalForm);
     console.log(this.items);
     try {
-      console.log(this.items.value[0].itemNumber);
+      // console.log(this.items.value[0].itemNumber);
     } catch (err) {
       console.log(err);
     }
@@ -291,6 +311,12 @@ export class ProposalsComponent implements OnInit {
     this.currentCustomer = this.allCustomersList.find((cus) => {
       return cus.costumerName == cusName;
     });
+
+    if (this.currentCustomer.costumerId == "99999") {
+      this.setStockForm();
+      return;
+    }
+
     this.salesService
       .getCustomerById(this.currentCustomer.costumerId)
       .subscribe((data) => {
@@ -309,10 +335,26 @@ export class ProposalsComponent implements OnInit {
       });
   }
 
+  setStockForm() {
+    this.newProposalForm.reset();
+    let proposal = this.newProposalForm.controls;
+    let customer = this.currentCustomer;
+    proposal.customerId.setValue(customer.costumerId);
+    proposal.customerName.setValue(customer.costumerName);
+    proposal.currency.setValue(customer.currency);
+    proposal.country.setValue(customer.country);
+    proposal.remark.setValue(customer.impRemark);
+    proposal.priceList.setValue(customer.priceList);
+    proposal.shippingAddress.setValue("למחסן חומרי גלם או מוצרים מוגמרים");
+    proposal.user.setValue(this.userName);
+    return;
+  }
+
   setFormData() {
     let proposal = this.newProposalForm.controls;
     let cmx = this.comaxCustomer;
     this.obligoDeviated = false;
+    proposal.customerTaxId.setValue(cmx.TaxID);
     proposal.customerId.setValue(cmx.ID);
     proposal.customerName.setValue(
       cmx.ForeignName ? cmx.ForeignName : cmx.Name
@@ -388,7 +430,10 @@ export class ProposalsComponent implements OnInit {
     );
     console.log(customer);
     this.currentCustomer = customer[0];
-
+    if (this.currentCustomer.costumerId == "99999") {
+      this.setStockForm();
+      return;
+    }
     this.salesService
       .getCustomerById(this.currentCustomer.costumerId)
       .subscribe((data) => {
@@ -427,9 +472,6 @@ export class ProposalsComponent implements OnInit {
   }
 
   createProposal() {
-    // console.log(this.newProposalForm.value);
-    // console.log(this.newProposalForm.controls);
-    // console.log(this.currentCustomer.contact);
     if (!this.newProposalForm.value.proposalDate) {
       this.newProposalForm.controls.proposalDate.setValue(this.today);
     }
@@ -462,6 +504,25 @@ export class ProposalsComponent implements OnInit {
       }
     }
     try {
+      let leadTime =
+        this.newProposalForm.value.orderType == "Make Up" ? 45 : 60;
+      let proposal = this.newProposalForm.controls;
+      let proposalDate = proposal.proposalDate.value
+        ? proposal.proposalDate.value
+        : new Date().toISOString().substring(0, 10);
+      proposal.proposalDate.setValue(proposalDate);
+      let requestedDate = proposal.requestedDate.value
+        ? proposal.requestedDate.value
+        : new Date(new Date().setDate(new Date().getDate() + leadTime))
+            .toISOString()
+            .substring(0, 10);
+      proposal.requestedDate.setValue(requestedDate);
+      let customerOrderDate = proposal.customerOrderDate.value
+        ? proposal.customerOrderDate.value.substr(0, 10)
+        : new Date().toISOString().substring(0, 10);
+      proposal.customerOrderDate.setValue(customerOrderDate);
+      proposal.proposalStatus.setValue("waiting");
+
       if (this.newProposalForm.valid) {
         this.currentPriceList = [];
         this.loading = true;
@@ -482,19 +543,35 @@ export class ProposalsComponent implements OnInit {
               this.currentPriceList = items;
               this.salesService
                 .addNewProposal(this.newProposalForm.value)
-                .subscribe((proposal) => {
-                  console.log(proposal);
+                .subscribe((data) => {
+                  console.log(data);
                   this.loading = false;
-                  if (proposal.msg) {
-                    console.log(proposal.msg);
-                    this.toastr.error(proposal.msg);
+                  if (data.msg) {
+                    console.log(data.msg);
+                    this.toastr.error(data.msg);
                     return;
-                  } else if (proposal) {
-                    console.log(proposal);
+                  } else if (data.newProposal && data.newOrder) {
+                    let proposal = data.newProposal
+                      ? data.newProposal
+                      : data.newProposal;
+
                     this.toastr.success(
                       "טיוטת הצעת מחיר נשמרה יש להוסיף מוצרים ושרותים להצעה."
                     );
                     this.currentProposal = proposal;
+                    if (data.newOrder) {
+                      this.toastr.success(
+                        "הזמנה נוצרה/עודכנה: " + data.newOrder.orderNumber
+                      );
+                    }
+
+                    this.newProposalForm.controls.proposalNumber.setValue(
+                      proposal.proposalNumber
+                    );
+                    this.newProposalForm.controls.orderNumber.setValue(
+                      proposal.orderNumber
+                    );
+
                     for (let key in this.newProposalForm.controls) {
                       if (key != "contacts" && key != "items") {
                         this.newProposalForm.controls[key].setValue(
@@ -502,32 +579,55 @@ export class ProposalsComponent implements OnInit {
                         );
                       }
                     }
-                    // for (let contact of proposal.contacts) {
-                    //   let contactForm = new FormGroup({
-                    //     name: new FormControl(contact["name"]),
-                    //     phone: new FormControl(contact["phone"]),
-                    //     mail: new FormControl(contact["mail"]),
-                    //   });
-                    //   this.contacts.push(contactForm);
-                    // }
-                    // for (let item of proposal.items) {
-                    //   let itemForm = new FormGroup({
-                    //     itemNumber: new FormControl(item["itemNumber"]),
-                    //     barcode: new FormControl(item["barcode"]),
-                    //     itemName: new FormControl(item["itemName"]),
-                    //     quantity: new FormControl(item["quantity"]),
-                    //     price: new FormControl(item["price"]),
-                    //     discount: new FormControl(item["discount"]),
-                    //     total: new FormControl(item["total"]),
-                    //   });
-                    //   this.items.push(itemForm);
-                    // }
-                    // this.newProposalForm.controls.proposalNumber.setValue(
-                    //   proposal.proposalNumber
-                    // );
-                    this.newProposalForm.controls.proposalStatus.setValue(
-                      "new"
+                    while (this.items.length > 0) {
+                      this.items.removeAt(0);
+                    }
+                    while (this.contacts.length > 0) {
+                      this.contacts.removeAt(0);
+                    }
+
+                    if (proposal.contacts && proposal.contacts.length > 0) {
+                      for (let contact of proposal.contacts) {
+                        let contactForm = new FormGroup({
+                          name: new FormControl(contact.name),
+                          phone: new FormControl(contact.phone),
+                          mail: new FormControl(contact.mail),
+                        });
+                        this.contacts.push(contactForm);
+                      }
+                    }
+
+                    if (proposal.items && proposal.items.length > 0) {
+                      for (let item of proposal.items) {
+                        let itemForm = new FormGroup({
+                          itemNumber: new FormControl(item.itemNumber),
+                          barcode: new FormControl(item.barcode),
+                          itemName: new FormControl(item.itemName),
+                          quantity: new FormControl(item.quantity),
+                          price: new FormControl(item.price),
+                          discount: new FormControl(item.discount),
+                          total: new FormControl(item.total),
+                          deliveryDate: new FormControl(item.deliveryDate),
+                          itemStatus: new FormControl(item.itemStatus),
+                        });
+                        this.items.push(itemForm);
+                      }
+                    }
+
+                    let idx = this.proposalsList.findIndex(
+                      (proposal) =>
+                        proposal.proposalNumber ==
+                        this.newProposalForm.value.proposalNumber
                     );
+                    if (idx > -1) {
+                      this.proposalsList.splice(
+                        idx,
+                        1,
+                        this.newProposalForm.value
+                      );
+                    } else {
+                      this.proposalsList.push(this.newProposalForm.value);
+                    }
                     console.log(this.newProposalForm.controls);
                     console.log(this.newProposalForm.value);
                   }
@@ -584,6 +684,12 @@ export class ProposalsComponent implements OnInit {
     this.editContact = this.contacts.length - 1;
   }
   addItem() {
+    let deliveryDate = new Date(this.newProposalForm.value.requestedDate)
+      .toISOString()
+      .substring(0, 10);
+    // let leadTime = this.newProposalForm.value.orderType == "Make Up" ? 45 : 60;
+
+    // deliveryDate.setDate(this.today.getDate() + leadTime);
     let itemForm = new FormGroup({
       itemNumber: new FormControl(""),
       barcode: new FormControl(""),
@@ -592,6 +698,8 @@ export class ProposalsComponent implements OnInit {
       price: new FormControl(0),
       discount: new FormControl(0),
       total: new FormControl(0),
+      deliveryDate: new FormControl(deliveryDate),
+      itemStatus: new FormControl("ממתין לאישור לקוח"),
     });
     this.items.push(itemForm);
     this.editItem = this.items.length - 1;
@@ -601,31 +709,46 @@ export class ProposalsComponent implements OnInit {
     console.log(this.items);
     let ittem = this.items.controls[i];
     console.log(ittem);
-
-    console.log(this.items.value[i].itemNumber);
-    let formItem = this.items.value[i];
-    let item = this.currentPriceList.find(
-      (pl) => pl.itemNumber == formItem.itemNumber
+    let itemExists = this.items.value.findIndex(
+      (oi) => oi.itemNumber == ittem.value.itemNumber
     );
-    console.log(item);
-    formItem.itemName = item.itemName;
-    formItem.price = +item.price;
-    formItem.barcode = item.barcode;
-    formItem.total =
-      +item.price * formItem.quantity -
-      (formItem.discount * formItem.price * formItem.quantity) / 100;
-    ittem.setValue(formItem);
-    // let formI = new FormGroup({
-    //   itemNumber: new FormControl(formItem.itemNumber),
-    //   itemName: new FormControl(item.itemName),
-    //   quantity: new FormControl(formItem.quantity),
-    //   price: new FormControl(+item.price),
-    //   discount: new FormControl(formItem.discount),
-    //   total: new FormControl(formItem.total * +item.price),
-    // });
-    // // this.items.setControl(i, formI);
-    this.items.setControl(i, ittem);
-    console.log(this.items);
+    if (itemExists > -1 && itemExists != i) {
+      alert(
+        "פריט זה קיים כבר בהזמנה זו, יש לפתוח הזמנה חדשה או לשנות את הכמות בפריט הקיים (לפני שנשלח לבישול!). "
+      );
+      return;
+    }
+    this.itemsService.getItemData(ittem.value.itemNumber).subscribe((items) => {
+      if (items.length == 0) {
+        this.toastr.error("מקט זה לא קיים  במערכת, יש להגדיר עץ מוצר עבורו");
+        return;
+      }
+
+      console.log(this.items.value[i].itemNumber);
+      let formItem = this.items.value[i];
+      let item = this.currentPriceList.find(
+        (pl) => pl.itemNumber == formItem.itemNumber
+      );
+      console.log(item);
+      formItem.itemName = item.itemName;
+      formItem.price = +item.price;
+      formItem.barcode = item.barcode;
+      formItem.total =
+        +item.price * formItem.quantity -
+        (formItem.discount * formItem.price * formItem.quantity) / 100;
+      ittem.setValue(formItem);
+      // let formI = new FormGroup({
+      //   itemNumber: new FormControl(formItem.itemNumber),
+      //   itemName: new FormControl(item.itemName),
+      //   quantity: new FormControl(formItem.quantity),
+      //   price: new FormControl(+item.price),
+      //   discount: new FormControl(formItem.discount),
+      //   total: new FormControl(formItem.total * +item.price),
+      // });
+      // // this.items.setControl(i, formI);
+      this.items.setControl(i, ittem);
+      console.log(this.items);
+    });
   }
   getItemByName(i) {
     let itemControls = this.items[i];
@@ -641,6 +764,7 @@ export class ProposalsComponent implements OnInit {
 
   saveItem(i) {
     console.log(this.items);
+
     let itemControls = this.items.controls[i];
     let itemValue = this.items.value[i];
     itemValue.total =
@@ -658,18 +782,86 @@ export class ProposalsComponent implements OnInit {
     if (this.newProposalForm.value.proposalNumber) {
       this.salesService
         .updateProposal(this.newProposalForm.value)
-        .subscribe((updatedProposal) => {
-          console.log(updatedProposal);
-          if (updatedProposal.msg) {
-            console.log(updatedProposal.msg);
-            this.toastr.error(updatedProposal.msg);
-          } else if (updatedProposal._id) {
+        .subscribe((data) => {
+          console.log(data);
+          if (data.msg) {
+            console.log(data.msg);
+            this.toastr.error(data.msg);
+          } else if (data.updatedProposal._id) {
             this.toastr.success("ההזמנה עודכנה בהצלחה");
+
+            let proposal = data.updatedProposal;
+            proposal.proposalDate = proposal.proposalDate
+              ? proposal.proposalDate.substr(0, 10)
+              : null;
+            proposal.estimatedArrivalDate = proposal.estimatedArrivalDate
+              ? proposal.estimatedArrivalDate.substr(0, 10)
+              : null;
+            proposal.customerOrderDate = proposal.customerOrderDate
+              ? proposal.customerOrderDate.substr(0, 10)
+              : null;
+            let leadTime = proposal.orderType == "Make Up" ? 45 : 60;
+            proposal.requestedDate = proposal.requestedDate
+              ? proposal.requestedDate.substr(0, 10)
+              : new Date(new Date().setDate(new Date().getDate() + leadTime))
+                  .toISOString()
+                  .substring(0, 10);
+
             for (let key in this.newProposalForm.controls) {
-              this.newProposalForm.controls[key].setValue(updatedProposal[key]);
+              if (key != "contacts" && key != "items") {
+                this.newProposalForm.controls[key].setValue(proposal[key]);
+              }
             }
+
+            while (this.items.length > 0) {
+              this.items.removeAt(0);
+            }
+            while (this.contacts.length > 0) {
+              this.contacts.removeAt(0);
+            }
+
+            if (proposal.contacts && proposal.contacts.length > 0) {
+              for (let contact of proposal.contacts) {
+                let contactForm = new FormGroup({
+                  name: new FormControl(contact.name),
+                  phone: new FormControl(contact.phone),
+                  mail: new FormControl(contact.mail),
+                });
+                this.contacts.push(contactForm);
+              }
+            }
+
+            if (proposal.items && proposal.items.length > 0) {
+              for (let item of proposal.items) {
+                let itemForm = new FormGroup({
+                  itemNumber: new FormControl(item.itemNumber),
+                  barcode: new FormControl(item.barcode),
+                  itemName: new FormControl(item.itemName),
+                  quantity: new FormControl(item.quantity),
+                  price: new FormControl(item.price),
+                  discount: new FormControl(item.discount),
+                  total: new FormControl(item.total),
+                  deliveryDate: new FormControl(item.deliveryDate),
+                  itemStatus: new FormControl(item.itemStatus),
+                });
+                this.items.push(itemForm);
+              }
+            }
+
+            let idx = this.proposalsList.findIndex(
+              (proposal) =>
+                proposal.proposalNumber ==
+                this.newProposalForm.value.proposalNumber
+            );
+            if (idx > -1) {
+              this.proposalsList.splice(idx, 1, this.newProposalForm.value);
+            } else {
+              this.proposalsList.push(this.newProposalForm.value);
+            }
+            this.currentProposal = this.newProposalForm.value;
             this.isUpdated = true;
             this.printView = true;
+            setTimeout(() => this.printBtn2.nativeElement.click(), 500);
           }
         });
     }
@@ -679,6 +871,65 @@ export class ProposalsComponent implements OnInit {
       this.items.removeAt(0);
     }
   }
+  jump() {
+    if (!this.newProposalForm.value.proposalDate) {
+      this.newProposalForm.controls.proposalDate.setValue(this.today);
+    }
+    Object.keys(this.newProposalForm.controls).forEach((key) => {
+      const controlErrors = this.newProposalForm.get(key).errors;
+      if (controlErrors != null) {
+        Object.keys(controlErrors).forEach((keyError) => {
+          this.toastr.error(key + "  is " + keyError);
+          // alert(key + " is " + keyError);
+          console.log(
+            "Key control: " + key + ", keyError: " + keyError + ", err value: ",
+            controlErrors[keyError]
+          );
+        });
+      }
+    });
+    if (this.newProposalForm.value.priceList == "0") {
+      alert("מחירון לא יכול להיות 0");
+      return;
+    }
+    if (
+      this.newProposalForm.value.priceList !=
+      this.newProposalForm.value.customerId
+    ) {
+      let conf = confirm(
+        "מספר המחירון שונה ממספר הלקוח, האם אתה בטוח שאתה רוצה להמשיך?"
+      );
+      if (!conf) {
+        return;
+      }
+    }
+    if (!this.newProposalForm.valid) {
+      console.log("השלם את הפרטים החסרים");
+      return;
+    }
+    this.currentPriceList = [];
+    this.loading = true;
+
+    this.salesService
+      .getItemsByPriceList(this.newProposalForm.value.priceList)
+      .subscribe((items) => {
+        if (items.msg) {
+          console.log(items.msg);
+          this.toastr.error(items.msg);
+        } else if (items.length == 1 && !items[0].price) {
+          this.loading = false;
+          this.toastr.error(
+            "לא נמצאו פריטים למחירון זה, בדוק את המחירון ונסה שוב"
+          );
+          return;
+        } else if (items) {
+          console.log(items);
+          this.currentPriceList = items;
+          this.loading = false;
+        }
+      });
+  }
+
   findTotalQty() {
     let total = 0;
     for (let item of this.items.value) {

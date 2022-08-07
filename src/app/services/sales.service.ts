@@ -34,9 +34,17 @@ export class SalesService {
       .post(url, proposal)
       .pipe(map((response) => response.json()));
   }
+  updateProposalStatus(status) {
+    let url = this.baseUrl + "proposals/updateProposalStatus";
+    return this.http.post(url, status).pipe(map((response) => response.json()));
+  }
 
   getAllProposals() {
     let url = this.baseUrl + "proposals/getAllProposals";
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+  getAllStockProposals() {
+    let url = this.baseUrl + "proposals/getAllStockProposals";
     return this.http.get(url).pipe(map((response) => response.json()));
   }
 

@@ -18,6 +18,7 @@ export class CustomersComponent implements OnInit {
   proposalsListView: boolean = false;
   customersListView: boolean = false;
   priceListsView: boolean = false;
+  stockPropsalView: boolean = false;
 
   constructor(
     private toastr: ToastrService,
@@ -39,7 +40,15 @@ export class CustomersComponent implements OnInit {
   getAllCustomers() {
     this.customersService.getAllCostumers().subscribe((data) => {
       console.log(data);
-      this.allCustomersList = data;
+      if (data.msg) {
+        console.log(data.msg);
+        this.toastr.error(data.msg);
+        return;
+      } else if (data.length > 0) {
+        this.allCustomersList = data;
+      } else {
+        this.toastr.error("לא נמצאו לקוחות המתאימים לחיפוש");
+      }
     });
   }
 
@@ -48,6 +57,7 @@ export class CustomersComponent implements OnInit {
     this.proposalsListView = false;
     this.customersListView = false;
     this.priceListsView = false;
+    this.stockPropsalView = false;
   }
 
   proposalsListMenu() {
@@ -55,6 +65,7 @@ export class CustomersComponent implements OnInit {
     this.proposalsListView = true;
     this.customersListView = false;
     this.priceListsView = false;
+    this.stockPropsalView = false;
   }
 
   customersListMenu() {
@@ -62,13 +73,21 @@ export class CustomersComponent implements OnInit {
     this.proposalsListView = false;
     this.customersListView = true;
     this.priceListsView = false;
+    this.stockPropsalView = false;
   }
   priceListsMenu() {
     this.newProposalView = false;
     this.proposalsListView = false;
     this.customersListView = false;
     this.priceListsView = true;
+    this.stockPropsalView = false;
   }
 
-  emptyMenu() {}
+  stockProposal() {
+    this.newProposalView = false;
+    this.proposalsListView = false;
+    this.customersListView = false;
+    this.priceListsView = false;
+    this.stockPropsalView = true;
+  }
 }

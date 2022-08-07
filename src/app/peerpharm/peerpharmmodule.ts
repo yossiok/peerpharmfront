@@ -200,7 +200,7 @@ import { CreamBarrelComponent } from "./inventory/creamBarrel/creamBarrel.compon
 import { BulksReportComponent } from "./batches/bulks-inventory/bulks-report/bulks-report.component";
 import { TemperaturesLogsComponent } from "./qa/temperaturesLogs/temperaturesLogs.component";
 import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
-
+import { StockProposalComponent } from "./customers/stock-proposal/stock-proposal.component";
 @NgModule({
   exports: [
     // MatInputModule,
@@ -374,6 +374,7 @@ import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
     ProposalsComponent,
     ProposalsListComponent,
     PriceListsComponent,
+    StockProposalComponent,
     BulksReportComponent,
     OpenOrderitemsComponent,
   ],

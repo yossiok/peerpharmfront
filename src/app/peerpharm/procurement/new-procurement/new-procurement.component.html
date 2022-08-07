@@ -1,5 +1,9 @@
 <!--UPDATE-->
-<div *ngIf="purchaseData" style="border-radius: 15px;" class="container1 bg-white border shadow-lg text-center p-3">
+<div
+  *ngIf="purchaseData"
+  style="border-radius: 15px"
+  class="container1 bg-white border shadow-lg text-center p-3"
+>
   <div class="row">
     <div class="col-12 p-3">
       <form [formGroup]="newPurchase">
@@ -7,93 +11,162 @@
           <div class="col-3">
             <h4>
               <span>Opened at:</span>
-              {{purchaseData.creationDate | date:'dd/MM/yy'}} &nbsp;&nbsp;
+              {{ purchaseData.creationDate | date: "dd/MM/yy" }} &nbsp;&nbsp;
               <i class="fas fa-arrow-right"></i>&nbsp;&nbsp;
               <span>Approval date: </span>
-              <span *ngIf="purchaseData.arrivalDate && purchaseData.arrivalDate != purchaseData.creationDate"
+              <span
+                *ngIf="
+                  purchaseData.arrivalDate &&
+                  purchaseData.arrivalDate != purchaseData.creationDate
+                "
                 class="click hover-date p-2"
-                (click)="editArrivalDateForPurchase = !editArrivalDateForPurchase">{{purchaseData.arrivalDate |
-                date:'dd/MM/yy'}}</span>
-              <span *ngIf="!purchaseData.arrivalDate || purchaseData.arrivalDate == purchaseData.creationDate"
-                class="click" (click)="editArrivalDateForPurchase = !editArrivalDateForPurchase"><button
-                  class="btn btn-primary">Set
-                  Approval Date</button></span>
+                (click)="
+                  editArrivalDateForPurchase = !editArrivalDateForPurchase
+                "
+                >{{ purchaseData.arrivalDate | date: "dd/MM/yy" }}</span
+              >
+              <span
+                *ngIf="
+                  !purchaseData.arrivalDate ||
+                  purchaseData.arrivalDate == purchaseData.creationDate
+                "
+                class="click"
+                (click)="
+                  editArrivalDateForPurchase = !editArrivalDateForPurchase
+                "
+                ><button class="btn btn-primary">
+                  Set Approval Date
+                </button></span
+              >
             </h4>
             <h4 *ngIf="editArrivalDateForPurchase">
-              <input type="date" formControlName="arrivalDate" (change)="editAllItemsArrival($event)">
+              <input
+                type="date"
+                formControlName="arrivalDate"
+                (change)="editAllItemsArrival($event)"
+              />
             </h4>
           </div>
           <div class="col-6">
-            <h3 class="p-2">Purchase {{purchaseData.orderNumber}}</h3>
-            <h3 class="p-2">{{purchaseData.supplierName}}</h3>
-            <h4 class="p-2">{{purchaseData.supplierEmail}}</h4>
+            <h3 class="p-2">Purchase {{ purchaseData.orderNumber }}</h3>
+            <h3 class="p-2">{{ purchaseData.supplierName }}</h3>
+            <h4 class="p-2">{{ purchaseData.supplierEmail }}</h4>
           </div>
           <div class="col-2">
-            <button *ngIf="editPurchaseAllowed" (click)="disabled = false"
+            <button
+              *ngIf="editPurchaseAllowed"
+              (click)="disabled = false"
               [ngClass]="!disabled ? 'btn-secondary' : 'btn-outline-secondary'"
-              class="btn rounded-pill form-control">Edit
-              Purchase</button>
+              class="btn rounded-pill form-control"
+            >
+              Edit Purchase
+            </button>
           </div>
           <div class="col-1">
-            <i (click)="closeOrderModal.emit(false); selectedItems = []" class="click fa fa-times h2 close p-2"></i>
+            <i
+              (click)="closeOrderModal.emit(false); selectedItems = []"
+              class="click fa fa-times h2 close p-2"
+            ></i>
           </div>
         </div>
         <div class="row"></div>
 
         <div class="row">
           <div class="col-2">
-            <button class="btn btn-primary rounded-pill form-control" (click)="open(recieveDeliveryCertificate)">
-              New Certificate</button>
+            <button
+              class="btn btn-primary rounded-pill form-control"
+              (click)="open(recieveDeliveryCertificate)"
+            >
+              New Certificate
+            </button>
           </div>
           <div class="col-2">
-            <button (click)="open(receiveInvoice)" class="btn btn-primary rounded-pill form-control">New
-              Invoice</button>
+            <button
+              (click)="open(receiveInvoice)"
+              class="btn btn-primary rounded-pill form-control"
+            >
+              New Invoice
+            </button>
           </div>
           <div class="col-5">
-            <button class="btn btn-outline-primary rounded-pill w-50" (click)="open(sumShipping)">הזן נתוני
-              העמסה</button>
+            <button
+              class="btn btn-outline-primary rounded-pill w-50"
+              (click)="open(sumShipping)"
+            >
+              הזן נתוני העמסה
+            </button>
           </div>
-          <div (click)="open(status)" [style.color]="setStatusTextColor(purchaseData.status)"
-            [style.background]="setStatusColor(purchaseData.status)" class="col-2 click p-3 rounded-pill">
-            Current status: <span ngbTooltip="click to watch" class="h4">{{hebStat(purchaseData.status)}} <br>
-              {{purchaseData.statusChange | date: 'dd/MM/yy'}}</span>
+          <div
+            (click)="open(status)"
+            [style.color]="setStatusTextColor(purchaseData.status)"
+            [style.background]="setStatusColor(purchaseData.status)"
+            class="col-2 click p-3 rounded-pill"
+          >
+            Current status:
+            <span ngbTooltip="click to watch" class="h4"
+              >{{ hebStat(purchaseData.status) }} <br />
+              {{ purchaseData.statusChange | date: "dd/MM/yy" }}</span
+            >
           </div>
-          <div class="col-1">
-
-          </div>
+          <div class="col-1"></div>
         </div>
         <div class="row mt-2">
           <div class="col-4">
-            <button (click)="open(certAndInvModal)" class="btn btn-primary rounded-pill form-control">Watch
-              Certificates & Invoices</button>
+            <button
+              (click)="open(certAndInvModal)"
+              class="btn btn-primary rounded-pill form-control"
+            >
+              Watch Certificates & Invoices
+            </button>
           </div>
-          <div class="col-5">
-          </div>
+          <div class="col-5"></div>
           <div class="col-2">
-            <select *ngIf="editPurchaseAllowed" [disabled]="disabled" (change)="setPurchaseStatus($event)"
-              class="form-control rounded-pill">
+            <select
+              *ngIf="editPurchaseAllowed"
+              [disabled]="disabled"
+              (change)="setPurchaseStatus($event)"
+              class="form-control rounded-pill"
+            >
               <option selected="true" disabled="disabled">Update Status</option>
               <option value="open">open</option>
               <option value="waitingForApproval">waiting approval</option>
               <option value="approvedBySupplier">approved</option>
               <option value="ready">ready</option>
               <!-- <option value="sentBySupplier">sent by supplier</option> -->
-              <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="ETD">Estimated
-                Departure(E.T.D)</option>
-              <option value="ETA">Estimated
-                Arrival(E.T.A)</option>
-              <option *ngIf="purchaseData.origin && purchaseData.origin == 'import'" value="cstClear">custom cleared
+              <option
+                *ngIf="purchaseData.origin && purchaseData.origin == 'import'"
+                value="ETD"
+              >
+                Estimated Departure(E.T.D)
+              </option>
+              <option value="ETA">Estimated Arrival(E.T.A)</option>
+              <option
+                *ngIf="purchaseData.origin && purchaseData.origin == 'import'"
+                value="cstClear"
+              >
+                custom cleared
               </option>
               <option value="partlyDelivered">partly delivered</option>
               <option value="supplied">delivered</option>
-              <option class="h4 border border-top" [style.background]="'brown'" [style.color]="'white'"
-                value="canceled">canceled</option>
-              <option class="h4 border border-bottom" [style.background]="'red'" value="closed">Close Order</option>
+              <option
+                class="h4 border border-top"
+                [style.background]="'brown'"
+                [style.color]="'white'"
+                value="canceled"
+              >
+                canceled
+              </option>
+              <option
+                class="h4 border border-bottom"
+                [style.background]="'red'"
+                value="closed"
+              >
+                Close Order
+              </option>
             </select>
           </div>
           <div class="col-1"></div>
         </div>
-
 
         <div class="row mt-4">
           <div class="col-4"></div>
@@ -124,52 +197,114 @@
                 </tr>
               </thead>
 
-
               <tbody>
-                <tr *ngFor="let stockitem of newPurchase.controls.stockitems.value; let i = index">
+                <tr
+                  *ngFor="
+                    let stockitem of newPurchase.controls.stockitems.value;
+                    let i = index
+                  "
+                >
+                  <td *ngIf="!editItem">
+                    <input
+                      class="text-primary"
+                      #cb
+                      type="checkbox"
+                      (change)="selectItem(i, cb.checked)"
+                    />
+                  </td>
+                  <td *ngIf="editItem && itemIndex == i">
+                    <input
+                      class="text-primary"
+                      #cb
+                      type="checkbox"
+                      (change)="selectItem(i, cb.checked)"
+                    />
+                  </td>
 
-                  <td *ngIf="!editItem"><input class="text-primary" #cb type="checkbox"
-                      (change)="selectItem(i, cb.checked)"></td>
-                  <td *ngIf="editItem && itemIndex == i"><input class="text-primary" #cb type="checkbox"
-                      (change)="selectItem(i, cb.checked)"></td>
+                  <td *ngIf="!editItem">
+                    <a
+                      style="color: black; text-decoration: underline"
+                      class="click"
+                      (click)="routeToItemIndex(stockitem.number)"
+                      >{{ stockitem.number }}</a
+                    >
+                  </td>
+                  <td *ngIf="editItem && itemIndex == i">
+                    {{ stockitem.number }}
+                  </td>
 
-                  <td *ngIf="!editItem">{{stockitem.number}}</td>
-                  <td *ngIf="editItem && itemIndex == i">{{stockitem.number}}</td>
-
-                  <td *ngIf="!editItem">{{stockitem.name}}</td>
-                  <td *ngIf="editItem && itemIndex == i">{{stockitem.name}}</td>
+                  <td *ngIf="!editItem">{{ stockitem.name }}</td>
+                  <td *ngIf="editItem && itemIndex == i">
+                    {{ stockitem.name }}
+                  </td>
 
                   <td *ngIf="!editItem && stockitem.isStock">Stock</td>
                   <td *ngIf="!editItem && !stockitem.isStock">
-                    Orders: <span *ngFor="let order of stockitem.customerOrders">{{order}},&nbsp;</span>
+                    Orders:
+                    <span *ngFor="let order of stockitem.customerOrders"
+                      >{{ order }},&nbsp;</span
+                    >
                   </td>
                   <td *ngIf="editItem && itemIndex == i">
-
-                    Orders: <span
-                      *ngFor="let order of newPurchase.value.stockitems[i].customerOrders">{{order}},&nbsp;</span> <br>
-                    <input placeholder="Order Number" maxlength="4" type="number" #customerOrderNumber2>
-                    <button ngbTooltip="Add Order" type="button"
-                      (click)="addOrderToPurchase(i, customerOrderNumber2)"><i class="fas fa-plus"></i></button>
-                    <button ngbTooltip="Erase Last" type="button" (click)="deleteCusomerOrderNumber(i,j)"><i
-                        class="fa fa-times text-danger"></i></button>
-
-
+                    Orders:
+                    <span
+                      *ngFor="
+                        let order of newPurchase.value.stockitems[i]
+                          .customerOrders
+                      "
+                      >{{ order }},&nbsp;</span
+                    >
+                    <br />
+                    <input
+                      placeholder="Order Number"
+                      maxlength="4"
+                      type="number"
+                      #customerOrderNumber2
+                    />
+                    <button
+                      ngbTooltip="Add Order"
+                      type="button"
+                      (click)="addOrderToPurchase(i, customerOrderNumber2)"
+                    >
+                      <i class="fas fa-plus"></i>
+                    </button>
+                    <button
+                      ngbTooltip="Erase Last"
+                      type="button"
+                      (click)="deleteCusomerOrderNumber(i, j)"
+                    >
+                      <i class="fa fa-times text-danger"></i>
+                    </button>
                   </td>
 
-                  <td *ngIf="!editItem">{{stockitem.quantity}}</td>
+                  <td *ngIf="!editItem">{{ stockitem.quantity }}</td>
                   <td *ngIf="editItem && itemIndex == i">
-                    <input type="text" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.quantity"
-                      [style.width]="'77px'">
+                    <input
+                      type="text"
+                      [ngModelOptions]="{ standalone: true }"
+                      [(ngModel)]="stockitem.quantity"
+                      [style.width]="'77px'"
+                    />
                   </td>
 
-                  <td *ngIf="!editItem"><span *ngIf="stockitem.arrivedAmount">{{stockitem.arrivedAmount}}</span></td>
-                  <td *ngIf="editItem && itemIndex == i"><span
-                      *ngIf="stockitem.arrivedAmount">{{stockitem.arrivedAmount}}</span></td>
-
-                  <td *ngIf="!editItem">{{stockitem.measurement}}</td>
+                  <td *ngIf="!editItem">
+                    <span *ngIf="stockitem.arrivedAmount">{{
+                      stockitem.arrivedAmount
+                    }}</span>
+                  </td>
                   <td *ngIf="editItem && itemIndex == i">
-                    <select [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.measurement"
-                      [style.width]="'70px'">
+                    <span *ngIf="stockitem.arrivedAmount">{{
+                      stockitem.arrivedAmount
+                    }}</span>
+                  </td>
+
+                  <td *ngIf="!editItem">{{ stockitem.measurement }}</td>
+                  <td *ngIf="editItem && itemIndex == i">
+                    <select
+                      [ngModelOptions]="{ standalone: true }"
+                      [(ngModel)]="stockitem.measurement"
+                      [style.width]="'70px'"
+                    >
                       <option value="">Measurement</option>
                       <option value="kilogram">kilogram</option>
                       <option value="liter">liter</option>
@@ -181,16 +316,30 @@
                     </select>
                   </td>
 
-                  <td *ngIf="!editItem">{{stockitem.price}} {{stockitem.coin | currencySymbol}}</td>
+                  <td *ngIf="!editItem">
+                    {{ stockitem.price | number: "1.2" }}
+                    {{ stockitem.coin | currencySymbol }}
+                  </td>
                   <td *ngIf="editItem && itemIndex == i">
-                    <input type="number" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.price"
-                      [style.width]="'77px'">
+                    <input
+                      type="number"
+                      [ngModelOptions]="{ standalone: true }"
+                      [(ngModel)]="stockitem.price"
+                      [style.width]="'77px'"
+                    />
                   </td>
 
-                  <td *ngIf="!editItem">{{stockitem.shippingPrice}} {{stockitem.coin | currencySymbol}}</td>
+                  <td *ngIf="!editItem">
+                    {{ stockitem.shippingPrice | number: "1.2" }}
+                    {{ stockitem.coin | currencySymbol }}
+                  </td>
                   <td *ngIf="editItem && itemIndex == i">
-                    <select [(ngModel)]="stockitem.coin" [ngModelOptions]="{standalone: true}" [style.width]="'77px'"
-                      required>
+                    <select
+                      [(ngModel)]="stockitem.coin"
+                      [ngModelOptions]="{ standalone: true }"
+                      [style.width]="'77px'"
+                      required
+                    >
                       <option value="" disabled>Coin</option>
                       <option value="ILS">ILS</option>
                       <option value="USD">USD</option>
@@ -200,56 +349,105 @@
                     </select>
                   </td>
 
-                  <td>{{stockitem.itemRequested | date: 'dd/MM/yy'}}</td>
+                  <td>{{ stockitem.itemRequested | date: "dd/MM/yy" }}</td>
 
-                  <td *ngIf="!editItem">{{stockitem.itemArrival | date: 'dd/MM/yy'}}</td>
+                  <td *ngIf="!editItem">
+                    {{ stockitem.itemArrival | date: "dd/MM/yy" }}
+                  </td>
                   <td *ngIf="editItem && itemIndex == i">
-                    <input type="date" [ngModelOptions]="{standalone: true}" [(ngModel)]="stockitem.itemArrival"
-                      [style.width]="'120px'">
+                    <input
+                      type="date"
+                      [ngModelOptions]="{ standalone: true }"
+                      [(ngModel)]="stockitem.itemArrival"
+                      [style.width]="'120px'"
+                    />
                   </td>
 
-                  <td *ngIf="!editItem">{{stockitem.remarks}}</td>
+                  <td *ngIf="!editItem">{{ stockitem.remarks }}</td>
                   <td *ngIf="editItem && itemIndex == i">
-                    <textarea [(ngModel)]="stockitem.remarks" [ngModelOptions]="{standalone: true}" type="number"
-                      [style.width]="'100px'" placeholder="Item Remarks"></textarea>
+                    <textarea
+                      [(ngModel)]="stockitem.remarks"
+                      [ngModelOptions]="{ standalone: true }"
+                      type="number"
+                      [style.width]="'100px'"
+                      placeholder="Item Remarks"
+                    ></textarea>
                   </td>
 
-                  <td *ngIf="!disabled && !editItem"><i (click)="openToEdit(i)" placement="top" ngbTooltip="Edit Item"
-                      class="click fa fa-pencil-alt text-primary"></i></td>
-                  <td><i *ngIf="!disabled  && editItem && itemIndex == i" placement="top" ngbTooltip="Edit Item"
-                      (click)="openToEdit(i)" class="click fa fa-pencil-alt text-primary"></i></td>
+                  <td *ngIf="!disabled && !editItem">
+                    <i
+                      (click)="openToEdit(i)"
+                      placement="top"
+                      ngbTooltip="Edit Item"
+                      class="click fa fa-pencil-alt text-primary"
+                    ></i>
+                  </td>
+                  <td>
+                    <i
+                      *ngIf="!disabled && editItem && itemIndex == i"
+                      placement="top"
+                      ngbTooltip="Edit Item"
+                      (click)="openToEdit(i)"
+                      class="click fa fa-pencil-alt text-primary"
+                    ></i>
+                  </td>
 
-                  <td><i *ngIf="!disabled && editItem && itemIndex == i" placement="top" ngbTooltip="Exit Edit"
-                      (click)="editItem = !editItem" class="click fa fa-times text-primary"></i></td>
+                  <td>
+                    <i
+                      *ngIf="!disabled && editItem && itemIndex == i"
+                      placement="top"
+                      ngbTooltip="Exit Edit"
+                      (click)="editItem = !editItem"
+                      class="click fa fa-times text-primary"
+                    ></i>
+                  </td>
 
-                  <td><i *ngIf="!disabled && editItem && itemIndex == i" (click)="updateItems(stockitem)"
-                      class="click fa fa-save text-primary h4"></i></td>
+                  <td>
+                    <i
+                      *ngIf="!disabled && editItem && itemIndex == i"
+                      (click)="updateItems(stockitem)"
+                      class="click fa fa-save text-primary h4"
+                    ></i>
+                  </td>
 
-                  <td *ngIf="!disabled && !editItem"><i placement="top" ngbTooltip="Remove Item From Purchase"
-                      (click)="removeStockitemFromPurchase(i)" class="click fa fa-times text-danger"></i></td>
-                  <td><i *ngIf="!disabled && editItem && itemIndex == i" placement="top"
-                      ngbTooltip="Remove Item From Purchase" (click)="removeStockitemFromPurchase(i)"
-                      class="click fa fa-times text-danger"></i></td>
-
+                  <td *ngIf="!disabled && !editItem">
+                    <i
+                      placement="top"
+                      ngbTooltip="Remove Item From Purchase"
+                      (click)="removeStockitemFromPurchase(i)"
+                      class="click fa fa-times text-danger"
+                    ></i>
+                  </td>
+                  <td>
+                    <i
+                      *ngIf="!disabled && editItem && itemIndex == i"
+                      placement="top"
+                      ngbTooltip="Remove Item From Purchase"
+                      (click)="removeStockitemFromPurchase(i)"
+                      class="click fa fa-times text-danger"
+                    ></i>
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
 
-        <hr class="text-muted">
+        <hr class="text-muted" />
 
         <div class="row mt-2">
           <div class="col">
-            <button (click)="showItemDetails = !showItemDetails" [disabled]="disabled"
-              class="btn btn-primary dropdown-toggle">
-              {{showItemDetails ? 'Hide Details' : 'Add Item'}}
+            <button
+              (click)="showItemDetails = !showItemDetails"
+              [disabled]="disabled"
+              class="btn btn-primary dropdown-toggle"
+            >
+              {{ showItemDetails ? "Hide Details" : "Add Item" }}
             </button>
           </div>
         </div>
         <form [formGroup]="itemForm" (ngSubmit)="addItemToPurchase()">
           <div *ngIf="showItemDetails">
-
             <div class="row mt-3">
               <div class="col">
                 <h5 class="text-secondary">Item Details</h5>
@@ -261,23 +459,46 @@
                 <div class="col-6">
                   <label>Item Number</label>
                   <span class="red float-left h4">*</span>
-                  <input (blur)="findStockItemByNumber()" formControlName="number" type="text" class="form-control"
-                    placeholder="Item Number" required>
+                  <input
+                    (blur)="findStockItemByNumber()"
+                    formControlName="number"
+                    type="text"
+                    class="form-control"
+                    placeholder="Item Number"
+                    required
+                  />
                 </div>
                 <div class="col-6">
                   <label>Item Name</label>
-                  <input formControlName="name" type="text" class="form-control" placeholder="Item Name" required>
+                  <input
+                    formControlName="name"
+                    type="text"
+                    class="form-control"
+                    placeholder="Item Name"
+                    required
+                  />
                 </div>
               </div>
               <div class="col-6 d-flex flex-row">
                 <div class="col-6">
                   <label>Quantity</label>
-                  <input placement="bottom" [ngbTooltip]="lastorders" formControlName="quantity" type="number"
-                    class="form-control" placeholder="Quantity" required>
+                  <input
+                    placement="bottom"
+                    [ngbTooltip]="lastorders"
+                    formControlName="quantity"
+                    type="number"
+                    class="form-control"
+                    placeholder="Quantity"
+                    required
+                  />
                 </div>
                 <div class="col-6">
                   <label>Measurement</label>
-                  <select formControlName="measurement" class="form-control" required>
+                  <select
+                    formControlName="measurement"
+                    class="form-control"
+                    required
+                  >
                     <option value="">Measurement</option>
                     <option value="kilogram">kilogram</option>
                     <option value="liter">liter</option>
@@ -296,7 +517,12 @@
               <div class="col-6 d-flex flex-row">
                 <div class="col-6">
                   <label>Price</label>
-                  <input formControlName="price" type="number" class="form-control" placeholder="Price">
+                  <input
+                    formControlName="price"
+                    type="number"
+                    class="form-control"
+                    placeholder="Price"
+                  />
                 </div>
                 <div class="col-6">
                   <label>Coin</label>
@@ -312,36 +538,74 @@
               <div class="col-6 d-flex flex-row">
                 <div class="col-6 ml-10">
                   <label>Item Approval Date</label>
-                  <input formControlName="itemArrival" class="form-control" type="date" placeholder="Item Arrival">
+                  <input
+                    formControlName="itemArrival"
+                    class="form-control"
+                    type="date"
+                    placeholder="Item Arrival"
+                  />
                 </div>
                 <div class="col-6 ml-10">
                   <label>Customer Order</label>
                   <div class="d-flex flex-row">
-                    <input type="radio" formControlName="isStock" [value]="true">
-                    <label>Stock</label><br>
-                    <input type="radio" formControlName="isStock" [value]="false">
-                    <label>Customer Order</label><br>
+                    <input
+                      type="radio"
+                      formControlName="isStock"
+                      [value]="true"
+                    />
+                    <label>Stock</label><br />
+                    <input
+                      type="radio"
+                      formControlName="isStock"
+                      [value]="false"
+                    />
+                    <label>Customer Order</label><br />
                   </div>
                   <div *ngIf="!itemForm.get('isStock').value">
-                    <input placeholder="Order Number" maxlength="4" type="number" #customerOrderNumber>
-                    <button type="button" (click)="addCusomerOrderNumberToItem(customerOrderNumber)"><i
-                        class="fas fa-plus"></i></button>
-                    Orders: <span *ngFor="let order of itemForm.get('customerOrders').value">{{order}},&nbsp;</span>
+                    <input
+                      placeholder="Order Number"
+                      maxlength="4"
+                      type="number"
+                      #customerOrderNumber
+                    />
+                    <button
+                      type="button"
+                      (click)="addCusomerOrderNumberToItem(customerOrderNumber)"
+                    >
+                      <i class="fas fa-plus"></i>
+                    </button>
+                    Orders:
+                    <span
+                      *ngFor="let order of itemForm.get('customerOrders').value"
+                      >{{ order }},&nbsp;</span
+                    >
                   </div>
                 </div>
               </div>
             </div>
 
             <div *ngIf="showItemDetails" class="row mt-4">
-              <textarea formControlName="remarks" type="number" class="form-control"
-                placeholder="Item Remarks"></textarea>
+              <textarea
+                formControlName="remarks"
+                type="number"
+                class="form-control"
+                placeholder="Item Remarks"
+              ></textarea>
             </div>
 
             <div class="row mt-1">
               <div class="col-5"></div>
-              <div class="col-2" [ngbTooltip]="itemFormErrors" placement="bottom">
-                <button type="submit" [disabled]="itemForm.invalid"
-                  [style.cursor]="itemForm.invalid ? 'not-allowed' : 'pointer' " class="btn btn-primary form-control">
+              <div
+                class="col-2"
+                [ngbTooltip]="itemFormErrors"
+                placement="bottom"
+              >
+                <button
+                  type="submit"
+                  [disabled]="itemForm.invalid"
+                  [style.cursor]="itemForm.invalid ? 'not-allowed' : 'pointer'"
+                  class="btn btn-primary form-control"
+                >
                   <i class="fa fa-plus"></i>
                 </button>
               </div>
@@ -350,23 +614,34 @@
           </div>
         </form>
 
-        <hr class="text-muted">
+        <hr class="text-muted" />
 
         <div class="row mt-1">
           <div class="col-sm-12 col-md-12 form-group">
             <label for="remarks">Remarks</label>
-            <textarea formControlName="remarks" [disabled]="disabled" value="purchaseData.remarks" class="form-control"
-              placeholder="Purchase Remarks"></textarea>
+            <textarea
+              formControlName="remarks"
+              [disabled]="disabled"
+              value="purchaseData.remarks"
+              class="form-control"
+              placeholder="Purchase Remarks"
+            ></textarea>
           </div>
         </div>
-        <hr class="text-muted">
+        <hr class="text-muted" />
 
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('update')" [disabled]="disabled || sendingPurchase"
-              [style.cursor]="sendingPurchase ? 'not-allowed' : 'pointer'" class="btn btn-primary form-control"
-              [ngClass]="showPurchaseDetails && showItemDetails ? 'fixed' : ''">Confirm</button>
+            <button
+              (click)="sendNewProc('update')"
+              [disabled]="disabled || sendingPurchase"
+              [style.cursor]="sendingPurchase ? 'not-allowed' : 'pointer'"
+              class="btn btn-primary form-control"
+              [ngClass]="showPurchaseDetails && showItemDetails ? 'fixed' : ''"
+            >
+              Confirm
+            </button>
           </div>
           <div class="col-4"></div>
         </div>
@@ -377,12 +652,14 @@
 
 <!----------------------------------------------------------------------------------------------------------------------->
 <!--ADD-->
-<div *ngIf="!purchaseData" style="border-radius: 15px;"
-  class="container1 bg-white border shadow-lg text-center p-2 m-2">
+<div
+  *ngIf="!purchaseData"
+  style="border-radius: 15px"
+  class="container1 bg-white border shadow-lg text-center p-2 m-2"
+>
   <div class="row">
     <div class="col-12 p-3">
       <form [formGroup]="newPurchase">
-
         <div class="row mt-1">
           <div class="col-4"></div>
           <div class="col-4">
@@ -391,10 +668,12 @@
             </div>
           </div>
           <div class="col-4">
-            <i (click)="closeOrderModal.emit(false)" class="h1 close click fa fa-times float-right p-2 rounded"></i>
+            <i
+              (click)="closeOrderModal.emit(false)"
+              class="h1 close click fa fa-times float-right p-2 rounded"
+            ></i>
           </div>
         </div>
-
 
         <div class="row mt-5">
           <div class="col">
@@ -405,24 +684,37 @@
           <div class="col form-group">
             <span class="red float-left h4">*</span>
             <label>Item Type</label>
-            <select formControlName="orderType" type="text" class="form-control" placeholder="Order Type">
+            <select
+              formControlName="orderType"
+              type="text"
+              class="form-control"
+              placeholder="Order Type"
+            >
               <option value="component">Component</option>
               <option value="material">Material</option>
             </select>
           </div>
           <div class="col form-group">
             <label>Requested Date</label>
-            <input formControlName="requestedDate" class="form-control" type="date">
+            <input
+              formControlName="requestedDate"
+              class="form-control"
+              type="date"
+            />
           </div>
         </div>
 
         <div class="row">
           <div class="col-12 form-group">
-            <textarea placeholder="Purchase Remarks" formControlName="remarks" class="form-control"></textarea>
+            <textarea
+              placeholder="Purchase Remarks"
+              formControlName="remarks"
+              class="form-control"
+            ></textarea>
           </div>
         </div>
 
-        <hr class="text-muted">
+        <hr class="text-muted" />
         <div class="row mt-3">
           <div class="col">
             <h5 class="text-secondary">Supplier Details</h5>
@@ -432,45 +724,72 @@
         <div class="row mt-2">
           <div class="col-sm-12 col-md-3 form-group">
             <span class="red float-left h4">*</span>
-            <input autocomplete="off" formControlName="supplierName" name="supplierName"
-              (change)="fillSupplierDetails($event)" list="suppliers" type="text" class="form-control"
-              placeholder="Supplier Name" required>
+            <input
+              autocomplete="off"
+              formControlName="supplierName"
+              name="supplierName"
+              (change)="fillSupplierDetails($event)"
+              list="suppliers"
+              type="text"
+              class="form-control"
+              placeholder="Supplier Name"
+              required
+            />
             <datalist id="suppliers">
-              <option *ngFor="let supplier of allSuppliers" [value]="supplier.suplierName">{{supplier.suplierNumber}}
+              <option
+                *ngFor="let supplier of allSuppliers"
+                [value]="supplier.suplierName"
+              >
+                {{ supplier.suplierNumber }}
               </option>
             </datalist>
           </div>
           <div class="col-sm-12 col-md-3 form-group">
             <span class="red float-left h4">*</span>
-            <input formControlName="supplierNumber" type="number" class="form-control" placeholder="Supplier Number"
-              required>
+            <input
+              formControlName="supplierNumber"
+              type="number"
+              class="form-control"
+              placeholder="Supplier Number"
+              required
+            />
           </div>
           <div class="col-sm-12 col-md-3 form-group">
             <span class="red float-left h4"> &nbsp;</span>
-            <input (change)="updateSupplierEmail($event)" formControlName="supplierEmail" type="text"
-              class="form-control" placeholder="Supplier Email">
+            <input
+              (change)="updateSupplierEmail($event)"
+              formControlName="supplierEmail"
+              type="text"
+              class="form-control"
+              placeholder="Supplier Email"
+            />
           </div>
           <div class="col-sm-12 col-md-3 form-group">
             <span class="red float-left h4"> &nbsp;</span>
-            <input disabled formControlName="supplierCountry" type="text" class="form-control"
-              placeholder="Supplier Country">
+            <input
+              disabled
+              formControlName="supplierCountry"
+              type="text"
+              class="form-control"
+              placeholder="Supplier Country"
+            />
           </div>
-
         </div>
 
-        <hr class="text-muted">
+        <hr class="text-muted" />
         <div class="row mt-2">
           <div class="col">
-            <button (click)="showItemDetails = !showItemDetails" class="btn btn-primary dropdown-toggle">
-              {{showItemDetails ? 'Hide Details' : 'Add Item'}}
+            <button
+              (click)="showItemDetails = !showItemDetails"
+              class="btn btn-primary dropdown-toggle"
+            >
+              {{ showItemDetails ? "Hide Details" : "Add Item" }}
             </button>
           </div>
         </div>
 
         <form [formGroup]="itemForm" (ngSubmit)="addItemToPurchase()">
-
           <div *ngIf="showItemDetails">
-
             <div class="row mt-3">
               <div class="col">
                 <h5 class="text-secondary">Item Details</h5>
@@ -481,21 +800,44 @@
               <div class="col-2">
                 <label>Item Number</label>
                 <span class="red float-left h4">*</span>
-                <input (blur)="findStockItemByNumber()" formControlName="number" type="text" class="form-control"
-                  placeholder="Item Number" required>
+                <input
+                  (blur)="findStockItemByNumber()"
+                  formControlName="number"
+                  type="text"
+                  class="form-control"
+                  placeholder="Item Number"
+                  required
+                />
               </div>
               <div class="col-2">
                 <label>Item Name</label>
-                <input formControlName="name" type="text" class="form-control" placeholder="Item Name" required>
+                <input
+                  formControlName="name"
+                  type="text"
+                  class="form-control"
+                  placeholder="Item Name"
+                  required
+                />
               </div>
               <div class="col-2">
                 <label>Quantity</label>
-                <input placement="bottom" [ngbTooltip]="lastorders" formControlName="quantity" type="number"
-                  class="form-control" placeholder="Quantity" required>
+                <input
+                  placement="bottom"
+                  [ngbTooltip]="lastorders"
+                  formControlName="quantity"
+                  type="number"
+                  class="form-control"
+                  placeholder="Quantity"
+                  required
+                />
               </div>
               <div class="col-2">
                 <label>Measurement</label>
-                <select formControlName="measurement" class="form-control" required>
+                <select
+                  formControlName="measurement"
+                  class="form-control"
+                  required
+                >
                   <option value="">Measurement</option>
                   <option value="kilogram">kilogram</option>
                   <option value="liter">liter</option>
@@ -509,7 +851,12 @@
               </div>
               <div class="col-2">
                 <label>Price</label>
-                <input formControlName="price" type="number" class="form-control" placeholder="Price">
+                <input
+                  formControlName="price"
+                  type="number"
+                  class="form-control"
+                  placeholder="Price"
+                />
               </div>
               <div class="col-2">
                 <label>Coin</label>
@@ -526,39 +873,76 @@
             <div class="row mt-4">
               <div class="col-2 ml-10">
                 <label>Item Approval Date</label>
-                <input formControlName="itemArrival" type="date" class="form-control" placeholder="Item Approval Date">
+                <input
+                  formControlName="itemArrival"
+                  type="date"
+                  class="form-control"
+                  placeholder="Item Approval Date"
+                />
               </div>
               <div class="col-2 ml-10">
                 <label>Customer Order</label>
                 <div class="d-flex flex-row">
-                  <input type="radio" formControlName="isStock" [value]="true">
-                  <label>Stock</label><br>
-                  <input type="radio" formControlName="isStock" [value]="false">
-                  <label>Customer Order</label><br>
+                  <input
+                    type="radio"
+                    formControlName="isStock"
+                    [value]="true"
+                  />
+                  <label>Stock</label><br />
+                  <input
+                    type="radio"
+                    formControlName="isStock"
+                    [value]="false"
+                  />
+                  <label>Customer Order</label><br />
                 </div>
                 <div *ngIf="!itemForm.get('isStock').value">
-                  <input placeholder="Order Number" maxlength="4" type="number" #customerOrderNumber>
-                  <button type="button" (click)="addCusomerOrderNumberToItem(customerOrderNumber)"><i
-                      class="fas fa-plus"></i></button>
-                  Orders: <span *ngFor="let order of itemForm.get('customerOrders').value">{{order}},&nbsp;</span>
+                  <input
+                    placeholder="Order Number"
+                    maxlength="4"
+                    type="number"
+                    #customerOrderNumber
+                  />
+                  <button
+                    type="button"
+                    (click)="addCusomerOrderNumberToItem(customerOrderNumber)"
+                  >
+                    <i class="fas fa-plus"></i>
+                  </button>
+                  Orders:
+                  <span
+                    *ngFor="let order of itemForm.get('customerOrders').value"
+                    >{{ order }},&nbsp;</span
+                  >
                 </div>
               </div>
-
             </div>
 
             <div *ngIf="showItemDetails" class="row">
-
               <div class="col-6 m-4 mx-auto">
-                <textarea formControlName="remarks" type="number" class="form-control"
-                  placeholder="Item Remarks"></textarea>
+                <textarea
+                  formControlName="remarks"
+                  type="number"
+                  class="form-control"
+                  placeholder="Item Remarks"
+                ></textarea>
               </div>
             </div>
 
             <div *ngIf="showItemDetails" class="row mt-1">
               <div class="col-5"></div>
-              <div [ngbTooltip]="itemFormErrors" placement="bottom" class="col-2">
-                <button type="button" (click)="addItemToPurchase()" [disabled]="itemForm.invalid"
-                  [style.cursor]="itemForm.invalid ? 'not-allowed' : 'pointer' " class="btn btn-primary form-control">
+              <div
+                [ngbTooltip]="itemFormErrors"
+                placement="bottom"
+                class="col-2"
+              >
+                <button
+                  type="button"
+                  (click)="addItemToPurchase()"
+                  [disabled]="itemForm.invalid"
+                  [style.cursor]="itemForm.invalid ? 'not-allowed' : 'pointer'"
+                  class="btn btn-primary form-control"
+                >
                   <i class="fa fa-plus"></i>
                 </button>
               </div>
@@ -566,7 +950,6 @@
             </div>
           </div>
         </form>
-
 
         <div class="row mt-4">
           <div class="col-4"></div>
@@ -577,7 +960,10 @@
         </div>
 
         <div class="row mt-3 bg-muted">
-          <div style="height: 300px;overflow-y: scroll;" class="col-12 shadow rounded items">
+          <div
+            style="height: 300px; overflow-y: scroll"
+            class="col-12 shadow rounded items"
+          >
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -594,71 +980,135 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let stockitem of this.newPurchase.controls.stockitems.value;let i = index">
+                <tr
+                  *ngFor="
+                    let stockitem of this.newPurchase.controls.stockitems.value;
+                    let i = index
+                  "
+                >
+                  <td>{{ stockitem.number }}</td>
 
-                  <td>{{stockitem.number}}</td>
-
-                  <td>{{stockitem.name}}</td>
-
+                  <td>{{ stockitem.name }}</td>
 
                   <td *ngIf="!editItem && stockitem.isStock">Stock</td>
                   <td *ngIf="!editItem && !stockitem.isStock">
-                    Orders: <span *ngFor="let order of stockitem.customerOrders">{{order}},&nbsp;</span>
+                    Orders:
+                    <span *ngFor="let order of stockitem.customerOrders"
+                      >{{ order }},&nbsp;</span
+                    >
                   </td>
                   <td *ngIf="editItem && itemIndex == i">
-                    <ng-container *ngFor="let order of stockitem.customerOrders; let j = index">
-                      <input type="text" (change)="changeOrder(i, order, j)" [ngModelOptions]="{standalone: true}"
-                        [(ngModel)]="order" [style.width]="'77px'">
-                      <button placement="bottom" ngbTooltip="Delete this order"
-                        (click)="deleteCusomerOrderNumber(i,j)">X</button>
+                    <ng-container
+                      *ngFor="
+                        let order of stockitem.customerOrders;
+                        let j = index
+                      "
+                    >
+                      <input
+                        type="text"
+                        (change)="changeOrder(i, order, j)"
+                        [ngModelOptions]="{ standalone: true }"
+                        [(ngModel)]="order"
+                        [style.width]="'77px'"
+                      />
+                      <button
+                        placement="bottom"
+                        ngbTooltip="Delete this order"
+                        (click)="deleteCusomerOrderNumber(i, j)"
+                      >
+                        X
+                      </button>
                     </ng-container>
-                    <br>
-                    <button placement="bottom" ngbTooltip="Add another customer order" (click)="wow = true">+</button>
-                    <input *ngIf="wow" type="text" (change)="addOrderToPurchase(i, $event)">
+                    <br />
+                    <button
+                      placement="bottom"
+                      ngbTooltip="Add another customer order"
+                      (click)="wow = true"
+                    >
+                      +
+                    </button>
+                    <input
+                      *ngIf="wow"
+                      type="text"
+                      (change)="addOrderToPurchase(i, $event)"
+                    />
                   </td>
 
-                  <td>{{stockitem.measurement}}</td>
-                  <td *ngIf="EditRowId == ''">{{stockitem.quantity}}</td>
+                  <td>{{ stockitem.measurement }}</td>
+                  <td *ngIf="EditRowId == ''">{{ stockitem.quantity }}</td>
                   <td *ngIf="EditRowId == stockitem.number">
-                    <input #editQuantity [value]="stockitem.quantity" type="number">
+                    <input
+                      #editQuantity
+                      [value]="stockitem.quantity"
+                      type="number"
+                    />
                   </td>
 
-                  <td *ngIf="EditRowId == ''">{{stockitem.price}} {{stockitem.coin | currencySymbol}}</td>
+                  <td *ngIf="EditRowId == ''">
+                    {{ stockitem.price | number: "1.2" }}
+                    {{ stockitem.coin | currencySymbol }}
+                  </td>
                   <td *ngIf="EditRowId == stockitem.number">
-                    <input #editPrice [value]="stockitem.price" type="number">
+                    <input #editPrice [value]="stockitem.price" type="number" />
                   </td>
 
-                  <td *ngIf="EditRowId == ''">{{stockitem.itemRequested}}</td>
+                  <td *ngIf="EditRowId == ''">{{ stockitem.itemRequested }}</td>
                   <td *ngIf="EditRowId == stockitem.number">
-                    <input type="date" [value]="stockitem.itemRequested">
+                    <input type="date" [value]="stockitem.itemRequested" />
                   </td>
 
-                  <td *ngIf="EditRowId == ''">{{stockitem.itemArrival}}</td>
+                  <td *ngIf="EditRowId == ''">{{ stockitem.itemArrival }}</td>
                   <td *ngIf="EditRowId == stockitem.number">
-                    <input #editArrival type="date" [value]="stockitem.itemArrival">
+                    <input
+                      #editArrival
+                      type="date"
+                      [value]="stockitem.itemArrival"
+                    />
                   </td>
 
-                  <i *ngIf="EditRowId == ''" (click)="editStockItem(stockitem.number)"
-                    class="click fa fa-pencil-alt text-primary"></i>
-                  <i *ngIf="EditRowId == stockitem.number" (click)="saveStockItem(i)"
-                    class="click fa fa-save text-primary"></i>
-                  <td><i (click)="removeStockitemFromPurchase(i)" class="click fa fa-times text-danger"></i></td>
+                  <i
+                    *ngIf="EditRowId == ''"
+                    (click)="editStockItem(stockitem.number)"
+                    class="click fa fa-pencil-alt text-primary"
+                  ></i>
+                  <i
+                    *ngIf="EditRowId == stockitem.number"
+                    (click)="saveStockItem(i)"
+                    class="click fa fa-save text-primary"
+                  ></i>
+                  <td>
+                    <i
+                      (click)="removeStockitemFromPurchase(i)"
+                      class="click fa fa-times text-danger"
+                    ></i>
+                  </td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
 
-
-        <hr class="text-muted">
+        <hr class="text-muted" />
 
         <div class="row mt-3">
           <div class="col-4"></div>
           <div class="col-4">
-            <button (click)="sendNewProc('add')" [disabled]="EditRowId != '' || !newPurchase.valid || sendingPurchase"
+            <button
+              (click)="sendNewProc('add')"
+              [disabled]="
+                EditRowId != '' || !newPurchase.valid || sendingPurchase
+              "
               *ngIf="newPurchaseAllowed"
-              [style.cursor]="sendingPurchase || !newPurchase.valid ? 'not-allowed' : 'pointer'"
-              class="btn btn-primary form-control" [ngClass]="showItemDetails ? 'fixed' : ''">Confirm</button>
+              [style.cursor]="
+                sendingPurchase || !newPurchase.valid
+                  ? 'not-allowed'
+                  : 'pointer'
+              "
+              class="btn btn-primary form-control"
+              [ngClass]="showItemDetails ? 'fixed' : ''"
+            >
+              Confirm
+            </button>
           </div>
           <div class="col-4"></div>
         </div>
@@ -670,26 +1120,48 @@
 <ng-template class="p-6" #recieveDeliveryCertificate let-modal>
   <div class="modal-header bg-primary">
     <h4 class="modal-title text-center" id="modal-basic-title">קבלת משלוח</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div dir="rtl" class="modal-body p-5">
     <h1>דווח על קבלת תעודת משלוח</h1>
 
-    <div class="container bg-white border border-primary shadow-lg text-center p-5">
-
-      <div class="row mt-2"><span class="red">*</span> שדה חובה </div>
+    <div
+      class="container bg-white border border-primary shadow-lg text-center p-5"
+    >
+      <div class="row mt-2"><span class="red">*</span> שדה חובה</div>
       <div class="row mt-2">
         <div class="col-md-4 form-group">
-          <label for="certificateNumber">מספר תעודה<span class="red">*</span></label>
-          <input [(ngModel)]="deliveryCertificate.certificateNumber" (keyup)="checkCertValidation()" maxlength="4"
-            type="text" class="form-control" placeholder="4 ספרות אחרונות" required>
+          <label for="certificateNumber"
+            >מספר תעודה<span class="red">*</span></label
+          >
+          <input
+            [(ngModel)]="deliveryCertificate.certificateNumber"
+            (keyup)="checkCertValidation()"
+            maxlength="4"
+            type="text"
+            class="form-control"
+            placeholder="4 ספרות אחרונות"
+            required
+          />
         </div>
         <div class="col-md-4 form-group">
-          <label for="deliveryArrivalDate">תאריך קבלת משלוח<span class="red">*</span></label>
-          <input [(ngModel)]="deliveryCertificate.deliveryArrivalDate" (change)="checkCertValidation()" type="date"
-            class="form-control" required>
+          <label for="deliveryArrivalDate"
+            >תאריך קבלת משלוח<span class="red">*</span></label
+          >
+          <input
+            [(ngModel)]="deliveryCertificate.deliveryArrivalDate"
+            (change)="checkCertValidation()"
+            type="date"
+            class="form-control"
+            required
+          />
         </div>
 
         <div class="row mt-3 bg-muted m-3">
@@ -704,12 +1176,33 @@
               </thead>
               <tbody>
                 <tr *ngFor="let stockitem of selectedItems; let i = index">
-                  <td>{{stockitem.number}}</td>
-                  <td>{{stockitem.name}}</td>
-                  <td><input class="smaller-input" type="number" #certItemAmount (keyup)="checkCertValidation()"
-                      (keyup)="checkItemAmount(i, stockitem.number, $event, certItemAmount)"
+                  <td>{{ stockitem.number }}</td>
+                  <td>{{ stockitem.name }}</td>
+                  <td>
+                    <input
+                      class="smaller-input"
+                      type="number"
+                      #certItemAmount
+                      (keyup)="checkCertValidation()"
+                      (keyup)="
+                        checkItemAmount(
+                          i,
+                          stockitem.number,
+                          $event,
+                          certItemAmount
+                        )
+                      "
                       (blur)="checkCertValidation()"
-                      (click)="checkItemAmount(i, stockitem.number, $event, certItemAmount)"></td>
+                      (click)="
+                        checkItemAmount(
+                          i,
+                          stockitem.number,
+                          $event,
+                          certItemAmount
+                        )
+                      "
+                    />
+                  </td>
                 </tr>
               </tbody>
             </table>
@@ -718,13 +1211,22 @@
 
         <div class="col-md-4 form-group">
           <label for="remarks">הערות</label>
-          <input [(ngModel)]="deliveryCertificate.remarks" type="text" class="form-control" placeholder="הערות">
+          <input
+            [(ngModel)]="deliveryCertificate.remarks"
+            type="text"
+            class="form-control"
+            placeholder="הערות"
+          />
         </div>
-        <br>
-        <button *ngIf="!submittingCert" (click)="saveCertificate()"
-          [style.cursor]="certValid ? 'pointer' : 'not-allowed'" [disabled]="!certValid"
-          class="btn btn-primary form-control">
-          הוסף את התעודה להזמנה מס' {{purchaseData.orderNumber}}
+        <br />
+        <button
+          *ngIf="!submittingCert"
+          (click)="saveCertificate()"
+          [style.cursor]="certValid ? 'pointer' : 'not-allowed'"
+          [disabled]="!certValid"
+          class="btn btn-primary form-control"
+        >
+          הוסף את התעודה להזמנה מס' {{ purchaseData.orderNumber }}
         </button>
         <div class="smallLoader" *ngIf="submittingCert"></div>
       </div>
@@ -732,12 +1234,21 @@
   </div>
 </ng-template>
 
-
-
 <ng-template #receiveInvoice let-modal>
   <div class="modal-header bg-primary">
-    <h4 style="margin-left:auto" class="modal-title text-white" id="modal-basic-title">קבלת חשבונית</h4>
-    <button type="button" class="close text-white" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <h4
+      style="margin-left: auto"
+      class="modal-title text-white"
+      id="modal-basic-title"
+    >
+      קבלת חשבונית
+    </h4>
+    <button
+      type="button"
+      class="close text-white"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -748,70 +1259,89 @@
       </div>
     </div>
     <div class="row mt-2">
-      <div class="col-2">
-        <span class="red">*</span> שדה חובה
-      </div>
+      <div class="col-2"><span class="red">*</span> שדה חובה</div>
       <div class="col-10"></div>
     </div>
 
     <!-- invoice number and remarks-->
     <div class="row mt-2">
       <div class="col-md-4 form-group">
-        <label for="invoiceNumber">מספר חשבונית<span class="red">*</span></label>
-        <input type="number" class="form-control" [(ngModel)]="invoice.purchaseInvoiceNumber" placeholder="מספר חשבונית"
-          required>
+        <label for="invoiceNumber"
+          >מספר חשבונית<span class="red">*</span></label
+        >
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="invoice.purchaseInvoiceNumber"
+          placeholder="מספר חשבונית"
+          required
+        />
       </div>
       <div class="col-md-4 form-group">
         <label for="remarks">הערות</label>
-        <input type="text" class="form-control" [(ngModel)]="invoice.invoiceRemarks" placeholder="הערות">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="invoice.invoiceRemarks"
+          placeholder="הערות"
+        />
       </div>
     </div>
 
-
-
     <div class="row mt-2">
-      <button [disabled]="!invoice.purchaseInvoiceNumber || invoice.purchaseInvoiceNumber == 0"
-        (click)="saveInvoiceToPurchase()" class="btn btn-primary form-control">
-        הוסף חשבונית להזמנה מס' {{purchaseData.orderNumber}}
+      <button
+        [disabled]="
+          !invoice.purchaseInvoiceNumber || invoice.purchaseInvoiceNumber == 0
+        "
+        (click)="saveInvoiceToPurchase()"
+        class="btn btn-primary form-control"
+      >
+        הוסף חשבונית להזמנה מס' {{ purchaseData.orderNumber }}
       </button>
     </div>
   </div>
 </ng-template>
 
-
 <ng-template class="p-6" #certAndInvModal let-modal>
   <div class="modal-header bg-primary">
     <h4 class="modal-title text-center" id="modal-basic-title">קבלת משלוח</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
 
   <div dir="rtl" class="modal-body p-5">
+    <h3>חשבוניות ותעודות משלוח להזמנה {{ purchaseData.orderNumber }}</h3>
 
-    <h3> חשבוניות ותעודות משלוח להזמנה {{purchaseData.orderNumber}}</h3>
-
-    <div class="container bg-white border border-primary shadow-lg text-center p-5">
-
-
+    <div
+      class="container bg-white border border-primary shadow-lg text-center p-5"
+    >
       <h5>חשבוניות</h5>
       <div *ngIf="purchaseData.billNumber" class="row mt-3 bg-muted">
         <div style="background: #d5cff9" class="col-12 shadow rounded">
-          <table style=" overflow: auto;" class="table table-hover">
+          <table style="overflow: auto" class="table table-hover">
             <thead>
               <tr>
                 <th>מספר חשבונית</th>
-                <th>מחיר העמסה </th>
-                <th> מחיר העמסה לפריט </th>
+                <th>מחיר העמסה</th>
+                <th>מחיר העמסה לפריט</th>
                 <th>הערות</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let invoice of purchaseData.billNumber">
-                <td>{{invoice.purchaseInvoiceNumber}}</td>
-                <td>{{invoice.fixedPrice}}</td>
-                <td>{{invoice.shippingPrice}} {{invoice.invoiceCoin | currencySymbol}}</td>
-                <td>{{invoice.remarks}}</td>
+                <td>{{ invoice.purchaseInvoiceNumber }}</td>
+                <td>{{ invoice.fixedPrice | number: "1.2" }}</td>
+                <td>
+                  {{ invoice.shippingPrice | number: "1.2" }}
+                  {{ invoice.invoiceCoin | currencySymbol }}
+                </td>
+                <td>{{ invoice.remarks }}</td>
               </tr>
             </tbody>
           </table>
@@ -820,8 +1350,12 @@
 
       <h5>תעודות משלוח</h5>
       <div class="row mt-3 bg-muted">
-        <div *ngIf="purchaseData.deliveryCerts" style="background: #d5cff9" class="col-12 shadow rounded">
-          <table style="overflow: auto;" class="table table-striped">
+        <div
+          *ngIf="purchaseData.deliveryCerts"
+          style="background: #d5cff9"
+          class="col-12 shadow rounded"
+        >
+          <table style="overflow: auto" class="table table-striped">
             <thead>
               <tr>
                 <th></th>
@@ -833,99 +1367,125 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let deliveryCert of purchaseData.deliveryCerts; let i = index">
-                <td class="click hover-red text-danger" (click)="deleteCert(i, deliveryCert.certificateNumber)">
+              <tr
+                *ngFor="
+                  let deliveryCert of purchaseData.deliveryCerts;
+                  let i = index
+                "
+              >
+                <td
+                  class="click hover-red text-danger"
+                  (click)="deleteCert(i, deliveryCert.certificateNumber)"
+                >
                   <i class="fa fa-times text-danger"></i>
                   <strong>מחק תעודה</strong>
                 </td>
-                <td>{{deliveryCert.certificateNumber}}</td>
-                <td>{{deliveryCert.deliveryArrivalDate | date:'d/M/YY'}}</td>
+                <td>{{ deliveryCert.certificateNumber }}</td>
+                <td>{{ deliveryCert.deliveryArrivalDate | date: "d/M/YY" }}</td>
                 <td>
-                  <table style="overflow: auto;" class="table">
+                  <table style="overflow: auto" class="table">
                     <tbody>
                       <tr *ngFor="let item of deliveryCert.stockitems">
-                        <td>{{item.number}}</td>
-                        <td>{{item.name}}</td>
-                        <td>{{item.quantity}}</td>
+                        <td>{{ item.number }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.quantity }}</td>
                       </tr>
                     </tbody>
                   </table>
                 </td>
-                <td>{{deliveryCert.userName}}</td>
-                <td>{{deliveryCert.remarks}}</td>
+                <td>{{ deliveryCert.userName }}</td>
+                <td>{{ deliveryCert.remarks }}</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
-
     </div>
   </div>
 </ng-template>
-
-
 
 <ng-template class="p-6" #sumShipping let-modal>
   <div class="modal-header bg-primary">
     <h4 class="modal-title text-center" id="modal-basic-title">נתוני סגירה</h4>
 
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div dir="rtl" class="modal-body p-5">
     <div class="d-flex flex-row justify-content-around">
-      <li class="list-group-item">
-        &#x24; = {{currencies.USD}} &#8362;
-      </li>
-      <li class="list-group-item">
-        &#xa3; = {{currencies.GBP}} &#8362;
-      </li>
-      <li class="list-group-item">
-        &#x20AC; = {{currencies.EUR}} &#8362;
-      </li>
+      <li class="list-group-item">&#x24; = {{ currencies.USD }} &#8362;</li>
+      <li class="list-group-item">&#xa3; = {{ currencies.GBP }} &#8362;</li>
+      <li class="list-group-item">&#x20AC; = {{ currencies.EUR }} &#8362;</li>
     </div>
     <div class="row mt-2">
       <div class="col-md-4 form-group">
         <label>מחיר הזמנה סופי</label>
-        <input type="number" class="form-control" placeholder="מחיר הזמנה סופי" #orderPrice>
+        <input
+          type="number"
+          class="form-control"
+          placeholder="מחיר הזמנה סופי"
+          #orderPrice
+        />
       </div>
     </div>
     <div class="row mt-2">
       <div class="col-md-4 form-group">
         <label>מחיר העמסה</label>
-        <input type="number" class="form-control" placeholder="מחיר העמסה סופי" #shippingPrice>
+        <input
+          type="number"
+          class="form-control"
+          placeholder="מחיר העמסה סופי"
+          #shippingPrice
+        />
       </div>
       <div class="col-md-4 form-group">
         <label>מע"מ 1</label>
-        <input type="number" class="form-control" placeholder='מע"מ 1' #tax1>
+        <input type="number" class="form-control" placeholder='מע"מ 1' #tax1 />
       </div>
       <div class="col-md-4 form-group">
         <label>מע"מ 2</label>
-        <input type="number" class="form-control" placeholder='מע"מ 2' #tax2>
+        <input type="number" class="form-control" placeholder='מע"מ 2' #tax2 />
       </div>
       <div class="col-md-4 form-group">
-        <button class="btn btn-secondary"
-          (click)="calculateShipping(orderPrice.value, shippingPrice.value, tax1.value, tax2.value, true); modal.dismiss('Cross click'); ">
+        <button
+          class="btn btn-secondary"
+          (click)="
+            calculateShipping(
+              orderPrice.value,
+              shippingPrice.value,
+              tax1.value,
+              tax2.value,
+              true
+            );
+            modal.dismiss('Cross click')
+          "
+        >
           עדכן נתוני העמסה
         </button>
       </div>
     </div>
   </div>
-
 </ng-template>
 
 <ng-template class="tooltip" #lastorders>
   <h3 class="head">Amounts by year:</h3>
   <div class="d-flex flex-column">
     <div *ngFor="let orderItem of itemForm.controls.historyAmounts.value">
-      <span class="year">{{orderItem.year}}:</span> &nbsp;&nbsp; <span class="amount">{{ orderItem.amount}}
-        {{itemForm.controls.measurement.value}} </span>
+      <span class="year">{{ orderItem.year }}:</span> &nbsp;&nbsp;
+      <span class="amount"
+        >{{ orderItem.amount }} {{ itemForm.controls.measurement.value }}
+      </span>
     </div>
   </div>
   <h3 class="head">Last supplier:</h3>
   <div class="">
-    <span class="year">{{lastSupplier}} </span>
+    <span class="year">{{ lastSupplier }} </span>
   </div>
 </ng-template>
 
@@ -933,7 +1493,9 @@
   <div *ngIf="itemForm.invalid" class="bg-danger">
     <div class="d-flex flex-column">
       <div *ngFor="let control of itemForm.controls | keyvalue">
-        <h4 *ngIf="control.value.status == 'INVALID'">Please fill {{control.key}}</h4>
+        <h4 *ngIf="control.value.status == 'INVALID'">
+          Please fill {{ control.key }}
+        </h4>
       </div>
     </div>
   </div>
@@ -943,7 +1505,7 @@
   <h3 class="m-2">Status Updates</h3>
   <div class="row m-2">
     <div class="col-12 shadow rounded">
-      <table style="overflow: auto;" class="table table-striped">
+      <table style="overflow: auto" class="table table-striped">
         <thead>
           <tr>
             <th>Status</th>
@@ -953,14 +1515,20 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let status of purchaseData.statusUpdates; let i = index"
-            [style.background]="setStatusColor(status.new)" [style.color]="setStatusTextColor(status.new)">
-            <td>{{hebStat(status.new)}}
-              <span *ngIf="status.new == 'ETD' || status.new == 'ETA'"> - {{status.ET | date: 'dd/MM/yyyy'}}</span>
+          <tr
+            *ngFor="let status of purchaseData.statusUpdates; let i = index"
+            [style.background]="setStatusColor(status.new)"
+            [style.color]="setStatusTextColor(status.new)"
+          >
+            <td>
+              {{ hebStat(status.new) }}
+              <span *ngIf="status.new == 'ETD' || status.new == 'ETA'">
+                - {{ status.ET | date: "dd/MM/yyyy" }}</span
+              >
             </td>
-            <td>{{hebStat(status.prev)}}</td>
-            <td>{{status.date | date: 'dd/MM/yyyy'}}</td>
-            <td>{{status.user}}</td>
+            <td>{{ hebStat(status.prev) }}</td>
+            <td>{{ status.date | date: "dd/MM/yyyy" }}</td>
+            <td>{{ status.user }}</td>
           </tr>
         </tbody>
       </table>
@@ -969,10 +1537,10 @@
 </ng-template>
 
 <ng-template #setEstimatedDate>
-  <h3 class="m-2">Set {{statusTypeToSet}}</h3>
+  <h3 class="m-2">Set {{ statusTypeToSet }}</h3>
   <div class="row m-2 p-5">
     <div class="col-12 p-5 shadow rounded">
-      <input class="form-control m-4" type="date" [(ngModel)]="statusDate">
+      <input class="form-control m-4" type="date" [(ngModel)]="statusDate" />
       <button class="btn btn-success m-4" (click)="setStatusDate()">Set</button>
     </div>
   </div>
