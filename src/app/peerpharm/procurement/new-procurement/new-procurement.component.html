@@ -225,7 +225,10 @@
                     <a
                       style="color: black; text-decoration: underline"
                       class="click"
-                      (click)="routeToItemIndex(stockitem.number)"
+                      href="/#/peerpharm/inventory/stock?itemNumber={{
+                        stockitem.number
+                      }}&type={{ newPurchase.controls.orderType.value }}"
+                      target="_blank"
                       >{{ stockitem.number }}</a
                     >
                   </td>

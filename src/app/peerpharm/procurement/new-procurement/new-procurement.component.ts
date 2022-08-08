@@ -17,7 +17,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { UserInfo } from "../../taskboard/models/UserInfo";
 import { Procurementservice } from "src/app/services/procurement.service";
 import { ToastrService } from "ngx-toastr";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router, UrlSerializer } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { PurchaseData } from "../procumentOrders/PurchaseData";
 import { DeliveryCertificate } from "../procumentOrders/DeliveryCert";
@@ -27,6 +27,7 @@ import { Currencies } from "../Currencies";
 
 import { UsersService } from "src/app/services/users.service";
 import { templateJitUrl } from "@angular/compiler";
+import { windowWhen } from "rxjs-compat/operator/windowWhen";
 
 @Component({
   selector: "app-new-procurement",
@@ -137,7 +138,8 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     private inventoryService: InventoryService,
     private supplierService: SuppliersService,
     public formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private serializer: UrlSerializer
   ) {
     this.newPurchase = fb.group({
       _id: [""],
@@ -1106,10 +1108,19 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   routeToItemIndex(item) {
-    const url = this.router.navigate(["/peerpharm/itemindex"], {
+    this.router.navigate(["/peerpharm/itemindex"], {
       queryParams: {
         itemNumber: item,
       },
     });
+    // const url = this.router.serializeUrl(
+    //   this.router.createUrlTree(["/peerpharm/itemindex/"], {
+    //     queryParams: {
+    //       itemNumber: item,
+    //     },
+    //   })
+    // );
+
+    // window.open(url, "_blank");
   }
 }
