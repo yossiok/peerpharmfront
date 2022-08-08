@@ -762,6 +762,7 @@
               <tr>
                 <th>#</th>
                 <th>מספר פריט</th>
+                <th>ברקוד</th>
                 <th>תאור</th>
                 <th>כמות</th>
                 <th>מחיר יחידה</th>
@@ -774,6 +775,7 @@
                 <tr *ngFor="let item of items.value; let i = index">
                   <td class="cellPadding">{{ i + 1 }}</td>
                   <td>{{ item.itemNumber }}</td>
+                  <td>{{ item.barcode }}</td>
                   <td>{{ item.itemName }}</td>
                   <td>{{ item.quantity | number }}</td>
                   <td>
