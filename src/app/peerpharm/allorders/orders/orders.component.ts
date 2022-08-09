@@ -35,7 +35,6 @@ export class OrdersComponent implements OnInit {
   @ViewChild("uploadExFile") uploadExFile: ElementRef;
 
   stagesCount = {
-    waiting: 0,
     new: 0,
     partialCmpt: 0,
     allCmpt: 0,
@@ -262,86 +261,69 @@ export class OrdersComponent implements OnInit {
   getOrders() {
     this.ordersService.getOrders().subscribe((orders) => {
       console.log(orders);
-      for (let order of orders) {
+      orders.map((order) => {
         order.color = "white";
-        if (order.deliveryDate) {
-          order.deliveryDate = new Date(order.deliveryDate);
+        let deliveryDateArr;
+        if (order.deliveryDate && order.deliveryDate.includes("/")) {
+          deliveryDateArr = order.deliveryDate.split("/");
+          if (deliveryDateArr[0].length == 1) {
+            deliveryDateArr[0] = "0" + deliveryDateArr[0];
+          }
+          if (deliveryDateArr[1].length == 1) {
+            deliveryDateArr[1] = "0" + deliveryDateArr[1];
+          }
+        } else if (order.deliveryDate) {
+          deliveryDateArr = order.deliveryDate.split("-");
+          let tempV = deliveryDateArr[0];
+          deliveryDateArr[0] = deliveryDateArr[2];
+          deliveryDateArr[2] = tempV;
 
-          if (order.deliveryDate <= new Date()) {
+          // order.deliveryDate =
+          //   deliveryDateArr[0] +
+          //   "/" +
+          //   deliveryDateArr[1] +
+          //   "/" +
+          //   deliveryDateArr[2];
+
+          // let newDate =
+          //   deliveryDateArr[2] +
+          //   "-" +
+          //   deliveryDateArr[1] +
+          //   "-" +
+          //   deliveryDateArr[0];
+          // order.deliveryDate = new Date(newDate);
+        }
+        let todayDateArr = this.today.split("/");
+        if (parseInt(deliveryDateArr[2]) < parseInt(todayDateArr[2])) {
+          //RED
+          order.color = "#ff9999";
+        } else {
+          if (
+            parseInt(deliveryDateArr[1]) < parseInt(todayDateArr[1]) &&
+            parseInt(deliveryDateArr[2]) == parseInt(todayDateArr[2])
+          ) {
+            //RED
+            order.color = "#ff9999";
+          } else if (
+            parseInt(deliveryDateArr[0]) < parseInt(todayDateArr[0]) &&
+            parseInt(deliveryDateArr[1]) == parseInt(todayDateArr[1])
+          ) {
+            //RED
             order.color = "#ff9999";
           }
         }
+
         this.returnStageColor(order);
         Object.assign({ isSelected: false }, order);
         order.NumberCostumer = order.orderNumber + " " + order.costumer;
-      }
-
-      // orders.map((order) => {
-      //   order.color = "white";
-      //   let deliveryDateArr;
-      //   if (order.deliveryDate && order.deliveryDate.includes("/")) {
-      //     deliveryDateArr = order.deliveryDate.split("/");
-      //     if (deliveryDateArr[0].length == 1) {
-      //       deliveryDateArr[0] = "0" + deliveryDateArr[0];
-      //     }
-      //     if (deliveryDateArr[1].length == 1) {
-      //       deliveryDateArr[1] = "0" + deliveryDateArr[1];
-      //     }
-      //   } else if (order.deliveryDate) {
-      //     deliveryDateArr = order.deliveryDate.split("-");
-      //     let tempV = deliveryDateArr[0];
-      //     deliveryDateArr[0] = deliveryDateArr[2];
-      //     deliveryDateArr[2] = tempV;
-
-      //     order.deliveryDate =
-      //       deliveryDateArr[0] +
-      //       "/" +
-      //       deliveryDateArr[1] +
-      //       "/" +
-      //       deliveryDateArr[2];
-
-      //     // let newDate =
-      //     //   deliveryDateArr[2] +
-      //     //   "-" +
-      //     //   deliveryDateArr[1] +
-      //     //   "-" +
-      //     //   deliveryDateArr[0];
-      //     // order.deliveryDate = new Date(newDate);
-      //   }
-      //   let todayDateArr = this.today.split("/");
-      //   if (parseInt(deliveryDateArr[2]) < parseInt(todayDateArr[2])) {
-      //     //RED
-      //     order.color = "#ff9999";
-      //   } else {
-      //     if (
-      //       parseInt(deliveryDateArr[1]) < parseInt(todayDateArr[1]) &&
-      //       parseInt(deliveryDateArr[2]) == parseInt(todayDateArr[2])
-      //     ) {
-      //       //RED
-      //       order.color = "#ff9999";
-      //     } else if (
-      //       parseInt(deliveryDateArr[0]) < parseInt(todayDateArr[0]) &&
-      //       parseInt(deliveryDateArr[1]) == parseInt(todayDateArr[1])
-      //     ) {
-      //       //RED
-      //       order.color = "#ff9999";
-      //     }
-      //   }
-
-      //   this.returnStageColor(order);
-      //   Object.assign({ isSelected: false }, order);
-      //   order.NumberCostumer = order.orderNumber + " " + order.costumer;
-      // });
-      this.orders = orders;
-      this.ordersCopy = orders;
+        this.orders = orders;
+        this.ordersCopy = orders;
+      });
     });
   }
 
   returnStageColor(order) {
-    if (order.stage == "waiting") {
-      order.stageColor = "#ff3700";
-      this.stagesCount.waiting++;
-    } else if (order.stage == "new" || order.stage == "customerApproved") {
+    if (order.stage == "new") {
       order.stageColor = "white";
       this.stagesCount.new++;
     } else if (order.stage == "partialCmpt") {
@@ -605,33 +587,34 @@ export class OrdersComponent implements OnInit {
         this.lodingOrders = false;
       });
   }
-  // filterByDeliveryDate(startDate,endDate){
-  //   if(!startDate || !endDate){
-  //     if(!startDate){
-  //       this.toastSrv.warning("נא להכניס תאריך התחלה משלוח")
-  //     }
-  //     if(!endDate){
-  //       this.toastSrv.warning("נא להכניס תאריך סיום משלוח")
-  //     }
-  //     return
-  //   }
-  //   this.lodingOrders = true;
-  //   this.ordersService.getAllOpenOrdersByDeliveryDate(startDate,endDate).subscribe((res)=>{
-  //     this.orders = res
-  //     let startYear = startDate.split("-")[0]
-  //     let startMonth = startDate.split("-")[1]
-  //     let startDay = startDate.split("-")[1]
-  //     let startStr = startDay + "/" + startMonth + "/" + startYear
+  filterByDeliveryDate(startDate, endDate) {
+    if (!startDate || !endDate) {
+      if (!startDate) {
+        this.toastSrv.warning("נא להכניס תאריך התחלה שילוח");
+      }
+      if (!endDate) {
+        this.toastSrv.warning("נא להכניס תאריך סיום שילוח");
+      }
+      return;
+    }
+    this.lodingOrders = true;
+    this.ordersService
+      .getAllOpenOrdersByDeliveryDate(startDate, endDate)
+      .subscribe((res) => {
+        this.orders = res;
+        let startYear = startDate.split("-")[0];
+        let startMonth = startDate.split("-")[1];
+        let startDay = startDate.split("-")[2];
+        let startStr = startDay + "/" + startMonth + "/" + startYear;
 
-  //     let endYear = endDate.split("-")[0]
-  //     let endMonth = endDate.split("-")[1]
-  //     let endDay = endDate.split("-")[1]
-  //     let endStr = endDay + "/" + endMonth + "/" + endYear
-  //     this.filterValue = `תאריכי משלוח מ${startStr} ועד ${endStr}`
-  //     this.lodingOrders = false;
-  //   })
-
-  // }
+        let endYear = endDate.split("-")[0];
+        let endMonth = endDate.split("-")[1];
+        let endDay = endDate.split("-")[2];
+        let endStr = endDay + "/" + endMonth + "/" + endYear;
+        this.filterValue = `תאריכי שילוח מ ${startStr} ועד ${endStr}`;
+        this.lodingOrders = false;
+      });
+  }
 
   filterByStage() {
     if (this.stageFilter == "") {

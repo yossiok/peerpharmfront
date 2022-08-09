@@ -811,7 +811,7 @@ export class QaPalletsComponent implements OnInit {
     // });
     this.currCustomer = packlist.costumerName;
     this.currCustomerNumber = packlist.costumerNumber;
-    if (!this.currCustomerNumber) {
+    if (this.currCustomerNumber == "") {
       this.customerService
         .getCostumerByName(this.currCustomer)
         .subscribe((data) => {

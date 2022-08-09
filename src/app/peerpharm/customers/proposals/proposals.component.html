@@ -34,7 +34,7 @@
         class="btn btn-outline-danger"
         #printBtn2
         [useExistingCss]="true"
-        printTitle="אישור הזמנה"
+        printTitle="חשבונית עיסקה"
         printSectionId="print-section"
         ngxPrint
       >
@@ -58,7 +58,7 @@
               *ngFor="let proposal of proposalsList"
               [value]="proposal.proposalNumber"
             >
-              {{ proposal.orderNumber }}
+              {{ proposal.proposalNumber }}
             </option>
           </select>
         </div>
@@ -152,7 +152,7 @@
               class="form-control"
               type="text"
               formControlName="priceList"
-              [value]="currentCustomer?.costumerId || currentProposal.priceList"
+              [value]="currentCustomer?.costumerId"
             />
           </div>
           <div class="col-2">
@@ -183,42 +183,21 @@
               class="form-control"
             />
           </div>
-          <div class="col-2">
-            <label for="">סוג ההזמנה</label>
-            <select
-              name=""
-              id=""
-              class="form-control"
-              formControlName="orderType"
-            >
-              <option value="" disabled>בחר</option>
-              <option value="Cosmetic">Cosmetic</option>
-              <option value="Make Up">Make Up</option>
-              <option value="Cosmetic & MakeUp">Cosmetic & Make Up</option>
-            </select>
-            <div *ngIf="orderType.errors" class="text-danger">*שדה חובה</div>
-          </div>
-          <div class="col-2">
-            <label for="">תאריך ההזמנה</label>
-            <input
-              type="date"
-              formControlName="customerOrderDate"
-              class="form-control"
-            />
-          </div>
-          <div class="col-2">
-            <label for="">תאריך מבוקש</label>
-            <input
-              type="date"
-              formControlName="requestedDate"
-              class="form-control"
-            />
-          </div>
+          <div class="col-1"></div>
           <div class="col-2">
             <label for="">הזמנה הוקלדה ע"י</label>
             <input
               type="text"
               formControlName="customerTyper"
+              class="form-control"
+            />
+          </div>
+          <div class="col-1"></div>
+          <div class="col-2">
+            <label for="">תאריך ההזמנה</label>
+            <input
+              type="date"
+              formControlName="customerOrderDate"
               class="form-control"
             />
           </div>
@@ -233,29 +212,6 @@
         <div class="row mt-4">
           <div class="col-1"></div>
           <div class="col-6">
-            <label>הערות להזמנה</label>
-            <textarea
-              name=""
-              id=""
-              cols="30"
-              rows="3"
-              class="form-control"
-              formControlName="remark"
-            ></textarea>
-          </div>
-        </div>
-        <div class="row mt-4">
-          <div class="col-1"></div>
-          <div class="col-5">
-            <label> כתובת חשבונית:</label>
-            <textarea
-              colls="30"
-              rows="3"
-              class="form-control"
-              formControlName="invoiceAddress"
-            ></textarea>
-          </div>
-          <div class="col-5">
             <label> כתובת למשלוח:</label>
             <textarea
               name=""
@@ -264,6 +220,18 @@
               rows="3"
               class="form-control"
               formControlName="shippingAddress"
+            ></textarea>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-6">
+            <label> כתובת חשבונית:</label>
+            <textarea
+              colls="30"
+              rows="3"
+              class="form-control"
+              formControlName="invoiceAddress"
             ></textarea>
           </div>
         </div>
@@ -376,11 +344,6 @@
               עדכן והמשך
             </button>
           </div>
-          <div class="col-2">
-            <button class="btn btn-outline-primary" (click)="jump()">
-              דלג ללא שמירה
-            </button>
-          </div>
 
           <div class="col-2">
             <button class="btn btn-outline-danger" (click)="resetForm()">
@@ -399,7 +362,7 @@
           <div class="col-12">
             <h2 class="text-center">פרוט פריטים וכמויות</h2>
             <h3 *ngIf="currentProposal" class="text-center">
-              הזמנה מספר: {{ currentProposal.orderNumber }}
+              הזמנה מספר: {{ currentProposal.proposalNumber }}
             </h3>
           </div>
         </div>
@@ -417,8 +380,6 @@
                   <th>מחיר יחידה</th>
                   <th>הנחה</th>
                   <th>סה"כ</th>
-                  <th>תאריך משוער</th>
-                  <th>סטטוס</th>
                   <th>
                     <i
                       class="fa fa-plus text-success click"
@@ -533,29 +494,6 @@
                       <td *ngIf="i != editItem">
                         {{ itemForm.value.total | number: "1.0-2" }}
                       </td>
-                      <td *ngIf="i == editItem">
-                        <input
-                          type="date"
-                          [value]="itemForm.value.deliveryDate"
-                          formControlName="deliveryDate"
-                          class="form-control"
-                        />
-                      </td>
-                      <td *ngIf="i != editItem">
-                        {{ itemForm.value.deliveryDate | date: "dd/MM/yyyy" }}
-                      </td>
-                      <td *ngIf="i == editItem">
-                        <input
-                          type="text"
-                          [value]="itemForm.value.itemStatus"
-                          formControlName="itemStatus"
-                          class="form-control"
-                        />
-                      </td>
-                      <td *ngIf="i != editItem">
-                        {{ itemForm.value.itemStatus }}
-                      </td>
-
                       <td *ngIf="i != editItem">
                         <i
                           class="fa fa-pencil-alt text-primary click"
@@ -599,7 +537,7 @@
             </table>
           </div>
         </div>
-        <!-- <div class="row mt-4">
+        <div class="row mt-4">
           <div class="col-1"></div>
           <div class="col-6">
             <label> הערות:</label>
@@ -611,7 +549,7 @@
               dir="rtl"
             ></textarea>
           </div>
-        </div> -->
+        </div>
         <div class="row mt-4">
           <div class="col-1"></div>
           <div class="col-6">
@@ -638,18 +576,18 @@
             ></textarea>
           </div>
         </div>
-        <!-- <div class="row mt-4">
+        <div class="row mt-4">
           <div class="col-1"></div>
           <div class="col-2">
             <label>תאריך מוכנות הזמנה משוער:</label>
             <input
               type="date"
               class="form-control"
-              formControlName="requestedDate"
-              [value]="newProposalForm.value.requestedDate | date: 'YYYY-MM-dd'"
+              formControlName="estimatedArrivalDate"
+              [value]="estimatedArrivalDate | date: 'YYYY-MM-dd'"
             />
           </div>
-        </div> -->
+        </div>
         <div class="row mt-4">
           <div class="col-1"></div>
           <div class="col-2">
@@ -705,19 +643,9 @@
       <div class="row mt-2" dir="rtl">
         <div class="col-4"></div>
         <div class="col-4">
-          <h4 class="text-center">
-            הזמנה
-            {{
-              newProposalForm.value.orderNumber || currentProposal.orderNumber
-            }}
-          </h4>
-          <!-- <h4 class="text-center">{{ currentProposal.proposalNumber }}</h4> -->
-          <h4 class="text-center">
-            (Proforma Invoice No.
-            {{
-              newProposalForm.value.orderNumber || currentProposal.orderNumber
-            }})
-          </h4>
+          <h4 class="text-center">חשבונית עסקה</h4>
+          <h4 class="text-center">(Proforma Invoice)</h4>
+          <h4 class="text-center">{{ currentProposal.proposalNumber }}</h4>
         </div>
         <div class="col-2"></div>
         <div class="col-2">
@@ -731,26 +659,15 @@
         <div class="col-10">
           <p>לכבוד,</p>
           <h5>{{ newProposalForm.value.customerName }}</h5>
-          <h5>מספר לקוח: {{ newProposalForm.value.customerId }}</h5>
           <p>{{ newProposalForm.value.invoiceAddress }}</p>
-          <p>חפ: {{ newProposalForm.value.customerTaxId }}</p>
+          <p>הזמנתכם: {{ newProposalForm.value.customerOrder }}</p>
           <p>
-            <b> הזמנתכם: </b>
-            {{ newProposalForm.value.customerOrder }}&nbsp;&nbsp;&nbsp;
-            <b> מתאריך: </b>
-            {{ newProposalForm.value.customerOrderDate | date: "dd/MM/yyyy" }}
-          </p>
-          <!-- <p>
             מתאריך:
             {{ newProposalForm.value.customerOrderDate | date: "dd/MM/yyyy" }}
-          </p> -->
+          </p>
           <p>
-            <b> לידי: </b>
-            {{ newProposalForm.value.contacts[0].name }}&nbsp;&nbsp;&nbsp;
-            <b> טלפון: </b>
-            {{ newProposalForm.value.contacts[0].phone }}&nbsp;&nbsp;&nbsp;
-            <b> אימייל: </b>
-            {{ newProposalForm.value.contacts[0].mail }}
+            לידי:
+            {{ newProposalForm.value.contacts[0].name }}
           </p>
         </div>
       </div>
@@ -765,20 +682,16 @@
               <tr>
                 <th>#</th>
                 <th>מספר פריט</th>
-                <th>ברקוד</th>
                 <th>תאור</th>
                 <th>כמות</th>
                 <th>מחיר יחידה</th>
                 <th>הנחה %</th>
                 <th>סה"כ</th>
-                <th>תאריך משוער</th>
-                <th>סטטוס</th>
               </tr>
               <ng-container *ngIf="items">
                 <tr *ngFor="let item of items.value; let i = index">
                   <td class="cellPadding">{{ i + 1 }}</td>
                   <td>{{ item.itemNumber }}</td>
-                  <td>{{ item.barcode }}</td>
                   <td>{{ item.itemName }}</td>
                   <td>{{ item.quantity | number }}</td>
                   <td>
@@ -788,8 +701,6 @@
                   <td>
                     {{ item.total | currency: newProposalForm.value.currency }}
                   </td>
-                  <td>{{ item.deliveryDate | date: "dd/MM/yyyy" }}</td>
-                  <td>{{ item.itemStatus }}</td>
                 </tr>
                 <tr>
                   <td colspan="3"></td>
@@ -852,7 +763,7 @@
       <div class="col-10">
         <h5>מועד משוער למוכנות לאיסוף :</h5>
         <p>
-          {{ newProposalForm.value.requestedDate | date: "dd/MM/yyyy" }}
+          {{ newProposalForm.value.estimatedArrivalDate | date: "dd/MM/yyyy" }}
         </p>
       </div>
     </div>
