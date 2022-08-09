@@ -709,7 +709,7 @@
           <!-- <button onClick="update()">עדכן</button> -->
           <button
             (click)="showQAPalletsModal = true"
-            [disabled]="!formid || disabledValue"
+            [disabled]="!formid"
             class="btn btn-light"
           >
             משטחים
@@ -1303,7 +1303,7 @@
   <div class="row mt-4">
     <div class="col-12">
       <table dir="rtl" class="float-right">
-        <tr>
+        <tr *ngIf="!disabledValue">
           <td>
             <h3 class="text-info"><u>הוסף משטח:</u> &nbsp;</h3>
           </td>
@@ -1404,7 +1404,7 @@
           <td></td>
           <td>
             <button
-              *ngIf="allowUpdateForm"
+              *ngIf="allowUpdateForm && !disabledValue"
               (click)="addNewQAPallet()"
               style="font-weight: bold; font-size: medium"
               class="btn btn-success"
@@ -1568,7 +1568,7 @@
             </td>
             <td>
               <button
-                *ngIf="allowUpdateForm"
+                *ngIf="allowUpdateForm && !disabledValue"
                 (click)="deleteQAPallet(QAPallet)"
                 class="btn btn-danger"
               >
@@ -1580,7 +1580,7 @@
               <!-- if enableEdit == true and enableEditIndex == index(i) display the cancel button -->
               <!-- on click cancel changes function -->
               <button
-                *ngIf="enableEdit && enableEditIndex == i"
+                *ngIf="enableEdit && enableEditIndex == i && !disabledValue"
                 (click)="enableEdit = false"
                 class="btn page-secondary-action-btn"
                 class="btn btn-danger form-control"
@@ -1592,7 +1592,7 @@
               <!-- if enableEdit == true and enableEditIndex == index(i) display the save button -->
               <!-- on click save changes function -->
               <button
-                *ngIf="enableEdit && enableEditIndex == i"
+                *ngIf="enableEdit && enableEditIndex == i && !disabledValue"
                 id="saveBtn"
                 class="btn page-primary-action-btn"
                 (click)="savePalltesChances(QAPallet)"
@@ -1606,7 +1606,7 @@
               <!-- on click make edit available with a function which takes event and index  -->
               <button
                 class="btn btn-success form-control"
-                *ngIf="!enableEdit"
+                *ngIf="!enableEdit && !disabledValue"
                 (click)="enableEditMethod($event, i)"
               >
                 עדכון
