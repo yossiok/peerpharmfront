@@ -8,7 +8,7 @@
     <div class="col-1"></div>
     <div class="col-2">
       <button class="btn btn-outline-primary" (click)="searchView()">
-        Edit
+        Home
       </button>
     </div>
     <div class="col-1"></div>
@@ -412,7 +412,7 @@
                   <th>#</th>
                   <th>מספר פריט</th>
                   <th>ברקוד</th>
-                  <th>תאור</th>
+                  <th style="width: 20%">תאור</th>
                   <th>כמות</th>
                   <th>מחיר יחידה</th>
                   <th>הנחה</th>
@@ -439,6 +439,7 @@
                           formControlName="itemNumber"
                           class="form-control"
                           value="{{ itemForm.value.itemNumber }}"
+                          style="width: 100px"
                         >
                           <option value="" disabled>בחר פריט</option>
                           <option
@@ -471,12 +472,14 @@
                           (change)="getItemByName(i)"
                           class="form-control"
                           [value]="itemForm.value.itemName"
+                          style="width: 200px"
                         />
                         <datalist id="itemsNames">
                           <option value="" disabled>בחר שם פריט</option>
                           <option
                             *ngFor="let itemN of currentPriceList"
                             [value]="itemN.itemName"
+                            style="word-wrap: break-word"
                           >
                             {{ itemN.itemName }}-{{ itemN.itemNumber }}
                           </option>
