@@ -208,6 +208,7 @@ import { PersonalPackagingComponent } from "./forms/mkupForm/PersonalPackaging/p
 import { MkupFormPrintingComponent } from "./forms/mkupForm/mkupFormPrinting/mkupFormPrinting.component";
 import { StickerComponent } from "./forms/mkupForm/sticker/sticker.component";
 
+import { StockProposalComponent } from "./customers/stock-proposal/stock-proposal.component";
 @NgModule({
   exports: [
     // MatInputModule,
@@ -388,6 +389,7 @@ import { StickerComponent } from "./forms/mkupForm/sticker/sticker.component";
     ProposalsComponent,
     ProposalsListComponent,
     PriceListsComponent,
+    StockProposalComponent,
     BulksReportComponent,
     OpenOrderitemsComponent,
   ],
