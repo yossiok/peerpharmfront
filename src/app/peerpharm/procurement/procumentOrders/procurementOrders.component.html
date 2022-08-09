@@ -4,9 +4,7 @@
     <ng-template ngbNavContent>
       <div class="container-fluid bg-white text-center">
         <div class="row">
-          <div class="col-4">
-
-          </div>
+          <div class="col-4"></div>
           <div class="col-4 rounded">
             <h3 class="p-2 text-primary">Purchase Orders</h3>
           </div>
@@ -17,84 +15,159 @@
               style="padding:0px 35px" printSectionId="print-section" ngxPrint><img
                 src="../../../../assets/images/print.png" alt="Print" width="60px"
                 style="padding:0 20px 0 0">Print</button></div> -->
-          <div class="col-2"><button #printOrdersBtn [disabled]="this.fetchingOrders"
-              class="btn btn-warning rounded-pill" [printStyle]="{table:{'border-collapse':'collapse' },
-              td : {'border': '1px solid black'},
-              tr : {'border': 'solid 2px black'},
-              th : {'border': 'solid 2px black'},
-              button:{'display':'none'}}" style="padding:0px 35px" printSectionId="print-section" ngxPrint
-              printTitle="Purchase Orders"><img src="../../../../assets/images/print.png" alt="Print" width="60px"
-                style="padding:0 20px 0 0">Print-F10</button>
-          </div>
-          <div class="col-3">
-            <button *ngIf="newPurchaseAllowed" (click)="orderDetailsModal = true"
-              class="btn btn-warning rounded-pill top_pilled">New Purchase -
-              F2</button>
-          </div>
           <div class="col-2">
-            <button class="btn btn-warning rounded-pill top_pilled" (click)="open(updateCurrencies)">Update Currencies -
-              F8</button>
-          </div>
-          <div class="col-2">
-            <button [disabled]="loadingProblematics" (click)="problematicsModalSelect = true" class="btn btn-warning rounded-pill top_pilled">
-              {{loadingProblematics ? '...אנא המתן' : 'פריטים בעייתיים בהזמנות לקוח'}}
-              <img style="width: 20px;" src="../../../../assets/images/alert3.gif" alt="">
+            <button
+              #printOrdersBtn
+              [disabled]="this.fetchingOrders"
+              class="btn btn-warning rounded-pill"
+              [printStyle]="{
+                table: { 'border-collapse': 'collapse' },
+                td: { border: '1px solid black' },
+                tr: { border: 'solid 2px black' },
+                th: { border: 'solid 2px black' },
+                button: { display: 'none' }
+              }"
+              style="padding: 0px 35px"
+              printSectionId="print-section"
+              ngxPrint
+              printTitle="Purchase Orders"
+            >
+              <img
+                src="../../../../assets/images/print.png"
+                alt="Print"
+                width="60px"
+                style="padding: 0 20px 0 0"
+              />Print-F10
             </button>
           </div>
           <div class="col-3">
-            <button (click)="purchaseRecommendationsModal = true"
-              class="btn btn-warning rounded-pill top_pilled">Purchase Requests
-              -
-              F4</button>
+            <button
+              *ngIf="newPurchaseAllowed"
+              (click)="orderDetailsModal = true"
+              class="btn btn-warning rounded-pill top_pilled"
+            >
+              New Purchase - F2
+            </button>
+          </div>
+          <div class="col-2">
+            <button
+              class="btn btn-warning rounded-pill top_pilled"
+              (click)="open(updateCurrencies)"
+            >
+              Update Currencies - F8
+            </button>
+          </div>
+          <div class="col-2">
+            <button
+              [disabled]="loadingProblematics"
+              (click)="problematicsModalSelect = true"
+              class="btn btn-warning rounded-pill top_pilled"
+            >
+              {{
+                loadingProblematics
+                  ? "...אנא המתן"
+                  : "פריטים בעייתיים בהזמנות לקוח"
+              }}
+              <img
+                style="width: 20px"
+                src="../../../../assets/images/alert3.gif"
+                alt=""
+              />
+            </button>
+          </div>
+          <div class="col-3">
+            <button
+              (click)="purchaseRecommendationsModal = true"
+              class="btn btn-warning rounded-pill top_pilled"
+            >
+              Purchase Requests - F4
+            </button>
           </div>
         </div>
 
-        <div class="row mt-2 " *ngIf="fetchingOrders">
+        <div class="row mt-2" *ngIf="fetchingOrders">
           <div class="verySmallLoader ml-8">
-            Loading <br> Orders
+            Loading <br />
+            Orders
           </div>
-          <span class="float-left">
-            You don't have to wait for me...
-          </span>
+          <span class="float-left"> You don't have to wait for me... </span>
         </div>
 
         <div class="search-container" *ngIf="!fetchingOrders">
           <form [formGroup]="filterForm">
-
             <div class="row mt-4">
               <div class="col-2">
-                <input type="text" formControlName="orderNumber" class="form-control rounded"
-                  placeholder="Search By Order Number" (keyup)="filterPurchaseOrders()" />
+                <input
+                  type="text"
+                  formControlName="orderNumber"
+                  class="form-control rounded"
+                  placeholder="Search By Order Number"
+                  (keyup)="filterPurchaseOrders()"
+                />
               </div>
               <div class="col-2">
                 <div>
-                  <input type="text" class="form-control rounded" formControlName="supplier"
-                    [placeholder]="chooseMultipleSuppliers ? 'Supplier 1' : 'Supplier'"
-                    (keyup)="chooseMultipleSuppliers ? null : filterPurchaseOrders()" />
+                  <input
+                    type="text"
+                    class="form-control rounded"
+                    formControlName="supplier"
+                    [placeholder]="
+                      chooseMultipleSuppliers ? 'Supplier 1' : 'Supplier'
+                    "
+                    (keyup)="
+                      chooseMultipleSuppliers ? null : filterPurchaseOrders()
+                    "
+                  />
                 </div>
                 <div *ngIf="chooseMultipleSuppliers">
-                  <p class="text-danger">Note: Other filters won't work with multiple suppliers search</p>
-                  <input type="text" class="form-control rounded" formControlName="supplier2"
-                    placeholder="Supplier 2" />
-                  <button class="row mt-2" (click)="filterMultipleSuppliers()">Filter Multiple Suppliers</button>
+                  <p class="text-danger">
+                    Note: Other filters won't work with multiple suppliers
+                    search
+                  </p>
+                  <input
+                    type="text"
+                    class="form-control rounded"
+                    formControlName="supplier2"
+                    placeholder="Supplier 2"
+                  />
+                  <button class="row mt-2" (click)="filterMultipleSuppliers()">
+                    Filter Multiple Suppliers
+                  </button>
                 </div>
               </div>
               <div class="col-1">
-                <input type="checkbox" (change)="chooseMultipleSuppliers = !chooseMultipleSuppliers"> <span>Search
-                  Multiple Suppliers</span>
+                <input
+                  type="checkbox"
+                  (change)="chooseMultipleSuppliers = !chooseMultipleSuppliers"
+                />
+                <span>Search Multiple Suppliers</span>
               </div>
-              <div class="col-2"><input type="text" class="form-control rounded" placeholder="Search By Item Number"
-                  (keyup)="searchByItem($event)" />
+              <div class="col-2">
+                <input
+                  type="text"
+                  class="form-control rounded"
+                  placeholder="Search By Item Number"
+                  (keyup)="searchByItem($event)"
+                />
               </div>
-              <div class="col-2"><input type="text" class="form-control rounded"
-                  placeholder="Search By Certificate Number" (keyup)="searchByCertNum($event)" />
+              <div class="col-2">
+                <input
+                  type="text"
+                  class="form-control rounded"
+                  placeholder="Search By Certificate Number"
+                  (keyup)="searchByCertNum($event)"
+                />
               </div>
             </div>
 
             <div class="row mt-4">
               <div class="col-1">
-                חפש לפי סטטוס <select (change)="filterPurchaseOrders()" formControlName="status"
-                  class="form-control rounded-pill">
+                חפש לפי סטטוס
+                <select
+                  (change)="filterPurchaseOrders()"
+                  formControlName="status"
+                  class="form-control rounded-pill"
+                >
                   <option selected="true" disabled="disabled">בחר סטטוס</option>
                   <option value="allOrders">all</option>
                   <option value="open">open</option>
@@ -113,55 +186,75 @@
                 </select>
               </div>
               <div class="col-2">
-                חפש לפי קטגוריה <select (change)="filterPurchaseOrders()" formControlName="category"
-                  class="form-control rounded-pill">
-                  <option selected="true" disabled="disabled">בחר קטגוריה</option>
+                חפש לפי קטגוריה
+                <select
+                  (change)="filterPurchaseOrders()"
+                  formControlName="category"
+                  class="form-control rounded-pill"
+                >
+                  <option selected="true" disabled="disabled">
+                    בחר קטגוריה
+                  </option>
                   <option value="">הכל</option>
-                  <option value='bottle_Glass'>בקבוק זכוכית</option>
-                  <option value='bottle_Plastic'>בקבוק פלסטיק</option>
-                  <option value='jar_Glass'>צנצנת זכוכית</option>
-                  <option value='jar_Plastic'>צנצנת פלסטיק</option>
-                  <option value='cap'>פקק</option>
-                  <option value='cover'>מכסה</option>
-                  <option value='pump'>משאבה</option>
-                  <option value='cosmetic_pump'>משאבה קוסמטית</option>
-                  <option value='over_cap'>מכסה עילי</option>
-                  <option value='tube'>שפורפרת</option>
-                  <option value='colons'>קולונים</option>
-                  <option value='hair_life'>היירלייפ</option>
-                  <option value='compacts'>קומפקטים</option>
-                  <option value='personal_package'>אריזות אישיות</option>
-                  <option value='master_carton'>קרטוני מאסטר</option>
-                  <option value='newsletter'>עלון לצרכן</option>
-                  <option value='irosol_valve'>אירוסול- שסתום</option>
-                  <option value='irosol_bottle'>איירוסול- בקבוק</option>
-                  <option value='irosol_hectotor'>אירוסול- הקטאטור</option>
-                  <option value='irosol_bottle'>איירוסול- בקבוק</option>
-                  <option value='cellophane'>צלופן</option>
-                  <option value='sticker'>מדבקה</option>
-                  <option value='sachet'>סאשט</option>
+                  <option value="bottle_Glass">בקבוק זכוכית</option>
+                  <option value="bottle_Plastic">בקבוק פלסטיק</option>
+                  <option value="jar_Glass">צנצנת זכוכית</option>
+                  <option value="jar_Plastic">צנצנת פלסטיק</option>
+                  <option value="cap">פקק</option>
+                  <option value="cover">מכסה</option>
+                  <option value="pump">משאבה</option>
+                  <option value="cosmetic_pump">משאבה קוסמטית</option>
+                  <option value="over_cap">מכסה עילי</option>
+                  <option value="tube">שפורפרת</option>
+                  <option value="colons">קולונים</option>
+                  <option value="hair_life">היירלייפ</option>
+                  <option value="compacts">קומפקטים</option>
+                  <option value="personal_package">אריזות אישיות</option>
+                  <option value="master_carton">קרטוני מאסטר</option>
+                  <option value="newsletter">עלון לצרכן</option>
+                  <option value="irosol_valve">אירוסול- שסתום</option>
+                  <option value="irosol_bottle">איירוסול- בקבוק</option>
+                  <option value="irosol_hectotor">אירוסול- הקטאטור</option>
+                  <option value="irosol_bottle">איירוסול- בקבוק</option>
+                  <option value="cellophane">צלופן</option>
+                  <option value="sticker">מדבקה</option>
+                  <option value="sachet">סאשט</option>
                 </select>
               </div>
               <div class="col-2">
-                חפש לפי סוג פריט <select (change)="filterPurchaseOrders()" formControlName="itemType"
-                  class="form-control rounded-pill">
+                חפש לפי סוג פריט
+                <select
+                  (change)="filterPurchaseOrders()"
+                  formControlName="itemType"
+                  class="form-control rounded-pill"
+                >
                   <option selected="true" disabled="disabled">בחר סוג</option>
                   <option value="all">הכל</option>
-                  <option value='material'>חומרי גלם</option>
-                  <option value='component'>קומפוננטים</option>
+                  <option value="material">חומרי גלם</option>
+                  <option value="component">קומפוננטים</option>
                 </select>
               </div>
               <div class="col-1">
-                חפש לפי שם משתמש <select (change)="filterPurchaseOrders()" formControlName="userName"
-                  class="form-control rounded-pill">
+                חפש לפי שם משתמש
+                <select
+                  (change)="filterPurchaseOrders()"
+                  formControlName="userName"
+                  class="form-control rounded-pill"
+                >
                   <option selected="true" disabled="disabled">בחר משתמש</option>
                   <option selected="true" value="all">All</option>
-                  <option *ngFor="let user of users" [value]="user.userName">{{user.userName}}</option>
+                  <option *ngFor="let user of users" [value]="user.userName">
+                    {{ user.userName }}
+                  </option>
                 </select>
               </div>
               <div class="col-1">
-                חפש לפי מקור (origin) <select (change)="filterPurchaseOrders()" formControlName="origin"
-                  class="form-control rounded-pill">
+                חפש לפי מקור (origin)
+                <select
+                  (change)="filterPurchaseOrders()"
+                  formControlName="origin"
+                  class="form-control rounded-pill"
+                >
                   <option value="israel">ארץ</option>
                   <option value="import">חו"ל</option>
                 </select>
@@ -172,13 +265,20 @@
                 </div> -->
 
               <div class="col-2">
-                <button (click)="resetFilters()" class="btn btn-secondary">Reset All Filters</button>
+                <button (click)="resetFilters()" class="btn btn-secondary">
+                  Reset All Filters
+                </button>
               </div>
 
               <div class="col-2 border">
                 <p class="text-primary h3">Orders</p>
-                <img src="../../../../assets/images/excel.png" class="click" alt="export to excel" style="width: 40px;"
-                  (click)="exportAsXLSX('purchaseData')">
+                <img
+                  src="../../../../assets/images/excel.png"
+                  class="click"
+                  alt="export to excel"
+                  style="width: 40px"
+                  (click)="exportAsXLSX('purchaseData')"
+                />
                 <!-- <button [printStyle]="{td : {'border': '1px solid black'}, tr : {'border': 'solid 1px black'}}"
                   style="padding:0px 35px" printSectionId="print-section" ngxPrint><img
                     src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button> -->
@@ -187,9 +287,14 @@
                     src="../../../../assets/images/print.png" alt="Print" style="width: 55px;"></button> -->
               </div>
               <div class="col-1 border">
-                <p class="text-primary h3 ">Items</p>
-                <img src="../../../../assets/images/excel.png" class="click" alt="export to excel" style="width: 40px;"
-                  (click)="exportAsXLSX('purchaseItems')">
+                <p class="text-primary h3">Items</p>
+                <img
+                  src="../../../../assets/images/excel.png"
+                  class="click"
+                  alt="export to excel"
+                  style="width: 40px"
+                  (click)="exportAsXLSX('purchaseItems')"
+                />
               </div>
               <!-- <div class="col-1">
                   Creation Date: <input class="form-control rounded-pill" formControlName="creationDate" (change)="dateChange()" #fromDateStr type="date">
@@ -201,24 +306,35 @@
             <div class="row mt-4">
               <div class="col-2">
                 <label for="">From</label>
-                <input type="date" class="form-control" formControlName="dateFrom" placeholder="From"
-                  (change)="filterPurchaseOrders()" />
+                <input
+                  type="date"
+                  class="form-control"
+                  formControlName="dateFrom"
+                  placeholder="From"
+                  (change)="filterPurchaseOrders()"
+                />
               </div>
               <div class="col-2">
                 <label for="">To</label>
-                <input type="date" class="form-control" formControlName="dateTo" placeholder="To"
-                  (change)="filterPurchaseOrders()" />
+                <input
+                  type="date"
+                  class="form-control"
+                  formControlName="dateTo"
+                  placeholder="To"
+                  (change)="filterPurchaseOrders()"
+                />
               </div>
             </div>
           </form>
         </div>
 
-
-
         <div id="print-section" class="row mt-4">
           <div class="col-12">
             <table class="table table-hover text-center">
-              <thead style="box-shadow: inset 0x 0x 4px 1px black !important" class="bg-primary text-white">
+              <thead
+                style="box-shadow: inset 0x 0x 4px 1px black !important"
+                class="bg-primary text-white"
+              >
                 <tr>
                   <th><b>#</b></th>
                   <th><b>Purchase Number</b></th>
@@ -235,66 +351,107 @@
                 </tr>
               </thead>
               <tbody id="table_body">
-                <tr style="margin-top: 1px;box-shadow: inset 0x 0x 4px 1px black !important"
-                  *ngFor="let line of procurementData; let i = index">
-                  <td>{{i+1}}</td>
-                  <td class="click" (click)="viewOrderDetails(i)" style="cursor: pointer;"><span
-                      style="color:blue;">{{line.orderNumber}}</span>
+                <tr
+                  style="
+                    margin-top: 1px;
+                    box-shadow: inset 0x 0x 4px 1px black !important;
+                  "
+                  *ngFor="let line of procurementData; let i = index"
+                >
+                  <td>{{ i + 1 }}</td>
+                  <td
+                    class="click"
+                    (click)="viewOrderDetails(i)"
+                    style="cursor: pointer"
+                  >
+                    <span style="color: blue">{{ line.orderNumber }}</span>
                   </td>
-                  <td>{{line.supplierNumber}} - {{line.supplierName}}</td>
-                  <td>{{line.origin}}</td>
-                  <td>{{ line.creationDate | date: 'dd/MM/yyyy' }}</td>
-                  <td>{{ line.requestedDate | date: 'dd/MM/yyyy' }}</td>
+                  <td>{{ line.supplierNumber }} - {{ line.supplierName }}</td>
+                  <td>{{ line.origin }}</td>
+                  <td>{{ line.creationDate | date: "dd/MM/yyyy" }}</td>
+                  <td>{{ line.requestedDate | date: "dd/MM/yyyy" }}</td>
                   <td *ngIf="EditRowId != line.orderNumber">
-                    {{ line.arrivalDate | date: 'dd/MM/yyyy' }}</td>
+                    {{ line.arrivalDate | date: "dd/MM/yyyy" }}
+                  </td>
                   <td *ngIf="EditRowId == line.orderNumber">
-                    <input (change)="updateArrivalDate($event,line.orderNumber)" type="date" class="form-control">
+                    <input
+                      (change)="updateArrivalDate($event, line.orderNumber)"
+                      type="date"
+                      class="form-control"
+                    />
                   </td>
                   <td>
                     <!-- <span *ngIf="line.stockitems[0].isStock">Stock</span>
                     <span *ngIf="line.stockitems[0].cusomerOrders" (mouseup)="this.modalService.dismissAll()" (mousedown)="this.modalService.open(purchaseDestination)">{{line.stockitems[0].cusomerOrders[0]}}</span> -->
-                    <select [ngClass]="line.stockitems.length > 1 ? 'form-control' : 'custom-select'">
-                      <ng-container *ngFor="let item of line.stockitems; let j = index">
-                        <option *ngIf="item.isStock">
-                          Stock
-                        </option>
-                        <ng-container *ngIf="item.customerOrders && item.customerOrders.length > 0">
-                          <option *ngFor="let orderNumber of item.customerOrders">
-                            {{orderNumber}}
+                    <select
+                      [ngClass]="
+                        line.stockitems.length > 1
+                          ? 'form-control'
+                          : 'custom-select'
+                      "
+                    >
+                      <ng-container
+                        *ngFor="let item of line.stockitems; let j = index"
+                      >
+                        <option *ngIf="item.isStock">Stock</option>
+                        <ng-container
+                          *ngIf="
+                            item.customerOrders &&
+                            item.customerOrders.length > 0
+                          "
+                        >
+                          <option
+                            *ngFor="let orderNumber of item.customerOrders"
+                          >
+                            {{ orderNumber }}
                           </option>
                         </ng-container>
                       </ng-container>
                     </select>
                   </td>
-                  <td *ngIf="EditRowId != line.orderNumber">{{line.remarks}}
+                  <td *ngIf="EditRowId != line.orderNumber">
+                    {{ line.remarks }}
                   </td>
                   <td *ngIf="EditRowId == line.orderNumber">
-                    <textarea [value]="line.remarks" #purchaseRemarks></textarea>
+                    <textarea
+                      [value]="line.remarks"
+                      #purchaseRemarks
+                    ></textarea>
                   </td>
-                  <td [style.background]="setStatusColor(line.status)" [style.color]="setStatusTextColor(line.status)">
-                    <label>{{hebStat(line.status)}} {{line.statusChange | date: 'dd/MM/yyyy'}}</label>
+                  <td
+                    [style.background]="setStatusColor(line.status)"
+                    [style.color]="setStatusTextColor(line.status)"
+                  >
+                    <label
+                      >{{ hebStat(line.status) }}
+                      {{ line.statusChange | date: "dd/MM/yyyy" }}</label
+                    >
                   </td>
-                  <td><button class="btn btn-primary" (click)="printOrder(line)">Print</button></td>
-                  <td>{{line.user}}</td>
+                  <td>
+                    <button class="btn btn-primary" (click)="printOrder(line)">
+                      Print
+                    </button>
+                  </td>
+                  <td>{{ line.user }}</td>
                 </tr>
               </tbody>
             </table>
             <div *ngIf="showLoader" class="smallLoader mx-auto my-auto"></div>
           </div>
         </div>
-
       </div>
     </ng-template>
   </ng-container>
 </nav>
 <div [ngbNavOutlet]="nav" class="mt-2"></div>
 
-<div *ngIf="showInfoModal == true" style="top:150px"
-  class="container border border-primary bg-white fixed-top text-center rounded shadow mx-auto my-auto p-2">
+<div
+  *ngIf="showInfoModal == true"
+  style="top: 150px"
+  class="container border border-primary bg-white fixed-top text-center rounded shadow mx-auto my-auto p-2"
+>
   <div class="row">
-    <div class="col-4">
-
-    </div>
+    <div class="col-4"></div>
     <div class="col-4">
       <h3>הוסף צפי תאריך / כמות ששולמה</h3>
     </div>
@@ -303,23 +460,25 @@
     </div>
   </div>
   <div class="row">
-
     <div class="col-2"></div>
     <div class="col-4">
-      <input type="text" class="form-control" [(ngModel)]="infoToStatus">
+      <input type="text" class="form-control" [(ngModel)]="infoToStatus" />
     </div>
     <div class="col-4">
-      <button (click)="addMoreInfo()" class="form-control btn btn-primary">Add</button>
+      <button (click)="addMoreInfo()" class="form-control btn btn-primary">
+        Add
+      </button>
     </div>
     <div class="col-2"></div>
-
   </div>
-
 </div>
 
-
-<div id="bill-section" *ngIf="priceAlert == true" style="top:300px"
-  class="container bg-danger fixed-top text-center rounded shadow mx-auto my-auto p-2">
+<div
+  id="bill-section"
+  *ngIf="priceAlert == true"
+  style="top: 300px"
+  class="container bg-danger fixed-top text-center rounded shadow mx-auto my-auto p-2"
+>
   <div class="row">
     <div class="col-12">
       <h2 class="text-white">שים לב המחיר הסופי אינו תואם !</h2>
@@ -328,27 +487,50 @@
   <div class="row">
     <div class="col-4"></div>
     <div class="col-4">
-      <button (click)="priceAlert=false;" class="form-control btn">אישור</button>
+      <button (click)="priceAlert = false" class="form-control btn">
+        אישור
+      </button>
     </div>
     <div class="col-4"></div>
   </div>
 </div>
-<div id="bill-section" *ngIf="bill == true" style="top:150px"
-  class="container bg-white fixed-top text-center rounded shadow mx-auto my-auto p-2">
+<div
+  id="bill-section"
+  *ngIf="bill == true"
+  style="top: 150px"
+  class="container bg-white fixed-top text-center rounded shadow mx-auto my-auto p-2"
+>
   <div class="row mt-2">
     <div class="col-4">
-      <button [printStyle]="{table:{'border-collapse':'collapse' },
-      td : {'border': '1px solid black'},
-      tr : {'border': 'solid 2px black'},
-      th : {'border': 'solid 2px black'},
-      button:{'display':'none'}}" style="background: none;border:none;cursor: pointer;" printSectionId="bill-section"
-        ngxPrint><img src="../../../../assets/images/print.png" alt="Print" style="width: 30px;"></button>
+      <button
+        [printStyle]="{
+          table: { 'border-collapse': 'collapse' },
+          td: { border: '1px solid black' },
+          tr: { border: 'solid 2px black' },
+          th: { border: 'solid 2px black' },
+          button: { display: 'none' }
+        }"
+        style="background: none; border: none; cursor: pointer"
+        printSectionId="bill-section"
+        ngxPrint
+      >
+        <img
+          src="../../../../assets/images/print.png"
+          alt="Print"
+          style="width: 30px"
+        />
+      </button>
     </div>
     <div class="col-4">
       <h3 class="text-primary">Bill</h3>
     </div>
     <div class="col-4">
-      <i (click)="bill = false" style="cursor: pointer;" class="fa fa-times" aria-hidden="true"></i>
+      <i
+        (click)="bill = false"
+        style="cursor: pointer"
+        class="fa fa-times"
+        aria-hidden="true"
+      ></i>
     </div>
   </div>
 
@@ -367,93 +549,118 @@
         </thead>
         <tbody>
           <tr *ngFor="let bill of billToPrint">
-            <td>{{bill.itemNumber}}</td>
-            <td>{{bill.price}}</td>
-            <td>{{bill.comaxNumber}}</td>
-            <td>{{bill.referenceNumber}}</td>
-            <td>{{bill.arrivedAmount}}</td>
-            <td>{{bill.arrivalDate | date: 'dd/MM/yyyy'}}</td>
+            <td>{{ bill.itemNumber }}</td>
+            <td>{{ bill.price }}</td>
+            <td>{{ bill.comaxNumber }}</td>
+            <td>{{ bill.referenceNumber }}</td>
+            <td>{{ bill.arrivedAmount }}</td>
+            <td>{{ bill.arrivalDate | date: "dd/MM/yyyy" }}</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
-
-
 </div>
 
-
-
-
-<div *ngIf="printBill==true" id="myModal3" class="modal3 position-fixed modal-inner"
-  style='border:1px; border-radius:5px;z-index: 1; left:300px;top:160px;font-size:20px;'>
+<div
+  *ngIf="printBill == true"
+  id="myModal3"
+  class="modal3 position-fixed modal-inner"
+  style="
+    border: 1px;
+    border-radius: 5px;
+    z-index: 1;
+    left: 300px;
+    top: 160px;
+    font-size: 20px;
+  "
+>
   <div id="billing-section">
-    <div class="modal-content" id='modelC'>
-      <div style="display: inline-block;" id="material-header" class="modal-header">
-
+    <div class="modal-content" id="modelC">
+      <div
+        style="display: inline-block"
+        id="material-header"
+        class="modal-header"
+      >
         <div class="row">
           <div class="col-5">
-            <img src="../../../../assets/images/logo.png">
+            <img src="../../../../assets/images/logo.png" />
           </div>
           <div class="col-6">
-            <p style="font-size: 12px;">Amal 17 Street, Afek Industry Park,Rosh Haayin 4809256</p>
-            <p style="font-size: 12px;">Tel:+972-3-9024055 Fax: +972-3-9024015 </p>
-            <p style="font-size: 12px;">Email: Office2@peerpharm.com</p>
+            <p style="font-size: 12px">
+              Amal 17 Street, Afek Industry Park,Rosh Haayin 4809256
+            </p>
+            <p style="font-size: 12px">
+              Tel:+972-3-9024055 Fax: +972-3-9024015
+            </p>
+            <p style="font-size: 12px">Email: Office2@peerpharm.com</p>
           </div>
 
           <div class="col-1">
-            <span class="close" id="closeId3" (click)="printBill=false;">&times;</span>
+            <span class="close" id="closeId3" (click)="printBill = false"
+              >&times;</span
+            >
           </div>
         </div>
-
       </div>
-      <hr>
+      <hr />
 
       <div class="row">
-        <div class="col-2 text-center"><button class="btn btn-warning rounded-pill" [printStyle]="{table:{'border-collapse':'collapse' },
-          td : {'border': '1px solid black'},
-          tr : {'border': 'solid 2px black'},
-          th : {'border': 'solid 2px black'},
-          button:{'display':'none'}}" style="padding:0px 35px" printSectionId="billing-section" ngxPrint
-            printTitle="Purchase Orders"><img src="../../../../assets/images/print.png" alt="Print" width="60px"
-              style="padding:0 20px 0 0">Print</button></div>
-
-        <div class="col-2">
+        <div class="col-2 text-center">
+          <button
+            class="btn btn-warning rounded-pill"
+            [printStyle]="{
+              table: { 'border-collapse': 'collapse' },
+              td: { border: '1px solid black' },
+              tr: { border: 'solid 2px black' },
+              th: { border: 'solid 2px black' },
+              button: { display: 'none' }
+            }"
+            style="padding: 0px 35px"
+            printSectionId="billing-section"
+            ngxPrint
+            printTitle="Purchase Orders"
+          >
+            <img
+              src="../../../../assets/images/print.png"
+              alt="Print"
+              width="60px"
+              style="padding: 0 20px 0 0"
+            />Print
+          </button>
         </div>
+
+        <div class="col-2"></div>
 
         <div class="col-4">
-          <b>Order:{{currentOrder.orderNumber}}</b>
-          <p style="margin-left:0;">Order Date:{{orderDate | date: 'dd/MM/yyyy'}}</p>
-          <p style="margin-left:0px;">Approval Date:{{arrivalDate | date: 'dd/MM/yyyy'}}</p>
+          <b>Order:{{ currentOrder.orderNumber }}</b>
+          <p style="margin-left: 0">
+            Order Date:{{ orderDate | date: "dd/MM/yyyy" }}
+          </p>
+          <p style="margin-left: 0px">
+            Approval Date:{{ arrivalDate | date: "dd/MM/yyyy" }}
+          </p>
         </div>
-
-        <div class="col-4">
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-4">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{currentOrder.supplierName}} - {{currentOrder.supplierNumber}}</p>
-        </div>
-
-        <div class="col-4"></div>
-
-
-      </div>
-
-      <div class="row">
-        <div class="col-4">
-          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{currentSupplier.address}}</p>
-        </div>
-
-        <div class="col-4"></div>
 
         <div class="col-4"></div>
       </div>
 
       <div class="row">
         <div class="col-4">
-          <p *ngIf="currentSupplier.phoneNum">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tel:{{currentSupplier.phoneNum}}</p>
+          <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {{ currentOrder.supplierName }} - {{ currentOrder.supplierNumber }}
+          </p>
+        </div>
+
+        <div class="col-4"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-4">
+          <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ currentSupplier.address }}
+          </p>
         </div>
 
         <div class="col-4"></div>
@@ -463,7 +670,11 @@
 
       <div class="row">
         <div class="col-4">
-          <p *ngIf="currentSupplier.faxNum">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fax:{{currentSupplier.faxNum}}</p>
+          <p *ngIf="currentSupplier.phoneNum">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tel:{{
+              currentSupplier.phoneNum
+            }}
+          </p>
         </div>
 
         <div class="col-4"></div>
@@ -471,7 +682,17 @@
         <div class="col-4"></div>
       </div>
 
+      <div class="row">
+        <div class="col-4">
+          <p *ngIf="currentSupplier.faxNum">
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fax:{{ currentSupplier.faxNum }}
+          </p>
+        </div>
 
+        <div class="col-4"></div>
+
+        <div class="col-4"></div>
+      </div>
 
       <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Order Details:</p>
       <div class="container" id="material-body" class="modal-body">
@@ -489,23 +710,33 @@
               <th>Unit Price (Foreign)</th>
               <th>Total Price (Foreign)</th>
               <th>Total Price (NIS)</th>
-
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let item of currentItems;let i = index;">
-              <td>{{i+1}}</td>
-              <td *ngIf="showImage == true"><img style="width:50px;" alt="Item Image" [src]="item.img"></td>
-              <td>{{item.number}}</td>
-              <td>{{item.componentNs}}</td>
-              <td>{{item.name}}</td>
-              <td>{{item.remarks}}</td>
-              <td>{{item.quantity}}</td>
+            <tr *ngFor="let item of currentItems; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td *ngIf="showImage == true">
+                <img style="width: 50px" alt="Item Image" [src]="item.img" />
+              </td>
+              <td>{{ item.number }}</td>
+              <td>{{ item.componentNs }}</td>
+              <td>{{ item.name }}</td>
+              <td>{{ item.remarks }}</td>
+              <td>{{ item.quantity }}</td>
 
-              <td>{{item.price}} {{item.coin | currencySymbol}}</td>
-              <td>{{item.itemPrice}} {{item.coin | currencySymbol}}</td>
-              <td><span *ngIf="item.localTotal">{{item.localTotal | number}}{{nisSymbol}}</span></td>
-
+              <td>
+                {{ item.price | number: "1.2" }}
+                {{ item.coin | currencySymbol }}
+              </td>
+              <td>
+                {{ item.itemPrice | number: "1.2" }}
+                {{ item.coin | currencySymbol }}
+              </td>
+              <td>
+                <span *ngIf="item.localTotal"
+                  >{{ item.localTotal | number: "1.0-2" }}{{ nisSymbol }}</span
+                >
+              </td>
             </tr>
             <tr *ngIf="country == true">
               <td></td>
@@ -514,10 +745,18 @@
               <td></td>
               <td></td>
               <td></td>
-              <td><b>{{totalAmount}}</b></td>
+              <td>
+                <b>{{ totalAmount }}</b>
+              </td>
               <td></td>
-              <td><b *ngIf="printSum">{{totalPrice}}{{currCoin}}</b></td>
-              <td><b>{{totalPriceNis | number}}{{nisSymbol}}</b></td>
+              <td>
+                <b *ngIf="printSum"
+                  >{{ totalPrice | number: "1.0-2" }}{{ currCoin }}</b
+                >
+              </td>
+              <td>
+                <b>{{ totalPriceNis | number: "1.0-2" }}{{ nisSymbol }}</b>
+              </td>
             </tr>
             <ng-container *ngIf="country == false">
               <tr>
@@ -527,10 +766,18 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td><b>{{totalAmount}}</b></td>
+                <td>
+                  <b>{{ totalAmount }}</b>
+                </td>
                 <td></td>
-                <td dir="rtl"><b *ngIf="printSum">{{totalPrice | number}}{{currCoin}}</b></td>
-                <td><b>{{totalPriceNis | number}}{{nisSymbol}}</b></td>
+                <td dir="rtl">
+                  <b *ngIf="printSum"
+                    >{{ totalPrice | number: "1.0-2" }}{{ currCoin }}</b
+                  >
+                </td>
+                <td>
+                  <b>{{ totalPriceNis | number: "1.0-2" }}{{ nisSymbol }}</b>
+                </td>
               </tr>
             </ng-container>
           </tbody>
@@ -538,68 +785,74 @@
 
         <div dir="rtl" *ngIf="country == false">
           <div class="row">
-            <b *ngIf="printSum">סה"כ לפני מע"מ: {{totalPrice | number}}{{currCoin}}</b>
+            <b *ngIf="printSum"
+              >סה"כ לפני מע"מ: {{ totalPrice | number: "1.0-2"
+              }}{{ currCoin }}</b
+            >
           </div>
           <div class="row">
-            <b>17% מע"מ: {{priceTaxes | number}}{{currCoin}}</b>
+            <b>17% מע"מ: {{ priceTaxes | number: "1.0-2" }}{{ currCoin }}</b>
           </div>
           <div class="row">
-            <b>סה"כ כולל מע"מ: {{totalPriceWithTaxes}}{{currCoin}}</b>
+            <b
+              >סה"כ כולל מע"מ: {{ totalPriceWithTaxes | number: "1.0-2"
+              }}{{ currCoin }}</b
+            >
           </div>
         </div>
 
         <div class="row">
-          <div style="display: inline-block;" class="col-6">
+          <div style="display: inline-block" class="col-6">
             <!-- <p style="margin-left:480px;font-size: 15px;display: inline-block;">Total Amont: {{totalAmount}}</p> &nbsp;
             &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
             <p style="font-size: 15px;display: inline-block;">Total Price: {{totalPrice}}</p> -->
           </div>
-          <div style="display: inline-block;" class="col-6">
-
-          </div>
+          <div style="display: inline-block" class="col-6"></div>
         </div>
 
         <div class="row">
           <div class="col-6">
-            {{outOfCountry}}
+            {{ outOfCountry }}
           </div>
-          <br>
+          <br />
           <div class="col-6">
-            {{importantRemarks}}
+            {{ importantRemarks }}
           </div>
         </div>
         <div class="row">
           <div class="col-12">
             <p>This order must be confirmed by supplier.</p>
           </div>
-
         </div>
         <div class="row">
           <div class="col-12">
-            <p>
-              Thank you,
-            </p>
+            <p>Thank you,</p>
           </div>
         </div>
         <div class="row">
           <div class="col-4">
-            {{currentOrder.user}}
+            {{ currentOrder.user }}
           </div>
         </div>
-
       </div>
-
     </div>
   </div>
 </div>
 
-<div *ngIf="orderDetailsModal==true" class="fixed-top text-center p-3 modal-inner">
-  <app-new-procurement [requestToPurchase]="requestToPurchase" [isEdit]="isEdit" [currencies]="currencies"
-    [purchaseData]="purchaseData" (newProcurementSaved)="newProcurementSaved($event)"
-    (closeOrderModal)='closeOrderModal($event)'>
+<div
+  *ngIf="orderDetailsModal == true"
+  class="fixed-top text-center p-3 modal-inner"
+>
+  <app-new-procurement
+    [requestToPurchase]="requestToPurchase"
+    [isEdit]="isEdit"
+    [currencies]="currencies"
+    [purchaseData]="purchaseData"
+    (newProcurementSaved)="newProcurementSaved($event)"
+    (closeOrderModal)="closeOrderModal($event)"
+  >
   </app-new-procurement>
 </div>
-
 
 <!-- <div *ngIf="newPurchaseModal == true"
   class="new-purchase-modal border bg-white container fixed-top text-center p-1">
@@ -609,23 +862,30 @@
   <app-new-procurement  (newProcurementSaved)="showLoader = true; getAllProcurementOrders()"></app-new-procurement>
 </div> -->
 
-<div *ngIf="purchaseRecommendationsModal == true"
-  class="border border-primary bg-white shadow-lg rounded container-fluid fixed-top my-auto text-center p-1 h-100 inner">
-
+<div
+  *ngIf="purchaseRecommendationsModal == true"
+  class="border border-primary bg-white shadow-lg rounded container-fluid fixed-top my-auto text-center p-1 h-100 inner"
+>
   <div class="row mt-2">
     <div class="col-1"></div>
     <div class="col-10">
       <h1 class="text-primary">Purchase Requests</h1>
     </div>
     <div class="col-1">
-      <i (click)="closePurchaseRequestsModal()" class="fa fa-times h1 click close"></i>
+      <i
+        (click)="closePurchaseRequestsModal()"
+        class="fa fa-times h1 click close"
+      ></i>
     </div>
   </div>
 
   <div class="row mt-1">
     <div class="col-1"></div>
     <div class="col-3">
-      <select (change)="filterRecByType($event)" class="form-control rounded-pill">
+      <select
+        (change)="filterRecByType($event)"
+        class="form-control rounded-pill"
+      >
         <option selected="true" disabled="disabled">Choose Type</option>
         <option value="all">All</option>
         <option value="components">Components</option>
@@ -633,12 +893,21 @@
       </select>
     </div>
     <div class="col-3">
-      <input (change)="filterRecByNumber($event)" type="text" class="form-control rounded-pill"
-        placeholder="Search By Number">
+      <input
+        (change)="filterRecByNumber($event)"
+        type="text"
+        class="form-control rounded-pill"
+        placeholder="Search By Number"
+      />
     </div>
     <div class="col-3"></div>
     <div class="col-1">
-      <button (click)="moveToNewPurchase()" class="btn btn-primary form-control rounded-pill">Order</button>
+      <button
+        (click)="moveToNewPurchase()"
+        class="btn btn-primary form-control rounded-pill"
+      >
+        Order
+      </button>
     </div>
     <div class="col-1"></div>
     <!-- <div class="col-3">
@@ -648,10 +917,18 @@
 
   <div *ngIf="loadingRecommendations">
     <div *ngIf="loadingRecommendations" class="smallLoader ml-5"></div>
-    <h3 class="bg-warning text-primary rounded-pill w-25 p-10 mx-auto">Please be patient. It might take a while...</h3>
+    <h3 class="bg-warning text-primary rounded-pill w-25 p-10 mx-auto">
+      Please be patient. It might take a while...
+    </h3>
   </div>
-  <div *ngIf="purchaseRecommendations && purchaseRecommendations.length > 0 && !loadingRecommendations"
-    class="requests row mt-1">
+  <div
+    *ngIf="
+      purchaseRecommendations &&
+      purchaseRecommendations.length > 0 &&
+      !loadingRecommendations
+    "
+    class="requests row mt-1"
+  >
     <div class="col-12">
       <table class="table table-striped">
         <thead class="bg-warning text-white">
@@ -670,9 +947,9 @@
         <tbody *ngFor="let purchaseRecommendation of purchaseRecommendations">
           <ng-container>
             <tr>
-              <th scope="row">{{purchaseRecommendation.recommendNumber}}</th>
-              <td>{{purchaseRecommendation.date | date}}</td>
-              <td>{{purchaseRecommendation.status}}</td>
+              <th scope="row">{{ purchaseRecommendation.recommendNumber }}</th>
+              <td>{{ purchaseRecommendation.date | date }}</td>
+              <td>{{ purchaseRecommendation.status }}</td>
               <td>
                 <table class="table table-sm">
                   <thead>
@@ -686,35 +963,63 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr *ngFor="let stockitem of purchaseRecommendation.stockitems">
-                      <td><input type="checkbox" title={{purchaseRecommendation.recommendNumber}}
-                          (change)="isSelected($event,stockitem)">
+                    <tr
+                      *ngFor="
+                        let stockitem of purchaseRecommendation.stockitems
+                      "
+                    >
+                      <td>
+                        <input
+                          type="checkbox"
+                          title="{{ purchaseRecommendation.recommendNumber }}"
+                          (change)="isSelected($event, stockitem)"
+                        />
                       </td>
-                      <td [style.background]="stockitem.urgent ? 'red' : ''"
-                        [ngbTooltip]="stockitem.urgent ? 'בהול!!!' : ''">
-                        {{stockitem.number}}
+                      <td
+                        [style.background]="stockitem.urgent ? 'red' : ''"
+                        [ngbTooltip]="stockitem.urgent ? 'בהול!!!' : ''"
+                      >
+                        {{ stockitem.number }}
                       </td>
                       <td [style.background]="stockitem.color">
-                        {{stockitem.name}} <a *ngIf="stockitem.lastorder" target="_blank"
-                          href="/#/peerpharm/procurement/procurementOrders?orderNumber={{stockitem.lastorder.orderNumber}}">
-                          <i class="fas fa-info" placement="bottom" ngbTooltip={{stockitem.tooltip}}></i></a>
+                        {{ stockitem.name }}
+                        <a
+                          *ngIf="stockitem.lastorder"
+                          target="_blank"
+                          href="/#/peerpharm/procurement/procurementOrders?orderNumber={{
+                            stockitem.lastorder.orderNumber
+                          }}"
+                        >
+                          <i
+                            class="fas fa-info"
+                            placement="bottom"
+                            ngbTooltip="{{ stockitem.tooltip }}"
+                          ></i
+                        ></a>
                       </td>
                       <td>
-                        {{stockitem.quantity}}
+                        {{ stockitem.quantity }}
                       </td>
                       <td>
-                        {{stockitem.customerOrder}}
+                        {{ stockitem.customerOrder }}
                       </td>
                       <td>
-                        {{stockitem.remarks}}
+                        {{ stockitem.remarks }}
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </td>
-              <td>{{purchaseRecommendation.remarks}}</td>
+              <td>{{ purchaseRecommendation.remarks }}</td>
               <td>
-                <button (click)="deletePurchaseRequest(purchaseRecommendation.recommendNumber)" class="btn btn-danger">
+                <button
+                  (click)="
+                    deletePurchaseRequest(
+                      purchaseRecommendation.recommendNumber
+                    )
+                  "
+                  class="btn btn-danger"
+                >
                   <i class="fas fa-trash"></i> Delete
                 </button>
                 <!-- <button (click)="approveRequest(purchaseRecommendation.recommendNumber)"
@@ -722,36 +1027,42 @@
                 </button> -->
               </td>
               <td>
-                <button (click)="printPurchaseRequest(purchaseRecommendation.recommendNumber)"
-                  class="btn btn-secondary"><img style="width: 30px;" src="../../../../assets/images/print.png"
-                    alt="">Print
+                <button
+                  (click)="
+                    printPurchaseRequest(purchaseRecommendation.recommendNumber)
+                  "
+                  class="btn btn-secondary"
+                >
+                  <img
+                    style="width: 30px"
+                    src="../../../../assets/images/print.png"
+                    alt=""
+                  />Print
                 </button>
               </td>
             </tr>
           </ng-container>
-
         </tbody>
       </table>
     </div>
   </div>
-
 </div>
 
-<div id="printRecommend" *ngIf="currRecommend" class="container p-3 bg-white d-none">
+<div
+  id="printRecommend"
+  *ngIf="currRecommend"
+  class="container p-3 bg-white d-none"
+>
   <div class="row m-1">
+    <div class="col-4">Date: {{ currRecommend.date | date: "dd/MM/yyyy" }}</div>
     <div class="col-4">
-      Date: {{currRecommend.date | date: 'dd/MM/yyyy'}}
+      <h3>Recommend - {{ currRecommend.recommendNumber }}</h3>
     </div>
-    <div class="col-4">
-      <h3>Recommend - {{currRecommend.recommendNumber}}</h3>
-    </div>
-    <div class="col-4">
-      Supplier: {{currRecommend.supplierName}}
-    </div>
+    <div class="col-4">Supplier: {{ currRecommend.supplierName }}</div>
   </div>
-  <br>
-  <hr>
-  <br>
+  <br />
+  <hr />
+  <br />
   <div class="row">
     <div class="col-12">
       <table class="table table-striped table-bordered">
@@ -764,42 +1075,52 @@
         </thead>
         <tbody>
           <tr *ngFor="let stockitem of currRecommend.stockitems">
-            <td>{{stockitem.stockitemNumber}}</td>
-            <td>{{stockitem.stockitemName}}</td>
-            <td>{{stockitem.amount}}</td>
+            <td>{{ stockitem.stockitemNumber }}</td>
+            <td>{{ stockitem.stockitemName }}</td>
+            <td>{{ stockitem.amount }}</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
-  <br>
-  <hr>
-  <br>
+  <br />
+  <hr />
+  <br />
   <div class="row mt-2">
     <div class="col-12">
-      <span>Importrant Remarks: {{currRecommend.remarks}}</span>
+      <span>Importrant Remarks: {{ currRecommend.remarks }}</span>
     </div>
   </div>
-
 </div>
 
-<div *ngIf="invoiceModal == true" style="top:200px;"
-  class="container bg-white fixed-top text-center rounded shadow mx-auto my-auto p-2">
+<div
+  *ngIf="invoiceModal == true"
+  style="top: 200px"
+  class="container bg-white fixed-top text-center rounded shadow mx-auto my-auto p-2"
+>
   <div class="row">
+    <div class="col-4"></div>
     <div class="col-4">
-
+      <button
+        [printStyle]="{
+          table: { 'border-collapse': 'collapse' },
+          td: { border: '1px solid black' },
+          tr: { border: 'solid 2px black' },
+          th: { border: 'solid 2px black' },
+          button: { display: 'none' }
+        }"
+        style="border: none; background: transparent; font-size: 30px"
+        printSectionId="invoice-section"
+        ngxPrint
+      >
+        אישור חשבונית
+      </button>
     </div>
     <div class="col-4">
-      <button [printStyle]="{table:{'border-collapse':'collapse' },
-      td : {'border': '1px solid black'},
-      tr : {'border': 'solid 2px black'},
-      th : {'border': 'solid 2px black'},
-      button:{'display':'none'}}" style="border:none;background:transparent;font-size: 30px;"
-        printSectionId="invoice-section" ngxPrint>אישור
-        חשבונית</button>
-    </div>
-    <div class="col-4">
-      <i (click)="invoiceModal = false;" class="fa fa-times text-primary h2 click close"></i>
+      <i
+        (click)="invoiceModal = false"
+        class="fa fa-times text-primary h2 click close"
+      ></i>
     </div>
   </div>
 
@@ -821,28 +1142,35 @@
         <tbody>
           <ng-container *ngFor="let item of currentInvoice.invoices">
             <tr *ngIf="item.changedQuantity || item.changedItemPrice">
-              <td>{{item.itemNumber}}</td>
-              <td>{{item.itemName}}</td>
-              <td>{{item.quantity}} <small class="text-success font-weight-bold"><u>{{item.changedQuantity}}</u></small>
+              <td>{{ item.itemNumber }}</td>
+              <td>{{ item.itemName }}</td>
+              <td>
+                {{ item.quantity }}
+                <small class="text-success font-weight-bold"
+                  ><u>{{ item.changedQuantity }}</u></small
+                >
               </td>
-              <td>{{item.supplierPrice}} <small
-                  class="text-success font-weight-bold"><u>{{item.changedItemPrice}}</u></small></td>
-              <td>{{item.price}}</td>
-              <td class="text-success">{{item.fixedQuantity}}</td>
-              <td>{{item.fixedPrice}}</td>
-              <td>{{item.chargeSupplier}}</td>
+              <td>
+                {{ item.supplierPrice }}
+                <small class="text-success font-weight-bold"
+                  ><u>{{ item.changedItemPrice }}</u></small
+                >
+              </td>
+              <td>{{ item.price }}</td>
+              <td class="text-success">{{ item.fixedQuantity }}</td>
+              <td>{{ item.fixedPrice }}</td>
+              <td>{{ item.chargeSupplier }}</td>
             </tr>
             <tr *ngIf="!item.changedQuantity && !item.changedItemPrice">
-              <td>{{item.itemNumber}}</td>
-              <td>{{item.itemName}}</td>
-              <td>{{item.quantity}}</td>
-              <td>{{item.supplierPrice}}</td>
-              <td>{{item.price}}</td>
-              <td class="text-success">{{item.fixedQuantity}}</td>
-              <td>{{item.fixedPrice}}</td>
-              <td>{{item.chargeSupplier}}</td>
+              <td>{{ item.itemNumber }}</td>
+              <td>{{ item.itemName }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.supplierPrice }}</td>
+              <td>{{ item.price }}</td>
+              <td class="text-success">{{ item.fixedQuantity }}</td>
+              <td>{{ item.fixedPrice }}</td>
+              <td>{{ item.chargeSupplier }}</td>
             </tr>
-
           </ng-container>
           <tr>
             <td></td>
@@ -852,7 +1180,9 @@
             <td></td>
             <td></td>
             <td></td>
-            <td class="font-weight-bold" dir="rtl">סה"כ לפני מע"מ: {{sumCharge}}</td>
+            <td class="font-weight-bold" dir="rtl">
+              סה"כ לפני מע"מ: {{ sumCharge }}
+            </td>
           </tr>
           <tr>
             <td></td>
@@ -862,7 +1192,9 @@
             <td></td>
             <td></td>
             <td></td>
-            <td class="font-weight-bold" dir="rtl">סה"כ אחרי מע"מ: {{sumChargeTaxes}} </td>
+            <td class="font-weight-bold" dir="rtl">
+              סה"כ אחרי מע"מ: {{ sumChargeTaxes }}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -871,16 +1203,28 @@
 </div>
 
 <!--Print Purchase Request-->
-<div style="visibility: hidden;" id="purchase-request" class="row">
-  <button #printRequest [printStyle]="{table:{'border-collapse':'collapse', 'font-size': '30px' },
-  td : {'border': '1px solid black'},
-  tr : {'border': 'solid 2px black'},
-  th : {'border': 'solid 2px black'},
-  button:{'display':'none'}}" style="visibility: hidden;" printSectionId="purchase-request" ngxPrint></button>
+<div style="visibility: hidden" id="purchase-request" class="row">
+  <button
+    #printRequest
+    [printStyle]="{
+      table: { 'border-collapse': 'collapse', 'font-size': '30px' },
+      td: { border: '1px solid black' },
+      tr: { border: 'solid 2px black' },
+      th: { border: 'solid 2px black' },
+      button: { display: 'none' }
+    }"
+    style="visibility: hidden"
+    printSectionId="purchase-request"
+    ngxPrint
+  ></button>
   <div class="col-12">
-    <h1 dir="rtl">בקשת רכש מספר {{purchaseRecommendationToPrint.recommendNumber}}</h1>
-    <h2 dir="rtl">נפתחה ע"י {{purchaseRecommendationToPrint.user}}</h2>
-    <h3 dir="rtl">בתאריך {{purchaseRecommendationToPrint.date | date: 'short'}}</h3>
+    <h1 dir="rtl">
+      בקשת רכש מספר {{ purchaseRecommendationToPrint.recommendNumber }}
+    </h1>
+    <h2 dir="rtl">נפתחה ע"י {{ purchaseRecommendationToPrint.user }}</h2>
+    <h3 dir="rtl">
+      בתאריך {{ purchaseRecommendationToPrint.date | date: "short" }}
+    </h3>
 
     <h4 dir="rtl">פריטים:</h4>
 
@@ -897,19 +1241,19 @@
       <tbody>
         <tr *ngFor="let stockitem of purchaseRecommendationToPrint.stockitems">
           <td>
-            {{stockitem.number}}
+            {{ stockitem.number }}
           </td>
           <td>
-            {{stockitem.name}}
+            {{ stockitem.name }}
           </td>
           <td>
-            {{stockitem.quantity}}
+            {{ stockitem.quantity }}
           </td>
           <td>
-            {{stockitem.customerOrder}}
+            {{ stockitem.customerOrder }}
           </td>
           <td>
-            {{stockitem.remarks}}
+            {{ stockitem.remarks }}
           </td>
         </tr>
       </tbody>
@@ -917,32 +1261,38 @@
   </div>
 </div>
 
-
 <ng-template class="p-6" #updateCurrencies let-modal>
   <div class="modal-header bg-primary">
     <h4 class="modal-title text-center" id="modal-basic-title">הזנת שערים</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <button
+      type="button"
+      class="close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    >
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
   <div dir="rtl" class="modal-body p-5">
     <div class="col-md-4 form-group">
       <label>USD &#x24;</label>
-      <input class="form-control" type="number" [(ngModel)]="currencies.USD">
+      <input class="form-control" type="number" [(ngModel)]="currencies.USD" />
     </div>
     <div class="col-md-4 form-group">
       <label>EUR &#x20AC;</label>
-      <input class="form-control" type="number" [(ngModel)]="currencies.EUR">
+      <input class="form-control" type="number" [(ngModel)]="currencies.EUR" />
     </div>
     <div class="col-md-4 form-group">
       <label>GBP &#xa3;</label>
-      <input class="form-control" type="number" [(ngModel)]="currencies.GBP">
+      <input class="form-control" type="number" [(ngModel)]="currencies.GBP" />
     </div>
     <div class="col-md-4 form-group">
       <label>JPY </label>
-      <input class="form-control" type="number" [(ngModel)]="currencies.JPY">
+      <input class="form-control" type="number" [(ngModel)]="currencies.JPY" />
     </div>
-    <button (click)="setCurrencies(); modal.dismiss('Cross click')">שמור שינויים</button>
+    <button (click)="setCurrencies(); modal.dismiss('Cross click')">
+      שמור שינויים
+    </button>
   </div>
 </ng-template>
 
@@ -953,22 +1303,32 @@
       <div class="mt-2 p-2" *ngIf="item.isStock || item.customerOrders">
         <span *ngIf="item.isStock">Stock</span>
         <span *ngIf="item.customerOrders && item.customerOrders.length > 0">
-          <span *ngFor="let orderNumber of item.customerOrders">{{orderNumber}}</span><br>
+          <span *ngFor="let orderNumber of item.customerOrders">{{
+            orderNumber
+          }}</span
+          ><br />
         </span>
       </div>
     </ng-container>
   </div>
 </ng-template>
 
-<div *ngIf="problematicsModal"
-  class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal batches-modal p-5">
-  <app-problematic-items [problematicItems]="problematicItems" [type]="problematicsType" (closed)="problematicsModal = false">
+<div
+  *ngIf="problematicsModal"
+  class="border border-info bg-white container fixed-top mx-auto my-auto text-center orderModal batches-modal p-5"
+>
+  <app-problematic-items
+    [problematicItems]="problematicItems"
+    [type]="problematicsType"
+    (closed)="problematicsModal = false"
+  >
   </app-problematic-items>
 </div>
 
-<div *ngIf="problematicsModalSelect"
-  class="border border-info bg-white container fixed-top mx-auto my-auto text-center p-5">
-
+<div
+  *ngIf="problematicsModalSelect"
+  class="border border-info bg-white container fixed-top mx-auto my-auto text-center p-5"
+>
   <h3>Please select item type</h3>
 
   <select class="form-control" #problemType>
@@ -977,8 +1337,9 @@
     <option value="all">All</option>
   </select>
 
-  <br><br><br>
+  <br /><br /><br />
 
-  <button (click)="getProblematicsReport(problemType)" class="btn btn-primary">Go</button>
-
+  <button (click)="getProblematicsReport(problemType)" class="btn btn-primary">
+    Go
+  </button>
 </div>
