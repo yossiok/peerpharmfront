@@ -817,111 +817,6 @@ export class ScheduleComponent implements OnInit {
   }
 
   async updateSchedule(line) {
-    const today = new Date();
-    const year = today.getFullYear();
-    const mount = today.getMonth();
-    const day = today.getDay();
-    const scheduleLineDate = new Date(line.date);
-    const scheduleYear = scheduleLineDate.getFullYear();
-    const scheduleMount = scheduleLineDate.getMonth();
-    const scheduleDay = scheduleLineDate.getDay();
-    if (year == scheduleYear && mount == scheduleMount && day == scheduleDay) {
-      let editReason = prompt("אנא הכנס/י את סיבת העדכון", "");
-      editReason = editReason.trim();
-      if (editReason != null && editReason != "") {
-        document.getElementById("editReason").innerHTML = editReason;
-        if (this.orderN.nativeElement.value != "") {
-          let scdLneInfo = await this.scheduleData.filter(
-            (sced) => sced._id == this.EditRowId
-          );
-
-          let updateOrderItemDate =
-            scdLneInfo[0].date == this.date.nativeElement.value;
-
-          let strHe = "";
-          let strEn = "";
-          let strAr = "";
-          let strRs = "";
-          if (this.remarksLangues.length > 0) {
-            if (this.remarksToAdd.length > 0) {
-              this.remarksToAdd.map((rem) => {
-                if (this.remarksLangues.includes("heb")) {
-                  strHe += rem.heb + ", ";
-                }
-                if (this.remarksLangues.includes("eng")) {
-                  strEn += rem.eng + ", ";
-                }
-                if (this.remarksLangues.includes("arab")) {
-                  strAr += rem.arab + ", ";
-                }
-                if (this.remarksLangues.includes("rus")) {
-                  strRs += rem.rus + ", ";
-                }
-              });
-            }
-            this.remarksLangues = [];
-            this.remarksToAdd = [];
-          }
-
-          let scheduleToUpdate: any = {
-            _id: line._id,
-            positionN: this.positionN.nativeElement.value,
-            orderN: this.orderN.nativeElement.value,
-            item: this.item.nativeElement.value,
-            costumer: this.costumer.nativeElement.value,
-            productName: this.productName.nativeElement.value,
-            batch: this.batch.nativeElement.value,
-            packageP: this.packageP.nativeElement.value,
-            qty: this.qty.nativeElement.value,
-            qtyProduced: "",
-            date: this.date.nativeElement.value,
-            marks: this.marks.nativeElement.value,
-            shift:
-              this.shift.nativeElement.value +
-              "\n" +
-              strHe +
-              "\n" +
-              strRs +
-              "\n" +
-              strAr +
-              "\n" +
-              strEn +
-              "\n",
-            mkp: this.currentType,
-            itemImpRemark: scdLneInfo[0].itemImpRemark,
-            whatIsMissing: this.whatIsMissing.nativeElement.value,
-          };
-
-          if (this.typeShown == "unpacked") {
-            scheduleToUpdate.status = "";
-            scdLneInfo[0].status = "";
-          }
-          this.scheduleService
-            .editSchedule(scheduleToUpdate, editReason)
-            .subscribe((res) => {
-              this.EditRowId = 0;
-              scheduleToUpdate.date3 = moment(scheduleToUpdate.date).format(
-                "YYYY-MM-DD"
-              );
-              this.scheduleData[
-                this.scheduleData.findIndex(
-                  (sced) => sced._id == scheduleToUpdate._id
-                )
-              ] = scheduleToUpdate;
-              this.editRadioBtnType = "";
-              if (updateOrderItemDate) {
-                //update orderItemSchedule
-              }
-            });
-        } else {
-          alert(
-            'מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.'
-          );
-        }
-      } else {
-        this.toastSrv.warning("חייב לציין את סיבת עריכת השורה");
-      }
-    } else {
       if (this.orderN.nativeElement.value != "") {
         let scdLneInfo = await this.scheduleData.filter(
           (sced) => sced._id == this.EditRowId
@@ -1009,7 +904,7 @@ export class ScheduleComponent implements OnInit {
           'מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.'
         );
       }
-    }
+    
   }
 
   setItemDetails(itemNumber) {
