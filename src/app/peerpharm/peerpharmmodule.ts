@@ -200,14 +200,6 @@ import { CreamBarrelComponent } from "./inventory/creamBarrel/creamBarrel.compon
 import { BulksReportComponent } from "./batches/bulks-inventory/bulks-report/bulks-report.component";
 import { TemperaturesLogsComponent } from "./qa/temperaturesLogs/temperaturesLogs.component";
 import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
-// import { MkupFormComponent } from "./forms/mkupForm/mkupForm.component";
-// import { FillingComponent } from "./forms/mkupForm/filling/filling.component";
-// import { LaserComponent } from "./forms/mkupForm/laser/laser.component";
-// import { MkupProductionComponent } from "./forms/mkupForm/mkupProduction/mkupProduction.component";
-// import { PersonalPackagingComponent } from "./forms/mkupForm/PersonalPackaging/personalPackaging.component";
-// import { MkupFormPrintingComponent } from "./forms/mkupForm/mkupFormPrinting/mkupFormPrinting.component";
-// import { StickerComponent } from "./forms/mkupForm/sticker/sticker.component";
-
 import { StockProposalComponent } from "./customers/stock-proposal/stock-proposal.component";
 @NgModule({
   exports: [
@@ -263,12 +255,6 @@ import { StockProposalComponent } from "./customers/stock-proposal/stock-proposa
     OrderdetailsComponent,
     BillUploadComponent,
     NewFormuleComponent,
-    // FillingComponent,
-    // LaserComponent,
-    // MkupProductionComponent,
-    // PersonalPackagingComponent,
-    // MkupFormPrintingComponent,
-    // StickerComponent,
     NeworderComponent,
     NeworderComponent,
     BulksInventoryComponent,
@@ -282,7 +268,6 @@ import { StockProposalComponent } from "./customers/stock-proposal/stock-proposa
     ProductionOrdersComponent,
     WeightProductionComponent,
     AddFormuleItemComponent,
-    // MkupFormComponent,
     CleaningFormsComponent,
     FirstAidComponent,
     ScheduleComponent,

@@ -903,7 +903,7 @@
         </div>
       </div>
       <div class="row">
-        <table>
+        <table dir="rtl">
           <tbody>
             <tr style="border: none">
               <td style="border: none">
@@ -924,7 +924,8 @@
 
             <tr>
               <td style="border: none">
-                <h4>שם לקוח:{{ currCustomer }} {{ currCustomerNumber }}</h4>
+                <h4>שם לקוח:{{ currCustomer }}</h4>
+                <h4>מס' לקוח: {{ currCustomerNumber }}</h4>
               </td>
               <td style="border: none; width: 65px"></td>
               <td style="border: none; width: 65px"></td>
@@ -941,7 +942,7 @@
         </table>
       </div>
       <div class="container-fluid" id="material-body" class="modal-body">
-        <table class="table table-bordered w-75">
+        <table class="table table-bordered w-75" dir="rtl">
           <thead style="background: lightgray !important">
             <tr>
               <th></th>
@@ -1124,9 +1125,8 @@
 
             <tr>
               <td style="border: none">
-                <h4>
-                  Costumer Name:{{ currCustomer }} {{ currCustomerNumber }}
-                </h4>
+                <h4>Customer Name: {{ currCustomer }}</h4>
+                <h4>Customer Number: {{ currCustomerNumber }}</h4>
               </td>
               <td style="border: none; width: 65px"></td>
               <td style="border: none; width: 65px"></td>

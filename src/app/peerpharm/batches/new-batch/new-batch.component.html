@@ -26,6 +26,80 @@
 
   <div class="container bg-light shadow-lg p-4">
     <h3>Add Item</h3>
+
+    <div
+      style="height: 0px !important"
+      *ngIf="openBarrelsModal == true"
+      id="myModal3"
+      class="modal3"
+      style="
+        border: 1px;
+        border-radius: 5px;
+        z-index: 1;
+        position: fixed;
+        left: 400px;
+        top: 130px;
+      "
+    >
+      <!-- Modal content -->
+      <div style="width: 1200px !important" class="modal-content" id="modelC">
+        <div
+          style="width: 1200px !important"
+          id="material-header"
+          class="modal-header"
+        >
+          <span class="close" id="closeId3" (click)="openBarrelsModal = false"
+            >&times;</span
+          >
+          <h2 style="text-align: center">Batch Data</h2>
+          <br />
+        </div>
+        <div
+          style="
+            height: auto !important;
+            width: 1200px !important;
+            overflow: scroll;
+          "
+          class="container"
+          id="material-body"
+          class="modal-body"
+        >
+          <ng-container *ngIf="wpLoading">
+            <h2>loading</h2>
+            <div
+              style="margin-right: auto !important"
+              class="smallLoader fixNoaStupidStuff mx-auto my-auto"
+            ></div>
+          </ng-container>
+
+          <div class="row mt-2" dir="rtl" style="width: 100%">
+            <div class="col-1"></div>
+            <div class="col-4 heb background-light">
+              <p>
+                Required Aount - סה"כ כמות דרושה:
+                {{ component.allocationsAmount | number }}
+              </p>
+              <p>
+                Stock Aount - סה"כ כמות במלאי:
+                {{ component.stock[0].stock | number }}
+              </p>
+              <p
+                [ngClass]="
+                  component.realAmount >= 0 ? 'text-success' : 'text-danger'
+                "
+              >
+                Difference - הפרש:
+                {{ component.realAmount | number }}
+              </p>
+              <p>
+                Open Purchase Amount - כמות ברכש:
+                {{ component.purchaseAmount }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="row">
       <div class="col-2">
         <label for="">Order Number</label>
@@ -301,8 +375,9 @@
         </div>
         <div style="border-bottom: 1px solid black" class="col-12">
           <span>PH: </span>{{ newBatchForm.controls["ph"].value
-          }}{{ newBatchForm.ph }}
-          &nbsp;&nbsp;&nbsp;&nbsp;<span>שם משתמש: {{sticker.user}}</span>
+          }}{{ newBatchForm.ph }} &nbsp;&nbsp;&nbsp;&nbsp;<span
+            >שם משתמש: {{ sticker.user }}</span
+          >
         </div>
       </div>
 

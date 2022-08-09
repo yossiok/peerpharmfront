@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild, Input } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ToastrService } from "ngx-toastr";
@@ -9,6 +9,7 @@ import { Procurementservice } from "src/app/services/procurement.service";
 import { SuppliersService } from "src/app/services/suppliers.service";
 import { Currencies } from "../procurement/Currencies";
 import { ExcelService } from "src/app/services/excel.service";
+import { ActivatedRoute } from "@angular/router";
 
 const defaultCmpt = {
   whoPays: "",
@@ -258,7 +259,8 @@ export class ItemIndexComponent implements OnInit {
     private authService: AuthService,
     private modalService: NgbModal,
     private uploadService: UploadFileService,
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -278,6 +280,14 @@ export class ItemIndexComponent implements OnInit {
     this.allowPriceUpdate =
       Number(this.authService.loggedInUser.screenPermission) < 4;
     setTimeout(() => this.itemNumber.nativeElement.focus(), 500);
+
+    this.activatedRoute.queryParams.subscribe((params) => {
+      console.log(params);
+      if (params.itemNumber) {
+        this.itemDetailsForm.controls.itemNumber.setValue(params.itemNumber);
+        this.getItemData();
+      }
+    });
   }
 
   setFormView(form) {

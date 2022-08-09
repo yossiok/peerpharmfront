@@ -195,11 +195,11 @@ export class AppModule {
       Upload: "העלאת",
       Wgt: "משקל",
       Title: "כותרת",
-      PAO:"חודשים לשימוש לאחר פתיחה",
-      Single:"בודדה",
-      Set:"סט",
-      In:"ב",
-      Of:"של"
+      PAO: "חודשים לשימוש לאחר פתיחה",
+      Single: "בודדה",
+      Set: "סט",
+      In: "ב",
+      Of: "של",
     });
 
     translate.setTranslation("en", {
@@ -262,12 +262,11 @@ export class AppModule {
       Upload: "Upload",
       Wgt: "Wgt",
       Title: "Title",
-      PAO:"PAO",
-      Single:"Single",
-      Set:"Set",
-      In:"In",
-      Of:"Of"
-
+      PAO: "PAO",
+      Single: "Single",
+      Set: "Set",
+      In: "In",
+      Of: "Of",
     });
 
     translate.addLangs(["en", "he"]);
