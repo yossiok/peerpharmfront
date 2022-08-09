@@ -686,18 +686,11 @@ export class StockComponent implements OnInit {
     }
     this.getColor(new Date());
     this.numberSearchInput.nativeElement.focus();
-
-    this.route.queryParams.subscribe((params) => {
-      console.log(params);
-      let itemNumber = params.itemNumber;
-      let type = String(params.type);
-      if (itemNumber) {
-        console.log(itemNumber);
-        console.log(type);
-        this.setType(type);
-        this.filterComponents(itemNumber);
-      }
-    });
+    // const itemNumber = this.route.snapshot.paramMap.get('itemNumber');
+    // if(itemNumber){
+    //   this.setType("product")
+    //   this.filterComponents(itemNumber)
+    // }
   }
 
   getItemPurchases(component) {
@@ -1722,11 +1715,7 @@ export class StockComponent implements OnInit {
         componentN = this.resCmpt.componentN;
     }
     this.procuretServ
-      .getLastOrdersForItemByDates(
-        componentN,
-        this.purchaseStartDate,
-        this.purchaseEndDate
-      )
+      .getLastOrdersForItemByDates(componentN, this.purchaseStartDate, this.purchaseEndDate)
       .subscribe((orders) => {
         this.fetchingOrders = false;
         if (orders && orders.length > 0) {
@@ -1750,6 +1739,8 @@ export class StockComponent implements OnInit {
           ];
       });
   }
+  
+  
 
   getSearchReport() {
     let invReport = [];

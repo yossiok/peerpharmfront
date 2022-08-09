@@ -55,10 +55,7 @@ export class PriceListsComponent implements OnInit {
   getUser() {
     this.user = this.authService.loggedInUser;
     this.userName = this.user.userName;
-    this.authorized =
-      this.user.authorization.includes("agent") ||
-      this.user.authorization.includes("newProposal") ||
-      this.user.authorization.includes("adminPanel");
+    this.authorized = this.user.authorization.includes("newProposal");
     console.log(this.user.authorization);
     console.log(this.user.userName);
     console.log(this.authorized);

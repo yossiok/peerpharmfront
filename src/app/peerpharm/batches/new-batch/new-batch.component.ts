@@ -44,7 +44,6 @@ export class NewBatchComponent implements OnInit {
   workPlan: WorkPlan;
   workPlanFormule: string;
   finalWeight: number;
-  openBarrelsModal: boolean = false;
 
   //barcode parameters
   bcValue = "BARCODE";
@@ -132,25 +131,14 @@ export class NewBatchComponent implements OnInit {
             let formule = this.workPlan.productionFormules.find(
               (f) => f.formule == params["params"].formule
             );
-            // this.openBarrelsModal = true;
             this.newBatchForm.controls.formule.setValue(formule.formule);
-            console.log(formule.barrels);
-            let finalWeight;
-            let barrelsWeight = 0;
-            while (isNaN(finalWeight)) finalWeight = prompt("הכנס משקל כולל");
-            for (let barrel of formule.barrels) {
-              let barrelWeight;
-              while (isNaN(barrelWeight))
-                barrelWeight = prompt(
-                  "מה המשקל של חבית: " + barrel.barrelNumber
-                );
-              barrelsWeight += Number(barrelWeight);
-            }
             this.newBatchForm.controls.barrelsList.setValue(formule.barrels);
-
-            this.finalWeight = Number(finalWeight);
-            // while (isNaN(barrelsWeight))
-            //   barrelsWeight = prompt("הכנס משקל חומר ישן");
+            let finalWeight;
+            let barrelsWeight;
+            while (isNaN(finalWeight)) finalWeight = prompt("הכנס משקל כולל");
+            this.finalWeight = finalWeight;
+            while (isNaN(barrelsWeight))
+              barrelsWeight = prompt("הכנס משקל חומר ישן");
             this.newBatchForm.controls.weightKg.setValue(this.finalWeight);
             this.newBatchForm.controls.newWeight.setValue(
               finalWeight - barrelsWeight

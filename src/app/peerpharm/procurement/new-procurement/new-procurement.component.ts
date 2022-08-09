@@ -17,17 +17,15 @@ import { AuthService } from "src/app/services/auth.service";
 import { UserInfo } from "../../taskboard/models/UserInfo";
 import { Procurementservice } from "src/app/services/procurement.service";
 import { ToastrService } from "ngx-toastr";
-import { ActivatedRoute, Router, UrlSerializer } from "@angular/router";
+import { ActivatedRoute } from "@angular/router";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { PurchaseData } from "../procumentOrders/PurchaseData";
 import { DeliveryCertificate } from "../procumentOrders/DeliveryCert";
 import { InvoiceData } from "./InvoiceData";
 import { StockItem } from "./StockItem";
 import { Currencies } from "../Currencies";
-
 import { UsersService } from "src/app/services/users.service";
 import { templateJitUrl } from "@angular/compiler";
-import { windowWhen } from "rxjs-compat/operator/windowWhen";
 
 @Component({
   selector: "app-new-procurement",
@@ -137,9 +135,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     private authService: AuthService,
     private inventoryService: InventoryService,
     private supplierService: SuppliersService,
-    public formBuilder: FormBuilder,
-    private router: Router,
-    private serializer: UrlSerializer
+    public formBuilder: FormBuilder
   ) {
     this.newPurchase = fb.group({
       _id: [""],
@@ -250,19 +246,13 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       if (!this.purchaseData.closeReason) this.purchaseData.closeReason = "";
       if (!this.purchaseData.userEmail) this.purchaseData.userEmail = "";
       if (!this.purchaseData.user) this.purchaseData.user = "";
-      if (!this.purchaseData.supplierCountry)
-        this.purchaseData.supplierCountry = "";
-      if (!this.purchaseData.shippingPercentage)
-        this.purchaseData.shippingPercentage = 0;
-      if (!this.purchaseData.finalPurchasePrice)
-        this.purchaseData.finalPurchasePrice = 0;
+      if (!this.purchaseData.supplierCountry) this.purchaseData.supplierCountry = "";
+      if (!this.purchaseData.shippingPercentage) this.purchaseData.shippingPercentage = 0;
+      if (!this.purchaseData.finalPurchasePrice) this.purchaseData.finalPurchasePrice = 0;
       if (!this.purchaseData.origin) this.purchaseData.origin = "";
-      if (!this.purchaseData.statusUpdates)
-        this.purchaseData.statusUpdates = [];
-      if (!this.purchaseData.statusChange)
-        this.purchaseData.statusChange = null;
-      if (!this.purchaseData.requestedDate)
-        this.purchaseData.requestedDate = null;
+      if (!this.purchaseData.statusUpdates) this.purchaseData.statusUpdates = [];
+      if (!this.purchaseData.statusChange) this.purchaseData.statusChange = null;
+      if (!this.purchaseData.requestedDate) this.purchaseData.requestedDate = null;
       if (!this.purchaseData.arrivalDate) this.purchaseData.arrivalDate = null;
       this.newPurchase.setValue(this.purchaseData as PurchaseData);
       this.newPurchase.controls.orderType.setValue(this.purchaseData.orderType);
@@ -286,28 +276,17 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           changes.purchaseData.currentValue.sumShippingCost = 0;
       }
       if (this.isEdit) {
-        if (changes.purchaseData.currentValue.remarks == null)
-          changes.purchaseData.currentValue.remarks = "";
-        if (!changes.purchaseData.currentValue.closeReason)
-          changes.purchaseData.currentValue.closeReason = "";
-        if (!changes.purchaseData.currentValue.userEmail)
-          changes.purchaseData.currentValue.userEmail = "";
-        if (!changes.purchaseData.currentValue.supplierCountry)
-          changes.purchaseData.currentValue.supplierCountry = "";
-        if (!changes.purchaseData.currentValue.user)
-          changes.purchaseData.currentValue.user = "";
-        if (!changes.purchaseData.currentValue.shippingPercentage)
-          changes.purchaseData.currentValue.shippingPercentage = 0;
-        if (!changes.purchaseData.currentValue.finalPurchasePrice)
-          changes.purchaseData.currentValue.finalPurchasePrice = 0;
-        if (!changes.purchaseData.currentValue.origin)
-          changes.purchaseData.currentValue.origin = "";
-        if (!changes.purchaseData.currentValue.statusUpdates)
-          changes.purchaseData.currentValue.statusUpdates = [];
-        if (!changes.purchaseData.currentValue.statusChange)
-          changes.purchaseData.currentValue.statusChange = null;
-        if (!changes.purchaseData.currentValue.requestedDate)
-          changes.purchaseData.currentValue.requestedDate = null;
+        if (changes.purchaseData.currentValue.remarks == null) changes.purchaseData.currentValue.remarks = "";
+        if (!changes.purchaseData.currentValue.closeReason) changes.purchaseData.currentValue.closeReason = "";
+        if (!changes.purchaseData.currentValue.userEmail) changes.purchaseData.currentValue.userEmail = "";
+        if (!changes.purchaseData.currentValue.supplierCountry) changes.purchaseData.currentValue.supplierCountry = "";
+        if (!changes.purchaseData.currentValue.user) changes.purchaseData.currentValue.user = "";
+        if (!changes.purchaseData.currentValue.shippingPercentage) changes.purchaseData.currentValue.shippingPercentage = 0;
+        if (!changes.purchaseData.currentValue.finalPurchasePrice) changes.purchaseData.currentValue.finalPurchasePrice = 0;
+        if (!changes.purchaseData.currentValue.origin) changes.purchaseData.currentValue.origin = "";
+        if (!changes.purchaseData.currentValue.statusUpdates) changes.purchaseData.currentValue.statusUpdates = [];
+        if (!changes.purchaseData.currentValue.statusChange) changes.purchaseData.currentValue.statusChange = null;
+        if (!changes.purchaseData.currentValue.requestedDate) changes.purchaseData.currentValue.requestedDate = null;
         this.newPurchase.setValue(changes.purchaseData.currentValue);
       }
     }
@@ -526,7 +505,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
                 data[0].manualCoin ? data[0].manualCoin.toUpperCase() : null
               );
               this.itemForm.controls.measurement.setValue(
-                data[0].unitOfMeasure
+                data[0].unitOfMeasure 
                   ? data[0].unitOfMeasure
                   : data[0].measurement
               );
@@ -534,6 +513,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
                 data[0].componentNs
               );
 
+              
               if (!data[0].price || data[0].price == "") {
                 // search in suppliers
                 var supplier = data[0].alternativeSuppliers.find(
@@ -907,9 +887,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     this.sendingPurchase = true;
     if (action == "add") {
       if (this.newPurchase.controls.stockitems.value) {
-        this.newPurchase.controls.stockitems.value.map(
-          (si) => (si.number = si.number.trim())
-        );
+        this.newPurchase.controls.stockitems.value.map(si => si.number = si.number.trim())
         if (confirm("האם להקים הזמנה זו ?")) {
           // Ensure that send button won't be blocked
           setTimeout(() => {
@@ -919,54 +897,54 @@ export class NewProcurementComponent implements OnInit, OnChanges {
               this.toastr.error("Something went wrong. Try again.");
             }
           }, 1000 * 10);
-
+          
           this.newPurchase.controls["user"].setValue(
             this.authService.loggedInUser.userName
-          );
-          this.newPurchase.controls.userEmail.setValue(
-            this.authService.loggedInUser.userEmail
-          );
-
-          // set order arrival date as the latest item arrival date
-          let latestArrivalItem = this.newPurchase.value.stockitems.reduce(
-            (latestItem, item) => {
-              return item.itemArrival > latestItem.itemArrival
-                ? item
-                : latestItem;
-            },
-            this.newPurchase.value.stockitems[0]
-          );
-
-          if (this.newPurchase.value.requestedDate) {
-            this.newPurchase.value.stockitems.map((si) => {
-              si.itemRequested = this.newPurchase.value.requestedDate;
-              return si;
-            });
-          }
-
-          let tempPurchase = this.newPurchase.value;
-          if (latestArrivalItem.itemArrival) {
-            tempPurchase.arrivalDate = latestArrivalItem.itemArrival;
-          } else {
-            tempPurchase.arrivalDate = null;
-          }
-
-          this.procurementService
-            .addNewProcurement(tempPurchase)
-            .subscribe((data) => {
-              this.sendingPurchase = false;
-              if (data) {
-                if (data.message)
-                  this.toastr.warning(data.message + ". Order Saved");
-                this.toastr.success(
-                  "הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!"
+            );
+            this.newPurchase.controls.userEmail.setValue(
+              this.authService.loggedInUser.userEmail
+              );
+              
+              // set order arrival date as the latest item arrival date
+              let latestArrivalItem = this.newPurchase.value.stockitems.reduce(
+                (latestItem, item) => {
+                  return item.itemArrival > latestItem.itemArrival
+                  ? item
+                  : latestItem;
+                },
+                this.newPurchase.value.stockitems[0]
                 );
-                this.newPurchase.reset();
-                this.newProcurementSaved.emit(data);
-                this.closeOrderModal.emit(false);
-                // location.reload();
-              } else this.toastr.error("משהו השתבש...");
-            });
+                
+                if (this.newPurchase.value.requestedDate) {
+                  this.newPurchase.value.stockitems.map((si) => {
+                    si.itemRequested = this.newPurchase.value.requestedDate;
+                    return si;
+                  });
+                }
+                
+                let tempPurchase = this.newPurchase.value;
+                if (latestArrivalItem.itemArrival) {
+                  tempPurchase.arrivalDate = latestArrivalItem.itemArrival;
+                } else {
+                  tempPurchase.arrivalDate = null;
+                }
+                
+                this.procurementService
+                .addNewProcurement(tempPurchase)
+                .subscribe((data) => {
+                  this.sendingPurchase = false;
+                  if (data) {
+                    if (data.message)
+                    this.toastr.warning(data.message + ". Order Saved");
+                    this.toastr.success(
+                      "הזמנה מספר" + data.orderNumber + "נשמרה בהצלחה!"
+                      );
+                      this.newPurchase.reset();
+                      this.newProcurementSaved.emit(data);
+                      this.closeOrderModal.emit(false);
+                      // location.reload();
+                    } else this.toastr.error("משהו השתבש...");
+                  });
         }
       } else {
         this.toastr.error("אין אפשרות להקים הזמנה ללא פריטים");
@@ -974,9 +952,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     }
     if (action == "update") {
       if (confirm("האם לעדכן הזמנה זו ?")) {
-        this.newPurchase.controls.stockitems.value.map(
-          (si) => (si.number = si.number.trim())
-        );
+        this.newPurchase.controls.stockitems.value.map(si => si.number = si.number.trim())
         // Ensure that send button won't be blocked
         setTimeout(() => {
           if (this.sendingPurchase) {
@@ -984,39 +960,39 @@ export class NewProcurementComponent implements OnInit, OnChanges {
             this.toastr.error("Something went wrong. Try again.");
           }
         }, 1000 * 10);
-
+        
         // set order arrival date as the latest item arrival date
         let latestArrivalItem = this.newPurchase.value.stockitems.reduce(
           (latestItem, item) => {
             return item.itemArrival > latestItem.itemArrival
-              ? item
-              : latestItem;
+            ? item
+            : latestItem;
           },
           this.newPurchase.value.stockitems[0]
-        );
-
-        if (latestArrivalItem.itemArrival != "")
+          );
+          
+          if (latestArrivalItem.itemArrival != "")
           this.newPurchase.controls.arrivalDate.setValue(
             latestArrivalItem.itemArrival
-          );
-        if (
-          !latestArrivalItem.itemArrival ||
-          latestArrivalItem.itemArrival == ""
-        ) {
-          this.newPurchase.controls.arrivalDate.setValue(null);
-        }
-
-        this.procurementService
-          .updatePurchaseOrder(this.newPurchase.value)
-          .subscribe((data) => {
-            this.sendingPurchase = false;
-            if (data) {
-              this.toastr.success("הזמנה עודכנה בהצלחה !");
-              this.closeOrderModal.emit(false);
-              this.newProcurementSaved.emit(data);
-              // location.reload()
-            } else this.toastr.error("משהו השתבש...");
-          });
+            );
+            if (
+              !latestArrivalItem.itemArrival ||
+              latestArrivalItem.itemArrival == ""
+              ) {
+                this.newPurchase.controls.arrivalDate.setValue(null);
+              }
+              
+              this.procurementService
+              .updatePurchaseOrder(this.newPurchase.value)
+              .subscribe((data) => {
+                this.sendingPurchase = false;
+                if (data) {
+                  this.toastr.success("הזמנה עודכנה בהצלחה !");
+                  this.closeOrderModal.emit(false);
+                  this.newProcurementSaved.emit(data);
+                  // location.reload()
+                } else this.toastr.error("משהו השתבש...");
+              });
       }
     }
   }
@@ -1051,21 +1027,21 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       .setPurchaseStatus(this.newPurchase.value)
       .subscribe((data) => {
         if (data) {
-          this.purchaseData = data;
-          this.newProcurementSaved.emit(data);
+          this.purchaseData = data
+          this.newProcurementSaved.emit(data)
           this.toastr.success("סטטוס עודכן בהצלחה !");
         } else this.toastr.error("משהו השתבש...");
       });
-  }
-
-  setStatusDate() {
-    this.newPurchase.controls.statusChange.setValue(this.statusDate);
-    this.procurementService
+    }
+    
+    setStatusDate() {
+      this.newPurchase.controls.statusChange.setValue(this.statusDate);
+      this.procurementService
       .setPurchaseStatus(this.newPurchase.value)
       .subscribe((data) => {
         if (data) {
-          this.purchaseData = data;
-          this.newProcurementSaved.emit(data);
+          this.purchaseData = data
+          this.newProcurementSaved.emit(data)
           this.modalService.dismissAll();
           this.toastr.success("סטטוס עודכן בהצלחה !");
         } else this.toastr.error("משהו השתבש...");
@@ -1105,22 +1081,5 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         ariaLabelledBy: "modal-basic-title",
       });
     }
-  }
-
-  routeToItemIndex(item) {
-    this.router.navigate(["/peerpharm/itemindex"], {
-      queryParams: {
-        itemNumber: item,
-      },
-    });
-    // const url = this.router.serializeUrl(
-    //   this.router.createUrlTree(["/peerpharm/itemindex/"], {
-    //     queryParams: {
-    //       itemNumber: item,
-    //     },
-    //   })
-    // );
-
-    // window.open(url, "_blank");
   }
 }

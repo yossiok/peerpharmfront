@@ -939,7 +939,6 @@ export class FormdetailsComponent implements OnInit {
           this.disabledValue = false;
           console.log(this.disabledValue);
         }
-
         // if (this.authService.loggedInUser.authorization.includes("QAAdmin")) {
         //   this.disableRemarkEditAfterSave = false;
         // }
