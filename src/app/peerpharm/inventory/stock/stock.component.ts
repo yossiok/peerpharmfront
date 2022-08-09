@@ -686,18 +686,19 @@ export class StockComponent implements OnInit {
     }
     this.getColor(new Date());
     this.numberSearchInput.nativeElement.focus();
-
     this.route.queryParams.subscribe((params) => {
-      console.log(params);
-      let itemNumber = params.itemNumber;
-      let type = String(params.type);
-      if (itemNumber) {
-        console.log(itemNumber);
-        console.log(type);
-        this.setType(type);
-        this.filterComponents(itemNumber);
+      if (params) {
+        let itemNumber = params.itemNumber;
+        this.stockType = params.type;
+        this.filterParams.controls.componentN.setValue(itemNumber);
+
+        this.filterComponents();
       }
     });
+    // if(itemNumber){
+    //   this.setType("product")
+    //   this.filterComponents(itemNumber)
+    // }
   }
 
   getItemPurchases(component) {

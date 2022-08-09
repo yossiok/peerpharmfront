@@ -1736,7 +1736,7 @@
         <!--component-->
         <mat-tab *ngIf="isSuperAdmin" label="הסטוריית רכש">
           <div class="container modal-inner">
-            <div class="row text-center p-2">
+            <div class="row fixNoaStupidStuff text-center p-2">
               <div class="col-1 fixNoaStupidStuff">
                 <img
                   class="w-50 h-100"
@@ -1778,48 +1778,47 @@
               </div>
               <div class="col-6"></div>
             </div>
-            <div class="row fixNoaStupidStuff eContainer"></div>
-            <!-- Start -->
             <div class="row fixNoaStupidStuff eContainer">
-              <div class="fixNoaStupidStuff">
-                <h4>חיפוש לפי תאריכי הזמנה</h4>
-                <div class="searchBox">
-                  <b>תאריך התחלה: </b>
-                  <input
-                    [(ngModel)]="purchaseStartDate"
-                    class="searchBox-item"
-                    id="purchaseStartDate"
-                    name="purchaseStartDate"
-                    type="date"
-                  />
-                  <b>תאריך סיום: </b>
-                  <input
-                    [(ngModel)]="purchaseEndDate"
-                    class="searchBox-item"
-                    id="purchaseEndDate"
-                    name="purchaseEndDate"
-                    type="date"
-                  />
-                  <button
-                    class="btn btn-success searchBox-item"
-                    (click)="getLastOrdersItemByDates('component')"
-                  >
-                    מצא
-                  </button>
-                </div>
-                <h5
-                  *ngIf="
-                    MaterialArrivalStartDate &&
-                    MaterialArrivalEndDate &&
-                    measure
-                  "
+          </div>
+          <!-- Start -->
+          <div class="row fixNoaStupidStuff eContainer">
+            <div class="fixNoaStupidStuff">
+              <h4>חיפוש לפי תאריכי הזמנה</h4>
+              <div class="searchBox">
+                <b>תאריך התחלה: </b>
+                <input
+                  [(ngModel)]="purchaseStartDate"
+                  class="searchBox-item"
+                  id="purchaseStartDate"
+                  name="purchaseStartDate"
+                  type="date"
+                />
+                <b>תאריך סיום: </b>
+                <input
+                  [(ngModel)]="purchaseEndDate"
+                  class="searchBox-item"
+                  id="purchaseEndDate"
+                  name="purchaseEndDate"
+                  type="date"
+                />
+                <button
+                  class="btn btn-success searchBox-item"
+                  (click)="getLastOrdersItemByDates('component')"
                 >
-                  {{ measure }} {{ totalQuantity }} מתאריך
-                  {{ MaterialArrivalStartDate | date: "dd/MM/yyy" }} עד לתאריך
-                  {{ MaterialArrivalEndDate | date: "dd/MM/yyy" }} הוזמנו
-                </h5>
+                  מצא
+                </button>
               </div>
+              <h5
+                *ngIf="
+                  MaterialArrivalStartDate && MaterialArrivalEndDate && measure
+                "
+              >
+                {{ measure }} {{ totalQuantity }} מתאריך
+                {{ MaterialArrivalStartDate | date: "dd/MM/yyy" }} עד לתאריך
+                {{ MaterialArrivalEndDate | date: "dd/MM/yyy" }} הוזמנו
+              </h5>
             </div>
+          </div>
             <div class="smallLoader" *ngIf="fetchingOrders"></div>
             <div
               *ngIf="lastOrdersOfItem.length > 0"
@@ -1836,10 +1835,10 @@
                       <th>Order Date</th>
                       <th>Arrival Date</th>
                       <th>Arrived Amount</th>
+                      <th></th>
                       <th>Ordered Amount</th>
                       <th>Item Price (Foreign)</th>
                       <th>Item Price (NIS)</th>
-                      <th>Remarks</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1863,6 +1862,7 @@
                           }}</span>
                         </td>
                         <td>{{ lastorderitem.arrivedAmount }}</td>
+                        <td>/</td>
                         <td>{{ lastorderitem.quantity }}</td>
                         <td>
                           {{ lastorderitem.price }}
@@ -1870,9 +1870,6 @@
                         </td>
                         <td>
                           {{ lastorderitem.localPrice | currency: "ILS" }}
-                        </td>
-                        <td>
-                          {{ lastorderitem.remarks }}
                         </td>
                       </tr>
                     </ng-container>

@@ -124,15 +124,15 @@
           />
         </td>
         <!-- <td>כמות חביות</td>
-        <td>
-          <input
-            type="number"
-            id="div_drumsAmount"
-            [(ngModel)]="form.drumsAmount"
-            class="inputDiv form-control"
-            [disabled]="disabledValue"
-          />
-        </td> -->
+          <td>
+            <input
+              type="number"
+              id="div_drumsAmount"
+              [(ngModel)]="form.drumsAmount"
+              class="inputDiv form-control"
+              [disabled]="disabledValue"
+            />
+          </td> -->
       </tr>
       <tr></tr>
       <tr *ngIf="numberOfFormsWithSameBatch > 1">
@@ -185,39 +185,39 @@
       </tr>
 
       <!-- <tr>
-        <td>תאריך ייצור/תאריך סיום</td>
-        <td>
-          <span *ngIf="form.batchN.length > 8">
-            <input
-              type="date"
-              id="div_productionDate"
-              [(ngModel)]="form.productaionDate"
-              class="inputDiv form-control"
-              [disabled]="form.batchN"
-            />
-          </span>
-          <span *ngIf="form.batchN.length == 8"> -->
+          <td>תאריך ייצור/תאריך סיום</td>
+          <td>
+            <span *ngIf="form.batchN.length > 8">
+              <input
+                type="date"
+                id="div_productionDate"
+                [(ngModel)]="form.productaionDate"
+                class="inputDiv form-control"
+                [disabled]="form.batchN"
+              />
+            </span>
+            <span *ngIf="form.batchN.length == 8"> -->
       <!-- {{form.productaionDate}} -->
       <!-- {{ form.productaionDate | date: "dd/MM/yy" }}
-          </span>
-        </td>
-        <td>תאריך תפוגה</td>
-        <td>
-          <span *ngIf="form.batchN.length > 8">
-            <input
-              type="date"
-              id="div_expirationDate"
-              [(ngModel)]="form.expirationDate"
-              class="inputDiv form-control"
-              [disabled]="disabledValue"
-            />
-          </span>
-          <span *ngIf="form.batchN.length == 8"> -->
+            </span>
+          </td>
+          <td>תאריך תפוגה</td>
+          <td>
+            <span *ngIf="form.batchN.length > 8">
+              <input
+                type="date"
+                id="div_expirationDate"
+                [(ngModel)]="form.expirationDate"
+                class="inputDiv form-control"
+                [disabled]="disabledValue"
+              />
+            </span>
+            <span *ngIf="form.batchN.length == 8"> -->
       <!-- {{form.expirationDate}} -->
       <!-- {{ form.expirationDate | date: "dd/MM/yy" }}
-          </span>
-        </td>
-      </tr> -->
+            </span>
+          </td>
+        </tr> -->
       <tr></tr>
       <tr>
         <td>תאריך מילוי</td>
@@ -281,24 +281,24 @@
         </td>
       </tr>
       <!-- <tr>
-        <td>מס' אצווה</td>
-        <td>
-          <input
-            type="text"
-            [(ngModel)]="currentBatchNumber"
-            class="inputDiv form-control"
-            style="display: inline"
-            [disabled]="disabledValue"
-          />
-          <button
-            class="btn btn-success"
-            (click)="getBarrelsList()"
-            [disabled]="disabledValue"
-          >
-            בחר
-          </button>
-        </td>
-      </tr> -->
+          <td>מס' אצווה</td>
+          <td>
+            <input
+              type="text"
+              [(ngModel)]="currentBatchNumber"
+              class="inputDiv form-control"
+              style="display: inline"
+              [disabled]="disabledValue"
+            />
+            <button
+              class="btn btn-success"
+              (click)="getBarrelsList()"
+              [disabled]="disabledValue"
+            >
+              בחר
+            </button>
+          </td>
+        </tr> -->
       <tr>
         <td>שם החבית</td>
         <td>
@@ -741,9 +741,9 @@
             [(ngModel)]="form.leftOvers"
           />
           <!-- <input class="form-control" *ngIf="form.batchStatus =='full'" style="width:5%" type="checkbox"
-          [disabled]="disabledValue" [checked]='true' />
-          <input class="form-control" *ngIf="form.batchStatus !='full'" style="width:5%" type="checkbox"
-          [disabled]="disabledValue" [checked]='false' /> -->
+            [disabled]="disabledValue" [checked]='true' />
+            <input class="form-control" *ngIf="form.batchStatus !='full'" style="width:5%" type="checkbox"
+            [disabled]="disabledValue" [checked]='false' /> -->
         </td>
         <td>באטצ' נוצל במלואו</td>
         <td>
@@ -758,9 +758,9 @@
             [(ngModel)]="form.leftOvers"
           />
           <!-- <input class="form-control" *ngIf="form.batchStatus =='part'" style="width:12%" type="checkbox" id="ccc"
-            [disabled]="disabledValue" [checked]='true' />
-          <input class="form-control" *ngIf="form.batchStatus !='part'" style="width:12%" type="checkbox" id="ccc"
-            [disabled]="disabledValue" [checked]='false' /> -->
+              [disabled]="disabledValue" [checked]='true' />
+            <input class="form-control" *ngIf="form.batchStatus !='part'" style="width:12%" type="checkbox" id="ccc"
+              [disabled]="disabledValue" [checked]='false' /> -->
         </td>
         <td>שאריות באטצ' קיימות</td>
       </tr>
@@ -844,9 +844,9 @@
 
       <!-- <tr> -->
       <!-- <td style="border-bottom:0px solid;">
-                <button onclick="rotateYDIV(&quot;table_q&quot;)">טופס אריזה</button>
-              </td>
-            </tr> -->
+                  <button onclick="rotateYDIV(&quot;table_q&quot;)">טופס אריזה</button>
+                </td>
+              </tr> -->
     </table>
   </div>
 
@@ -981,11 +981,11 @@
       id="table_p"
     >
       <!-- <table
-          border="0"
-          style="font-size:18px; width:800px;height:600px; font-family:Arial; border-collapse: collapse; display:inline-table;float:right"
-          id="table_p"
-          class="post"
-        > -->
+            border="0"
+            style="font-size:18px; width:800px;height:600px; font-family:Arial; border-collapse: collapse; display:inline-table;float:right"
+            id="table_p"
+            class="post"
+          > -->
       <thead>
         <tr>
           <td
@@ -1172,9 +1172,9 @@
           </button>
         </td>
         <!-- <td>משקל ברוטו</td>
-            <td>
-              <input id="div_brotoWeight" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"/>
-            </td> -->
+              <td>
+                <input id="div_brotoWeight" class="inputDiv form-control" style="width:100px" [disabled]="disabledValue"/>
+              </td> -->
       </tr>
       <tr>
         <td colspan="2">
@@ -1208,10 +1208,10 @@
         </td>
       </tr>
       <!-- <tr>
-            <td colspan="4">
-              <input id="div_remarks" class="inputDiv form-control" style="width:500px" [disabled]="disabledValue"/>
-            </td>
-          </tr> -->
+              <td colspan="4">
+                <input id="div_remarks" class="inputDiv form-control" style="width:500px" [disabled]="disabledValue"/>
+              </td>
+            </tr> -->
       <tr>
         <td>שם ותחימת מבקר איכות</td>
         <td>

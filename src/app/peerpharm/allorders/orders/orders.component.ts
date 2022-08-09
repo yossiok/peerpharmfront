@@ -605,34 +605,33 @@ export class OrdersComponent implements OnInit {
         this.lodingOrders = false;
       });
   }
-  filterByDeliveryDate(startDate, endDate) {
-    if (!startDate || !endDate) {
-      if (!startDate) {
-        this.toastSrv.warning("נא להכניס תאריך התחלה שילוח");
-      }
-      if (!endDate) {
-        this.toastSrv.warning("נא להכניס תאריך סיום שילוח");
-      }
-      return;
-    }
-    this.lodingOrders = true;
-    this.ordersService
-      .getAllOpenOrdersByDeliveryDate(startDate, endDate)
-      .subscribe((res) => {
-        this.orders = res;
-        let startYear = startDate.split("-")[0];
-        let startMonth = startDate.split("-")[1];
-        let startDay = startDate.split("-")[2];
-        let startStr = startDay + "/" + startMonth + "/" + startYear;
+  // filterByDeliveryDate(startDate,endDate){
+  //   if(!startDate || !endDate){
+  //     if(!startDate){
+  //       this.toastSrv.warning("נא להכניס תאריך התחלה משלוח")
+  //     }
+  //     if(!endDate){
+  //       this.toastSrv.warning("נא להכניס תאריך סיום משלוח")
+  //     }
+  //     return
+  //   }
+  //   this.lodingOrders = true;
+  //   this.ordersService.getAllOpenOrdersByDeliveryDate(startDate,endDate).subscribe((res)=>{
+  //     this.orders = res
+  //     let startYear = startDate.split("-")[0]
+  //     let startMonth = startDate.split("-")[1]
+  //     let startDay = startDate.split("-")[1]
+  //     let startStr = startDay + "/" + startMonth + "/" + startYear
 
-        let endYear = endDate.split("-")[0];
-        let endMonth = endDate.split("-")[1];
-        let endDay = endDate.split("-")[2];
-        let endStr = endDay + "/" + endMonth + "/" + endYear;
-        this.filterValue = `תאריכי שילוח מ ${startStr} ועד ${endStr}`;
-        this.lodingOrders = false;
-      });
-  }
+  //     let endYear = endDate.split("-")[0]
+  //     let endMonth = endDate.split("-")[1]
+  //     let endDay = endDate.split("-")[1]
+  //     let endStr = endDay + "/" + endMonth + "/" + endYear
+  //     this.filterValue = `תאריכי משלוח מ${startStr} ועד ${endStr}`
+  //     this.lodingOrders = false;
+  //   })
+
+  // }
 
   filterByStage() {
     if (this.stageFilter == "") {
