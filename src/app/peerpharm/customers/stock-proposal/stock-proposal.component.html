@@ -1,0 +1,574 @@
+<div *ngIf="!authorized">אינך מורשה לראות מסך זה</div>
+<div dir="rtl" *ngIf="authorized">
+  <div class="row mt-2 form_1">
+    <div class="col-1"></div>
+    <div class="col-2">
+      <button class="btn btn-outline-success" (click)="editView()">New</button>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-2">
+      <button class="btn btn-outline-primary" (click)="searchView()">
+        Edit
+      </button>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-2">
+      <button
+        *ngIf="!printView"
+        class="btn btn-outline-info"
+        (click)="printDisplay()"
+      >
+        Print Preview
+      </button>
+      <button
+        *ngIf="printView"
+        class="btn btn-outline-info"
+        (click)="draftView()"
+      >
+        Edit View
+      </button>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-2" *ngIf="printView">
+      <button
+        class="btn btn-outline-danger"
+        #printBtn2
+        [useExistingCss]="true"
+        printTitle="אישור הזמנה"
+        printSectionId="print-section"
+        ngxPrint
+      >
+        Print
+      </button>
+    </div>
+  </div>
+  <ng-container *ngIf="searchMode">
+    <form action="" [formGroup]="searchForm" class="form_1">
+      <div class="row mt-2">
+        <div class="col-1"></div>
+        <div class="col-2">
+          <label for="">מספר הזמנה</label>
+          <select
+            formControlName="proposalNumber"
+            class="form-control"
+            (change)="showProposal()"
+          >
+            <option value="" disabled>בחר מספר</option>
+            <option
+              *ngFor="let proposal of proposalsList"
+              [value]="proposal.proposalNumber"
+            >
+              {{ proposal.orderNumber }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </ng-container>
+  <form [formGroup]="newProposalForm" class="form_1">
+    <ng-container *ngIf="editMode && !printView">
+      <div *ngIf="loading" class="loading">Loading&#8230;</div>
+      <ng-container *ngIf="!proposalAdded">
+        <div class="row mt-2">
+          <div class="col-1"></div>
+          <div class="col-6"><h3>הזמנה למלאי</h3></div>
+          <div class="col-2">
+            <label>תאריך</label>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="proposalDate"
+              [value]="
+                proposalDate.value
+                  ? proposalDate.value
+                  : (currentDate | date: 'yyyy-MM-dd')
+              "
+            />
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-1"></div>
+          <div class="col-2">
+            <label>מספר הלקוח</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="customerId"
+            />
+            <div *ngIf="customerId.errors" class="text-danger">*שדה חובה</div>
+          </div>
+          <div class="col-4">
+            <label>שם הלקוח</label>
+            <input
+              class="form-control"
+              type="text"
+              formControlName="customerName"
+            />
+            <div *ngIf="customerName.errors" class="text-danger">*שדה חובה</div>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-1"></div>
+
+          <div class="col-1"></div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-1"></div>
+          <div class="col-6"><h3>פרטי הזמנה</h3></div>
+          <div class="col-5"></div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-2">
+            <label for="">מאשר הזמנה</label>
+            <input
+              type="text"
+              formControlName="customerOrder"
+              class="form-control"
+            />
+          </div>
+          <div class="col-2">
+            <label for="">סוג ההזמנה</label>
+            <select
+              name=""
+              id=""
+              class="form-control"
+              formControlName="orderType"
+            >
+              <option value="" disabled>בחר</option>
+              <option value="Cosmetic">Cosmetic</option>
+              <option value="Make Up">Make Up</option>
+              <option value="Cosmetic & MakeUp">Cosmetic & Make Up</option>
+            </select>
+            <div *ngIf="orderType.errors" class="text-danger">*שדה חובה</div>
+          </div>
+          <div class="col-2">
+            <label for="">תאריך ההזמנה</label>
+            <input
+              type="date"
+              formControlName="proposalDate"
+              class="form-control"
+            />
+          </div>
+          <div class="col-2">
+            <label for="">תאריך מבוקש</label>
+            <input
+              type="date"
+              formControlName="requestedDate"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-6">
+            <label>הערות להזמנה</label>
+            <textarea
+              name=""
+              id=""
+              cols="30"
+              rows="3"
+              class="form-control"
+              formControlName="remark"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="row mt-5">
+          <div class="col-1"></div>
+          <div class="col-2">
+            <button
+              *ngIf="!proposalNumber.value"
+              class="btn btn-outline-primary"
+              (click)="createProposal()"
+            >
+              אשר והמשך
+            </button>
+            <button
+              *ngIf="proposalNumber.value"
+              class="btn btn-outline-primary"
+              (click)="createProposal()"
+            >
+              עדכן והמשך
+            </button>
+          </div>
+          <div class="col-2">
+            <button class="btn btn-outline-primary" (click)="jump()">
+              דלג ללא שמירה
+            </button>
+          </div>
+
+          <div class="col-2">
+            <button class="btn btn-outline-danger" (click)="resetForm()">
+              בטל ונקה
+            </button>
+          </div>
+          <div class="col-4">
+            <button class="btn btn-outline-info" (click)="printDisplay()">
+              הצג לפני הדפסה
+            </button>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="proposalAdded && !printView">
+        <div class="row mt-4">
+          <div class="col-12">
+            <h2 class="text-center">פרוט פריטים וכמויות</h2>
+            <h3 *ngIf="currentProposal" class="text-center">
+              הזמנה מספר: {{ currentProposal.orderNumber }}
+            </h3>
+          </div>
+        </div>
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-11">
+            <table class="table striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>מספר פריט</th>
+                  <th>ברקוד</th>
+                  <th>תאור</th>
+                  <th>משקל יחידה (גר')</th>
+                  <th>כמות</th>
+                  <th>משקל כולל (ק''ג)</th>
+                  <th>תאריך משוער</th>
+                  <th>סטטוס</th>
+                  <th>
+                    <i
+                      class="fa fa-plus text-success click"
+                      ngbTooltip="New Item"
+                      (click)="addItem()"
+                    ></i>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container formArrayName="items">
+                  <tr *ngFor="let itemForm of items.controls; let i = index">
+                    <ng-container [formGroup]="itemForm">
+                      <td>{{ i + 1 }}</td>
+                      <td *ngIf="i == editItem">
+                        <input
+                          type="text"
+                          (change)="getItemName(i)"
+                          formControlName="itemNumber"
+                          class="form-control"
+                          value="{{ itemForm.value.itemNumber }}"
+                        />
+                      </td>
+                      <td *ngIf="i != editItem">
+                        {{ itemForm.value.itemNumber }}
+                      </td>
+                      <td *ngIf="i == editItem">
+                        <input
+                          type="text"
+                          [value]="itemForm.value.barcode"
+                          formControlName="barcode"
+                          class="form-control"
+                        />
+                      </td>
+                      <td *ngIf="i != editItem">
+                        {{ itemForm.value.barcode }}
+                      </td>
+                      <td *ngIf="i == editItem">
+                        <input
+                          type="select"
+                          list="itemsNames"
+                          formControlName="itemName"
+                          (change)="getItemByName(i)"
+                          class="form-control"
+                          [value]="itemForm.value.itemName"
+                        />
+                      </td>
+                      <td *ngIf="i != editItem">
+                        {{ itemForm.value.itemName }}
+                      </td>
+                      <td *ngIf="i == editItem">
+                        <input
+                          type="number"
+                          [value]="itemForm.value.netWeightGr"
+                          formControlName="netWeightGr"
+                          class="form-control"
+                        />
+                      </td>
+                      <td *ngIf="i != editItem">
+                        {{ itemForm.value.netWeightGr }}
+                      </td>
+                      <td *ngIf="i == editItem">
+                        <input
+                          type="number"
+                          [value]="itemForm.value.quantity"
+                          formControlName="quantity"
+                          class="form-control"
+                        />
+                      </td>
+                      <td *ngIf="i != editItem">
+                        {{ itemForm.value.quantity | number }}
+                      </td>
+                      <td>{{ itemForm.value.totalWeight | number }}</td>
+                      <td *ngIf="i == editItem">
+                        <input
+                          type="date"
+                          [value]="itemForm.value.deliveryDate"
+                          formControlName="deliveryDate"
+                          class="form-control"
+                        />
+                      </td>
+                      <td *ngIf="i != editItem">
+                        {{ itemForm.value.deliveryDate | date: "dd/MM/yyyy" }}
+                      </td>
+                      <td *ngIf="i == editItem">
+                        <input
+                          type="text"
+                          [value]="itemForm.value.itemStatus"
+                          formControlName="itemStatus"
+                          class="form-control"
+                        />
+                      </td>
+                      <td *ngIf="i != editItem">
+                        {{ itemForm.value.itemStatus }}
+                      </td>
+
+                      <td *ngIf="i != editItem">
+                        <i
+                          class="fa fa-pencil-alt text-primary click"
+                          ngbTooltip="Edit Item"
+                          (click)="editItem = i"
+                        ></i
+                        >&nbsp;&nbsp;
+                        <i
+                          class="fa fa-trash text-danger"
+                          ngbTooltip="Delete Item"
+                          (click)="removeItem(i)"
+                        ></i>
+                      </td>
+                      <td *ngIf="i == editItem">
+                        <i
+                          class="fa fa-save text-success click"
+                          ngbTooltip="Save Item"
+                          (click)="saveItem(i)"
+                        >
+                          &nbsp;</i
+                        >
+                        <i
+                          class="fa fa-arrow-left text-danger click"
+                          ngbTooltip="Clear Item"
+                          (click)="editItem = -1"
+                        ></i>
+                      </td>
+                    </ng-container>
+                  </tr>
+                  <tr>
+                    <td colspan="8" class="text-center">
+                      <i
+                        class="fa fa-plus text-success click"
+                        ngbTooltip="New Item"
+                        (click)="addItem()"
+                      ></i>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-1"></div>
+          <div class="col-2">
+            <button class="btn btn-info" (click)="updateProposal()">
+              אשר והמשך
+            </button>
+          </div>
+          <div class="col-2">
+            <button class="btn btn-danger" (click)="resetItems()">נקה</button>
+          </div>
+          <div class="col-4">
+            <button class="btn btn-outline-info" (click)="printDisplay()">
+              הצג לפני הדפסה
+            </button>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </form>
+
+  <div *ngIf="printView" id="print-section">
+    <header>
+      <div class="row mt-4 form_1" dir="rtl">
+        <div class="col-1"></div>
+        <div class="col-7">
+          <h2>פאר פארם בע"מ</h2>
+          <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256</p>
+          <p>
+            <span>טלפון 03-9024055</span>&nbsp;&nbsp;
+            <span>פקס 03-9024015</span>&nbsp;&nbsp;
+            <span>דואר אלקטרוני peerpharm@barak.net.il</span>&nbsp;&nbsp;<span
+              >ח.פ: 511899023</span
+            >
+          </p>
+        </div>
+        <div class="col-3">
+          <img
+            style="width: 270px"
+            src="../../../assets/images/peerpharm.png"
+          />
+        </div>
+      </div>
+      <hr
+        style="
+          height: 2px;
+          border-width: 0;
+          width: 85%;
+          color: gray;
+          background-color: gray;
+          text-align: left;
+        "
+      />
+      <div class="row mt-2" dir="rtl">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <h4 class="text-center">
+            הזמנת מלאי
+            {{
+              newProposalForm.value.orderNumber || currentProposal.orderNumber
+            }}
+          </h4>
+          <!-- <h4 class="text-center">{{ currentProposal.proposalNumber }}</h4> -->
+          <h4 class="text-center">
+            (Proforma Invoice No.
+            {{
+              newProposalForm.value.orderNumber || currentProposal.orderNumber
+            }})
+          </h4>
+        </div>
+        <div class="col-2"></div>
+        <div class="col-2">
+          <h6>
+            תאריך:
+            {{
+              newProposalForm.value.proposalDate || currentProposal.proposalDate
+                | date: "dd/MM/yyyy"
+            }}
+          </h6>
+        </div>
+      </div>
+      <div class="row mt-2" dir="rtl">
+        <div class="col-1"></div>
+        <div class="col-10">
+          <p>לכבוד,</p>
+          <h5>{{ newProposalForm.value.customerName }}</h5>
+
+          <p>
+            <b> מאושר על ידי: </b>
+            {{ newProposalForm.value.customerOrder }}&nbsp;&nbsp;&nbsp;
+          </p>
+          <p>
+            <b> תאריך: </b>
+            {{ newProposalForm.value.proposalDate | date: "dd/MM/yyyy" }}
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <div class="row mt-2" dir="rtl">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <main>
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th>#</th>
+                <th>מספר פריט</th>
+                <th>תאור</th>
+                <th>משקל יחידה (גר')</th>
+                <th>כמות</th>
+                <th>משקל כולל (ק''ג)</th>
+                <th>תאריך משוער</th>
+                <th>סטטוס</th>
+              </tr>
+              <ng-container *ngIf="items">
+                <tr *ngFor="let item of items.value; let i = index">
+                  <td class="cellPadding">{{ i + 1 }}</td>
+                  <td>{{ item.itemNumber }}</td>
+                  <td>{{ item.itemName }}</td>
+                  <td>{{ item.netWeightGr }}</td>
+                  <td>{{ item.quantity | number }}</td>
+                  <td>{{ item.totalWeight | number }}</td>
+                  <td>{{ item.deliveryDate | date: "dd/MM/yyyy" }}</td>
+                  <td>{{ item.itemStatus }}</td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </main>
+      </div>
+    </div>
+    <div class="row mt-2" dir="rtl">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <h5>הערות:</h5>
+        <p>{{ newProposalForm.value.remark }}</p>
+      </div>
+    </div>
+
+    <div class="row mt-2" dir="rtl">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <h5>מועד משוער למוכנות לאיסוף :</h5>
+        <p>
+          {{ newProposalForm.value.requestedDate | date: "dd/MM/yyyy" }}
+        </p>
+      </div>
+    </div>
+
+    <div class="row mt-4" dir="rtl">
+      <div class="col-1"></div>
+      <div class="col-4">
+        <p>בכבוד רב,</p>
+        <h5>חביב פאר</h5>
+        <h5>פארפארם בע"מ</h5>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-1"></div>
+
+      <div class="col-3">
+        <p>
+          <span>שם המאשר:</span>&nbsp;&nbsp;
+          <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u>
+          </span>
+        </p>
+      </div>
+      <div class="col-1"></div>
+      <div class="col-3">
+        <p>
+          &nbsp;&nbsp; <span>תאריך:</span>&nbsp;&nbsp;
+          <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u> </span
+          >&nbsp;&nbsp;
+        </p>
+      </div>
+      <div class="col-1"></div>
+      <div class="col-3">
+        <p>
+          <span>חתימה:</span>
+          <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u> </span
+          >&nbsp;&nbsp; &nbsp;&nbsp;
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
