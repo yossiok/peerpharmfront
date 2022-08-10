@@ -167,4 +167,35 @@ export class BulksReportComponent implements OnInit {
       `Barels Stock Report ${new Date().toString().slice(0, 10)}`
     );
   }
+
+  emptyBarrel(barrelNumber) {
+    if (
+      !this.authService.loggedInUser.authorization.includes(
+        "creamProductionManager"
+      )
+    ) {
+      alert("אינך מורשה לבצע פעולה זאת");
+      return;
+    }
+    console.log(barrelNumber);
+    let conf = confirm(
+      "אתה עומד לרוקן את החבית והיא לא תהיה זמינה יותר. האם להמשיך?"
+    );
+    if (!conf) return;
+    this.creamBarrelService.emptyBarrel(barrelNumber).subscribe((data) => {
+      console.log(data);
+      if (data.msg) {
+        console.log(data.msg);
+        this.toastSrv.error(data.msg);
+        return;
+      } else if (
+        data.barrelNumber == barrelNumber &&
+        data.barrelStatus == "done"
+      ) {
+        this.filteredBarrelsList = this.filteredBarrelsList.filter(
+          (barrel) => barrel.barrelNumber != barrelNumber
+        );
+      }
+    });
+  }
 }

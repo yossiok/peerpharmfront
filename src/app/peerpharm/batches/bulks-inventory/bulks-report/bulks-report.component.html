@@ -160,6 +160,7 @@
             <th>מתאים להזמנות</th>
             <th>תאריך ייצור</th>
             <th>תאריך תפוגה</th>
+            <th></th>
           </tr>
         </thead>
 
@@ -193,6 +194,14 @@
             </td>
             <td>{{ barrel.productionDate | date: "dd/MM/yyyy" }}</td>
             <td>{{ barrel.expirationDate | date: "dd/MM/yyyy" }}</td>
+            <td>
+              <button
+                class="btn btn-outline-danger"
+                (click)="emptyBarrel(barrel.barrelNumber)"
+              >
+                <i class="fas fa-trash">&nbsp;רוקן</i>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>

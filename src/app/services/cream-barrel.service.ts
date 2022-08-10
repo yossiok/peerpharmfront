@@ -94,4 +94,11 @@ export class CreamBarrelService {
     let url = this.baseUrl + "creamBarrel/getAllBarrels";
     return this.http.get(url).pipe(map((res) => res.json()));
   }
+
+  emptyBarrel(barrelNumber) {
+    let url =
+      this.baseUrl + "creamBarrel/emptyBarrel?barrelNumber=" + barrelNumber;
+
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
 }
