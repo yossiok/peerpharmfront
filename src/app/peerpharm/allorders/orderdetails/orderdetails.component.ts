@@ -1739,6 +1739,11 @@ export class OrderdetailsComponent implements OnInit {
       if (item.itemNumber != "" && item.orderNumber && item.orderNumber != "") {
         //check batch specifications
         this.batchService.getSpecvalue(item.batch).subscribe((res) => {
+          if (res.msg) {
+            console.log(res.msg);
+            this.toastSrv.error(res.msg);
+            return;
+          }
           let status = res.status;
           if (status == 2 || status == 0)
             this.toastSrv.error("Batch Specifications Declined by Q.A");
