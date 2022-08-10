@@ -1738,11 +1738,11 @@ export class OrderdetailsComponent implements OnInit {
       //check item
       if (item.itemNumber != "" && item.orderNumber && item.orderNumber != "") {
         //check batch specifications
+        item.batch = item.batch ? item.batch.trim() : "";
         this.batchService.getSpecvalue(item.batch).subscribe((res) => {
           if (res.msg) {
             console.log(res.msg);
             this.toastSrv.error(res.msg);
-            return;
           }
           let status = res.status;
           if (status == 2 || status == 0)
