@@ -66,6 +66,7 @@ export class OrdersComponent implements OnInit {
 
   sortByOrderDateFlag: boolean = false;
   sortByDeliveryDateFlag: boolean = false;
+  sortByStageFlag: boolean = false;
   stageFilter: string = "";
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
@@ -266,6 +267,7 @@ export class OrdersComponent implements OnInit {
         order.color = "white";
         if (order.deliveryDate) {
           order.deliveryDate = new Date(order.deliveryDate);
+          console.log(order.deliveryDate);
 
           if (order.deliveryDate <= new Date()) {
             order.color = "#ff9999";
@@ -605,33 +607,33 @@ export class OrdersComponent implements OnInit {
         this.lodingOrders = false;
       });
   }
-  // filterByDeliveryDate(startDate,endDate){
-  //   if(!startDate || !endDate){
-  //     if(!startDate){
-  //       this.toastSrv.warning("נא להכניס תאריך התחלה משלוח")
-  //     }
-  //     if(!endDate){
-  //       this.toastSrv.warning("נא להכניס תאריך סיום משלוח")
-  //     }
-  //     return
-  //   }
-  //   this.lodingOrders = true;
-  //   this.ordersService.getAllOpenOrdersByDeliveryDate(startDate,endDate).subscribe((res)=>{
-  //     this.orders = res
-  //     let startYear = startDate.split("-")[0]
-  //     let startMonth = startDate.split("-")[1]
-  //     let startDay = startDate.split("-")[1]
-  //     let startStr = startDay + "/" + startMonth + "/" + startYear
+  filterByDeliveryDate(startDate,endDate){
+    if(!startDate || !endDate){
+      if(!startDate){
+        this.toastSrv.warning("נא להכניס תאריך התחלה משלוח")
+      }
+      if(!endDate){
+        this.toastSrv.warning("נא להכניס תאריך סיום משלוח")
+      }
+      return
+    }
+    this.lodingOrders = true;
+    this.ordersService.getAllOpenOrdersByDeliveryDate(startDate,endDate).subscribe((res)=>{
+      this.orders = res
+      let startYear = startDate.split("-")[0]
+      let startMonth = startDate.split("-")[1]
+      let startDay = startDate.split("-")[2]
+      let startStr = startDay + "/" + startMonth + "/" + startYear
 
-  //     let endYear = endDate.split("-")[0]
-  //     let endMonth = endDate.split("-")[1]
-  //     let endDay = endDate.split("-")[1]
-  //     let endStr = endDay + "/" + endMonth + "/" + endYear
-  //     this.filterValue = `תאריכי משלוח מ${startStr} ועד ${endStr}`
-  //     this.lodingOrders = false;
-  //   })
+      let endYear = endDate.split("-")[0]
+      let endMonth = endDate.split("-")[1]
+      let endDay = endDate.split("-")[2]
+      let endStr = endDay + "/" + endMonth + "/" + endYear
+      this.filterValue = `תאריכי משלוח מ${startStr} ועד ${endStr}`
+      this.lodingOrders = false;
+    })
 
-  // }
+  }
 
   filterByStage() {
     if (this.stageFilter == "") {
@@ -657,6 +659,12 @@ export class OrdersComponent implements OnInit {
         break;
       case "partialCmpt":
         stage = "רכיבים קיימים חלקית";
+        break;
+      case "waitToCustomer":
+        stage = "ממתין לאישור לקוח";
+        break;
+      case "customerApprove":
+        stage ='אושר ע"י לקוח';
         break;
 
       default:
@@ -743,39 +751,19 @@ export class OrdersComponent implements OnInit {
         }
       }
 
-      if (type == "delivery") {
+      
+      if(type == "delivery"){
+
         if (this.sortByDeliveryDateFlag) {
           this.orders.sort(function (a, b) {
             if (
-              Number(a.deliveryDate.split("/")[2]) >
-              Number(b.deliveryDate.split("/")[2])
+              new Date(a.deliveryDate).getTime() > new Date(b.deliveryDate).getTime()
             ) {
               return -1;
-            } else if (
-              Number(a.deliveryDate.split("/")[2]) ==
-              Number(b.deliveryDate.split("/")[2])
+            }
+            if (
+              new Date(a.deliveryDate).getTime() < new Date(b.deliveryDate).getTime()
             ) {
-              if (
-                Number(a.deliveryDate.split("/")[1]) >
-                Number(b.deliveryDate.split("/")[1])
-              ) {
-                return -1;
-              } else if (
-                Number(a.deliveryDate.split("/")[1]) ==
-                Number(b.deliveryDate.split("/"))[1]
-              ) {
-                if (
-                  Number(a.deliveryDate.split("/")[0]) >
-                  Number(b.deliveryDate.split("/")[0])
-                ) {
-                  return -1;
-                } else {
-                  return 1;
-                }
-              } else {
-                return 1;
-              }
-            } else {
               return 1;
             }
           });
@@ -783,40 +771,19 @@ export class OrdersComponent implements OnInit {
         } else {
           this.orders.sort(function (a, b) {
             if (
-              Number(a.deliveryDate.split("/")[2]) >
-              Number(b.deliveryDate.split("/")[2])
+              new Date(a.deliveryDate).getTime() > new Date(b.deliveryDate).getTime()
             ) {
               return 1;
-            } else if (
-              Number(a.deliveryDate.split("/")[2]) ==
-              Number(b.deliveryDate.split("/")[2])
+            }
+            if (
+              new Date(a.deliveryDate).getTime() < new Date(b.deliveryDate).getTime()
             ) {
-              if (
-                Number(a.deliveryDate.split("/")[1]) >
-                Number(b.deliveryDate.split("/")[1])
-              ) {
-                return 1;
-              } else if (
-                Number(a.deliveryDate.split("/")[1]) ==
-                Number(b.deliveryDate.split("/")[1])
-              ) {
-                if (
-                  Number(a.deliveryDate.split("/")[0]) >
-                  Number(b.deliveryDate.split("/")[0])
-                ) {
-                  return 1;
-                } else {
-                  return -1;
-                }
-              } else {
-                return -1;
-              }
-            } else {
               return -1;
             }
           });
           this.sortByDeliveryDateFlag = !this.sortByDeliveryDateFlag;
         }
+            
       }
     } catch (error) {
       console.log(error);
@@ -827,6 +794,37 @@ export class OrdersComponent implements OnInit {
     this.orders.filter((e) => (e.isSelected = ev.target.checked));
   }
 
+  sortOrdersByStage2() {
+      if (this.sortByStageFlag) {
+        this.orders.sort(function (a, b) {
+          if (
+            a.stage > b.stage
+          ) {
+            return -1;
+          }
+          if (
+            a.stage < b.stage
+          ) {
+            return 1;
+          }
+        });
+        this.sortByStageFlag = !this.sortByStageFlag;
+      } else {
+        this.orders.sort(function (a, b) {
+          if (
+              a.stage > b.stage
+          ) {
+            return 1;
+          }
+          if (
+              a.stage < b.stage
+          ) {
+            return -1;
+          }
+        });
+        this.sortByStageFlag = !this.sortByStageFlag;
+      }
+  }
   sortOrdersByStage() {
     var tempArr = [],
       stageNewArr = [],
