@@ -296,6 +296,8 @@
         <option value="production">נשלח לייצור</option>
         <option value="prodFinish">עבר ייצור</option>
         <option value="partialCmpt">רכיבים קיימים חלקית</option>
+        <option value="waiting">ממתין לאישור לקוח</option>
+        <option value="customerApproved">אושר ע"י לקוח</option>
       </select>
     </div>
     <div *ngIf="lodingOrders" class="smallerLoader"></div>
@@ -478,7 +480,7 @@
             Stage
             <i
               class="ti-exchange-vertical"
-              (click)="sortOrdersByStage()"
+              (click)="sortOrdersByStage2()"
               style="cursor: pointer"
             ></i>
           </th>

@@ -75,10 +75,10 @@ export class NeworderComponent implements OnInit {
 
   orderForm: FormGroup = new FormGroup({
     //   'description' : [null, Validators.compose([Validators.required, Validators.minLength(30), Validators.maxLength(500)])],
-    deliveryDate: new FormControl(new Date(), Validators.required),
+    deliveryDate: new FormControl("", Validators.required),
     costumer: new FormControl("", Validators.required),
     costumerInternalId: new FormControl(""),
-    orderDate: new FormControl(new Date(), Validators.required),
+    orderDate: new FormControl("", Validators.required),
     orderRemarks: new FormControl(""),
     customerOrderNum: new FormControl("", Validators.required),
     type: new FormControl("", Validators.required),
