@@ -201,6 +201,22 @@ import { BulksReportComponent } from "./batches/bulks-inventory/bulks-report/bul
 import { TemperaturesLogsComponent } from "./qa/temperaturesLogs/temperaturesLogs.component";
 import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
 import { StockProposalComponent } from "./customers/stock-proposal/stock-proposal.component";
+
+import {MkupFormComponent} from "./forms/mkupForm/mkupForm.component"
+import {FillingComponent} from "./forms/mkupForm/filling/filling.component"
+import {LaserComponent} from "./forms/mkupForm/laser/laser.component"
+import {MkupFormPrintingComponent} from "./forms/mkupForm/mkupFormPrinting/mkupFormPrinting.component"
+import {PersonalPackagingComponent} from "./forms/mkupForm/PersonalPackaging/personalPackaging.component"
+import {StickerComponent} from "./forms/mkupForm/sticker/sticker.component"
+import {MkupProductionComponent} from "./forms/mkupForm/mkupProduction/mkupProduction.component"
+
+
+
+
+
+
+
+
 @NgModule({
   exports: [
     // MatInputModule,
@@ -377,6 +393,13 @@ import { StockProposalComponent } from "./customers/stock-proposal/stock-proposa
     StockProposalComponent,
     BulksReportComponent,
     OpenOrderitemsComponent,
+    MkupFormComponent,
+    FillingComponent,
+    LaserComponent,
+    MkupFormPrintingComponent,
+    PersonalPackagingComponent,
+    StickerComponent,
+    MkupProductionComponent
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [
