@@ -687,7 +687,7 @@ export class StockComponent implements OnInit {
     this.getColor(new Date());
     this.numberSearchInput.nativeElement.focus();
     this.route.queryParams.subscribe((params) => {
-      if (params) {
+      if (params.itemNumber || params.type) {
         let itemNumber = params.itemNumber;
         this.stockType = params.type;
         this.filterParams.controls.componentN.setValue(itemNumber);
