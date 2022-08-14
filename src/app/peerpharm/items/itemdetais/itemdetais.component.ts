@@ -97,7 +97,7 @@ export class ItemdetaisComponent implements OnInit {
   productPriceModal: Boolean = false;
 
   PAO:Boolean = false;
-  setUnits:Boolean=true;
+  setUnits:Boolean=false;
   unitWeight:Boolean=true;
 
   itemLockedForEdit: Boolean = false;
@@ -2230,6 +2230,17 @@ export class ItemdetaisComponent implements OnInit {
           }
         }
       });
+    }
+  }
+  add(){
+    this.itemShown.setUnits++
+  }
+  sub(){
+    if(this.itemShown.setUnits <= 1 ){
+      this.itemShown.setUnits = 1
+      return
+    }else{
+      this.itemShown.setUnits--
     }
   }
 }

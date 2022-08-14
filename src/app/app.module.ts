@@ -200,6 +200,7 @@ export class AppModule {
       Set: "סט",
       In: "ב",
       Of: "של",
+      Multiply:"הכפלה"
     });
 
     translate.setTranslation("en", {
@@ -267,6 +268,7 @@ export class AppModule {
       Set: "Set",
       In: "In",
       Of: "Of",
+      Multiply:"Multiply"
     });
 
     translate.addLangs(["en", "he"]);
