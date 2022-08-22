@@ -21,13 +21,13 @@ export class TwoFactorSms implements CanActivate {
   ) {}
 
   canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    next?: ActivatedRouteSnapshot,
+    state?: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     return new Promise((resolve, reject) => {
       this.modalService.userAnserEventEmitter.subscribe((userChoice) => {
         if (userChoice) resolve(userChoice);
-        else reject(false);
+        else resolve(false);
       });
       this.modalService.confirm({ title: "title", message: "message" });
 

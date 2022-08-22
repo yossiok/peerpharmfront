@@ -18,7 +18,7 @@ import { OrderItem, ProductionFormule, WorkPlan } from "../WorkPlan";
 import { ConfirmService } from "../../../../services/confirm.modal.service";
 import { Router } from "@angular/router";
 import { CreamBarrelService } from "src/app/services/cream-barrel.service";
-
+import { TwoFactorSms } from "src/app/guards/twofactorsms.guard";
 @Component({
   selector: "app-planning-details",
   templateUrl: "./planning-details.component.html",
@@ -55,6 +55,8 @@ export class PlanningDetailsComponent implements OnInit {
   enableEdit: boolean = false;
   enableEditIndex: any = null;
   editWeightInput: any = null;
+  printSingle: boolean = false;
+  formulePrint: number = -1;
 
   loadData: boolean;
   showMaterialsForFormules: boolean = false;
@@ -116,7 +118,8 @@ export class PlanningDetailsComponent implements OnInit {
     private inventoryService: InventoryService,
     private modalService: ConfirmService,
     public router: Router,
-    private creamBarrelService: CreamBarrelService
+    private creamBarrelService: CreamBarrelService,
+    private twoFactorSms: TwoFactorSms
   ) {}
 
   ngOnInit(): void {
@@ -270,10 +273,16 @@ export class PlanningDetailsComponent implements OnInit {
       // resolve(true)
       this.modalService.userAnserEventEmitter.subscribe((userChoice) => {
         if (userChoice) resolve(userChoice);
-        else reject(false);
+        else resolve(false);
       });
       this.modalService.confirm({ title: "title", message: "message" });
       // resolve(true);
+    });
+  }
+  authenticateTrue(): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      // allways returns true for skipping this stage
+      resolve(true);
     });
   }
 
@@ -675,12 +684,21 @@ export class PlanningDetailsComponent implements OnInit {
       this.workPlan.productionFormules.map((f) =>
         f.status < 3 ? (f.status = 3) : (f.status = f.status)
       );
+      // Checking the SMS before continue to the next step
+      let state = await this.twoFactorSms.canActivate();
+      console.log(state);
+      if (!state) {
+        console.log("Wrong number, try again.");
+        alert("Wrong number, try again.");
+        return;
+      }
 
       this.saveChanges()
         .then((succesMessage) => {
           this.toastr.success(succesMessage, "פורמולות מאושרות");
-          this.authenticate()
+          this.authenticateTrue()
             .then(async (approved) => {
+              console.log(approved);
               if (approved) {
                 let amountsLoaded = await this.loadMaterialsForFormule(true);
                 let formulesPrinted = await this.printFormules();
@@ -799,5 +817,36 @@ export class PlanningDetailsComponent implements OnInit {
         : -this.orderNumberSort
     );
     this.orderNumberSort *= -1;
+  }
+
+  async printSelectedFormule(idx) {
+    let state = await this.twoFactorSms.canActivate();
+    console.log(state);
+    if (!state) {
+      console.log("Wrong number, try again.");
+      alert("Wrong number, try again.");
+      return;
+    }
+    this.formulePrint = idx;
+    this.printSingle = true;
+    let formule = this.workPlan.productionFormules[idx];
+    console.log(formule);
+    formule.barrelsWeight = formule.barrelsWeight ? formule.barrelsWeight : 0;
+    let prodWeight = formule.totalKG - formule.barrelsWeight;
+    formule.formuleData = this.formuleCalculate(
+      formule.formuleData,
+      prodWeight
+    );
+
+    this.printingFormules = true;
+    setTimeout(() => {
+      this.printFormuleBtn.nativeElement.click();
+      setTimeout(() => {
+        this.printingFormules = false;
+        this.showMaterialsForFormules = false;
+        this.printSingle = false;
+        this.formulePrint = -1;
+      }, 1000);
+    }, 1000);
   }
 }
