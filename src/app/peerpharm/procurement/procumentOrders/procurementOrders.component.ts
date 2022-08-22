@@ -542,11 +542,16 @@ export class ProcurementOrdersComponent implements OnInit {
         (purchOrder) => purchOrder.creationDate < dateTo
       );
     }
-
+    // eran new Search
     if (orderNumber) {
       this.procurementData = this.procurementData.filter((purchOrder) =>
         purchOrder.orderNumber.toString().includes(orderNumber)
       );
+      if(this.procurementData.length < 1){
+        this.procurementservice.getProcurementsByIncludeOrderNumber(orderNumber).subscribe((res)=>{
+          this.procurementData = res
+        })
+      }
     }
 
     if (supplier) {

@@ -445,6 +445,12 @@ export class Procurementservice {
       .post(url, JSON.stringify({ orderNumber }), this.options)
       .pipe(map((res) => res.json()));
   }
+  getProcurementsByIncludeOrderNumber(orderNumber){
+    let url = this.baseUrl + "procurementOrderController/getProcurementsByIncludeOrderNumber";
+    return this.http
+      .post(url, JSON.stringify({ orderNumber }), this.options)
+      .pipe(map((res) => res.json()));
+  }
 
   // not used
   // closeOrder(orderNumber, reason): Observable<any> {
