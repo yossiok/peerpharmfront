@@ -694,11 +694,6 @@ export class PlanningDetailsComponent implements OnInit {
 
   async approveFormules() {
     if (confirm("לאשר לייצור?")) {
-      // change status
-      this.workPlan.productionFormules.map((f) =>
-        f.status < 3 ? (f.status = 3) : (f.status = f.status)
-      );
-      // Checking the SMS before continue to the next step
       let state = await this.twoFactorSms.canActivate();
       console.log(state);
       if (!state) {
@@ -706,24 +701,43 @@ export class PlanningDetailsComponent implements OnInit {
         alert("Wrong number, try again.");
         return;
       }
+      this.productionService
+        .wpFormulesUpdate(this.workPlan.serialNumber)
+        .subscribe((data) => {
+          if (data.msg) {
+            console.log(data.msg);
+            this.toastr.error(data.msg);
+            return;
+          } else if (data.serialNumber == this.workPlan.serialNumber) {
+            this.workPlan = data;
+            // change status
+            this.workPlan.productionFormules.map((f) =>
+              f.status < 3 ? (f.status = 3) : (f.status = f.status)
+            );
+          }
 
-      this.saveChanges()
-        .then((succesMessage) => {
-          this.toastr.success(succesMessage, "פורמולות מאושרות");
-          this.authenticateTrue()
-            .then(async (approved) => {
-              console.log(approved);
-              if (approved) {
-                let amountsLoaded = await this.loadMaterialsForFormule(true);
-                let formulesPrinted = await this.printFormules();
-              } else this.toastr.error("אימות נכשל");
+          // Checking the SMS before continue to the next step
+
+          this.saveChanges()
+            .then((succesMessage) => {
+              this.toastr.success(succesMessage, "פורמולות מאושרות");
+              this.authenticateTrue()
+                .then(async (approved) => {
+                  console.log(approved);
+                  if (approved) {
+                    let amountsLoaded = await this.loadMaterialsForFormule(
+                      true
+                    );
+                    let formulesPrinted = await this.printFormules();
+                  } else this.toastr.error("אימות נכשל");
+                })
+                .catch((authFailedMsg) => {
+                  this.toastr.error("אימות נכשל!");
+                });
             })
-            .catch((authFailedMsg) => {
-              this.toastr.error("אימות נכשל!");
+            .catch((errorMessage) => {
+              this.toastr.error(errorMessage);
             });
-        })
-        .catch((errorMessage) => {
-          this.toastr.error(errorMessage);
         });
     }
   }
@@ -841,26 +855,39 @@ export class PlanningDetailsComponent implements OnInit {
       alert("Wrong number, try again.");
       return;
     }
-    this.formulePrint = idx;
-    this.printSingle = true;
-    let formule = this.workPlan.productionFormules[idx];
-    console.log(formule);
-    formule.barrelsWeight = formule.barrelsWeight ? formule.barrelsWeight : 0;
-    let prodWeight = formule.totalKG - formule.barrelsWeight;
-    formule.formuleData = this.formuleCalculate(
-      formule.formuleData,
-      prodWeight
-    );
 
-    this.printingFormules = true;
-    setTimeout(() => {
-      this.printFormuleBtn.nativeElement.click();
-      setTimeout(() => {
-        this.printingFormules = false;
-        this.showMaterialsForFormules = false;
-        this.printSingle = false;
-        this.formulePrint = -1;
-      }, 1000);
-    }, 1000);
+    this.productionService
+      .wpFormulesUpdate(this.workPlan.serialNumber)
+      .subscribe((data) => {
+        if (data.msg) {
+          console.log(data.msg);
+          this.toastr.error(data.msg);
+          return;
+        } else if (data.serialNumber == this.workPlan.serialNumber) {
+          this.formulePrint = idx;
+          this.printSingle = true;
+          let formule = this.workPlan.productionFormules[idx];
+          console.log(formule);
+          formule.barrelsWeight = formule.barrelsWeight
+            ? formule.barrelsWeight
+            : 0;
+          let prodWeight = formule.totalKG - formule.barrelsWeight;
+          formule.formuleData = this.formuleCalculate(
+            formule.formuleData,
+            prodWeight
+          );
+
+          this.printingFormules = true;
+          setTimeout(() => {
+            this.printFormuleBtn.nativeElement.click();
+            setTimeout(() => {
+              this.printingFormules = false;
+              this.showMaterialsForFormules = false;
+              this.printSingle = false;
+              this.formulePrint = -1;
+            }, 1000);
+          }, 1000);
+        }
+      });
   }
 }
