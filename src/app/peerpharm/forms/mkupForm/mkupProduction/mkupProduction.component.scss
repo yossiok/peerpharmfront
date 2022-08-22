@@ -1,90 +1,97 @@
-.mainPage{
-    margin-right: 8rem;
-    margin-left: 8rem;
+.mainPage {
+  margin-right: 8rem;
+  margin-left: 8rem;
 }
-.heading{
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    margin-top: 3rem;
-    margin-bottom: 3rem;
+.subHeader {
+  margin: 20px auto 20px auto;
+  display: block;
+  font-weight: bold;
+  font-size: 18px;
 }
-.containerSix{
-    display: flex;
-    flex-direction: row;
-    justify-content:flex-start;
-    align-items: center;
-    text-align:center;
-    margin-bottom: 5rem;
+label {
+  font-size: 17px;
+  font-weight: bold;
+  padding: 1px;
 }
-.containerSixR{
-    display: flex;
-    flex-direction: row;
-    justify-content:flex-start;
-    align-items: center;
-    text-align:center;
-    margin-bottom: 5rem;
+.heading {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 }
-.containerThree{
-    display: flex;
+.containerSix {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 5rem;
+}
+.containerSixR {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 5rem;
+}
+.containerThree {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  text-align: right;
+  margin-right: 2rem;
+  margin-left: 2rem;
+}
+.containerThreeR {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+  text-align: right;
+  margin-right: 2rem;
+  margin-left: 2rem;
+}
+.containerThreeR input {
+  margin-left: 1rem;
+}
+.inputData label {
+  margin-left: 1rem;
+  align-self: flex-start;
+}
+.containerTwo {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+  text-align: right;
+  margin-right: 2rem;
+  margin-left: 2rem;
+  margin-bottom: 5rem;
+}
+.containerTwo input {
+  margin-left: 2rem;
+}
+.testingTittle {
+  margin-bottom: 2rem;
+}
+.rowFour {
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+  align-items: center;
+  text-align: center;
+}
+
+@media screen and (max-width: 1200px) {
+  .containerSix {
     flex-direction: column;
-    justify-content:center;
-    align-items:flex-end;
-    text-align:right;
-    margin-right: 2rem;
-    margin-left: 2rem;
-}
-.containerThreeR{
-    display: flex;
-    flex-direction: row;
-    justify-content:flex-start;
-    align-items:flex-end;
-    text-align:right;
-    margin-right: 2rem;
-    margin-left: 2rem;
-}
-.containerThreeR input{
-    margin-left: 1rem;
-}
-.inputData label{
-    margin-left: 1rem;
-    align-self:flex-start;
-}
-.containerTwo{
-    display: flex;
-    flex-direction: row;
-    justify-content:flex-start;
-    align-items:flex-end;
-    text-align:right;
-    margin-right: 2rem;
-    margin-left: 2rem;
-    margin-bottom: 5rem;
-
-}
-.containerTwo input{
-    margin-left: 2rem;
-}
-.testingTittle{
-    margin-bottom: 2rem;
-}
-.rowFour{
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: center;
-    text-align: center;
-}
-
-
-
-  @media screen and (max-width: 1200px) {
-    .containerSix{
-        flex-direction: column;
-    }
-    
   }
-  @media screen and (max-width: 800px) {
-    .containerSix{
-        flex-direction: column;
-    }
+}
+@media screen and (max-width: 800px) {
+  .containerSix {
+    flex-direction: column;
   }
+}
