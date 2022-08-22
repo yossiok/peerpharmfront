@@ -19,6 +19,7 @@ import { ConfirmService } from "../../../../services/confirm.modal.service";
 import { Router } from "@angular/router";
 import { CreamBarrelService } from "src/app/services/cream-barrel.service";
 import { TwoFactorSms } from "src/app/guards/twofactorsms.guard";
+
 @Component({
   selector: "app-planning-details",
   templateUrl: "./planning-details.component.html",
@@ -394,6 +395,19 @@ export class PlanningDetailsComponent implements OnInit {
   }
 
   addBatch(formule) {
+    let item = "";
+    item = prompt("הכנס מספר פורמולה");
+    if (item.trim().length == 0) {
+      alert("יש להכניס מסםר פורמולה");
+      return;
+    }
+    if (
+      item.trim() != formule.formuleData.formuleNumber &&
+      item.trim().toLowerCase() != formule.formule.toLowerCase()
+    ) {
+      alert("מספר הפורמולה לא תואם לשורה שבחרת");
+      return;
+    }
     this.router.navigate(["/peerpharm/batches/newBatch"], {
       queryParams: {
         formule: formule.formule,

@@ -142,7 +142,7 @@ export class NewBatchComponent implements OnInit {
               let barrelWeight;
               while (isNaN(barrelWeight))
                 barrelWeight = prompt(
-                  "מה המשקל של חבית: " + barrel.barrelNumber
+                  "מה המשקל של חבית ישנה מספר: " + barrel.barrelNumber
                 );
               barrelsWeight += Number(barrelWeight);
             }
