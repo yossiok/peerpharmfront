@@ -2,199 +2,40 @@
   <div class="heading">
     <h1 class="tittle">טופס ייצור</h1>
   </div>
-
-  <div class="form-group row">
-    <div class="col-1">
-      <label for="itemNumber">מק"ט</label>
-    </div>
-    <div class="col-1">
-      <input
-        type="text"
-        name="itemNumber"
-        id="itemNumber"
-        class="form-control"
-      />
-    </div>
-    <div class="col-1"></div>
-    <div class="col-1">
-      <label for="productName">שם מוצר</label>
-    </div>
-    <div class="col-3">
-      <input
-        type="text"
-        name="productName"
-        id="productName"
-        class="form-control"
-      />
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-1">
+  <div class="containerSixTop">
+    <div class="containerThree">
+      <div class="inputData">
       <label for="orderNumber">מס' הזמנה</label>
-    </div>
-    <div class="col-1">
-      <input
-        type="text"
-        name="orderNumber"
-        id="orderNumber"
-        class="form-control"
-      />
-    </div>
-    <div class="col-1"></div>
-    <div class="col-1">
-      <label for="orderQty">כמות מוזמנת</label>
-    </div>
-    <div class="col-1">
-      <input type="number" name="orderQty" id="orderQty" class="form-control" />
-    </div>
-    <div class="col-1"></div>
-  </div>
-  <div class="form-group row">
-    <div class="col-1">
-      <label for="customerName">מספר לקוח</label>
-    </div>
-    <div class="col-1">
-      <input
-        type="text"
-        name="customerId"
-        id="customerName"
-        class="form-control"
-      />
-    </div>
-    <div class="col-1"></div>
-    <div class="col-1">
+      <input type="number" name="orderNumber" id="orderNumber">
+      </div>
+      <div class="inputData">
+      <label for="productName">שם מוצר</label>
+      <input type="text" name="productName" id="productName">
+      </div>
+      <div class="inputData">
       <label for="customerName">שם לקוח</label>
+      <input type="text" name="customerName" id="customerName">
+      </div>
     </div>
-    <div class="col-3">
-      <input
-        type="text"
-        name="customerName"
-        id="customerName"
-        class="form-control"
-      />
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-1">
-      <label for="batchNumber">מס' אצווה</label>
-    </div>
-    <div class="col-2">
-      <input
-        type="text"
-        name="batchNumber"
-        id="batchNumber"
-        class="form-control"
-      />
+    <div class="containerThree">
+      <div class="inputData">
+        <label for="orderQty">כמות מוזמנת</label>
+        <input type="number" name="orderQty" id="orderQty">
+      </div>
+      <div class="inputData">
+        <label for="itemNumber">מק"ט</label>
+        <input type="number" name="itemNumber" id="itemNumber">
+      </div>
+      <div class="inputData">
+        <label for="batchNumber">מס' אצווה</label>
+        <input type="text" name="batchNumber" id="batchNumber">
+      </div>
     </div>
   </div>
-
-  <div class="form-group row">
-    <div class="col-1">
-      <label for="startProductionDate">תאריך התחלת ייצור</label>
-    </div>
-    <div class="col-1">
-      <input
-        type="date"
-        name="startProductionDate"
-        id="startProductionDate"
-        class="form-control"
-      />
-    </div>
-    <div class="col-1"></div>
-    <div class="col-1">
-      <label for="startProductionDate">שעת התחלה</label>
-    </div>
-    <div class="col-1">
-      <input
-        type="time"
-        name="endProductionDate"
-        id="endProductionDate"
-        class="form-control"
-      />
-    </div>
-    <div class="col-1"></div>
-  </div>
-  <div class="form-group row">
-    <div class="col-1">
-      <label for="startProductionDate">תאריך סיום ייצור</label>
-    </div>
-    <div class="col-1">
-      <input
-        type="date"
-        name="endProductionDate"
-        id="endProductionDate"
-        class="form-control"
-      />
-    </div>
-    <div class="col-1"></div>
-    <div class="col-1">
-      <label for="startProductionDate">שעת סיום</label>
-    </div>
-    <div class="col-1">
-      <input
-        type="time"
-        name="endProductionTime"
-        id="endProductionTime"
-        class="form-control"
-      />
-    </div>
-    <div class="col-1"></div>
-  </div>
-  <div class="form-group row">
-    <div class="col-1">
-      <label for="produceQty">כמות שיוצרה</label>
-    </div>
-    <div class="col-1">
-      <input
-        type="number"
-        name="produceQty"
-        id="produceQty"
-        class="form-control"
-      />
-    </div>
-    <div class="col-1"></div>
-    <div class="col-1">
-      <label for="productionPerson">ייצור ע"י</label>
-    </div>
-    <div class="col-1">
-      <input
-        type="text"
-        name="productionPerson"
-        id="productionPerson"
-        class="form-control"
-      />
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-1">
-      <label for="netoWeight">משקל נטו</label>
-    </div>
-    <div class="col-1">
-      <input
-        type="number"
-        name="netoWeight"
-        id="netoWeight"
-        class="form-control"
-      />
-    </div>
-    <div class="col-1"></div>
-    <div class="col-1">
-      <label for="deviationRange">טווח סטייה</label>
-    </div>
-    <div class="col-1">
-      <input
-        type="number"
-        name="deviationRange"
-        id="deviationRange"
-        class="form-control"
-      />
-    </div>
-  </div>
-
-  <!-- <div class="containerSix">
+  <div class="containerSix2">
     <div class="containerThree">
       <div class="inputData"></div>
-      <div class="inputData">
+      <div class="inputData pend">
         <label for="endProductionDate">תאריך סיום ייצור</label>
         <input
           type="date"
@@ -255,108 +96,11 @@
     </div>
     <div class="inputData">
       <label for="netoWeight">משקל נטו</label>
-      <input
-        type="number"
-        name="netoWeight"
-        id="netoWeight"
-        class="form-control"
-      />
-    </div>
-  </div> -->
-  <div class="row mt-4">
-    <h3 class="testingTittle">בדיקות לפני ייצור</h3>
-  </div>
-
-  <div class="form-group row">
-    <div class="col-2">
-      <label for="sensoryTesting"
-        >בדיקה סנסורית של המוצר (מול ריטה או דוגמאות)</label
-      >
-    </div>
-    <div class="col-1">
-      <input
-        type="checkbox"
-        name="sensoryTesting"
-        id="sensoryTesting"
-        class="form-control"
-      />
-    </div>
-    <div class="col-1"></div>
-    <div class="col-2">
-      <label for="containers">זיהוי וניקוי מיכלים </label>
-    </div>
-    <div class="col-1">
-      <input
-        type="checkbox"
-        name="containers"
-        id="containers"
-        class="form-control"
-      />
+      <input type="number" name="netoWeight" id="netoWeight">
     </div>
   </div>
-  <div class="form-group row">
-    <div class="col-2">
-      <label for="productIdentification"
-        >זיהוי מוצר (גודט עגול או מרובע \ קומפוננט אם זה אבקה)</label
-      >
-    </div>
-    <div class="col-1">
-      <input
-        type="checkbox"
-        name="productIdentification"
-        id="productIdentification"
-        class="form-control"
-      />
-    </div>
-    <div class="col-1"></div>
-    <div class="col-2">
-      <label for="machine">אישור וכיוון ניקיון מכונה</label>
-    </div>
-    <div class="col-1">
-      <input type="checkbox" name="machine" id="machine" class="form-control" />
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-2">
-      <label for="productLicense">רישיון למוצר</label>
-    </div>
-    <div class="col-1">
-      <input
-        type="checkbox"
-        name="productLicense"
-        id="productLicense"
-        class="form-control"
-      />
-    </div>
-    <div class="col-1"></div>
-    <div class="col-2">
-      <label for="customerApproval">אישור לקוח</label>
-    </div>
-    <div class="col-1">
-      <input
-        type="checkbox"
-        name="customerApproval"
-        id="customerApproval"
-        class="form-control"
-      />
-    </div>
-  </div>
-  <div class="form-group row">
-    <div class="col-2">
-      <label for="managerSignature">חתימת מנהל מאשר</label>
-    </div>
-    <div class="col-2">
-      <input
-        type="text"
-        name="managerSignature"
-        id="managerSignature"
-        class="form-control"
-      />
-    </div>
-    <div class="col-1"></div>
-  </div>
-
-  <!-- <div class="containerSix testing">
+  <h5 class="testingTittle">בדיקות לפני ייצור</h5>
+  <div class="checkBefor">
     <div class="containerThree">
       <div class="inputData">
         <label for="sensoryTesting"
@@ -432,7 +176,66 @@
   <div class="row mt-4">
     <h3 class="testingTittle" style="margin-top: 3rem">בקרה במהלך ייצור</h3>
   </div>
-  <div class="containerSix">
+  <h5 class="testingTittle" style="margin-top: 3rem;">בקרה במהלך ייצור</h5>
+  <table>
+    <thead>
+      <tr>
+        <th>
+          שעת בדיקה
+        </th>
+        <th>
+           תקינות דחיסה
+        </th>
+        <th>
+             ניקיון מיכלים
+        </th>
+        <th>
+              אישור ניקין מכונה לאחר ייצור
+        </th>
+        <th>
+           משקל נטו
+        </th>
+        <th>
+            כמות שיוצרה
+        </th>
+        <th>
+             קיימות שאריות באטצ'
+        </th>
+        <th>
+               באטצ' נוצל במלואו
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <input type="time" name="testingTime" id="testingTime">
+        </td>
+        <td>
+          <input type="checkbox" name="testingCompression" id="testingCompression">
+        </td>
+        <td>
+          <input type="checkbox" name="testingContainerClean" id="testingContainerClean">
+        </td>
+        <td>
+          <input type="text" name="testingMachineClean" id="testingMachineClean">
+        </td>
+        <td>
+          <input type="number" name="testingNetoWeigth" id="testingNetoWeigth">
+        </td>
+        <td>
+          <input type="number" name="testingProduceQty" id="testingProduceQty">
+        </td>
+        <td>
+          <input type="checkbox" name="testingBatchLeft" id="testingBatchLeft">
+        </td>
+        <td>
+          <input type="checkbox" name="fullBatch" id="fullBatch">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- <div class="containerSix">
     <div class="containerThree">
       <div class="inputData">
         <label for="testingTime">שעת בדיקה</label>
@@ -481,15 +284,6 @@
           class="form-control"
         />
       </div>
-      <div class="inputData">
-        <label for="testingEquation">[משוואה]</label>
-        <input
-          type="checkbox"
-          name="testingEquation"
-          id="testingEquation"
-          class="form-control"
-        />
-      </div>
     </div>
     <div class="containerThree">
       <div class="inputData">
@@ -520,7 +314,7 @@
         />
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="containerSixR">
     <div class="containerThreeR">
       <div class="inputData">

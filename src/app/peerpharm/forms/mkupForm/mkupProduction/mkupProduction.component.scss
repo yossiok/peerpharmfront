@@ -2,96 +2,203 @@
   margin-right: 8rem;
   margin-left: 8rem;
 }
-.subHeader {
-  margin: 20px auto 20px auto;
-  display: block;
-  font-weight: bold;
-  font-size: 18px;
+.heading{
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 3rem;
+    margin-bottom: 2rem;
 }
-label {
-  font-size: 17px;
-  font-weight: bold;
-  padding: 1px;
+.containerSix{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items: center;
+    text-align:center;
+    margin-bottom: 2rem;
 }
-.heading {
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  margin-top: 3rem;
-  margin-bottom: 3rem;
-}
-.containerSix {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  text-align: center;
-  margin-bottom: 5rem;
-}
-.containerSixR {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  text-align: center;
-  margin-bottom: 5rem;
-}
-.containerThree {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
-  text-align: right;
-  margin-right: 2rem;
-  margin-left: 2rem;
-}
-.containerThreeR {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-end;
-  text-align: right;
-  margin-right: 2rem;
-  margin-left: 2rem;
-}
-.containerThreeR input {
-  margin-left: 1rem;
-}
-.inputData label {
-  margin-left: 1rem;
-  align-self: flex-start;
-}
-.containerTwo {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: flex-end;
-  text-align: right;
-  margin-right: 2rem;
-  margin-left: 2rem;
-  margin-bottom: 5rem;
-}
-.containerTwo input {
-  margin-left: 2rem;
-}
-.testingTittle {
-  margin-bottom: 2rem;
-}
-.rowFour {
-  display: flex;
-  flex-direction: row;
-  justify-content: start;
-  align-items: center;
-  text-align: center;
-}
+.containerSixTop{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items: center;
+    text-align:center;
+    margin-bottom: 2rem;
 
-@media screen and (max-width: 1200px) {
-  .containerSix {
-    flex-direction: column;
-  }
 }
-@media screen and (max-width: 800px) {
-  .containerSix {
-    flex-direction: column;
-  }
+.checkBefor{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items: center;
+    text-align:center;
+    margin-bottom: 2rem;
 }
+.containerSix2{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items: center;
+    text-align:center;
+    margin-bottom: 2rem;
+}
+.containerSixR{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items: center;
+    text-align:center;
+    margin-bottom: 2rem;
+}
+.containerThree{
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items:flex-end;
+    text-align:right;
+    margin-right: 2rem;
+    margin-left: 2rem;
+}
+.containerThreeR{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items:flex-end;
+    text-align:right;
+    margin-right: 2rem;
+    margin-left: 2rem;
+}
+.containerThreeR input{
+    margin-left: 1rem;
+}
+.inputData label{
+    margin-left: 1rem;
+    align-self:flex-start;
+}
+.containerTwo{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items:flex-end;
+    text-align:right;
+    margin-right: 2rem;
+    margin-left: 2rem;
+    margin-bottom: 2rem;
+
+}
+.containerTwo input{
+    margin-left: 2rem;
+}
+.testingTittle{
+    margin-bottom: 2rem;
+}
+.rowFour{
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    text-align: center;
+}
+table, th, td {
+    border: 1px solid;
+    align-items: center;
+    text-align: center;
+  }
+    th, td {
+    padding: 3px;
+    
+  }
+  table{
+    margin-bottom: 2rem;
+  }
+
+
+
+  @media screen and (max-width: 1200px) {
+    .mainPage{
+        margin-right: 0;
+        margin-left: 0;
+    }
+    .containerSix2 .containerThree {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+
+
+    }
+    .containerSix2 .containerThree .inputData {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        margin-bottom: 0.5rem;
+
+    }
+    .checkBefor{
+        flex-direction: row;
+        justify-content:start;
+        align-items: flex-end ;
+        margin-left: 0;
+    }
+    .checkBefor .containerThree{
+        flex-direction: row;
+        justify-content:start;
+        align-items: flex-end;
+        margin-left: 0;
+    }
+    .containerSixTop .containerThree .inputData {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        margin-bottom: 0.5rem;
+
+        
+    }
+    
+    
+  }
+  @media screen and (max-width: 800px) {
+    .mainPage{
+        margin-right: 0;
+        margin-left: 0;
+    }
+    .containerSix2 .containerThree {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+
+
+    }
+    .containerSix2 .containerThree .inputData {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        margin-bottom: 0.5rem;
+
+    }
+    .checkBefor{
+        flex-direction: row;
+        justify-content:start;
+        align-items: flex-end ;
+        margin-left: 0;
+    }
+    .checkBefor .containerThree{
+        flex-direction: row;
+        justify-content:start;
+        align-items: flex-end;
+        margin-left: 0;
+    }
+    
+    // .checkBefor .containerThree .inputData label, .checkBefor .containerThree .inputData input{
+        
+
+
+    // }
+    
+
+
+  }

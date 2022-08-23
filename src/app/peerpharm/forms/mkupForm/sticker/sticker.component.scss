@@ -7,7 +7,7 @@
     align-items: center;
     text-align: center;
     margin-top: 3rem;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 }
 .containerSix{
     display: flex;
@@ -15,7 +15,24 @@
     justify-content:flex-start;
     align-items: center;
     text-align:center;
-    margin-bottom: 5rem;
+    margin-bottom: 2rem;
+}
+.containerSix5{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items: center;
+    text-align:center;
+    margin-bottom: 2rem;
+}
+.containerSix6{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items: center;
+    text-align:center;
+    margin-bottom: 2rem;
+
 }
 
 .containerSixTop{
@@ -34,7 +51,7 @@
     justify-content:flex-start;
     align-items: center;
     text-align:center;
-    margin-bottom: 5rem;
+    margin-bottom: 2rem;
 }
 .containerThree{
     display: flex;
@@ -53,7 +70,7 @@
     text-align:right;
     margin-right: 2rem;
     margin-left: 2rem;
-    margin-bottom: 5rem;
+    margin-bottom: 2rem;
 
 }
 .containerThreeR{
@@ -80,7 +97,7 @@
     text-align:right;
     margin-right: 2rem;
     margin-left: 2rem;
-    margin-bottom: 5rem;
+    margin-bottom: 2rem;
 
 }
 .containerTwo input{
@@ -97,6 +114,73 @@
     text-align: center;
 }
 .remarksContainer{
-    margin-top: 3rem;
+    margin-top: 2rem;
     margin-bottom: 3rem;
 }
+table, th, td {
+    border: 1px solid;
+    align-items: center;
+    text-align: center;
+  }
+    th, td {
+    padding: 3px;
+    
+    
+  }
+  table{
+    margin-bottom: 2rem;
+  }
+@media screen and (max-width: 1200px) {
+    .mainPage{
+        margin-right: 0;
+        margin-left: 0;
+    }
+    .containerSix{
+        flex-direction: column;
+    }
+    .containerSixTop .containerThree .inputData{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .containerSix5{
+        justify-content: start;
+        align-items: flex-end;
+    }
+    .containerSix6{
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .containerSix6 .containerThree{
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    
+  }
+  @media screen and (max-width: 800px) {
+    .mainPage{
+        margin-right: 0;
+        margin-left: 0;
+    }
+    .containerSix{
+        flex-direction: column;
+    }
+    .containerSix5{
+        justify-content: start;
+        align-items: flex-end;
+    }
+    .containerSix6{
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .containerSix6 .containerThree{
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+  }

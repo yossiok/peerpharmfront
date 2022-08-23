@@ -36,7 +36,7 @@
     <label for="uwAction">פעולה לא נדרשת</label>
     <input type="checkbox" name="uwAction" id="uwAction">
   </div>
-  <div class="containerSix">
+  <div class="containerSix" id="numbers">
     <div class="containerThree">
       <div class="inputData">
       <label for="personalPackNum">מק"ט אריזה אישית</label>
@@ -85,7 +85,7 @@
     </div>
   </div>
   <h5 class="testingTittle">בדיקות לפני אריזה</h5>
-  <div class="containerSix">
+  <div class="containerSix" id="testing">
     <div class="containerThree">
       <div class="inputData">
         <label for="detectionPersonalPack">זיהוי אריזה אישית</label>
@@ -109,7 +109,53 @@
     </div>
   </div>
   <h5 class="testingTittle" style="margin-top: 3rem;">בקרה במהלך אריזה</h5>
-  <div class="containerSix">
+  <table>
+    <thead>
+      <tr>
+        <th>
+          שעת בדיקה
+        </th>
+        <th>
+           תקינות אריזה סופית
+        </th>
+        <th>
+           תקינות אלון 
+        </th>
+        <th>
+           תקינות לייזר 
+        </th>
+        <th>
+           תקינות הדפסה 
+        </th>
+        <th>
+           תקינות הדבקה 
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <input type="time" name="testingTime" id="testingTime" style="margin-left:1rem;">
+        </td>
+        <td>
+          <input type="checkbox" name="packCorrectness" id="packCorrectness" style="margin-left: 1rem;">
+        </td>
+        <td>
+          <input type="checkbox" name="pamphletCorrectness" id="pamphletCorrectness" style="margin-left: 1rem;">
+        </td>
+        <td>
+          <input type="checkbox" name="laserCorrectness" id="laserCorrectness" style="margin-left: 1rem;">
+        </td>
+        <td>
+          <input type="checkbox" name="printingCorrectness" id="printingCorrectness" style="margin-left: 1rem;">
+        </td>
+        <td>
+          <input type="checkbox" name="stickerCorrectness" id="stickerCorrectness" style="margin-left: 1rem;">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- <div class="containerSix">
     <div class="inputData">
       <label for="testingTime">שעת בדיקה</label>
       <input type="time" name="testingTime" id="testingTime" style="margin-left:1rem;">
@@ -134,7 +180,7 @@
       <label for="stickerCorrectness">תקינות הדבקה</label>
       <input type="checkbox" name="stickerCorrectness" id="stickerCorrectness" style="margin-left: 1rem;">
     </div>
-  </div>
+  </div> -->
   <div class="containerThree2">
     <div class="inputData">
       <label for="unitsInCarton">כמות יח' בקרטון</label>
