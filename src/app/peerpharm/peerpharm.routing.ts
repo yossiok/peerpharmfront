@@ -92,9 +92,9 @@ import { CustomersComponent } from "./customers/customers.component";
 import { ProposalsComponent } from "./customers/proposals/proposals.component";
 import { CreamBarrelComponent } from "./inventory/creamBarrel/creamBarrel.component";
 import { OpenOrderitemsComponent } from "./allorders/open-orderitems/open-orderitems.component";
-import {TemperaturesLogsComponent} from './qa/temperaturesLogs/temperaturesLogs.component'
+import { TemperaturesLogsComponent } from "./qa/temperaturesLogs/temperaturesLogs.component";
 import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
-// import { MkupFormComponent } from "./forms/mkupForm/mkupForm.component";
+import { MkupFormComponent } from "./forms/mkupForm/mkupForm.component";
 // import { ItemIndexNewComponent } from "./item-index-new/item-index-new.component";
 
 export const PeerPharmRputs: Routes = [
@@ -412,14 +412,14 @@ export const PeerPharmRputs: Routes = [
     },
     component: AllPlanningComponent,
   },
-  {
-    path: "production/lines",
-    canActivate: [ScreenGuard],
-    data: {
-      title: "Production Lines",
-    },
-    component: LinesComponent,
-  },
+  // {
+  //   path: "production/lines",
+  //   canActivate: [ScreenGuard],
+  //   data: {
+  //     title: "Production Lines",
+  //   },
+  //   component: LinesComponent,
+  // },
   {
     path: "production/productionHall",
     canActivate: [ScreenGuard],
@@ -574,6 +574,14 @@ export const PeerPharmRputs: Routes = [
       title: "Forms",
     },
     component: FormdetailsComponent,
+  },
+  {
+    path: "forms/mkupForm/:id",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "MakeUp Form",
+    },
+    component: MkupFormComponent,
   },
   {
     path: "forms/checkingforms",

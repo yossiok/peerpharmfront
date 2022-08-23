@@ -450,14 +450,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
       },
-      {
-        path: "/peerpharm/production/lines",
-        title: "Lines",
-        icon: "fas fa-i-cursor",
-        class: "",
-        extralink: false,
-        submenu: [],
-      },
+      // {
+      //   path: "/peerpharm/production/lines",
+      //   title: "Lines",
+      //   icon: "fas fa-i-cursor",
+      //   class: "",
+      //   extralink: false,
+      //   submenu: [],
+      // },
       {
         path: "/peerpharm/production/printBarcode",
         title: "Print Barcode",

@@ -113,9 +113,7 @@ export class ProductionService {
   }
 
   multiUpdateWorkPlans(workPlansArray) {
-    let url =
-      this.baseUrl +
-      `productionSchedule/MultiUpdateWorkPlan`;
+    let url = this.baseUrl + `productionSchedule/MultiUpdateWorkPlan`;
     return this.http
       .post(url, JSON.stringify(workPlansArray), this.options)
       .pipe(map((res) => res.json()));
@@ -141,5 +139,12 @@ export class ProductionService {
     const url =
       this.baseUrl + `productionSchedule/workplan?delete=${serialNumber}`;
     return this.http.delete(url).pipe(map((reponse) => reponse.json()));
+  }
+
+  wpFormulesUpdate(serialNumber) {
+    const url =
+      this.baseUrl +
+      `productionSchedule/wpFormulesUpdate?workPlan=${serialNumber}`;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 }
