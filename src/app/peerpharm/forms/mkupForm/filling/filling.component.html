@@ -2,7 +2,7 @@
   <div class="heading">
     <h1 class="tittle">טופס מילוי</h1>
   </div>
-  <div class="containerSix">
+  <div class="containerSixTop">
     <div class="containerThree">
       <div class="inputData">
       <label for="orderNumber">מס' הזמנה</label>
@@ -32,7 +32,7 @@
       </div>
     </div>
   </div>
-  <div class="containerSix">
+  <div class="containerSix2">
     <div class="containerThree">
       <div class="inputData">
       <label for="startFillingDate">תאריך תחילת מילוי</label>
@@ -59,7 +59,7 @@
     </div>
   </div>
   <h5 class="testingTittle">בדיקות לפני מילוי</h5>
-  <div class="containerSix">
+  <div class="checkBefor">
     <div class="containerThree">
       <div class="inputData">
         <label for="componentIdentification">זיהוי קומפוננט</label>
@@ -82,7 +82,7 @@
     </div>
   </div>
   <h5 class="testingTittle" style="margin-top: 3rem;">בקרה במהלך מילוי</h5>
-  <div class="containerSix">
+  <!-- <div class="containerSix">
       <div class="inputData">
         <label for="testingTime">שעת בדיקה</label>
         <input type="time" name="testingTime" id="testingTime" style="margin-left:1rem;">
@@ -95,7 +95,35 @@
         <label for="close">סגירה ואיטום</label>
         <input type="checkbox" name="close" id="close" >
       </div>
-  </div>
+  </div> -->
+  <table>
+    <thead>
+      <tr>
+        <th>
+          שעת בדיקה
+        </th>
+        <th>
+           תקינות מילוי
+        </th>
+        <th>
+              סגירה ואיטום
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <input type="time" name="testingTime" id="testingTime" style="margin-left:1rem;">
+        </td>
+        <td>
+          <input type="checkbox" name="fillingCorrectness" id="fillingCorrectness" style="margin-left:1rem;">
+        </td>
+        <td>
+          <input type="checkbox" name="close" id="close" >
+        </td>
+      </tr>
+    </tbody>
+  </table>
   <div class="containerThree2">
     <div class="inputData">
       <label for="unitsInCarton">כמות יח' בקרטון</label>

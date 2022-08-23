@@ -7,7 +7,7 @@
     align-items: center;
     text-align: center;
     margin-top: 3rem;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 }
 .containerSix{
     display: flex;
@@ -15,7 +15,32 @@
     justify-content:flex-start;
     align-items: center;
     text-align:center;
-    margin-bottom: 5rem;
+    margin-bottom: 2rem;
+}
+.containerSixTop{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items: center;
+    text-align:center;
+    margin-bottom: 2rem;
+
+}
+.checkBefor{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items: center;
+    text-align:center;
+    margin-bottom: 2rem;
+}
+.containerSix2{
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items: center;
+    text-align:center;
+    margin-bottom: 2rem;
 }
 .containerSixR{
     display: flex;
@@ -23,7 +48,7 @@
     justify-content:flex-start;
     align-items: center;
     text-align:center;
-    margin-bottom: 5rem;
+    margin-bottom: 2rem;
 }
 .containerThree{
     display: flex;
@@ -58,7 +83,7 @@
     text-align:right;
     margin-right: 2rem;
     margin-left: 2rem;
-    margin-bottom: 5rem;
+    margin-bottom: 2rem;
 
 }
 .containerTwo input{
@@ -74,17 +99,106 @@
     align-items: center;
     text-align: center;
 }
+table, th, td {
+    border: 1px solid;
+    align-items: center;
+    text-align: center;
+  }
+    th, td {
+    padding: 3px;
+    
+  }
+  table{
+    margin-bottom: 2rem;
+  }
 
 
 
   @media screen and (max-width: 1200px) {
-    .containerSix{
-        flex-direction: column;
+    .mainPage{
+        margin-right: 0;
+        margin-left: 0;
     }
+    .containerSix2 .containerThree {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+
+
+    }
+    .containerSix2 .containerThree .inputData {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        margin-bottom: 0.5rem;
+
+    }
+    .checkBefor{
+        flex-direction: row;
+        justify-content:start;
+        align-items: flex-end ;
+        margin-left: 0;
+    }
+    .checkBefor .containerThree{
+        flex-direction: row;
+        justify-content:start;
+        align-items: flex-end;
+        margin-left: 0;
+    }
+    .containerSixTop .containerThree .inputData {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        margin-bottom: 0.5rem;
+
+        
+    }
+    
     
   }
   @media screen and (max-width: 800px) {
-    .containerSix{
-        flex-direction: column;
+    .mainPage{
+        margin-right: 0;
+        margin-left: 0;
     }
+    .containerSix2 .containerThree {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+
+
+    }
+    .containerSix2 .containerThree .inputData {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        margin-bottom: 0.5rem;
+
+    }
+    .checkBefor{
+        flex-direction: row;
+        justify-content:start;
+        align-items: flex-end ;
+        margin-left: 0;
+    }
+    .checkBefor .containerThree{
+        flex-direction: row;
+        justify-content:start;
+        align-items: flex-end;
+        margin-left: 0;
+    }
+    
+    // .checkBefor .containerThree .inputData label, .checkBefor .containerThree .inputData input{
+        
+
+
+    // }
+    
+
+
   }

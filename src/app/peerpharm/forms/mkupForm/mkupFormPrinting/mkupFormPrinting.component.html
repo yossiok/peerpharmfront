@@ -36,7 +36,7 @@
     <label for="uwAction">פעולה לא נדרשת</label>
     <input type="checkbox" name="uwAction" id="uwAction">
   </div>
-  <div class="containerSix">
+  <div class="containerSix containerSixMob" >
     <div class="containerThree">
       <div class="inputData">
       <label for="startPrintingDate">תאריך תחילת הדפסה</label>
@@ -63,7 +63,7 @@
     </div>
   </div>
   <h5 class="testingTittle">בדיקות לפני הדפסה</h5>
-  <div class="containerSix">
+  <div class="containerSixtesting">
     <div class="containerThree">
       <div class="inputData">
         <label for="detection">זיהוי גלופה</label>
@@ -92,16 +92,35 @@
     </div>
   </div>
   <h5 class="testingTittle" style="margin-top: 3rem;">בקרה במהלך הדפסה</h5>
-  <div class="containerSix">
+  <table>
+    <thead>
+      <tr>
+        <th>
+          שעת בדיקה
+        </th>
+        <th>
+           תקינות הדפסה
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <input type="time" name="testingTime" id="testingTime" style="margin-left:1rem;">
+        </td>
+        <td>
+          <input type="checkbox" name="printingCorrectness" id="printingCorrectness">
+        </td>
+
+      </tr>
+    </tbody>
+  </table>
+  <!-- <div class="containerSix">
     <div class="inputData">
       <label for="testingTime">שעת בדיקה</label>
       <input type="time" name="testingTime" id="testingTime" style="margin-left:1rem;">
     </div>
-    <div class="inputData">
-      <label for="printingCorrectness">תקינות הדפסה</label>
-      <input type="checkbox" name="printingCorrectness" id="printingCorrectness">
-    </div>
-  </div>
+  </div> -->
   <div class="containerThree2">
     <div class="inputData">
       <label for="unitsInCarton">כמות יח' בקרטון</label>

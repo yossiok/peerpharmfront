@@ -2,7 +2,7 @@
   <div class="heading">
     <h1 class="tittle">טופס ייצור</h1>
   </div>
-  <div class="containerSix">
+  <div class="containerSixTop">
     <div class="containerThree">
       <div class="inputData">
       <label for="orderNumber">מס' הזמנה</label>
@@ -32,13 +32,13 @@
       </div>
     </div>
   </div>
-  <div class="containerSix">
+  <div class="containerSix2">
     <div class="containerThree">
       <div class="inputData">
       <label for="startProductionDate">תאריך תחילת ייצור</label>
       <input type="date" name="startProductionDate" id="startProductionDate">
       </div>
-      <div class="inputData">
+      <div class="inputData pend">
       <label for="endProductionDate">תאריך סיום ייצור</label>
       <input type="date" name="endProductionDate" id="endProductionDate">
       </div>
@@ -73,7 +73,7 @@
     </div>
   </div>
   <h5 class="testingTittle">בדיקות לפני ייצור</h5>
-  <div class="containerSix testing">
+  <div class="checkBefor">
     <div class="containerThree">
       <div class="inputData">
         <label for="sensoryTesting">בדיקה סנסורית של המוצר (מול ריטה או דוגמאות)</label>
@@ -108,7 +108,65 @@
     </div>
   </div>
   <h5 class="testingTittle" style="margin-top: 3rem;">בקרה במהלך ייצור</h5>
-  <div class="containerSix">
+  <table>
+    <thead>
+      <tr>
+        <th>
+          שעת בדיקה
+        </th>
+        <th>
+           תקינות דחיסה
+        </th>
+        <th>
+             ניקיון מיכלים
+        </th>
+        <th>
+              אישור ניקין מכונה לאחר ייצור
+        </th>
+        <th>
+           משקל נטו
+        </th>
+        <th>
+            כמות שיוצרה
+        </th>
+        <th>
+             קיימות שאריות באטצ'
+        </th>
+        <th>
+               באטצ' נוצל במלואו
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <input type="time" name="testingTime" id="testingTime">
+        </td>
+        <td>
+          <input type="checkbox" name="testingCompression" id="testingCompression">
+        </td>
+        <td>
+          <input type="checkbox" name="testingContainerClean" id="testingContainerClean">
+        </td>
+        <td>
+          <input type="text" name="testingMachineClean" id="testingMachineClean">
+        </td>
+        <td>
+          <input type="number" name="testingNetoWeigth" id="testingNetoWeigth">
+        </td>
+        <td>
+          <input type="number" name="testingProduceQty" id="testingProduceQty">
+        </td>
+        <td>
+          <input type="checkbox" name="testingBatchLeft" id="testingBatchLeft">
+        </td>
+        <td>
+          <input type="checkbox" name="fullBatch" id="fullBatch">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- <div class="containerSix">
     <div class="containerThree">
       <div class="inputData">
         <label for="testingTime">שעת בדיקה</label>
@@ -132,10 +190,6 @@
         <label for="testingMachineClean">אישור ניקיון מכונה לאחר ייצור</label>
         <input type="text" name="testingMachineClean" id="testingMachineClean">
       </div>
-      <div class="inputData">
-        <label for="testingEquation">[משוואה]</label>
-        <input type="checkbox" name="testingEquation" id="testingEquation">
-      </div>
     </div>
     <div class="containerThree">
       <div class="inputData">
@@ -151,7 +205,7 @@
         <input type="checkbox" name="testingContainerClean" id="testingContainerClean">
       </div>
     </div>
-  </div>
+  </div> -->
   <div class="containerSixR">
     <div class="containerThreeR">
       <div class="inputData">
