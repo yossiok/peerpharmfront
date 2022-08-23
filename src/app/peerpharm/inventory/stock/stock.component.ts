@@ -1163,6 +1163,10 @@ export class StockComponent implements OnInit {
       if (notActive) {
         this.newSpecificPurchaseRecommendModal = false;
         this.recommendStockItem.number = "";
+        this.recommendStockItem.name = "";
+        this.recommendStockItem.quantity = null;
+        this.recommendStockItem.measurement = null;
+        this.recommendStockItem.customerOrder = "";
 
         alert("הפריט לא פעיל ולא ניתן להזמין אותו ");
         return;
