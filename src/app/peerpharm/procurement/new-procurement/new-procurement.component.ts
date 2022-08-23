@@ -79,6 +79,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   editItem: boolean = false;
   newPurchaseAllowed: boolean = false;
   editPurchaseAllowed: boolean = false;
+  notActive: boolean = false;
 
   newPurchase: FormGroup;
   // deliveryCertificateForm: FormGroup;
@@ -494,7 +495,28 @@ export class NewProcurementComponent implements OnInit, OnChanges {
     });
   }
 
-  findStockItemByNumber() {
+  checkIfItemIsActive(itemNumber) {
+    return new Promise((resolve, reject) => {
+      this.inventoryService
+        .checkIfItemIsActive(itemNumber)
+        .subscribe((data) => {
+          console.log(data);
+          this.notActive = data ? true : false;
+          resolve(data);
+        });
+    });
+  }
+
+  async findStockItemByNumber() {
+    let notActive = await this.checkIfItemIsActive(
+      this.itemForm.get("number").value
+    );
+    console.log(notActive);
+    if (notActive) {
+      alert("הפריט לא פעיל ולא ניתן להזמין אותו ");
+      return;
+    }
+
     this.getLastOrdersForItem(this.itemForm.get("number").value);
 
     if (this.itemForm.get("number").value != "") {
