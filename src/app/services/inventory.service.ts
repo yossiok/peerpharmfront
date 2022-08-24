@@ -1096,6 +1096,12 @@ export class InventoryService {
       whOriginName;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+
+  checkIfItemIsActive(itemNumber) {
+    let url =
+      this.baseUrl + "component/checkIfItemIsActive?itemNumber=" + itemNumber;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
 }
 
 // startNewItemObservable() {

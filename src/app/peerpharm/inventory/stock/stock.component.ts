@@ -1132,8 +1132,24 @@ export class StockComponent implements OnInit {
     });
   }
 
+  checkIfItemIsActive(itemNumber) {
+    return new Promise((resolve, reject) => {
+      this.inventoryService
+        .checkIfItemIsActive(itemNumber)
+        .subscribe((data) => {
+          if (data.msg) {
+            console.log(data.msg);
+            this.toastSrv.error(data.msg);
+            resolve(data.msg);
+            return;
+          }
+          resolve(data);
+        });
+    });
+  }
+
   // start
-  getStockItemByNumber(ev) {
+  async getStockItemByNumber(ev) {
     let componentN = "";
     if (typeof ev == "string") {
       componentN = ev;
@@ -1142,8 +1158,22 @@ export class StockComponent implements OnInit {
     }
 
     if (componentN) {
+      let notActive = await this.checkIfItemIsActive(componentN);
+      console.log(notActive);
+      if (notActive) {
+        this.newSpecificPurchaseRecommendModal = false;
+        this.recommendStockItem.number = "";
+        this.recommendStockItem.name = "";
+        this.recommendStockItem.quantity = null;
+        this.recommendStockItem.measurement = null;
+        this.recommendStockItem.customerOrder = "";
+
+        alert("הפריט לא פעיל ולא ניתן להזמין אותו ");
+        return;
+      }
+
       this.recommendStockItem.number = componentN;
-      console.log(this.recommendStockItem.number);
+
       //get existing amounts of and locations on shelfs
       this.inventoryService
         .getAmountOnShelfs(componentN)
@@ -1896,6 +1926,10 @@ export class StockComponent implements OnInit {
       .getFilteredComponents(query)
       .subscribe((filteredComponents) => {
         console.log(filteredComponents);
+        filteredComponents.forEach((co) => {
+          co.active = co.notActive ? "לא פעיל" : "פעיל";
+          co.color = co.notActive ? "red" : "black";
+        });
         this.components = filteredComponents;
         this.componentsUnFiltered = filteredComponents;
 

@@ -328,7 +328,21 @@
     *ngIf="item.itemType != 'material'"
     class="w-50 float-right modal-inner"
   >
-    <h1 class="text-center text-info">פרטים כלליים</h1>
+    <h1 class="text-center text-info">
+      פרטים כלליים <span [style.color]="item.color"> - {{ item.active }}</span>
+    </h1>
+    <div class="row mt-4">
+      <div class="col-4">
+        <p class="h5">סטטוס פריט</p>
+      </div>
+      <div class="col-4">
+        <select class="form-control" [(ngModel)]="item.notActive">
+          <option value="false">פריט פעיל</option>
+          <option value="true">פריט לא פעיל</option>
+        </select>
+      </div>
+      <div class="col-4"></div>
+    </div>
 
     <div class="row mt-4 d-flex flex-row">
       <div class="col-2">
@@ -707,7 +721,21 @@
     *ngIf="item.itemType == 'material'"
     class="w-50 float-right modal-inner"
   >
-    <h1 class="mt-4 text-info text-center">פרטים כלליים</h1>
+    <h1 class="text-center text-info">
+      פרטים כלליים <span [style.color]="item.color"> - {{ item.active }}</span>
+    </h1>
+    <div dir="rtl" class="row mt-4">
+      <div class="col-4">
+        <p class="h5">סטטוס פריט</p>
+      </div>
+      <div class="col-4">
+        <select class="form-control" [(ngModel)]="item.notActive">
+          <option value="false">פריט פעיל</option>
+          <option value="true">פריט לא פעיל</option>
+        </select>
+      </div>
+      <div class="col-4"></div>
+    </div>
     <div class="row mt-4 d-flex flex-row">
       <div class="col-2">
         <label>Item</label>

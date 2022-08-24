@@ -311,6 +311,7 @@
             <tr style="text-align: center">
               <th style="width: 3%"></th>
               <th style="width: 8%"></th>
+              <th style="width: 8%">סטטוס</th>
               <th style="width: 3%"><b>מספר פריט</b></th>
               <th style="width: 5%"><b>מק"ט פריט-ספק</b></th>
               <th style="width: 5%"><b>ספק</b></th>
@@ -330,6 +331,7 @@
               <td style="width: 3%">{{ i + 1 }}</td>
               <td style="padding: 5">
                 <button
+                  [disabled]="component.notActive"
                   class="btn btn-warning form-control rounded-pill"
                   (click)="
                     newSpecificPurchaseRecommendModal = true;
@@ -635,6 +637,7 @@
                   </form>
                 </div>
               </td>
+              <td [style.color]="component.color">{{ component.active }}</td>
               <td
                 style="width: 6%"
                 class="compNum"
@@ -900,6 +903,7 @@
         <tr style="text-align: center">
           <th style="width: 5%"></th>
           <th style="width: 10%"><b>מספר פריט</b></th>
+          <th>סטטוס</th>
           <th style="width: 15%"><b>שם פריט</b></th>
           <th style="width: 15%"><b>בעייתי?</b></th>
           <th style="width: 9%"><b>כמות מוקצת</b></th>
@@ -922,7 +926,7 @@
               </div>
             </fieldset>
           </td>
-
+          <td [style.color]="material.color">{{ material.active }}</td>
           <td [ngClass]="dangerColor(material.threatment)" style="width: 15%">
             <div style="float: none">{{ material.componentName }}</div>
           </td>

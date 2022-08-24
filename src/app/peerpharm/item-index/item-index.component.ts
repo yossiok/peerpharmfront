@@ -403,7 +403,8 @@ export class ItemIndexComponent implements OnInit {
               this.currencies[item.manualCoin.toUpperCase()]
             ).toFixed(2);
           }
-
+          item.active = item.notActive ? "לא פעיל" : "פעיל";
+          item.color = item.notActive ? "red" : "blue";
           this.item = item;
 
           this.getLastOrdersItem(20);
