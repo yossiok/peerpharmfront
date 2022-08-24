@@ -72,6 +72,12 @@
   border-radius: 10px;
   overflow-y: scroll;
   height: 90vh;
+  z-index: 900;
+}
+.wpLink{
+  cursor: pointer;
+  text-decoration: underline;
+
 }
 
 .index {
@@ -165,4 +171,20 @@
   justify-content: center;
   align-items: center;
   text-align: center;
+}
+.reportWindow{
+  position: fixed;
+  background-color: #f3f3f3;
+  top: 1%;
+  left: 10%;
+  width: 80%;
+  padding: 5rem;
+  height: 80%;
+  overflow-y: scroll;
+}
+
+.closeBtn{
+  float:right;
+  margin-right: 4rem;
+  border-radius: 99999999px;
 }
