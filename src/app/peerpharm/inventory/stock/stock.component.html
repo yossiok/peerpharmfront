@@ -4555,7 +4555,7 @@
           formControlName="type"
           (change)="filterByType()"
         >
-          <option value="">All</option>
+          <option value="" selected>All</option>
           <option value="material">Material</option>
           <option value="component">Component</option>
         </select>
@@ -4625,6 +4625,7 @@
             <th>Units</th>
             <th>PO No.</th>
             <th>PO Date</th>
+            <th>PO Status</th>
             <th>Arrived Qty</th>
             <th>Arrival Date</th>
             <th>Supplier Name</th>
@@ -4644,6 +4645,7 @@
             <td>{{ recom.measurement }}</td>
             <td>{{ recom.poNumber }}</td>
             <td>{{ recom.poDate | date: "dd/MM/yyyy" }}</td>
+            <td>{{ recom.poStatus }}</td>
             <td>{{ recom.arrivedAmount }}</td>
             <td>{{ recom.arrivalDate | date: "dd/MM/yyyy" }}</td>
             <td>{{ recom.supplierName }}</td>
