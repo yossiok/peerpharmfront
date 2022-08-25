@@ -10,6 +10,7 @@ import { ProductionService } from "src/app/services/production.service";
 import { resolve } from "url";
 import { WorkPlan } from "../WorkPlan";
 import { FormulesService } from "src/app/services/formules.service";
+import { EPERM } from "constants";
 
 @Component({
   selector: "app-all-planning",
@@ -22,6 +23,8 @@ export class AllPlanningComponent implements OnInit {
 
   workPlans: WorkPlan[];
   workPlansCopy: WorkPlan[];
+  workPlansReportArray:WorkPlan[];
+  workPlansReportArrayCopy:WorkPlan[];
   checkedWorkPlans: WorkPlan[] = [];
   producedWorkPlans: number[];
   workPlansInterval: any = null;
@@ -38,6 +41,10 @@ export class AllPlanningComponent implements OnInit {
   authorized: boolean = false;
 
   toDoneArray: Array<any> = [];
+  sortByDateFlag = false
+  itemNumberReportFilter = ""
+  orderNumberReportFilter = ""
+  showReport = false
 
   constructor(
     private productionService: ProductionService,
@@ -71,6 +78,29 @@ export class AllPlanningComponent implements OnInit {
         this.workPlans = workPlans.filter(
           (wp) => wp.status != 8 && wp.status != 7
         );
+        
+        this.workPlansReportArray = workPlans.map((wp)=>{
+          if(wp.status != 8 && wp.status != 7 && wp.status != 6 && (Math.ceil(Math.abs(new Date().getTime() - new Date(wp.date).getTime()) / (1000 * 60 * 60 * 24)) ) > 7){
+              return {
+                ...wp,
+                daysDiff: (Math.ceil(Math.abs(new Date().getTime() - new Date(wp.date).getTime()) / (1000 * 60 * 60 * 24)) )
+              }
+          }
+        });
+        this.workPlansReportArray.map((wp,index)=>{
+          if(wp && wp.orderItems && wp.orderItems.length > 0){
+            wp.orderItems.map((item)=>{
+              if(item && item.status && (item.status == 6 || item.status == 7 || item.status == 8)){
+                delete this.workPlansReportArray[index]
+              }
+            })
+          }
+        })
+        this.workPlansReportArray.sort((a,b)=>{
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        })
+        this.workPlansReportArrayCopy = this.workPlansReportArray
+            
         this.workPlansCopy = [...workPlans];
         this.fetchingWorkPlans = false;
         console.log(this.workPlans);
@@ -292,5 +322,60 @@ export class AllPlanningComponent implements OnInit {
         console.log(this.workPlans);
       });
     }
+  }
+  sortByDate(){
+    if(this.sortByDateFlag){
+      this.workPlansReportArray.sort((a,b)=>{
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      })
+    }else{
+      this.workPlansReportArray.sort((a,b)=>{
+        return new Date(b.date).getTime() - new Date(a.date).getTime();
+      })
+    }
+    this.sortByDateFlag = !this.sortByDateFlag
+
+  }
+  reportFilter(){
+    if(this.itemNumberReportFilter == "" && this.orderNumberReportFilter == ""){
+      return
+    }
+    try {
+    let arr = []
+    if(this.itemNumberReportFilter != ""){
+      this.workPlansReportArrayCopy.map((wp)=>{
+        if(wp && wp.orderItems && wp.orderItems.length > 0){
+          wp.orderItems.map((item)=>{
+            if(item.itemNumber.includes(this.itemNumberReportFilter) && !arr.includes(wp)){
+              arr.push(wp)
+            }
+          })
+        }
+      })
+    }
+    if(this.orderNumberReportFilter != ""){
+      this.workPlansReportArrayCopy.map((wp)=>{
+        if(wp && wp.orderItems && wp.orderItems.length > 0){
+          wp.orderItems.map((item)=>{
+            if(item.orderNumber.includes(this.orderNumberReportFilter) && !arr.includes(wp)){
+              arr.push(wp)
+            }
+          })
+        }
+      })
+    }
+    this.workPlansReportArray = [...arr]
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+    
+  }
+
+  clearReportFilter(){
+    this.itemNumberReportFilter =""
+    this.orderNumberReportFilter = ""
+    this.workPlansReportArray = this.workPlansReportArrayCopy
   }
 }
