@@ -1895,6 +1895,7 @@ export class StockComponent implements OnInit {
         Unit: recom.measurement,
         "PO Number": recom.poNumber,
         "PO Date": recom.poDate,
+        "PO Status": recom.poStatus,
         "Arrived Qty": recom.arrivedAmount,
         "Arrival Date": recom.arrivalDate,
         "Supplier Name": recom.supplierName,
