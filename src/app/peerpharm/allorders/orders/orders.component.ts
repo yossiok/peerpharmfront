@@ -68,6 +68,7 @@ export class OrdersComponent implements OnInit {
   sortByDeliveryDateFlag: boolean = false;
   sortByStageFlag: boolean = false;
   stageFilter: string = "";
+  sortByCustomerNameFlag = false
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
     event: KeyboardEvent
@@ -267,7 +268,7 @@ export class OrdersComponent implements OnInit {
         order.color = "white";
         if (order.deliveryDate) {
           order.deliveryDate = new Date(order.deliveryDate);
-          console.log(order.deliveryDate);
+          // console.log(order.deliveryDate);
 
           if (order.deliveryDate <= new Date()) {
             order.color = "#ff9999";
@@ -275,7 +276,7 @@ export class OrdersComponent implements OnInit {
         }
         this.returnStageColor(order);
         Object.assign({ isSelected: false }, order);
-        order.NumberCostumer = order.orderNumber + " " + order.costumer;
+        order.NumberCostumer = order.costumerInternalId + " " + order.costumer;
       }
 
       // orders.map((order) => {
@@ -1061,5 +1062,29 @@ export class OrdersComponent implements OnInit {
     //   .map((b) => b.billQty)
     //   .reduce((a, b) => a + b, 0);
     // item.quantityRemained = Number(item.quantity) - quantitySupplied;
+  }
+
+  sortOrdersCustomerName(){
+    if(this.sortByCustomerNameFlag){
+
+      this.orders.sort((a,b)=>{
+        if(a.costumer < b.costumer){return -1}
+        if(a.costumer > b.costumer){return 1}
+        return 0
+      })
+
+    }else{
+
+      this.orders.sort((a,b)=>{
+        if(a.costumer < b.costumer){return 1}
+        if(a.costumer > b.costumer){return -1}
+        return 0
+      })
+
+    }
+
+    this.sortByCustomerNameFlag = !this.sortByCustomerNameFlag
+    
+
   }
 }

@@ -429,7 +429,7 @@
           [class.read-only]="checkPermission()"
           style="box-shadow: inset 0px 0px 4px 1px black"
         >
-          <th style="width: 3%"></th>
+          <!-- <th style="width: 3%"></th> -->
           <th style="width: 3%">
             <input
               type="checkbox"
@@ -437,7 +437,7 @@
               (change)="checkboxAllOrders($event)"
             />
           </th>
-          <th style="padding: 5px">
+          <th style="padding: 5px; margin-right: 1rem;">
             Order Number
             <i
               class="ti-exchange-vertical"
@@ -445,7 +445,15 @@
               style="cursor: pointer"
             ></i>
           </th>
-          <th style="width: 18%; padding: 5px"></th>
+          <th style="width: 21%">
+            Customer Name
+            <i
+              class="ti-exchange-vertical"
+              (click)="sortOrdersCustomerName()"
+              style="cursor: pointer"
+            ></i>
+          </th>
+          <!-- <th style="width: 18%; padding: 5px"></th> -->
           <th style="padding: 5px">
             Order date
             <i
@@ -546,7 +554,7 @@
             *ngIf="order._id !== EditRowId || !orderEditApprove"
             (click)="edit(order._id)"
           >
-            {{ order.costumer }}
+            {{ order.costumer }} - {{order.costumerInternalId}}
           </td>
 
           <td *ngIf="order._id === EditRowId">
