@@ -163,7 +163,7 @@
               Clear
             </button>
           </div>
-            <div class="col-1" ngbTooltip="Unproduced Batches Report">
+          <div class="col-1" ngbTooltip="Unproduced Batches Report">
             <button class="btn btn-outline-warning" (click)="showReport = true">
               Report
             </button>
@@ -352,22 +352,53 @@
   </div>
 </ng-template>
 
-
 <!-- ern report table -->
 <div *ngIf="showReport" class="reportWindow">
-  <button type="button" class="btn btn-primary closeBtn" (click)="showReport=false">X</button>
-  <div class="w-75 d-flex justify-content-between align-items-between" >
+  <div class="row">
+    <div class="col-10"></div>
+    <div class="col-1">
+      <button
+        type="button"
+        class="btn btn-primary closeBtn"
+        (click)="showReport = false"
+      >
+        X
+      </button>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-12 w-100">
+      <h1 class="text-center">דו"ח פקודות עבודה ממתינות לייצור</h1>
+    </div>
+  </div>
+  <div class="w-75 d-flex justify-content-between align-items-between">
     <div class="w-100">
-      <input  type="text" placeholder="Item Number" [(ngModel)]="itemNumberReportFilter">
+      <input
+        type="text"
+        placeholder="Item Number"
+        [(ngModel)]="itemNumberReportFilter"
+      />
     </div>
-    <div class="w-100 ">
-      <input  type="text" placeholder="Order Number" [(ngModel)]="orderNumberReportFilter">
+    <div class="w-100">
+      <input
+        type="text"
+        placeholder="Order Number"
+        [(ngModel)]="orderNumberReportFilter"
+      />
     </div>
-    <div class="w-100 ">
-      <button type="button" class="btn btn-primary" (click)="reportFilter()">Search</button>
+    <div class="w-100">
+      <button type="button" class="btn btn-primary" (click)="reportFilter()">
+        Search
+      </button>
     </div>
-    <div class="w-100 ">
-      <button type="button" class="btn btn-primary" (click)="clearReportFilter()">Clear</button>
+    <div class="w-100">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="clearReportFilter()"
+      >
+        Clear
+      </button>
     </div>
   </div>
   <table class="table">
@@ -390,17 +421,17 @@
     <tbody>
       <ng-container *ngFor="let wp of workPlansReportArray">
         <tr *ngFor="let item of wp.orderItems">
-          <th scope="row">{{item.itemNumber}}</th>
-          <td>{{item.orderNumber}}</td>
-          <td>{{item.netWeightGr}}</td>
+          <th scope="row">{{ item.itemNumber }}</th>
+          <td>{{ item.orderNumber }}</td>
+          <td>{{ item.netWeightGr }}</td>
           <td>{{ item.status | orderItemBatchStatus }}</td>
-          <td>{{wp.date | date: 'dd/MM/yyyy'}}</td>
+          <td>{{ wp.date | date: "dd/MM/yyyy" }}</td>
           <td>
             <span (click)="openWorkPlan(wp.serialNumber)" class="wpLink">
-              {{wp.serialNumber}}
+              {{ wp.serialNumber }}
             </span>
           </td>
-          <td>{{wp.daysDiff}}</td>
+          <td>{{ wp.daysDiff }}</td>
         </tr>
       </ng-container>
     </tbody>
