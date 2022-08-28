@@ -1,8 +1,33 @@
 
 .top-logo
 {
-    height: 50px;
+    height: 40px;
     background: #fff;
     margin-top: 6px;
     border-radius: 5px;
+    float: left;
+}
+.globalsearch
+{
+    width: 120px; 
+    border-radius: 5px;
+    border: 0px;
+    display:block;
+    margin: 5px auto;
+    float: left;
+    margin-left: 10px;
+}
+.logo-cont
+{
+    max-width: 150px;
+}
+.fa-search
+{
+    margin-top: 10px;
+    cursor: pointer;
+}
+.nav-link
+{
+
+    margin-top: 10px;
 }

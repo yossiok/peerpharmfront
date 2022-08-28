@@ -34,6 +34,7 @@ import { BarcodePrintComponent } from "./schedule/barcode-print/barcode-print.co
 import { ItemslistComponent } from "./items/itemslist/itemslist.component";
 
 import { PlateComponent } from "./plate/plate.component";
+import { SearchComponent } from "./search/search.component";
 import { StockComponent } from "./inventory/stock/stock.component";
 import { NeworderComponent } from "./allorders/neworder/neworder.component";
 import { LinesComponent } from "./production/lines/lines.component";
@@ -292,6 +293,7 @@ import {MkupProductionComponent} from "./forms/mkupForm/mkupProduction/mkupProdu
     QaPalletsComponent,
     TemperaturesLogsComponent,
     PlateComponent,
+    SearchComponent,
     StockComponent,
     ContentComponent,
     NavComponent,

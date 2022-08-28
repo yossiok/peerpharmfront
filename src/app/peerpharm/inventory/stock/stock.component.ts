@@ -177,6 +177,10 @@ export class StockComponent implements OnInit {
   updateSupplier = false;
   check = false;
   itemShellUpdates: any[] = [];
+  recommendationReportModal: boolean = false;
+  recommendationsReport: any[] = [];
+  recommendationsReportCopy: any[] = [];
+  sortToggle: number = 1;
 
   resCmpt: any = defaultCmpt;
 
@@ -403,6 +407,14 @@ export class StockComponent implements OnInit {
   dir: string;
   PPCLoading: boolean = false;
   searchBarcode: any;
+
+  searchMenu: FormGroup = new FormGroup({
+    itemNumber: new FormControl(""),
+    itemName: new FormControl(""),
+    requestNumber: new FormControl(""),
+    poNumber: new FormControl(""),
+    type: new FormControl(""),
+  });
 
   // currentFileUpload: File; //for img upload creating new component
 
@@ -1804,40 +1816,192 @@ export class StockComponent implements OnInit {
     );
   }
 
+  // getRecommendationReport() {
+  //   let query = this.filterParams.value;
+  //   query.itemType = this.stockType;
+  //   this.smallerLoader = true;
+  //   this.toastSrv.info(
+  //     "פעולה זו עשויה להימשך מספר דקות.",
+  //     'מכין דו"ח המלצה לרכש.'
+  //   );
+  //   this.inventoryService.getpurchaseRec(query).subscribe((res) => {
+  //     this.smallerLoader = false;
+  //     let filt = res
+  //       .filter(
+  //         (item) =>
+  //           item.minimum != "" && Number(item.minimum) >= Number(item.stock)
+  //       )
+  //       .map((item) => {
+  //         item.openOrders = "";
+  //         item.orderedAmount = 0;
+  //         for (let order of item.purchases) {
+  //           if (order.status != "closed" && order.status != "canceled") {
+  //             item.openOrders += "," + order.orderNumber; // purchase order numbers
+  //             let i = order.stockitems.findIndex((i) => i.name == item.name);
+  //             item.orderedAmount += Number(order.stockitems[i].quantity); // purchase amounts
+  //           }
+  //         }
+  //         delete item.purchases;
+  //         return item;
+  //       });
+  //     this.excelService.exportAsExcelFile(
+  //       filt,
+
+  //       `דו"ח המלצה לרכש ${new Date().toString().slice(0, 10)}`
+  //     );
+  //   });
+  // }
+
   getRecommendationReport() {
-    let query = this.filterParams.value;
-    query.itemType = this.stockType;
     this.smallerLoader = true;
     this.toastSrv.info(
       "פעולה זו עשויה להימשך מספר דקות.",
-      'מכין דו"ח המלצה לרכש.'
+      'מכין דו"ח דרישות רכש.'
     );
-    this.inventoryService.getpurchaseRec(query).subscribe((res) => {
-      this.smallerLoader = false;
-      let filt = res
-        .filter(
-          (item) =>
-            item.minimum != "" && Number(item.minimum) >= Number(item.amount)
-        )
-        .map((item) => {
-          item.openOrders = "";
-          item.orderedAmount = 0;
-          for (let order of item.purchases) {
-            if (order.status != "closed" && order.status != "canceled") {
-              item.openOrders += "," + order.orderNumber; // purchase order numbers
-              let i = order.stockitems.findIndex((i) => i.name == item.name);
-              item.orderedAmount += Number(order.stockitems[i].quantity); // purchase amounts
-            }
-          }
-          delete item.purchases;
-          return item;
-        });
-      this.excelService.exportAsExcelFile(
-        filt,
+    this.procuretServ.getRecommendationsReport().subscribe((data) => {
+      if (data.msg) {
+        console.log(data.msg);
+        this.smallerLoader = false;
+        return;
+      } else if (data && data.length > 0) {
+        this.smallerLoader = false;
+        this.recommendationsReport = data;
+        this.recommendationsReportCopy = data;
+        this.recommendationReportModal = true;
 
-        `דו"ח המלצה לרכש ${new Date().toString().slice(0, 10)}`
-      );
+        // this.excelService.exportAsExcelFile(
+        //   data,
+        //   `דו"ח המלצה לרכש ${new Date().toString().slice(0, 10)}`
+        // );
+      } else {
+        this.smallerLoader = false;
+        this.toastSrv.error("לא התקבלו תוצאות, אין דרישות פתוחות");
+        return;
+      }
     });
+  }
+
+  exportToExcel() {
+    let exportArr = [];
+
+    for (let recom of this.recommendationsReport) {
+      let line = {
+        "Item Number": recom.itemNumber,
+        "Item Name": recom.itemName,
+        "Request Number": recom.recommendNumber,
+        "Request Date": recom.requestDate,
+        Type: recom.type,
+        "Requested Qty": recom.requestQty,
+        Unit: recom.measurement,
+        "PO Number": recom.poNumber,
+        "PO Date": recom.poDate,
+        "PO Status": recom.poStatus,
+        "Arrived Qty": recom.arrivedAmount,
+        "Arrival Date": recom.arrivalDate,
+        "Supplier Name": recom.supplierName,
+      };
+      exportArr.push(line);
+    }
+
+    this.excelService.exportAsExcelFile(
+      exportArr,
+      `דו"ח דרישות לרכש ${new Date().toString().slice(0, 10)}`
+    );
+  }
+
+  filterByItemNumber() {
+    console.log(this.searchMenu.value);
+    let itemNumber = this.searchMenu.value.itemNumber;
+    if (itemNumber == "") {
+      this.recommendationsReport = [...this.recommendationsReportCopy];
+    } else {
+      this.recommendationsReport = this.recommendationsReportCopy.filter(
+        (rec) => {
+          return rec.itemNumber.includes(itemNumber);
+        }
+      );
+    }
+  }
+  filterByItemName() {
+    console.log(this.searchMenu.value);
+    let itemName = this.searchMenu.value.itemName.toLowerCase();
+    if (itemName == "") {
+      this.recommendationsReport = [...this.recommendationsReportCopy];
+    } else {
+      this.recommendationsReport = this.recommendationsReportCopy.filter(
+        (rec) => {
+          return rec.itemName.toLowerCase().includes(itemName);
+        }
+      );
+    }
+  }
+  filterByReq() {
+    console.log(this.searchMenu.value);
+    let requestNumber = this.searchMenu.value.requestNumber;
+    if (requestNumber == "") {
+      this.recommendationsReport = [...this.recommendationsReportCopy];
+    } else {
+      this.recommendationsReport = this.recommendationsReportCopy.filter(
+        (rec) => {
+          return rec.recommendNumber.toString().includes(requestNumber);
+        }
+      );
+    }
+  }
+
+  filterByType() {
+    console.log(this.searchMenu.value);
+    let type = this.searchMenu.value.type;
+    if (type == "") {
+      this.recommendationsReport = this.recommendationsReportCopy.filter(
+        (rec) =>
+          rec.type == "material" || rec.type == "component" || rec.type == ""
+      );
+    } else {
+      this.recommendationsReport = this.recommendationsReportCopy.filter(
+        (rec) => {
+          return rec.type == type;
+        }
+      );
+    }
+  }
+
+  clearMenu() {
+    this.searchMenu.reset();
+    this.recommendationsReport = this.recommendationsReportCopy;
+  }
+  sortByItemNumber() {
+    let i = this.sortToggle;
+    this.recommendationsReport.sort((a, b) => {
+      return a.itemNumber > b.itemNumber
+        ? i
+        : a.itemNumber < b.itemNumber
+        ? -i
+        : 0;
+    });
+    this.sortToggle *= -1;
+  }
+  sortByReqNumber() {
+    let i = this.sortToggle;
+    this.recommendationsReport.sort((a, b) => {
+      return a.recommendNumber > b.recommendNumber
+        ? i
+        : a.recommendNumber < b.recommendNumber
+        ? -i
+        : 0;
+    });
+    this.sortToggle *= -1;
+  }
+  sortByItemName() {
+    let i = this.sortToggle;
+    this.recommendationsReport.sort((a, b) => {
+      return a.itemName.toLowerCase() > b.itemName.toLowerCase()
+        ? i
+        : a.itemName.toLowerCase() < b.itemName.toLowerCase()
+        ? -i
+        : 0;
+    });
+    this.sortToggle *= -1;
   }
 
   getPPCReport() {

@@ -158,11 +158,8 @@
             class="btn-info form-control rounded-pill"
             type="button"
           >
-            <b>דו"ח המלצה לרכש</b>&nbsp;&nbsp;<img
-              src="../../../../assets/images/excel.png"
-              style="width: 25px; height: 25px"
-              alt=""
-            />
+            <b>דו"ח דרישות רכש&nbsp;&nbsp;</b>
+            <i class="fas fa-list-alt"></i>
           </button>
         </div>
         <div class="col-2 fixNoaStupidStuff">
@@ -4499,3 +4496,193 @@
 
   <div class="modal-footer"></div>
 </ng-template>
+<div
+  *ngIf="recommendationReportModal == true"
+  class="border border-primary text-info bg-light shadow-lg fixed-top mx-auto p-1 w-75 h-75"
+  style="overflow: scroll"
+>
+  <div class="row mt-2 w-100" dir="rtl">
+    <div class="col-1">
+      <button class="btn outline-primary">
+        <i
+          (click)="recommendationReportModal = false"
+          class="click fa fa-times"
+        ></i>
+      </button>
+    </div>
+    <div class="col-8 text-center">
+      <h1>דו"ח דרישות לרכש - {{ today | date: "dd/MM/yyyy" }}</h1>
+    </div>
+    <div class="col-1"></div>
+  </div>
+  <form [formGroup]="searchMenu">
+    <div class="row w-100">
+      <div class="col-1">
+        <p class="font-roboto text-center text-dark">Filters:</p>
+      </div>
+      <div class="col-1">
+        <input
+          class="form-control"
+          type="text"
+          formControlName="itemNumber"
+          placeholder="Item Number"
+          (keyup)="filterByItemNumber()"
+        />
+      </div>
+      <div class="col-2">
+        <input
+          class="form-control"
+          type="text"
+          formControlName="itemName"
+          placeholder="Item Name"
+          (keyup)="filterByItemName()"
+        />
+      </div>
+      <div class="col-2">
+        <input
+          class="form-control mx-0"
+          type="text"
+          formControlName="requestNumber"
+          placeholder="Request Number"
+          (keyup)="filterByReq()"
+        />
+      </div>
+      <div class="col-1">
+        <select
+          name=""
+          id=""
+          class="form-control"
+          formControlName="type"
+          (change)="filterByType()"
+        >
+          <option value="" selected>All</option>
+          <option value="material">Material</option>
+          <option value="component">Component</option>
+        </select>
+      </div>
+      <div class="col-1">
+        <button class="btn btn-outline-danger" (click)="clearMenu()">
+          <i class="fas fa-eraser"></i>&nbsp;Clear
+        </button>
+      </div>
+      <div class="col-1">
+        <button
+          class="btn btn-outline-secondary"
+          [useExistingCss]="true"
+          printTitle="דו''ח דרישות רכש "
+          printSectionId="print-section-report"
+          ngxPrint
+        >
+          <i class="fas fa-print"></i>&nbsp;Print
+        </button>
+      </div>
+      <div class="col-2">
+        <button class="btn btn-outline-success" (click)="exportToExcel()">
+          <img
+            src="../../../../assets/images/excel.png"
+            style="width: 25px; height: 25px"
+            alt=""
+          />&nbsp;Export
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="row mt-2 w-100" id="print-section-report">
+    <div class="col-12">
+      <table class="table table-striped bg-light">
+        <thead class="text-info h4">
+          <tr class="font-roboto">
+            <th>
+              <i
+                class="ti-exchange-vertical"
+                (click)="sortByItemNumber()"
+                style="cursor: pointer"
+              >
+                <span class="font-roboto">&nbsp;&nbsp;Item Number</span>
+              </i>
+            </th>
+            <th>
+              <i
+                class="ti-exchange-vertical"
+                (click)="sortByItemName()"
+                style="cursor: pointer"
+              >
+                <span class="font-roboto">&nbsp;&nbsp;Item Name</span>
+              </i>
+            </th>
+            <th>
+              <i
+                class="ti-exchange-vertical"
+                (click)="sortByReqNumber()"
+                style="cursor: pointer"
+              >
+                <span class="font-roboto">&nbsp;&nbsp;Request No.</span></i
+              >
+            </th>
+            <th>Request Date</th>
+            <th>Type</th>
+            <th>Request Qty</th>
+            <th>Units</th>
+            <th>PO No.</th>
+            <th>PO Date</th>
+            <th>PO Status</th>
+            <th>Arrived Qty</th>
+            <th>Arrival Date</th>
+            <th>Supplier Name</th>
+          </tr>
+        </thead>
+        <tbody class="text-dark">
+          <tr
+            *ngFor="let recom of recommendationsReport"
+            style="font-size: larger"
+          >
+            <td>{{ recom.itemNumber }}</td>
+            <td style="text-align: left !important">{{ recom.itemName }}</td>
+            <td>{{ recom.recommendNumber }}</td>
+            <td>{{ recom.requestDate | date: "dd/MM/yyyy" }}</td>
+            <td>{{ recom.type }}</td>
+            <td>{{ recom.requestQty }}</td>
+            <td>{{ recom.measurement }}</td>
+            <td>{{ recom.poNumber }}</td>
+            <td>{{ recom.poDate | date: "dd/MM/yyyy" }}</td>
+            <td>{{ recom.poStatus }}</td>
+            <td>{{ recom.arrivedAmount }}</td>
+            <td>{{ recom.arrivalDate | date: "dd/MM/yyyy" }}</td>
+            <td>{{ recom.supplierName }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">...</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

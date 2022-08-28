@@ -84,7 +84,6 @@ export class Procurementservice {
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
-  
   getLastOrdersForItem(itemNum, numOfOrders) {
     const url =
       this.baseUrl +
@@ -100,7 +99,10 @@ export class Procurementservice {
       this.baseUrl +
       "procurementOrderController/getLastOrdersForItemByDates?itemNum=" +
       itemNum +
-      "&startDate="+startDate + "&endDate="+endDate
+      "&startDate=" +
+      startDate +
+      "&endDate=" +
+      endDate;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
 
@@ -445,8 +447,10 @@ export class Procurementservice {
       .post(url, JSON.stringify({ orderNumber }), this.options)
       .pipe(map((res) => res.json()));
   }
-  getProcurementsByIncludeOrderNumber(orderNumber){
-    let url = this.baseUrl + "procurementOrderController/getProcurementsByIncludeOrderNumber";
+  getProcurementsByIncludeOrderNumber(orderNumber) {
+    let url =
+      this.baseUrl +
+      "procurementOrderController/getProcurementsByIncludeOrderNumber";
     return this.http
       .post(url, JSON.stringify({ orderNumber }), this.options)
       .pipe(map((res) => res.json()));
@@ -488,5 +492,11 @@ export class Procurementservice {
       "procurementOrderController/getOpenOrdersFromSupplier?supplierID=" +
       supplierID;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
+  getRecommendationsReport() {
+    let url = this.baseUrl + "newProcurement/purchaseRecommendationsReport";
+
+    return this.http.get(url).pipe(map((response) => response.json()));
   }
 }

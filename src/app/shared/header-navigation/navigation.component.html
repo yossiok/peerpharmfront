@@ -2,10 +2,21 @@
 <!-- toggle and nav items -->
 <!-- ============================================================== -->
 <ul class="navbar-nav float-left mr-auto">
-    <a routerLink="/starter">
+    <div class="logo-cont">
 
-        <img style="margin-right: 30px; width:140px;margin-left: 30px;" class="top-logo" src="/assets/images/logo.png"
-            alt="logo" /></a>
+        <a routerLink="/starter">
+            <img style="margin-right: 10px; width:120px;margin-left: 10px;" class="top-logo" src="/assets/images/logo.png"
+                alt="logo" />
+            </a>
+            <input  class="globalsearch" placeholder="search everything" [(ngModel)]="searchTerm" (keyup.enter)="doSearch()"/><i class="fa fa-search"   (click)="doSearch()" ></i>
+
+    </div>
+
+        
+     
+           
+  
+
     <!-- <li class="nav-item d-none d-md-block">
     <a (click)="toggleSidebar.emit()" class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)">
         <i class="mdi mdi-menu font-24"></i>

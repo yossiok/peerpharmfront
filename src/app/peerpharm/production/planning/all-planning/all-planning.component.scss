@@ -74,10 +74,9 @@
   height: 90vh;
   z-index: 900;
 }
-.wpLink{
+.wpLink {
   cursor: pointer;
   text-decoration: underline;
-
 }
 
 .index {
@@ -172,19 +171,20 @@
   align-items: center;
   text-align: center;
 }
-.reportWindow{
+.reportWindow {
   position: fixed;
   background-color: #f3f3f3;
-  top: 1%;
+  top: 10%;
   left: 10%;
   width: 80%;
   padding: 5rem;
   height: 80%;
   overflow-y: scroll;
+  border: 2px solid blue;
 }
 
-.closeBtn{
-  float:right;
+.closeBtn {
+  float: right;
   margin-right: 4rem;
   border-radius: 99999999px;
 }
