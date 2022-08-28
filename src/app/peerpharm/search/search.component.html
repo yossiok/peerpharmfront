@@ -1,0 +1,48 @@
+<div>
+  <h1>Items</h1>
+  <table  class="table table-striped">
+	<tr  >
+		<th>
+		Item Number
+		</th>
+		<th  >
+		  Text
+		</th>
+	  </tr>
+    <tr *ngFor="let item of allItems">
+      <td>
+		<a href="{{'/#/peerpharm/items/itemDetails/' + item.itemNumber }}" >{{ item.itemNumber }}</a> 
+      </td>
+      <td  [innerHTML]="item.toText" >
+        
+      </td>
+    </tr>
+  </table>
+
+  <h1>Order Items</h1>
+
+  <table  class="table table-striped">
+	<tr  >
+		<th>
+		Item Number
+		</th>
+		<th  >
+			Order Number
+		  </th>
+		<th  >
+		  Text
+		</th>
+	  </tr>
+	<tr *ngFor="let oi of allOrderItems">
+		<td>
+			{{ oi.itemNumber }}
+		  </td>
+		  <td>
+			{{ oi.orderNumber }}
+		  </td>
+		  <td  [innerHTML]="oi.toText">
+		 
+		  </td>
+    </tr>
+  </table>
+</div>
