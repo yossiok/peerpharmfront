@@ -164,7 +164,7 @@ export class AppModule {
       Unit: "יחידה",
       Units: "יחידות",
       Status: "סטטוס",
-      Carton: "קרטונים",
+      Carton: "קרטון",
       Pallet: "משטח",
       License: "רישיון",
       Pump: "משאבה",
@@ -200,7 +200,14 @@ export class AppModule {
       Set: "סט",
       In: "ב",
       Of: "של",
-      Multiply:"הכפלה"
+      Multiply: "הכפלה",
+      Front: "חזית",
+      Back: "גב",
+      Filling: "מילוי",
+      only: "בלבד",
+      Tube: "שפורפרת",
+      in: "בתוך",
+      required: "נדרש",
     });
 
     translate.setTranslation("en", {
@@ -268,7 +275,14 @@ export class AppModule {
       Set: "Set",
       In: "In",
       Of: "Of",
-      Multiply:"Multiply"
+      Multiply: "Multiply",
+      Front: "Front",
+      Back: "Back",
+      Filling: "Filling",
+      only: "only",
+      Tube: "Tube",
+      required: "required",
+      in: "in",
     });
 
     translate.addLangs(["en", "he"]);

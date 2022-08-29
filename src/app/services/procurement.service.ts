@@ -55,6 +55,11 @@ export class Procurementservice {
     });
   }
 
+  getAllPurchaseOrders(isClose) {
+    let url = this.baseUrl + "procurementOrderController/getAllPurchaseOrders";
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+
   startNewCall(skip, limit, isClosed, observer) {
     let url =
       this.baseUrl +

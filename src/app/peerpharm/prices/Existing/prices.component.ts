@@ -243,6 +243,11 @@ export class PricesComponent implements OnInit {
             } else if (component.componentN == this.item.cartonNumber2)
               componentPricing.price =
                 componentPricing.price / Number(this.item.PcsCarton2);
+          } else if (
+            component.componentType == "sticker" &&
+            this.item.stickerTypeK == "twoSide"
+          ) {
+            componentPricing.price *= 2;
           }
         }
         componentPricing.shippingPrice = component.shippingPrice

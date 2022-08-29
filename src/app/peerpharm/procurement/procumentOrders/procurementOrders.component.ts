@@ -219,7 +219,8 @@ export class ProcurementOrdersComponent implements OnInit {
   getAllProcurementOrders(isClosed) {
     this.orderDetailsModal = false;
     this.fetchingOrders = true;
-    this.procurementservice.getAllPurchasesObservable(isClosed).subscribe(
+    // this.procurementservice.getAllPurchasesObservable(isClosed).subscribe(
+    this.procurementservice.getAllPurchaseOrders(isClosed).subscribe(
       (purchases) => {
         if (purchases.length > 0) {
           this.showLoader = false;
@@ -547,10 +548,12 @@ export class ProcurementOrdersComponent implements OnInit {
       this.procurementData = this.procurementData.filter((purchOrder) =>
         purchOrder.orderNumber.toString().includes(orderNumber)
       );
-      if(this.procurementData.length < 1){
-        this.procurementservice.getProcurementsByIncludeOrderNumber(orderNumber).subscribe((res)=>{
-          this.procurementData = res
-        })
+      if (this.procurementData.length < 1) {
+        this.procurementservice
+          .getProcurementsByIncludeOrderNumber(orderNumber)
+          .subscribe((res) => {
+            this.procurementData = res;
+          });
       }
     }
 

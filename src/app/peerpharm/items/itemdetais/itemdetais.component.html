@@ -75,7 +75,8 @@
          סמן את האפשרות רק אם המוצר הוא שפורפרת בתוך אריזת קרטון"
       >
         <label [ngClass]="checkItemStatus()" style="font-weight: bold"
-          >{{ "Tube" | translate }} {{ "in" | translate }} {{ "Carton" }}</label
+          >{{ "Tube" | translate }} {{ "in" | translate }}
+          {{ "Carton" | translate }}</label
         >
       </div>
       <div style="margin: 3px">
@@ -212,13 +213,24 @@
           [(ngModel)]="itemShown.stickerVersion"
         />
         <!--type-->
-        <input
+
+        <select
+          name="stickerTypeK"
+          style="width: 150px"
+          id="id_stickerType"
+          placeholder="Sticker Type"
+          [(ngModel)]="itemShown.stickerTypeK"
+        >
+          <option value="oneSide">One Side Only</option>
+          <option value="twoSide">Front + Back</option>
+        </select>
+        <!-- <input
           type="text"
           style="width: 150px"
           id="id_stickerType"
           placeholder="Sticker Type"
           [(ngModel)]="itemShown.stickerTypeK"
-        />
+        /> -->
       </div>
       <div>
         <!--Sticker 2-->
@@ -712,7 +724,7 @@
                     </div>
                   </div>
                   <!-- new2 -->
-                  
+
                   <!--  -->
                   <div>
                     <div *ngIf="unitWeight == true" class="productionLabel">
@@ -720,10 +732,13 @@
                         (click)="addRemoveInputs('unitWeight')"
                         style="margin-right: 2px; cursor: pointer"
                         class="fa fa-minus"
-                        *ngIf="unitWeight == true && alowUserEditItemTree == true"
+                        *ngIf="
+                          unitWeight == true && alowUserEditItemTree == true
+                        "
                       ></i>
                       <label
-                        >{{"Net" | translate}} {{ "Weight" | translate }} {{"gr" | translate}}</label
+                        >{{ "Net" | translate }} {{ "Weight" | translate }}
+                        {{ "gr" | translate }}</label
                       >
                     </div>
                     <div *ngIf="unitWeight == false" class="productionLabel">
@@ -732,11 +747,12 @@
                         style="margin-right: 2px; cursor: pointer"
                         class="fa fa-plus"
                         *ngIf="
-                        unitWeight == false && alowUserEditItemTree == true
+                          unitWeight == false && alowUserEditItemTree == true
                         "
                       ></i>
                       <label
-                        >{{"Net" | translate}} {{ "Weight" | translate }} {{"gr" | translate}}</label
+                        >{{ "Net" | translate }} {{ "Weight" | translate }}
+                        {{ "gr" | translate }}</label
                       >
                     </div>
                   </div>
@@ -818,9 +834,7 @@
                         class="fa fa-minus"
                         *ngIf="setUnits == true && alowUserEditItemTree == true"
                       ></i>
-                      <label
-                        >{{ "Multiply" | translate }}</label
-                      >
+                      <label>{{ "Multiply" | translate }}</label>
                     </div>
                     <div *ngIf="setUnits == false" class="productionLabel">
                       <i
@@ -828,12 +842,10 @@
                         style="margin-right: 2px; cursor: pointer"
                         class="fa fa-plus"
                         *ngIf="
-                        setUnits == false && alowUserEditItemTree == true
+                          setUnits == false && alowUserEditItemTree == true
                         "
                       ></i>
-                      <label
-                        >{{ "Multiply" | translate }}</label
-                      >
+                      <label>{{ "Multiply" | translate }}</label>
                     </div>
                   </div>
                   <!-- PAO -->
@@ -923,19 +935,23 @@
                   </div>
                   <!--  -->
                   <div *ngIf="setUnits == true">
-                    <button (click)="add()" *ngIf="alowUserEditItemTree">+</button>
+                    <button (click)="add()" *ngIf="alowUserEditItemTree">
+                      +
+                    </button>
                     <input
                       type="number"
                       id="id_setUnits"
                       [(ngModel)]="itemShown.setUnits"
                       class="productionInput"
                     />
-                    <button (click)="sub()" *ngIf="alowUserEditItemTree">-</button>
+                    <button (click)="sub()" *ngIf="alowUserEditItemTree">
+                      -
+                    </button>
                   </div>
                   <div *ngIf="setUnits == false">
                     <p>---</p>
                   </div>
-                  
+
                   <div *ngIf="PAO == true">
                     <input
                       type="number"
@@ -950,7 +966,7 @@
                   <!--  -->
                 </div>
               </div>
-              
+
               <div class="row">
                 <div class="col-2">
                   <div>
@@ -968,7 +984,8 @@
                         <option value="Bottle">Bottle</option>
                         <option value="Jar">Jar</option>
                         <option value="Pump">Pump</option>
-                        <option value="Seal">Seal</option>alowUserEditItemTree
+                        <option value="Seal">Seal</option>
+                        alowUserEditItemTree
                         <option value="Cap">Cap</option>
                         <option value="OverCap">OverCap</option>
                         <option value="Stage">Stage</option>
