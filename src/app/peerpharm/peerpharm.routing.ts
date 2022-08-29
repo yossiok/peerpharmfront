@@ -95,6 +95,7 @@ import { OpenOrderitemsComponent } from "./allorders/open-orderitems/open-orderi
 import { TemperaturesLogsComponent } from "./qa/temperaturesLogs/temperaturesLogs.component";
 import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
 import { MkupFormComponent } from "./forms/mkupForm/mkupForm.component";
+import { SearchComponent } from "./search/search.component";
 // import { ItemIndexNewComponent } from "./item-index-new/item-index-new.component";
 
 export const PeerPharmRputs: Routes = [
@@ -251,6 +252,14 @@ export const PeerPharmRputs: Routes = [
       title: "Plates",
     },
     component: PlateComponent,
+  },
+  {
+    path: "search",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Search",
+    },
+    component: SearchComponent,
   },
   {
     path: "inventory/stock",

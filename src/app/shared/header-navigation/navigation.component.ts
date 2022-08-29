@@ -24,6 +24,7 @@ export class NavigationComponent implements AfterViewInit {
   email: string;
   picture:string;
   accountSettingsModal:boolean = false;
+  searchTerm:string='';
 
   public config: PerfectScrollbarConfigInterface = {};
 
@@ -37,6 +38,12 @@ export class NavigationComponent implements AfterViewInit {
     ) {
 
     
+     }
+
+
+     doSearch()
+     {
+      location.href="/#/peerpharm/search?search="+this.searchTerm;
      }
   ngOnInit() {
     ;
