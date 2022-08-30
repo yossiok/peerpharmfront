@@ -65,6 +65,7 @@ export class QaPalletsComponent implements OnInit {
   allReadyPackedListsCopy: any[];
   readyBills: any[];
   readyBillsCopy: any[];
+  currentGrandTotal: number = 0;
 
   today: Date = new Date();
 
@@ -857,6 +858,11 @@ export class QaPalletsComponent implements OnInit {
       })
     );
     console.log(combinedResult);
+    this.currentGrandTotal = 0;
+
+    for (let pallet of combinedResult) {
+      this.currentGrandTotal += Number(pallet.quantity);
+    }
     console.log(result);
     combinedResult.forEach((obj) => {
       let orderAmount = result.find(

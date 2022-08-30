@@ -857,7 +857,7 @@
 
   <div id="print-sectionHE">
     <div
-      class="modal3 bg-white scroll w-75 ml-5"
+      class="modal3 bg-white scroll w-75 h-75 ml-5"
       *ngIf="showProductsBeforeDeliveryHE == true"
     >
       <!-- Modal content -->
@@ -1037,6 +1037,15 @@
               </td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2"><b>Grand Total</b></td>
+              <td>
+                <b>{{ currentGrandTotal | number }}</b>
+              </td>
+              <td></td>
+            </tr>
+          </tfoot>
         </table>
 
         <table class="table mt-3">
@@ -1246,6 +1255,15 @@
               </td>
             </tr>
           </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="2"><b>Grand Total</b></td>
+              <td>
+                <b>{{ currentGrandTotal | number }}</b>
+              </td>
+              <td></td>
+            </tr>
+          </tfoot>
         </table>
 
         <table class="table mt-3">
