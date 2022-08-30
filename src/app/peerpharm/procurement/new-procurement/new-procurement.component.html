@@ -352,7 +352,17 @@
                     </select>
                   </td>
 
-                  <td>{{ stockitem.itemRequested | date: "dd/MM/yy" }}</td>
+                  <td *ngIf="!editItem">
+                    {{ stockitem.itemRequested | date: "dd/MM/yy" }}
+                  </td>
+                  <td *ngIf="editItem && itemIndex == i">
+                    <input
+                      type="date"
+                      [ngModelOptions]="{ standalone: true }"
+                      [(ngModel)]="stockitem.itemRequested"
+                      [style.width]="'120px'"
+                    />
+                  </td>
 
                   <td *ngIf="!editItem">
                     {{ stockitem.itemArrival | date: "dd/MM/yy" }}
