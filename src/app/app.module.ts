@@ -208,6 +208,8 @@ export class AppModule {
       Tube: "שפורפרת",
       in: "בתוך",
       required: "נדרש",
+      Print: "הדפסה",
+      Specification: "ספסיפיקציות",
     });
 
     translate.setTranslation("en", {
@@ -283,6 +285,8 @@ export class AppModule {
       Tube: "Tube",
       required: "required",
       in: "in",
+      Print: "Print",
+      Specification: "Specification",
     });
 
     translate.addLangs(["en", "he"]);
