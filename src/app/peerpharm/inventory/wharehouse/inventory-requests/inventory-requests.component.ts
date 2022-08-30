@@ -3,6 +3,7 @@ import { InventoryService } from "src/app/services/inventory.service";
 import { InventoryRequestService } from "src/app/services/inventory-request.service";
 import { NotificationService } from "src/app/services/notification.service";
 import { ExcelService } from "src/app/services/excel.service";
+import { AuthService } from "src/app/services/auth.service";
 
 @Component({
   selector: "app-inventory-requests",
@@ -14,7 +15,8 @@ export class InventoryRequestsComponent implements OnInit {
     private inventoryService: InventoryService,
     private inventoryReqService: InventoryRequestService,
     private notificationService: NotificationService,
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    private auth: AuthService
   ) {}
 
   ordersDemands: any = [];
@@ -23,9 +25,14 @@ export class InventoryRequestsComponent implements OnInit {
   openOrder: string = "";
   newReqIncoming: boolean = false;
   allRequests: Array<any>;
+  isAllowedToView: boolean = false;
   @Output() outPutItemsArray = new EventEmitter();
 
   ngOnInit() {
+    console.log(this.auth.loggedInUser);
+    this.isAllowedToView =
+      this.auth.loggedInUser.screenPermission == "6" ? false : true;
+
     this.getAllHistoryRequests();
     this.notificationService.newInventoryReqEventEmitter.subscribe((data) => {
       if (data == "newInventoryReq") this.newReqIncoming = true;

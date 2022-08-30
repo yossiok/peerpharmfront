@@ -519,7 +519,10 @@
                   [printStyle]="{
                     body: { 'text-align': 'right', direction: 'rtl' },
                     header: { 'border-bottom': 'solid 1px' },
-                    table: { 'text-align': 'right', 'border-collapse': 'collapse' },
+                    table: {
+                      'text-align': 'right',
+                      'border-collapse': 'collapse'
+                    },
                     h2: { 'text-align': 'center', 'margin-bottom': '20px' },
                     th: {
                       border: '1px solid black',
@@ -531,7 +534,7 @@
                     '.remarks': { width: '20%' },
                     '.max_width': { width: '10%' }
                   }"
-                  >
+                >
                   הדפסה לפני שינויים <i class="fa fa-print"></i>
                 </button>
               </div>
@@ -1055,15 +1058,12 @@
 
 <!-- eran table -->
 <div id="pBeforChanges" style="display: none">
-
   <header>
     <h1>העברת סחורה לייצור</h1>
     <h2>{{ curentWhareHouseName }} warehouse</h2>
   </header>
 
-  
   <table dir="rtl">
-
     <tr>
       <th>מס' פריט</th>
       <th>שם פריט</th>
@@ -1073,24 +1073,22 @@
       <th>הערות</th>
     </tr>
 
-
     <span *ngFor="let reqItem of multiLinesArr; let i = index">
-      <tr >
+      <tr>
         <td>{{ reqItem.itemNumber }}</td>
         <td class="itemNamePrint">{{ reqItem.itemName }}</td>
         <td>
           <span *ngFor="let shelf of reqItem.currItemShelfs; index as i">
-            {{shelf.position}}
-            <span *ngIf="i < (reqItem.currItemShelfs.length-1)">,</span>
-            <span *ngIf="i == (reqItem.currItemShelfs.length-1)">.</span>
+            {{ shelf.position }}
+            <span *ngIf="i < reqItem.currItemShelfs.length - 1">,</span>
+            <span *ngIf="i == reqItem.currItemShelfs.length - 1">.</span>
           </span>
         </td>
-        <td >
+        <td>
           {{ reqItem.amount }}
         </td>
         <td>{{ reqItem.relatedOrder }}</td>
         <td class="remarks">{{ reqItem.remarks }}</td>
-
       </tr>
     </span>
   </table>
@@ -1104,7 +1102,6 @@
     <h1>העברת סחורה לייצור</h1>
     <h2>{{ curentWhareHouseName }} warehouse</h2>
   </header>
-  
 
   <!-- dani -->
   <table>

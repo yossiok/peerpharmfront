@@ -23,7 +23,6 @@ import { Procurementservice } from "src/app/services/procurement.service";
   styleUrls: ["./wharehouse.component.scss"],
 })
 export class WharehouseComponent implements OnInit {
-
   // new ----------------------
   newReqNumber: number;
   inventoryReqForm: FormGroup;
@@ -130,8 +129,10 @@ export class WharehouseComponent implements OnInit {
     // this.itemLine.controls.arrivalDate.setValue(todayStr);
     this.getUserWhs();
     this.getAllWhs();
-    if (this.authService.loggedInUser.screenPermission == "6")
+    if (this.authService.loggedInUser.screenPermission == "6") {
       this.isJew = false;
+      this.showNewReq = false;
+    }
     this.allowNewRequest =
       Number(this.authService.loggedInUser.screenPermission) < 4;
   }

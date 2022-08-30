@@ -512,7 +512,7 @@ export class StockComponent implements OnInit {
   @Input() expectedArrivalItemData: any;
 
   checkPermission() {
-    return this.authService.loggedInUser.screenPermission == "5";
+    return Number(this.authService.loggedInUser.screenPermission) > 4;
   }
 
   //expected Arrivals modal
