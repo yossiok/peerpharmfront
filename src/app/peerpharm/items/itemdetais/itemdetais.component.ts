@@ -96,9 +96,9 @@ export class ItemdetaisComponent implements OnInit {
   editSpecTable: Boolean = false;
   productPriceModal: Boolean = false;
 
-  PAO:Boolean = false;
-  setUnits:Boolean=false;
-  unitWeight:Boolean=true;
+  PAO: Boolean = false;
+  setUnits: Boolean = false;
+  unitWeight: Boolean = true;
 
   itemLockedForEdit: Boolean = false;
   productionType: "";
@@ -143,7 +143,7 @@ export class ItemdetaisComponent implements OnInit {
     batchN: "",
     impRemarks: "",
     boxImage: "",
-    stickerImage: "",
+
     palletImage: "",
     palletImage2: "",
     palletImage3: "",
@@ -183,9 +183,19 @@ export class ItemdetaisComponent implements OnInit {
     stickerNumber: "",
     stickerVersion: null,
     stickerTypeK: "",
+    stickerImage: "",
     sticker2Number: "",
     sticker2Version: null,
     sticker2TypeK: "",
+    sticker2Image: "",
+    sticker3Number: "",
+    sticker3Version: null,
+    sticker3TypeK: "",
+    sticker3Image: "",
+    sticker4Number: "",
+    sticker4Version: null,
+    sticker4TypeK: "",
+    sticker4Image: "",
     boxNumber: "",
     boxName: "",
     boxVersion: null,
@@ -401,9 +411,9 @@ export class ItemdetaisComponent implements OnInit {
     scentRemarks: "",
     scentSpec: "",
 
-    PAO:0,
-    setUnits:1,
-    unitWeight:0
+    PAO: 0,
+    setUnits: 1,
+    unitWeight: 0,
   };
 
   selectedFiles: FileList;
@@ -552,9 +562,9 @@ export class ItemdetaisComponent implements OnInit {
       pallet3x: [null, Validators.required],
       pallet3y: [null, Validators.required],
 
-      PAO:[null,Validators.required],
-      setUnits:[null,Validators.required],
-      unitWeight:[null,Validators.required]
+      PAO: [null, Validators.required],
+      setUnits: [null, Validators.required],
+      unitWeight: [null, Validators.required],
     });
   }
 
@@ -1009,6 +1019,60 @@ export class ItemdetaisComponent implements OnInit {
           this.productionType = "";
         }
         break;
+      case "sticker2":
+        if (compNumber != "") {
+          this.invtSer.getCmptByitemNumber(compNumber).subscribe((data) => {
+            this.itemShown.sticker2Image = data[0].img;
+            this.itemShown.sticker2Version = data[0].versionNumber;
+
+            // this.itemsService
+            //   .updateStickerImage(this.itemShown)
+            //   .subscribe((data) => {
+            //     if (data) {
+            //       console.log("sticker image updated");
+            //     }
+            //   });
+          });
+        } else {
+          this.productionType = "";
+        }
+        break;
+      case "sticker3":
+        if (compNumber != "") {
+          this.invtSer.getCmptByitemNumber(compNumber).subscribe((data) => {
+            this.itemShown.sticker3Image = data[0].img;
+            this.itemShown.sticker3Version = data[0].versionNumber;
+
+            // this.itemsService
+            //   .updateStickerImage(this.itemShown)
+            //   .subscribe((data) => {
+            //     if (data) {
+            //       console.log("sticker image updated");
+            //     }
+            //   });
+          });
+        } else {
+          this.productionType = "";
+        }
+        break;
+      case "sticker4":
+        if (compNumber != "") {
+          this.invtSer.getCmptByitemNumber(compNumber).subscribe((data) => {
+            this.itemShown.sticker4Image = data[0].img;
+            this.itemShown.sticker4Version = data[0].versionNumber;
+
+            // this.itemsService
+            //   .updateStickerImage(this.itemShown)
+            //   .subscribe((data) => {
+            //     if (data) {
+            //       console.log("sticker image updated");
+            //     }
+            //   });
+          });
+        } else {
+          this.productionType = "";
+        }
+        break;
       case "box":
         if (compNumber != "") {
           this.invtSer.getCmptByitemNumber(compNumber).subscribe((data) => {
@@ -1255,15 +1319,15 @@ export class ItemdetaisComponent implements OnInit {
           this.itemExist = true;
           this.item = res[0];
           this.itemShown = res[0];
-            // !this.itemShown.netWeightK && !this.itemShown.unitWeight
-          if(this.item.netWeightK && !this.item.unitWeight){
-            this.item.unitWeight = Number(this.item.netWeightK)
+          // !this.itemShown.netWeightK && !this.itemShown.unitWeight
+          if (this.item.netWeightK && !this.item.unitWeight) {
+            this.item.unitWeight = Number(this.item.netWeightK);
           }
-          if(this.itemShown.netWeightK && !this.itemShown.unitWeight){
-            this.itemShown.unitWeight = Number(this.itemShown.netWeightK)
+          if (this.itemShown.netWeightK && !this.itemShown.unitWeight) {
+            this.itemShown.unitWeight = Number(this.itemShown.netWeightK);
           }
-          this.PAO = res[0].PAO ? true : false
-          this.setUnits = res[0].setUnits ? true : false
+          this.PAO = res[0].PAO ? true : false;
+          this.setUnits = res[0].setUnits ? true : false;
 
           this.itemShown.updateDate = moment(this.itemShown.updateDate).format(
             "YYYY-MM-DD"
@@ -1321,11 +1385,11 @@ export class ItemdetaisComponent implements OnInit {
         this.itemExist = false;
         this.toastr.error(item, "Item Not found");
         this.itemShown = Object.assign({}, this.itemCopy);
-        if(this.itemShown.netWeightK && !this.itemShown.unitWeight){
-          this.itemShown.unitWeight = Number(this.itemShown.netWeightK) 
+        if (this.itemShown.netWeightK && !this.itemShown.unitWeight) {
+          this.itemShown.unitWeight = Number(this.itemShown.netWeightK);
         }
-        this.PAO = this.itemShown.PAO ? true : false
-        this.setUnits = this.itemShown.setUnits ? true : false
+        this.PAO = this.itemShown.PAO ? true : false;
+        this.setUnits = this.itemShown.setUnits ? true : false;
         this.dataDiv = ["", ""];
         this.showGoddet();
       } else if (res.msg == "noItem") {
@@ -1335,14 +1399,14 @@ export class ItemdetaisComponent implements OnInit {
         this.itemExist = true;
         this.item = res[0];
         this.itemShown = res[0];
-        if(this.itemShown.netWeightK && !this.itemShown.unitWeight){
-          this.itemShown.unitWeight = Number(this.itemShown.netWeightK)
+        if (this.itemShown.netWeightK && !this.itemShown.unitWeight) {
+          this.itemShown.unitWeight = Number(this.itemShown.netWeightK);
         }
-        if(this.item.netWeightK && !this.item.unitWeight){
-          this.item.unitWeight = Number(this.item.netWeightK)
+        if (this.item.netWeightK && !this.item.unitWeight) {
+          this.item.unitWeight = Number(this.item.netWeightK);
         }
-        this.PAO = res[0].PAO ? true : false
-        this.setUnits = res[0].setUnits ? true : false
+        this.PAO = res[0].PAO ? true : false;
+        this.setUnits = res[0].setUnits ? true : false;
         if (this.itemShown.bottleNumber != "") {
           this.fillBottle(this.itemShown.bottleNumber);
           this.searchCompNumberByComp(
@@ -1442,7 +1506,27 @@ export class ItemdetaisComponent implements OnInit {
         }
 
         this.searchCompNumberByComp(this.itemShown.boxNumber, "box");
-        this.searchCompNumberByComp(this.itemShown.stickerNumber, "sticker");
+        if (this.itemShown.stickerNumber) {
+          this.searchCompNumberByComp(this.itemShown.stickerNumber, "sticker");
+        }
+        if (this.itemShown.sticker2Number) {
+          this.searchCompNumberByComp(
+            this.itemShown.sticker2Number,
+            "sticker2"
+          );
+        }
+        if (this.itemShown.sticker3Number) {
+          this.searchCompNumberByComp(
+            this.itemShown.sticker3Number,
+            "sticker3"
+          );
+        }
+        if (this.itemShown.sticker4Number) {
+          this.searchCompNumberByComp(
+            this.itemShown.sticker4Number,
+            "sticker4"
+          );
+        }
         this.searchPlateByNumber(this.itemShown.pallet, "pallet");
         this.searchPlateByNumber(this.itemShown.pallet2, "pallet2");
         this.searchPlateByNumber(this.itemShown.pallet3, "pallet3");
@@ -1682,28 +1766,36 @@ export class ItemdetaisComponent implements OnInit {
               : "";
           }
         }
-        let errors = []
-        if(!this.itemShown.unitWeight || this.itemShown.unitWeight < 1){
-          errors.push({msg:"משקל יחידה הוא חובה וחייב להיות גדול מאפס"})
+        let errors = [];
+        if (!this.itemShown.unitWeight || this.itemShown.unitWeight < 1) {
+          errors.push({ msg: "משקל יחידה הוא חובה וחייב להיות גדול מאפס" });
         }
-        if(this.itemShown.setUnits < 1){
-          errors.push({msg:"יחידות בסט גם אם הוא יחיד חייב להיות גדול מאפס"})
+        if (this.itemShown.setUnits < 1) {
+          errors.push({
+            msg: "יחידות בסט גם אם הוא יחיד חייב להיות גדול מאפס",
+          });
         }
-        if(this.itemShown.unitWeight < 0){
-          errors.push({msg:"משקל יחידה לא יכול להיות קטן מאפס"})
+        if (this.itemShown.unitWeight < 0) {
+          errors.push({ msg: "משקל יחידה לא יכול להיות קטן מאפס" });
         }
-        if(errors.length > 0){
-          errors.forEach((err)=>{
-            this.toastr.warning(err.msg)
-          })
-          return
+        if (errors.length > 0) {
+          errors.forEach((err) => {
+            this.toastr.warning(err.msg);
+          });
+          return;
         }
-        if(this.itemShown.setUnits > 1){
-            this.itemShown.netWeightK = String(this.itemShown.setUnits * this.itemShown.unitWeight)
-        }else{
-          this.itemShown.netWeightK ? this.itemShown.netWeightK : this.itemShown.unitWeight ? String(this.itemShown.unitWeight) : null
+        if (this.itemShown.setUnits > 1) {
+          this.itemShown.netWeightK = String(
+            this.itemShown.setUnits * this.itemShown.unitWeight
+          );
+        } else {
+          this.itemShown.netWeightK
+            ? this.itemShown.netWeightK
+            : this.itemShown.unitWeight
+            ? String(this.itemShown.unitWeight)
+            : null;
         }
-        
+
         this.itemsService.addItem(this.itemShown).subscribe((data) => {
           this.toastr.success("" + data.message);
           location.reload();
@@ -1714,20 +1806,24 @@ export class ItemdetaisComponent implements OnInit {
 
   updateBtn() {
     if (!this.itemShown.netWeightK && !this.itemShown.unitWeight) {
-      alert("Net Weight Of Unit gr must have a value. Fill the unit net weight");
+      alert(
+        "Net Weight Of Unit gr must have a value. Fill the unit net weight"
+      );
       return;
     }
     if (!this.itemShown.unitWeight || this.itemShown.unitWeight < 1) {
-      alert("Net Weight Of Unit gr must have a value more than 0. Fill the unit net weight");
+      alert(
+        "Net Weight Of Unit gr must have a value more than 0. Fill the unit net weight"
+      );
       return;
     }
-    if(this.itemShown.setUnits < 1){
-      this.toastr.error("יחידות בסט גם אם הוא יחיד חייב להיות גדול מאפס")
-      return
+    if (this.itemShown.setUnits < 1) {
+      this.toastr.error("יחידות בסט גם אם הוא יחיד חייב להיות גדול מאפס");
+      return;
     }
-    if(this.itemShown.unitWeight < 0){
-      this.toastr.error("משקל יחידה לא יכול להיות קטן מאפס")
-      return
+    if (this.itemShown.unitWeight < 0) {
+      this.toastr.error("משקל יחידה לא יכול להיות קטן מאפס");
+      return;
     }
     this.modalService.open(this.editItemModal);
   }
@@ -1738,31 +1834,45 @@ export class ItemdetaisComponent implements OnInit {
       return;
     }
     if (!this.itemShown.unitWeight || this.itemShown.unitWeight < 1) {
-      alert("Net Weight Of Unit gr must have a value more than 0. Fill the unit net weight");
+      alert(
+        "Net Weight Of Unit gr must have a value more than 0. Fill the unit net weight"
+      );
       return;
     }
-    if(this.itemShown.setUnits < 1){
-      this.toastr.error("יחידות בסט גם אם הוא יחיד חייב להיות גדול מאפס")
-      return
+    if (this.itemShown.setUnits < 1) {
+      this.toastr.error("יחידות בסט גם אם הוא יחיד חייב להיות גדול מאפס");
+      return;
     }
-    if(this.itemShown.unitWeight < 0){
-      this.toastr.error("משקל יחידה לא יכול להיות קטן מאפס")
-      return
+    if (this.itemShown.unitWeight < 0) {
+      this.toastr.error("משקל יחידה לא יכול להיות קטן מאפס");
+      return;
     }
-    if(this.itemShown.setUnits > 1){
-      this.itemShown.netWeightK = String(this.itemShown.setUnits * this.itemShown.unitWeight)
-    }else{
-      this.itemShown.netWeightK = this.itemShown.netWeightK ? this.itemShown.netWeightK : this.itemShown.unitWeight ? String(this.itemShown.unitWeight) : null
+    if (this.itemShown.setUnits > 1) {
+      this.itemShown.netWeightK = String(
+        this.itemShown.setUnits * this.itemShown.unitWeight
+      );
+    } else {
+      this.itemShown.netWeightK = this.itemShown.netWeightK
+        ? this.itemShown.netWeightK
+        : this.itemShown.unitWeight
+        ? String(this.itemShown.unitWeight)
+        : null;
     }
     this.lookingForItem = true;
     if (this.itemShown.itemNumber != "") {
       this.itemShown.nameOfupdating = this.user.userName;
       console.log(this.itemShown);
-      if ((!this.itemShown.netWeightK && !this.itemShown.unitWeight) || (!this.itemShown.unitWeight || this.itemShown.unitWeight < 1)) {
+      if (
+        (!this.itemShown.netWeightK && !this.itemShown.unitWeight) ||
+        !this.itemShown.unitWeight ||
+        this.itemShown.unitWeight < 1
+      ) {
         this.toastr.error(
           "Net Weight Of Unit gr must have a value more than 0. Fill the unit net weight"
         );
-        alert("Net Weight Of Unit gr must have a value more than 0. Fill the unit net weight");
+        alert(
+          "Net Weight Of Unit gr must have a value more than 0. Fill the unit net weight"
+        );
         return;
       }
       try {
@@ -2031,29 +2141,28 @@ export class ItemdetaisComponent implements OnInit {
         }
         break;
 
-        case "PAO":
-          if(this.PAO == true){
-            this.PAO = false
-          }else{
-            this.PAO = true
-          }
-          break;
+      case "PAO":
+        if (this.PAO == true) {
+          this.PAO = false;
+        } else {
+          this.PAO = true;
+        }
+        break;
 
-        case "setUnits":
-          if(this.setUnits == true){
-              this.setUnits = false
-          }else{
-            this.setUnits = true
-          }
-          break;
-        case "unitWeight":
-          if(this.unitWeight == true){
-              this.unitWeight = false
-          }else{
-            this.unitWeight = true
-          }
-          break;
-
+      case "setUnits":
+        if (this.setUnits == true) {
+          this.setUnits = false;
+        } else {
+          this.setUnits = true;
+        }
+        break;
+      case "unitWeight":
+        if (this.unitWeight == true) {
+          this.unitWeight = false;
+        } else {
+          this.unitWeight = true;
+        }
+        break;
     }
   }
 
@@ -2232,15 +2341,15 @@ export class ItemdetaisComponent implements OnInit {
       });
     }
   }
-  add(){
-    this.itemShown.setUnits++
+  add() {
+    this.itemShown.setUnits++;
   }
-  sub(){
-    if(this.itemShown.setUnits <= 1 ){
-      this.itemShown.setUnits = 1
-      return
-    }else{
-      this.itemShown.setUnits--
+  sub() {
+    if (this.itemShown.setUnits <= 1) {
+      this.itemShown.setUnits = 1;
+      return;
+    } else {
+      this.itemShown.setUnits--;
     }
   }
 }

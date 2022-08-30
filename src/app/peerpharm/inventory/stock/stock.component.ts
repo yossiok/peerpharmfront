@@ -2406,6 +2406,8 @@ export class StockComponent implements OnInit {
     this.inventoryService
       .getCmptPPCDetails(component.componentN)
       .subscribe((data) => {
+        data.stockQty = data.stock[0] ? data.stock[0].stock : 0;
+        // data.stock = data.stock.length == 0 ? [{ stock: 0 }] : data.stock;
         this.alloAmountsLoading = false;
         console.log(data);
         this.component = data;

@@ -96,6 +96,16 @@
         >
       </div>
       <div style="margin: 3px">
+        <label [ngClass]="checkItemStatus()" style="font-weight: bold"
+          >{{ "Sticker" | translate }} 3</label
+        >
+      </div>
+      <div style="margin: 3px">
+        <label [ngClass]="checkItemStatus()" style="font-weight: bold"
+          >{{ "Sticker" | translate }} 4</label
+        >
+      </div>
+      <div style="margin: 3px">
         <label [ngClass]="checkItemStatus()" style="font-weight: bold">{{
           "Box" | translate
         }}</label>
@@ -258,6 +268,62 @@
           style="width: 150px"
           id="id_sticker2Type"
           [(ngModel)]="itemShown.sticker2TypeK"
+        />
+      </div>
+      <div>
+        <!--Sticker 3-->
+        <!--componentN-->
+        <input
+          [ngClass]="itemBackgroundByStatus()"
+          type="text"
+          id="id_sticker3Number"
+          [(ngModel)]="itemShown.sticker3Number"
+          placeholder="Sticker 3 Number"
+          onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')"
+        />
+        <!--Version-->
+        <input
+          type="number"
+          class="small-input"
+          placeholder="v."
+          disabled
+          [(ngModel)]="itemShown.sticker3Version"
+        />
+        <!--Sticker Type-->
+        <input
+          type="text"
+          placeholder="Sticker 3 Type"
+          style="width: 150px"
+          id="id_sticker2Type"
+          [(ngModel)]="itemShown.sticker3TypeK"
+        />
+      </div>
+      <div>
+        <!--Sticker 4-->
+        <!--componentN-->
+        <input
+          [ngClass]="itemBackgroundByStatus()"
+          type="text"
+          id="id_sticker3Number"
+          [(ngModel)]="itemShown.sticker4Number"
+          placeholder="Sticker 4 Number"
+          onfocusout="loadOackagDetails(this.id, 'id_stickerWeight','id_stickerSelect')"
+        />
+        <!--Version-->
+        <input
+          type="number"
+          class="small-input"
+          placeholder="v."
+          disabled
+          [(ngModel)]="itemShown.sticker4Version"
+        />
+        <!--Sticker Type-->
+        <input
+          type="text"
+          placeholder="Sticker 4 Type"
+          style="width: 150px"
+          id="id_sticker2Type"
+          [(ngModel)]="itemShown.sticker4TypeK"
         />
       </div>
       <div>
@@ -3235,7 +3301,7 @@
             <div class="container-fluid">
               <div class="row mt-4">
                 <div class="col-2">
-                  <label class="form-control">Sticker</label>
+                  <label class="form-control"> Sticker 1 </label>
                 </div>
                 <div class="col-2 d-flex">
                   <input
@@ -3257,6 +3323,90 @@
                     class="w-50 imageClass"
                     [src]="itemShown.stickerImage"
                     alt="Sticker"
+                  />
+                </div>
+                <div class="col-6"></div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-2">
+                  <label class="form-control">Sticker 2 </label>
+                </div>
+                <div class="col-2 d-flex">
+                  <input
+                    type="text"
+                    [(ngModel)]="itemShown.sticker2Number"
+                    class="form-control"
+                  />
+                  <input
+                    type="number"
+                    style="height: 35px"
+                    disabled
+                    placeholder="v."
+                    [(ngModel)]="itemShown.sticker2Version"
+                    class="small-input"
+                  />
+                </div>
+                <div class="col-2">
+                  <img
+                    class="w-50 imageClass"
+                    [src]="itemShown.sticker2Image"
+                    alt="Sticker 2"
+                  />
+                </div>
+                <div class="col-6"></div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-2">
+                  <label class="form-control">Sticker 3 </label>
+                </div>
+                <div class="col-2 d-flex">
+                  <input
+                    type="text"
+                    [(ngModel)]="itemShown.sticker3Number"
+                    class="form-control"
+                  />
+                  <input
+                    type="number"
+                    style="height: 35px"
+                    disabled
+                    placeholder="v."
+                    [(ngModel)]="itemShown.sticker3Version"
+                    class="small-input"
+                  />
+                </div>
+                <div class="col-2">
+                  <img
+                    class="w-50 imageClass"
+                    [src]="itemShown.sticker3Image"
+                    alt="Sticker 3"
+                  />
+                </div>
+                <div class="col-6"></div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-2">
+                  <label class="form-control">Sticker 4 </label>
+                </div>
+                <div class="col-2 d-flex">
+                  <input
+                    type="text"
+                    [(ngModel)]="itemShown.sticker4Number"
+                    class="form-control"
+                  />
+                  <input
+                    type="number"
+                    style="height: 35px"
+                    disabled
+                    placeholder="v."
+                    [(ngModel)]="itemShown.sticker4Version"
+                    class="small-input"
+                  />
+                </div>
+                <div class="col-2">
+                  <img
+                    class="w-50 imageClass"
+                    [src]="itemShown.sticker4Image"
+                    alt="Sticker 4"
                   />
                 </div>
                 <div class="col-6"></div>
