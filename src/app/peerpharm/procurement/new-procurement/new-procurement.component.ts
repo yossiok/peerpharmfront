@@ -924,6 +924,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   sendNewProc(action) {
+    let withRemarks = confirm("האם להוסיף הערות להזמנת הלקוח?");
     this.sendingPurchase = true;
     if (action == "add") {
       if (this.newPurchase.controls.stockitems.value) {
@@ -970,7 +971,12 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           } else {
             tempPurchase.arrivalDate = null;
           }
-
+          tempPurchase.withRemarks = withRemarks;
+          tempPurchase.update = action == "add" ? false : true;
+          tempPurchase.creationDate = tempPurchase.creationDate
+            ? tempPurchase.creationDate.substring(0, 10)
+            : new Date().toISOString().substring(0, 10);
+          console.log(tempPurchase);
           this.procurementService
             .addNewProcurement(tempPurchase)
             .subscribe((data) => {
@@ -1025,9 +1031,14 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         ) {
           this.newPurchase.controls.arrivalDate.setValue(null);
         }
-
+        let purchaseObject = this.newPurchase.value;
+        purchaseObject.update = true;
+        purchaseObject.withRemarks = withRemarks;
+        purchaseObject.creationDate = purchaseObject.creationDate
+          ? purchaseObject.creationDate.substring(0, 10)
+          : null;
         this.procurementService
-          .updatePurchaseOrder(this.newPurchase.value)
+          .addNewProcurement(purchaseObject)
           .subscribe((data) => {
             this.sendingPurchase = false;
             if (data) {
