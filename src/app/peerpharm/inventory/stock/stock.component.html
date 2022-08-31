@@ -685,7 +685,7 @@
                 style="width: 5%; cursor: pointer"
                 (click)="getCmptAmounts(component.componentN, component._id)"
               >
-                {{ component.amount }}
+                {{ component.amount | number }}
                 <img
                   src="../../../../assets/images/search_plus_blue.png"
                   alt="watch quantities"
@@ -843,7 +843,7 @@
                 "
               />
             </td>
-            <td style="width: 9%">{{ component.amount }}</td>
+            <td style="width: 9%">{{ component.amount | number }}</td>
             <td style="width: 9%">
               <button
                 [style.cursor]="
@@ -1005,7 +1005,7 @@
     </div>
 
     <div
-      style="top: 20px; max-width: 80%"
+      style="top: 20px; max-width: fit-content"
       class="container bg-light rounded fixed-top shadow mx-auto my-auto border border-success"
       *ngIf="openModal == true && stockType == 'component'"
     >
@@ -2051,7 +2051,7 @@
                       rows="4"
                       cols="30"
                       [(ngModel)]="resCmpt.componentName"
-                      style="width: 80%"
+                      style="width: fit-content"
                       id="input_componentName"
                     ></textarea>
                   </td>
@@ -2559,7 +2559,7 @@
   </div>
 
   <div
-    style="top: 20px; max-width: 80%"
+    style="top: 20px; max-width: fit-content"
     class="container bg-light rounded shadow fixed-top mx-auto my-auto border border-success"
     *ngIf="openModal == true && stockType == 'material'"
   >
