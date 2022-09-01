@@ -1,26 +1,38 @@
 <div class="d-flex flex-row justify-content-center">
-
   <div class="mt-8 mr-5">
-    <img *ngIf="item" class="image1" [src]="item.imgMain1" alt="Image 1 Missing">
+    <img
+      *ngIf="item"
+      class="image1"
+      [src]="item.imgMain1"
+      alt="Image 1 Missing"
+    />
   </div>
 
   <div *ngIf="item.imgMain2" class="mt-8 mr-5">
-    <img *ngIf="item" class="image1" [src]="item.imgMain2" alt="Image 2 Missing">
+    <img
+      *ngIf="item"
+      class="image1"
+      [src]="item.imgMain2"
+      alt="Image 2 Missing"
+    />
   </div>
 
   <div>
     <div class="container mt-5">
       <div class="row mt-5">
-        <input type="number" placeholder="Product Number" #productNumber> &nbsp;&nbsp;
-        <button class="btn btn-warning" (click)="getItemData(productNumber)">Calculate Product Cost</button>
+        <input type="number" placeholder="Product Number" #productNumber />
+        &nbsp;&nbsp;
+        <button class="btn btn-warning" (click)="getItemData(productNumber)">
+          Calculate Product Cost
+        </button>
       </div>
       <div *ngIf="calculating" class="row mt-2">
-        <h3>{{waitingText}}</h3>
+        <h3>{{ waitingText }}</h3>
         <div class="bigLoader"></div>
       </div>
       <div *ngIf="!calculating" class="container mt-5">
         <div class="row mt-4">
-          <h2>{{item.name}} {{item.subName}} {{item.discriptionK}}</h2>
+          <h2>{{ item.name }} {{ item.subName }} {{ item.discriptionK }}</h2>
         </div>
         <div class="row mt-2">
           <div class="col-4">
@@ -38,35 +50,47 @@
               <tbody class="table table-bordered">
                 <tr *ngFor="let component of itemComponents">
                   <td class="click" (click)="changeView(component)">
-                    {{component.componentNumber}}</td>
-                  <td>{{component.componentName}}</td>
-                  <td>{{component.price | number}} <span *ngIf="component.price == NaN">Update Price</span>
+                    {{ component.componentNumber }}
                   </td>
-                  <td>{{component.shippingPrice}}</td>
-                  <td><span
-                      *ngIf="component.lastOrders && component.lastOrders[0]">{{component.lastOrders[0].supplierName}}</span>
+                  <td>{{ component.componentName }}</td>
+                  <td>
+                    {{ component.price | number }}
+                    <span *ngIf="component.price == NaN">Update Price</span>
                   </td>
-                  <td>{{component.stockAmount}}</td>
+                  <td>{{ component.shippingPrice }}</td>
+                  <td>
+                    <span
+                      *ngIf="component.lastOrders && component.lastOrders[0]"
+                      >{{ component.lastOrders[0].supplierName }}</span
+                    >
+                  </td>
+                  <td>{{ component.stockAmount }}</td>
                 </tr>
                 <tr *ngIf="allowed">
                   <td>Formule Cost:</td>
-                  <td> {{formulePriceProblem}}
+                  <td>{{ formulePriceProblem }}</td>
+                  <td [style.background]="partialFormulePrice ? 'red' : ''">
+                    {{ item.formulePrice | number }}
                   </td>
-                  <td [style.background]="partialFormulePrice ? 'red' : ''">{{item.formulePrice | number}}</td>
                   <td class="h4" colspan="3">
                     <span *ngIf="partialFormulePrice" class="text-danger">
                       <i class="fas fa-exclamation-triangle"></i> Missing Price:
                     </span>
-                    <span style="color: red;" *ngFor="let item of itemsMissingPrice">{{item}}, </span>
+                    <span
+                      style="color: red"
+                      *ngFor="let item of itemsMissingPrice"
+                      >{{ item }},
+                    </span>
                   </td>
                 </tr>
                 <tr *ngIf="allowed">
                   <td>Total Item Cost:</td>
                   <td></td>
-                  <td>{{totalItemPrice | number}}</td>
-                  <td>{{totalShippingPrice | number}}</td>
-                  <td class="bg-warning"><strong>Total:</strong>
-                    <h4>{{totalItemPrice + totalShippingPrice | number}}</h4>
+                  <td>{{ totalItemPrice | number }}</td>
+                  <td>{{ totalShippingPrice | number }}</td>
+                  <td class="bg-warning">
+                    <strong>Total:</strong>
+                    <h4>{{ totalItemPrice + totalShippingPrice | number }}</h4>
                   </td>
                   <td></td>
                 </tr>
@@ -77,7 +101,7 @@
         </div>
         <div *ngIf="item">
           <div class="row mt-4">
-            <h3>Customers Purchasing Item {{item.itemNumber}}</h3>
+            <h3>Customers Purchasing Item {{ item.itemNumber }}</h3>
           </div>
           <div class="bg-warning" *ngIf="loadingCustomers">
             <h4>Loading Customers For Item</h4>
@@ -92,8 +116,8 @@
             </thead>
             <tbody class="table table-bordered">
               <tr *ngFor="let customer of customersForItem">
-                <td>{{customer.costumerId}}</td>
-                <td>{{customer.costumerName}}</td>
+                <td>{{ customer.costumerId }}</td>
+                <td>{{ customer.costumerName }}</td>
               </tr>
             </tbody>
           </table>
@@ -104,24 +128,31 @@
 
   <div class="float-left small p-5 mr-5">
     <h3>Important Remarks:</h3>
-    <h4 class="bg-danger text-white p-5">
-      1. {{item.proRemarks}}
-    </h4>
-    <h4 class="bg-white text-danger p-5">
-      2. {{item.impRemarks}}
-    </h4>
+    <h4 class="bg-danger text-white p-5">1. {{ item.proRemarks }}</h4>
+    <h4 class="bg-white text-danger p-5">2. {{ item.impRemarks }}</h4>
   </div>
-
 </div>
 
-<div class="fixed-top mt-10 p-2 w-50 mx-auto bg-warning" *ngIf="selectedComponent && showOrders">
-  <i class="fa fa-times float-right h3 click p-2" (click)="showOrders = false"></i>
-  <h3 class="text-center">Purchases for item {{selectedComponent.componentNumber}}</h3>
+<div
+  class="fixed-top mt-10 p-2 w-50 mx-auto bg-warning"
+  *ngIf="selectedComponent && showOrders"
+>
+  <i
+    class="fa fa-times float-right h3 click p-2"
+    (click)="showOrders = false"
+  ></i>
+  <h3 class="text-center">
+    Purchases for item {{ selectedComponent.componentNumber }}
+  </h3>
   <div class="row">
     <div class="col-3">
-      <button class="btn btn-warning" (click)="selectedStatus = selectedStatus == 'open' ? 'closed' : 'open'">Change
-        Status</button>
-      <p class="bg-dark text-warning p-2">Status = {{selectedStatus}}</p>
+      <button
+        class="btn btn-warning"
+        (click)="selectedStatus = selectedStatus == 'open' ? 'closed' : 'open'"
+      >
+        Change Status
+      </button>
+      <p class="bg-dark text-warning p-2">Status = {{ selectedStatus }}</p>
     </div>
     <div class="col-6">
       <table class="bg-warning text-dark">
@@ -138,20 +169,28 @@
         <tbody class="table table-bordered">
           <ng-container *ngFor="let order of selectedComponent.lastOrders">
             <tr
-              *ngIf="(order.status != 'closed' && selectedStatus != 'closed') || (order.status == 'closed' && selectedStatus == 'closed')">
-              <td>{{order.orderNumber}}</td>
-              <td>{{order.status}}</td>
-              <td>{{order.orderDate | date:'dd/MM/yy'}}</td>
-              <td>{{order.arrivalDate | date:'dd/MM/yy'}}</td>
-              <td>{{order.quantity}}</td>
-              <td>{{order.price}} {{order.coin | currencySymbol}}}}</td>
+              *ngIf="
+                (order.status != 'closed' && selectedStatus != 'closed') ||
+                (order.status == 'closed' && selectedStatus == 'closed')
+              "
+            >
+              <td>{{ order.orderNumber }}</td>
+              <td>{{ order.status }}</td>
+              <td>{{ order.orderDate | date: "dd/MM/yyyy" }}</td>
+              <td>{{ order.arrivalDate | date: "dd/MM/yyyy" }}</td>
+              <td>{{ order.quantity }}</td>
+              <td>{{ order.price }} {{ order.coin | currencySymbol }}</td>
             </tr>
           </ng-container>
         </tbody>
       </table>
     </div>
     <div class="col-3">
-      <img class="image m-2" [src]="selectedComponent.imgUrl" alt="Component image missing..">
+      <img
+        class="image m-2"
+        [src]="selectedComponent.imgUrl"
+        alt="Component image missing.."
+      />
     </div>
   </div>
 </div>

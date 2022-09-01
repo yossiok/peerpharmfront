@@ -210,7 +210,7 @@ export class PricesComponent implements OnInit {
           coin = component.coin ? component.coin : "ILS";
         } else {
           let suppliers = component.alternativeSuppliers;
-          if (!suppliers || suppliers.length == 0) componentPricing.price = NaN;
+          if (!suppliers || suppliers.length == 0) componentPricing.price = 0;
           else {
             for (let i = 0; i < suppliers.length; i++) {
               if (
@@ -222,7 +222,7 @@ export class PricesComponent implements OnInit {
                 coin = suppliers[i].coin ? suppliers[i].coin : "ILS";
                 i = suppliers.length;
               } else {
-                componentPricing.price = NaN;
+                componentPricing.price = 0;
               }
             }
           }
