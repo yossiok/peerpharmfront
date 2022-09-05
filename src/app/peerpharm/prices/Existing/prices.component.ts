@@ -191,6 +191,7 @@ export class PricesComponent implements OnInit {
   createComponentsPrice(components) {
     return new Promise<any>((resolve, reject) => {
       let itemComponents = [];
+      this.notPricedComponents = [];
       for (let component of components) {
         console.log(component);
         let componentPricing = {
