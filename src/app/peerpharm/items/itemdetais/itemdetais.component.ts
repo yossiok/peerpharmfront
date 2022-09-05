@@ -1847,7 +1847,7 @@ export class ItemdetaisComponent implements OnInit {
       this.toastr.error("משקל יחידה לא יכול להיות קטן מאפס");
       return;
     }
-    if (this.itemShown.setUnits > 1) {
+    if (this.itemShown.setUnits) {
       this.itemShown.netWeightK = String(
         this.itemShown.setUnits * this.itemShown.unitWeight
       );
@@ -2118,7 +2118,7 @@ export class ItemdetaisComponent implements OnInit {
       case "grossWeightUnit":
         if (this.grossWeightUnit == true) {
           this.grossWeightUnit = false;
-          this.itemShown.grossUnitWeightK = "---";
+          this.itemShown.grossUnitWeightK = null;
         } else {
           this.grossWeightUnit = true;
         }

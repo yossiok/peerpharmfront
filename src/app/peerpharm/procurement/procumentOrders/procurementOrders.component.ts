@@ -100,10 +100,10 @@ export class ProcurementOrdersComponent implements OnInit {
   EditRowId: any = "";
   totalPriceNis: number = 0;
   printSum: boolean = false;
-  nisSymbol: string = "\u20AA";
-  usdSymbol: string = "$";
-  eurSymbol: string = "\u20AC";
-  gbpSymbol: string = "\u00A3";
+  nisSymbol: string = "ILS";
+  usdSymbol: string = "USD";
+  eurSymbol: string = "EUR";
+  gbpSymbol: string = "GBP";
   loadingRecommendations: boolean;
   arrivalDate: any;
   destinationLine: any;
@@ -850,16 +850,20 @@ export class ProcurementOrdersComponent implements OnInit {
 
     if (this.printSum) {
       if (coin == "nis" || coin == "NIS" || coin == "ILS") {
-        this.currCoin = this.nisSymbol;
+        // this.currCoin = this.nisSymbol;
+        this.currCoin = "ILS";
       }
       if (coin == "eur" || coin == "EUR") {
-        this.currCoin = "\u20AC";
+        // this.currCoin = "\u20AC";
+        this.currCoin = "EUR";
       }
       if (coin == "usd" || coin == "USD") {
-        this.currCoin = "$";
+        // this.currCoin = "$";
+        this.currCoin = "USD";
       }
       if (coin == "gbp" || coin == "GBP") {
-        this.currCoin = "\u00A3";
+        // this.currCoin = "\u00A3";
+        this.currCoin = "GBP";
       }
     }
 

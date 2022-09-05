@@ -122,6 +122,7 @@ export class PriceListsComponent implements OnInit {
       this.loading = false;
       if (data.msg) {
         this.toastr.error(data.msg);
+        this.loading = false;
         return;
       } else if (data && data.length > 0 && data[0].itemNumber) {
         this.priceList = data;
