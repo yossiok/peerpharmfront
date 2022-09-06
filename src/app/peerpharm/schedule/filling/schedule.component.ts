@@ -18,6 +18,7 @@ import { BatchesService } from "src/app/services/batches.service";
 import { ExcelService } from "src/app/services/excel.service";
 import { AuthService } from "src/app/services/auth.service";
 import { Router } from "@angular/router";
+import { cpuUsage } from "process";
 
 @Component({
   selector: "app-schedule",
@@ -60,6 +61,10 @@ export class ScheduleComponent implements OnInit {
   time: any;
   batchesSpecifications: any[];
   fillingDate: any;
+  componentsTotalQty: any[] = [];
+  componentsTotalQtyCopy: any[] = [];
+  componentsQtyRpoert: boolean = false;
+  sortToggle: number = 1;
 
   myDate: Date = new Date();
   intervalId: any;
@@ -128,6 +133,13 @@ export class ScheduleComponent implements OnInit {
   unscheduledBatches: Array<any> = [];
   showBatchesAlert: boolean = false;
   showBatchesList: boolean = false;
+
+  searchMenu: FormGroup = new FormGroup({
+    itemNumber: new FormControl(""),
+    orderNumber: new FormControl(""),
+    componentN: new FormControl(""),
+    type: new FormControl(""),
+  });
 
   constructor(
     private scheduleService: ScheduleService,
@@ -266,14 +278,15 @@ export class ScheduleComponent implements OnInit {
 
   exportAsXLSX(): void {
     try {
+      debugger;
       let tempArr = this.scheduleData.filter((s) => s.mkp == this.typeShown);
       tempArr.forEach((x) => {
         // console.log(x);
         let str = "";
-        let componentsArray = this.itemsComponentsByItemNumber[Number(x.item)];
+        // let componentsArray = this.itemsComponentsByItemNumber[Number(x.item)];
         //  console.log(this.itemsComponentsByItemNumber[84]);
-        componentsArray.map((compo) => {
-          str += String(compo) + ", ";
+        x.components.map((compo) => {
+          str += String(compo.componentN) + ", ";
         });
         x.components = str;
         delete x._id;
@@ -391,6 +404,8 @@ export class ScheduleComponent implements OnInit {
     else {
       this.fillingDate = date;
       this.startTime();
+      this.componentsTotalQty = [];
+      this.scheduleData = [];
       this.scheduleService.getScheduleByDate(date).subscribe((res) => {
         res.map((sced) => {
           if (sced.status == "filled") sced.color = "#CE90FF";
@@ -424,24 +439,42 @@ export class ScheduleComponent implements OnInit {
           .getComponentsForMultiItems(this.itemsNumbers)
           .subscribe((res2) => {
             this.itemsComponentsByItemNumber = res2;
-          });
-        this.selectedArr = [];
 
-        //get batch specifications status
-        this.scheduleData.map((sced) => {
-          if (sced.batch && sced.batch != "") {
-            let batches = sced.batch.split("+");
-            if (batches.length > 1) {
-              sced.batchSpecStatus = 999;
-            } else {
-              this.batchService.getSpecvalue(batches[0]).subscribe((res) => {
-                if (res.status) sced.batchSpecStatus = res.status;
-                else sced.batchSpecStatus = -1;
-              });
-            }
-          }
-        });
-        setTimeout(() => (this.scheduleDataCopy = this.scheduleDataCopy), 5000);
+            console.log(res2);
+            console.log(this.scheduleData);
+
+            this.scheduleData.forEach((line) => {
+              let idx = res2.findIndex((item) => item.itemNumber == line.item);
+              if (idx > -1) {
+                line.components = res2[idx].components;
+              }
+            });
+
+            console.log(this.scheduleData);
+            //get batch specifications status
+            this.scheduleData.map((sced) => {
+              if (sced.batch && sced.batch != "") {
+                let batches = sced.batch.split("+");
+                if (batches.length > 1) {
+                  sced.batchSpecStatus = 999;
+                } else {
+                  this.batchService
+                    .getSpecvalue(batches[0])
+                    .subscribe((res) => {
+                      if (res.status) sced.batchSpecStatus = res.status;
+                      else sced.batchSpecStatus = -1;
+                    });
+                }
+              }
+            });
+            this.selectedArr = [];
+            this.scheduleDataCopy = this.scheduleData;
+
+            setTimeout(() => {
+              this.scheduleDataCopy = this.scheduleData;
+              // this.getComponentsQty();
+            }, 5000);
+          });
       });
     }
   }
@@ -506,6 +539,17 @@ export class ScheduleComponent implements OnInit {
         .getComponentsForMultiItems(this.itemsNumbers)
         .subscribe((res2) => {
           this.itemsComponentsByItemNumber = res2;
+          console.log(res2);
+          console.log(this.scheduleData);
+
+          this.scheduleData.forEach((line) => {
+            let idx = res2.findIndex((item) => item.itemNumber == line.item);
+            if (idx > -1) {
+              line.components = res2[idx].components;
+            }
+          });
+
+          console.log(this.scheduleData);
         });
 
       //get batch specifications status
@@ -817,94 +861,93 @@ export class ScheduleComponent implements OnInit {
   }
 
   async updateSchedule(line) {
-      if (this.orderN.nativeElement.value != "") {
-        let scdLneInfo = await this.scheduleData.filter(
-          (sced) => sced._id == this.EditRowId
-        );
+    if (this.orderN.nativeElement.value != "") {
+      let scdLneInfo = await this.scheduleData.filter(
+        (sced) => sced._id == this.EditRowId
+      );
 
-        let updateOrderItemDate =
-          scdLneInfo[0].date == this.date.nativeElement.value;
+      let updateOrderItemDate =
+        scdLneInfo[0].date == this.date.nativeElement.value;
 
-        let strHe = "";
-        let strEn = "";
-        let strAr = "";
-        let strRs = "";
+      let strHe = "";
+      let strEn = "";
+      let strAr = "";
+      let strRs = "";
 
-        if (this.remarksLangues.length > 0) {
-          if (this.remarksToAdd.length > 0) {
-            this.remarksToAdd.map((rem) => {
-              if (this.remarksLangues.includes("heb")) {
-                strHe += rem.heb + ", ";
-              }
-              if (this.remarksLangues.includes("eng")) {
-                strEn += rem.eng + ", ";
-              }
-              if (this.remarksLangues.includes("arab")) {
-                strAr += rem.arab + ", ";
-              }
-              if (this.remarksLangues.includes("rus")) {
-                strRs += rem.rus + ", ";
-              }
-            });
-          }
-          this.remarksLangues = [];
-          this.remarksToAdd = [];
+      if (this.remarksLangues.length > 0) {
+        if (this.remarksToAdd.length > 0) {
+          this.remarksToAdd.map((rem) => {
+            if (this.remarksLangues.includes("heb")) {
+              strHe += rem.heb + ", ";
+            }
+            if (this.remarksLangues.includes("eng")) {
+              strEn += rem.eng + ", ";
+            }
+            if (this.remarksLangues.includes("arab")) {
+              strAr += rem.arab + ", ";
+            }
+            if (this.remarksLangues.includes("rus")) {
+              strRs += rem.rus + ", ";
+            }
+          });
         }
-
-        let scheduleToUpdate: any = {
-          _id: line._id,
-          positionN: this.positionN.nativeElement.value,
-          orderN: this.orderN.nativeElement.value,
-          item: this.item.nativeElement.value,
-          costumer: this.costumer.nativeElement.value,
-          productName: this.productName.nativeElement.value,
-          batch: this.batch.nativeElement.value,
-          packageP: this.packageP.nativeElement.value,
-          qty: this.qty.nativeElement.value,
-          qtyProduced: "",
-          date: this.date.nativeElement.value,
-          marks: this.marks.nativeElement.value,
-          shift:
-            this.shift.nativeElement.value +
-            "\n" +
-            strHe +
-            "\n" +
-            strRs +
-            "\n" +
-            strAr +
-            "\n" +
-            strEn +
-            "\n",
-          mkp: this.currentType,
-          itemImpRemark: scdLneInfo[0].itemImpRemark,
-          whatIsMissing: this.whatIsMissing.nativeElement.value,
-        };
-
-        if (this.typeShown == "unpacked") {
-          scheduleToUpdate.status = "";
-          scdLneInfo[0].status = "";
-        }
-        this.scheduleService.editSchedule(scheduleToUpdate).subscribe((res) => {
-          this.EditRowId = 0;
-          scheduleToUpdate.date3 = moment(scheduleToUpdate.date).format(
-            "YYYY-MM-DD"
-          );
-          this.scheduleData[
-            this.scheduleData.findIndex(
-              (sced) => sced._id == scheduleToUpdate._id
-            )
-          ] = scheduleToUpdate;
-          this.editRadioBtnType = "";
-          if (updateOrderItemDate) {
-            //update orderItemSchedule
-          }
-        });
-      } else {
-        alert(
-          'מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.'
-        );
+        this.remarksLangues = [];
+        this.remarksToAdd = [];
       }
-    
+
+      let scheduleToUpdate: any = {
+        _id: line._id,
+        positionN: this.positionN.nativeElement.value,
+        orderN: this.orderN.nativeElement.value,
+        item: this.item.nativeElement.value,
+        costumer: this.costumer.nativeElement.value,
+        productName: this.productName.nativeElement.value,
+        batch: this.batch.nativeElement.value,
+        packageP: this.packageP.nativeElement.value,
+        qty: this.qty.nativeElement.value,
+        qtyProduced: "",
+        date: this.date.nativeElement.value,
+        marks: this.marks.nativeElement.value,
+        shift:
+          this.shift.nativeElement.value +
+          "\n" +
+          strHe +
+          "\n" +
+          strRs +
+          "\n" +
+          strAr +
+          "\n" +
+          strEn +
+          "\n",
+        mkp: this.currentType,
+        itemImpRemark: scdLneInfo[0].itemImpRemark,
+        whatIsMissing: this.whatIsMissing.nativeElement.value,
+      };
+
+      if (this.typeShown == "unpacked") {
+        scheduleToUpdate.status = "";
+        scdLneInfo[0].status = "";
+      }
+      this.scheduleService.editSchedule(scheduleToUpdate).subscribe((res) => {
+        this.EditRowId = 0;
+        scheduleToUpdate.date3 = moment(scheduleToUpdate.date).format(
+          "YYYY-MM-DD"
+        );
+        this.scheduleData[
+          this.scheduleData.findIndex(
+            (sced) => sced._id == scheduleToUpdate._id
+          )
+        ] = scheduleToUpdate;
+        this.editRadioBtnType = "";
+        if (updateOrderItemDate) {
+          //update orderItemSchedule
+        }
+      });
+    } else {
+      alert(
+        'מספר הזמנה של פק"ע לא יכול להיות ריק\nעבור הזמנות פנימיות יש להזין 0 במספר הזמנה.'
+      );
+    }
   }
 
   setItemDetails(itemNumber) {
@@ -1141,5 +1184,95 @@ export class ScheduleComponent implements OnInit {
     this.scheduleService.addImpRemarkFromItemTree().subscribe((data) => {
       console.log(data);
     });
+  }
+
+  getComponentsQty() {
+    for (let line of this.scheduleData) {
+      for (let component of line.components) {
+        let idx = this.componentsTotalQty.findIndex(
+          (comp) => comp.componentN == component.componentN
+        );
+        let pcsPerItem = component.PcsCarton
+          ? Number(component.PcsCarton)
+          : component.stickerType && component.stickerType == "twoSide"
+          ? 2
+          : 1;
+        let qtyProduced = line.qtyProduced ? Number(line.qtyProduced) : 0;
+        let qty = line.qty ? Number(line.qty) : 0;
+        let quantity =
+          qtyProduced > qty * 0.95
+            ? 0
+            : Math.ceil((qty - qtyProduced) / pcsPerItem);
+        let spare = 0;
+        if (quantity > 0) {
+          spare =
+            (qty - qtyProduced) * 0.1 < 50
+              ? Math.ceil(50 / pcsPerItem)
+              : (qty - qtyProduced) * 0.1 > 200
+              ? Math.ceil(200 / pcsPerItem)
+              : Math.ceil(((qty - qtyProduced) * 0.1) / pcsPerItem);
+        }
+        if (idx == -1) {
+          this.componentsTotalQty.push({
+            componentN: component.componentN,
+            type: component.type,
+            img: component.itemImage,
+            pcsPerItem: pcsPerItem,
+            quantity: quantity,
+            grossQty: quantity + spare,
+            orderNumber: line.orderN,
+            itemNumber: line.item,
+          });
+        } else {
+          this.componentsTotalQty[idx].quantity += quantity;
+          this.componentsTotalQty[idx].grossQty += quantity + spare;
+          this.componentsTotalQty[idx].orderNumber += ", " + line.orderN;
+          this.componentsTotalQty[idx].itemNumber += ", " + line.item;
+        }
+      }
+    }
+    this.componentsTotalQtyCopy = this.componentsTotalQty;
+    this.componentsQtyRpoert = true;
+    console.log(this.componentsTotalQty);
+    // this.excelService.exportAsExcelFile(this.componentsTotalQty, "data");
+  }
+
+  filterByComponent() {
+    console.log(this.searchMenu.value);
+    let componentN = this.searchMenu.value.componentN;
+    if (componentN == "") {
+      this.componentsTotalQty = [...this.componentsTotalQtyCopy];
+    } else {
+      this.componentsTotalQty = this.componentsTotalQtyCopy.filter((rec) => {
+        return rec.componentN.includes(componentN);
+      });
+    }
+  }
+
+  clearMenu() {
+    this.searchMenu.reset();
+    this.componentsTotalQty = this.componentsTotalQtyCopy;
+  }
+  sortByComponent() {
+    let i = this.sortToggle;
+    this.componentsTotalQty.sort((a, b) => {
+      return a.componentN > b.componentN
+        ? i
+        : a.componentN < b.componentN
+        ? -i
+        : 0;
+    });
+    this.sortToggle *= -1;
+  }
+
+  filterByType() {
+    let type = this.searchMenu.value.type;
+    if (type == "") {
+      this.componentsTotalQty = this.componentsTotalQtyCopy;
+    } else {
+      this.componentsTotalQty = this.componentsTotalQtyCopy.filter((comp) => {
+        return comp.type == type;
+      });
+    }
   }
 }

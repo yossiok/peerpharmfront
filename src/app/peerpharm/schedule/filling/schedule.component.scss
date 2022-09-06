@@ -1,20 +1,18 @@
-
-#print-schedule-section{
+#print-schedule-section {
   display: none;
 }
 input[type="checkbox"] {
   /* Double-sized Checkboxes */
- 
+
   padding: 10px;
   margin-left: 10px;
 }
-ul { 
+ul {
   list-style-type: circle;
-  font-size:15px;
- 
+  font-size: 15px;
 }
-li { 
-  margin-top:50px;
+li {
+  margin-top: 50px;
 }
 div {
   float: left;
@@ -36,7 +34,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -70,11 +68,11 @@ input[type=number] {
   background: chartreuse;
 }
 
-.qc-batch{
+.qc-batch {
   background-color: greenyellow;
-    padding: 30px;
-    border-radius: 50px;
-    cursor: pointer;
+  padding: 30px;
+  border-radius: 50px;
+  cursor: pointer;
 }
 
 .qc-check {
@@ -102,7 +100,7 @@ input[type=number] {
   font-size: 20px;
   border: 0px;
   text-align: center;
-  margin-top:20px;
+  margin-top: 20px;
 }
 
 div::selection {
@@ -127,38 +125,38 @@ thead {
 td {
   border-bottom: 1px solid #ddd;
   font-family: "Berlin Sans FB";
-  padding:5px;
+  padding: 5px;
 }
 
 .positionClass {
-  width:3%;
+  width: 3%;
 }
-.mkpClass{
-  width:7%;
+.mkpClass {
+  width: 7%;
 }
 
-.selectShiftClass{
-  height:34px;
+.selectShiftClass {
+  height: 34px;
 }
 
 .fixNoaStupidStuff {
-  float:none !important;
-  margin-right:0px !important;
-  padding:0
+  float: none !important;
+  margin-right: 0px !important;
+  padding: 0;
 }
 
-tr { 
+tr {
   margin-top: 10px !important;
 }
 
- td { 
-   text-align: center;
- }
- .reason{
-   text-align: right;
-   margin-left: -6rem;
- }
- .alert {
+td {
+  text-align: center;
+}
+.reason {
+  text-align: right;
+  margin-left: -6rem;
+}
+.alert {
   padding: 70px;
   background-color: #f44336;
   color: white;
@@ -166,7 +164,7 @@ tr {
   z-index: 9999;
   width: 500px;
   font-size: 22px;
-  top:50vh;
+  top: 50vh;
   right: 40vw;
 }
 
@@ -216,8 +214,8 @@ tr {
 #checkboxes label:hover {
   background-color: #1e90ff;
 }
-.lang{
-  margin-left: .5rem;
+.lang {
+  margin-left: 0.5rem;
 }
 .batchAlert {
   background-color: #1c87c9;
@@ -239,10 +237,9 @@ tr {
   font-family: sans-serif;
   min-width: 25rem;
   box-shadow: 0 0 1.25rem rgba(0, 0, 0, 0.15);
-  width:100%;
-
+  width: 100%;
 }
-.batchesList{
+.batchesList {
   position: absolute;
   right: 50vh;
   width: 50%;
@@ -257,7 +254,7 @@ tr {
 }
 .styled-table th,
 .styled-table td {
-    padding: 0.75rem 0.9375rem;
+  padding: 0.75rem 0.9375rem;
 }
 .styled-table tbody tr {
   border-bottom: 1px solid #dddddd;
@@ -274,14 +271,13 @@ tr {
   font-weight: bold;
   color: #bd0524;
 }
-.close{
+.close {
   color: #ddddddc5;
   font-weight: bold;
   font-size: medium;
   background-color: #b6001e;
   width: 10%;
   height: 2rem;
-
 }
 @keyframes glowing {
   0% {
@@ -301,9 +297,25 @@ tr {
   animation: glowing 1300ms infinite;
 }
 
+.pictureTabImg {
+  transition: 0.3s;
+  max-height: 150px;
+  max-width: 100px;
+  z-index: 1;
+}
+.pictureTabImg:hover {
+  transform: scale(3);
+  z-index: 99999 !important;
+}
+
+.font-roboto {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+}
 
 @media only screen and (max-width: 1024px) {
-
 }
 
 @media print {
@@ -311,13 +323,9 @@ tr {
     color: black;
     font-size: 15px;
   }
- 
- 
+
   @page {
     size: 25cm 35.7cm;
     margin: 5mm 5mm 5mm 5mm;
   }
 }
-
-
- 

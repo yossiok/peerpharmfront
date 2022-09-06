@@ -27,8 +27,6 @@
       >
         Print Schedule
       </button>
-
-      
     </div>
     <div class="col-4 fixNoaStupidStuff">
       <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
@@ -40,7 +38,6 @@
     </div>
     <div class="col-4 fixNoaStupidStuff"></div>
   </div>
-
 
   <div class="row fixNoaStupidStuff">
     <div class="col-3"></div>
@@ -83,53 +80,46 @@
     <div class="col-2"></div>
   </div>
 
-
-    <p *ngIf="showBatchesAlert" class="batchAlert" (click)="showBatchesList=true">קיימות אצוות שלא משוייכות ללו"ז</p>
-    <div *ngIf="showBatchesList" class="batchesList">
-      <p (click)="showBatchesList=false" class="close">סגירה</p>
-      <table class="styled-table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>
-              מספר אצווה
-            </th>
-            <th>
-              מק"ט פריט
-            </th>
-            <th>
-              מספר הזמנה
-            </th>
-            <th>
-              תאריך ייצור
-            </th>
-            <th>
-              תאריך תפוגה
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let batch of unscheduledBatches;index as i">
-            <td>{{i+1}}</td>
-            <td>
-              {{batch.batchNumber}}
-            </td>
-            <td>
-              <p *ngIf="batch.item && batch.item != ''">{{batch.item }}</p>
-              <p *ngIf="!(batch.item && batch.item != '')">---</p>
-            </td>
-            <td>
-              <p *ngIf="batch.order && batch.order != ''">{{batch.order }}</p>
-              <p *ngIf="!(batch.order && batch.order != '')">---</p>
-            </td>
-            <td>{{batch.produced | date: "dd/MM/yyyy"}}</td>
-            <td>{{batch.expration | date: "dd/MM/yyyy"}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-
+  <p
+    *ngIf="showBatchesAlert"
+    class="batchAlert"
+    (click)="showBatchesList = true"
+  >
+    קיימות אצוות שלא משוייכות ללו"ז
+  </p>
+  <div *ngIf="showBatchesList" class="batchesList">
+    <p (click)="showBatchesList = false" class="close">סגירה</p>
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>מספר אצווה</th>
+          <th>מק"ט פריט</th>
+          <th>מספר הזמנה</th>
+          <th>תאריך ייצור</th>
+          <th>תאריך תפוגה</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let batch of unscheduledBatches; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>
+            {{ batch.batchNumber }}
+          </td>
+          <td>
+            <p *ngIf="batch.item && batch.item != ''">{{ batch.item }}</p>
+            <p *ngIf="!(batch.item && batch.item != '')">---</p>
+          </td>
+          <td>
+            <p *ngIf="batch.order && batch.order != ''">{{ batch.order }}</p>
+            <p *ngIf="!(batch.order && batch.order != '')">---</p>
+          </td>
+          <td>{{ batch.produced | date: "dd/MM/yyyy" }}</td>
+          <td>{{ batch.expration | date: "dd/MM/yyyy" }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <br />
 
@@ -151,7 +141,12 @@
         Filter
       </button>
     </div>
-    <div class="col-9 fixNoaStupidStuff"></div>
+    <div class="col-1"></div>
+    <div class="col-1 fixNoaStupidStuff" *ngIf="scheduleDataCopy">
+      <button class="btn btn-info" (click)="getComponentsQty()">
+        Components Report
+      </button>
+    </div>
   </div>
 
   <div class="row mt-2 fixNoaStupidStuff">
@@ -306,8 +301,8 @@
         >
           <tr>
             <th>
-              <input (change)="selectAll()" type="checkbox">
-              <label > בחר הכל</label><br>
+              <input (change)="selectAll()" type="checkbox" />
+              <label> בחר הכל</label><br />
             </th>
             <th class="hideInTablet">
               <img
@@ -607,13 +602,15 @@
                   target="_blank"
                   routerLink="/peerpharm/items/itemDetails/{{ line.item }}"
                 >
-                  {{ line.item }}
-                </a><br>
+                  {{ line.item }} </a
+                ><br />
                 components:
                 <ul>
-                  <li *ngFor="let component of itemsComponentsByItemNumber[line.item] | keyvalue" style="margin: 0.2rem;">
-                    {{component.value}}
-                        
+                  <li
+                    *ngFor="let component of line.components"
+                    style="margin: 0.2rem"
+                  >
+                    {{ component.componentN }}
                   </li>
                 </ul>
               </td>
@@ -751,7 +748,6 @@
                   [value]="line.marks"
                   class="form-control"
                 ></textarea>
-
               </td>
 
               <td
@@ -786,18 +782,49 @@
                     <div class="selectBox" (click)="showCheckboxes()">
                       בחר הערות ושפות
                       <div id="checkboxes2">
-                        <label class="lang" for="heb"><input type="checkbox" id="heb" (change)="addLangues('heb')" />עברית</label>
-                        <label class="lang" for="eng"><input type="checkbox" id="eng" (change)="addLangues('eng')" />אנגלית</label>
-                        <label class="lang" for="arab"><input type="checkbox" id="arab" (change)="addLangues('arab')" />ערבית</label>
-                        <label class="lang" for="rus"><input type="checkbox" id="rus" (change)="addLangues('rus')" />רוסית</label>
+                        <label class="lang" for="heb"
+                          ><input
+                            type="checkbox"
+                            id="heb"
+                            (change)="addLangues('heb')"
+                          />עברית</label
+                        >
+                        <label class="lang" for="eng"
+                          ><input
+                            type="checkbox"
+                            id="eng"
+                            (change)="addLangues('eng')"
+                          />אנגלית</label
+                        >
+                        <label class="lang" for="arab"
+                          ><input
+                            type="checkbox"
+                            id="arab"
+                            (change)="addLangues('arab')"
+                          />ערבית</label
+                        >
+                        <label class="lang" for="rus"
+                          ><input
+                            type="checkbox"
+                            id="rus"
+                            (change)="addLangues('rus')"
+                          />רוסית</label
+                        >
                       </div>
                     </div>
                     <div id="checkboxes">
-                      <label *ngFor="let remark of remarks; index as i" for="remark._id"><input type="checkbox" id="remark._id" (change)="addRemarks(remark._id)" />{{remark.heb}}</label>
+                      <label
+                        *ngFor="let remark of remarks; index as i"
+                        for="remark._id"
+                        ><input
+                          type="checkbox"
+                          id="remark._id"
+                          (change)="addRemarks(remark._id)"
+                        />{{ remark.heb }}</label
+                      >
                     </div>
                   </div>
                 </form>
-                  
               </td>
               <td
                 class="mkpClass"
@@ -1326,9 +1353,8 @@
           <b
             >Filling Schedule Date:
             {{ this.fillingDate | date: "dd/MM/yyyy" }}
-            {{this.myDate | date: "hh:mm"}}
-            </b
-          >
+            {{ this.myDate | date: "hh:mm" }}
+          </b>
         </th>
       </tr>
       <tr>
@@ -1361,11 +1387,17 @@
           <td>
             {{ line.item }}
             components:
-                <ul>
-                  <li *ngFor="let component of itemsComponentsByItemNumber[line.item] | keyvalue" style="margin: 0.2rem;">
-                    {{component.value}}
-                  </li>
-                </ul>
+            <ul>
+              <li
+                *ngFor="
+                  let component of itemsComponentsByItemNumber[line.item]
+                    | keyvalue
+                "
+                style="margin: 0.2rem"
+              >
+                {{ component.value }}
+              </li>
+            </ul>
           </td>
           <td>
             {{ line.itemImpRemark }}
@@ -1403,3 +1435,121 @@
   <strong>הערה חשובה:</strong> שים לב: קיימת שורה עם אותם נתונים
 </div>
 
+<div
+  *ngIf="componentsQtyRpoert == true"
+  class="border border-primary text-info bg-light shadow-lg fixed-top mx-auto p-1 w-75 h-75"
+  style="overflow: scroll"
+>
+  <div class="row mt-2 w-100" dir="rtl">
+    <div class="col-1">
+      <button class="btn outline-primary">
+        <i (click)="componentsQtyRpoert = false" class="click fa fa-times"></i>
+      </button>
+    </div>
+    <div class="col-8 text-center">
+      <h1>דו"ח רכיבים נדרשים ללו"ז - {{ today | date: "dd/MM/yyyy" }}</h1>
+    </div>
+    <div class="col-1"></div>
+  </div>
+  <form [formGroup]="searchMenu">
+    <div class="row w-100">
+      <div class="col-1">
+        <p class="font-roboto text-center text-dark">Filters:</p>
+      </div>
+      <div class="col-2">
+        <input
+          class="form-control"
+          type="text"
+          formControlName="componentN"
+          placeholder="Component"
+          (keyup)="filterByComponent()"
+        />
+      </div>
+      <div class="col-1">
+        <select
+          name=""
+          id=""
+          class="form-control"
+          formControlName="type"
+          (change)="filterByType()"
+        >
+          <option value="" selected>All</option>
+          <option value="bottle">Bottle</option>
+          <option value="cap">Cap</option>
+          <option value="pump">Pump</option>
+          <option value="sticker">Sticker</option>
+          <option value="seal">Seal</option>
+          <option value="box">Box</option>
+          <option value="stage/leaflet">Stage/Leaflet</option>
+          <option value="carton">Catron</option>
+        </select>
+      </div>
+      <div class="col-1">
+        <button class="btn btn-outline-danger" (click)="clearMenu()">
+          <i class="fas fa-eraser"></i>&nbsp;Clear
+        </button>
+      </div>
+      <div class="col-1">
+        <button
+          class="btn btn-outline-secondary"
+          [useExistingCss]="true"
+          printTitle="דו''ח רכיבים נדרשים ללו''ז"
+          printSectionId="print-section-report"
+          ngxPrint
+        >
+          <i class="fas fa-print"></i>&nbsp;Print
+        </button>
+      </div>
+      <div class="col-2">
+        <button class="btn btn-outline-success" (click)="exportToExcel()">
+          <img
+            src="../../../../assets/images/excel.png"
+            style="width: 25px; height: 25px"
+            alt=""
+          />&nbsp;Export
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="row mt-2 w-100" id="print-section-report">
+    <div class="col-12">
+      <table class="table table-striped bg-light">
+        <thead class="text-info h4">
+          <tr class="font-roboto">
+            <th>
+              <i
+                class="ti-exchange-vertical"
+                (click)="sortByComponent()"
+                style="cursor: pointer"
+              >
+                <span class="font-roboto">&nbsp;&nbsp;Component</span></i
+              >
+            </th>
+            <th>Type</th>
+            <th>Pcs Per Item</th>
+            <th>Quantity (Net)</th>
+            <th>Quantity (Gross)</th>
+            <th>Image</th>
+            <th>Order Number</th>
+            <th>Item Number</th>
+          </tr>
+        </thead>
+        <tbody class="text-dark">
+          <tr
+            *ngFor="let component of componentsTotalQty"
+            style="font-size: larger"
+          >
+            <td>{{ component.componentN }}</td>
+            <td>{{ component.type }}</td>
+            <td>{{ component.pcsPerItem }}</td>
+            <td>{{ component.quantity }}</td>
+            <td>{{ component.grossQty }}</td>
+            <td><img [src]="component.img" class="pictureTabImg" /></td>
+            <td>{{ component.orderNumber }}</td>
+            <td>{{ component.itemNumber }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
