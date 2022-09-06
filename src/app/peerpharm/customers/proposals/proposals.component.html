@@ -418,7 +418,6 @@
                   <th>הנחה</th>
                   <th>סה"כ</th>
                   <th>תאריך משוער</th>
-                  <th>סטטוס</th>
                   <th>
                     <i
                       class="fa fa-plus text-success click"
@@ -544,7 +543,7 @@
                       <td *ngIf="i != editItem">
                         {{ itemForm.value.deliveryDate | date: "dd/MM/yyyy" }}
                       </td>
-                      <td *ngIf="i == editItem">
+                      <!-- <td *ngIf="i == editItem">
                         <input
                           type="text"
                           [value]="itemForm.value.itemStatus"
@@ -554,7 +553,7 @@
                       </td>
                       <td *ngIf="i != editItem">
                         {{ itemForm.value.itemStatus }}
-                      </td>
+                      </td> -->
 
                       <td *ngIf="i != editItem">
                         <i
@@ -670,7 +669,10 @@
     </ng-container>
   </form>
 
-  <div *ngIf="printView" id="print-section">
+  <div
+    *ngIf="printView && newProposalForm.value.country == 'israel'"
+    id="print-section"
+  >
     <header>
       <div class="row mt-4 form_1" dir="rtl">
         <div class="col-1"></div>
@@ -772,7 +774,6 @@
                 <th>הנחה %</th>
                 <th>סה"כ</th>
                 <th>תאריך משוער</th>
-                <th>סטטוס</th>
               </tr>
               <ng-container *ngIf="items">
                 <tr *ngFor="let item of items.value; let i = index">
@@ -789,7 +790,6 @@
                     {{ item.total | currency: newProposalForm.value.currency }}
                   </td>
                   <td>{{ item.deliveryDate | date: "dd/MM/yyyy" }}</td>
-                  <td>{{ item.itemStatus }}</td>
                 </tr>
                 <tr>
                   <td colspan="3"></td>
@@ -830,6 +830,22 @@
       <div class="col-1"></div>
       <div class="col-10">
         <h5>הערות:</h5>
+        <p
+          *ngIf="
+            newProposalForm.value.proposalStatus &&
+            newProposalForm.value.proposalStatus == 'waiting'
+          "
+        >
+          אישור לקוח: ממתין לאישור לקוח
+        </p>
+        <p
+          *ngIf="
+            newProposalForm.value.proposalStatus &&
+            newProposalForm.value.proposalStatus == 'customerApproved'
+          "
+        >
+          אישור לקוח: מאושר
+        </p>
         <p>{{ newProposalForm.value.remark }}</p>
       </div>
     </div>
@@ -895,6 +911,233 @@
       <div class="col-3">
         <p>
           <span>חתימה:</span>
+          <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u> </span
+          >&nbsp;&nbsp; &nbsp;&nbsp;
+        </p>
+      </div>
+    </div>
+  </div>
+  <div
+    *ngIf="printView && newProposalForm.value.country == 'abroad'"
+    id="print-section"
+    dir="ltr"
+  >
+    <header>
+      <div class="row mt-4 form_1en">
+        <div class="col-1"></div>
+        <div class="col-7">
+          <h2>PeerPharm Ltd.</h2>
+          <p>17, Amal Street, Afek Industry Park</p>
+          <p>Rosh Ha'Ayin 4809256, ISRAEL</p>
+          <p>
+            <span><b>Tel:</b> 03-9024055</span>&nbsp;&nbsp;
+            <span><b>Fax:</b> 03-9024015</span>&nbsp;&nbsp;
+            <span><b>Email:</b> management@peerpharm.com</span>&nbsp;&nbsp;<span
+              ><b>Company ID:</b> 511899023</span
+            >
+          </p>
+        </div>
+        <div class="col-3">
+          <img
+            style="width: 270px"
+            src="../../../assets/images/peerpharm.png"
+          />
+        </div>
+      </div>
+      <hr
+        style="
+          height: 2px;
+          border-width: 0;
+          width: 85%;
+          color: gray;
+          background-color: gray;
+          text-align: left;
+        "
+      />
+      <div class="row mt-2">
+        <div class="col-4"></div>
+        <div class="col-4">
+          <h4 class="text-center">
+            Proforma Invoice for Order No.
+            {{
+              newProposalForm.value.orderNumber || currentProposal.orderNumber
+            }}
+          </h4>
+        </div>
+        <div class="col-2">
+          <h6>
+            Date: {{ newProposalForm.value.proposalDate | date: "dd/MM/yyyy" }}
+          </h6>
+        </div>
+        <div class="col-2"></div>
+      </div>
+      <div class="row mt-2 textLeft">
+        <div class="col-1"></div>
+        <div class="col-10">
+          <p>To:</p>
+          <h5>{{ newProposalForm.value.customerName }}</h5>
+          <h5>Customer ID: {{ newProposalForm.value.customerId }}</h5>
+          <p>{{ newProposalForm.value.invoiceAddress }}</p>
+          <p>
+            <b> Your order: </b>
+            {{ newProposalForm.value.customerOrder }}&nbsp;&nbsp;&nbsp;
+            <b> Dated: </b>
+            {{ newProposalForm.value.customerOrderDate | date: "dd/MM/yyyy" }}
+          </p>
+          <!-- <p>
+            מתאריך:
+            {{ newProposalForm.value.customerOrderDate | date: "dd/MM/yyyy" }}
+          </p> -->
+          <p>
+            <b> Hand to: </b>
+            {{ newProposalForm.value.contacts[0].name }}&nbsp;&nbsp;&nbsp;
+            <b> Tel: </b>
+            {{ newProposalForm.value.contacts[0].phone }}&nbsp;&nbsp;&nbsp;
+            <b> Email: </b>
+            {{ newProposalForm.value.contacts[0].mail }}
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <div class="row mt-2 textLeft" dir="ltr">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <main>
+          <table class="table table-bordered">
+            <tbody>
+              <tr>
+                <th>#</th>
+                <th>Cat. No.</th>
+                <th>Barcode</th>
+                <th>Description</th>
+                <th>Quantity</th>
+                <th>Unit price</th>
+                <!-- <th>Discount %</th> -->
+                <th>Total</th>
+                <th>Estimated Readiness</th>
+              </tr>
+              <ng-container *ngIf="items">
+                <tr *ngFor="let item of items.value; let i = index">
+                  <td class="cellPadding">{{ i + 1 }}</td>
+                  <td>{{ item.itemNumber }}</td>
+                  <td>{{ item.barcode }}</td>
+                  <td>{{ item.itemName }}</td>
+                  <td>{{ item.quantity | number }}</td>
+                  <td>
+                    {{ item.price | currency: newProposalForm.value.currency }}
+                  </td>
+                  <!-- <td>{{ item.discount }}%</td> -->
+                  <td>
+                    {{ item.total | currency: newProposalForm.value.currency }}
+                  </td>
+                  <td>{{ item.deliveryDate | date: "dd/MM/yyyy" }}</td>
+                </tr>
+                <tr>
+                  <td colspan="4">Grand Total</td>
+                  <td>{{ findTotalQty() | number }}</td>
+                  <td></td>
+                  <!-- <td></td> -->
+                  <td>
+                    {{ findSum() | currency: newProposalForm.value.currency }}
+                  </td>
+                  <td colspan="2"></td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </main>
+      </div>
+    </div>
+    <div class="row mt-2 textLeft" dir="ltr">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <h5>Comments:</h5>
+        <p
+          *ngIf="
+            newProposalForm.value.proposalStatus &&
+            newProposalForm.value.proposalStatus == 'waiting'
+          "
+        >
+          Waiting for Customer approval
+        </p>
+        <p
+          *ngIf="
+            newProposalForm.value.proposalStatus &&
+            newProposalForm.value.proposalStatus == 'customerApproved'
+          "
+        >
+          Approved by Customer
+        </p>
+        <p>{{ newProposalForm.value.remark }}</p>
+      </div>
+    </div>
+    <div class="row mt-2 textLeft" dir="ltr">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <h5>Additions:</h5>
+        <p>{{ newProposalForm.value.additions }}</p>
+      </div>
+    </div>
+    <div class="row mt-2 textLeft" dir="ltr">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <h5>Payment Terms:</h5>
+        <p>{{ newProposalForm.value.paymentTerms }}</p>
+      </div>
+    </div>
+    <div class="row mt-2 textLeft" dir="ltr">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <h5>Estimated readiness for shipment :</h5>
+        <p>
+          {{ newProposalForm.value.requestedDate | date: "dd/MM/yyyy" }}
+        </p>
+      </div>
+    </div>
+
+    <div class="row mt-4 textLeft" dir="ltr">
+      <div class="col-1"></div>
+      <div class="col-4">
+        <p>Sincerly,</p>
+        <h5>Haviv Peer</h5>
+        <h5>PerPharm Ltd.</h5>
+      </div>
+    </div>
+    <div class="row mt-2 textLeft" dir="ltr">
+      <div class="col-1"></div>
+
+      <div class="col-3">
+        <p>
+          <span>Approved by:</span>&nbsp;&nbsp;
+          <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u>
+          </span>
+        </p>
+      </div>
+      <div class="col-1"></div>
+      <div class="col-3">
+        <p>
+          &nbsp;&nbsp; <span>Date:</span>&nbsp;&nbsp;
+          <span>
+            <u>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            </u> </span
+          >&nbsp;&nbsp;
+        </p>
+      </div>
+      <div class="col-1"></div>
+      <div class="col-3">
+        <p>
+          <span>Signature:</span>
           <span>
             <u>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

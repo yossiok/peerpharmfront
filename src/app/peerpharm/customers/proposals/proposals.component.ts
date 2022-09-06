@@ -699,7 +699,7 @@ export class ProposalsComponent implements OnInit {
       discount: new FormControl(0),
       total: new FormControl(0),
       deliveryDate: new FormControl(deliveryDate),
-      itemStatus: new FormControl("ממתין לאישור לקוח"),
+      itemStatus: new FormControl("Waiting for Customer approval"),
     });
     this.items.push(itemForm);
     this.editItem = this.items.length - 1;
