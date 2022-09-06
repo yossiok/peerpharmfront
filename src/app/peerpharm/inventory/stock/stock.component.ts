@@ -2323,6 +2323,7 @@ export class StockComponent implements OnInit {
   async openDataMaterial(materNum) {
     this.searchBarcode = materNum;
     this.materialArrivals = [];
+    this.itemShellUpdates = [];
     this.inventoryService
       .getMaterialArrivalByNumber(materNum)
       .subscribe((data) => {
@@ -3338,6 +3339,7 @@ export class StockComponent implements OnInit {
 
         this.lastYearOutAmount = sumOutMovements;
         this.itemMovements = data;
+        this.itemShellUpdates = [];
         this.inventoryService
           .getItemShellsAfterUpdateByNumber(componentN)
           .subscribe((itemShells) => {
