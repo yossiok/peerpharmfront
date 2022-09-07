@@ -1187,7 +1187,16 @@ export class ScheduleComponent implements OnInit {
   }
 
   getComponentsQty() {
-    for (let line of this.scheduleData) {
+    console.log(this.scheduleData);
+    let filtered = this.scheduleData.filter(
+      (line) =>
+        line.mkp == "basic" ||
+        line.mkp == "tube" ||
+        line.mkp == "mkp" ||
+        line.mkp == "sachet"
+    );
+    console.log(filtered);
+    for (let line of filtered) {
       for (let component of line.components) {
         let idx = this.componentsTotalQty.findIndex(
           (comp) => comp.componentN == component.componentN
@@ -1212,7 +1221,7 @@ export class ScheduleComponent implements OnInit {
               ? Math.ceil(200 / pcsPerItem)
               : Math.ceil(((qty - qtyProduced) * 0.1) / pcsPerItem);
         }
-        if (idx == -1) {
+        if (idx == -1 && quantity > 0) {
           this.componentsTotalQty.push({
             componentN: component.componentN,
             type: component.type,
@@ -1223,7 +1232,7 @@ export class ScheduleComponent implements OnInit {
             orderNumber: line.orderN,
             itemNumber: line.item,
           });
-        } else {
+        } else if (quantity > 0) {
           this.componentsTotalQty[idx].quantity += quantity;
           this.componentsTotalQty[idx].grossQty += quantity + spare;
           this.componentsTotalQty[idx].orderNumber += ", " + line.orderN;

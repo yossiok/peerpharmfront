@@ -14,6 +14,21 @@ ul {
 li {
   margin-top: 50px;
 }
+
+.list {
+  ul {
+    font-size: 15px;
+    // list-style-position: outside;
+    padding: 0;
+    margin: 0;
+  }
+  li {
+    list-style-type: square;
+    margin: 0;
+    padding: 0;
+  }
+}
+
 div {
   float: left;
   margin-right: 5px;

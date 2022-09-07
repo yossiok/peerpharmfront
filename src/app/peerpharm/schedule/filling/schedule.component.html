@@ -315,7 +315,7 @@
             <!--1-->
             <th><b>Order</b></th>
             <!--2-->
-            <th><b>Item</b></th>
+            <th style="width: 10%"><b>Item</b></th>
             <!--3-->
             <th><b>Item Important Remark</b></th>
             <!--4-->
@@ -605,12 +605,9 @@
                   {{ line.item }} </a
                 ><br />
                 components:
-                <ul>
-                  <li
-                    *ngFor="let component of line.components"
-                    style="margin: 0.2rem"
-                  >
-                    {{ component.componentN }}
+                <ul class="list">
+                  <li *ngFor="let component of line.components">
+                    {{ component.componentN }} - {{ component.type }}
                   </li>
                 </ul>
               </td>
@@ -1387,15 +1384,12 @@
           <td>
             {{ line.item }}
             components:
-            <ul>
+            <ul style="font-size: 15px; list-style-position: outside">
               <li
-                *ngFor="
-                  let component of itemsComponentsByItemNumber[line.item]
-                    | keyvalue
-                "
-                style="margin: 0.2rem"
+                style="list-style-type: square; margin: 0; padding: 0"
+                *ngFor="let component of line.components"
               >
-                {{ component.value }}
+                {{ component.componentN }}-{{ component.type }}
               </li>
             </ul>
           </td>
