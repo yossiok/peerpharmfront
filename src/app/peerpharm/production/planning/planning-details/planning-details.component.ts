@@ -792,10 +792,12 @@ export class PlanningDetailsComponent implements OnInit {
               : 0;
             let prodWeight = formule.totalKG - formule.barrelsWeight;
             console.log(prodWeight);
-            formule.formuleData = this.formuleCalculate(
+            let newFormuleData = this.formuleCalculate(
               formule.formuleData,
               prodWeight
             );
+            console.log(newFormuleData);
+            formule.formuleData = newFormuleData;
             console.log(formule.formuleData);
           }
           console.log(this.workPlan);
@@ -859,6 +861,7 @@ export class PlanningDetailsComponent implements OnInit {
     this.productionService
       .wpFormulesUpdate(this.workPlan.serialNumber)
       .subscribe((data) => {
+        console.log(data);
         if (data.msg) {
           console.log(data.msg);
           this.toastr.error(data.msg);
@@ -866,16 +869,20 @@ export class PlanningDetailsComponent implements OnInit {
         } else if (data.serialNumber == this.workPlan.serialNumber) {
           this.formulePrint = idx;
           this.printSingle = true;
+          this.workPlan.productionFormules[idx] = data.productionFormules[idx];
           let formule = this.workPlan.productionFormules[idx];
-          console.log(formule);
+          // console.log(formule);
           formule.barrelsWeight = formule.barrelsWeight
             ? formule.barrelsWeight
             : 0;
           let prodWeight = formule.totalKG - formule.barrelsWeight;
-          formule.formuleData = this.formuleCalculate(
+
+          let newFormuleData = this.formuleCalculate(
             formule.formuleData,
             prodWeight
           );
+          // console.log(newFormuleData);
+          formule.formuleData = newFormuleData;
 
           this.printingFormules = true;
           setTimeout(() => {

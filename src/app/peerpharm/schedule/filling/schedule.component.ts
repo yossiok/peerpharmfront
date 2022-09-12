@@ -63,7 +63,7 @@ export class ScheduleComponent implements OnInit {
   fillingDate: any;
   componentsTotalQty: any[] = [];
   componentsTotalQtyCopy: any[] = [];
-  componentsQtyRpoert: boolean = false;
+  componentsQtyReport: boolean = false;
   sortToggle: number = 1;
 
   myDate: Date = new Date();
@@ -89,6 +89,7 @@ export class ScheduleComponent implements OnInit {
   @ViewChild("mkpA") mkp: ElementRef;
   @ViewChild("id") id: ElementRef;
   @ViewChild("batchSpecStatus") batchSpecStatus: ElementRef;
+  @ViewChild("btnPrint") btnPrint: ElementRef;
   openingPrintModal: boolean;
   sameLineAlert: boolean = false;
 
@@ -278,7 +279,6 @@ export class ScheduleComponent implements OnInit {
 
   exportAsXLSX(): void {
     try {
-      debugger;
       let tempArr = this.scheduleData.filter((s) => s.mkp == this.typeShown);
       tempArr.forEach((x) => {
         // console.log(x);
@@ -1241,7 +1241,7 @@ export class ScheduleComponent implements OnInit {
       }
     }
     this.componentsTotalQtyCopy = this.componentsTotalQty;
-    this.componentsQtyRpoert = true;
+    this.componentsQtyReport = true;
     console.log(this.componentsTotalQty);
     // this.excelService.exportAsExcelFile(this.componentsTotalQty, "data");
   }
@@ -1283,5 +1283,29 @@ export class ScheduleComponent implements OnInit {
         return comp.type == type;
       });
     }
+  }
+
+  printReport() {
+    console.log("Print");
+    setTimeout(() => {
+      this.btnPrint.nativeElement.click();
+    }, 500);
+  }
+  exportToExcel() {
+    let tempArr = [];
+
+    for (let component of this.componentsTotalQty) {
+      let line = {
+        קומפוננט: component.componentN,
+        סוג: component.type,
+        "יח' למוצר": component.pcsPerItem,
+        "כמות דרושה (מדויק)": component.quantity,
+        "כמות דרושה (ברוטו)": component.grossQty,
+        "מספר הזמנה": component.orderNumber,
+        "מקט מוצר": component.itemNumber,
+      };
+      tempArr.push(line);
+    }
+    this.excelService.exportAsExcelFile(tempArr, "data");
   }
 }

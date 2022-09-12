@@ -141,10 +141,10 @@
         Filter
       </button>
     </div>
-    <div class="col-1"></div>
-    <div class="col-1 fixNoaStupidStuff" *ngIf="scheduleDataCopy">
-      <button class="btn btn-info" (click)="getComponentsQty()">
-        Components Report
+    <div class="col-2"></div>
+    <div class="col-2 fixNoaStupidStuff" *ngIf="scheduleDataCopy">
+      <button class="btn btn-warning" (click)="getComponentsQty()">
+        Components Report &nbsp;<i class="fas fa-list"></i>
       </button>
     </div>
   </div>
@@ -1430,14 +1430,14 @@
 </div>
 
 <div
-  *ngIf="componentsQtyRpoert == true"
+  *ngIf="componentsQtyReport == true"
   class="border border-primary text-info bg-light shadow-lg fixed-top mx-auto p-1 w-75 h-75"
   style="overflow: scroll"
 >
   <div class="row mt-2 w-100" dir="rtl">
     <div class="col-1">
       <button class="btn outline-primary">
-        <i (click)="componentsQtyRpoert = false" class="click fa fa-times"></i>
+        <i (click)="componentsQtyReport = false" class="click fa fa-times"></i>
       </button>
     </div>
     <div class="col-8 text-center">
@@ -1484,13 +1484,7 @@
         </button>
       </div>
       <div class="col-1">
-        <button
-          class="btn btn-outline-secondary"
-          [useExistingCss]="true"
-          printTitle="דו''ח רכיבים נדרשים ללו''ז"
-          printSectionId="print-section-report"
-          ngxPrint
-        >
+        <button class="btn btn-outline-secondary" (click)="printReport()">
           <i class="fas fa-print"></i>&nbsp;Print
         </button>
       </div>
@@ -1501,6 +1495,18 @@
             style="width: 25px; height: 25px"
             alt=""
           />&nbsp;Export
+        </button>
+      </div>
+      <div class="col-1">
+        <button
+          style="display: none"
+          #btnPrint
+          [useExistingCss]="true"
+          printTitle="דו''ח רכיבים נדרשים ללו''ז"
+          printSectionId="print-section-report"
+          ngxPrint
+        >
+          <i class="fas fa-print"></i>&nbsp;Print
         </button>
       </div>
     </div>
