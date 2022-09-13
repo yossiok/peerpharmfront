@@ -1864,6 +1864,7 @@ export class StockComponent implements OnInit {
         this.smallerLoader = false;
         return;
       } else if (data && data.length > 0) {
+        // console.log(data);
         this.smallerLoader = false;
         this.recommendationsReport = data;
         this.recommendationsReportCopy = data;
