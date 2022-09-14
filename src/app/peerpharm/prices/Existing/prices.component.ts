@@ -207,7 +207,11 @@ export class PricesComponent implements OnInit {
           componentPricing.price = Number(component.manualPrice);
           coin = component.manualCoin ? component.manualCoin : "ILS";
         } else if (component.price) {
-          componentPricing.price = Number(component.price);
+          component.shippingPrice = component.shippingPrice
+            ? Number(component.shippingPrice)
+            : 0;
+          componentPricing.price =
+            Number(component.price) - component.shippingPrice;
           coin = component.coin ? component.coin : "ILS";
         } else {
           let suppliers = component.alternativeSuppliers;
@@ -219,7 +223,8 @@ export class PricesComponent implements OnInit {
                 suppliers[i].price != null &&
                 suppliers[i].price != undefined
               ) {
-                componentPricing.price = Number(suppliers[i].price);
+                componentPricing.price =
+                  Number(suppliers[i].price) - component.shippingPrice;
                 coin = suppliers[i].coin ? suppliers[i].coin : "ILS";
                 i = suppliers.length;
               } else {
