@@ -328,6 +328,7 @@ export class WharehouseComponent implements OnInit {
     let i = this.whareHouses.findIndex((wh) => wh.name == whname);
     this.curentWhareHouseId = this.whareHouses[i]._id;
     this.curentWhareHouseName = this.whareHouses[i].name;
+
     // this.changeWh = false;
   }
 
@@ -396,9 +397,10 @@ export class WharehouseComponent implements OnInit {
             this.currItemShelfs = res;
           } else {
             this.currItemShelfs = [];
-            this.currItemShelfs.push(
-              "NO SHELFS WITH ITEM # " + ev.target.value
-            );
+            this.currItemShelfs.push({
+              position: "NO SHELFS WITH ITEM # " + ev.target.value,
+              amount: 0,
+            });
           }
         });
 
@@ -421,9 +423,10 @@ export class WharehouseComponent implements OnInit {
               element.currItemShelfs = res;
             } else {
               element.currItemShelfs = [];
-              element.currItemShelfs.push(
-                "NO SHELFS WITH ITEM # " + element.itemNumber
-              );
+              element.currItemShelfs.push({
+                position: "NO SHELFS WITH ITEM # " + ev.target.value,
+                amount: 0,
+              });
             }
           });
       });

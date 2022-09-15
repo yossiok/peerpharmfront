@@ -78,8 +78,10 @@ export class BetweenWHComponent implements OnInit {
     this.getLastReception();
     this.user = this.authService.loggedInUser.userName;
     // this.userWH = this.authService.loggedInUser.allowedWH;
-    this.userWH = this.reallyAllWhareHouses.filter((wh)=> this.authService.loggedInUser.allowedWH.includes(wh._id))
-    console.log(this.userWH)
+    this.userWH = this.reallyAllWhareHouses.filter((wh) =>
+      this.authService.loggedInUser.allowedWH.includes(wh._id)
+    );
+    console.log(this.userWH);
   }
 
   getLastReception() {
