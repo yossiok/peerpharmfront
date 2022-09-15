@@ -37,6 +37,10 @@ export class InvArrivalsComponent implements OnInit {
   noItem: boolean = true;
   showStickerForm: boolean = false;
   customersList: any[];
+  supplierView: boolean = false;
+  warehouseView: boolean = false;
+  customerView: boolean = false;
+  chosenPO: any = null;
 
   componentArrival: FormGroup = new FormGroup({
     itemType: new FormControl("component", Validators.required),
@@ -52,6 +56,8 @@ export class InvArrivalsComponent implements OnInit {
     purchaseOrder: new FormControl(null),
     ownerId: new FormControl(""),
     user: new FormControl(""),
+    sourceType: new FormControl(""),
+    inList: new FormControl(false),
   });
   stickerItem: any;
 
@@ -136,21 +142,30 @@ export class InvArrivalsComponent implements OnInit {
   getPurchaseOrders(e) {
     console.log(e.target.value);
     this.purchaseOrders = [];
+    this.chosenPO = null;
+    this.componentArrival.controls.item.reset();
+    this.componentArrival.controls.itemName.reset();
+    this.componentArrival.controls.position.reset();
+    this.componentArrival.controls.amount.reset();
+    this.shellNums = [];
+    this.itemNames = [];
     this.purchaseService
-      .getAllOrdersFromSupplier(e.target.value)
+      .getOpenOrdersFromSupplier(e.target.value)
       .subscribe((data) => {
+        // console.log(data);
         if (data.length > 0) {
-          let filtered = data.filter(
-            (order) => order.status != "closed" && order.status != "canceled"
-          );
-          for (let po of filtered) {
-            let idx = po.stockitems.findIndex(
-              (si) => si.number == this.componentArrival.value.item
-            );
-            if (idx > -1) {
-              this.purchaseOrders.push(po);
-            }
-          }
+          // let filtered = data.filter(
+          //   (order) => order.status != "closed" && order.status != "canceled"
+          // );
+          // for (let po of filtered) {
+          //   let idx = po.stockitems.findIndex(
+          //     (si) => si.number == this.componentArrival.value.item
+          //   );
+          //   if (idx > -1) {
+          //     this.purchaseOrders.push(po);
+          //   }
+          // }
+          this.purchaseOrders = data;
         }
       });
   }
@@ -220,6 +235,7 @@ export class InvArrivalsComponent implements OnInit {
         this.componentArrival.controls.itemName.setValue(
           result[0].componentName
         );
+        this.componentArrival.controls.itemType.setValue(result[0].itemType);
         if (!this.componentArrival.value.whareHouseID)
           this.toastr.error("אנא בחר מחסן.");
         else if (!this.componentArrival.value.item)
@@ -292,43 +308,109 @@ export class InvArrivalsComponent implements OnInit {
   }
 
   addToArrivals() {
-    // set whareHouse name and shelf position
-    let whareHouse = this.allWhareHouses.find(
-      (wh) => wh._id == this.componentArrival.value.whareHouseID
-    );
-    this.componentArrival.controls.user.setValue(
-      this.authService.loggedInUser.userName
-    );
-    console.log(this.componentArrival.value.user);
-    this.componentArrival.controls.whareHouse.setValue(whareHouse.name);
-    let shellDoc = this.shellNums.find(
-      (shell) =>
-        shell.shell_id_in_whareHouse ==
-        this.componentArrival.value.shell_id_in_whareHouse
-    );
-    this.componentArrival.controls.position.setValue(shellDoc.position);
+    try {
+      let item;
+      //check amount versus the ordered amount leftover
+      if (this.componentArrival.controls.sourceType.value == "supplier") {
+        item = this.chosenPO.stockitems.find(
+          (po) => po.number == this.componentArrival.controls.item.value
+        );
+        if (!item) {
+          if (!confirm("הפריט לא נמצא בהזמנה האם לקלוט למחסן?")) return;
+        }
+        if (
+          this.componentArrival.controls.amount.value >
+          item.quantity * 1.1 - item.arrivedAmount
+        ) {
+          alert(
+            "הכמות שאתה קולט למחסן גדולה מהכמות שנשארה לאספקה בהזמנה. צור קשר עם הקניינית על מנת לעדכן את ההזמנה."
+          );
 
-    //push arrival to allArrivals
-    // convert item from number to string
-    let itemToPush = { ...this.componentArrival.value };
-    itemToPush.item = "" + itemToPush.item;
-    this.allArrivals.push(this.componentArrival.value);
-    // this.allArrivals.push(itemToPush);
-    //22/08/2021 Dani Morag:
-    // reset the fields of the add component arrival except for the supplier and warehouse. Further to the request of Tomer
-    this.componentArrival.get("itemType").reset();
-    this.componentArrival.get("item").reset();
-    this.componentArrival.get("amount").reset();
-    this.componentArrival.get("shell_id_in_whareHouse").reset();
-    this.componentArrival.get("position").reset();
-    this.componentArrival.get("isNewItemShell").reset();
-    this.componentArrival.get("supplier").reset();
-    this.componentArrival.get("purchaseOrder").reset();
-    this.shellNums = [];
+          return;
+        }
+        item.inList = true;
+        item.color = "#e8e5e5";
+        console.log(this.chosenPO);
+      }
 
-    this.componentArrival.controls.isNewItemShell.setValue(false);
-    this.componentArrival.controls.itemType.setValue("component");
-    this.first.nativeElement.focus();
+      // check if the  quantity arrived against the left over.
+      // let idx = this.chosenPO.stockitems.findIndex(
+      //   (si) => si.number == this.componentArrival.value.item
+      // );
+
+      // if (
+      //   this.componentArrival.value.amount >
+      //   this.chosenPO.stockitems[idx].leftOver +
+      //     this.chosenPO.stockitems[idx].quantity * 0.1
+      // ) {
+      //   alert(
+      //     "הכמות שהוכנסה גדולה מהיתרה להספקה. יש לתקן כמות או לעדכן הזמנת רכש"
+      //   );
+      //   this.componentArrival.controls.amount.setValue(null);
+      //   return;
+      // }
+
+      // let item = this.componentArrival.value.item;
+      // let idx = this.allArrivals.findIndex((line) => line.item == item);
+      // if (idx > -1) {
+      //   alert("הפריט הוכנס כבר לרשימת הפריטים שהתקבלו");
+
+      //   this.componentArrival.controls.item.reset();
+      //   return;
+      // }
+
+      // set whareHouse name and shelf position
+      let whareHouse = this.allWhareHouses.find(
+        (wh) => wh._id == this.componentArrival.value.whareHouseID
+      );
+      this.componentArrival.controls.user.setValue(
+        this.authService.loggedInUser.userName
+      );
+      console.log(this.componentArrival.value.user);
+      this.componentArrival.controls.whareHouse.setValue(whareHouse.name);
+      let shellDoc = this.shellNums.find(
+        (shell) =>
+          shell.shell_id_in_whareHouse ==
+          this.componentArrival.value.shell_id_in_whareHouse
+      );
+      this.componentArrival.controls.position.setValue(shellDoc.position);
+
+      //push arrival to allArrivals
+      // convert item from number to string
+      let itemToPush = { ...this.componentArrival.value };
+      itemToPush.item = "" + itemToPush.item;
+      this.allArrivals.push(this.componentArrival.value);
+
+      console.log(this.allArrivals);
+
+      // mark the chosen component in case it is from PO
+
+      // this.chosenPO.stockitems[idx].inList = true;
+      // this.chosenPO.stockitems[idx].color = "#d8d8d0";
+      // console.log(this.chosenPO.stockitems[idx]);
+
+      // this.allArrivals.push(itemToPush);
+      //22/08/2021 Dani Morag:
+      // reset the fields of the add component arrival except for the supplier and warehouse. Further to the request of Tomer
+      this.componentArrival.get("itemType").reset();
+      this.componentArrival.get("item").reset();
+      this.componentArrival.get("itemName").reset();
+      this.componentArrival.get("amount").reset();
+      this.componentArrival.get("shell_id_in_whareHouse").reset();
+      this.componentArrival.get("position").reset();
+      this.componentArrival.get("isNewItemShell").reset();
+      // this.componentArrival.get("supplier").reset();
+      // this.componentArrival.get("purchaseOrder").reset();
+      this.shellNums = [];
+      this.itemNames = [];
+
+      this.componentArrival.controls.isNewItemShell.setValue(false);
+      console.log(this.allArrivals);
+      this.first.nativeElement.focus();
+    } catch (error) {
+      console.log(error.message);
+      this.toastr.error(error.message);
+    }
   }
 
   addToStock() {
@@ -354,7 +436,7 @@ export class InvArrivalsComponent implements OnInit {
           //     (a) => a.item == arrival.item
           //   ).componentName;
           // }
-
+          console.log(this.certificateReception);
           if (data.msg.length > 0) {
             for (let message of data.msg) {
               this.toastr.error(message);
@@ -365,18 +447,23 @@ export class InvArrivalsComponent implements OnInit {
           }
 
           if (data.msg.length == 0 && data.warning.length == 0) {
-            this.toastr.success("נשמר", "הנתונים נשלמרו בהצלחה");
+            this.toastr.success("נשמר", "הנתונים נשמרו בהצלחה");
           }
           this.sending = false;
-          this.componentArrival.reset();
-          this.componentArrival.controls.isNewItemShell.setValue(false);
-          this.componentArrival.controls.itemType.setValue("component");
+          // this.componentArrival.controls.itemType.setValue("component");
           setTimeout(() => {
             // if (confirm('להדפיס מדבקות?')) this.printSticker = true
             this.printBtn2.nativeElement.click();
             setTimeout(() => {
               this.allArrivals = [];
+              this.itemNames = [];
               // this.printSticker = false
+              this.componentArrival.reset();
+              this.chosenPO = null;
+              this.shellNums = [];
+              this.componentArrival.controls.isNewItemShell.setValue(false);
+              this.purchaseOrders = [];
+              this.supplierView = false;
             }, 1000);
           }, 500);
         } else {
@@ -386,6 +473,12 @@ export class InvArrivalsComponent implements OnInit {
   }
 
   removeFromArrivals(i) {
+    let itemNumber = this.allArrivals[i].item;
+    let idx = this.chosenPO.stockitems.findIndex(
+      (si) => si.number == itemNumber
+    );
+    this.chosenPO.stockitems[idx].inList = false;
+    this.chosenPO.stockitems[idx].color = "#fff";
     this.allArrivals.splice(i, 1);
   }
 
@@ -401,5 +494,62 @@ export class InvArrivalsComponent implements OnInit {
 
   getKeyByValue(object, value) {
     return Object.keys(object).find((key) => object[key] === value);
+  }
+
+  chooseSource() {
+    let source = this.componentArrival.value.sourceType;
+    console.log(source);
+    if (source == "supplier") {
+      this.supplierView = true;
+      this.warehouseView = false;
+      this.customerView = false;
+    } else if (source == "warehouse") {
+      this.warehouseView = true;
+      this.supplierView = false;
+      this.customerView = false;
+    } else if (source == "customer") {
+      this.warehouseView = false;
+      this.supplierView = false;
+      this.customerView = true;
+    }
+  }
+
+  choosePO() {
+    this.chosenPO = null;
+    let poNumber = this.componentArrival.value.purchaseOrder;
+    console.log(poNumber);
+    this.chosenPO = this.purchaseOrders.find(
+      (po) => po.orderNumber == poNumber
+    );
+
+    if (this.chosenPO.stockitems && this.chosenPO.stockitems.length > 0) {
+      this.chosenPO.stockitems.forEach((si) => {
+        si.quantity = si.quantity ? Number(si.quantity) : 0;
+        si.arrivedAmount = si.arrivedAmount ? Number(si.arrivedAmount) : 0;
+        si.leftOver =
+          si.quantity - si.arrivedAmount < 0
+            ? 0
+            : si.quantity - si.arrivedAmount;
+        si.inList = false;
+        si.color = "#fff";
+      });
+    }
+  }
+
+  resetValues() {
+    this.purchaseOrders = [];
+    this.chosenPO = null;
+    this.shellNums = [];
+    this.itemNames = [];
+    this.allArrivals = [];
+    this.componentArrival.get("itemType").reset();
+    this.componentArrival.get("item").reset();
+    this.componentArrival.get("itemName").reset();
+    this.componentArrival.get("amount").reset();
+    this.componentArrival.get("shell_id_in_whareHouse").reset();
+    this.componentArrival.get("position").reset();
+    this.componentArrival.get("supplier").reset();
+    this.componentArrival.get("purchaseOrder").reset();
+    this.componentArrival.controls.isNewItemShell.setValue(false);
   }
 }

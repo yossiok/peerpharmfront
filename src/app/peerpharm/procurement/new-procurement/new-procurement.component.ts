@@ -939,7 +939,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
               this.disabled = false;
               this.toastr.error("Something went wrong. Try again.");
             }
-          }, 1000 * 10);
+          }, 1000 * 20);
 
           this.newPurchase.controls["user"].setValue(
             this.authService.loggedInUser.userName

@@ -192,7 +192,7 @@
                   <th *ngIf="!editItem">shipping</th>
                   <th *ngIf="editItem">Coin</th>
                   <th>Requested Date</th>
-                  <th>Approval Date</th>
+                  <th>Arrival Date</th>
                   <th>Remarks</th>
                 </tr>
               </thead>
@@ -365,13 +365,13 @@
                   </td>
 
                   <td *ngIf="!editItem">
-                    {{ stockitem.itemArrival | date: "dd/MM/yy" }}
+                    {{ stockitem.actualArrivalDate | date: "dd/MM/yy" }}
                   </td>
                   <td *ngIf="editItem && itemIndex == i">
                     <input
                       type="date"
                       [ngModelOptions]="{ standalone: true }"
-                      [(ngModel)]="stockitem.itemArrival"
+                      [(ngModel)]="stockitem.actualArrivalDate"
                       [style.width]="'120px'"
                     />
                   </td>
