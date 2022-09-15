@@ -134,7 +134,7 @@ export class BetweenWHComponent implements OnInit {
             resolve(true);
           } else {
             this.noItem = true;
-            reject("פריט לא קיים :(");
+            resolve("פריט זה לא נמצא במחסן שנבחר :(");
           }
         });
     });

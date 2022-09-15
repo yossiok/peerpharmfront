@@ -1,116 +1,189 @@
 <div dir="rtl">
-
-
   <form [formGroup]="movementForm" (ngSubmit)="addItem()">
     <h3>העברת סחורה בין מחסנים</h3>
     <div class="row mt-4">
       <p class="h5">* = שדה חובה</p>
     </div>
     <div class="row mt-4">
-
       <div class="col-2">
         <label>ממחסן *</label>
-        <select class="form-control" formControlName="WH_originId" (change)="getChunks('o')">
+        <select
+          class="form-control"
+          formControlName="WH_originId"
+          (change)="getChunks('o')"
+        >
           <option disabled value="">בחר מחסן</option>
-          <option *ngFor="let whareHouse of userWH" [value]="whareHouse._id" [disabled]="allMovements.length>0">
-            {{whareHouse.name}}
+          <option
+            *ngFor="let whareHouse of userWH"
+            [value]="whareHouse._id"
+            [disabled]="allMovements.length > 0"
+          >
+            {{ whareHouse.name }}
           </option>
         </select>
-        <div style="color:red; font-weight: bold;font-size: 2rem;"
-          *ngIf="movementForm.controls.WH_originId.touched && movementForm.controls.WH_originId.errors?.required">
-          **בחר מחסן</div>
+        <div
+          style="color: red; font-weight: bold; font-size: 2rem"
+          *ngIf="
+            movementForm.controls.WH_originId.touched &&
+            movementForm.controls.WH_originId.errors?.required
+          "
+        >
+          **בחר מחסן
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div *ngIf="!disabled" class="col-2">
+        <label> מק"ט * </label>
+        <input
+          type="text"
+          #first
+          [disabled]="disabled"
+          formControlName="item"
+          class="form-control"
+          (blur)="getChunks('o')"
+        />
+        <div
+          style="color: red; font-weight: bold; font-size: 1.5rem"
+          *ngIf="
+            movementForm.controls.item.touched &&
+            movementForm.controls.item.errors?.required
+          "
+        >
+          **הכנס מק"ט
+        </div>
+      </div>
+      <div *ngIf="!disabled" class="col-2">
+        <label class="d-block"> שם </label>
+        <input class="d-inline form-control" type="text" #name />
+        <button class="d-inline" type="button" (click)="getNames()">
+          Find
+        </button>
+        <select class="form-control" (change)="setItemDetailsNumber($event)">
+          <option
+            *ngFor="let itemName of itemNames"
+            [value]="itemName.componentN"
+          >
+            {{ itemName.componentName }}
+          </option>
+        </select>
       </div>
       <div class="col-2">
         <label>ממדף *</label>
-        <select class="form-control" (change)="setOriginPosition()" formControlName="shell_id_in_whareHouse_Origin">
+        <select
+          class="form-control"
+          (change)="setOriginPosition()"
+          formControlName="shell_id_in_whareHouse_Origin"
+        >
           <option disabled value="">בחר מדף</option>
-          <option *ngFor="let shelf of originWHShelfs" [disabled]="shelf.position == 'MINUS'"
-            [value]="shelf.shell_id_in_whareHouse" [ngStyle]="{'color': shelf.amount >=0 ? 'black' : 'red' }">
-            {{shelf.position}} - {{shelf.amount}} pcs
+          <option
+            *ngFor="let shelf of originWHShelfs"
+            [disabled]="shelf.position == 'MINUS'"
+            [value]="shelf.shell_id_in_whareHouse"
+            [ngStyle]="{ color: shelf.amount >= 0 ? 'black' : 'red' }"
+          >
+            {{ shelf.position }} - {{ shelf.amount }} pcs
           </option>
         </select>
       </div>
-    </div>
-    <div class="row mt-4">
-      <div *ngIf="!disabled" class="col-2">
-        <label>
-          מק"ט *
-        </label>
-        <input type="text" #first [disabled]="disabled" formControlName="item" class="form-control"
-          (blur)="getChunks('o')">
-        <div style="color:red; font-weight: bold;font-size: 1.5rem;"
-          *ngIf="movementForm.controls.item.touched && movementForm.controls.item.errors?.required">**הכנס מק"ט </div>
-      </div>
-      <div *ngIf="!disabled" class="col-2">
-        <label class="d-block">
-          שם
-        </label>
-        <input class="d-inline form-control" type="text" #name>
-        <button class="d-inline" type="button" (click)="getNames()">Find</button>
-        <select class="form-control" (change)="setItemDetailsNumber($event)">
-          <option *ngFor="let itemName of itemNames" [value]="itemName.componentN">
-            {{itemName.componentName}}
-          </option>
-        </select>
-      </div>
-
-
 
       <div class="col-2">
         <label>כמות *</label>
-        <input type="number" formControlName="amount" (change)="checkAmount()" class="form-control">
-        <div style="color:red; font-size: 1.2rem;font-weight: bold;" *ngIf="movementForm.controls.amount.errors?.min">*
-          הכמות חייבת
-          להיות גדולה מאפס
+        <input
+          type="number"
+          formControlName="amount"
+          (change)="checkAmount()"
+          class="form-control"
+        />
+        <div
+          style="color: red; font-size: 1.2rem; font-weight: bold"
+          *ngIf="movementForm.controls.amount.errors?.min"
+        >
+          * הכמות חייבת להיות גדולה מאפס
         </div>
       </div>
-
-
-
-
     </div>
     <div class="row mt-4">
-
       <div class="col-2">
         <label>למחסן *</label>
-        <select class="form-control" formControlName="WH_destId" #whid (change)="getChunks('d')"
-          (change)="getAllShelfsOfDest($event)">
+        <select
+          class="form-control"
+          formControlName="WH_destId"
+          #whid
+          (change)="getChunks('d')"
+          (change)="getAllShelfsOfDest($event)"
+        >
           <option disabled value="">בחר מחסן</option>
-          <option [disabled]="allMovements.length > 0" *ngFor="let whareHouse of userWH"
-            [value]="whareHouse._id">{{whareHouse.name}}
+          <option
+            [disabled]="allMovements.length > 0"
+            *ngFor="let whareHouse of userWH"
+            [value]="whareHouse._id"
+          >
+            {{ whareHouse.name }}
           </option>
         </select>
       </div>
       <div class="col-2">
-
         <label>למדף *</label>
-        <select class="form-control" (change)="setDestPosition()" formControlName="shell_id_in_whareHouse_Dest">
+        <select
+          class="form-control"
+          (change)="setDestPosition()"
+          formControlName="shell_id_in_whareHouse_Dest"
+        >
           <option disabled value="">בחר מדף</option>
-          <option *ngFor="let shelf of destWHShelfs" [disabled]="shelf.position == 'MINUS'"
-            [value]="shelf.shell_id_in_whareHouse" [ngStyle]="{'color': shelf.amount >=0 ? 'black' : 'red' }">
-            {{shelf.position}} - {{shelf.amount}} pcs
+          <option
+            *ngFor="let shelf of destWHShelfs"
+            [disabled]="shelf.position == 'MINUS'"
+            [value]="shelf.shell_id_in_whareHouse"
+            [ngStyle]="{ color: shelf.amount >= 0 ? 'black' : 'red' }"
+          >
+            {{ shelf.position }} - {{ shelf.amount }} pcs
           </option>
         </select>
-        <span class="mt-1" [ngbTooltip]="noItem ? 'יש להזין מספר פריט תקין' : ''">
-          <button type="button" [disabled]="noItem" [style.cursor]="noItem ? 'not-allowed' : 'pointer'"
-            (click)="getAllShelfsOfDest(whid.value)" class="btn btn-warning">הכנס למדף חדש</button>
+        <span
+          class="mt-1"
+          [ngbTooltip]="noItem ? 'יש להזין מספר פריט תקין' : ''"
+        >
+          <button
+            type="button"
+            [disabled]="noItem"
+            [style.cursor]="noItem ? 'not-allowed' : 'pointer'"
+            (click)="getAllShelfsOfDest(whid.value)"
+            class="btn btn-warning"
+          >
+            הכנס למדף חדש
+          </button>
         </span>
       </div>
       <div *ngIf="itemNames" class="col-2">
-        <img [src]=itemNames[0].img alt=" חסרה תמונה ראשית" class="pictureTabImg">
+        <img
+          [src]="itemNames[0].img"
+          alt=" חסרה תמונה ראשית"
+          class="pictureTabImg"
+        />
       </div>
     </div>
     <div class="row mt-4">
       <div class="col-2 d-flex flex-column justify-content-around">
         <div *ngIf="sending" class="smallerLoader"></div>
-        <button type="submit" [disabled]="!movementForm.valid"
-          [style.cursor]="movementForm.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">הוסף למשלוח</button>
-
+        <button
+          type="submit"
+          [disabled]="!movementForm.valid"
+          [style.cursor]="movementForm.valid ? 'pointer' : 'not-allowed'"
+          class="btn btn-info"
+        >
+          הוסף למשלוח
+        </button>
       </div>
+      <div class="col-2 d-flex flex-column justify-content-between"></div>
       <div class="col-2 d-flex flex-column justify-content-between">
-      </div>
-      <div class="col-2 d-flex flex-column justify-content-between">
-        <button type="button" class="btn btn-secondary" (click)="movementForm.reset()">נקה נתונים</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="movementForm.reset()"
+        >
+          נקה נתונים
+        </button>
       </div>
     </div>
   </form>
@@ -127,42 +200,63 @@
           <th></th>
         </tr>
       </thead>
-      <tbody style="background-color: rgb(228, 225, 225);">
+      <tbody style="background-color: rgb(228, 225, 225)">
         <!-- <ng-container *ngIf="allMovements.length>0"> -->
         <tr *ngFor="let move of allMovements; let i = index">
-          <td class="text-center">{{i+1}}</td>
-          <td class="text-center">{{move.item}}</td>
-          <td class="text-center">{{move.itemName}}</td>
-          <td class="text-center">{{move.amount}}</td>
-          <td class="text-center">{{move.WH_originName}}/{{move.shell_position_in_whareHouse_Origin}}</td>
-          <td class="text-center">{{move.WH_destName}}/{{move.shell_position_in_whareHouse_Dest}}</td>
-          <td class="text-center"><i (click)="removeFromAllMovements(i)" class="fa fa-times text-danger"></i></td>
+          <td class="text-center">{{ i + 1 }}</td>
+          <td class="text-center">{{ move.item }}</td>
+          <td class="text-center">{{ move.itemName }}</td>
+          <td class="text-center">{{ move.amount }}</td>
+          <td class="text-center">
+            {{ move.WH_originName }}/{{
+              move.shell_position_in_whareHouse_Origin
+            }}
+          </td>
+          <td class="text-center">
+            {{ move.WH_destName }}/{{ move.shell_position_in_whareHouse_Dest }}
+          </td>
+          <td class="text-center">
+            <i
+              (click)="removeFromAllMovements(i)"
+              class="fa fa-times text-danger"
+            ></i>
+          </td>
         </tr>
         <!-- </ng-container> -->
       </tbody>
-
     </table>
   </div>
 
   <div class="row mt-2 d-flex flex-row justify-content-around w-50">
-    <button *ngIf="!sending" class="btn btn-info" (click)="move()" [disabled]="allMovements.length == 0"
-      [style.cursor]="allMovements.length == 0 ? 'not-allowed' : 'pointer'">
+    <button
+      *ngIf="!sending"
+      class="btn btn-info"
+      (click)="move()"
+      [disabled]="allMovements.length == 0"
+      [style.cursor]="allMovements.length == 0 ? 'not-allowed' : 'pointer'"
+    >
       נפק תעודה (עדכן מלאים)<i class="fa fa-check"></i>
     </button>
     <div class="smallerLoader" *ngIf="sending"></div>
-    <button class="btn btn-success" (click)="justPrint()">הדפס <i class="fa fa-print"></i></button>
-    <button class="btn btn-warning" (click)="clearArrivals()">נקה טבלה <i class="fas fa-trash-alt"></i></button>
+    <button class="btn btn-success" (click)="justPrint()">
+      הדפס <i class="fa fa-print"></i>
+    </button>
+    <button class="btn btn-warning" (click)="clearArrivals()">
+      נקה טבלה <i class="fas fa-trash-alt"></i>
+    </button>
   </div>
-
 
   <!-- תעודת העברה -->
 
-  <ng-container *ngIf="allMovements && allMovements.length>0">
+  <ng-container *ngIf="allMovements && allMovements.length > 0">
     <div class="row mt-4">
-      <div id="print-section2" style="direction: rtl; text-align: right; visibility:hidden; ">
+      <div
+        id="print-section2"
+        style="direction: rtl; text-align: right; visibility: hidden"
+      >
         <header>
           <h1>פאר פארם בע"מ</h1>
-          <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256 </p>
+          <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256</p>
           <p>
             <span>טלפון 03-9024055</span>&nbsp;&nbsp;
             <span>פקס 03-9024015</span>&nbsp;&nbsp;
@@ -170,20 +264,29 @@
             <span>ח.פ: 511899023</span>
           </p>
           <p
-            *ngIf="allMovements[0].WH_originName == 'ARIEL 1' || allMovements[0].WH_originName == 'ARIEL 2' || allMovements[0].WH_originName == 'ARIEL 3' || allMovements[0].WH_originName == 'ARIEL 4' ||
-          allMovements[0].WH_destName == 'ARIEL 1' || allMovements[0].WH_destName == 'ARIEL 2' || allMovements[0].WH_destName == 'ARIEL 3' || allMovements[0].WH_destName == 'ARIEL 4'">
-
-          </p>
+            *ngIf="
+              allMovements[0].WH_originName == 'ARIEL 1' ||
+              allMovements[0].WH_originName == 'ARIEL 2' ||
+              allMovements[0].WH_originName == 'ARIEL 3' ||
+              allMovements[0].WH_originName == 'ARIEL 4' ||
+              allMovements[0].WH_destName == 'ARIEL 1' ||
+              allMovements[0].WH_destName == 'ARIEL 2' ||
+              allMovements[0].WH_destName == 'ARIEL 3' ||
+              allMovements[0].WH_destName == 'ARIEL 4'
+            "
+          ></p>
         </header>
         <main>
-          <h2 *ngIf="!historic">תעודת העברה מס' {{reception}}</h2>
-          <h2 *ngIf="historic">תעודת העברה מס' {{allMovements[0].warehouseReception}}</h2>
-          <p class='originDestWh'>
-            <span><u>תאריך:</u></span>&nbsp;&nbsp;
-            <span>{{today | date :'dd-MM-yyyy' }}</span>&nbsp;&nbsp;
-
+          <h2 *ngIf="!historic">תעודת העברה מס' {{ reception }}</h2>
+          <h2 *ngIf="historic">
+            תעודת העברה מס' {{ allMovements[0].warehouseReception }}
+          </h2>
+          <p class="originDestWh">
+            <span><u>תאריך:</u></span
+            >&nbsp;&nbsp; <span>{{ today | date: "dd-MM-yyyy" }}</span
+            >&nbsp;&nbsp;
           </p>
-          <br>
+          <br />
           <table>
             <thead>
               <tr>
@@ -192,25 +295,40 @@
               </tr>
             </thead>
             <tbody>
-              <td style="border:1px solid black; margin-left:30px;" *ngIf="allMovements.length>0">
-                {{allMovements[0].WH_destName | warehousesNames}}<br><span
-                  *ngIf="allMovements.length>0 &&
-              
-              allMovements[0].WH_destName == 'ARIEL 1' || allMovements[0].WH_destName == 'ARIEL 2' || allMovements[0].WH_destName == 'ARIEL 3' || allMovements[0].WH_destName == 'ARIEL 4' ">
-                  מוחמד עלי מוסטפה אבי סלימה <br>עוסק מורשה מספר: 853143675 <br>
+              <td
+                style="border: 1px solid black; margin-left: 30px"
+                *ngIf="allMovements.length > 0"
+              >
+                {{ allMovements[0].WH_destName | warehousesNames }}<br /><span
+                  *ngIf="
+                    (allMovements.length > 0 &&
+                      allMovements[0].WH_destName == 'ARIEL 1') ||
+                    allMovements[0].WH_destName == 'ARIEL 2' ||
+                    allMovements[0].WH_destName == 'ARIEL 3' ||
+                    allMovements[0].WH_destName == 'ARIEL 4'
+                  "
+                >
+                  מוחמד עלי מוסטפה אבי סלימה <br />עוסק מורשה מספר: 853143675
+                  <br />
                 </span>
               </td>
-              <td style="border:1px solid black">{{allMovements[0].WH_originName | warehousesNames}}
-                <br><span
-                  *ngIf=" allMovements.length>0 &&
-            allMovements[0].WH_originName == 'ARIEL 1' || allMovements[0].WH_originName == 'ARIEL 2' || allMovements[0].WH_originName == 'ARIEL 3' || allMovements[0].WH_originName == 'ARIEL 4' ">מוחמד
-                  עלי מוסטפה אבי סלימה <br>עוסק מורשה מספר: 853143675 <br></span>
-
-
+              <td style="border: 1px solid black">
+                {{ allMovements[0].WH_originName | warehousesNames }}
+                <br /><span
+                  *ngIf="
+                    (allMovements.length > 0 &&
+                      allMovements[0].WH_originName == 'ARIEL 1') ||
+                    allMovements[0].WH_originName == 'ARIEL 2' ||
+                    allMovements[0].WH_originName == 'ARIEL 3' ||
+                    allMovements[0].WH_originName == 'ARIEL 4'
+                  "
+                  >מוחמד עלי מוסטפה אבי סלימה <br />עוסק מורשה מספר: 853143675
+                  <br
+                /></span>
               </td>
             </tbody>
           </table>
-          <br><br><br>
+          <br /><br /><br />
           <table>
             <tbody>
               <tr>
@@ -220,18 +338,23 @@
                 <th>כמות</th>
                 <th>ממחסן/מדף</th>
                 <th>למחסן/מדף</th>
-
               </tr>
-              <ng-container *ngIf="allMovements.length>0">
-
-                <tr *ngFor="let move of allMovements; let i=index">
-                  <td>{{i+1}}</td>
-                  <td>{{move.item}}</td>
-                  <td>{{move.itemName}}</td>
-                  <td>{{move.amount}}</td>
-                  <td>{{move.WH_originName}}/{{move.shell_position_in_whareHouse_Origin}}</td>
-                  <td>{{move.WH_destName}}/{{move.shell_position_in_whareHouse_Dest}}</td>
-
+              <ng-container *ngIf="allMovements.length > 0">
+                <tr *ngFor="let move of allMovements; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ move.item }}</td>
+                  <td>{{ move.itemName }}</td>
+                  <td>{{ move.amount }}</td>
+                  <td>
+                    {{ move.WH_originName }}/{{
+                      move.shell_position_in_whareHouse_Origin
+                    }}
+                  </td>
+                  <td>
+                    {{ move.WH_destName }}/{{
+                      move.shell_position_in_whareHouse_Dest
+                    }}
+                  </td>
                 </tr>
               </ng-container>
             </tbody>
@@ -244,43 +367,49 @@
               <u>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              </u>
-            </span>&nbsp;&nbsp;
-            <span>חתימה:</span>&nbsp;&nbsp;
+              </u> </span
+            >&nbsp;&nbsp; <span>חתימה:</span>&nbsp;&nbsp;
             <span>
               <u>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              </u>
-            </span>&nbsp;&nbsp;
-            <span>תאריך:</span>&nbsp;&nbsp;
+              </u> </span
+            >&nbsp;&nbsp; <span>תאריך:</span>&nbsp;&nbsp;
             <span>
               <u>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-              </u>
-            </span>&nbsp;&nbsp;
+              </u> </span
+            >&nbsp;&nbsp;
           </p>
         </div>
-        <footer>
-        </footer>
+        <footer></footer>
       </div>
-      <button type="button" style='display: none;' #printBtn2 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl'}, 
-      header : {'border-bottom': 'solid 1px'},
-      main : {'border-bottom': 'solid 1px' },
-      table :{ 'text-align': 'right' },
-      footer : { 'position': 'absolute' , 'width': '100%' },
-      h2 : {'text-align': 'center'},
-      '.originDestWh':{'text-align':'right'},
-      th : {'width': '16%' },
-      td : {'width': '16%' },
-      '.itemNamePrint' : {'width': '35%'},
-      '.signatures' : { 'margin' : '50px'},
-      '.cellPadding' : { 'padding' : '15px 0px'}
-    }" printTitle="תעודת העברה" printSectionId="print-section2" ngxPrint>print</button>
+      <button
+        type="button"
+        style="display: none"
+        #printBtn2
+        [printStyle]="{
+          body: { 'text-align': 'right', direction: 'rtl' },
+          header: { 'border-bottom': 'solid 1px' },
+          main: { 'border-bottom': 'solid 1px' },
+          table: { 'text-align': 'right' },
+          footer: { position: 'absolute', width: '100%' },
+          h2: { 'text-align': 'center' },
+          '.originDestWh': { 'text-align': 'right' },
+          th: { width: '16%' },
+          td: { width: '16%' },
+          '.itemNamePrint': { width: '35%' },
+          '.signatures': { margin: '50px' },
+          '.cellPadding': { padding: '15px 0px' }
+        }"
+        printTitle="תעודת העברה"
+        printSectionId="print-section2"
+        ngxPrint
+      >
+        print
+      </button>
       <!-- <button (click)="printStockTransferCertificate()">click</button> -->
-
     </div>
   </ng-container>
-
 </div>
