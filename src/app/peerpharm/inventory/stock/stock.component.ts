@@ -11,6 +11,7 @@ import {
   HostListener,
 } from "@angular/core";
 import { InventoryService } from "../../../services/inventory.service";
+import { UsersService } from "../../../services/users.service";
 import { ActivatedRoute } from "@angular/router";
 import { UploadFileService } from "src/app/services/helpers/upload-file.service";
 import { HttpRequest } from "@angular/common/http";
@@ -181,6 +182,10 @@ export class StockComponent implements OnInit {
   recommendationsReport: any[] = [];
   recommendationsReportCopy: any[] = [];
   sortToggle: number = 1;
+  purchasers: any[] = [];
+  monthsCount: number = null;
+  materialUsage: any = null;
+  componentUsage: any = null;
 
   resCmpt: any = defaultCmpt;
 
@@ -480,7 +485,8 @@ export class StockComponent implements OnInit {
     private toastSrv: ToastrService,
     private batchService: BatchesService,
     private itemService: ItemsService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private usersService: UsersService
   ) {
     this.editVersionForm = new FormGroup({
       date: new FormControl(new Date(this.today), Validators.required),
@@ -506,6 +512,7 @@ export class StockComponent implements OnInit {
       type: new FormControl("", Validators.required),
       status: new FormControl("open"),
       stockitems: new FormControl([]),
+      purchaser: new FormControl(""),
     });
   }
   @Output() sendDataToExpectedArrivalsModal = new EventEmitter();
@@ -696,6 +703,7 @@ export class StockComponent implements OnInit {
       if (this.route.snapshot.queryParams.componentN)
         this.filterByComponentN(this.route.snapshot.queryParams.componentN);
     }
+    this.getPurchasers();
     this.getColor(new Date());
     this.numberSearchInput.nativeElement.focus();
     this.route.queryParams.subscribe((params) => {
@@ -711,6 +719,18 @@ export class StockComponent implements OnInit {
     //   this.setType("product")
     //   this.filterComponents(itemNumber)
     // }
+  }
+
+  getPurchasers() {
+    this.usersService.getAllUsers().subscribe((data) => {
+      this.purchasers = data.filter(
+        (user) =>
+          user.authorization.includes("newPurchase") &&
+          user.authorization.includes("editPurchase")
+      );
+
+      console.log(this.purchasers);
+    });
   }
 
   getItemPurchases(component) {
@@ -3363,6 +3383,43 @@ export class StockComponent implements OnInit {
       this.itemmoveBtnTitle = "Back to item details";
       this.loadingMovements = false;
     }
+  }
+
+  getMaterialUsage() {
+    console.log(this.monthsCount);
+    console.log(this.lastOrdersOfItem[0].number);
+    console.log(this.lastOrdersOfItem[0].itemName);
+    console.log(this.lastOrdersOfItem[0].name);
+    this.inventoryService
+      .getMaterialUsage(this.monthsCount, this.lastOrdersOfItem[0].number)
+      .subscribe((data) => {
+        console.log(data);
+        if (data.msg) {
+          console.log(data.msg);
+          this.toastSrv.error(data.msg);
+          return;
+        } else if (data) {
+          this.materialUsage = data;
+        }
+      });
+  }
+  getComponentUsage() {
+    console.log(this.monthsCount);
+    console.log(this.resCmpt.componentN);
+    console.log(this.resCmpt.componentName);
+    this.inventoryService
+      .getComponentUsage(this.monthsCount, this.resCmpt.componentN)
+      .subscribe((data) => {
+        console.log(data);
+        if (data.msg) {
+          console.log(data.msg);
+          this.toastSrv.error(data.msg);
+          this.componentUsage = data;
+          return;
+        } else if (data) {
+          this.componentUsage = data;
+        }
+      });
   }
 
   // ********************ENLARGE TABLE IMAGE BY CLICK************

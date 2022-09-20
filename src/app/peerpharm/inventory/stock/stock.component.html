@@ -365,8 +365,26 @@
 
                     <span class="float-left"> * Required field</span>
 
-                    <div class="row mt-2 fixNoaStupidStuff">
-                      <div class="col-3">
+                    <div class="row mt-2 fixNoaStupidStuff w-100">
+                      <div class="col-2">
+                        <label class="text-info">Purchaser</label>
+                        <span class="hot-red float-left">*</span>
+                        <select
+                          name=""
+                          id=""
+                          class="form-control rounded-pill"
+                          formContralName="purchaser"
+                        >
+                          <option value="" disabled>בחר מנהלת רכש</option>
+                          <option
+                            *ngFor="let user of purchasers"
+                            [value]="user.userName"
+                          >
+                            {{ user.firstName }} {{ user.lastName }}
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-2">
                         <label class="text-info">Date</label>
                         <span class="hot-red float-left">*</span>
                         <input
@@ -1549,6 +1567,112 @@
                             {{ itemMovement.movementDate | date: "dd/MM/yyyy" }}
                           </td>
                           <td>{{ itemMovement.userName }}</td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab selected label="שימוש בפריט">
+          <div class="container modal-inner">
+            <div class="row fixNoaStupidStuff text-center p-2">
+              <div class="col-1 fixNoaStupidStuff">
+                <img
+                  class="w-50 h-100"
+                  (click)="switchModalView(resCmpt.componentN)"
+                  src="../../../../assets/images/refreshData.png"
+                />
+              </div>
+              <div class="col-10 fixNoaStupidStuff text-center">
+                <h3 class="text-success">
+                  {{ resCmpt.componentN }} - צריכת פריט לייצור
+                </h3>
+                <h3 class="text-success">
+                  {{ resCmpt.componentName }}
+                </h3>
+              </div>
+              <div class="col-1 fixNoaStupidStuff">
+                <span
+                  class="close text-success"
+                  id="closeId2"
+                  (click)="
+                    openModal = false;
+                    componentUsage = null;
+                    monthsCount = null;
+                    newItem = '';
+                    lastOrdersOfItem = []
+                  "
+                  >&times;</span
+                >
+              </div>
+            </div>
+
+            <div dir="rtl" class="row fixNoaStupidStuff text-center">
+              <div class="col-2"></div>
+              <div class="col-2">
+                <label>מספר חודשים לאחור:</label>
+              </div>
+              <div class="col-2">
+                <input
+                  class="form-control"
+                  type="number"
+                  [(ngModel)]="monthsCount"
+                />
+              </div>
+              <div class="col-2">
+                <button
+                  class="btn btn-success form-control"
+                  (click)="getComponentUsage()"
+                >
+                  מצא
+                </button>
+              </div>
+              <div class="col-2"></div>
+            </div>
+            <div class="row fixNoaStupidStuff text-center p-2">
+              <div class="col-12 fixNoaStupidStuff">
+                <div class="w-100">
+                  <table class="table table-striped table-hover">
+                    <thead class="bg-success text-white">
+                      <tr>
+                        <th>מקט</th>
+                        <th>שם פריט</th>
+                        <th>מתאריך</th>
+                        <th>כמות שנצרכה</th>
+                        <th>ממוצע חודשי</th>
+                        <th>ממוצע רבעוני</th>
+                      </tr>
+                    </thead>
+                    <h4 *ngIf="componentUsage && componentUsage.msg">
+                      {{ componentUsage.msg }}
+                    </h4>
+                    <tbody *ngIf="componentUsage && !componentUsage.msg">
+                      <ng-container>
+                        <tr>
+                          <td>{{ resCmpt.componentN }}</td>
+                          <td>
+                            {{ resCmpt.componentName }}
+                          </td>
+                          <td>
+                            {{ componentUsage.fromDate | date: "dd/MM/yyyy" }}
+                          </td>
+                          <td>
+                            {{ componentUsage.totalUsed | number: "1.0-2" }}
+                          </td>
+                          <td>
+                            {{
+                              componentUsage.averagePerMonth | number: "1.0-2"
+                            }}
+                          </td>
+                          <td>
+                            {{
+                              componentUsage.averagePerQuarther
+                                | number: "1.0-2"
+                            }}
+                          </td>
                         </tr>
                       </ng-container>
                     </tbody>
@@ -3389,24 +3513,133 @@
           </div>
         </div>
       </mat-tab>
+      <mat-tab label="Item Usage">
+        <div class="container-fluid text-center modal-inner">
+          <div class="row fixNoaStupidStuff">
+            <div class="col-10 fixNoaStupidStuff text-center">
+              <h3 class="text-success">שימוש בחומר גלם</h3>
+              <h3 class="text-success">
+                {{ lastOrdersOfItem[0].number }} -
+                {{ lastOrdersOfItem[0].name }}
+              </h3>
+            </div>
+            <div class="col-1 fixNoaStupidStuff">
+              <span
+                class="close text-success"
+                id="closeId2"
+                (click)="
+                  openModal = false;
+                  materialUsage = null;
+                  monthsCount = null;
+                  newItem = '';
+                  lastOrdersOfItem = []
+                "
+                >&times;</span
+              >
+            </div>
+          </div>
 
+          <div class="row fixNoaStupidStuff eContainer">
+            <div class="fixNoaStupidStuff">
+              <h4>מדידת צריכת חומרי גלם החלה ב 01.02.2002</h4>
+
+              <div class="searchBox">
+                <b>מספר חודשים לאחור </b>
+                <input
+                  [(ngModel)]="monthsCount"
+                  class="searchBox-item"
+                  id="monthsCount"
+                  name="monthsCount"
+                  type="number"
+                />
+                <button
+                  class="btn btn-success searchBox-item"
+                  (click)="getMaterialUsage()"
+                >
+                  מצא
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="row fixNoaStupidStuff mt-2">
+            <div style="height: 500px" class="col-12 fixNoaStupidStuff">
+              <table class="table table-hover table-striped">
+                <thead class="text-white bg-success">
+                  <tr>
+                    <th>מקט</th>
+                    <th>שם פריט</th>
+                    <th>מתאריך</th>
+                    <th>כמות שנצרכה</th>
+                    <th>ממוצע חודשי</th>
+                    <th>ממוצע רבעוני</th>
+                  </tr>
+                </thead>
+                <tbody style="overflow-y: scroll">
+                  <tr *ngIf="materialUsage">
+                    <td>{{ lastOrdersOfItem[0].number }}</td>
+                    <td>{{ lastOrdersOfItem[0].name }}</td>
+                    <td>{{ materialUsage.fromDate | date: "dd/MM/yyyy" }}</td>
+                    <td>{{ materialUsage.totalUsed | number: "1.0-2" }}</td>
+                    <td>
+                      {{ materialUsage.averagePerMonth | number: "1.0-2" }}
+                    </td>
+                    <td>
+                      {{ materialUsage.averagePerQuarther | number: "1.0-2" }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
       <!--material-->
       <mat-tab *ngIf="isSuperAdmin" label="Item Purchase History">
-        <span
+        <!-- <span
           class="close text-success"
           id="closeId2"
           (click)="openModal = false; newItem = ''; lastOrdersOfItem = []"
           >&times;</span
-        >
-        <div class="row">
+        > -->
+        <!-- <div class="row">
           <label>Number of orders: </label> &nbsp;
           <input type="text" #numOfOrders />
           <div class="col-1"></div>
           <button (click)="getLastOrdersItem(numOfOrders.value, 'material')">
             Watch History
-          </button>
-        </div>
-        <div class="container modal-inner">
+          </button> -->
+        <!-- </div> -->
+        <div class="container-fluid text-center modal-inner">
+          <div class="row fixNoaStupidStuff">
+            <div class="col-4 fixNoaStupidStuff"></div>
+            <div class="col-4 fixNoaStupidStuff">
+              <h3 class="text-success">היסטורית רכש</h3>
+            </div>
+            <div class="col-4 fixNoaStupidStuff">
+              <span
+                class="close text-success"
+                id="closeId2"
+                (click)="openModal = false; newItem = ''; lastOrdersOfItem = []"
+                >&times;</span
+              >
+            </div>
+          </div>
+          <div class="row fixNoaStupidStuff eContainer">
+            <div class="fixNoaStupidStuff">
+              <div class="serachBox">
+                <label>מספר הזמנות לצפייה: </label> &nbsp;
+                <input type="text" #numOfOrders />
+                &nbsp;&nbsp;
+                <button
+                  (click)="getLastOrdersItem(numOfOrders.value, 'material')"
+                >
+                  Watch History
+                </button>
+              </div>
+            </div>
+          </div>
+
           <div class="smallLoader" *ngIf="fetchingOrders"></div>
           <div
             *ngIf="lastOrdersOfItem.length > 0"
@@ -3734,7 +3967,17 @@
       <span class="float-left"> * Required field</span>
 
       <div class="row mt-2 fixNoaStupidStuff">
-        <div class="col-3">
+        <div class="col-2 fixNoaStupidStuff">
+          <label class="text-info">Purchaser</label>
+          <span class="hot-red float-left">*</span>
+          <select class="form-control rounded-pill" formControlName="purchaser">
+            <option value="" disabled>בחר מנהל רכש</option>
+            <option *ngFor="let user of purchasers" [value]="user.userName">
+              {{ user.firstName }} {{ user.lastName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-2 fixNoaStupidStuff">
           <label class="text-info">Date</label>
           <span class="hot-red float-left">*</span>
           <input
@@ -3744,7 +3987,7 @@
             required
           />
         </div>
-        <div class="col-3">
+        <div class="col-2 fixNoaStupidStuff">
           <label class="text-info">My Email</label>
           <span class="hot-red float-left">*</span>
           <input
@@ -3754,7 +3997,7 @@
             required
           />
         </div>
-        <div class="col-5">
+        <div class="col-5 fixNoaStupidStuff">
           <label class="text-info">Remarks</label>
           <input
             type="text"
@@ -3797,7 +4040,7 @@
             >בהול <span *ngIf="!recommendStockItem.urgent">?</span>
             <span *ngIf="recommendStockItem.urgent">!!!</span></label
           >
-          <br /><br />
+          <br />
           <input
             type="checkbox"
             [ngModelOptions]="{ standalone: true }"
@@ -3865,7 +4108,7 @@
             <option value="box">קופסא</option>
           </select>
         </div>
-        <div class="col-1">
+        <div class="col-1 fixNoaStupidStuff">
           <label class="text-info">Customer Order</label>
           <select
             [ngModelOptions]="{ standalone: true }"

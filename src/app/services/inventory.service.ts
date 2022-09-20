@@ -1102,6 +1102,26 @@ export class InventoryService {
       this.baseUrl + "component/checkIfItemIsActive?itemNumber=" + itemNumber;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+  getMaterialUsage(months, itemNumber) {
+    let url =
+      this.baseUrl +
+      "itemmovement/materialUsageMonths?months=" +
+      months +
+      "&itemNumber=" +
+      itemNumber;
+
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+  getComponentUsage(months, itemNumber) {
+    let url =
+      this.baseUrl +
+      "itemmovement/componentUsageMonths?months=" +
+      months +
+      "&itemNumber=" +
+      itemNumber;
+
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
 }
 
 // startNewItemObservable() {
