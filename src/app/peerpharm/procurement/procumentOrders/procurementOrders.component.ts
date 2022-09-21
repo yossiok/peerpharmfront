@@ -1183,7 +1183,10 @@ export class ProcurementOrdersComponent implements OnInit {
     console.log(this.recommendFilterForm.value.itemNumber);
     let itemNumber = this.recommendFilterForm.value.itemNumber;
     this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(
-      (rec) => rec.itemNumber.includes(itemNumber)
+      (rec) => {
+        let idx = rec.stockitems.findIndex((si) => si.number == itemNumber);
+        return idx > -1;
+      }
     );
   }
   resetFilterRec() {
