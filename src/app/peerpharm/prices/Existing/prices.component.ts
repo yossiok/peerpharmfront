@@ -106,7 +106,7 @@ export class PricesComponent implements OnInit {
               this.calculating = false;
               this.loadingCustomers = true;
               this.getCustomersForItem(this.item.itemNumber);
-              this.getSuppliersForComponents();
+              // this.getSuppliersForComponents();
               this.getStockAmounts();
             })
             .catch((error) => {
@@ -166,6 +166,7 @@ export class PricesComponent implements OnInit {
         this.createComponentsPrice(this.allComponents)
           .then((itemComponents) => {
             this.itemComponents = itemComponents;
+
             // Calculate total item price
             for (let component of this.itemComponents) {
               if (typeof component.price == typeof 0)
@@ -214,26 +215,35 @@ export class PricesComponent implements OnInit {
             Number(component.price) - component.shippingPrice;
           coin = component.coin ? component.coin : "ILS";
         } else {
-          let suppliers = component.alternativeSuppliers;
-          if (!suppliers || suppliers.length == 0) componentPricing.price = 0;
-          else {
-            for (let i = 0; i < suppliers.length; i++) {
-              if (
-                suppliers[i].price != "" &&
-                suppliers[i].price != null &&
-                suppliers[i].price != undefined
-              ) {
-                componentPricing.price =
-                  Number(suppliers[i].price) - component.shippingPrice;
-                coin = suppliers[i].coin ? suppliers[i].coin : "ILS";
-                i = suppliers.length;
-              } else {
-                componentPricing.price = 0;
+          if (component.lastOrders && component.lastOrders.length > 0) {
+            for (let order of component.lastOrders) {
+              if (order.price) {
+                let shippingPrice = order.shippingPrice
+                  ? Number(order.shippingPrice)
+                  : 0;
+                componentPricing.price = order.price + shippingPrice;
+                coin = order.coin ? order.coin : "ILS";
+                break;
+              }
+            }
+          } else {
+            let suppliers = component.alternativeSuppliers;
+            componentPricing.price = 0;
+            if (suppliers && suppliers.length > 0) {
+              for (let supplier of suppliers) {
+                if (supplier.price) {
+                  componentPricing.price = Number(supplier.price);
+                  componentPricing.shippingPrice = supplier.shippingPrice
+                    ? supplier.shippingPrice
+                    : 0;
+                  coin = supplier.coin ? supplier.coin.toUpperCase() : "ILS";
+                  break;
+                }
               }
             }
           }
         }
-        // if(!coin) reject(`Item ${component.componentN}`) // crashing table, removed
+
         console.log(coin);
         if (!coin || !componentPricing.price) {
           console.log("Coin or Price is not defined", componentPricing);
