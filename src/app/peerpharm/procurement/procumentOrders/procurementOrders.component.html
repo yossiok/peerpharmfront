@@ -265,7 +265,10 @@
                 </div> -->
 
               <div class="col-2">
-                <button (click)="resetFilters()" class="btn btn-secondary">
+                <button
+                  (click)="resetFilters()"
+                  class="btn btn-secondary rounded-pill mt-3"
+                >
                   Reset All Filters
                 </button>
               </div>
@@ -878,42 +881,84 @@
       ></i>
     </div>
   </div>
+  <form action="" [formGroup]="recommendFilterForm">
+    <div class="row mt-1">
+      <div class="col-1"></div>
 
-  <div class="row mt-1">
-    <div class="col-1"></div>
-    <div class="col-3">
-      <select
-        (change)="filterRecByType($event)"
-        class="form-control rounded-pill"
-      >
-        <option selected="true" disabled="disabled">Choose Type</option>
-        <option value="all">All</option>
-        <option value="components">Components</option>
-        <option value="materials">Materials</option>
-      </select>
-    </div>
-    <div class="col-3">
-      <input
-        (change)="filterRecByNumber($event)"
-        type="text"
-        class="form-control rounded-pill"
-        placeholder="Search By Number"
-      />
-    </div>
-    <div class="col-3"></div>
-    <div class="col-1">
-      <button
-        (click)="moveToNewPurchase()"
-        class="btn btn-primary form-control rounded-pill"
-      >
-        Order
-      </button>
-    </div>
-    <div class="col-1"></div>
-    <!-- <div class="col-3">
+      <div class="col-2">
+        <label for="">Filter by Type</label>
+        <select
+          (change)="filterRecByType()"
+          class="form-control rounded-pill"
+          formControlName="itemType"
+          placeholder="Choose Type"
+        >
+          <option value="all">All</option>
+          <option value="component">Components</option>
+          <option value="material">Materials</option>
+        </select>
+      </div>
+      <div class="col-2">
+        <label for="">Filter By User</label>
+        <select
+          (change)="filterRecByUser()"
+          class="form-control rounded-pill"
+          formControlName="userName"
+          placeholder="Choose User"
+        >
+          <option *ngFor="let user of users" [value]="user.userName">
+            {{ user.firstName }} {{ user.lastName }}
+          </option>
+        </select>
+      </div>
+      <div class="col-2">
+        <label for="">Filter By Purchaser</label>
+        <select
+          (change)="filterRecByPurchaser()"
+          class="form-control rounded-pill"
+          formControlName="purchaser"
+          placeholder="Choose Purchaser"
+        >
+          <option
+            *ngFor="let purchaser of purchasers"
+            [value]="purchaser.userName"
+          >
+            {{ purchaser.firstName }} {{ purchaser.lastName }}
+          </option>
+        </select>
+      </div>
+      <div class="col-1">
+        <label for="">By Item Number</label>
+        <input
+          (change)="filterRecByItemNumber()"
+          type="text"
+          formControlName="itemNumber"
+          class="form-control rounded-pill"
+          placeholder="Filter By Number"
+        />
+      </div>
+      <div class="col-1">
+        <button
+          (click)="resetFilterRec()"
+          class="btn btn-info form-control rounded-pill mt-4"
+        >
+          Reset
+        </button>
+      </div>
+      <div class="col-1">
+        <button
+          (click)="moveToNewPurchase()"
+          class="btn btn-primary form-control rounded-pill mt-4"
+        >
+          Order
+        </button>
+      </div>
+      <div class="col-1"></div>
+      <!-- <div class="col-3">
     <img (click)="getAllPurchaseRecommends()" style="width:50px" src="../../../../assets/images/refreshData.png">
   </div> -->
-  </div>
+    </div>
+  </form>
 
   <div *ngIf="loadingRecommendations">
     <div *ngIf="loadingRecommendations" class="smallLoader ml-5"></div>

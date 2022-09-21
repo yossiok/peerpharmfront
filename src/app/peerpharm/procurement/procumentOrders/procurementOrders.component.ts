@@ -109,7 +109,8 @@ export class ProcurementOrdersComponent implements OnInit {
   destinationLine: any;
   chooseMultipleSuppliers: boolean = false;
   // users: import("c:/tommy/system/peerpharmfront/src/app/peerpharm/taskboard/models/UserInfo").UserInfo[];
-  users: any;
+  users: any[] = [];
+  purchasers: any[] = [];
   newItem = {
     itemNumber: "",
     itemName: "",
@@ -137,6 +138,14 @@ export class ProcurementOrdersComponent implements OnInit {
     itemNumber: new FormControl(null),
     origin: new FormControl(null),
   });
+
+  recommendFilterForm: FormGroup = new FormGroup({
+    itemType: new FormControl(""),
+    itemNumber: new FormControl(""),
+    userName: new FormControl(null),
+    purchaser: new FormControl(""),
+  });
+
   purchaseRecommendationToPrint: any = {};
   loadingProblematics: boolean = false;
   problematicsModal: boolean = false;
@@ -215,6 +224,7 @@ export class ProcurementOrdersComponent implements OnInit {
     let isClosed = false;
     this.getAllProcurementOrders(isClosed);
   }
+
   //The isClosed argument is sent from filterPurchaseOrders()
   getAllProcurementOrders(isClosed) {
     this.orderDetailsModal = false;
@@ -294,13 +304,19 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   getAllUsers() {
-    this.userService.getAllUsers().subscribe(
-      (users) =>
-        (this.users = users.sort((a, b) => {
-          if (a.userName.toLowerCase() > b.userName.toLowerCase()) return 1;
-          else return -1;
-        }))
-    );
+    this.userService.getAllUsers().subscribe((users) => {
+      console.log(users);
+      this.users = users.sort((a, b) => {
+        if (a.userName.toLowerCase() > b.userName.toLowerCase()) return 1;
+        else return -1;
+      });
+      this.purchasers = users.filter((user) => {
+        return (
+          user.authorization.includes("newPurchase") &&
+          user.authorization.includes("editPurchase")
+        );
+      });
+    });
   }
 
   getCurrencies(): void {
@@ -919,6 +935,7 @@ export class ProcurementOrdersComponent implements OnInit {
           si.color = si.color == "lightgreen" ? "lightgreen" : "";
         });
       });
+      this.purchaseRecommendationsCopy = this.purchaseRecommendations;
     });
   }
 
@@ -1130,5 +1147,47 @@ export class ProcurementOrdersComponent implements OnInit {
 
   open(modal) {
     this.modalService.open(modal);
+  }
+
+  filterRecByType() {
+    console.log(this.recommendFilterForm.value.itemType);
+
+    let itemType = this.recommendFilterForm.value.itemType;
+    if (itemType == "all") {
+      this.purchaseRecommendations = this.purchaseRecommendationsCopy;
+      return;
+    } else {
+      this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(
+        (rec) => rec.type == itemType
+      );
+    }
+  }
+  filterRecByUser() {
+    console.log(this.recommendFilterForm.value.userName);
+    let userName = this.recommendFilterForm.value.userName;
+
+    this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(
+      (rec) => rec.user == userName
+    );
+  }
+
+  filterRecByPurchaser() {
+    console.log(this.recommendFilterForm.value.purchaser);
+    let purchaser = this.recommendFilterForm.value.purchaser;
+
+    this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(
+      (rec) => rec.purchaser == purchaser
+    );
+  }
+  filterRecByItemNumber() {
+    console.log(this.recommendFilterForm.value.itemNumber);
+    let itemNumber = this.recommendFilterForm.value.itemNumber;
+    this.purchaseRecommendations = this.purchaseRecommendationsCopy.filter(
+      (rec) => rec.itemNumber.includes(itemNumber)
+    );
+  }
+  resetFilterRec() {
+    this.recommendFilterForm.reset();
+    this.purchaseRecommendations = this.purchaseRecommendationsCopy;
   }
 }
