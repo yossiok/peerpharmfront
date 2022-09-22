@@ -206,22 +206,23 @@ export class PricesComponent implements OnInit {
         //Calculate component pricing
         if (component.manualPrice) {
           componentPricing.price = Number(component.manualPrice);
-          coin = component.manualCoin ? component.manualCoin : "ILS";
-        } else if (component.price) {
-          component.shippingPrice = component.shippingPrice
-            ? Number(component.shippingPrice)
-            : 0;
-          componentPricing.price =
-            Number(component.price) - component.shippingPrice;
-          coin = component.coin ? component.coin : "ILS";
+          coin = component.manualCoin
+            ? component.manualCoin.toUpperCase()
+            : "ILS";
+          // } else if (component.price) {
+          //   component.shippingPrice = component.shippingPrice
+          //     ? component.shippingPrice
+          //     : 0;
+          //   componentPricing.price = Number(component.price);
+          //   coin = component.coin ? component.coin.toUpperCase() : "ILS";
         } else {
           if (component.lastOrders && component.lastOrders.length > 0) {
             for (let order of component.lastOrders) {
               if (order.price) {
-                let shippingPrice = order.shippingPrice
-                  ? Number(order.shippingPrice)
+                componentPricing.shippingPrice = order.shippingPrice
+                  ? order.shippingPrice
                   : 0;
-                componentPricing.price = order.price + shippingPrice;
+                componentPricing.price = Number(order.price);
                 coin = order.coin ? order.coin : "ILS";
                 break;
               }
@@ -240,6 +241,14 @@ export class PricesComponent implements OnInit {
                   break;
                 }
               }
+            }
+
+            if (!componentPricing.price && component.price) {
+              component.shippingPrice = component.shippingPrice
+                ? component.shippingPrice
+                : 0;
+              componentPricing.price = Number(component.price);
+              coin = component.coin ? component.coin.toUpperCase() : "ILS";
             }
           }
         }
