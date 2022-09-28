@@ -137,6 +137,7 @@ export class ProcurementOrdersComponent implements OnInit {
     supplier2: new FormControl(null),
     itemNumber: new FormControl(null),
     origin: new FormControl(null),
+    supplierN: new FormControl(null),
   });
 
   recommendFilterForm: FormGroup = new FormGroup({
@@ -206,7 +207,7 @@ export class ProcurementOrdersComponent implements OnInit {
     private modalService: NgbModal,
     private userService: UsersService,
     private ordersService: OrdersService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getAllUsers();
@@ -223,6 +224,35 @@ export class ProcurementOrdersComponent implements OnInit {
     //isClosed is a boolean parameter, default value is false
     let isClosed = false;
     this.getAllProcurementOrders(isClosed);
+  }
+
+  orderBy(param) {
+ 
+
+    console.log(param);
+    switch (param) {
+      case 'pNum':
+        this.procurementData = this.procurementData.sort((a, b) => a.orderNumber - b.orderNumber);
+        break;
+      case 'supplier':
+        this.procurementData = this.procurementData.sort((a, b) => a.supplierName.localeCompare(b.supplierName)    );
+        break;
+
+      case 'cdate':
+        this.procurementData = this.procurementData.sort((a, b) => Date.parse(a.creationDate) -  Date.parse(b.creationDate)  );
+        break;
+      case 'rdate':
+        this.procurementData = this.procurementData.sort((a, b) =>  Date.parse(a.requestedDate) -  Date.parse(b.requestedDate)    );
+        break;
+     
+        case 'status':
+          this.procurementData = this.procurementData.sort((a, b) => a.status.localeCompare(b.status));
+          break;
+         
+
+    }
+
+
   }
 
   //The isClosed argument is sent from filterPurchaseOrders()
@@ -262,7 +292,7 @@ export class ProcurementOrdersComponent implements OnInit {
           );
         }
       },
-      () => {},
+      () => { },
       () => {
         this.fetchingOrders = false;
         if (this.procurementData.length > 0) {
@@ -410,7 +440,7 @@ export class ProcurementOrdersComponent implements OnInit {
       for (let item of this.checkedRecommendations) {
         this.procurementservice
           .checkRecommendationItemAsOrdered(item.number, item.recommendationnum)
-          .subscribe((updatedRecommend) => {});
+          .subscribe((updatedRecommend) => { });
       }
       this.getAllPurchaseRecommends();
     }
@@ -483,6 +513,7 @@ export class ProcurementOrdersComponent implements OnInit {
   }
 
   filterPurchaseOrders() {
+    debugger;
     this.procurementData = this.procurementDataCopy;
 
     let status = this.filterForm.value.status;
@@ -495,6 +526,7 @@ export class ProcurementOrdersComponent implements OnInit {
     let itemNumber = this.filterForm.value.itemNumber;
     let supplier = this.filterForm.value.supplier;
     let origin = this.filterForm.value.origin;
+    let supplierN = this.filterForm.value.supplierN;
     // prevent status == null
     status = status ? status : "allOrders";
 
@@ -576,6 +608,11 @@ export class ProcurementOrdersComponent implements OnInit {
     if (supplier) {
       this.procurementData = this.procurementData.filter((purchOrder) =>
         purchOrder.supplierName.toLowerCase().includes(supplier)
+      );
+    }
+    if (supplierN) {
+      this.procurementData = this.procurementData.filter((purchOrder) =>
+        purchOrder.supplierNumber.toString().includes(supplierN)
       );
     }
 
