@@ -612,6 +612,16 @@ export class AllItemsComponent implements OnInit {
     );
     this.sortToggle *= -1;
   }
+  sortByFormuleNumber() {
+    let i = this.sortToggle;
+    this.filteredOrderItems.sort((a, b) => {
+      return a.formule.formuleNumber > b.formule.formuleNumber
+        ? i
+        : a.formule.formuleNumber < b.formule.formuleNumber
+        ? -i
+        : 0;
+    });
+  }
   //sort by the second level of the array (nested array)
   sortItemsOne(field) {
     let i = this.sortToggle;

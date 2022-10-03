@@ -58,6 +58,9 @@ import { ItemDetailsTabComponent } from "./items/item-details-tab/item-details-t
 import { OutServicesComponent } from "./out-services/out-services.component";
 import { PricesComponent } from "./prices/Existing/prices.component";
 import { AllPricingComponent } from "./prices/all-pricing/all-pricing.component";
+import { OrdersSimulatorComponent } from "./allorders/orders-simulator/orders-simulator.component";
+import { ItemsExplosionComponent } from "./allorders/orders-simulator/items-explosion/items-explosion.component";
+import { FormulesExplosionComponent } from "./allorders/orders-simulator/formules-explosion/formules-explosion.component";
 
 import { WharehouseComponent } from "./inventory/wharehouse/wharehouse.component";
 import { InventoryRequestsComponent } from "./inventory/wharehouse/inventory-requests/inventory-requests.component";
@@ -203,20 +206,13 @@ import { TemperaturesLogsComponent } from "./qa/temperaturesLogs/temperaturesLog
 import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
 import { StockProposalComponent } from "./customers/stock-proposal/stock-proposal.component";
 
-import {MkupFormComponent} from "./forms/mkupForm/mkupForm.component"
-import {FillingComponent} from "./forms/mkupForm/filling/filling.component"
-import {LaserComponent} from "./forms/mkupForm/laser/laser.component"
-import {MkupFormPrintingComponent} from "./forms/mkupForm/mkupFormPrinting/mkupFormPrinting.component"
-import {PersonalPackagingComponent} from "./forms/mkupForm/PersonalPackaging/personalPackaging.component"
-import {StickerComponent} from "./forms/mkupForm/sticker/sticker.component"
-import {MkupProductionComponent} from "./forms/mkupForm/mkupProduction/mkupProduction.component"
-
-
-
-
-
-
-
+import { MkupFormComponent } from "./forms/mkupForm/mkupForm.component";
+import { FillingComponent } from "./forms/mkupForm/filling/filling.component";
+import { LaserComponent } from "./forms/mkupForm/laser/laser.component";
+import { MkupFormPrintingComponent } from "./forms/mkupForm/mkupFormPrinting/mkupFormPrinting.component";
+import { PersonalPackagingComponent } from "./forms/mkupForm/PersonalPackaging/personalPackaging.component";
+import { StickerComponent } from "./forms/mkupForm/sticker/sticker.component";
+import { MkupProductionComponent } from "./forms/mkupForm/mkupProduction/mkupProduction.component";
 
 @NgModule({
   exports: [
@@ -401,7 +397,10 @@ import {MkupProductionComponent} from "./forms/mkupForm/mkupProduction/mkupProdu
     MkupFormPrintingComponent,
     PersonalPackagingComponent,
     StickerComponent,
-    MkupProductionComponent
+    MkupProductionComponent,
+    OrdersSimulatorComponent,
+    ItemsExplosionComponent,
+    FormulesExplosionComponent,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [

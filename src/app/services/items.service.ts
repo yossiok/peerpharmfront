@@ -113,6 +113,11 @@ export class ItemsService {
     let url = this.baseUrl + "item?itemDetails=" + itemNumber;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+  getItemByNumber(itemNumber) {
+    let url = this.baseUrl + "item/getItemByNumber?itemNumber=" + itemNumber;
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+
   getShellDetailsByNumber(itemNumber) {
     let url = this.baseUrl + "item?itemInShell=" + itemNumber;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
@@ -283,5 +288,14 @@ export class ItemsService {
   getAllproductsNew() {
     let url = this.baseUrl + "item/getAllproductsNew";
     return this.http.get(url).pipe(map((response) => response.json()));
+  }
+
+  getComponentsForList(list) {
+    let url = this.baseUrl + "component/getComponentsForList";
+    return this.http.post(url, list).pipe(map((response) => response.json()));
+  }
+  getMaterialsForList(list) {
+    let url = this.baseUrl + "material/getMaterialsForList";
+    return this.http.post(url, list).pipe(map((response) => response.json()));
   }
 }

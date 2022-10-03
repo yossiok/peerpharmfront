@@ -1,0 +1,141 @@
+<div *ngIf="user.screenPermission < 4">
+  <div class="main-part" dir="rtl">
+    <div class="left-part bg-white fixed-left-part">
+      <div class="position-relative">
+        <div class="px-3 py-3 d-flex align-items-center border-bottom">
+          <p class="mb-0 mt-5 py-1 text-center font-18 font-bold heb">
+            סימולטור הזמנות
+          </p>
+        </div>
+        <ul class="tasklist list-style-none">
+          <li
+            style="cursor: pointer"
+            class="task-item pr-2 py-1 d-flex incomplete border-bottom heb-menu"
+            (click)="itemsSimulator()"
+          >
+            תחזית הזמנות מוצרים<span
+              class="badge badge-danger ml-auto pr-2 pt-1"
+              [style.background]="1 | orderItemBatchStatusColor"
+              >&nbsp; 1 &nbsp;
+            </span>
+          </li>
+          <li
+            style="cursor: pointer"
+            class="task-item d-flex complete pr-2 border-bottom heb-menu"
+            (click)="formulesSimulator()"
+          >
+            תחזית פורמולות<span
+              class="badge badge-success ml-auto pt-1"
+              [style.background]="2 | orderItemBatchStatusColor"
+            >
+              &nbsp; 2 &nbsp;
+            </span>
+          </li>
+          <!-- <li
+            style="cursor: pointer"
+            class="task-item d-flex complete pr-2 border-bottom heb-menu"
+            (click)="customersListMenu()"
+          >
+            רשימת לקוחות<span
+              class="badge badge-success ml-auto pt-1"
+              [style.background]="3 | orderItemBatchStatusColor"
+            >
+              &nbsp; 3 &nbsp;</span
+            >
+          </li>
+          <li
+            style="cursor: pointer"
+            class="task-item d-flex complete pr-2 border-bottom heb-menu"
+            (click)="priceListsMenu()"
+          >
+            מחירונים<span
+              class="badge badge-success ml-auto pt-1"
+              [style.background]="4 | orderItemBatchStatusColor"
+              >&nbsp; 4 &nbsp;
+            </span>
+          </li>
+          <li
+            style="cursor: pointer"
+            class="task-item d-flex complete border-bottom heb-menu pr-2"
+            (click)="stockProposal()"
+          >
+            הזמנה למלאי<span
+              class="badge badge-success ml-auto pt-1"
+              [style.background]="5 | orderItemBatchStatusColor"
+              >&nbsp; 5 &nbsp;
+            </span>
+          </li> -->
+        </ul>
+      </div>
+    </div>
+    <div>
+      <!-- <h1 class="text-center">
+          <span class="heading2"> Customers Management</span>
+        </h1> -->
+      <div class="right-part bg-white">
+        <div
+          class="text-center shadow bg-white mx-auto rounded p-2"
+          style="width: 95%"
+        >
+          <div class="row mt-4" *ngIf="itemsSimulatorView">
+            <div class="col-12">
+              <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
+                תחזית הזמנות מוצרים
+              </h1>
+            </div>
+          </div>
+          <div class="row mt-4" *ngIf="formulesSimulatorView">
+            <div class="col-12">
+              <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
+                תחזית ייצור פורמולות
+              </h1>
+            </div>
+          </div>
+          <div class="row mt-4" *ngIf="customersListView">
+            <div class="col-12">
+              <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
+                רשימת לקוחות - Customers List
+              </h1>
+            </div>
+          </div>
+          <div class="row mt-4" *ngIf="priceListsView">
+            <div class="col-12">
+              <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
+                מחירונים - Price Lists
+              </h1>
+            </div>
+          </div>
+          <div class="row mt-4" *ngIf="stockPropsalView">
+            <div class="col-12">
+              <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
+                הזמנת מוצרים למלאי
+              </h1>
+            </div>
+          </div>
+          <div dir="rtl" class="row mt-4">
+            <app-items-explosion
+              *ngIf="itemsSimulatorView"
+            ></app-items-explosion>
+          </div>
+          <div dir="rtl" class="row mt-4">
+            <app-formules-explosion
+              *ngIf="formulesSimulatorView"
+            ></app-formules-explosion>
+          </div>
+          <div dir="rtl" class="row mt-4">
+            <app-price-lists
+              *ngIf="priceListsView"
+              [allCustomersList]="allCustomersList"
+            ></app-price-lists>
+          </div>
+          <div dir="rtl" class="row mt-4">
+            <app-stock-proposal
+              *ngIf="stockPropsalView"
+              [allCustomersList]="allCustomersList"
+            ></app-stock-proposal>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

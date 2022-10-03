@@ -96,6 +96,7 @@ import { TemperaturesLogsComponent } from "./qa/temperaturesLogs/temperaturesLog
 import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
 import { MkupFormComponent } from "./forms/mkupForm/mkupForm.component";
 import { SearchComponent } from "./search/search.component";
+import { OrdersSimulatorComponent } from "./allorders/orders-simulator/orders-simulator.component";
 // import { ItemIndexNewComponent } from "./item-index-new/item-index-new.component";
 
 export const PeerPharmRputs: Routes = [
@@ -129,6 +130,14 @@ export const PeerPharmRputs: Routes = [
       title: "All Orders",
     },
     component: AllordersComponent,
+  },
+  {
+    path: "allorders/orders-simulator",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Orders Simulator",
+    },
+    component: OrdersSimulatorComponent,
   },
   {
     path: "allorders/open-orderitems",

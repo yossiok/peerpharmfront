@@ -1,74 +1,494 @@
 <div dir="rtl">
-
-
   <form [formGroup]="componentCheckout" (ngSubmit)="addToOutGoing()">
     <h3>הוצאת סחורה</h3>
     <div class="row mt-4">
       <p class="h5">* = שדה חובה</p>
     </div>
     <div class="row mt-4">
-
       <div class="col-2">
         <label>מחסן *</label>
-        <select class="form-control" (change)="itemNumber ? getShelfs() : null" formControlName="whareHouseID" #first>
+        <select
+          class="form-control"
+          (change)="itemNumber ? getShelfs() : null"
+          formControlName="whareHouseID"
+          #first
+        >
           <option disabled value="">בחר מחסן</option>
-          <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
+          <option
+            *ngFor="let whareHouse of allWhareHouses"
+            [value]="whareHouse._id"
+          >
+            {{ whareHouse.name }}
           </option>
         </select>
-
       </div>
+      <div class="col-2">
+        <label>יעד הסחורה *</label>
+        <select class="form-control" formControlName="destinationType">
+          <option disabled value="">בחר</option>
+          <option [disabled]="supplierChosen" value="warehouse">
+            מחסן אחר
+          </option>
+          <option [disabled]="supplierChosen" value="customer">לקוח</option>
+          <option [disabled]="supplierChosen" value="localSupplier">
+            ספק בארץ (החזרה)
+          </option>
+          <option [disabled]="supplierChosen" value="externalSupplier">
+            ספק בחו"ל (החזרה)
+          </option>
+        </select>
+      </div>
+    </div>
+    <ng-container
+      *ngIf="
+        componentCheckout.controls.destinationType.value == 'localSupplier'
+      "
+    >
+      <div class="row mt-2">
+        <div class="col-2">
+          <label>ספק</label>
+          <input
+            list="suppliers"
+            (change)="getPurchaseOrders($event)"
+            class="form-control"
+            formControlName="supplier"
+            [disabled]="supplierChosen"
+          />
 
-      <div *ngIf="!disabled" class="col-2">
-        <label>
-          מק"ט *
-        </label>
-        <input type="text" [disabled]="disabled" formControlName="item" (blur)="getShelfs()" class="form-control">
+          <datalist id="suppliers">
+            <option
+              *ngFor="let supplier of allSuppliers"
+              value="{{ supplier.suplierNumber }}"
+              [disabled]="supplierChosen || whChosen"
+            >
+              {{ supplier.suplierNumber }} - {{ supplier.suplierName }}
+            </option>
+          </datalist>
+        </div>
+        <div class="col-2">
+          <label>מס' הזמנת רכש</label>
+          <select
+            class="form-control"
+            formControlName="purchaseOrder"
+            (change)="selectPurchaseOrder()"
+          >
+            <option selected value="">מס' הזמנה</option>
+            <option
+              *ngFor="let purchase of purchaseOrders"
+              [value]="purchase.orderNumber"
+            >
+              {{ purchase.orderNumber }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-4 w-100" *ngIf="purchaseOrder">
+        <table class="table table-hover">
+          <thead class="bg-info text-white">
+            <tr>
+              <th class="text-center">#</th>
+              <th class="text-center">סוג פריט</th>
+              <th class="text-center">מק"ט</th>
+              <th class="text-center">שם פריט</th>
+              <th class="text-center">כמות שהוזמנה</th>
+              <th class="text-center">כמות שסופקה</th>
+              <th class="text-center">יתרה להספקה</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of purchaseOrder.stockitems; let i = index">
+              <td class="text-center">{{ i + 1 }}</td>
+              <td class="text-center">{{ purchaseOrder.orderType }}</td>
+              <td class="text-center">{{ item.number }}</td>
+              <td class="text-center">{{ item.name }}</td>
+              <td class="text-center">{{ item.quantity }}</td>
+              <td class="text-center">{{ item.arrivedAmount }}</td>
+              <td class="text-center">
+                {{ item.quantity - item.arrivedAmount }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+    <ng-container
+      *ngIf="componentCheckout.controls.destinationType.value == 'warehouse'"
+    >
+      <div class="row mt-2">
+        <div class="col-2">
+          <label>מחסן *</label>
+          <select
+            class="form-control"
+            (change)="getWhActionLogs()"
+            formControlName="WH_destName"
+          >
+            <option disabled value="">בחר מחסן</option>
+            <option
+              *ngFor="let whareHouse of allWhareHouses"
+              [value]="whareHouse.name"
+              [disabled]="
+                whareHouse._id == componentCheckout.controls.whareHouseID.value
+              "
+              [style.background-color]="
+                whareHouse._id == componentCheckout.controls.whareHouseID.value
+                  ? '#cccccc'
+                  : 'white'
+              "
+            >
+              {{ whareHouse.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-4 w-100" *ngIf="purchaseOrder || whActionLog">
+        <table class="table table-hover">
+          <thead class="bg-info text-white">
+            <tr>
+              <th class="text-center">#</th>
+              <th class="text-center">סוג פריט</th>
+              <th class="text-center">מק"ט</th>
+              <th class="text-center">שם פריט</th>
+              <th class="text-center">מחסן מקור</th>
+              <th class="text-center">כמות שנופקה</th>
+              <th class="text-center">סטטוס</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let item of whActionLog.logs; let i = index"
+              [style.background-color]="
+                item.deliveryStatus == 'delivered' ? '#e8e5e5' : 'white'
+              "
+            >
+              <td class="text-center">{{ i + 1 }}</td>
+              <td class="text-center">{{ item.itemType }}</td>
+              <td class="text-center">{{ item.item }}</td>
+              <td class="text-center">{{ item.itemName }}</td>
+              <td class="text-center">{{ item.WH_originName }}</td>
+              <td class="text-center">{{ item.amount }}</td>
+              <td class="text-center">{{ item.deliveryStatus }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+    <ng-container
+      *ngIf="componentCheckout.controls.destinationType.value == 'customer'"
+    >
+      <div class="row mt-4">
+        <div class="col-2">
+          <label>שם הלקוח</label>
+          <input
+            list="customers"
+            class="form-control"
+            formControlName="customerId"
+            (change)="getOrders()"
+          />
+          <datalist id="customers">
+            <option value="" selected>בחר לקוח</option>
+            <option
+              *ngFor="let customer of customersList"
+              value="{{ customer.costumerId }}"
+            >
+              {{ customer.costumerId }} - {{ customer.costumerName }}
+            </option>
+          </datalist>
+        </div>
+        <div class="col-2">
+          <label>מספר הזמנה</label>
+          <select
+            formControlName="orderNumber"
+            class="form-control"
+            (change)="getOrderItems()"
+          >
+            <option value="" disabled>בחר הזמנה</option>
+            <option
+              *ngFor="let order of orderItemsList"
+              [value]="order.orderNumber"
+            >
+              {{ order.orderNumber }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row mt-4" *ngIf="currentOrder">
+        <table class="table table-hover">
+          <thead class="bg-info text-white">
+            <tr>
+              <th class="text-center">#</th>
+              <th class="text-center">מק"ט</th>
+              <th class="text-center">שם פריט</th>
+              <th class="text-center">סוג פריט</th>
+              <th class="text-center">כמות שהוזמנה</th>
+              <th class="text-center">כמות שיוצרה</th>
+              <th class="text-center">כמות שנופקה</th>
+              <th class="text-center">תאריך הזמנה</th>
+              <th class="text-center">סטטוס</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let item of currentOrder.orderItems; let i = index"
+              [style.background-color]="
+                item.status == 'done' ? '#e8e5e5' : 'white'
+              "
+            >
+              <td class="text-center">{{ i + 1 }}</td>
+              <td class="text-center">{{ item.itemNumber }}</td>
+              <td class="text-center">{{ item.discription }}</td>
+              <td class="text-center">{{ currentOrder.type }}</td>
+              <td class="text-center">{{ item.quantity }}</td>
+              <td class="text-center">{{ item.quantityProduced }}</td>
+              <td class="text-center">{{ item.quantitySupplied }}</td>
+              <td class="text-center">
+                {{ item.itemOrderDate | date: "dd/MM/yyyy" }}
+              </td>
+              <td class="text-center">{{ item.oiStatus }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </ng-container>
+
+    <div class="row mt-4">
+      <div
+        *ngIf="
+          !disabled &&
+          this.componentCheckout.controls.destinationType.value == 'customer'
+        "
+        class="col-2"
+      >
+        <label> מק"ט * </label>
+        <select
+          [disabled]="disabled"
+          formControlName="item"
+          #itemNum
+          (change)="getShelfs()"
+          class="form-control"
+        >
+          <ng-container *ngIf="currentOrder">
+            <option selected value="">מקט</option>
+            <option
+              *ngFor="let item of currentOrder.orderItems"
+              [value]="item.itemNumber"
+              [disabled]="item.oiStatus == 'shipped'"
+              [style.background]="
+                item.oiStatus == 'shipped' ? '#e8e5e5' : 'white'
+              "
+            >
+              {{ item.itemNumber }}
+            </option>
+          </ng-container>
+          <!-- <ng-container *ngIf="!purchaseOrder">
+            <option selected value="">מקט</option>
+            <option
+              *ngFor="let item of purchaseOrder.stockitems"
+              [value]="item.number"
+            >
+              {{ item.number }}
+            </option>
+          </ng-container> -->
+        </select>
+      </div>
+      <div
+        *ngIf="
+          !disabled &&
+          this.componentCheckout.controls.destinationType.value != 'customer'
+        "
+        class="col-2"
+      >
+        <label> מק"ט * </label>
+        <input
+          type="text"
+          #itemNum
+          [disabled]="disabled"
+          formControlName="item"
+          (blur)="getShelfs()"
+          class="form-control"
+        />
       </div>
       <div *ngIf="!disabled" class="col-2">
-        <label class="d-block">
-          שם
-        </label>
-        <input class="d-inline form-control" type="text" #name formControlName="itemName">
-        <button class="d-inline" type="button" (click)="getNames()">Find</button>
+        <label class="d-block"> שם </label>
+        <input
+          class="d-inline form-control"
+          type="text"
+          #name
+          formControlName="itemName"
+        />
+        <button class="d-inline" type="button" (click)="getNames()">
+          Find
+        </button>
         <select class="form-control" (change)="setItemDetailsNumber($event)">
-          <option *ngFor="let itemName of itemNames" [value]="itemName.componentN">{{itemName.componentName}}
+          <option
+            *ngFor="let itemName of itemNames"
+            [value]="itemName.componentN"
+          >
+            {{ itemName.componentName }}
           </option>
         </select>
       </div>
       <div class="col-2">
         <label>מדף *</label>
-        <select class="form-control" formControlName="shell_id_in_whareHouse" (change)="setShelf($event)">
+        <select
+          class="form-control"
+          formControlName="shell_id_in_whareHouse"
+          (blur)="setShelf($event)"
+        >
           <option disabled value="">בחר מדף</option>
-          <option *ngFor="let shellNum of shellNums" [disabled]="shellNum.position == 'MINUS'"
-            [value]="shellNum.shell_id_in_whareHouse" [ngStyle]="{'color': shellNum.amount >=0 ? 'black' : 'red' }">
-            {{shellNum.position}} - {{shellNum.amount}} pcs
+          <option
+            *ngFor="let shellNum of shellNums"
+            [disabled]="shellNum.position == 'MINUS'"
+            [value]="shellNum.shell_id_in_whareHouse"
+            [ngStyle]="{ color: shellNum.amount >= 0 ? 'black' : 'red' }"
+          >
+            {{ shellNum.position }} - {{ shellNum.amount }} pcs
           </option>
         </select>
-        <input type="checkbox" (change)="shaulyShutUp()" class="return">
-        <h3 class="return-label">החזרת סחורה</h3>
+        <!-- <input type="checkbox" (change)="shaulyShutUp()" class="return" />
+        <h3 class="return-label">החזרת סחורה</h3> -->
       </div>
-      <div class="col-2">
+      <div
+        class="col-2"
+        *ngIf="
+          this.componentCheckout.controls.destinationType.value != 'customer'
+        "
+      >
         <label>כמות *</label>
-        <input type="number" min="1" formControlName="amount" (change)="checkAmount()" class="form-control">
-        <div style="color:red; font-size: 1.2rem;font-weight: bold;"
-          *ngIf="componentCheckout.controls.amount.errors?.min">* הכמות חייבת
-          להיות גדולה מאפס
+        <input
+          type="number"
+          min="1"
+          formControlName="amount"
+          (change)="checkAmount()"
+          class="form-control"
+        />
+        <div
+          style="color: red; font-size: 1.2rem; font-weight: bold"
+          *ngIf="componentCheckout.controls.amount.errors?.min"
+        >
+          * הכמות חייבת להיות גדולה מאפס
         </div>
-        <label>סיבת <span *ngIf="!isReturn">יציאה</span><span *ngIf="isReturn">החזרה</span> *</label>
-        <input type="text" class="form-control" formControlName="destination">
-      </div>
-      <div class="col-2 d-flex flex-column justify-content-around">
-        <button type="submit" [disabled]="!componentCheckout.valid"
-          [style.cursor]="componentCheckout.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">הוצא</button>
-        <button type="button" class="btn btn-secondary" (click)="componentCheckout.reset()">נקה נתונים</button>
-      </div>
-      <div class="col-1">
+        <!-- <label
+          >סיבת <span *ngIf="!isReturn">יציאה</span
+          ><span *ngIf="isReturn">החזרה</span> *</label
+        >
+        <input type="text" class="form-control" formControlName="destination" /> -->
       </div>
     </div>
+    <ng-container
+      *ngIf="
+        this.componentCheckout.controls.destinationType.value == 'customer'
+      "
+    >
+      <div class="row mt-4">
+        <div class="col-2">
+          <label>קרטונים בקומה *</label>
+          <input
+            type="number"
+            min="1"
+            formControlName="kartonQuantity"
+            class="form-control"
+            (change)="getAmount()"
+          />
+        </div>
+        <div class="col-2">
+          <label>מספר קומות מלאות *</label>
+          <input
+            type="number"
+            min="1"
+            formControlName="floorNumber"
+            class="form-control"
+            (change)="getAmount()"
+          />
+          <div
+            style="color: red; font-size: 1.2rem; font-weight: bold"
+            *ngIf="componentCheckout.controls.amount.errors?.min"
+          >
+            * הכמות חייבת להיות גדולה מאפס
+          </div>
+        </div>
+        <div class="col-2">
+          <label>קרטונים בקומה חלקית</label>
+          <input
+            type="number"
+            min="1"
+            formControlName="lastFloorQuantity"
+            class="form-control"
+            (change)="getAmount()"
+          />
+        </div>
+        <div class="col-2">
+          <label>יחידות בקרטון מלא *</label>
+          <input
+            type="number"
+            min="1"
+            formControlName="unitsInKarton"
+            class="form-control"
+            (change)="getAmount()"
+          />
+          <div
+            style="color: red; font-size: 1.2rem; font-weight: bold"
+            *ngIf="componentCheckout.controls.amount.errors?.min"
+          >
+            * הכמות חייבת להיות גדולה מאפס
+          </div>
+        </div>
+        <div class="col-2">
+          <label>יחידות בקרטון חלקי *</label>
+          <input
+            type="number"
+            min="0"
+            formControlName="unitsQuantityPartKarton"
+            class="form-control"
+            (change)="getAmount()"
+          />
+        </div>
+        <div class="col-1">
+          <label>משטח</label>
+          <select formControlName="kindOfPallet" class="form-control">
+            <option value="" selected disabled>סוג</option>
+            <option value="EU">EU</option>
+            <option value="US">US</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="col-1">
+          <label for="">כמות</label>
+          <div class="form-control">
+            {{ componentCheckout.value.amount }}
+          </div>
+        </div>
+      </div>
+    </ng-container>
     <div class="row mt-4">
-      <div class="col-8"></div>
+      <div class="col-2">
+        <button
+          type="submit"
+          [disabled]="!componentCheckout.valid"
+          [style.cursor]="componentCheckout.valid ? 'pointer' : 'not-allowed'"
+          class="btn btn-info"
+        >
+          העבר לתעודה
+        </button>
+      </div>
+      <div class="col-2">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="
+            componentCheckout.reset();
+            supplierChosen = false;
+            currentOrder = null
+          "
+        >
+          נקה נתונים
+        </button>
+      </div>
       <div class="col-2" *ngIf="itemNames">
-        <img [src]=itemNames[0].img alt=" חסרה תמונה ראשית" class="pictureTabImg">
+        <img
+          [src]="itemNames[0].img"
+          alt=" חסרה תמונה ראשית"
+          class="pictureTabImg"
+        />
       </div>
     </div>
   </form>
@@ -79,41 +499,88 @@
       <thead class="bg-info text-white">
         <tr>
           <th class="text-center">פריט</th>
+          <th class="text-center">תאור</th>
           <th class="text-center">כמות</th>
           <th class="text-center">יצא ממחסן..</th>
           <th class="text-center">ממדף..</th>
-          <th class="text-center"></th>
+          <th class="text-center">יעד</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let arrival of outGoing; let i = index">
-          <td class="text-center">{{arrival.item}}</td>
-          <td class="text-center">{{arrival.amount}}</td>
-          <td class="text-center">{{arrival.whareHouse}}</td>
-          <td class="text-center">{{arrival.position}}</td>
-          <td class="text-center"><i (click)="removeFromArrivals(i)" class="fa fa-times text-danger"></i></td>
+          <td class="text-center">{{ arrival.item }}</td>
+          <td class="text-center">{{ arrival.itemName }}</td>
+          <td class="text-center">{{ arrival.amount }}</td>
+          <td class="text-center">{{ arrival.whareHouse }}</td>
+          <td class="text-center">{{ arrival.position }}</td>
+          <td
+            class="text-center"
+            *ngIf="this.componentCheckout.value.destinationType == 'warehouse'"
+          >
+            {{ arrival.WH_destName }}
+          </td>
+          <td
+            class="text-center"
+            *ngIf="this.componentCheckout.value.destinationType == 'customer'"
+          >
+            {{ arrival.customerName }}
+          </td>
+          <td
+            class="text-center"
+            *ngIf="
+              this.componentCheckout.value.destinationType == 'localSupplier'
+            "
+          >
+            {{ arrival.supplierName }}
+          </td>
+          <td
+            class="text-center"
+            *ngIf="
+              this.componentCheckout.value.destinationType == 'externalSupplier'
+            "
+          >
+            {{ arrival.supplierName }}
+          </td>
+          <td class="text-center">
+            <i
+              (click)="removeFromArrivals(i)"
+              class="fa fa-times text-danger"
+            ></i>
+          </td>
         </tr>
       </tbody>
-
     </table>
   </div>
 
   <div class="row mt-2 d-flex flex-row justify-content-around w-50">
-    <button *ngIf="!sending" class="btn btn-info" (click)="checkout()" [disabled]="outGoing.length == 0"
-      [style.cursor]="outGoing.length == 0 ? 'not-allowed' : 'pointer'">
+    <button
+      *ngIf="!sending"
+      class="btn btn-info"
+      (click)="checkout()"
+      [disabled]="outGoing.length == 0"
+      [style.cursor]="outGoing.length == 0 ? 'not-allowed' : 'pointer'"
+    >
       הוצא מהמלאי (שלח שינויים) <i class="fa fa-check"></i>
     </button>
     <div class="smallerLoader" *ngIf="sending"></div>
-    <button class="btn btn-success" (click)="justPrint()">הדפס <i class="fa fa-print"></i></button>
-    <button class="btn btn-warning" (click)="clearArrivals()">נקה טבלה <i class="fas fa-trash-alt"></i></button>
+    <button class="btn btn-success" (click)="justPrint()">
+      הדפס <i class="fa fa-print"></i>
+    </button>
+    <button class="btn btn-warning" (click)="clearArrivals()">
+      נקה טבלה <i class="fas fa-trash-alt"></i>
+    </button>
   </div>
 
   <!-- תעודת יציאה -->
   <div class="row mt-4">
-    <div id="print-section2" style="direction: rtl; text-align: right; display: none; ">
+    <div
+      id="print-section2"
+      style="direction: rtl; text-align: right; display: none"
+    >
       <header>
         <h1>פאר פארם בע"מ</h1>
-        <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256 </p>
+        <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256</p>
         <p>
           <span>טלפון 03-9024055</span>&nbsp;&nbsp;
           <span>פקס 03-9024015</span>&nbsp;&nbsp;
@@ -122,35 +589,45 @@
         </p>
       </header>
       <main>
-        <h2>תעודת <span *ngIf="!isReturn">יציאה</span><span *ngIf="isReturn">החזרה</span> מס' {{certificateReception}}
+        <h2>
+          תעודת <span *ngIf="!isReturn">יציאה</span
+          ><span *ngIf="isReturn">החזרה</span> מס' {{ certificateReception }}
         </h2>
-        <p class='originDestWh'>
-          <span><u>תאריך:</u></span>&nbsp;&nbsp;
-          <span>{{today | date :'dd-MM-yyyy' }}</span>&nbsp;&nbsp;
-
+        <p class="originDestWh">
+          <span><u>תאריך:</u></span
+          >&nbsp;&nbsp; <span>{{ today | date: "dd-MM-yyyy" }}</span
+          >&nbsp;&nbsp;
         </p>
-        <br>
+        <br />
         <table>
           <tbody>
             <tr>
               <th>#</th>
               <th>מספר פריט</th>
+              <th>תאור</th>
               <th>מחסן</th>
               <th>מיקום</th>
               <th>כמות</th>
-              <th class='itemNamePrint'>שם פריט</th>
-              <th>סיבת יציאה / החזרה</th>
-
+              <th class="itemNamePrint">שם פריט</th>
+              <th>יעד</th>
             </tr>
-            <ng-container *ngFor="let arrival of outGoing; let i =index">
+            <ng-container *ngFor="let arrival of outGoing; let i = index">
               <tr>
-                <td class="cellPadding">{{i+1}}</td>
-                <td>{{arrival.item}}</td>
-                <td>{{arrival.whareHouse}}</td>
-                <td>{{arrival.position}}</td>
-                <td>{{arrival.amount>=0?arrival.amount:-arrival.amount}}</td>
-                <td>{{arrival.itemName}}</td>
-                <td>{{arrival.destination}}</td>
+                <td class="cellPadding">{{ i + 1 }}</td>
+                <td>{{ arrival.item }}</td>
+                <td>{{ arrival.itemName }}</td>
+                <td>{{ arrival.whareHouse }}</td>
+                <td>{{ arrival.position }}</td>
+                <td>
+                  {{ arrival.amount >= 0 ? arrival.amount : -arrival.amount }}
+                </td>
+                <td>{{ arrival.itemName }}</td>
+                <td *ngIf="arrival.destinationType == 'warehouse'">
+                  {{ arrival.WH_destName }}
+                </td>
+                <td *ngIf="arrival.destinationType == 'customer'">
+                  {{ arrival.customerName }}
+                </td>
               </tr>
             </ng-container>
           </tbody>
@@ -163,42 +640,47 @@
             <u>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </u>
-          </span>&nbsp;&nbsp;
-          <span>חתימה:</span>&nbsp;&nbsp;
+            </u> </span
+          >&nbsp;&nbsp; <span>חתימה:</span>&nbsp;&nbsp;
           <span>
             <u>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </u>
-          </span>&nbsp;&nbsp;
-          <span>תאריך:</span>&nbsp;&nbsp;
+            </u> </span
+          >&nbsp;&nbsp; <span>תאריך:</span>&nbsp;&nbsp;
           <span>
             <u>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </u>
-          </span>&nbsp;&nbsp;
+            </u> </span
+          >&nbsp;&nbsp;
         </p>
       </div>
-      <footer>
-      </footer>
+      <footer></footer>
     </div>
-    <button style='display: none;' #printBtn2 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl'}, 
-      header : {'border-bottom': 'solid 1px'},
-      main : {'border-bottom': 'solid 1px' },
-      table :{ 'text-align': 'right' },
-      footer : { 'position': 'absolute' , 'width': '100%' },
-      h2 : {'text-align': 'center'},
-      '.originDestWh':{'text-align':'right'},
-      th : {'width': '16%' },
-      td : {'width': '16%' },
-      '.itemNamePrint' : {'width': '35%'},
-      '.signatures' : { 'margin' : '50px'},
-      '.cellPadding' : { 'padding' : '15px 0px'}
-      }" printTitle="תעודת יציאה" printSectionId="print-section2" ngxPrint>print</button>
+    <button
+      style="display: none"
+      #printBtn2
+      [printStyle]="{
+        body: { 'text-align': 'right', direction: 'rtl' },
+        header: { 'border-bottom': 'solid 1px' },
+        main: { 'border-bottom': 'solid 1px' },
+        table: { 'text-align': 'right' },
+        footer: { position: 'absolute', width: '100%' },
+        h2: { 'text-align': 'center' },
+        '.originDestWh': { 'text-align': 'right' },
+        th: { width: '16%' },
+        td: { width: '16%' },
+        '.itemNamePrint': { width: '35%' },
+        '.signatures': { margin: '50px' },
+        '.cellPadding': { padding: '15px 0px' }
+      }"
+      printTitle="תעודת יציאה"
+      printSectionId="print-section2"
+      ngxPrint
+    >
+      print
+    </button>
     <!-- <button (click)="printStockTransferCertificate()">click</button> -->
-
   </div>
-
 </div>
