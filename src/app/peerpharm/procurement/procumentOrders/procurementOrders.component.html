@@ -112,11 +112,22 @@
                     class="form-control rounded"
                     formControlName="supplier"
                     [placeholder]="
-                      chooseMultipleSuppliers ? 'Supplier 1' : 'Supplier'
+                      chooseMultipleSuppliers ? 'Supplier 1' : 'Supplier Name'
                     "
                     (keyup)="
                       chooseMultipleSuppliers ? null : filterPurchaseOrders()
                     "
+                  />
+                </div>
+              </div>
+              <div class="col-2">
+                <div>
+                  <input
+                    type="text"
+                    class="form-control rounded"
+                    formControlName="supplierN"
+                    [placeholder]="'Supplier Number'  "
+                    (keyup)=" filterPurchaseOrders() "
                   />
                 </div>
                 <div *ngIf="chooseMultipleSuppliers">
@@ -340,15 +351,15 @@
               >
                 <tr>
                   <th><b>#</b></th>
-                  <th><b>Purchase Number</b></th>
-                  <th><b>Supplier</b></th>
+                  <th><b (click)="orderBy('pNum')">Purchase Number</b></th>
+                  <th><b (click)="orderBy('supplier')" >Supplier</b></th>
                   <th><b>Origin</b></th>
-                  <th><b>Creation Date</b></th>
-                  <th><b>Requested Date</b></th>
+                  <th><b (click)="orderBy('cdate')" >Creation Date</b></th>
+                  <th><b (click)="orderBy('rdate')" >Requested Date</b></th>
                   <th><b>Approval Date</b></th>
-                  <th><b>Customer Order</b></th>
+                  <th><b   >Customer Order</b></th>
                   <th><b>Remarks</b></th>
-                  <th><b>Status</b></th>
+                  <th><b (click)="orderBy('status')" >Status</b></th>
                   <th></th>
                   <th>User</th>
                 </tr>
