@@ -34,6 +34,14 @@ export const ROUTES: RouteInfo[] = [
         submenu: [],
       },
       {
+        path: "/peerpharm/allorders/orders-simulator",
+        title: "Orders Simulator",
+        icon: "mdi mdi-adjust",
+        class: "",
+        extralink: false,
+        submenu: [],
+      },
+      {
         path: "/peerpharm/allorders/open-orderitems",
         title: "Open OrderItems",
         icon: "mdi mdi-adjust",
