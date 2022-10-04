@@ -1,4 +1,6 @@
-<div *ngIf="!authorized">אינך מורשה לראות מסך זה</div>
+<div *ngIf="!authorized">
+  <h3 class="text-center">אינך מורשה לראות מסך זה</h3>
+</div>
 <div dir="rtl" *ngIf="authorized">
   <form action="" [formGroup]="orderSimForm" class="form_1">
     <div class="row mt-2">
@@ -10,6 +12,7 @@
           formControlName="itemNumber"
           class="form-control"
           (change)="getItemName()"
+          #first
         />
       </div>
       <div class="col-4">

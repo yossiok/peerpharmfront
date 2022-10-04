@@ -15,6 +15,7 @@ export class ItemsExplosionComponent implements OnInit {
   user: any = null;
   userName: string = "";
   authorized: boolean = false;
+  viewFormule: boolean = false;
 
   itemsList: any[] = [];
   materialsList: any[] = [];
@@ -30,6 +31,8 @@ export class ItemsExplosionComponent implements OnInit {
     unitWeight: new FormControl(null, Validators.required),
     components: new FormControl([]),
   });
+
+  @ViewChild("first") first: ElementRef;
 
   constructor(
     private toastr: ToastrService,
@@ -47,19 +50,30 @@ export class ItemsExplosionComponent implements OnInit {
     this.userName = this.user.userName;
     this.authorized =
       this.user.authorization.includes("newProposal") ||
-      this.user.authorization.includes("adminPanel");
+      this.user.authorization.includes("newOrder");
+    this.viewFormule =
+      this.user.authorization.includes("showFormule") ||
+      this.user.authorization.includes("formulePrice");
     console.log(this.user.authorization);
     console.log(this.user.userName);
     console.log(this.authorized);
+    console.log(this.viewFormule);
   }
 
   getItemName() {
     console.log(this.orderSimForm.value.itemNumber);
     let itemNumber = this.orderSimForm.value.itemNumber;
     this.itemsService.getItemByNumber(itemNumber).subscribe((data) => {
+      if (!data) {
+        this.toastr.error("לא נמצא מוצר במקט זה");
+        this.first.nativeElement.focus();
+        return;
+      }
+
       if (data.msg) {
         console.log(data.msg);
         this.toastr.error(data.msg);
+        this.first.nativeElement.focus();
         return;
       } else if (data) {
         this.orderSimForm.controls.itemName.setValue(data.itemName);
@@ -77,6 +91,7 @@ export class ItemsExplosionComponent implements OnInit {
     }
     this.itemsList.push(this.orderSimForm.value);
     this.orderSimForm.reset();
+    this.first.nativeElement.focus();
   }
   clearOrderSim() {
     this.orderSimForm.reset();
@@ -106,6 +121,11 @@ export class ItemsExplosionComponent implements OnInit {
     });
   }
   getMaterialsForList() {
+    if (!this.viewFormule) {
+      alert("אין לך הרשאה לראות נתונים אלה.");
+      return;
+    }
+
     if (this.itemsList.length == 0) {
       this.toastr.error("רשימת המוצרים ריקה, יש להכניס לפחות מוצר אחד לרשימה");
       return;

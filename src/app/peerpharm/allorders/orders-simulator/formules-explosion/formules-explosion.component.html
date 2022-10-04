@@ -1,1 +1,159 @@
-<p>formules-explosion works!</p>
+<div *ngIf="!authorized">
+  <h3 class="text-center">אינך מורשה לראות מסך זה</h3>
+</div>
+<div *ngIf="authorized" dir="rtl">
+  <form action="" [formGroup]="formuleSimForm" class="form_1">
+    <div class="row mt-2">
+      <div class="col-1"></div>
+      <div class="col-2">
+        <label for=""> מספר פורמולה</label>
+        <input
+          type="text"
+          formControlName="formuleNumber"
+          class="form-control"
+          (change)="getFormuleName()"
+          #first
+        />
+      </div>
+      <div class="col-4">
+        <label for="">שם הפורמולה</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="formuleName"
+          disabled
+        />
+      </div>
+      <div class="col-1">
+        <label for="">משקל (ק"ג)</label>
+        <input type="number" class="form-control" formControlName="weightKg" />
+      </div>
+      <div class="col-1">
+        <button class="btn btn-outline-success mt-4" (click)="addFormule()">
+          הוסף
+        </button>
+      </div>
+      <div class="col-1">
+        <button class="btn btn-outline-danger mt-4" (click)="clearFormuleSim()">
+          נקה
+        </button>
+      </div>
+    </div>
+  </form>
+  <div class="row mt-3">
+    <div class="col-12">
+      <table class="table table-hover w-75 align-items-center mx-auto">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>מספר פורמולה</th>
+            <th>תאור פורמולה</th>
+            <th>משקל (ק"ג)</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let formule of formulesList; let i = index">
+            <th>{{ i + 1 }}</th>
+            <td>{{ formule.formuleNumber }}</td>
+            <td>{{ formule.formuleName }}</td>
+            <td>{{ formule.weightKg }}</td>
+            <td>
+              <button class="btn-outline-danger" (click)="removeFormule(i)">
+                <i class="fas fa-times"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div
+    class="row mt-3"
+    dir="rtl"
+    *ngIf="formulesList && formulesList.length > 0"
+  >
+    <div class="col-1"></div>
+    <div class="col-1">
+      <button class="btn btn-outline-warning" (click)="getMaterialsForList()">
+        חומרי גלם
+      </button>
+    </div>
+  </div>
+  <div *ngIf="loading" class="loading"></div>
+  <ng-container *ngIf="materialsList && materialsList.length > 0">
+    <div class="row mt-3">
+      <div class="col-12">
+        <h2 class="text-center">כמויות חומרי גלם עבור הפורמולות שבתחזית</h2>
+        <ng-container *ngIf="errors && errors.length > 0">
+          <h3 class="mx-4">שגיאות:</h3>
+          <ul class="mx-4">
+            <li class="error" *ngFor="let error of errors">{{ error }}</li>
+          </ul>
+        </ng-container>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-1"></div>
+      <div class="col-1">
+        <button
+          class="btn btn-outline-primary"
+          printSectionId="print-section-materials"
+          ngxPrint
+          [useExistingCss]="true"
+        >
+          <i class="fas fa-print"></i>&nbsp;הדפס&nbsp;
+        </button>
+      </div>
+      <div class="col-1"></div>
+      <div class="col-1">
+        <button
+          class="btn btn-outline-success"
+          (click)="exportMaterialsListXL()"
+        >
+          <i class="fas fa-file-excel"></i>&nbsp;ייצא לאקסל&nbsp;
+        </button>
+      </div>
+    </div>
+    <div class="row mt-3" dir="rtl" id="print-section-materials">
+      <div class="col-12">
+        <table class="table table-hover w-75 mx-auto">
+          <thead>
+            <tr>
+              <th colspan="7" class="blue text-center">כתב כמויות לתחזית</th>
+            </tr>
+            <tr>
+              <th>#</th>
+              <th>מקט חומר גלם</th>
+              <th>שם חומר גלם</th>
+              <th>כמות נדרשת (ק"ג)</th>
+              <th>מלאי קיים (ק"ג)</th>
+              <th>כמות ברכש (ק"ג)</th>
+              <th>פער</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let material of materialsList; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ material.item }}</td>
+              <td>{{ material.itemName }}</td>
+              <td>
+                <strong>
+                  {{ material.kgProd | number: "1.0-2" }}
+                </strong>
+              </td>
+              <td>{{ material.stockAmount | number: "1.0-2" }}</td>
+              <td>
+                {{ material.purchaseAmount | number: "1.0-2" }}
+              </td>
+
+              <td dir="ltr" [ngClass]="material.diff < 0 ? 'error' : 'blue'">
+                {{ material.diff | number: "1.0-2" }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </ng-container>
+</div>
