@@ -14,6 +14,7 @@ export class OrdersSimulatorComponent implements OnInit {
   user: any = null;
   itemsSimulatorView: boolean = false;
   formulesSimulatorView: boolean = false;
+  cmptHistoryView: boolean = false;
 
   constructor(
     private toastr: ToastrService,
@@ -33,9 +34,16 @@ export class OrdersSimulatorComponent implements OnInit {
   itemsSimulator() {
     this.itemsSimulatorView = true;
     this.formulesSimulatorView = false;
+    this.cmptHistoryView = false;
   }
   formulesSimulator() {
     this.itemsSimulatorView = false;
     this.formulesSimulatorView = true;
+    this.cmptHistoryView = false;
+  }
+  cmptHistory() {
+    this.cmptHistoryView = true;
+    this.itemsSimulatorView = false;
+    this.formulesSimulatorView = false;
   }
 }

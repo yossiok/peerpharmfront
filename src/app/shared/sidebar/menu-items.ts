@@ -33,14 +33,7 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
       },
-      {
-        path: "/peerpharm/allorders/orders-simulator",
-        title: "Orders Simulator",
-        icon: "mdi mdi-adjust",
-        class: "",
-        extralink: false,
-        submenu: [],
-      },
+
       {
         path: "/peerpharm/allorders/open-orderitems",
         title: "Open OrderItems",
@@ -586,6 +579,23 @@ export const ROUTES: RouteInfo[] = [
         path: "/peerpharm/customers",
         title: "Customers",
         icon: "fas fa-list-ol",
+        class: "",
+        extralink: false,
+        submenu: [],
+      },
+    ],
+  },
+  {
+    path: "",
+    title: "MRP Tools",
+    icon: "fas fa-dollar-sign",
+    class: "has-arrow",
+    extralink: false,
+    submenu: [
+      {
+        path: "/peerpharm/mrp-tools",
+        title: "MRP Tools",
+        icon: "mdi mdi-adjust",
         class: "",
         extralink: false,
         submenu: [],

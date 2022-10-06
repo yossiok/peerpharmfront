@@ -96,7 +96,7 @@ import { TemperaturesLogsComponent } from "./qa/temperaturesLogs/temperaturesLog
 import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
 import { MkupFormComponent } from "./forms/mkupForm/mkupForm.component";
 import { SearchComponent } from "./search/search.component";
-import { OrdersSimulatorComponent } from "./allorders/orders-simulator/orders-simulator.component";
+import { OrdersSimulatorComponent } from "./mrp-tools/orders-simulator.component";
 // import { ItemIndexNewComponent } from "./item-index-new/item-index-new.component";
 
 export const PeerPharmRputs: Routes = [
@@ -131,14 +131,7 @@ export const PeerPharmRputs: Routes = [
     },
     component: AllordersComponent,
   },
-  {
-    path: "allorders/orders-simulator",
-    canActivate: [ScreenGuard],
-    data: {
-      title: "Orders Simulator",
-    },
-    component: OrdersSimulatorComponent,
-  },
+
   {
     path: "allorders/open-orderitems",
     canActivate: [ScreenGuard],
@@ -853,5 +846,13 @@ export const PeerPharmRputs: Routes = [
       title: "Proposals",
     },
     component: ProposalsComponent,
+  },
+  {
+    path: "mrp-tools",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "MRP Tools",
+    },
+    component: OrdersSimulatorComponent,
   },
 ];

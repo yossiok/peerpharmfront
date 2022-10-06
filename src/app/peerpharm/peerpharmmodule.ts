@@ -58,9 +58,10 @@ import { ItemDetailsTabComponent } from "./items/item-details-tab/item-details-t
 import { OutServicesComponent } from "./out-services/out-services.component";
 import { PricesComponent } from "./prices/Existing/prices.component";
 import { AllPricingComponent } from "./prices/all-pricing/all-pricing.component";
-import { OrdersSimulatorComponent } from "./allorders/orders-simulator/orders-simulator.component";
-import { ItemsExplosionComponent } from "./allorders/orders-simulator/items-explosion/items-explosion.component";
-import { FormulesExplosionComponent } from "./allorders/orders-simulator/formules-explosion/formules-explosion.component";
+import { OrdersSimulatorComponent } from "./mrp-tools/orders-simulator.component";
+import { ItemsExplosionComponent } from "./mrp-tools/items-explosion/items-explosion.component";
+import { FormulesExplosionComponent } from "./mrp-tools/formules-explosion/formules-explosion.component";
+import { CmptHistoryComponent } from "./mrp-tools/cmpt-history/cmpt-history.component";
 
 import { WharehouseComponent } from "./inventory/wharehouse/wharehouse.component";
 import { InventoryRequestsComponent } from "./inventory/wharehouse/inventory-requests/inventory-requests.component";
@@ -401,6 +402,7 @@ import { MkupProductionComponent } from "./forms/mkupForm/mkupProduction/mkupPro
     OrdersSimulatorComponent,
     ItemsExplosionComponent,
     FormulesExplosionComponent,
+    CmptHistoryComponent,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [

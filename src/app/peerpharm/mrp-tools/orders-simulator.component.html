@@ -4,7 +4,7 @@
       <div class="position-relative">
         <div class="px-3 py-3 d-flex align-items-center border-bottom">
           <p class="mb-0 mt-5 py-1 text-center font-18 font-bold heb">
-            סימולטור הזמנות
+            כלי תפ"י
           </p>
         </div>
         <ul class="tasklist list-style-none">
@@ -31,19 +31,19 @@
               &nbsp; 2 &nbsp;
             </span>
           </li>
-          <!-- <li
+          <li
             style="cursor: pointer"
             class="task-item d-flex complete pr-2 border-bottom heb-menu"
-            (click)="customersListMenu()"
+            (click)="cmptHistory()"
           >
-            רשימת לקוחות<span
+            היסטורית קומפוננטים<span
               class="badge badge-success ml-auto pt-1"
               [style.background]="3 | orderItemBatchStatusColor"
             >
               &nbsp; 3 &nbsp;</span
             >
           </li>
-          <li
+          <!-- <li
             style="cursor: pointer"
             class="task-item d-flex complete pr-2 border-bottom heb-menu"
             (click)="priceListsMenu()"
@@ -91,10 +91,10 @@
               </h1>
             </div>
           </div>
-          <div class="row mt-4" *ngIf="customersListView">
+          <div class="row mt-4" *ngIf="cmptHistoryView">
             <div class="col-12">
               <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
-                רשימת לקוחות - Customers List
+                היסטורית שימוש בקומפוננטים
               </h1>
             </div>
           </div>
@@ -123,10 +123,7 @@
             ></app-formules-explosion>
           </div>
           <div dir="rtl">
-            <app-price-lists
-              *ngIf="priceListsView"
-              [allCustomersList]="allCustomersList"
-            ></app-price-lists>
+            <app-cmpt-history *ngIf="cmptHistoryView"></app-cmpt-history>
           </div>
           <div dir="rtl">
             <app-stock-proposal

@@ -1,0 +1,32 @@
+<div *ngIf="!authorized">
+  <h3 class="text-center">אינך מורשה לראות מסך זה</h3>
+</div>
+<div *ngIf="!ready">
+  <h3 class="text-center">מסך בבנייה</h3>
+</div>
+<div dir="rtl" *ngIf="authorized && ready">
+  <form action="" [formGroup]="componentSearchForm">
+    <div class="row mt-2">
+      <div class="col-1"></div>
+      <div class="col-1">
+        <label for="">מק"ט פריט</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlname="componentN"
+          (change)="getComponentByNumber()"
+          #first
+        />
+      </div>
+      <div class="col-4">
+        <label for="">תאור הפריט</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="componentName"
+          (change)="(getCompoentnByNumber)"
+        />
+      </div>
+    </div>
+  </form>
+</div>
