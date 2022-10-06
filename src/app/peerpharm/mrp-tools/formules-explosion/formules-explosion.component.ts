@@ -84,7 +84,11 @@ export class FormulesExplosionComponent implements OnInit {
     if (!this.formuleSimForm.valid) {
       alert("אחד הנתונים חסר");
       return;
+    } else if (this.formuleSimForm.value.weightKg < 1) {
+      alert("הכמות צריכה להיות גדולה מאפס");
+      return;
     }
+
     this.formulesList.push(this.formuleSimForm.value);
     this.formuleSimForm.reset();
     this.first.nativeElement.focus();

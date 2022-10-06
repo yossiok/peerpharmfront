@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ElementRef, ViewChild } from "@angular/core";
 import { FormArray, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { ItemsService } from "src/app/services/items.service";
+import { InventoryService } from "src/app/services/inventory.service";
 import { AuthService } from "src/app/services/auth.service";
 import { FormulesService } from "src/app/services/formules.service";
 import { ExcelService } from "src/app/services/excel.service";
@@ -15,6 +16,7 @@ export class CmptHistoryComponent implements OnInit {
   user: any = null;
   userName: string = "";
   authorized: boolean = false;
+  ready: boolean = true;
 
   componentsList: any[] = [];
 
@@ -28,7 +30,8 @@ export class CmptHistoryComponent implements OnInit {
     private authService: AuthService,
     private itemsService: ItemsService,
     private fourmulesService: FormulesService,
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    private inventoryService: InventoryService
   ) {}
 
   ngOnInit(): void {
@@ -44,6 +47,18 @@ export class CmptHistoryComponent implements OnInit {
 
   getComponentByNumber() {
     console.log(this.componentSearchForm.value.componentN);
+    let componentN = this.componentSearchForm.value.componentN;
+    this.inventoryService.getItemByNumber(componentN).subscribe((data) => {
+      console.log(data);
+      if (data.msg) {
+        this.toastr.error(data.msg);
+        return;
+      } else if (data) {
+        this.componentSearchForm.controls.componentName.setValue(
+          data.componentName
+        );
+      }
+    });
   }
 
   getComponentByName() {

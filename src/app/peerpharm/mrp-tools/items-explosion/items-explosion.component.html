@@ -40,11 +40,19 @@
           type="number"
           class="form-control"
           formControlName="unitWeight"
+          dir="ltr"
+          min="1"
         />
       </div>
       <div class="col-1">
         <label for="">כמות (יחידות)</label>
-        <input type="number" formControlName="quantity" class="form-control" />
+        <input
+          type="number"
+          formControlName="quantity"
+          class="form-control"
+          min="1"
+          dir="ltr"
+        />
       </div>
       <div class="col-1">
         <button class="btn btn-outline-success mt-4" (click)="addItem()">
@@ -104,16 +112,22 @@
     </div>
   </div>
   <div *ngIf="loading" class="loading"></div>
+  <ng-container *ngIf="errors && errors.length > 0">
+    <h3 class="mx-4">שגיאות:</h3>
+    <ul class="mx-4">
+      <li class="error" *ngFor="let error of errors">{{ error }}</li>
+    </ul>
+  </ng-container>
   <ng-container *ngIf="materialsList && materialsList.length > 0">
     <div class="row mt-3">
       <div class="col-12">
         <h2 class="text-center">כמויות חומרי גלם עבור המוצרים בתחזית</h2>
-        <ng-container *ngIf="errors && errors.length > 0">
+        <!-- <ng-container *ngIf="errors && errors.length > 0">
           <h3 class="mx-4">שגיאות:</h3>
           <ul class="mx-4">
             <li class="error" *ngFor="let error of errors">{{ error }}</li>
           </ul>
-        </ng-container>
+        </ng-container> -->
       </div>
     </div>
     <div class="row mt-2">

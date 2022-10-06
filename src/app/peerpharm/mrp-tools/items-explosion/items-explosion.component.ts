@@ -88,7 +88,14 @@ export class ItemsExplosionComponent implements OnInit {
     if (!this.orderSimForm.valid) {
       alert("אחד הנתונים חסר");
       return;
+    } else if (this.orderSimForm.value.quantity < 1) {
+      alert("הכמות חייבת להיות גדולה מאפס");
+      return;
+    } else if (this.orderSimForm.value.unitWeight < 1) {
+      alert("משקל יחידה חייב להיות גדול מאפס");
+      return;
     }
+
     this.itemsList.push(this.orderSimForm.value);
     this.orderSimForm.reset();
     this.first.nativeElement.focus();
@@ -135,8 +142,8 @@ export class ItemsExplosionComponent implements OnInit {
     this.materialsList = [];
     this.componentsList = [];
     this.itemsService.getMaterialsForList(this.itemsList).subscribe((data) => {
-      console.log(data);
       this.loading = false;
+
       if (data.msg) {
         this.toastr.error(data.msg);
         console.log(data.msg);
@@ -148,6 +155,9 @@ export class ItemsExplosionComponent implements OnInit {
             this.materialsList.push(material);
           }
         }
+      } else {
+        this.errors.push("לא נמצאו פורמולות ");
+        return;
       }
     });
   }
