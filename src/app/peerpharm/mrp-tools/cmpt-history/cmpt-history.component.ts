@@ -16,7 +16,7 @@ export class CmptHistoryComponent implements OnInit {
   user: any = null;
   userName: string = "";
   authorized: boolean = false;
-  ready: boolean = true;
+  ready: boolean = false;
 
   componentsList: any[] = [];
 
