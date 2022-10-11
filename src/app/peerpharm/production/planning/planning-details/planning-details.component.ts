@@ -460,6 +460,7 @@ export class PlanningDetailsComponent implements OnInit {
                   this.enableEditIndex = null;
                   this.editWeightInput = null;
                   this.workPlan = data;
+                  this.getBarrelsForWP();
                   this.updateWorkPlans.emit();
                   if (data.status == -1) {
                     this.closeWorkPlan(-1);
@@ -467,12 +468,14 @@ export class PlanningDetailsComponent implements OnInit {
                   }
                   resolve("הפרטים נשמרו בהצלחה");
                 } else if (data.msg) {
+                  this.getBarrelsForWP();
                   reject(data.msg);
                 }
               });
           });
         } else {
           this.editWeightInput = null;
+          this.getBarrelsForWP();
           return;
         }
         // If bigger than max range
@@ -492,6 +495,7 @@ export class PlanningDetailsComponent implements OnInit {
                   this.enableEditIndex = null;
                   this.editWeightInput = null;
                   this.workPlan = data;
+                  this.getBarrelsForWP();
                   this.updateWorkPlans.emit();
                   if (data.status == -1) {
                     this.closeWorkPlan(-1);
@@ -499,12 +503,14 @@ export class PlanningDetailsComponent implements OnInit {
                   }
                   resolve("הפרטים נשמרו בהצלחה");
                 } else if (data.msg) {
+                  this.getBarrelsForWP();
                   reject(data.msg);
                 }
               });
           });
         } else {
           this.editWeightInput = null;
+          this.getBarrelsForWP();
           return;
         }
         // If between ranges
@@ -523,6 +529,7 @@ export class PlanningDetailsComponent implements OnInit {
                 this.enableEditIndex = null;
                 this.editWeightInput = null;
                 this.workPlan = data;
+                this.getBarrelsForWP();
                 this.updateWorkPlans.emit();
                 if (data.status == -1) {
                   this.closeWorkPlan(-1);
@@ -530,6 +537,7 @@ export class PlanningDetailsComponent implements OnInit {
                 }
                 resolve("הפרטים נשמרו בהצלחה");
               } else if (data.msg) {
+                this.getBarrelsForWP();
                 reject(data.msg);
               }
             });
@@ -549,6 +557,7 @@ export class PlanningDetailsComponent implements OnInit {
               this.enableEditIndex = null;
               this.editWeightInput = null;
               this.workPlan = data;
+              this.getBarrelsForWP();
               this.updateWorkPlans.emit();
               if (data.status == -1) {
                 this.closeWorkPlan(-1);
@@ -556,6 +565,7 @@ export class PlanningDetailsComponent implements OnInit {
               }
               resolve("הפרטים נשמרו בהצלחה");
             } else if (data.msg) {
+              this.getBarrelsForWP();
               reject(data.msg);
             }
           });
