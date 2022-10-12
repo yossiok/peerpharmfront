@@ -294,10 +294,7 @@ export class ItemsService {
     let url = this.baseUrl + "component/getComponentsForList";
     return this.http.post(url, list).pipe(map((response) => response.json()));
   }
-  getComponentsForMultiList(list) {
-    let url = this.baseUrl + "component/getComponentsForMultiList";
-    return this.http.post(url, list).pipe(map((response) => response.json()));
-  }
+
   getMaterialsForList(list) {
     let url = this.baseUrl + "material/getMaterialsForList";
     return this.http.post(url, list).pipe(map((response) => response.json()));
