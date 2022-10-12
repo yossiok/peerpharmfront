@@ -18,14 +18,40 @@
           #first
         />
       </div>
-      <div class="col-4">
+      <div class="col-6">
         <label for="">תאור הפריט</label>
         <input
+          list="components"
           type="text"
           class="form-control"
           formControlName="componentName"
-          (change)="(getCompoentnByNumber)"
+          (change)="getComponentByName()"
         />
+        <datalist id="components">
+          <option value="null" disabled>בחר קומפוננט</option>
+          <ng-container *ngIf="componentsList.length > 0">
+            <option
+              *ngFor="let component of componentsList"
+              [value]="component.componentName"
+              dir="ltr"
+            >
+              {{ component.componentN }} - {{ component.componentName }}
+            </option>
+          </ng-container>
+        </datalist>
+      </div>
+      <div class="col-1">
+        <button
+          class="btn btn-outline-success mt-4"
+          (click)="chooseComponent()"
+        >
+          בחר
+        </button>
+      </div>
+      <div class="col-1">
+        <button class="btn btn-outline-danger mt-4" (click)="clearComponent()">
+          נקה
+        </button>
       </div>
     </div>
   </form>

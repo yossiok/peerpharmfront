@@ -3,221 +3,140 @@
 </div>
 <div dir="rtl" *ngIf="authorized">
   <div class="row mt-3">
-    <div class="col-1"></div>
-    <div class="col-2">
-      <button class="btn btn-outline-success" (click)="newForecastView()">
-        תחזית חדשה
-      </button>
-    </div>
-    <div class="col-1"></div>
-    <div class="col-2">
-      <button class="btn btn-outline-primary" (click)="oldForecastView()">
-        תחזיות קיימות
-      </button>
+    <div class="col-12">
+      <h2 class="text-center">רשימת תחזיות מכירות (מוצרים ופרומולות)</h2>
     </div>
   </div>
-  <div *ngIf="!newForecast" class="row mt-3">
-    <div class="col-1"></div>
-    <div class="col-4">
-      <label for="">בחר תחזית</label>
-      <select
-        name=""
-        id=""
-        class="form-control"
-        (change)="getForecastByNumber($event.target)"
-      >
-        <option value="" disabled>בחר תחזית</option>
-        <option
-          value="{{ list.forecastNumber }}"
-          *ngFor="let list of forecastLists"
-        >
-          {{ list.forecastNumber }} - {{ list.forecastName }}
-        </option>
-      </select>
-    </div>
-  </div>
-  <form action="" [formGroup]="forecastListForm" *ngIf="newForecast">
+  <form action="" [formGroup]="forecastSearchForm">
     <div class="row mt-3">
       <div class="col-1"></div>
-      <div class="col-4">
-        <label for="">שם התחזית</label>
-        <input
-          type="text"
+      <div class="col-1">
+        <label for="">מספר התחזית</label>
+        <select
           class="form-control"
-          placeholder="בחר שם לתחזית"
-          formControlName="forecastName"
-        />
+          formControlName="forecastNumber"
+          (change)="filterByNumber()"
+          placeholder="בחר מספר"
+        >
+          <option value="all">All</option>
+          <option
+            *ngFor="let forecast of forecastListsCopy"
+            value="{{ forecast.forecastNumber }}"
+          >
+            {{ forecast.forecastNumber }}
+          </option>
+        </select>
       </div>
       <div class="col-1">
         <label for="">שנה</label>
-        <select class="form-control" formControlName="forecastYear">
-          <option value="2022">2022</option>
-          <option value="2023">2023</option>
-          <option value="2024">2024</option>
-          <option value="2025">2025</option>
-          <option value="2026">2026</option>
+        <select
+          name=""
+          id=""
+          class="form-control"
+          formControlName="forecastYear"
+          (change)="filterByYear()"
+        >
+          <option value="all">All</option>
+          <option *ngFor="let year of yearsList" value="{{ year }}">
+            {{ year }}
+          </option>
         </select>
       </div>
       <div class="col-1">
         <label for="">רבעון</label>
-        <select class="form-control" formControlName="forecastQuarter">
-          <option value="All">All</option>
-          <option value="Q1">Q-1</option>
-          <option value="Q2">Q-2</option>
-          <option value="Q3">Q-3</option>
-          <option value="Q4">Q-4</option>
+        <select
+          name=""
+          id=""
+          formControlName="forecastQuarter"
+          class="form-control"
+          (change)="filterByQuarter()"
+        >
+          <option value="all">All</option>
+          <option value="Q1">Q1</option>
+          <option value="Q2">Q2</option>
+          <option value="Q3">Q3</option>
+          <option value="Q4">Q4</option>
         </select>
       </div>
       <div class="col-2">
-        <label for="">שם הלקוח</label>
-        <select name="" id="" class="form-control" formControlName="customerId">
-          <option value="" disabled>בחר לקוח</option>
+        <label for="">לקוח</label>
+        <select
+          name=""
+          id=""
+          formControlName="customerId"
+          (click)="filterByCustomer()"
+          class="form-control"
+        >
+          <option value="all">All</option>
           <option value="General">כללי</option>
           <option
             *ngFor="let customer of customersList"
-            value="{{ customer.costumerId }} - {{ customer.costumerName }}"
+            value="{{ customer.costumerId }}"
           >
             {{ customer.costumerId }} - {{ customer.costumerName }}
           </option>
         </select>
       </div>
-    </div>
-  </form>
-  <form action="" [formGroup]="orderSimForm" class="form_1">
-    <div class="row mt-2">
-      <div class="col-1"></div>
       <div class="col-1">
-        <label>מק"ט מוצר</label>
-        <input
-          type="text"
-          formControlName="itemNumber"
-          class="form-control"
-          (change)="getItemName()"
-          #first
-        />
-      </div>
-      <div class="col-4">
-        <label for="">שם המוצר</label>
-        <input
-          type="text"
-          formControlName="itemName"
-          class="form-control"
-          disabled
-        />
-      </div>
-      <div class="col-2">
-        <label for="">ברקוד</label>
-        <input
-          type="text"
-          disabled
-          class="form-control"
-          formControlName="barcode"
-          disabled
-        />
-      </div>
-      <div class="col-1">
-        <label for="">משקל יחידה (גר')</label>
-        <input
-          type="number"
-          class="form-control"
-          formControlName="unitWeight"
-          dir="ltr"
-          min="1"
-        />
-      </div>
-      <div class="col-1">
-        <label for="">כמות (יחידות)</label>
-        <input
-          type="number"
-          formControlName="quantity"
-          class="form-control"
-          min="1"
-          dir="ltr"
-        />
-      </div>
-      <div class="col-1">
-        <button class="btn btn-outline-success mt-4" (click)="addItem()">
-          הוסף
-        </button>
-      </div>
-      <div class="col-1">
-        <button class="btn btn-outline-danger mt-4" (click)="clearOrderSim()">
-          נקה
+        <button class="btn btn-outline-danger mt-4" (click)="clearFilters()">
+          בטל סינון
         </button>
       </div>
     </div>
   </form>
   <div class="row mt-3">
     <div class="col-12">
-      <h3 class="text-center">
-        מוצרים וכמויות עבור תחזית
-        {{ this.forecastListForm.value.forecastNumber }}
-      </h3>
-    </div>
-  </div>
-  <div class="row mt-3">
-    <div class="col-1"></div>
-    <div class="col-4">
-      <span class="heading3">
-        <label>שם התחזית:</label>
-        {{ this.forecastListForm.value.forecastName }}
-      </span>
-    </div>
-    <div class="col-1">
-      <div class="heading3">
-        <label for="">שנה:</label>
-        {{ this.forecastListForm.value.forecastYear }}
-      </div>
-    </div>
-    <div class="col-1">
-      <div class="heading3">
-        <label for="">רבעון:</label>
-        {{ this.forecastListForm.value.forecastQuarter }}
-      </div>
-    </div>
-    <div class="col-4">
-      <div class="heading3">
-        <label for="">לקוח:</label>
-        {{ this.forecastListForm.value.customerId }}
-      </div>
-    </div>
-  </div>
-
-  <div class="row mt-3">
-    <div class="col-12">
-      <table class="table table-hover w-75 align-items-center mx-auto">
+      <table class="table table-hover">
         <thead>
           <tr>
             <th>#</th>
-            <th>מק"ט</th>
-            <th>תאור המוצר</th>
-            <th>ברקוד</th>
-            <th>משקל יחידה (גר')</th>
-            <th>כמות</th>
-            <th>משקל כולל (ק"ג)</th>
-            <th></th>
+            <th>מספר זיהוי</th>
+            <th>שם התחזית</th>
+            <th>שנה</th>
+            <th>רבעון</th>
+            <th>לקוח</th>
+            <th>
+              הכל/כלום
+              <input
+                type="checkbox"
+                class="form-control"
+                (click)="selectAll($event.target.checked)"
+                style="width: 20px"
+              />
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of itemsList; let i = index">
-            <th>{{ i + 1 }}</th>
-            <td>{{ item.itemNumber }}</td>
-            <td>{{ item.itemName }}</td>
-            <td>{{ item.barcode }}</td>
-            <td>{{ item.unitWeight | number }}</td>
-            <td>{{ item.quantity | number }}</td>
-            <td>{{ (item.quantity * item.unitWeight) / 1000 | number }}</td>
-            <td>
-              <button class="btn-outline-danger" (click)="removeItem(i)">
-                <i class="fas fa-times"></i>
-              </button>
+          <tr *ngFor="let forecast of forecastLists; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ forecast.forecastNumber }}</td>
+            <td>{{ forecast.forecastName }}</td>
+            <td>{{ forecast.forecastYear }}</td>
+            <td>{{ forecast.forecastQuarter }}</td>
+            <td>{{ forecast.customerId }}</td>
+            <td *ngIf="forecastLists[i].isSelected">
+              <input
+                type="checkbox"
+                class="form-contol"
+                (change)="isSelected($event.target.checked, i)"
+                checked
+                style="width: 20px; height: 35px"
+              />
+            </td>
+            <td *ngIf="!forecastLists[i].isSelected">
+              <input
+                type="checkbox"
+                class="form-contol"
+                (change)="isSelected($event.target.checked, i)"
+                style="width: 20px; height: 35px"
+              />
             </td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
-  <div class="row mt-3" dir="rtl" *ngIf="itemsList && itemsList.length > 0">
+  <div class="row mt-3" dir="rtl">
     <div class="col-1"></div>
     <div class="col-1">
       <button class="btn btn-outline-primary" (click)="getComponentsForList()">
@@ -227,16 +146,6 @@
     <div class="col-1">
       <button class="btn btn-outline-warning" (click)="getMaterialsForList()">
         חומרי גלם
-      </button>
-    </div>
-    <div class="col-1">
-      <button class="btn btn-outline-success" (click)="saveList()">
-        שמור רשימה
-      </button>
-    </div>
-    <div class="col-1">
-      <button class="btn btn-outline-danger" (click)="deleteList()">
-        מחק רשימה
       </button>
     </div>
   </div>

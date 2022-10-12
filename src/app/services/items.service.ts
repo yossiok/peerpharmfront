@@ -294,8 +294,41 @@ export class ItemsService {
     let url = this.baseUrl + "component/getComponentsForList";
     return this.http.post(url, list).pipe(map((response) => response.json()));
   }
+  getComponentsForMultiList(list) {
+    let url = this.baseUrl + "component/getComponentsForMultiList";
+    return this.http.post(url, list).pipe(map((response) => response.json()));
+  }
   getMaterialsForList(list) {
     let url = this.baseUrl + "material/getMaterialsForList";
     return this.http.post(url, list).pipe(map((response) => response.json()));
+  }
+  addMaterialsForecast(forecast) {
+    let url = this.baseUrl + "material/addMaterialsForecast";
+    return this.http
+      .post(url, forecast)
+      .pipe(map((response) => response.json()));
+  }
+  saveForecastList(list) {
+    let url = this.baseUrl + "orderitem/saveForecastList";
+    return this.http.post(url, list).pipe(map((response) => response.json()));
+  }
+  getAllForecastLists() {
+    let url = this.baseUrl + "orderitem/getAllForecastLists";
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+  getForecastByNumber(forecastNumber) {
+    let url =
+      this.baseUrl +
+      "orderitem/getForecastByNumber?forecastNumber=" +
+      forecastNumber;
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+  deleteForecast(forecastNumber) {
+    let url =
+      this.baseUrl +
+      "orderitem/deleteForecastByNumber?forecastNumber=" +
+      forecastNumber;
+
+    return this.http.delete(url).pipe(map((response) => response.json()));
   }
 }

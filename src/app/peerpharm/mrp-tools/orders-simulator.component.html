@@ -13,7 +13,7 @@
             class="task-item pr-2 py-1 d-flex incomplete border-bottom heb-menu"
             (click)="itemsSimulator()"
           >
-            תחזית הזמנות מוצרים<span
+            בניית תחזית מוצרים<span
               class="badge badge-danger ml-auto pr-2 pt-1"
               [style.background]="1 | orderItemBatchStatusColor"
               >&nbsp; 1 &nbsp;
@@ -25,6 +25,19 @@
             (click)="formulesSimulator()"
           >
             תחזית פורמולות<span
+              class="badge badge-success ml-auto pt-1"
+              [style.background]="2 | orderItemBatchStatusColor"
+            >
+              &nbsp; 2 &nbsp;
+            </span>
+          </li>
+          <li
+            style="cursor: pointer"
+            class="task-item d-flex complete pr-2 border-bottom heb-menu"
+            (click)="multiForecasts()"
+          >
+            תחזיות מרובות
+            <span
               class="badge badge-success ml-auto pt-1"
               [style.background]="2 | orderItemBatchStatusColor"
             >
@@ -80,7 +93,7 @@
           <div class="row mt-4" *ngIf="itemsSimulatorView">
             <div class="col-12">
               <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
-                תחזית הזמנות מוצרים
+                תחזית הזמנות מוצרים - יצירה,עריכה ומחיקה
               </h1>
             </div>
           </div>
@@ -98,10 +111,10 @@
               </h1>
             </div>
           </div>
-          <div class="row mt-4" *ngIf="priceListsView">
+          <div class="row mt-4" *ngIf="multiForecastView">
             <div class="col-12">
               <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
-                מחירונים - Price Lists
+                תחזיות מרובות
               </h1>
             </div>
           </div>
@@ -126,10 +139,9 @@
             <app-cmpt-history *ngIf="cmptHistoryView"></app-cmpt-history>
           </div>
           <div dir="rtl">
-            <app-stock-proposal
-              *ngIf="stockPropsalView"
-              [allCustomersList]="allCustomersList"
-            ></app-stock-proposal>
+            <app-multi-forecasts
+              *ngIf="multiForecastView"
+            ></app-multi-forecasts>
           </div>
         </div>
       </div>

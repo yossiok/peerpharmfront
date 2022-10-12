@@ -62,6 +62,7 @@ import { OrdersSimulatorComponent } from "./mrp-tools/orders-simulator.component
 import { ItemsExplosionComponent } from "./mrp-tools/items-explosion/items-explosion.component";
 import { FormulesExplosionComponent } from "./mrp-tools/formules-explosion/formules-explosion.component";
 import { CmptHistoryComponent } from "./mrp-tools/cmpt-history/cmpt-history.component";
+import { MultiForecastsComponent } from "./mrp-tools/multi-forecasts/multi-forecasts.component";
 
 import { WharehouseComponent } from "./inventory/wharehouse/wharehouse.component";
 import { InventoryRequestsComponent } from "./inventory/wharehouse/inventory-requests/inventory-requests.component";
@@ -403,6 +404,7 @@ import { MkupProductionComponent } from "./forms/mkupForm/mkupProduction/mkupPro
     ItemsExplosionComponent,
     FormulesExplosionComponent,
     CmptHistoryComponent,
+    MultiForecastsComponent,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [

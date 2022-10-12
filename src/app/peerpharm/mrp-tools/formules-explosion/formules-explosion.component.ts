@@ -45,9 +45,7 @@ export class FormulesExplosionComponent implements OnInit {
   getUser() {
     this.user = this.authService.loggedInUser;
     this.userName = this.user.userName;
-    this.authorized =
-      this.user.authorization.includes("showFormule") ||
-      this.user.authorization.includes("formulePrice");
+    this.authorized = this.user.authorization.includes("viewFormule");
     console.log(this.user.authorization);
     console.log(this.user.userName);
     console.log(this.authorized);

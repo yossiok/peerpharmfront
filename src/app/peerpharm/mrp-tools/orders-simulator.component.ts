@@ -15,6 +15,7 @@ export class OrdersSimulatorComponent implements OnInit {
   itemsSimulatorView: boolean = false;
   formulesSimulatorView: boolean = false;
   cmptHistoryView: boolean = false;
+  multiForecastView: boolean = false;
 
   constructor(
     private toastr: ToastrService,
@@ -35,15 +36,24 @@ export class OrdersSimulatorComponent implements OnInit {
     this.itemsSimulatorView = true;
     this.formulesSimulatorView = false;
     this.cmptHistoryView = false;
+    this.multiForecastView = false;
   }
   formulesSimulator() {
     this.itemsSimulatorView = false;
     this.formulesSimulatorView = true;
+    this.cmptHistoryView = false;
+    this.multiForecastView = false;
+  }
+  multiForecasts() {
+    this.multiForecastView = true;
+    this.itemsSimulatorView = false;
+    this.formulesSimulatorView = false;
     this.cmptHistoryView = false;
   }
   cmptHistory() {
     this.cmptHistoryView = true;
     this.itemsSimulatorView = false;
     this.formulesSimulatorView = false;
+    this.multiForecastView = false;
   }
 }

@@ -16,9 +16,10 @@ export class CmptHistoryComponent implements OnInit {
   user: any = null;
   userName: string = "";
   authorized: boolean = false;
-  ready: boolean = false;
+  ready: boolean = true;
 
   componentsList: any[] = [];
+  chosenComponent: any = null;
 
   componentSearchForm: FormGroup = new FormGroup({
     componentN: new FormControl("", Validators.required),
@@ -49,7 +50,6 @@ export class CmptHistoryComponent implements OnInit {
     console.log(this.componentSearchForm.value.componentN);
     let componentN = this.componentSearchForm.value.componentN;
     this.inventoryService.getItemByNumber(componentN).subscribe((data) => {
-      console.log(data);
       if (data.msg) {
         this.toastr.error(data.msg);
         return;
@@ -57,11 +57,50 @@ export class CmptHistoryComponent implements OnInit {
         this.componentSearchForm.controls.componentName.setValue(
           data.componentName
         );
+      } else if (!data) {
+        this.toastr.error("הפריט לא נמצא");
       }
     });
   }
 
   getComponentByName() {
     console.log(this.componentSearchForm.value.componentName);
+    let regName = this.componentSearchForm.value.componentName;
+    this.inventoryService.getNamesByRegex(regName).subscribe((data) => {
+      console.log(data);
+      this.componentsList = data;
+
+      if (this.componentsList.length == 1) {
+        this.componentSearchForm.controls.componentName.setValue(
+          this.componentsList[0].componentName
+        );
+        this.componentSearchForm.controls.componentN.setValue(
+          this.componentsList[0].componentN
+        );
+      }
+      console.log(this.componentSearchForm.value);
+    });
+  }
+  chooseComponent() {
+    if (!this.componentSearchForm.valid) {
+      alert("יש לבחור פריט");
+      return;
+    }
+
+    this.inventoryService
+      .getItemByNumber(this.componentSearchForm.value.componentN)
+      .subscribe((data) => {
+        if (data.msg) {
+          this.toastr.error(data.msg);
+          return;
+        } else if (data) {
+          this.chosenComponent = data;
+          console.log(data);
+          return;
+        } else if (!data) {
+          this.toastr.error("פריט לא נמצא");
+          return;
+        }
+      });
   }
 }
