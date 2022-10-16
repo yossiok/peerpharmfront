@@ -55,7 +55,7 @@ export class EmailPurchaseOrderComponent implements OnInit {
       this.currentOrder.supplierEmail + ";" + this.userEmail + ";"
     );
     this.emailDetailsForm.controls.content.setValue(
-      "Dear Supplier,\n\nfind attached your purchase order.\n\nregards,\nPeerpharm"
+      `Dear Supplier,\n\nfind attached your purchase order: ${this.currentOrder.orderNumber} .\n\nregards,\nPeerpharm`
     );
   }
   closeModal() {
