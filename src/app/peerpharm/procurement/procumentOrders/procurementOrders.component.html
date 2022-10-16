@@ -126,8 +126,8 @@
                     type="text"
                     class="form-control rounded"
                     formControlName="supplierN"
-                    [placeholder]="'Supplier Number'  "
-                    (keyup)=" filterPurchaseOrders() "
+                    [placeholder]="'Supplier Number'"
+                    (keyup)="filterPurchaseOrders()"
                   />
                 </div>
                 <div *ngIf="chooseMultipleSuppliers">
@@ -352,14 +352,14 @@
                 <tr>
                   <th><b>#</b></th>
                   <th><b (click)="orderBy('pNum')">Purchase Number</b></th>
-                  <th><b (click)="orderBy('supplier')" >Supplier</b></th>
+                  <th><b (click)="orderBy('supplier')">Supplier</b></th>
                   <th><b>Origin</b></th>
-                  <th><b (click)="orderBy('cdate')" >Creation Date</b></th>
-                  <th><b (click)="orderBy('rdate')" >Requested Date</b></th>
+                  <th><b (click)="orderBy('cdate')">Creation Date</b></th>
+                  <th><b (click)="orderBy('rdate')">Requested Date</b></th>
                   <th><b>Approval Date</b></th>
-                  <th><b   >Customer Order</b></th>
+                  <th><b>Customer Order</b></th>
                   <th><b>Remarks</b></th>
-                  <th><b (click)="orderBy('status')" >Status</b></th>
+                  <th><b (click)="orderBy('status')">Status</b></th>
                   <th></th>
                   <th>User</th>
                 </tr>
@@ -656,7 +656,16 @@
           </p>
         </div>
 
-        <div class="col-4"></div>
+        <div class="col-2"></div>
+        <div class="col-2">
+          <button
+            class="btn btn-primary rounded-pill"
+            style="padding: 10px 35px; font-size: 1rem"
+            (click)="sendEmailModal = 'true'"
+          >
+            <i class="fas fa-envelope-square"></i>&nbsp;&nbsp;Email&nbsp;&nbsp;
+          </button>
+        </div>
       </div>
 
       <div class="row">
@@ -1406,4 +1415,13 @@
   <button (click)="getProblematicsReport(problemType)" class="btn btn-primary">
     Go
   </button>
+</div>
+<div
+  *ngIf="sendEmailModal"
+  class="border border-info bg-white container fixed-top mx-auto my-auto text-center mailModal p-2"
+>
+  <app-email-purchase-order
+    [currentOrder]="currentOrder"
+    (closed)="sendEmailModal = false"
+  ></app-email-purchase-order>
 </div>

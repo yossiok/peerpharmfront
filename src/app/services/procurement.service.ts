@@ -507,4 +507,9 @@ export class Procurementservice {
 
     return this.http.get(url).pipe(map((response) => response.json()));
   }
+
+  sendPurchaseOrderByMail(mail) {
+    let url = this.baseUrl + "newProcurement/sendPurchaseOrderByMail";
+    return this.http.post(url, mail).pipe(map((response) => response.json()));
+  }
 }

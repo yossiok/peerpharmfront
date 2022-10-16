@@ -73,6 +73,7 @@ import { ProcurementOrderItemBalanceComponent } from "./procurement/procurementO
 import { ProcurementOrdersComponent } from "./procurement/procumentOrders/procurementOrders.component";
 import { ProcurementOrderItemComponent } from "./procurement/procumentOrderItem/procurementOrderItem.component";
 import { NewProcurementComponent } from "./procurement/new-procurement/new-procurement.component";
+import { EmailPurchaseOrderComponent } from "./procurement/procumentOrders/email-purchase-order/email-purchase-order.component";
 import { FinanceReportComponent } from "./finance-reports/financereport.component";
 import { WarehousesActionsReportsComponent } from "./inventory/inventory-reports/warehousesActionsReports/warehousesActionsReports.component";
 import { MAT_DIALOG_DEFAULT_OPTIONS } from "@angular/material/dialog";
@@ -405,6 +406,7 @@ import { MkupProductionComponent } from "./forms/mkupForm/mkupProduction/mkupPro
     FormulesExplosionComponent,
     CmptHistoryComponent,
     MultiForecastsComponent,
+    EmailPurchaseOrderComponent,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [
