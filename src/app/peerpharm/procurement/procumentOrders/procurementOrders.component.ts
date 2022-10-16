@@ -1234,4 +1234,28 @@ export class ProcurementOrdersComponent implements OnInit {
     this.recommendFilterForm.reset();
     this.purchaseRecommendations = this.purchaseRecommendationsCopy;
   }
+
+  exportRequestsToXL() {
+    let exportArr = [];
+    for (let recommend of this.purchaseRecommendations) {
+      for (let item of recommend.stockitems) {
+        let dateStr = recommend.date ? recommend.date.substring(0, 10) : "";
+        let line = {
+          "מס' בקשה": recommend.recommendNumber,
+          "תאריך הבקשה": dateStr,
+          "סוג פריט": recommend.type,
+          "מקט פריט": item.number,
+          "תאור הפריט": item.name,
+          כמות: item.quantity,
+          יחידות: item.measurement,
+          "הזמנת לקוח": item.customerOrder,
+          "שם המבקש": recommend.user,
+          קניין: recommend.purchaser,
+        };
+        exportArr.push(line);
+      }
+    }
+
+    this.excelService.exportAsExcelFile(exportArr, "PurchaseRecommendations");
+  }
 }
