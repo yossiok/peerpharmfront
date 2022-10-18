@@ -198,6 +198,10 @@ export class ItemsExplosionComponent implements OnInit {
     this.errors = [];
     this.materialsList = [];
     this.componentsList = [];
+    for (let item of this.itemsList) {
+      item.totalWeight = (item.quantity * item.unitWeight) / 1000;
+    }
+
     this.itemsService.getMaterialsForList(this.itemsList).subscribe((data) => {
       this.loading = false;
 

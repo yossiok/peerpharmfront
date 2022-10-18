@@ -254,11 +254,12 @@ export class MultiForecastsComponent implements OnInit {
     this.itemsList = [];
     for (let forecast of this.forecastLists) {
       for (let item of forecast.itemsList) {
+        item.totalWeight = (item.quantity * item.unitWeight) / 1000;
         let idx = this.itemsList.findIndex(
           (itemL) => itemL.itemNumber == item.itemNumber
         );
         if (idx > -1) {
-          this.itemsList[idx].quantity += item.quantity;
+          this.itemsList[idx].totalWeight += item.totalWeight;
         } else {
           this.itemsList.push(item);
         }
