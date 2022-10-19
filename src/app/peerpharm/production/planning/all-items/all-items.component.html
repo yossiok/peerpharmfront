@@ -236,10 +236,18 @@
           <input
             class="form-control mr-sm-2"
             type="text"
-            placeholder="Search"
+            placeholder="Item/Order/Name"
             aria-label="Search"
             #oiFilter
             (keyup)="filterOrderItems()"
+          />
+          <input
+            class="form-control mr-sm-2"
+            type="text"
+            placeholder="Formule Number"
+            aria-label="Search"
+            #oiFilter2
+            (keyup)="filterOrderItemsNew()"
           />
           <button
             class="btn btn-outline-primary my-2 my-sm-0"
@@ -286,7 +294,7 @@
             <th>
               <i
                 class="ti-exchange-vertical"
-                (click)="sortItemsTwo('formule', 'formuleNumber')"
+                (click)="sortByFormuleNumber()"
                 style="cursor: pointer"
               ></i
               >Parent/Formule
@@ -455,15 +463,14 @@
             #wpFilter
             (keyup)="filterWorkPlans()"
           />
-          <button
-            class="btn btn-outline-danger my-2 my-sm-0 ml-2 ml-sm-0"
-            type="button"
-            (click)="clearWorkPlans()"
-          >
-            Clear
-          </button>
-        </form>
-        <form class="form-inline my-2 my-lg-0">
+          <input
+            class="form-control mr-sm-2 ml-2 ml-sm-0"
+            type="text"
+            placeholder="Search Order"
+            aria-label="Search Order"
+            #orderFilter
+            (keyup)="filterByOrder()"
+          />
           <input
             class="form-control mr-sm-2 ml-2 ml-sm-0"
             type="text"
@@ -507,24 +514,21 @@
       <table class="table table-striped">
         <thead class="bg-secondary text-white">
           <tr>
-            <th
-              class="ti-exchange-vertical"
-              (click)="sortWpOne('serialNumber')"
-              style="cursor: pointer"
-            >
+            <th (click)="sortWpOne('serialNumber')">
+              <i class="ti-exchange-vertical" style="cursor: pointer"></i>
               WP Number
             </th>
-            <th
-              class="ti-exchange-vertical"
-              (click)="sortWpOne('date')"
-              style="cursor: pointer"
-            >
+            <th (click)="sortWpOne('date')">
+              <i class="ti-exchange-vertical" style="cursor: pointer"></i>
               Created at
             </th>
             <th class="orders">Orders</th>
             <th class="orders">Items</th>
             <th>Remark</th>
-            <th>Status</th>
+            <th (click)="sortWpOne('status')">
+              <i class="ti-exchange-vertical" style="cursor: pointer"></i>
+              Status
+            </th>
           </tr>
         </thead>
         <tbody

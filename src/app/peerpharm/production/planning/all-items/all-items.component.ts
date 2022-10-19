@@ -65,9 +65,11 @@ export class AllItemsComponent implements OnInit {
   filteredWorkPlansCopy: any[] = [];
 
   @ViewChild("oiFilter") oiFilter: ElementRef;
+  @ViewChild("oiFilter2") oiFilter2: ElementRef;
   @ViewChild("wpFilter") wpFilter: ElementRef;
   @ViewChild("wpList") invstck: ElementRef;
   @ViewChild("itemFilter") itemFilter: ElementRef;
+  @ViewChild("orderFilter") orderFilter: ElementRef;
   @ViewChild("familyFilter") familyFilter: ElementRef;
 
   constructor(
@@ -121,6 +123,11 @@ export class AllItemsComponent implements OnInit {
 
     this.ordersService.getAllOpenOrderItemsNew().subscribe((data) => {
       console.log(data);
+      for (let item of data) {
+        console.log(
+          `Order Status: ${item.order.status}, Item number: ${item.itemNumber}, Order Number: ${item.orderNumber}`
+        );
+      }
       // this.orderItems = data;
       for (let item of data) {
         item.origQty = Number(item.quantity);
@@ -615,12 +622,16 @@ export class AllItemsComponent implements OnInit {
   sortByFormuleNumber() {
     let i = this.sortToggle;
     this.filteredOrderItems.sort((a, b) => {
-      return a.formule.formuleNumber > b.formule.formuleNumber
-        ? i
-        : a.formule.formuleNumber < b.formule.formuleNumber
-        ? -i
-        : 0;
+      let formuleA = a.formule.parentNumber
+        ? a.formule.parentNumber
+        : a.formule.formuleNumber;
+      let formuleB = b.formule.parentNumber
+        ? b.formule.parentNumber
+        : b.formule.formuleNumber;
+
+      return formuleA > formuleB ? i : formuleA < formuleB ? -i : 0;
     });
+    this.sortToggle *= -1;
   }
   //sort by the second level of the array (nested array)
   sortItemsOne(field) {
@@ -674,7 +685,7 @@ export class AllItemsComponent implements OnInit {
     } else {
       let array = [...this.filteredOrderItems];
       let arrayCopy = [...this.filteredOrderItems];
-      this.filteredOrderItems = array.filter((o) =>
+      this.filteredOrderItems = arrayCopy.filter((o) =>
         Object.entries(o).some((entry) =>
           String(entry[1]).toLowerCase().includes(value)
         )
@@ -682,23 +693,40 @@ export class AllItemsComponent implements OnInit {
     }
   }
 
+  filterOrderItemsNew() {
+    let value = this.oiFilter2.nativeElement.value;
+    console.log(value);
+
+    value = String(value).toLowerCase().trim();
+    if (value == "") {
+      this.clearOrderItems();
+    } else {
+      let arrayCopy = [...this.filteredOrderItems];
+      this.filteredOrderItems = arrayCopy.filter((item) => {
+        let formule = item.formule.parentNumber
+          ? item.formule.parentNumber
+          : item.formule.formuleNumber;
+        return formule.toLowerCase().includes(value);
+      });
+    }
+  }
+
   clearOrderItems() {
     this.viewOrders(this.currentView);
     this.oiFilter.nativeElement.value = "";
+    this.oiFilter2.nativeElement.value = "";
   }
 
   filterWorkPlans() {
-    let value = this.wpFilter.nativeElement.value;
+    let value = this.wpFilter.nativeElement.value.trim();
     console.log(value);
     console.log(this.filteredWorkPlansCopy);
-    value = String(value).toLowerCase();
+
     if (value == "") {
       this.clearWorkPlans();
     } else {
-      this.filteredWorkPlans = this.filteredWorkPlansCopy.filter((o) =>
-        Object.entries(o).some((entry) =>
-          String(entry[1]).toLowerCase().includes(value)
-        )
+      this.filteredWorkPlans = this.filteredWorkPlansCopy.filter((wp) =>
+        String(wp.serialNumber).includes(value)
       );
     }
   }
@@ -706,28 +734,40 @@ export class AllItemsComponent implements OnInit {
     this.viewWP(this.currentWPView);
     this.wpFilter.nativeElement.value = "";
     this.itemFilter.nativeElement.value = "";
+    this.orderFilter.nativeElement.value = "";
     this.familyFilter.nativeElement.value = "";
   }
 
   filterByItem() {
     let value = this.itemFilter.nativeElement.value;
-    value = String(value).toLowerCase();
-    value = value.trim();
-    console.log(value);
+    value = String(value).toLowerCase().trim();
     if (value == "") {
       this.clearWorkPlans();
     } else {
       this.filteredWorkPlans = this.filteredWorkPlansCopy.filter((wp) => {
-        console.log(wp.orderItems);
         let idx = wp.orderItems.findIndex((oi) =>
-          oi.parentFormule.includes(value)
+          oi.itemNumber.includes(value)
         );
-        // let idx = wp.orderItems.findIndex((oi) => oi.parentFormule== value) ;
         return idx > -1;
       });
-      console.log(this.filteredWorkPlans);
     }
   }
+
+  filterByOrder() {
+    let value = this.orderFilter.nativeElement.value;
+    value = String(value).toLowerCase().trim();
+    if (value == "") {
+      this.clearWorkPlans();
+    } else {
+      this.filteredWorkPlans = this.filteredWorkPlansCopy.filter((wp) => {
+        let idx = wp.orderItems.findIndex((oi) =>
+          oi.orderNumber.includes(value)
+        );
+        return idx > -1;
+      });
+    }
+  }
+
   filterByFamily() {
     let value = String(this.familyFilter.nativeElement.value)
       .toLowerCase()
@@ -736,7 +776,6 @@ export class AllItemsComponent implements OnInit {
       this.clearWorkPlans();
     } else {
       this.formuleService.getFormuleByNumber(value).subscribe((data) => {
-        console.log(data);
         let parentFormule = data.parentNumber ? data.parentNumber : value;
         console.log(parentFormule);
 
@@ -744,10 +783,8 @@ export class AllItemsComponent implements OnInit {
           let idx = wp.orderItems.findIndex(
             (oi) => oi.parentFormule == parentFormule
           );
-          console.log(idx);
           return idx > -1;
         });
-        console.log(this.filteredWorkPlans);
       });
     }
   }
