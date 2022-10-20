@@ -1,62 +1,107 @@
 <div dir="rtl">
-    <div class="form-group">
-        <input class="form-control" type="number" placeholder="מס' הזמנת רכש" [(ngModel)]="purchaseOrder">
-        <input class="form-control" type="number" placeholder="ספק" [(ngModel)]="supplier">
-        <!-- <input class="form-control" type="number" placeholder="מספר פריט" [(ngModel)]="itemNumber"> -->
-        <input class="form-control" type="text" placeholder="שם פריט" [(ngModel)]="itemName">
-        <!-- <input class="form-control" type="number" placeholder="כמות" [(ngModel)]="amount"> -->
-        <input class="form-control" type="number" placeholder="מס' משטחים" [(ngModel)]="numPallets">
-        <input class="form-control" type="number" placeholder="כמות במשטח" [(ngModel)]="amountPerPallet">
-        <!-- <input class="form-control" type="number" placeholder="מס' תעודה" [(ngModel)]="certifNumber"> -->
-        <!-- <input class="form-control" type="text" placeholder="שם משתמש" [(ngModel)]="userName"> -->
-        <!-- <input class="form-control" type="date" placeholder="תאריך" [(ngModel)]="date"> -->
-    </div>
-    <button class="print-btn" [useExistingCss]="false" #printBtn3 printSectionId="print-section3" ngxPrint></button>
+  <div class="form-group">
+    <input
+      class="form-control"
+      type="number"
+      placeholder="מס' הזמנת רכש"
+      [(ngModel)]="purchaseOrder"
+    />
+    <input
+      class="form-control"
+      type="number"
+      placeholder="ספק"
+      [(ngModel)]="supplier"
+    />
+    <!-- <input class="form-control" type="number" placeholder="מספר פריט" [(ngModel)]="itemNumber"> -->
+    <input
+      class="form-control"
+      type="text"
+      placeholder="שם פריט"
+      [(ngModel)]="itemName"
+    />
+    <!-- <input class="form-control" type="number" placeholder="כמות" [(ngModel)]="amount"> -->
+    <input
+      class="form-control"
+      type="number"
+      placeholder="מס' משטחים"
+      [(ngModel)]="numPallets"
+    />
+    <input
+      class="form-control"
+      type="number"
+      placeholder="כמות במשטח"
+      [(ngModel)]="amountPerPallet"
+    />
+    <!-- <input class="form-control" type="number" placeholder="מס' תעודה" [(ngModel)]="certifNumber"> -->
+    <!-- <input class="form-control" type="text" placeholder="שם משתמש" [(ngModel)]="userName"> -->
+    <!-- <input class="form-control" type="date" placeholder="תאריך" [(ngModel)]="date"> -->
+  </div>
+  <button
+    class="print-btn"
+    [useExistingCss]="true"
+    #printBtn3
+    printSectionId="print-section3"
+    ngxPrint
+  ></button>
 </div>
 
 <div dir="rtl" id="print-section3">
-    <table style="text-align: center" [style.margin.px]="3" [style.width.px]="400" [style.max-height.px]="400"
-        [style.font-size.px]="24" [style.border.px]="0">
-        <tr>
-            <td><strong>כמות סה"כ:</strong> {{amount}}</td>
-        </tr>
-        <tr>
-            <td><strong>מספר משטחים:</strong> {{numPallets}}</td>
-        </tr>
-        <tr>
-            <td><strong>כמות במשטח:</strong> {{amountPerPallet}}</td>
-        </tr>
-        <tr>
-            <td>{{userName}} <strong>:מקבל</strong></td>
-        </tr>
-        <tr>
-            <td>
-                <h3>פאר פארם בע"מ</h3>
-            </td>
-        </tr>
-        <tr>
-            <td>{{date | date: 'medium'}} <strong>:תאריך</strong></td>
-        </tr>
-        <tr>
-            <td>{{purchaseOrder}} <strong>:מס' הזמנת רכש</strong></td>
-        </tr>
-        <tr>
-            <td><strong>:ספק</strong><br>{{supplier}} - {{supplierName}}</td>
-        </tr>
-        <tr>
-            <td><strong>מס' תעודת קליטה:</strong> {{certifNumber}}</td>
-        </tr>
-        <tr>
-            <td><strong>מק"ט:</strong> {{itemNumber}}</td>
-        </tr>
-        <tr>
-            <td><strong>:תיאור</strong> <br> {{itemName}}</td>
-        </tr>
-        <tr>
-            <td>
-                <ngx-barcode [bc-value]="itemNumber" [bc-display-value]="true"></ngx-barcode>
-            </td>
-        </tr>
-    </table>
+  <table
+    style="text-align: right"
+    [style.margin.px]="3"
+    [style.width.px]="400"
+    [style.max-height.px]="400"
+    [style.font-size.px]="24"
+    [style.border.px]="0"
+  >
+    <tr>
+      <td><strong>כמות סה"כ: </strong> {{amount}}</td>
+    </tr>
+    <tr>
+      <td><strong>מספר משטחים:</strong> {{numPallets}}</td>
+    </tr>
+    <tr>
+      <td><strong>כמות במשטח:</strong> {{amountPerPallet}}</td>
+    </tr>
+    <tr>
+      <td><strong>מקבל: </strong>{{fullName}}</td>
+    </tr>
+    <tr>
+      <td>
+        <h3>פאר פארם בע"מ</h3>
+      </td>
+    </tr>
+    <tr>
+      <td><strong>תאריך:</strong> {{date | date: 'medium'}}</td>
+    </tr>
+    <tr>
+      <td><strong>מס' הזמנת רכש:</strong>{{purchaseOrder}}</td>
+    </tr>
+    <tr>
+      <td><strong>ספק:</strong><br />{{supplier}} - {{supplierName}}</td>
+    </tr>
+    <tr>
+      <td><strong>מס' תעודת קליטה:</strong> {{certifNumber}}</td>
+    </tr>
+    <tr>
+      <td><strong>מק"ט:</strong> {{itemNumber}}</td>
+    </tr>
+    <tr>
+      <td>
+        <strong>תיאור: </strong> <br />
+        {{itemName}}
+      </td>
+    </tr>
+    <tr>
+      <td class="text-center">
+        <ngx-barcode
+          [bc-value]="itemNumber"
+          [bc-display-value]="true"
+        ></ngx-barcode>
+      </td>
+    </tr>
+  </table>
 </div>
-<button (click)="doStupidStuff()" class="btn btn-success" type="button">הדפס</button>
+<button (click)="doStupidStuff()" class="btn btn-success" type="button">
+  הדפס
+</button>

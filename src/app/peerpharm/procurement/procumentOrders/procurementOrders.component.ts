@@ -528,7 +528,9 @@ export class ProcurementOrdersComponent implements OnInit {
     let dateTo = this.filterForm.value.dateTo;
     let orderNumber = this.filterForm.value.orderNumber;
     let itemNumber = this.filterForm.value.itemNumber;
-    let supplier = this.filterForm.value.supplier;
+    let supplier = this.filterForm.value.supplier
+      ? this.filterForm.value.supplier.toLowerCase()
+      : "";
     let origin = this.filterForm.value.origin;
     let supplierN = this.filterForm.value.supplierN;
     // prevent status == null
@@ -865,7 +867,7 @@ export class ProcurementOrdersComponent implements OnInit {
     this.printSum = false;
     for (let i = 0; i < this.currentItems.length; i++) {
       if (i == 0) {
-        coin = this.currentItems[i].coin;
+        coin = this.currentItems[i].coin ? this.currentItems[i].coin : "ILS";
         if (this.currentItems.length == 1) this.printSum = true;
       } else {
         if (this.currentItems[i].coin == coin) this.printSum = true;
