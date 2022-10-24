@@ -8,6 +8,7 @@ import { SuppliersService } from "src/app/services/suppliers.service";
 import { WarehouseService } from "src/app/services/warehouse.service";
 import { CostumersService } from "src/app/services/costumers.service";
 import { AuthService } from "src/app/services/auth.service";
+import { OrdersService } from "src/app/services/orders.service";
 
 @Component({
   selector: "app-inv-arrivals",
@@ -40,13 +41,18 @@ export class InvArrivalsComponent implements OnInit {
   supplierView: boolean = false;
   warehouseView: boolean = false;
   customerView: boolean = false;
+  customerSupplyView: boolean = false;
   chosenPO: any = null;
+  whActionLogs: any[] = [];
+  chosenActionLog: any;
+  customerOrders: any[] = [];
+  chosenOrder: any[] = [];
 
   componentArrival: FormGroup = new FormGroup({
     itemType: new FormControl("component", Validators.required),
     item: new FormControl(null, Validators.required),
     itemName: new FormControl(""),
-    amount: new FormControl(null, Validators.min(0.001)),
+    amount: new FormControl(null, [Validators.min(0.001), Validators.required]),
     shell_id_in_whareHouse: new FormControl(null, Validators.required),
     position: new FormControl(""),
     whareHouseID: new FormControl(null, Validators.required),
@@ -58,6 +64,15 @@ export class InvArrivalsComponent implements OnInit {
     user: new FormControl(""),
     sourceType: new FormControl(""),
     inList: new FormControl(false),
+    sourceWhId: new FormControl(""),
+    sourceWhName: new FormControl(""),
+    sourceWhCertificateId: new FormControl(""),
+    shell_id_in_whareHouse_Origin: new FormControl(""),
+    shell_position_in_whareHouse_Origin: new FormControl(""),
+    itemId: new FormControl(""),
+    customerId: new FormControl(""),
+    customerName: new FormControl(""),
+    customerOrder: new FormControl(""),
   });
   stickerItem: any;
 
@@ -69,7 +84,8 @@ export class InvArrivalsComponent implements OnInit {
     private warehouseService: WarehouseService,
     private modalService: NgbModal,
     private customersService: CostumersService,
-    private authService: AuthService
+    private authService: AuthService,
+    private ordersService: OrdersService
   ) {}
 
   ngOnInit(): void {
@@ -139,8 +155,12 @@ export class InvArrivalsComponent implements OnInit {
     });
   }
 
-  getPurchaseOrders(e) {
-    console.log(e.target.value);
+  getPurchaseOrders() {
+    let supplierId = this.componentArrival.value.supplier;
+    if (!supplierId || isNaN(supplierId)) {
+      alert("יש לבחור ספק מתוך הרשימה");
+      return;
+    }
     this.purchaseOrders = [];
     this.chosenPO = null;
     this.componentArrival.controls.item.reset();
@@ -150,38 +170,21 @@ export class InvArrivalsComponent implements OnInit {
     this.shellNums = [];
     this.itemNames = [];
     this.purchaseService
-      .getOpenOrdersFromSupplier(e.target.value)
+      .getOpenOrdersFromSupplier(supplierId)
       .subscribe((data) => {
-        // console.log(data);
-        if (data.length > 0) {
-          // let filtered = data.filter(
-          //   (order) => order.status != "closed" && order.status != "canceled"
-          // );
-          // for (let po of filtered) {
-          //   let idx = po.stockitems.findIndex(
-          //     (si) => si.number == this.componentArrival.value.item
-          //   );
-          //   if (idx > -1) {
-          //     this.purchaseOrders.push(po);
-          //   }
-          // }
+        console.log(data);
+        if (data.msg) {
+          this.toastr.error(data.msg);
+          alert("לא נמצא ספק מתאים לערך שנבחר");
+          return;
+        } else if (data && data.length > 0) {
           this.purchaseOrders = data;
+        } else if (data && data.length == 0) {
+          alert("לא נמצאו הזמנות רכש פתוחות לספק שנבחר");
+          return;
         }
       });
   }
-
-  // if
-
-  //         this.purchaseOrders = data
-  //           .filter((PO) => PO.status != "closed" && PO.status != "canceled")
-  //           .filter((PO) => {
-  //             for (let si of PO.stockitems) {
-  //               if (si.number == this.componentArrival.value.item) return true;
-  //               else return false;
-  //             }
-  //           });
-  //       });
-  //   }
 
   async checkComponentN() {
     return new Promise((resolve, reject) => {
@@ -221,7 +224,76 @@ export class InvArrivalsComponent implements OnInit {
       });
   }
 
+  getWhName() {
+    let whId = this.componentArrival.value.whareHouseID;
+    if (!whId) {
+      return;
+    }
+    this.allWhareHouses.forEach((wh) => {
+      wh.inList = false;
+      wh.color = "#fff";
+    });
+
+    let wh = this.allWhareHouses.find((wh) => wh._id == whId);
+
+    if (wh) {
+      this.componentArrival.controls.whareHouse.setValue(wh.name);
+      wh.inList = true;
+      wh.color = "#e8e5e5";
+    }
+
+    this.resetValues();
+  }
+
   getShelfs() {
+    if (
+      (!this.componentArrival.value.item ||
+        this.componentArrival.value.item.length) < 2 &&
+      !this.componentArrival.value.itemId
+    ) {
+      return;
+    }
+    if (this.componentArrival.value.sourceType == "warehouse") {
+      console.log(this.componentArrival.value.itemId);
+      let itemId = this.componentArrival.value.itemId;
+      let item;
+      if (itemId) {
+        item = this.chosenActionLog.logs.find((log) => log._id == itemId);
+      } else {
+        item = this.chosenActionLog.logs.find(
+          (log) => log.item == this.componentArrival.value.item
+        );
+      }
+      this.componentArrival.controls.item.setValue(item.item);
+    }
+    if (this.componentArrival.value.sourceType == "customer") {
+      let itemNumber = this.componentArrival.value.item;
+      let item;
+      if (itemNumber) {
+        item = this.chosenOrder.find((co) => co.itemNumber == itemNumber);
+        this.componentArrival.controls.itemName.setValue(item.discription);
+      }
+      if (
+        this.componentArrival.value.whareHouseID == "5c31bb6f91ca6b2510349ce9"
+      ) {
+        this.componentArrival.controls.itemType.setValue("product");
+      } else this.componentArrival.controls.itemType.setValue("component");
+    }
+    if (this.componentArrival.value.sourceType == "supplier") {
+      let itemNumber = this.componentArrival.value.item;
+      let item;
+      if (itemNumber) {
+        item = this.chosenPO.stockitems.find((cp) => cp.number == itemNumber);
+        this.componentArrival.controls.itemName.setValue(item.name);
+      }
+      this.componentArrival.controls.itemType.setValue(this.chosenPO.orderType);
+    }
+
+    //     if(this.componentArrival.value.sourceType=="customerSupply"){
+    // this.componentArrival.controls.itemType.setValue("component")
+
+    //     }
+
     console.log("Get Shelf initiated");
     if (
       this.componentArrival.value.whareHouseID == "5c31bb6f91ca6b2510349ce9"
@@ -229,46 +301,78 @@ export class InvArrivalsComponent implements OnInit {
       this.componentArrival.controls.itemType.setValue("product");
     }
 
-    this.checkComponentN()
-      .then((result) => {
-        // console.log(result);
-        this.componentArrival.controls.itemName.setValue(
-          result[0].componentName
-        );
-        this.componentArrival.controls.itemType.setValue(result[0].itemType);
-        if (!this.componentArrival.value.whareHouseID)
-          this.toastr.error("אנא בחר מחסן.");
-        else if (!this.componentArrival.value.item)
-          this.toastr.error("אנא הזן מספר פריט.");
-        else
-          this.inventoryService
-            .getShelfListForItemInWhareHouse2(
-              this.componentArrival.value.item,
-              this.componentArrival.value.whareHouseID
-            )
-            .subscribe((res) => {
-              console.log(res);
-              if (res.msg) this.toastr.error("בעיה בהזנת הנתונים.");
-              else if (res.length == 0) {
-                let noShellsForItem = confirm(
-                  "הפריט לא נמצא על אף אחד מהמדפים במחסן זה. להכניס למדף חדש?"
-                );
-                if (noShellsForItem) {
-                  this.componentArrival.controls.isNewItemShell.setValue(true);
-                  this.getAllShellsOfWhareHouse();
+    if (this.componentArrival.value.itemName) {
+      this.inventoryService
+        .getShelfListForItemInWhareHouse2(
+          this.componentArrival.value.item,
+          this.componentArrival.value.whareHouseID
+        )
+        .subscribe((res) => {
+          console.log(res);
+          if (res.msg) this.toastr.error("בעיה בהזנת הנתונים.");
+          else if (res.length == 0) {
+            let noShellsForItem = confirm(
+              "הפריט לא נמצא על אף אחד מהמדפים במחסן זה. להכניס למדף חדש?"
+            );
+            if (noShellsForItem) {
+              this.componentArrival.controls.isNewItemShell.setValue(true);
+              this.getAllShellsOfWhareHouse();
+            }
+          } else {
+            this.shellNums = res;
+            //stupid bug:
+            this.componentArrival.controls.shell_id_in_whareHouse.setValue(
+              this.shellNums[0].shell_id_in_whareHouse
+            );
+            this.componentArrival.controls.isNewItemShell.setValue(false);
+          }
+        });
+      return;
+    } else {
+      this.checkComponentN()
+        .then((result) => {
+          // console.log(result);
+          this.componentArrival.controls.itemName.setValue(
+            result[0].componentName
+          );
+          this.componentArrival.controls.itemType.setValue(result[0].itemType);
+          if (!this.componentArrival.value.whareHouseID)
+            this.toastr.error("אנא בחר מחסן.");
+          else if (!this.componentArrival.value.item)
+            this.toastr.error("אנא הזן מספר פריט.");
+          else
+            this.inventoryService
+              .getShelfListForItemInWhareHouse2(
+                this.componentArrival.value.item,
+                this.componentArrival.value.whareHouseID
+              )
+              .subscribe((res) => {
+                console.log(res);
+                if (res.msg) this.toastr.error("בעיה בהזנת הנתונים.");
+                else if (res.length == 0) {
+                  let noShellsForItem = confirm(
+                    "הפריט לא נמצא על אף אחד מהמדפים במחסן זה. להכניס למדף חדש?"
+                  );
+                  if (noShellsForItem) {
+                    this.componentArrival.controls.isNewItemShell.setValue(
+                      true
+                    );
+                    this.getAllShellsOfWhareHouse();
+                  }
+                } else {
+                  this.shellNums = res;
+                  //stupid bug:
+                  this.componentArrival.controls.shell_id_in_whareHouse.setValue(
+                    this.shellNums[0].shell_id_in_whareHouse
+                  );
+                  this.componentArrival.controls.isNewItemShell.setValue(false);
                 }
-              } else {
-                this.shellNums = res;
-                //stupid bug:
-                this.componentArrival.controls.shell_id_in_whareHouse.setValue(
-                  this.shellNums[0].shell_id_in_whareHouse
-                );
-              }
-            });
-      })
-      .catch((e) => {
-        this.toastr.error("", e);
-      });
+              });
+        })
+        .catch((e) => {
+          this.toastr.error("", e);
+        });
+    }
   }
 
   getAllShellsOfWhareHouse() {
@@ -333,7 +437,54 @@ export class InvArrivalsComponent implements OnInit {
         console.log(this.chosenPO);
       }
 
-      // check if the  quantity arrived against the left over.
+      if (this.componentArrival.value.sourceType == "warehouse") {
+        // check if the  quantity arrived against the delivery note.
+        item = this.chosenActionLog.logs.find(
+          (log) => log._id == this.componentArrival.value.itemId
+        );
+
+        if (!item) {
+          alert(
+            "הפריט לא נמצא בתעודת יציאה מהמחסן, יש יצור תעודה ממחסן המקור."
+          );
+          return;
+        }
+
+        if (this.componentArrival.value.amount != item.amount) {
+          alert("הכמות שהוכנסה לא תואמת לכמות שנשלחה, יש לתקן כמות.");
+          return;
+        }
+        item.inList = true;
+        item.color = "#e8e5e5";
+        this.componentArrival.controls.shell_id_in_whareHouse_Origin.setValue(
+          item.shell_id_in_whareHouse_Origin
+        );
+        this.componentArrival.controls.shell_position_in_whareHouse_Origin.setValue(
+          item.shell_position_in_whareHouse_Origin
+        );
+      }
+      if (this.componentArrival.controls.sourceType.value == "customer") {
+        item = this.chosenOrder.find(
+          (order) =>
+            order.itemNumber == this.componentArrival.controls.item.value
+        );
+        if (!item) {
+          if (!confirm("הפריט לא נמצא בהזמנה האם לקלוט למחסן?")) return;
+        }
+        if (
+          this.componentArrival.controls.amount.value >
+          item.quantityProduced * 1.1 - item.arrivedAmount
+        ) {
+          if (
+            !confirm("הכמות שאתה קולט למחסן גדולה מהכמות שסופקה. האם להמשיך?")
+          )
+            return;
+        }
+        item.inList = true;
+        item.color = "#e8e5e5";
+        console.log(this.chosenPO);
+      }
+
       // let idx = this.chosenPO.stockitems.findIndex(
       //   (si) => si.number == this.componentArrival.value.item
       // );
@@ -360,6 +511,7 @@ export class InvArrivalsComponent implements OnInit {
       // }
 
       // set whareHouse name and shelf position
+
       let whareHouse = this.allWhareHouses.find(
         (wh) => wh._id == this.componentArrival.value.whareHouseID
       );
@@ -399,6 +551,7 @@ export class InvArrivalsComponent implements OnInit {
       this.componentArrival.get("shell_id_in_whareHouse").reset();
       this.componentArrival.get("position").reset();
       this.componentArrival.get("isNewItemShell").reset();
+
       // this.componentArrival.get("supplier").reset();
       // this.componentArrival.get("purchaseOrder").reset();
       this.shellNums = [];
@@ -464,6 +617,7 @@ export class InvArrivalsComponent implements OnInit {
               this.componentArrival.controls.isNewItemShell.setValue(false);
               this.purchaseOrders = [];
               this.supplierView = false;
+              this.chosenActionLog = null;
             }, 1000);
           }, 500);
         } else {
@@ -474,12 +628,34 @@ export class InvArrivalsComponent implements OnInit {
 
   removeFromArrivals(i) {
     let itemNumber = this.allArrivals[i].item;
-    let idx = this.chosenPO.stockitems.findIndex(
-      (si) => si.number == itemNumber
-    );
-    this.chosenPO.stockitems[idx].inList = false;
-    this.chosenPO.stockitems[idx].color = "#fff";
-    this.allArrivals.splice(i, 1);
+    let item;
+    let sourceType = this.componentArrival.value.sourceType;
+    if (sourceType == "supplier") {
+      let idx = this.chosenPO.stockitems.findIndex(
+        (si) => si.number == itemNumber
+      );
+      this.chosenPO.stockitems[idx].inList = false;
+      this.chosenPO.stockitems[idx].color = "#fff";
+      this.allArrivals.splice(i, 1);
+    } else if (sourceType == "warehouse") {
+      let itemId = this.allArrivals[i].itemId;
+
+      if (itemId) {
+        item = this.chosenActionLog.logs.find((log) => log._id == itemId);
+      } else {
+        item = this.chosenActionLog.logs.find((log) => log.item == itemNumber);
+      }
+      item.inList = false;
+      item.color = "#fff";
+      this.allArrivals.splice(i, 1);
+    } else if (sourceType == "customer") {
+      item = this.chosenOrder.find((order) => order.itemNumber == itemNumber);
+      item.inList = false;
+      item.color = "#fff";
+      this.allArrivals.splice(i, 1);
+    } else {
+      this.allArrivals.splice(i, 1);
+    }
   }
 
   justPrint() {
@@ -499,18 +675,27 @@ export class InvArrivalsComponent implements OnInit {
   chooseSource() {
     let source = this.componentArrival.value.sourceType;
     console.log(source);
+    this.resetValues();
     if (source == "supplier") {
       this.supplierView = true;
       this.warehouseView = false;
       this.customerView = false;
+      this.customerSupplyView = false;
     } else if (source == "warehouse") {
       this.warehouseView = true;
       this.supplierView = false;
       this.customerView = false;
+      this.customerSupplyView = false;
     } else if (source == "customer") {
       this.warehouseView = false;
       this.supplierView = false;
       this.customerView = true;
+      this.customerSupplyView = false;
+    } else if (source == "customerSupply") {
+      this.customerSupplyView = true;
+      this.supplierView = false;
+      this.warehouseView = false;
+      this.customerView = false;
     }
   }
 
@@ -537,19 +722,134 @@ export class InvArrivalsComponent implements OnInit {
   }
 
   resetValues() {
+    let whareHouseID = this.componentArrival.value.whareHouseID;
+    let whareHouse = this.componentArrival.value.whareHouse;
+    let sourceType = this.componentArrival.value.sourceType;
     this.purchaseOrders = [];
     this.chosenPO = null;
     this.shellNums = [];
     this.itemNames = [];
     this.allArrivals = [];
-    this.componentArrival.get("itemType").reset();
-    this.componentArrival.get("item").reset();
-    this.componentArrival.get("itemName").reset();
-    this.componentArrival.get("amount").reset();
-    this.componentArrival.get("shell_id_in_whareHouse").reset();
-    this.componentArrival.get("position").reset();
-    this.componentArrival.get("supplier").reset();
-    this.componentArrival.get("purchaseOrder").reset();
-    this.componentArrival.controls.isNewItemShell.setValue(false);
+    this.whActionLogs = [];
+    this.chosenActionLog = null;
+    this.chosenOrder = [];
+    this.componentArrival.reset();
+    this.componentArrival.controls.whareHouseID.setValue(whareHouseID);
+    this.componentArrival.controls.whareHouse.setValue(whareHouse);
+    this.componentArrival.controls.sourceType.setValue(sourceType);
+    // this.componentArrival.get("itemType").reset();
+    // this.componentArrival.get("item").reset();
+    // this.componentArrival.get("itemName").reset();
+    // this.componentArrival.get("amount").reset();
+    // this.componentArrival.get("shell_id_in_whareHouse").reset();
+    // this.componentArrival.get("position").reset();
+    // this.componentArrival.get("supplier").reset();
+    // this.componentArrival.get("purchaseOrder").reset();
+    // this.componentArrival.controls.isNewItemShell.setValue(false);
+    // this.componentArrival.get("customerId").reset();
+    // this.componentArrival.get("customerName").reset();
+    // this.componentArrival.get("customerOrder").reset();
+  }
+
+  getWhActionLogs() {
+    if (!this.componentArrival.controls.sourceWhId.value) {
+      alert("יש לבחור מחסן מקור");
+      return;
+    }
+    let idx = this.allWhareHouses.findIndex(
+      (wh) => wh._id == this.componentArrival.controls.sourceWhId.value
+    );
+    let sourceWhName = this.allWhareHouses[idx].name;
+    let destWhName = this.componentArrival.value.whareHouse;
+
+    if (sourceWhName && destWhName && sourceWhName != destWhName) {
+      this.componentArrival.controls.sourceWhName.setValue(sourceWhName);
+    } else {
+      alert("יש לבחור מחסן יעד ומחסן מקור");
+      return;
+    }
+
+    this.inventoryService
+      .getWhActionLogsByWhName(sourceWhName, destWhName)
+      .subscribe((data) => {
+        console.log(data);
+        if (data.msg) {
+          this.toastr.error(data.msg);
+          return;
+        } else if (data.length > 0) {
+          this.whActionLogs = data;
+          return;
+        } else {
+          this.toastr.error("לא נמצאו תעודות יציאה למחסן זה");
+          this.whActionLogs = [];
+          return;
+        }
+      });
+  }
+
+  setSourceDeliveryNote() {
+    let deliveryNote = this.componentArrival.value.sourceWhCertificateId;
+    if (deliveryNote) {
+      let idx = this.whActionLogs.findIndex(
+        (al) => al.deliveryNote == deliveryNote
+      );
+      if (idx > -1) {
+        for (let item of this.whActionLogs[idx].logs) {
+          if (item.deliveryStatus == "delivered") {
+            item.inList = true;
+            item.color = "#e8e5e5";
+          }
+        }
+        this.chosenActionLog = this.whActionLogs[idx];
+      }
+    }
+  }
+
+  getOrderNumber() {
+    let customerId = this.componentArrival.value.customerId;
+    console.log(customerId);
+    let customer = this.customersList.find(
+      (cus) => cus.costumerId == customerId
+    );
+    this.componentArrival.controls.customerName.setValue(customer.costumerName);
+    console.log(this.componentArrival.value.customerName);
+
+    if (customerId) {
+      this.ordersService.getOrdersByCustomerId(customerId).subscribe((data) => {
+        console.log(data);
+        if (data.msg) {
+          this.toastr.error(data.msg);
+          return;
+        } else if (data && data.length > 0) {
+          this.customerOrders = data;
+          return;
+        } else {
+          alert("לא נמצאו הזמנות מלקוח זה.");
+          return;
+        }
+      });
+    }
+  }
+
+  chooseOrder() {
+    let orderNumber = this.componentArrival.value.customerOrder;
+    console.log(orderNumber);
+
+    if (orderNumber) {
+      this.ordersService.getItemsFromOrder(orderNumber).subscribe((data) => {
+        console.log(data);
+        if (data.msg) {
+          this.toastr.error(data.msg);
+          return;
+        } else if (data && data.length > 0) {
+          this.chosenOrder = data;
+          console.log(this.chosenOrder);
+          return;
+        } else {
+          alert("לא נמצאו פריטים בהזמנה שנבחרה.");
+          return;
+        }
+      });
+    }
   }
 }

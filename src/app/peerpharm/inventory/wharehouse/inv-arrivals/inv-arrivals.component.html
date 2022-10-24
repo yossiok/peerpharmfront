@@ -10,7 +10,7 @@
         <label>מחסן *</label>
         <select
           class="form-control"
-          (change)="itemNumber ? getShelfs() : null"
+          (change)="getWhName()"
           formControlName="whareHouseID"
         >
           <option disabled value="">בחר מחסן</option>
@@ -32,7 +32,8 @@
           <option disabled value="">בחר מקור הסחורה</option>
           <option value="supplier">ספק</option>
           <option value="warehouse">מחסן אחר</option>
-          <option value="customer">לקוח (החזרה)</option>
+          <option value="customerSupply">לקוח (קומפוננטים)</option>
+          <option value="customer">לקוח (החזרות)</option>
         </select>
       </div>
     </div>
@@ -42,24 +43,18 @@
           <label>ספק</label>
           <input
             list="suppliers"
-            (blur)="getPurchaseOrders($event)"
+            (change)="getPurchaseOrders()"
             class="form-control"
             formControlName="supplier"
           />
           <datalist id="suppliers">
             <option
               *ngFor="let supplier of allSuppliers"
-              value="{{ supplier.suplierNumber }}"
+              [value]="supplier.suplierNumber"
             >
               {{ supplier.suplierNumber }} - {{ supplier.suplierName }}
             </option>
           </datalist>
-
-          <!-- <select class="form-control" (change)="getPurchaseOrders($event)" formControlName="supplier">
-                    <option disabled value="">בחר ספק</option>
-                    <option *ngFor="let supplier of allSuppliers" [value]="supplier.suplierNumber">{{supplier.suplierNumber}} - {{supplier.suplierName}}
-                    </option>
-                  </select> -->
         </div>
         <div class="col-2">
           <label>מס' הזמנת רכש</label>
@@ -78,9 +73,114 @@
           </select>
         </div>
       </ng-container>
+      <ng-container *ngIf="warehouseView">
+        <div class="col-2">
+          <label for="">מחסן מקור</label>
+          <select
+            name=""
+            id=""
+            class="form-control"
+            formControlName="sourceWhId"
+            (change)="getWhActionLogs()"
+          >
+            <option>שם מחסן המקור</option>
+            <option
+              *ngFor="let whareHouse of allWhareHouses"
+              [value]="whareHouse._id"
+              [disabled]="whareHouse.inList"
+              [style.background-color]="whareHouse.color"
+            >
+              {{ whareHouse.name }}
+            </option>
+          </select>
+        </div>
+        <div class="col-2">
+          <label for="">מס' תעודה</label>
+          <select
+            class="form-control"
+            formControlName="sourceWhCertificateId"
+            (change)="setSourceDeliveryNote()"
+          >
+            <option disabled>בחר תעודה</option>
+            <option *ngFor="let log of whActionLogs" [value]="log.deliveryNote">
+              {{ log.deliveryNote }}
+            </option>
+          </select>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="customerView">
+        <div class="col-2">
+          <label>לקוח</label>
+          <input
+            list="customers"
+            (change)="getOrderNumber()"
+            class="form-control"
+            formControlName="customerId"
+          />
+          <datalist id="customers">
+            <option
+              *ngFor="let customer of customersList"
+              [value]="customer.costumerId"
+            >
+              {{ customer.costumerId }} - {{ customer.costumerName }}
+            </option>
+          </datalist>
+        </div>
+        <div class="col-2">
+          <label>מס' הזמנת לקוח</label>
+          <select
+            class="form-control"
+            formControlName="customerOrder"
+            (change)="chooseOrder()"
+          >
+            <option selected value="">מס' הזמנה</option>
+            <option
+              *ngFor="let order of customerOrders"
+              [value]="order.orderNumber"
+            >
+              {{ order.orderNumber }}
+            </option>
+          </select>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="customerSupplyView">
+        <div class="col-2">
+          <label>לקוח</label>
+          <input
+            list="customers"
+            (change)="getOrderNumber()"
+            class="form-control"
+            formControlName="customerId"
+          />
+          <datalist id="customers">
+            <option
+              *ngFor="let customer of customersList"
+              [value]="customer.costumerId"
+            >
+              {{ customer.costumerId }} - {{ customer.costumerName }}
+            </option>
+          </datalist>
+        </div>
+        <div class="col-2">
+          <label>מס' הזמנת לקוח</label>
+          <select
+            class="form-control"
+            formControlName="customerOrder"
+            (change)="chooseOrder()"
+          >
+            <option selected value="">מס' הזמנה</option>
+            <option
+              *ngFor="let order of customerOrders"
+              [value]="order.orderNumber"
+            >
+              {{ order.orderNumber }}
+            </option>
+          </select>
+        </div>
+      </ng-container>
     </div>
     <div class="row mt-4 w-100">
-      <table class="table table-hover">
+      <table class="table table-hover" *ngIf="supplierView">
         <thead class="bg-info text-white">
           <tr>
             <th>#</th>
@@ -97,7 +197,7 @@
             *ngFor="let item of chosenPO.stockitems; let i = index"
             [style.background-color]="item.color"
           >
-            <td class="text-center">{{ index }}</td>
+            <td class="text-center">{{ i + 1 }}</td>
             <td class="text-center">
               {{ item.componentType || chosenPO.orderType }}
             </td>
@@ -113,6 +213,68 @@
           </tr>
         </tbody>
       </table>
+      <table class="table table-hover" *ngIf="warehouseView">
+        <thead class="bg-info text-white">
+          <tr>
+            <th>#</th>
+            <th class="text-center">סוג פריט</th>
+            <th class="text-center">מק"ט</th>
+            <th class="text-center">שם פריט</th>
+            <th class="text-center">הגיע ממחסן</th>
+            <th class="text-center">הגיע ממדף</th>
+            <th class="text-center">כמות שנשלחה</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="chosenActionLog && chosenActionLog.logs.length > 0">
+          <tr
+            *ngFor="let item of chosenActionLog.logs; let i = index"
+            [style.background-color]="item.color"
+          >
+            <td class="text-center">{{ i + 1 }}</td>
+            <td class="text-center">
+              {{ item.itemType }}
+            </td>
+            <td class="text-center">
+              {{ item.item }}
+            </td>
+            <td class="text-center">{{ item.itemName }}</td>
+            <td class="text-center">{{ item.WH_originName }}</td>
+            <td class="text-center">
+              {{ item.shell_position_in_whareHouse_Origin }}
+            </td>
+            <td class="text-center">{{ item.amount || 0 }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="table table-hover" *ngIf="customerView">
+        <thead class="bg-info text-white">
+          <tr>
+            <th>#</th>
+            <th class="text-center">סוג פריט</th>
+            <th class="text-center">מק"ט</th>
+            <th class="text-center">שם פריט</th>
+            <th class="text-center">משקל (גר')</th>
+            <th class="text-center">כמות שהוזמנה</th>
+            <th class="text-center">כמות שסופקה</th>
+          </tr>
+        </thead>
+        <tbody *ngIf="chosenOrder && chosenOrder.length > 0">
+          <tr
+            *ngFor="let item of chosenOrder; let i = index"
+            [style.background-color]="item.color"
+          >
+            <td class="text-center">{{ i + 1 }}</td>
+            <td class="text-center">Product</td>
+            <td class="text-center">
+              {{ item.itemNumber }}
+            </td>
+            <td class="text-center">{{ item.discription }}</td>
+            <td class="text-center">{{ item.netWeightGr }}</td>
+            <td class="text-center">{{ item.quantity || 0 }}</td>
+            <td class="text-center">{{ item.quantityProduced }}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div class="row mt-2">
@@ -120,11 +282,11 @@
         <label> מק"ט * </label>
         <select
           formControlName="item"
-          (change)="getShelfs()"
+          (blur)="getShelfs()"
           class="form-control"
           #first
         >
-          <option value="" disabled>בחר מקט</option>
+          <option value="" selected="true" disabled>בחר מקט</option>
           <ng-container
             *ngIf="
               chosenPO && chosenPO.stockitems && chosenPO.stockitems.length > 0
@@ -143,22 +305,57 @@
       </div>
       <div *ngIf="!disabled && warehouseView" class="col-2">
         <label> מק"ט * </label>
-        <input
-          type="text"
-          [disabled]="disabled"
-          formControlName="item"
-          (change)="getShelfs()"
+        <select
+          formControlName="itemId"
+          (blur)="getShelfs()"
           class="form-control"
-        />
+          #first
+        >
+          <option value="" selected disabled>בחר מקט</option>
+          <ng-container
+            *ngIf="chosenActionLog && chosenActionLog.logs.length > 0"
+          >
+            <option
+              *ngFor="let item of chosenActionLog.logs"
+              [value]="item._id"
+              [disabled]="item.inList"
+              [style.background-color]="item.color"
+            >
+              {{ item.item }}
+            </option>
+          </ng-container>
+        </select>
       </div>
       <div *ngIf="!disabled && customerView" class="col-2">
+        <label> מק"ט * </label>
+        <select
+          formControlName="item"
+          (blur)="getShelfs()"
+          class="form-control"
+          #first
+        >
+          <option value="" selected="true" disabled>בחר מקט</option>
+          <ng-container *ngIf="chosenOrder && chosenOrder.length > 0">
+            <option
+              *ngFor="let item of chosenOrder"
+              [value]="item.itemNumber"
+              [disabled]="item.inList"
+              [style.background-color]="item.color"
+            >
+              {{ item.itemNumber }}
+            </option>
+          </ng-container>
+        </select>
+      </div>
+      <div *ngIf="!disabled && customerSupplyView" class="col-2">
         <label> מק"ט * </label>
         <input
           type="text"
           [disabled]="disabled"
           formControlName="item"
-          (change)="getShelfs()"
+          (blur)="getShelfs()"
           class="form-control"
+          #first
         />
       </div>
       <div *ngIf="!disabled" class="col-2">
@@ -168,6 +365,7 @@
           formControlName="itemName"
           type="text"
           #name
+          (click)="getShelfs()"
         />
         <button class="d-inline" type="button" (click)="getNames()">
           Find
@@ -387,14 +585,19 @@
                   <td>{{ arrival.purchaseOrder }}</td>
                 </ng-container>
                 <ng-container *ngIf="arrival.sourceType == 'warehouse'">
-                  <td>{{ arrival.sourceWh || arrival.WH_originName }}</td>
+                  <td>{{ arrival.sourceWhName }}</td>
                   <td>
-                    {{ arrival.deliveryNote || arrival.warehouseReception }}
+                    {{ arrival.sourceWhCertificateId }}
                   </td>
                 </ng-container>
-                <ng-container *ngIf="arrival.sourceType == 'customer'">
-                  <td>{{ arrival.sourceWh }}</td>
-                  <td>{{ arrival.deliveryNote }}</td>
+                <ng-container
+                  *ngIf="
+                    arrival.sourceType == 'customer' ||
+                    arrival.sourceType == 'customerSupply'
+                  "
+                >
+                  <td>{{ arrival.customerId }}</td>
+                  <td>{{ arrival.deliveryNote || arrival.customerOrder }}</td>
                 </ng-container>
               </tr>
             </ng-container>
