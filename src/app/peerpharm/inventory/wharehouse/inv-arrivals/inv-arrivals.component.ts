@@ -424,7 +424,7 @@ export class InvArrivalsComponent implements OnInit {
         }
         if (
           this.componentArrival.controls.amount.value >
-          item.quantity * 1.1 - item.arrivedAmount
+          item.quantity * 1.2 - item.arrivedAmount
         ) {
           alert(
             "הכמות שאתה קולט למחסן גדולה מהכמות שנשארה לאספקה בהזמנה. צור קשר עם הקניינית על מנת לעדכן את ההזמנה."
