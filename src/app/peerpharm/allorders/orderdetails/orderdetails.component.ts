@@ -303,159 +303,185 @@ export class OrderdetailsComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    // this.getAllFormsDetails()
-    this.loadAlerts = true;
-    this.iAmHaviv =
-      this.authService.loggedInUser.screenPermission == "1" ||
-      this.authService.loggedInUser.screenPermission == "2";
+    try {
+      // this.getAllFormsDetails()
+      this.loadAlerts = true;
+      this.iAmHaviv =
+        this.authService.loggedInUser.screenPermission == "1" ||
+        this.authService.loggedInUser.screenPermission == "2";
 
-    this.productionApproved =
-      this.authService.loggedInUser.authorization.includes("production");
-    this.orderItemEditApprove =
-      this.authService.loggedInUser.authorization.includes("newOrder");
-    this.getUserInfo();
-    setTimeout(() => {
-      this.itemData.itemOrderDate = new Date().toISOString().substr(0, 10);
-    }, 150);
-    this.orderService.openOrdersValidate.subscribe((res) => {
-      this.number = this.route.snapshot.paramMap.get("id");
+      this.productionApproved =
+        this.authService.loggedInUser.authorization.includes("production");
+      this.orderItemEditApprove =
+        this.authService.loggedInUser.authorization.includes("newOrder");
+      this.getUserInfo();
+      setTimeout(() => {
+        this.itemData.itemOrderDate = new Date().toISOString().substr(0, 10);
+      }, 150);
+      this.orderService.openOrdersValidate.subscribe((res) => {
+        this.number = this.route.snapshot.paramMap.get("id");
 
-      if (res == true || this.number == "00") {
-        // Getting All OrderItems!
-        this.showingAllOrders = true;
-        this.loadData = true;
-        this.orderService.getOpenOrdersItems().subscribe(async (orders) => {
-          console.log(orders);
-          this.multi = true;
-          orders.orderItems.forEach((item) => {
-            item.pakaStatus = item.pakaStatus ? item.pakaStatus : 0;
-            if (item.workPlans && item.workPlans.length > 0) {
-              let i = item.workPlans.length - 1;
-              item.pakaStatus = item.workPlans[i].itemStatus;
-            }
-            // console.log(item);
-            item.isExpand = "+";
-            item.colorBtn = "#33FFE0";
-          });
-          this.ordersData = orders.ordersData;
-          await this.colorOrderItemsLines(orders.orderItems).then((data) => {});
-          this.ordersItems = orders.orderItems;
-          this.productionRequirements = orders.orderItems;
+        if (res == true || this.number == "00") {
+          // Getting All OrderItems!
+          this.showingAllOrders = true;
+          this.loadData = true;
+          this.orderService.getOpenOrdersItems().subscribe(async (orders) => {
+            console.log(orders);
+            this.multi = true;
+            orders.orderItems.forEach((item) => {
+              item.pakaStatus = item.pakaStatus ? item.pakaStatus : 0;
+              if (item.workPlans && item.workPlans.length > 0) {
+                let i = item.workPlans.length - 1;
+                item.pakaStatus = item.workPlans[i].itemStatus;
+              }
+              // console.log(item);
+              item.isExpand = "+";
+              item.colorBtn = "#33FFE0";
+            });
+            this.ordersData = orders.ordersData;
+            await this.colorOrderItemsLines(orders.orderItems).then(
+              (data) => {}
+            );
+            this.ordersItems = orders.orderItems;
+            this.productionRequirements = orders.orderItems;
 
-          this.ordersItemsCopy = orders.orderItems;
-          this.ordersItems.map((item) => {
-            item.itemFullName = item.itemNumber + " " + item.discription;
-            item.oiStatus = item.oiStatus ? item.oiStatus : "open";
-          });
-          //this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
-          //this.getComponents(this.ordersItems[0].orderNumber);
-          this.multi = true;
-          this.loadData = false;
-        });
-      } else {
-        this.showingAllOrders = false;
-        this.loadData = true;
-        this.orderService.ordersArr.subscribe(async (res) => {
-          var numArr = this.number.split(",").filter((x) => x != "");
-
-          //multi orders:  came through load button
-          if (numArr.length > 1) {
-            this.orderService
-              .getOrdersIdsByNumbers(numArr)
-              .subscribe(async (orders) => {
-                console.log(orders);
-                if (orders.ordersIds.length > 1) {
-                  this.ordersData = orders.ordersData;
-                  this.ordersData.map((order) => {
-                    order.pakaStatus = order.pakaStatus ? order.pakaStatus : 0;
-                    if (order.workPlans && order.workPlans.length > 0) {
-                      let i = order.workPlans.length - 1;
-                      order.pakaStatus = order.workPlans[i].itemStatus;
-                    }
-                    // console.log(order);
-                    if (
-                      order.costumerImpRemark != undefined &&
-                      order.costumerImpRemark != ""
-                    ) {
-                      this.multiCostumerImpRemark.push(order.costumerImpRemark);
-                    }
-                  });
-                  this.checkCostumersImportantRemarks(this.ordersData);
-                  this.orderService
-                    .getMultiOrdersIds(orders.ordersIds)
-                    .subscribe(async (orderItems) => {
-                      console.log(orderItems);
-                      let itemNumbers = [];
-                      for (let oi of orderItems) {
-                        itemNumbers.push(oi.itemNumber);
-                        // if the item has no formule and filling only, to prevent adding to cream production workplan
-                        oi.pakaStatus = oi.fillingOnly ? 10 : oi.pakaStatus;
-                      }
-                      // console.log(itemNumbers);
-                      this.itemSer
-                        .checkForProblematicItems(itemNumbers)
-                        .subscribe((data) => {
-                          // console.log(data);
-                          for (let item of data) {
-                            let idx = orderItems.findIndex(
-                              (oi) => oi.itemNumber == item.itemNumber
-                            );
-                            if (idx > -1) {
-                              orderItems[idx].formuleFound = item.formuleFound;
-                              orderItems[idx].problematicComponents =
-                                item.problematicComponents;
-                              orderItems[idx].problematicMaterials =
-                                item.problematicMaterials;
-                            }
-                          }
-                          console.log(orderItems);
-
-                          orderItems.forEach((item) => {
-                            // console.log(item);
-                            let problem = this.problematicAlerts(item);
-                            item.problematicArr = problem.problematicArr;
-                            item.alertsArr = problem.alertsArr;
-                            item.isExpand = "+";
-                            item.colorBtn = "#33FFE0";
-                            item.oiStatus = item.oiStatus
-                              ? item.oiStatus
-                              : "open";
-                          });
-                          this.ordersItems = orderItems;
-                          this.productionRequirements = orderItems;
-
-                          this.ordersItemsCopy = orderItems;
-
-                          this.multi = true;
-                        });
-                      await this.colorOrderItemsLines(orderItems).then(
-                        (data) => {}
-                      );
-                    });
-                } else {
-                  //one order: but came through load button
-                  await this.getOrderDetails();
-                  await this.getOrderItems(false);
-
-                  this.show = true;
-                  this.multi = false;
-                  this.loadData = false;
-                }
-              });
-          } else {
-            //one order:
-            await this.getOrderDetails();
-            await this.getOrderItems(false);
-
-            this.show = true;
-            this.multi = false;
+            this.ordersItemsCopy = orders.orderItems;
+            this.ordersItems.map((item) => {
+              item.itemFullName = item.itemNumber + " " + item.discription;
+              item.oiStatus = item.oiStatus ? item.oiStatus : "open";
+            });
+            //this.ordersItems = this.ordersItems.map(elem => Object.assign({ expand: false }, elem));
+            //this.getComponents(this.ordersItems[0].orderNumber);
+            this.multi = true;
             this.loadData = false;
-          }
-        });
-      }
-    });
+          });
+        } else {
+          this.showingAllOrders = false;
+          this.loadData = true;
+          this.orderService.ordersArr.subscribe(async (res) => {
+            var numArr = this.number.split(",").filter((x) => x != "");
 
-    this.ordersItems;
+            //multi orders:  came through load button
+            if (numArr.length > 1) {
+              this.orderService
+                .getOrdersIdsByNumbers(numArr)
+                .subscribe(async (orders) => {
+                  console.log(orders);
+                  if (orders.ordersIds.length > 1) {
+                    this.ordersData = orders.ordersData;
+                    this.ordersData.map((order) => {
+                      order.pakaStatus = order.pakaStatus
+                        ? order.pakaStatus
+                        : 0;
+                      if (order.workPlans && order.workPlans.length > 0) {
+                        let i = order.workPlans.length - 1;
+                        order.pakaStatus = order.workPlans[i].itemStatus;
+                      }
+                      // console.log(order);
+                      if (
+                        order.costumerImpRemark != undefined &&
+                        order.costumerImpRemark != ""
+                      ) {
+                        this.multiCostumerImpRemark.push(
+                          order.costumerImpRemark
+                        );
+                      }
+                    });
+                    this.checkCostumersImportantRemarks(this.ordersData);
+                    this.orderService
+                      .getMultiOrdersIds(orders.ordersIds)
+                      .subscribe(async (orderItems) => {
+                        console.log(orderItems);
+                        let itemNumbers = [];
+                        for (let oi of orderItems) {
+                          itemNumbers.push(oi.itemNumber);
+                          // if the item has no formule and filling only, to prevent adding to cream production workplan
+                          oi.pakaStatus = oi.fillingOnly ? 10 : oi.pakaStatus;
+                        }
+                        // console.log(itemNumbers);
+                        this.itemSer
+                          .checkForProblematicItems(itemNumbers)
+                          .subscribe((data) => {
+                            if (data.msg) {
+                              this.toastSrv.error(data.msg);
+                            } else if (data) {
+                              console.log(data);
+                              for (let oi of orderItems) {
+                                let oiProblems = data.find(
+                                  (dt) => dt.itemNumber == oi.itemNumber
+                                );
+                                oi.formuleFound = oiProblems.formuleFound;
+                                oi.problematicComponents =
+                                  oiProblems.problematicComponents;
+                                oi.problematicMaterials =
+                                  oiProblems.problematicMaterials;
+                              }
+                              // for (let item of data) {
+                              //   let idx = orderItems.findIndex(
+                              //     (oi) => oi.itemNumber == item.itemNumber
+                              //   );
+                              //   if (idx > -1) {
+                              //     orderItems[idx].formuleFound =
+                              //       item.formuleFound;
+                              //     orderItems[idx].problematicComponents =
+                              //       item.problematicComponents;
+                              //     orderItems[idx].problematicMaterials =
+                              //       item.problematicMaterials;
+                              //   }
+                              // }
+                              console.log(orderItems);
+
+                              orderItems.forEach((item) => {
+                                // console.log(item);
+                                let problem = this.problematicAlerts(item);
+                                item.problematicArr = problem.problematicArr;
+                                item.alertsArr = problem.alertsArr;
+                                item.isExpand = "+";
+                                item.colorBtn = "#33FFE0";
+                                item.oiStatus = item.oiStatus
+                                  ? item.oiStatus
+                                  : "open";
+                              });
+                            }
+                            this.ordersItems = orderItems;
+                            this.productionRequirements = orderItems;
+
+                            this.ordersItemsCopy = orderItems;
+
+                            this.multi = true;
+                          });
+                        await this.colorOrderItemsLines(orderItems).then(
+                          (data) => {}
+                        );
+                      });
+                  } else {
+                    //one order: but came through load button
+                    await this.getOrderDetails();
+                    await this.getOrderItems(false);
+
+                    this.show = true;
+                    this.multi = false;
+                    this.loadData = false;
+                  }
+                });
+            } else {
+              //one order:
+              await this.getOrderDetails();
+              await this.getOrderItems(false);
+
+              this.show = true;
+              this.multi = false;
+              this.loadData = false;
+            }
+          });
+        }
+      });
+
+      this.ordersItems;
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
+    }
   }
 
   problematicAlerts(item) {
