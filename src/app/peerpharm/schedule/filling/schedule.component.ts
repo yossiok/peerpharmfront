@@ -19,6 +19,7 @@ import { ExcelService } from "src/app/services/excel.service";
 import { AuthService } from "src/app/services/auth.service";
 import { Router } from "@angular/router";
 import { cpuUsage } from "process";
+import { ConsoleLogger } from "@aws-amplify/core";
 
 @Component({
   selector: "app-schedule",
@@ -400,13 +401,23 @@ export class ScheduleComponent implements OnInit {
   }
 
   dateChanged(date) {
-    if (date == "") this.toastSrv.error("יש לבחור תאריך מתוך הלוח");
-    else {
-      this.fillingDate = date;
-      this.startTime();
-      this.componentsTotalQty = [];
-      this.scheduleData = [];
-      this.scheduleService.getScheduleByDate(date).subscribe((res) => {
+    if (date == "") {
+      this.toastSrv.error("יש לבחור תאריך מתוך הלוח");
+      return;
+    }
+
+    this.fillingDate = date;
+    this.startTime();
+    this.componentsTotalQty = [];
+    this.scheduleData = [];
+    this.itemsNumbers = [];
+    this.scheduleService.getScheduleByDate(date).subscribe((res) => {
+      if (res.msg) {
+        console.log(res);
+        this.toastSrv.error(res.msg);
+        return;
+      }
+      if (res && res.length > 0) {
         res.map((sced) => {
           if (sced.status == "filled") sced.color = "#CE90FF";
           if (sced.status == "done") sced.color = "Aquamarine";
@@ -435,48 +446,67 @@ export class ScheduleComponent implements OnInit {
         this.scheduleData.forEach((row) => {
           this.itemsNumbers.push(row.item);
         });
-        this.itemSer
-          .getComponentsForMultiItems(this.itemsNumbers)
-          .subscribe((res2) => {
-            this.itemsComponentsByItemNumber = res2;
-
-            console.log(res2);
-            console.log(this.scheduleData);
-
-            this.scheduleData.forEach((line) => {
-              let idx = res2.findIndex((item) => item.itemNumber == line.item);
-              if (idx > -1) {
-                line.components = res2[idx].components;
+        if (this.itemsNumbers.length > 0) {
+          this.itemSer
+            .getComponentsForMultiItems(this.itemsNumbers)
+            .subscribe((res2) => {
+              if (res2.msg) {
+                console.log(res2);
+                this.toastSrv.error(res2.msg);
               }
-            });
+              this.itemsComponentsByItemNumber = res2;
 
-            console.log(this.scheduleData);
-            //get batch specifications status
-            this.scheduleData.map((sced) => {
-              if (sced.batch && sced.batch != "") {
-                let batches = sced.batch.split("+");
-                if (batches.length > 1) {
-                  sced.batchSpecStatus = 999;
-                } else {
-                  this.batchService
-                    .getSpecvalue(batches[0])
-                    .subscribe((res) => {
-                      if (res.status) sced.batchSpecStatus = res.status;
-                      else sced.batchSpecStatus = -1;
-                    });
+              console.log(res2);
+              console.log(this.scheduleData);
+
+              this.scheduleData.forEach((line) => {
+                let idx = res2.findIndex(
+                  (item) => item.itemNumber == line.item
+                );
+                if (idx > -1) {
+                  line.components = res2[idx].components;
                 }
-              }
-            });
-            this.selectedArr = [];
-            this.scheduleDataCopy = this.scheduleData;
+              });
 
-            setTimeout(() => {
+              console.log(this.scheduleData);
+              //get batch specifications status
+              this.scheduleData.map((sced) => {
+                if (sced.batch && sced.batch != "") {
+                  let batches = sced.batch.split("+");
+                  if (batches.length > 1) {
+                    sced.batchSpecStatus = 999;
+                  } else {
+                    this.batchService
+                      .getSpecvalue(batches[0])
+                      .subscribe((res) => {
+                        if (res.msg && res.msg != "success") {
+                          console.log(res);
+                          this.toastSrv.error(res.msg);
+                        }
+
+                        if (res.status) sced.batchSpecStatus = res.status;
+                        else sced.batchSpecStatus = -1;
+                      });
+                  }
+                }
+              });
+              this.selectedArr = [];
               this.scheduleDataCopy = this.scheduleData;
-              // this.getComponentsQty();
-            }, 5000);
-          });
-      });
-    }
+
+              setTimeout(() => {
+                this.scheduleDataCopy = this.scheduleData;
+                // this.getComponentsQty();
+              }, 5000);
+            });
+        } else {
+          this.toastSrv.error("אין תכנון ליום זה.");
+          return;
+        }
+      } else {
+        this.toastSrv.error("אין תכנון ליום זה.");
+        return;
+      }
+    });
   }
 
   openFormDetails(scheduleId) {
@@ -1033,7 +1063,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   filterSchedule() {
-    this.scheduleData = this.selectedArr;
+    this.scheduleDataCopy = this.selectedArr;
   }
 
   handleChange(type) {
