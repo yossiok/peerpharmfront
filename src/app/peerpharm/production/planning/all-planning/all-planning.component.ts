@@ -256,7 +256,8 @@ export class AllPlanningComponent implements OnInit {
   }
 
   showHideCheckBox() {
-    if (this.showCheckbox) this.checkedWorkPlans = [];
+    if (this.showCheckbox) this.toDoneArray = [];
+    // if (this.showCheckbox) this.checkedWorkPlans = [];
 
     this.showCheckbox = !this.showCheckbox;
   }

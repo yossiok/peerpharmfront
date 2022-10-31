@@ -335,10 +335,10 @@
           <th>#</th>
           <th>Material Number</th>
           <th>Material Name</th>
-          <th>Required</th>
-          <th>In Stock</th>
-          <th>In Purchase</th>
-          <th>Material Status</th>
+          <th>Required (Kg)</th>
+          <th>In Stock (Kg)</th>
+          <th>In Purchase (Kg)</th>
+          <th>Material Status (Kg)</th>
         </tr>
       </thead>
       <tbody>
@@ -346,7 +346,7 @@
           <td>{{ i + 1 }}</td>
           <td>{{ material.item }}</td>
           <td>{{ material.itemName }}</td>
-          <td>{{ material.kgProd }}</td>
+          <td>{{ material.kgProd | number: "1.2" }}</td>
           <td>
             {{ material.stockAmount | number: "1.2" }}
           </td>
