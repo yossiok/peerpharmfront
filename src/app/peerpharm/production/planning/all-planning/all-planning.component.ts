@@ -12,6 +12,7 @@ import { resolve } from "url";
 import { WorkPlan } from "../WorkPlan";
 import { FormulesService } from "src/app/services/formules.service";
 import { EPERM } from "constants";
+import { TwoFactorSms } from "src/app/guards/twofactorsms.guard";
 
 @Component({
   selector: "app-all-planning",
@@ -59,7 +60,8 @@ export class AllPlanningComponent implements OnInit {
     private modalService: NgbModal,
     private router: Router,
     private formuleService: FormulesService,
-    private itemService: ItemsService
+    private itemService: ItemsService,
+    private twoFactorSms: TwoFactorSms
   ) {}
 
   async ngOnInit() {
@@ -313,7 +315,14 @@ export class AllPlanningComponent implements OnInit {
     this.excelService.exportAsExcelFile(excel, title);
   }
 
-  loadMaterialsForFormule() {
+  async loadMaterialsForFormule() {
+    let state = await this.twoFactorSms.canActivate();
+    console.log(state);
+    if (!state) {
+      console.log("Wrong number, try again.");
+      alert("Wrong number, try again.");
+      return;
+    }
     this.checkedWorkPlans = this.toDoneArray;
     if (this.checkedWorkPlans.length == 0)
       this.toastr.warning("יש לבחור לפחות תכנית אחת");
