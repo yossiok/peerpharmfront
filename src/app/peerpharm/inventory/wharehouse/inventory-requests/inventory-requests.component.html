@@ -1,5 +1,5 @@
 <ng-container *ngIf="isAllowedToView">
-  <mat-tab-group>
+  <mat-tab-group class="mr-5">
     <mat-tab>
       <ng-template mat-tab-label>
         <label
@@ -8,6 +8,24 @@
           >Now</label
         >
       </ng-template>
+      <div class="row mt-2">
+        <div class="col-1"></div>
+        <col-2>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="component"
+            placeholder="Component Number"
+            (change)="searchDemandByComponent()"
+          />
+        </col-2>
+        <div class="col-1"></div>
+        <col-1>
+          <button class="btn btn-outline-danger ml-2" (click)="clearSearch()">
+            Clear
+          </button></col-1
+        >
+      </div>
       <table class="table">
         <thead class="bg-info text-white">
           <tr
@@ -99,6 +117,24 @@
           >History</label
         >
       </ng-template>
+      <div class="row mt-2">
+        <div class="col-1"></div>
+        <col-2>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="component"
+            placeholder="Component Number"
+            (change)="searchRequestByComponent()"
+          />
+        </col-2>
+        <div class="col-1"></div>
+        <col-1>
+          <button class="btn btn-outline-danger ml-2" (click)="clearSearch()">
+            Clear
+          </button></col-1
+        >
+      </div>
       <table class="table">
         <thead style="background-color: rgb(206, 172, 19)" class="text-white">
           <tr>
@@ -164,19 +200,9 @@
         </ng-container>
       </table>
     </mat-tab>
-    <mat-tab>
+    <!-- <mat-tab>
       <ng-template disabled mat-tab-label> </ng-template>
-    </mat-tab>
-    <mat-tab disabled>
-      <ng-template mat-tab-label>
-        <img
-          src="../../../../assets/images/excel.png"
-          style="width: 37px; cursor: pointer"
-          (click)="export()"
-          alt=""
-        />
-      </ng-template>
-    </mat-tab>
+    </mat-tab> -->
     <mat-tab ngbTooltip="Get all requests" disabled>
       <ng-template mat-tab-label>
         <label
@@ -186,6 +212,16 @@
             src="../../../../assets/images/refreshData.png"
             alt=""
         /></label>
+      </ng-template>
+    </mat-tab>
+    <mat-tab disabled>
+      <ng-template mat-tab-label>
+        <img
+          src="../../../../assets/images/excel.png"
+          style="width: 37px; cursor: pointer"
+          (click)="export()"
+          alt=""
+        />
       </ng-template>
     </mat-tab>
   </mat-tab-group>

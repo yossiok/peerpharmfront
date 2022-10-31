@@ -1,64 +1,63 @@
 .new-req-div {
-    z-index: 2; 
-    position: fixed; 
-    margin-left: 30%;
+  z-index: 2;
+  position: fixed;
+  // margin-left: 30%;
+  max-width: 30vh;
 }
 
-input, textarea {
-    padding: 4px 4px;
-    margin: 2px 0;
-    display: inline-block;
-    border-radius: 4px;
-    box-sizing: border-box;
+input,
+textarea {
+  padding: 4px 4px;
+  margin: 2px 0;
+  display: inline-block;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
-input:focus { 
-    background-color: wheat;
-    border: 1px solid rgb(131, 212, 233);
+input:focus {
+  background-color: wheat;
+  border: 1px solid rgb(131, 212, 233);
 }
-td{
-    padding: 5px;
+td {
+  padding: 5px;
 }
 
-.managingDiv{
-    /* background-color: coral;  */
+.managingDiv {
+  /* background-color: coral;  */
 }
 /* input[name="newDemandId"]{
     visibility: hidden;
 } */
-a{
-    text-align: center;
+a {
+  text-align: center;
 }
-.itemsList .form-group label{
-    text-align: center;
-    
+.itemsList .form-group label {
+  text-align: center;
 }
 .compImgInWh {
-    width:45px;
-    transition: 0.3s;
+  width: 45px;
+  transition: 0.3s;
 }
-.compImgInWh:hover{
-    transform: scale(2);
+.compImgInWh:hover {
+  transform: scale(2);
 }
 
 .click {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .mask-1:hover {
-    background-color: #ffbc34;
-    color: white !important
+  background-color: #ffbc34;
+  color: white !important;
 }
 
 .mask-2:hover {
-    background-color: #36bea6;
-    color: white !important;
-    
+  background-color: #36bea6;
+  color: white !important;
 }
 
 .mask-3:hover {
-    background-color: #2962FF;
-    color: white !important;
-
+  background-color: #2962ff;
+  color: white !important;
 }
 
 // .table {
@@ -68,20 +67,19 @@ a{
 // }
 
 .bigLoader {
-    margin: auto;
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid #3498db;
-    width: 300px;
-    height: 300px;
-    -webkit-animation: spin 2s linear infinite; /* Safari */
-    animation: spin 2s linear infinite;
-  }
+  margin: auto;
+  border: 5px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 5px solid #3498db;
+  width: 300px;
+  height: 300px;
+  -webkit-animation: spin 2s linear infinite; /* Safari */
+  animation: spin 2s linear infinite;
+}
 
-  .pictureTabImg {
-    transition: 0.3s;
-  }
-  .pictureTabImg:hover{
-    transform: scale(3);
-      
-  }
+.pictureTabImg {
+  transition: 0.3s;
+}
+.pictureTabImg:hover {
+  transform: scale(3);
+}

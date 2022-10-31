@@ -4,6 +4,7 @@ import { InventoryRequestService } from "src/app/services/inventory-request.serv
 import { NotificationService } from "src/app/services/notification.service";
 import { ExcelService } from "src/app/services/excel.service";
 import { AuthService } from "src/app/services/auth.service";
+import { FormGroup } from "@angular/forms";
 
 @Component({
   selector: "app-inventory-requests",
@@ -19,14 +20,18 @@ export class InventoryRequestsComponent implements OnInit {
     private auth: AuthService
   ) {}
 
-  ordersDemands: any = [];
+  ordersDemands: any[] = [];
+  ordersDemandsCopy: any[] = [];
   EditRowId2nd: any = "";
   expand: boolean = false;
   openOrder: string = "";
   newReqIncoming: boolean = false;
-  allRequests: Array<any>;
+  allRequests: any[] = [];
+  allRequestsCopy: any[] = [];
   isAllowedToView: boolean = false;
   @Output() outPutItemsArray = new EventEmitter();
+
+  component: string = "";
 
   ngOnInit() {
     console.log(this.auth.loggedInUser);
@@ -47,6 +52,7 @@ export class InventoryRequestsComponent implements OnInit {
       .getInventoryRequestsListWeek()
       .subscribe((data) => {
         this.allRequests = data;
+        this.allRequestsCopy = data;
         console.log(this.allRequests);
       });
   }
@@ -71,6 +77,7 @@ export class InventoryRequestsComponent implements OnInit {
           });
         }
       });
+      this.ordersDemandsCopy = res;
       this.ordersDemands = res;
       this.newReqIncoming = false;
     });
@@ -146,5 +153,49 @@ export class InventoryRequestsComponent implements OnInit {
           }
         });
     }
+  }
+
+  searchDemandByComponent() {
+    console.log(this.component);
+    console.log(this.ordersDemandsCopy);
+
+    this.ordersDemands = this.ordersDemandsCopy.filter((od) => {
+      let item = od.reqList.find((rl) => rl.itemNumber == this.component);
+      if (item) {
+        item.cmptLineColor = "yellow";
+        this.EditRowId2nd = od._id;
+        this.expand = true;
+        this.openOrder = od.reqNum;
+
+        return od;
+      }
+    });
+    console.log(this.ordersDemands);
+  }
+  clearSearch() {
+    this.ordersDemands = this.ordersDemandsCopy;
+    this.allRequests = this.allRequestsCopy;
+    this.EditRowId2nd = null;
+    this.expand = false;
+    this.openOrder = null;
+    this.component = "";
+  }
+
+  searchRequestByComponent() {
+    console.log(this.component);
+    console.log(this.allRequests);
+
+    this.allRequests = this.allRequestsCopy.filter((od) => {
+      let item = od.reqList.find((rl) => rl.itemNumber == this.component);
+      if (item) {
+        item.cmptLineColor = "yellow";
+        this.EditRowId2nd = od._id;
+        this.expand = true;
+        this.openOrder = od.reqNum;
+
+        return od;
+      }
+    });
+    console.log(this.allRequests);
   }
 }
