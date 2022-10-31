@@ -2765,7 +2765,8 @@
                   *ngIf="
                     itemShown.bottleNumber &&
                     itemShown.bottleNumber != '---' &&
-                    !itemShown.bottleExpected
+                    !itemShown.bottleExpected &&
+                    smallLoader
                   "
                 >
                   <div class="smallerLoader"></div>
@@ -2811,7 +2812,7 @@
                         <th>Arrival Date</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody *ngIf="itemShown.bottlePurchases.length > 0">
                       <tr *ngFor="let purchase of itemShown.bottlePurchases">
                         <td>{{ purchase.orderNumber }}</td>
                         <td>{{ purchase.quantity | number }}</td>

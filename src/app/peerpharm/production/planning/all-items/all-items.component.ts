@@ -104,7 +104,7 @@ export class AllItemsComponent implements OnInit {
     this.filteredWorkPlans = [];
     //filter out the cancelled and done workplans
     this.filteredWorkPlans = this.workPlans.filter((wp) => {
-      return wp.status < 6;
+      return wp.status < 3;
     });
     this.filteredWorkPlansCopy = [...this.filteredWorkPlans];
     this.modalService.open(modal);
@@ -221,7 +221,7 @@ export class AllItemsComponent implements OnInit {
   }
 
   getWorkPlans() {
-    this.productionService.getAllWorkPlans().subscribe((workPlans) => {
+    this.productionService.getAllWorkPlansList().subscribe((workPlans) => {
       this.workPlans = workPlans;
       console.log(this.workPlans);
 
@@ -261,11 +261,27 @@ export class AllItemsComponent implements OnInit {
   }
 
   openWorkPlan(serialNum) {
-    this.showWorkPlan = true;
-    this.currentWorkPlan = this.workPlans.find(
-      (wp) => wp.serialNumber == serialNum
-    );
+    this.productionService.getWorkPlan(serialNum).subscribe((data) => {
+      console.log(data);
+      if (data && data.msg) {
+        this.toastr.error(data.msg);
+        return;
+      } else if (data && data.serialNumber == serialNum) {
+        this.showWorkPlan = true;
+        this.currentWorkPlan = data;
+      } else {
+        this.toastr.error(
+          "Workplan wasn't found - לא נמצאה פקודת עבודה מספר: " + serialNum
+        );
+      }
+    });
   }
+  // openWorkPlan(serialNum) {
+  //   this.showWorkPlan = true;
+  //   this.currentWorkPlan = this.workPlans.find(
+  //     (wp) => wp.serialNumber == serialNum
+  //   );
+  // }
 
   closeWorkPlan(i) {
     this.currentWorkPlan = null;

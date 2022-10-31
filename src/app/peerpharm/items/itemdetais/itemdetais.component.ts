@@ -47,6 +47,7 @@ export class ItemdetaisComponent implements OnInit {
   @Input() formDetailsItemNum: string;
 
   loadingItem: boolean = false;
+  smallLoader: boolean = false;
   isDisabled = true;
   // New Item Tree //
   itemBatches: any[];
@@ -657,8 +658,10 @@ export class ItemdetaisComponent implements OnInit {
   fillBottle(bottleNumber) {
     bottleNumber = this.itemShown.bottleNumber;
     if (bottleNumber != "---" && bottleNumber != "") {
+      this.smallLoader = true;
       // debugger;
       this.invtSer.getCmptPPCDetails(bottleNumber).subscribe((data) => {
+        this.smallLoader = false;
         // debugger;
         this.itemShown.bottleTube = data.stock[0].componentName;
         this.itemShown.bottleImage = data.stock[0].img;
@@ -2277,6 +2280,7 @@ export class ItemdetaisComponent implements OnInit {
   loadPackagDetails(number, src) {
     if (number != "") {
       this.invtSer.getCmptByNumber(number, "product").subscribe((res) => {
+        this.smallLoader = false;
         switch (src) {
           case "bottle":
             this.itemShown.item1w = res[0].packageWeight;

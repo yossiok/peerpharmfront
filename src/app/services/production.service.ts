@@ -90,6 +90,11 @@ export class ProductionService {
     const url = this.baseUrl + `productionSchedule/workplans`;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+  getAllWorkPlansList() {
+    const url = this.baseUrl + `productionSchedule/workplansList`;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
   getDoneWorkPlans() {
     const url = this.baseUrl + `productionSchedule/getDoneWorkplans`;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
@@ -110,6 +115,11 @@ export class ProductionService {
     return this.http
       .post(url, JSON.stringify(workPlan), this.options)
       .pipe(map((res) => res.json()));
+  }
+
+  changeOrderWeight(obj) {
+    let url = this.baseUrl + "productionSchedule/changeOrderWeight";
+    return this.http.post(url, obj).pipe(map((response) => response.json()));
   }
 
   multiUpdateWorkPlans(workPlansArray) {

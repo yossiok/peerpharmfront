@@ -425,146 +425,95 @@ export class NewBatchComponent implements OnInit {
     }
     // add batch AND REDUCE AMOUNTS!!!
     else {
-      if (this.newBatchForm.value.chosenFormule == "") {
-        this.toastSrv.error("Please Choose Main Formule");
-      } else {
-        if (confirm("באטצ' יתווסף למערכת והכמויות יירדו מהמלאי. האם להמשיך?")) {
-          this.disableButton = true;
-          this.toastSrv.info("Adding Batch. Please wait...");
-          let con = true;
-          let user = this.authService.loggedInUser.userName;
-          console.log(user);
-          // reduce materials from itemShells
+      this.batchService
+        .checkIfBatchExist(this.newBatchForm.value.batchNumber)
+        .subscribe((data) => {
+          console.log(data);
+          if (data == true) {
+            alert(
+              "Batch Number " +
+                this.newBatchForm.value.batchNumber +
+                " already exists, choose a new batchNumber"
+            );
+            return;
+          }
 
-          this.batchService
-            .addBatch(this.newBatchForm.value)
-            .subscribe((data) => {
-              console.log(data);
-              if (data.msg == "success") {
-                console.log(this.newBatchForm.controls);
-                this.inventorySrv
-                  .reduceMaterialAmounts(
-                    this.newBatchForm.controls.batchNumber.value,
-                    this.newBatchForm.controls.chosenFormule.value,
-                    this.newBatchForm.controls.newWeight.value,
-                    user,
-                    true,
-                    this.newBatchForm.controls.barrelsList.value
-                  )
-                  .subscribe((data) => {
-                    console.log(data);
+          if (this.newBatchForm.value.chosenFormule == "") {
+            this.toastSrv.error("Please Choose Main Formule");
+          } else {
+            if (
+              confirm("באטצ' יתווסף למערכת והכמויות יירדו מהמלאי. האם להמשיך?")
+            ) {
+              this.disableButton = true;
+              this.toastSrv.info("Adding Batch. Please wait...");
+              let con = true;
+              let user = this.authService.loggedInUser.userName;
+              console.log(user);
+              // reduce materials from itemShells
+
+              this.batchService
+                .addBatch(this.newBatchForm.value)
+                .subscribe((data) => {
+                  console.log(data);
+                  if (data.msg == "success") {
+                    console.log(this.newBatchForm.controls);
+                    this.inventorySrv
+                      .reduceMaterialAmounts(
+                        this.newBatchForm.controls.batchNumber.value,
+                        this.newBatchForm.controls.chosenFormule.value,
+                        this.newBatchForm.controls.newWeight.value,
+                        user,
+                        true,
+                        this.newBatchForm.controls.barrelsList.value
+                      )
+                      .subscribe((data) => {
+                        console.log(data);
+                        this.disableButton = false;
+                        if (data == "Formule Not Found") {
+                          this.toastSrv.error(data);
+                          con = confirm(
+                            "פורמולה לא קיימת. כמויות לא ירדו מהמלאי. להוסיף באטצ' בכל זאת?"
+                          );
+                          this.disableButton = false;
+                        }
+                        if (data.materials && data.updatedShells)
+                          this.toastSrv.success(
+                            "Amounts reduced. Shelfs updated."
+                          );
+                      });
+
+                    this.printBtn.nativeElement.click();
+                    this.toastSrv.success("באטצ נוסף בהצלחה !");
+
+                    this.resetBatchValues();
+                    this.toastSrv.info(
+                      "אתה חוזר לפקודת העבודה",
+                      "You are getting back to the workplan"
+                    );
+
+                    this.backToWP();
+                  } else if (data.msg == "Batch Allready Exist") {
+                    this.toastSrv.error(
+                      "Please fill a different batch number.",
+                      "Batch number allready exist."
+                    );
                     this.disableButton = false;
-                    if (data == "Formule Not Found") {
-                      this.toastSrv.error(data);
-                      con = confirm(
-                        "פורמולה לא קיימת. כמויות לא ירדו מהמלאי. להוסיף באטצ' בכל זאת?"
-                      );
-                      this.disableButton = false;
-                    }
-                    if (data.materials && data.updatedShells)
-                      this.toastSrv.success("Amounts reduced. Shelfs updated.");
-                  });
-
-                this.printBtn.nativeElement.click();
-                this.toastSrv.success("באטצ נוסף בהצלחה !");
-                // setTimeout(() => {
-                //   this.allStickers = [];
-                //   this.getLastBatch();
-                //   if (confirm("האם יש עוד חומר לייצר?")) {
-                //     let finalWeight;
-                //     let barrelsWeight;
-                //     while (isNaN(finalWeight))
-                //       finalWeight = prompt("הכנס משקל כולל");
-                //     this.finalWeight = finalWeight;
-                //     while (isNaN(barrelsWeight))
-                //       barrelsWeight = prompt("הכנס משקל חביות");
-                //     this.newBatchForm.controls.weightKg.setValue(
-                //       this.finalWeight
-                //     );
-                //     this.newBatchForm.controls.newWeight.setValue(
-                //       finalWeight - barrelsWeight
-                //     );
-                //   }
-                // }, 2000);
-                this.resetBatchValues();
-                this.toastSrv.info(
-                  "אתה חוזר לפקודת העבודה",
-                  "You are getting back to the workplan"
-                );
-
-                this.backToWP();
-              } else if (data.msg == "Batch Allready Exist") {
-                this.toastSrv.error(
-                  "Please fill a different batch number.",
-                  "Batch number allready exist."
-                );
-                this.disableButton = false;
-              } else {
-                this.toastSrv.error("Something went wrong.");
-                this.resetBatchValues();
-                return;
-              }
-            });
-
-          // this.inventorySrv
-          //   .reduceMaterialAmounts(
-          //     this.newBatchForm.controls.batchNumber.value,
-          //     this.newBatchForm.controls.chosenFormule.value,
-          //     this.newBatchForm.controls.weightKg.value,
-          //     user,
-          //     true
-          //   )
-          //   .subscribe((data) => {
-          //     console.log(data);
-          //     this.disableButton = false;
-          //     if (data == "Formule Not Found") {
-          //       this.toastSrv.error(data);
-          //       con = confirm(
-          //         "פורמולה לא קיימת. כמויות לא ירדו מהמלאי. להוסיף באטצ' בכל זאת?"
-          //       );
-          //       this.disableButton = false;
-          //     }
-          //     if (data.materials && data.updatedShells)
-          //       this.toastSrv.success("Amounts reduced. Shelfs updated.");
-          //     if (con) {
-          //       // add batch to batches list
-          //       console.log(this.newBatchForm);
-
-          //       this.batchService
-          //         .addBatch(this.newBatchForm.value)
-          //         .subscribe((data) => {
-          //           console.log(data);
-          //           if (data.msg == "success") {
-          //             this.printBtn.nativeElement.click();
-          //             this.toastSrv.success("באטצ נוסף בהצלחה !");
-          //             setTimeout(() => {
-          //               this.allStickers = [];
-          //               this.getLastBatch();
-          //               if (confirm("האם יש עוד חומר לייצר?")) {
-          //                 let finalWeight;
-          //                 while (isNaN(finalWeight))
-          //                   finalWeight = prompt("הכנס משקל");
-          //                 this.finalWeight = finalWeight;
-          //               }
-          //             }, 2000);
-          //           } else if (data.msg == "Batch Allready Exist")
-          //             this.toastSrv.error(
-          //               "Please fill a different batch number.",
-          //               "Batch number allready exist."
-          //             );
-          //           else this.toastSrv.error("Something went wrong.");
-          //         });
-          //     }
-          //   });
-        } else {
-          this.resetBatchValues();
-          this.toastSrv.info(
-            "אתה חוזר לפקודת העבודה",
-            "You are getting back to the workplan"
-          );
-          this.backToWP();
-        }
-      }
+                  } else {
+                    this.toastSrv.error("Something went wrong.");
+                    this.resetBatchValues();
+                    return;
+                  }
+                });
+            } else {
+              this.resetBatchValues();
+              this.toastSrv.info(
+                "אתה חוזר לפקודת העבודה",
+                "You are getting back to the workplan"
+              );
+              this.backToWP();
+            }
+          }
+        });
     }
   }
 

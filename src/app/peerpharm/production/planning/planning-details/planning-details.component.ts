@@ -396,6 +396,7 @@ export class PlanningDetailsComponent implements OnInit {
 
   addBatch(formule) {
     let item = "";
+    let itemNumber = formule.ordersAndItems[0].itemNumber;
     item = prompt("הכנס מספר פורמולה");
     if (item.trim().length == 0) {
       alert("יש להכניס מסםר פורמולה");
@@ -403,7 +404,8 @@ export class PlanningDetailsComponent implements OnInit {
     }
     if (
       item.trim() != formule.formuleData.formuleNumber &&
-      item.trim().toLowerCase() != formule.formule.toLowerCase()
+      item.trim().toLowerCase() != formule.formule.toLowerCase() &&
+      item.trim() != itemNumber
     ) {
       alert("מספר הפורמולה לא תואם לשורה שבחרת");
       return;
@@ -424,6 +426,74 @@ export class PlanningDetailsComponent implements OnInit {
           this.toastr.success(succesMessage);
         })
         .catch((errorMessage) => this.toastr.error(errorMessage));
+    }
+  }
+
+  changeOrderWeight(line) {
+    if (
+      (line || line == 0) &&
+      this.editWeightInput &&
+      this.editWeightInput > 0
+    ) {
+      let orderItem = this.workPlan.orderItems[line];
+
+      let quantity = orderItem.quantity ? +orderItem.quantity : 1;
+      let unitWeight = orderItem.netWeightGr ? +orderItem.netWeightGr : 1;
+      let exactTotalKg = (quantity * unitWeight) / 1000;
+      let newWeightKg = this.editWeightInput;
+
+      if (newWeightKg > exactTotalKg * 1.25) {
+        let conf = confirm("המשקל גדול מהדרוש ב 25%, האם להמשיך?");
+        if (!conf) return;
+      } else if (newWeightKg < exactTotalKg) {
+        let conf = confirm("המשקל קטן מהדרוש, האם להמשיך?");
+        if (!conf) return;
+      }
+      let objToSend = {
+        newWeightKg,
+        workPlan: this.workPlan.serialNumber,
+        orderItem,
+      };
+
+      this.productionService.changeOrderWeight(objToSend).subscribe((data) => {
+        console.log(data);
+        if (data && data.msg) {
+          this.toastr.error(data.msg);
+          this.productionService
+            .getWorkPlan(this.workPlan.serialNumber)
+            .subscribe((data) => {
+              if (data.msg) {
+                this.toastr.error(data.msg);
+              } else if (
+                data &&
+                data.serialNumber == this.workPlan.serialNumber
+              ) {
+                this.workPlan = data;
+                this.enableEdit = false;
+                this.edit = -1;
+                this.editF = -1;
+                this.enableEditIndex = null;
+                this.editWeightInput = null;
+                this.getBarrelsForWP();
+                this.updateWorkPlans.emit();
+                return;
+              }
+            });
+        } else if (data && data.serialNumber == this.workPlan.serialNumber) {
+          this.workPlan = data;
+          this.enableEdit = false;
+          this.edit = -1;
+          this.editF = -1;
+          this.enableEditIndex = null;
+          this.editWeightInput = null;
+          this.getBarrelsForWP();
+          this.updateWorkPlans.emit();
+          return;
+        }
+      });
+    } else {
+      alert("  יש להכניס משקל רצוי גדול מאפס");
+      return;
     }
   }
 

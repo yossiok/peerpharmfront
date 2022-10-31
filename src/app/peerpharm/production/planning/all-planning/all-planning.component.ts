@@ -7,6 +7,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { ExcelService } from "src/app/services/excel.service";
 import { InventoryService } from "src/app/services/inventory.service";
 import { ProductionService } from "src/app/services/production.service";
+import { ItemsService } from "src/app/services/items.service";
 import { resolve } from "url";
 import { WorkPlan } from "../WorkPlan";
 import { FormulesService } from "src/app/services/formules.service";
@@ -23,8 +24,8 @@ export class AllPlanningComponent implements OnInit {
 
   workPlans: WorkPlan[];
   workPlansCopy: WorkPlan[];
-  workPlansReportArray:WorkPlan[];
-  workPlansReportArrayCopy:WorkPlan[];
+  workPlansReportArray: WorkPlan[];
+  workPlansReportArrayCopy: WorkPlan[];
   checkedWorkPlans: WorkPlan[] = [];
   producedWorkPlans: number[];
   workPlansInterval: any = null;
@@ -39,12 +40,13 @@ export class AllPlanningComponent implements OnInit {
   loadData: boolean = false;
   showCheckbox: boolean = false;
   authorized: boolean = false;
+  loading: boolean = false;
 
   toDoneArray: Array<any> = [];
-  sortByDateFlag = false
-  itemNumberReportFilter = ""
-  orderNumberReportFilter = ""
-  showReport = false
+  sortByDateFlag = false;
+  itemNumberReportFilter = "";
+  orderNumberReportFilter = "";
+  showReport = false;
 
   constructor(
     private productionService: ProductionService,
@@ -56,7 +58,8 @@ export class AllPlanningComponent implements OnInit {
     private route: ActivatedRoute,
     private modalService: NgbModal,
     private router: Router,
-    private formuleService: FormulesService
+    private formuleService: FormulesService,
+    private itemService: ItemsService
   ) {}
 
   async ngOnInit() {
@@ -74,33 +77,48 @@ export class AllPlanningComponent implements OnInit {
   getWorkPlans() {
     this.fetchingWorkPlans = true;
     return new Promise((resolve, reject) => {
-      this.productionService.getAllWorkPlans().subscribe((workPlans) => {
+      this.productionService.getAllWorkPlansList().subscribe((workPlans) => {
         this.workPlans = workPlans.filter(
           (wp) => wp.status != 8 && wp.status != 7
         );
-        
-        this.workPlansReportArray = workPlans.map((wp)=>{
-          if(wp.status != 8 && wp.status != 7 && wp.status != 6 && (Math.ceil(Math.abs(new Date().getTime() - new Date(wp.date).getTime()) / (1000 * 60 * 60 * 24)) ) > 7){
-              return {
-                ...wp,
-                daysDiff: (Math.ceil(Math.abs(new Date().getTime() - new Date(wp.date).getTime()) / (1000 * 60 * 60 * 24)) )
-              }
+
+        this.workPlansReportArray = workPlans.map((wp) => {
+          if (
+            wp.status != 8 &&
+            wp.status != 7 &&
+            wp.status != 6 &&
+            Math.ceil(
+              Math.abs(new Date().getTime() - new Date(wp.date).getTime()) /
+                (1000 * 60 * 60 * 24)
+            ) > 7
+          ) {
+            return {
+              ...wp,
+              daysDiff: Math.ceil(
+                Math.abs(new Date().getTime() - new Date(wp.date).getTime()) /
+                  (1000 * 60 * 60 * 24)
+              ),
+            };
           }
         });
-        this.workPlansReportArray.map((wp,index)=>{
-          if(wp && wp.orderItems && wp.orderItems.length > 0){
-            wp.orderItems.map((item)=>{
-              if(item && item.status && (item.status == 6 || item.status == 7 || item.status == 8)){
-                delete this.workPlansReportArray[index]
+        this.workPlansReportArray.map((wp, index) => {
+          if (wp && wp.orderItems && wp.orderItems.length > 0) {
+            wp.orderItems.map((item) => {
+              if (
+                item &&
+                item.status &&
+                (item.status == 6 || item.status == 7 || item.status == 8)
+              ) {
+                delete this.workPlansReportArray[index];
               }
-            })
+            });
           }
-        })
-        this.workPlansReportArray.sort((a,b)=>{
+        });
+        this.workPlansReportArray.sort((a, b) => {
           return new Date(a.date).getTime() - new Date(b.date).getTime();
-        })
-        this.workPlansReportArrayCopy = this.workPlansReportArray
-            
+        });
+        this.workPlansReportArrayCopy = this.workPlansReportArray;
+
         this.workPlansCopy = [...workPlans];
         this.fetchingWorkPlans = false;
         console.log(this.workPlans);
@@ -138,11 +156,30 @@ export class AllPlanningComponent implements OnInit {
   //   this.modalService.open(this.producedWorkPlansER)
   // }
 
+  // openWorkPlan(serialNum) {
+  //   this.showWorkPlan = true;
+  //   this.currentWorkPlan = this.workPlans.find(
+  //     (wp) => wp.serialNumber == serialNum
+  //   );
+  // }
+
   openWorkPlan(serialNum) {
-    this.showWorkPlan = true;
-    this.currentWorkPlan = this.workPlans.find(
-      (wp) => wp.serialNumber == serialNum
-    );
+    this.loading = true;
+    this.productionService.getWorkPlan(serialNum).subscribe((data) => {
+      this.loading = false;
+      console.log(data);
+      if (data && data.msg) {
+        this.toastr.error(data.msg);
+        return;
+      } else if (data && data.serialNumber == serialNum) {
+        this.showWorkPlan = true;
+        this.currentWorkPlan = data;
+      } else {
+        this.toastr.error(
+          "Workplan wasn't found - לא נמצאה פקודת עבודה מספר: " + serialNum
+        );
+      }
+    });
   }
 
   closeWorkPlan(i) {
@@ -164,27 +201,27 @@ export class AllPlanningComponent implements OnInit {
   }
 
   filterByStatus(event) {
-    let status = event.target.value;
-    if (status == 7) {
-      this.fetchingWorkPlans2 = true;
-      this.productionService.getDoneWorkPlans().subscribe((workPlans) => {
-        this.workPlans = workPlans;
-        this.fetchingWorkPlans2 = false;
-      });
-      return;
-    }
-    if (status == 8) {
-      this.fetchingWorkPlans3 = true;
-      this.productionService.getCancelWorkPlans().subscribe((workPlans) => {
-        this.workPlans = workPlans;
-        this.fetchingWorkPlans3 = false;
-      });
-      return;
-    }
-    if (status == 0) {
-      this.workPlans = this.workPlansCopy;
-      return;
-    }
+    let status = event;
+    // if (status == 7) {
+    //   this.fetchingWorkPlans2 = true;
+    //   this.productionService.getDoneWorkPlans().subscribe((workPlans) => {
+    //     this.workPlans = workPlans;
+    //     this.fetchingWorkPlans2 = false;
+    //   });
+    //   return;
+    // }
+    // if (status == 8) {
+    //   this.fetchingWorkPlans3 = true;
+    //   this.productionService.getCancelWorkPlans().subscribe((workPlans) => {
+    //     this.workPlans = workPlans;
+    //     this.fetchingWorkPlans3 = false;
+    //   });
+    //   return;
+    // }
+    // if (status == 0) {
+    //   this.workPlans = this.workPlansCopy;
+    //   return;
+    // }
     this.workPlans = this.workPlansCopy.filter((wp) => wp.status == status);
   }
 
@@ -264,16 +301,19 @@ export class AllPlanningComponent implements OnInit {
     let excel = [];
     data.map((i) => {
       excel.push({
-        'מק"ט': i.itemNumber,
+        'מק"ט': i.item,
         "שם החומר": i.itemName,
-        "כמות נדרשת": i.kgProduction,
-        "כמות במלאי": i.materialArrivals[0].amount,
+        "כמות נדרשת": i.kgProd,
+        "כמות במלאי": i.stockAmount,
+        "כמות ברכש": i.purchaseAmount,
+        "מאזן החומר": i.stockAmount - i.kgProd + i.purchaseAmount,
       });
     });
     this.excelService.exportAsExcelFile(excel, title);
   }
 
   loadMaterialsForFormule() {
+    this.checkedWorkPlans = this.toDoneArray;
     if (this.checkedWorkPlans.length == 0)
       this.toastr.warning("יש לבחור לפחות תכנית אחת");
     else {
@@ -283,22 +323,33 @@ export class AllPlanningComponent implements OnInit {
         orderItemsToExplode = temp;
       }
       this.toastr.info("אנא המתן...", "מחשב כמויות");
-      this.loadData = true;
+      this.loading = true;
       this.disableCheckBox = true;
-      this.inventoryService
-        .getMaterialsForFormules(orderItemsToExplode)
+      this.itemService
+        .getMaterialsForList(orderItemsToExplode)
+        // this.inventoryService
+        //   .getMaterialsForFormules(orderItemsToExplode)
         .subscribe((data) => {
-          // this.checkedWorkPlans = []
-          this.materialsForFormules = data.newArray;
-          this.showMaterialsForFormules = true;
-          this.loadData = false;
+          this.loading = false;
           this.disableCheckBox = false;
+          // this.checkedWorkPlans = []
+          if (data && data.msg) {
+            this.toastr.error(data.msg);
+            return;
+          } else if (data && data.length > 0) {
+            this.materialsForFormules = data;
+            this.showMaterialsForFormules = true;
+            return;
+          } else {
+            this.toastr.error("לא נמצאו נתונים");
+            return;
+          }
         });
     }
   }
 
-  checkAmountsForMaterial(prod, stock) {
-    return Number(stock) - Number(prod);
+  checkAmountsForMaterial(prod, stock, purchase) {
+    return Number(stock) - Number(prod) + Number(purchase);
   }
   filterByFamily() {
     let value = String(this.familyFilter.nativeElement.value)
@@ -323,59 +374,64 @@ export class AllPlanningComponent implements OnInit {
       });
     }
   }
-  sortByDate(){
-    if(this.sortByDateFlag){
-      this.workPlansReportArray.sort((a,b)=>{
+  sortByDate() {
+    if (this.sortByDateFlag) {
+      this.workPlansReportArray.sort((a, b) => {
         return new Date(a.date).getTime() - new Date(b.date).getTime();
-      })
-    }else{
-      this.workPlansReportArray.sort((a,b)=>{
+      });
+    } else {
+      this.workPlansReportArray.sort((a, b) => {
         return new Date(b.date).getTime() - new Date(a.date).getTime();
-      })
+      });
     }
-    this.sortByDateFlag = !this.sortByDateFlag
-
+    this.sortByDateFlag = !this.sortByDateFlag;
   }
-  reportFilter(){
-    if(this.itemNumberReportFilter == "" && this.orderNumberReportFilter == ""){
-      return
+  reportFilter() {
+    if (
+      this.itemNumberReportFilter == "" &&
+      this.orderNumberReportFilter == ""
+    ) {
+      return;
     }
     try {
-    let arr = []
-    if(this.itemNumberReportFilter != ""){
-      this.workPlansReportArrayCopy.map((wp)=>{
-        if(wp && wp.orderItems && wp.orderItems.length > 0){
-          wp.orderItems.map((item)=>{
-            if(item.itemNumber.includes(this.itemNumberReportFilter) && !arr.includes(wp)){
-              arr.push(wp)
-            }
-          })
-        }
-      })
-    }
-    if(this.orderNumberReportFilter != ""){
-      this.workPlansReportArrayCopy.map((wp)=>{
-        if(wp && wp.orderItems && wp.orderItems.length > 0){
-          wp.orderItems.map((item)=>{
-            if(item.orderNumber.includes(this.orderNumberReportFilter) && !arr.includes(wp)){
-              arr.push(wp)
-            }
-          })
-        }
-      })
-    }
-    this.workPlansReportArray = [...arr]
-      
+      let arr = [];
+      if (this.itemNumberReportFilter != "") {
+        this.workPlansReportArrayCopy.map((wp) => {
+          if (wp && wp.orderItems && wp.orderItems.length > 0) {
+            wp.orderItems.map((item) => {
+              if (
+                item.itemNumber.includes(this.itemNumberReportFilter) &&
+                !arr.includes(wp)
+              ) {
+                arr.push(wp);
+              }
+            });
+          }
+        });
+      }
+      if (this.orderNumberReportFilter != "") {
+        this.workPlansReportArrayCopy.map((wp) => {
+          if (wp && wp.orderItems && wp.orderItems.length > 0) {
+            wp.orderItems.map((item) => {
+              if (
+                item.orderNumber.includes(this.orderNumberReportFilter) &&
+                !arr.includes(wp)
+              ) {
+                arr.push(wp);
+              }
+            });
+          }
+        });
+      }
+      this.workPlansReportArray = [...arr];
     } catch (error) {
       console.log(error);
-      
     }
-    
   }
 
-  clearReportFilter(){
-    this.itemNumberReportFilter =""
-    this.orderNumberReportFilter = ""
-    this.workPlansReportArray = this.workPlansReportArrayCopy
+  clearReportFilter() {
+    this.itemNumberReportFilter = "";
+    this.orderNumberReportFilter = "";
+    this.workPlansReportArray = this.workPlansReportArrayCopy;
   }
 }

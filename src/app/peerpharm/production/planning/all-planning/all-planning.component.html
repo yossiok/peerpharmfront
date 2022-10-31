@@ -66,32 +66,65 @@
       <!-- index -->
       <div>
         <div class="status-index-item"><b>Index:</b></div>
-        <div class="status-index-item" [style.background]="'#68e37d'">
+        <div
+          class="status-index-item click"
+          [style.background]="'#68e37d'"
+          (click)="filterByStatus(2)"
+        >
           PP&C <i class="fa fa-pencil-alt"></i>
         </div>
-        <div class="status-index-item" [style.background]="'#5B9BD5'">
+        <div
+          class="status-index-item click"
+          [style.background]="'#5B9BD5'"
+          (click)="filterByStatus(3)"
+        >
           Formula <i class="fa fa-flask"></i>
         </div>
-        <div class="status-index-item" [style.background]="'#ED7D31'">
+        <div
+          class="status-index-item click"
+          [style.background]="'#ED7D31'"
+          (click)="filterByStatus(4)"
+        >
           Scheduled <i class="far fa-calendar-alt"></i>
         </div>
-        <div class="status-index-item" [style.background]="'#C48170'">
+        <div
+          class="status-index-item click"
+          [style.background]="'#C48170'"
+          (click)="filterByStatus(5)"
+        >
           Materials <i class="fas fa-tint"></i>
         </div>
-        <div class="status-index-item" [style.background]="'#A5A5A5'">
+        <div
+          class="status-index-item click"
+          [style.background]="'#A5A5A5'"
+          (click)="filterByStatus(6)"
+        >
           Produced <i class="fas fa-archive"></i>
         </div>
-        <div class="status-index-item" [style.background]="'#c93682'">
+        <div
+          class="status-index-item click"
+          [style.background]="'#c93682'"
+          (click)="filterByStatus(8)"
+        >
           Canceled <i class="fas fa-times"></i>
         </div>
-        <div class="status-index-item" [style.background]="'#d1c9c9'">
+        <div
+          class="status-index-item click"
+          [style.background]="'#d1c9c9'"
+          (click)="filterByStatus(9)"
+        >
           Partial Produce <i class="fa fa-spinner"></i>
         </div>
-        <div class="status-index-item" [style.background]="'#1A8A22'">
+        <div
+          class="status-index-item click"
+          [style.background]="'#1A8A22'"
+          (click)="filterByStatus(7)"
+        >
           Done<i class="fa fa-check"></i>
         </div>
       </div>
     </div>
+    <div *ngIf="loading" class="loading">Loading&#8230;</div>
     <!--work plans-->
     <div
       *ngIf="showWorkPlan || showMaterialsForFormules"
@@ -103,7 +136,7 @@
           <div class="col-2 px-1">
             <select
               class="form-control form-control-1"
-              (change)="filterByStatus($event)"
+              (change)="filterByStatus($event.target.value)"
             >
               <option value="0">All</option>
               <option value="2">PP&C</option>
@@ -250,7 +283,7 @@
 <!--Work Plan modal-->
 <div class="position-fixed work-plan" *ngIf="showWorkPlan">
   <app-planning-details
-    (updateWorkPlans)="getWorkPlans()"
+    (updateWorkPlans)="getWorkPlansList()"
     (closeWorkPlanEmitter)="closeWorkPlan($event)"
     [workPlan]="currentWorkPlan"
   >
@@ -265,6 +298,7 @@
   <button
     style="visibility: hidden"
     #printAmounts
+    [useExistingCss]="true"
     ngxPrint
     printSectionId="print-amounts"
   ></button>
@@ -298,28 +332,43 @@
     <table class="table table-striped mt-4">
       <thead class="bg-success text-white">
         <tr>
+          <th>#</th>
           <th>Material Number</th>
           <th>Material Name</th>
           <th>Required</th>
           <th>In Stock</th>
+          <th>In Purchase</th>
+          <th>Material Status</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let material of materialsForFormules">
-          <td>{{ material.itemNumber }}</td>
+        <tr *ngFor="let material of materialsForFormules; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ material.item }}</td>
           <td>{{ material.itemName }}</td>
-          <td>{{ material.kgProduction }}</td>
+          <td>{{ material.kgProd }}</td>
+          <td>
+            {{ material.stockAmount | number: "1.2" }}
+          </td>
+          <td>{{ material.purchaseAmount | number: "1.2" }}</td>
           <td
             [style.backgroundColor]="
               checkAmountsForMaterial(
-                material.kgProduction,
-                material.materialArrivals[0].amount
+                material.kgProd,
+                material.stockAmount,
+                material.purchaseAmount
               ) < 0
                 ? 'red'
                 : 'lightgreen'
             "
           >
-            {{ material.materialArrivals[0].amount | number }}
+            {{
+              checkAmountsForMaterial(
+                material.kgProd,
+                material.stockAmount,
+                material.purchaseAmount
+              ) | number: "1.2"
+            }}
           </td>
         </tr>
       </tbody>
