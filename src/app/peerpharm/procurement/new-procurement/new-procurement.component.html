@@ -685,7 +685,7 @@
           </div>
           <div class="col-4">
             <i
-              (click)="closeOrderModal.emit(false)"
+              (click)="closeNewProcurementModal()"
               class="h1 close click fa fa-times float-right p-2 rounded"
             ></i>
           </div>
@@ -991,6 +991,7 @@
                   <th>Measurement</th>
                   <th>Quantity</th>
                   <th>Price</th>
+                  <th>Currency</th>
                   <th>Requested Date</th>
                   <th>Approval Date</th>
                   <th>-</th>
@@ -1064,10 +1065,23 @@
 
                   <td *ngIf="EditRowId == ''">
                     {{ stockitem.price | number: "1.2" }}
-                    {{ stockitem.coin | currencySymbol }}
                   </td>
                   <td *ngIf="EditRowId == stockitem.number">
                     <input #editPrice [value]="stockitem.price" type="number" />
+                  </td>
+                  <td *ngIf="EditRowId == ''">
+                    {{ stockitem.coin }}
+                    {{ stockitem.coin | currencySymbol }}
+                  </td>
+                  <td *ngIf="EditRowId == stockitem.number">
+                    <select #editCoin name="" id="" [value]="stockitem.coin">
+                      <option value="ILS">ILS</option>
+                      <option value="USD">USD</option>
+                      <option value="EUR">EUR</option>
+                      <option value="GBP">GBP</option>
+                      <option value="CHF">CHF</option>
+                      <option value="JPY">JPY</option>
+                    </select>
                   </td>
 
                   <td *ngIf="EditRowId == ''">{{ stockitem.itemRequested }}</td>

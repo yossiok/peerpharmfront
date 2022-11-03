@@ -515,10 +515,10 @@
                           required
                         >
                           <option value="kg">kg</option>
+                          <option value="unit">Unit</option>
                           <option value="liter">liter</option>
                           <option value="meter">meter</option>
                           <option value="ml">ml</option>
-                          <option value="unit">Unit</option>
                           <option value="ton">טון</option>
                           <option value="unit">יחידה</option>
                           <option value="box">קופסא</option>
@@ -4023,8 +4023,9 @@
           <span class="hot-red float-left">*</span>
           <label class="text-info">Type</label>
           <select
-            formControlName="type"
             class="form-control rounded-pill"
+            [ngModelOptions]="{ standalone: true }"
+            [(ngModel)]="recommendStockItem.type"
             required
           >
             <option selected="true" disabled="disabled">Choose Type</option>
@@ -4099,13 +4100,8 @@
             required
           >
             <option value="kg">kg</option>
-            <option value="liter">liter</option>
-            <option value="meter">meter</option>
-            <option value="ml">ml</option>
             <option value="unit">Unit</option>
-            <option value="ton">טון</option>
-            <option value="unit">יחידה</option>
-            <option value="box">קופסא</option>
+            <option value="liter">liter</option>
           </select>
         </div>
         <div class="col-1 fixNoaStupidStuff">

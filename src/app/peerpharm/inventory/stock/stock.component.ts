@@ -391,6 +391,7 @@ export class StockComponent implements OnInit {
   filterParams: FormGroup;
 
   recommendStockItem = {
+    type: "",
     name: "",
     number: "",
     quantity: "",
@@ -585,7 +586,8 @@ export class StockComponent implements OnInit {
       this.recommendStockItem.name == "" ||
       this.recommendStockItem.number == "" ||
       this.recommendStockItem.measurement == "" ||
-      this.recommendStockItem.customerOrder == ""
+      this.recommendStockItem.customerOrder == "" ||
+      this.recommendStockItem.type == ""
     ) {
       this.toastSrv.error("אנא מלא את כל הפרטים של הפריט");
     } else {
@@ -1218,10 +1220,24 @@ export class StockComponent implements OnInit {
         .getCmptByitemNumber(componentN)
         .subscribe((data) => {
           if (data) {
-            this.recommendStockItem.name = data[0].componentName;
-            if (data[0].itemType == "material") {
-              if (data[0].threatment)
-                this.recommendStockItem.threatment = data[0].threatment;
+            console.log(data);
+            if (data.msg) {
+              this.toastSrv.error(data.msg);
+              return;
+            } else if (data && data.length > 0) {
+              let item = data[0];
+              this.recommendStockItem.name = item.componentName;
+              this.recommendStockItem.type = item.itemType;
+              this.recommendStockItem.threatment = item.threatment;
+              if (item.itemType == "material") {
+                this.recommendStockItem.measurement = "kg";
+              } else {
+                this.recommendStockItem.measurement = "unit";
+              }
+              console.log(this.recommendStockItem);
+            } else {
+              this.toastSrv.error("לא נמצא פריט לפי המספר שהוכנס. נסה שנית");
+              return;
             }
           }
         });
@@ -1230,6 +1246,11 @@ export class StockComponent implements OnInit {
 
   // E2
   sendRecommandation() {
+    if (!this.newPurchaseRecommendation.value.purchaser) {
+      alert("יש לבחור מנהל רכש אליו תועבר הבקשה");
+      return;
+    }
+
     const re =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     if (
@@ -1240,6 +1261,12 @@ export class StockComponent implements OnInit {
       this.newPurchaseRecommendation.controls.user.setValue(
         this.authService.loggedInUser.userName
       );
+      console.log(this.newPurchaseRecommendation.value);
+      console.log(this.newPurchaseRecommendation.value.stockitems);
+      console.log(this.newPurchaseRecommendation.value.stockitems[0]);
+      console.log(this.newPurchaseRecommendation.value.stockitems[0].type);
+      let type = this.newPurchaseRecommendation.value.stockitems[0].type;
+      this.newPurchaseRecommendation.controls.type.setValue(type);
       this.inventoryService
         .addNewRecommendation(this.newPurchaseRecommendation.value)
         .subscribe((data) => {

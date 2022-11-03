@@ -53,6 +53,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
 
   @ViewChild("editQuantity") editQuantity: ElementRef;
   @ViewChild("editPrice") editPrice: ElementRef;
+  @ViewChild("editCoin") editCoin: ElementRef;
   @ViewChild("editArrival") editArrival: ElementRef;
   @ViewChild("sumShipping") sumShipping: ElementRef;
   @ViewChild("cb") checkItem: ElementRef;
@@ -222,6 +223,24 @@ export class NewProcurementComponent implements OnInit, OnChanges {
       this.itemForm.controls.itemArrival.setValue(null);
     }
     if (this.requestToPurchase) {
+      for (let item of this.requestToPurchase.stockitems) {
+        console.log(item);
+        item.coin = item.coin
+          ? item.coin
+          : item.lastorder && item.lastorder.coin
+          ? item.lastorder.coin
+          : "ILS";
+        item.price = item.price
+          ? item.price
+          : item.lastorder && item.lastorder.price
+          ? item.lastorder.price
+          : null;
+      }
+
+      console.log(this.requestToPurchase);
+      console.log(this.requestToPurchase.stockitems);
+      console.log(this.requestToPurchase.stockitems[0]);
+      console.log(this.requestToPurchase.stockitems[0].type);
       this.newPurchase.patchValue({
         _id: "",
         supplierName: this.requestToPurchase.supplierName,
@@ -233,7 +252,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
         userEmail: "",
         user: this.requestToPurchase.user,
         billNumber: [],
-        orderType: this.requestToPurchase.type,
+        orderType: this.requestToPurchase.stockitems[0].type,
         remarks: this.requestToPurchase.remarks,
         status: "open",
         deliveryCerts: [],
@@ -691,6 +710,7 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   saveStockItem(index) {
     let stockitem = this.newPurchase.controls.stockitems.value[index];
     stockitem.price = this.editPrice.nativeElement.value;
+    stockitem.coin = this.editCoin.nativeElement.value;
     stockitem.itemArrival = this.editArrival.nativeElement.value;
     stockitem.quantity = this.editQuantity.nativeElement.value;
     this.toastr.success("פריט עודכן בהצלחה");
@@ -924,8 +944,32 @@ export class NewProcurementComponent implements OnInit, OnChanges {
   }
 
   sendNewProc(action) {
+    let newPurchase = this.newPurchase.value;
+    if (!newPurchase.supplierName || !newPurchase.supplierNumber) {
+      alert("פרטי הספק חסרים, בדוק מספר או שם");
+      return;
+    }
+    if (!newPurchase.stockitems || newPurchase.stockitems.length == 0) {
+      alert("אין פריטים בהזמנה, יש למלא לפחות שורת פריט אחת.");
+      return;
+    }
+    if (!newPurchase.orderType) {
+      alert("יש לבחור את סוג ההזמנה - Item Type");
+      return;
+    }
+
+    for (let item of newPurchase.stockitems) {
+      let valid = true;
+      if (!item.price || !item.coin) {
+        alert("פריט מספר " + item.number + " אין מחיר או מטבע");
+        valid = false;
+      }
+      if (!valid) return;
+    }
+
     let withRemarks = confirm("האם להוסיף הערות להזמנת הלקוח?");
     this.sendingPurchase = true;
+
     if (action == "add") {
       if (this.newPurchase.controls.stockitems.value) {
         this.newPurchase.controls.stockitems.value.map(
@@ -1050,6 +1094,11 @@ export class NewProcurementComponent implements OnInit, OnChanges {
           });
       }
     }
+  }
+
+  closeNewProcurementModal() {
+    this.newPurchase.reset();
+    this.closeOrderModal.emit(false);
   }
 
   setPurchaseStatus(ev) {
