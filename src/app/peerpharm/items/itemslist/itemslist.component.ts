@@ -81,8 +81,8 @@ export class ItemslistComponent implements OnInit {
         return;
       } else if (data && data.length > 0) {
         data.map((item) => {
-          item.itemFullName =
-            item.name + " " + item.subName + " " + item.discriptionK;
+          // item.itemFullName =
+          //   item.name + " " + item.subName + " " + item.discriptionK;
           // item.licsensDate = moment(item.licsensDate).format("DD/MM/YYYY");
           if (item.StickerLanguageK != null) {
             item.StickerLanguageK = item.StickerLanguageK.split("/").join(" ");
@@ -108,8 +108,8 @@ export class ItemslistComponent implements OnInit {
         // map items
         this.filtering = true;
         items.map((item) => {
-          item.itemFullName =
-            item.name + " " + item.subName + " " + item.discriptionK;
+          // item.itemFullName =
+          //   item.name + " " + item.subName + " " + item.discriptionK;
           // item.licsensDate = moment(item.licsensDate).format("DD/MM/YYYY");
           if (item.StickerLanguageK != null) {
             item.StickerLanguageK = item.StickerLanguageK.split("/").join(" ");
@@ -153,8 +153,8 @@ export class ItemslistComponent implements OnInit {
       .subscribe((items) => {
         console.log(items);
         items.map((item) => {
-          item.itemFullName =
-            item.name + " " + item.subName + " " + item.discriptionK;
+          // item.itemFullName = item.lognName;
+          // item.name + " " + item.subName + " " + item.discriptionK;
           item.licensDate =
             item.licensDate == "Invalid date"
               ? item.licensDate

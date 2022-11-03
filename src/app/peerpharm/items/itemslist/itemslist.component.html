@@ -213,7 +213,7 @@
                 {{ item.itemNumber }}
               </a>
             </td>
-            <td>{{ item.itemFullName }}</td>
+            <td>{{ item.longName }}</td>
             <td style="color: black">
               <div *ngIf="item.volumeKey">{{ item.volumeKey }} ml</div>
               <div *ngIf="item.volumeKey == null && item.netWeightK">
