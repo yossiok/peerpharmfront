@@ -124,7 +124,7 @@
   <br />
 
   <div class="row mt-4 fixNoaStupidStuff">
-    <div class="col-2 fixNoaStupidStuff">
+    <div class="col-1 fixNoaStupidStuff">
       <input
         class="form-control"
         type="date"
@@ -133,15 +133,23 @@
         (change)="dateChanged(date.value)"
       />
     </div>
-    <div class="col-1 fixNoaStupidStuff">
+    <div class="col-1 fixNoaStupidStuff px-2">
       <button
         class="btn btn-info form-control border border-dark"
-        (click)="dateChanged(date.value)"
+        (click)="filterSchedule()"
       >
-        Filter
+        Filter Check Box
       </button>
     </div>
-    <div class="col-2"></div>
+    <div class="col-1 fixNoaStupidStuff">
+      <button
+        class="btn btn-success form-control border border-dark"
+        (click)="clearFilter()"
+      >
+        Clear Filter
+      </button>
+    </div>
+    <div class="col-1"></div>
     <div class="col-2 fixNoaStupidStuff" *ngIf="scheduleDataCopy">
       <button class="btn btn-warning" (click)="getComponentsQty()">
         Components Report &nbsp;<i class="fas fa-list"></i>
@@ -546,7 +554,7 @@
         <tbody id="table_body">
           <tr
             style="box-shadow: inset 0px 0px 4px 1px black"
-            *ngFor="let line of scheduleData"
+            *ngFor="let line of scheduleData; let i = index"
             [style.background-color]="line.color"
           >
             <ng-container *ngIf="line !== undefined && line.mkp === typeShown">
@@ -555,7 +563,8 @@
                   name="selectLine"
                   class="form-control"
                   type="checkbox"
-                  (change)="isSelected($event, line)"
+                  (change)="isSelected($event, i)"
+                  [checked]="line.checked"
                 />
               </td>
               <td></td>
@@ -1181,18 +1190,19 @@
         id="material-header"
         class="modal-header"
       >
-        <div class="row">
-          <div class="col-5">
+        <div class="row w-100">
+          <div class="col-5"></div>
+          <div class="col-3">
             <button
               style="border: none; background: none; font-size: 30px"
               [useExistingCss]="true"
               ngxPrint
               printSectionId="print-sectionReport"
             >
-              דו"ח לו"ז
+              <span class="text-center"> דו"ח לו"ז</span>
             </button>
           </div>
-          <div class="col-6"></div>
+          <div class="col-2"></div>
           <div class="col-1">
             <span class="close" id="closeId3" (click)="fillingReport = false"
               >&times;</span

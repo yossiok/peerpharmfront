@@ -410,6 +410,7 @@ export class ScheduleComponent implements OnInit {
     this.startTime();
     this.componentsTotalQty = [];
     this.scheduleData = [];
+    this.scheduleDataCopy = [];
     this.itemsNumbers = [];
     this.scheduleService.getScheduleByDate(date).subscribe((res) => {
       if (res.msg) {
@@ -419,6 +420,7 @@ export class ScheduleComponent implements OnInit {
       }
       if (res && res.length > 0) {
         res.map((sced) => {
+          sced.checked = true;
           if (sced.status == "filled") sced.color = "#CE90FF";
           if (sced.status == "done") sced.color = "Aquamarine";
           if (sced.status == "beingFilled") sced.color = "yellow";
@@ -527,6 +529,7 @@ export class ScheduleComponent implements OnInit {
     this.scheduleService.getScheduleByDate(today).subscribe((res) => {
       console.log(res);
       res.map((sced) => {
+        sced.checked = true;
         sced.color = "white";
         if (sced.status === "filled") {
           sced.color = "#CE90FF"; //purple
@@ -613,13 +616,19 @@ export class ScheduleComponent implements OnInit {
     this.modalService.open(this.batchSpecStatus);
   }
 
-  isSelected(ev, item) {
+  isSelected(event, i) {
+    this.scheduleData[i].checked = event.target.checked;
+    console.log(this.scheduleData[i].checked);
+  }
+
+  isSelectedOld(ev, i) {
     try {
-      console.log(ev.checked);
+      console.log(ev.target.checked);
+      let item = this.scheduleData[i].item;
 
       if ((ev.target && ev.target.checked == true) || ev.checked == true) {
         var isSelected = this.selectedArr;
-
+        this.scheduleData[i].checked = ev.target.checked;
         this.itemSer.createFillingReport(item.item).subscribe((data) => {
           item.impRemarks = data[0].impRemarks;
           item.bottleNumber = data[0].bottleNumber;
@@ -660,14 +669,26 @@ export class ScheduleComponent implements OnInit {
   }
 
   selectAll() {
-    console.log(this.scheduleData[0]);
-    this.chkAll = !this.chkAll;
-    if (this.chkAll) {
-      this.selects();
-    } else {
-      this.deSelect();
+    try {
+      this.chkAll = !this.chkAll;
+
+      for (let line of this.scheduleData) {
+        line.checked = this.chkAll;
+      }
+      console.log(this.scheduleData);
+    } catch (error) {
+      console.log(error);
     }
   }
+  // selectAll() {
+  //   console.log(this.scheduleData[0]);
+  //   this.chkAll = !this.chkAll;
+  //   if (this.chkAll) {
+  //     this.selects();
+  //   } else {
+  //     this.deSelect();
+  //   }
+  // }
 
   selects() {
     var ele = <HTMLInputElement[]>(
@@ -694,8 +715,41 @@ export class ScheduleComponent implements OnInit {
   }
 
   makeFillingReport() {
+    this.scheduleData = this.scheduleDataCopy.filter((line) => line.checked);
+    this.selectedArr = [];
+    for (let item of this.scheduleData) {
+      this.itemSer.createFillingReport(item.item).subscribe((data) => {
+        if (data.msg) {
+          this.toastSrv.error(data.msg);
+          return;
+        } else if (data && data.length > 0) {
+          item.impRemarks = data[0].impRemarks;
+          item.bottleNumber = data[0].bottleNumber;
+          item.pumpNumber = data[0].pumpNumber;
+          item.sealNumber = data[0].sealNumber;
+          item.capNumber = data[0].capNumber;
+          item.cartonNumber = data[0].cartonNumber;
+          item.stickerNumber = data[0].stickerNumber;
+          item.boxNumber = data[0].boxNumber;
+          item.PcsCarton = data[0].PcsCarton;
+          item.bottleImage = data[0].bottleImage;
+          item.bottlePosition = data[0].bottlePosition;
+          item.sealImage = data[0].sealImage;
+          item.sealPosition = data[0].sealPosition;
+          item.capPosition = data[0].capPosition;
+          item.capImage = data[0].capImage;
+          item.pumpImage = data[0].pumpImage;
+          item.pumpPosition = data[0].pumpPosition;
+          item.imgMain1 = data[0].imgMain1;
+          item.imgMain2 = data[0].imgMain2;
+          item.scheduleRemark = data[0].scheduleRemark;
+          item.boxImage = data[0].boxImage;
+          item.proRemarks = data[0].proRemarks;
+          this.selectedArr.push(item);
+        }
+      });
+    }
     this.fillingReport = true;
-    this.selectedArr;
   }
 
   setType(type, elem) {
@@ -1063,7 +1117,14 @@ export class ScheduleComponent implements OnInit {
   }
 
   filterSchedule() {
-    this.scheduleDataCopy = this.selectedArr;
+    console.log(this.scheduleData);
+    console.log(this.scheduleDataCopy);
+    this.scheduleData = this.scheduleData.filter((line) => line.checked);
+  }
+  clearFilter() {
+    console.log(this.scheduleData);
+    console.log(this.scheduleDataCopy);
+    this.scheduleData = this.scheduleDataCopy;
   }
 
   handleChange(type) {
@@ -1072,6 +1133,7 @@ export class ScheduleComponent implements OnInit {
   setDone() {}
 
   moveAllOpenScedToToday() {
+    this.selectedArr = this.scheduleDataCopy.filter((line) => line.checked);
     if (this.selectedArr.length > 0) {
       this.scheduleService.moveToNextDay(this.selectedArr).subscribe((data) => {
         if (data.msg == "success") {
@@ -1218,6 +1280,8 @@ export class ScheduleComponent implements OnInit {
 
   getComponentsQty() {
     console.log(this.scheduleData);
+    this.scheduleData = this.scheduleDataCopy.filter((line) => line.checked);
+
     let filtered = this.scheduleData.filter(
       (line) =>
         line.mkp == "basic" ||
@@ -1226,6 +1290,8 @@ export class ScheduleComponent implements OnInit {
         line.mkp == "sachet"
     );
     console.log(filtered);
+    this.componentsTotalQty = [];
+    this.componentsTotalQtyCopy = [];
     for (let line of filtered) {
       for (let component of line.components) {
         let idx = this.componentsTotalQty.findIndex(
