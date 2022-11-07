@@ -420,7 +420,7 @@ export class ScheduleComponent implements OnInit {
       }
       if (res && res.length > 0) {
         res.map((sced) => {
-          sced.checked = true;
+          sced.checked = false;
           if (sced.status == "filled") sced.color = "#CE90FF";
           if (sced.status == "done") sced.color = "Aquamarine";
           if (sced.status == "beingFilled") sced.color = "yellow";
@@ -529,7 +529,7 @@ export class ScheduleComponent implements OnInit {
     this.scheduleService.getScheduleByDate(today).subscribe((res) => {
       console.log(res);
       res.map((sced) => {
-        sced.checked = true;
+        sced.checked = false;
         sced.color = "white";
         if (sced.status === "filled") {
           sced.color = "#CE90FF"; //purple
@@ -1125,6 +1125,7 @@ export class ScheduleComponent implements OnInit {
     console.log(this.scheduleData);
     console.log(this.scheduleDataCopy);
     this.scheduleData = this.scheduleDataCopy;
+    this.scheduleData.forEach((sched) => (sched.checked = false));
   }
 
   handleChange(type) {
@@ -1135,6 +1136,9 @@ export class ScheduleComponent implements OnInit {
   moveAllOpenScedToToday() {
     this.selectedArr = this.scheduleDataCopy.filter((line) => line.checked);
     if (this.selectedArr.length > 0) {
+      let conf = confirm("השורות שנבחרו יעברו ליום המחרת, האם להמשיך?");
+      if (!conf) return;
+
       this.scheduleService.moveToNextDay(this.selectedArr).subscribe((data) => {
         if (data.msg == "success") {
           this.toastSrv.success("פריטים נבחרים עברו 24 שעות קדימה");
@@ -1145,7 +1149,10 @@ export class ScheduleComponent implements OnInit {
         }
       });
     } else {
-      this.scheduleService.setOpenToToday().subscribe((res) => {});
+      alert(
+        " על מנת להעביר שורת משימה ליום המחרת יש לבחור לפחות שורה אחת על ידי סימון בריבוע שמשמאל לשורה (צ'קבוקס)"
+      );
+      return;
     }
   }
 

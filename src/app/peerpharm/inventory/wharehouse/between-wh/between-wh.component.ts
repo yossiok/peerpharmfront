@@ -393,7 +393,12 @@ export class BetweenWHComponent implements OnInit {
         this.sending = false;
         alert(data.msg);
         this.toastr.error("Operation Falied", data.msg);
-      } else if (data.actionLogs.length == 0) {
+      } else if (data && data.errors && data.erros.length > 0) {
+        for (let er of data.errors) {
+          let error = er.msg ? er.msg : er;
+          this.toastr.error(er.msg);
+        }
+      } else if (data.savedMovements.length == 0) {
         this.toastr.error("הפעולה נכשלה, לא נעשה שינוי למלאי");
         alert("הפעולה נכשלה, לא נעשה שינוי למלאי");
         setTimeout(() => {
@@ -407,7 +412,7 @@ export class BetweenWHComponent implements OnInit {
         }, 1500);
         this.sending = false;
         this.movementForm.controls.valid.setValue(false);
-      } else if (data.actionLogs.length < this.allMovements.length) {
+      } else if (data.savedMovements.length < this.allMovements.length) {
         let realData = [];
         for (let move of this.allMovements) {
           let index = data.actionLogs.findIndex((al) => {
@@ -436,7 +441,7 @@ export class BetweenWHComponent implements OnInit {
           this.first.nativeElement.focus();
         }, 1500);
         this.sending = false;
-      } else if (data.actionLogs.length == this.allMovements.length) {
+      } else if (data.savedMovements.length == this.allMovements.length) {
         setTimeout(() => {
           this.printBtn2.nativeElement.click();
           location.reload();
