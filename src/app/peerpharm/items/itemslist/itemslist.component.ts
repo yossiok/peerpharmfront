@@ -261,11 +261,13 @@ export class ItemslistComponent implements OnInit {
     if (numName == "") this.items = this.itemsCopy;
     numName = numName.toLowerCase();
     this.items = this.itemsCopy
-      .filter(
-        (i) =>
-          i.itemNumber.includes(numName) ||
-          i.longName.toLowerCase().includes(numName)
-      )
+      .filter((i) => {
+        if (
+          (i.itemNumber && i.itemNumber.includes(numName)) ||
+          (i.longName && i.longName.toLowerCase().includes(numName))
+        )
+          return i;
+      })
       .sort((a, b) => a.itemNumber.length - b.itemNumber.length);
     this.filtering = false;
     // setTimeout(() => (this.filtering = false), 500);
