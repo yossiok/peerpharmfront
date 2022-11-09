@@ -989,7 +989,7 @@ export class ScheduleComponent implements OnInit {
         batch: this.batch.nativeElement.value,
         packageP: this.packageP.nativeElement.value,
         qty: this.qty.nativeElement.value,
-        qtyProduced: "",
+        qtyProduced: line.qtyProduced,
         date: this.date.nativeElement.value,
         marks: this.marks.nativeElement.value,
         shift:
@@ -1013,16 +1013,49 @@ export class ScheduleComponent implements OnInit {
         scdLneInfo[0].status = "";
       }
       this.scheduleService.editSchedule(scheduleToUpdate).subscribe((res) => {
-        this.EditRowId = 0;
-        scheduleToUpdate.date3 = moment(scheduleToUpdate.date).format(
-          "YYYY-MM-DD"
-        );
-        this.scheduleData[
-          this.scheduleData.findIndex(
-            (sced) => sced._id == scheduleToUpdate._id
-          )
-        ] = scheduleToUpdate;
-        this.editRadioBtnType = "";
+        console.log(res);
+
+        if (res && res.msg) {
+          console.log(res);
+          this.toastSrv.error(res.msg);
+          return;
+        } else if (res) {
+          this.EditRowId = 0;
+          let newSced = res;
+          newSced.color = "white";
+          if (newSced.status === "filled") {
+            newSced.color = "#CE90FF"; //purple
+          }
+          if (newSced.status === "beingFilled") {
+            newSced.color = "yellow";
+          }
+          if (newSced.status === "packed") {
+            newSced.color = "orange";
+          }
+          if (newSced.status === "done") {
+            newSced.color = "Aquamarine";
+          }
+          if (newSced.status === "partialDone") {
+            newSced.color = "#ff7272"; //light red
+          }
+          if (newSced.status === "problem") {
+            newSced.color = "red";
+          }
+          if (
+            newSced.whatIsMissing == "noStickers" ||
+            newSced.whatIsMissing == "noMaterial" ||
+            newSced.whatIsMissing == "noComponent"
+          ) {
+            newSced.color = "grey";
+          }
+
+          newSced.date3 = moment(scheduleToUpdate.date).format("YYYY-MM-DD");
+          this.scheduleData[
+            this.scheduleData.findIndex((sced) => sced._id == newSced._id)
+          ] = newSced;
+          this.editRadioBtnType = "";
+        }
+
         if (updateOrderItemDate) {
           //update orderItemSchedule
         }

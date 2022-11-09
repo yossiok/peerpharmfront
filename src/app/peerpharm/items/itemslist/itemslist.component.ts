@@ -151,27 +151,39 @@ export class ItemslistComponent implements OnInit {
     this.itemsService
       .getProductsByQuery(this.searchMenu.value)
       .subscribe((items) => {
-        console.log(items);
-        items.map((item) => {
-          // item.itemFullName = item.lognName;
-          // item.name + " " + item.subName + " " + item.discriptionK;
-          item.licensDate =
-            item.licensDate == "Invalid date"
-              ? item.licensDate
-              : new Date(item.licensDate);
-          // item.licsensDate = moment(item.licsensDate).format("DD/MM/YYYY");
-          if (item.StickerLanguageK != null) {
-            item.StickerLanguageK = item.StickerLanguageK.split("/").join(" ");
-          }
-        });
-        items.sort(function (a, b) {
-          return a.itemNumber - b.itemNumber;
-        });
-        this.items = items;
-        this.itemsCopy = items;
-        this.complete = true;
-        this.getAllProducts = true;
-        this.filtering = false;
+        if (items && items.msg) {
+          this.toastSrv.error(items.msg);
+          this.filtering = false;
+          return;
+        } else if (items && items.length > 0) {
+          console.log(items);
+
+          items.map((item) => {
+            // item.itemFullName = item.lognName;
+            // item.name + " " + item.subName + " " + item.discriptionK;
+            item.licensDate =
+              item.licensDate == "Invalid date"
+                ? item.licensDate
+                : new Date(item.licensDate);
+            // item.licsensDate = moment(item.licsensDate).format("DD/MM/YYYY");
+            if (item.StickerLanguageK != null) {
+              item.StickerLanguageK =
+                item.StickerLanguageK.split("/").join(" ");
+            }
+          });
+          items.sort(function (a, b) {
+            return a.itemNumber - b.itemNumber;
+          });
+          this.items = items;
+          this.itemsCopy = items;
+          this.complete = true;
+          this.getAllProducts = true;
+          this.filtering = false;
+        } else {
+          this.toastSrv.error("לא נמצאו נתונים המתאימים לחיפוש");
+          this.filtering = false;
+          return;
+        }
       });
   }
 
@@ -245,15 +257,18 @@ export class ItemslistComponent implements OnInit {
 
   filterByNumber(ev) {
     this.filtering = true;
-    if (ev.target.value == "") this.items = this.itemsCopy;
+    let numName = ev.target.value;
+    if (numName == "") this.items = this.itemsCopy;
+    numName = numName.toLowerCase();
     this.items = this.itemsCopy
       .filter(
         (i) =>
-          i.itemNumber.includes(ev.target.value) ||
-          i.itemFullName.toLowerCase().includes(ev.target.value.toLowerCase())
+          i.itemNumber.includes(numName) ||
+          i.longName.toLowerCase().includes(numName)
       )
       .sort((a, b) => a.itemNumber.length - b.itemNumber.length);
-    setTimeout(() => (this.filtering = false), 500);
+    this.filtering = false;
+    // setTimeout(() => (this.filtering = false), 500);
   }
 
   filterByComponent(ev) {

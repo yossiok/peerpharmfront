@@ -298,7 +298,19 @@
   <button
     style="visibility: hidden"
     #printAmounts
-    [useExistingCss]="true"
+    [printStyle]="{
+      h2: { display: 'inline' },
+      h3: { display: 'none' },
+      footer: { 'page-break-after': 'always' },
+      table: { 'counter-reset': 'page', 'border-collapse': 'collapse' },
+      th: {
+        border: 'solid 1px black',
+        'font-size': '22px',
+        'text-align': 'center'
+      },
+      tr: { border: 'solid 2px black' },
+      td: { border: 'solid 1px black', padding: '5px', 'font-size': '22px' }
+    }"
     ngxPrint
     printSectionId="print-amounts"
   ></button>
@@ -307,29 +319,38 @@
     class="fa fa-times float-right h3 close"
   ></i>
   <h1 class="text-center">כתב כמויות</h1>
-  <h2 dir="rtl">
-    <img
-      (click)="exportExplosion(materialsForFormules, 'כתב כמויות')"
-      src="../../../../../assets/images/excel.png"
-      class="img"
-      alt=""
-    />
-    <img
-      (click)="printAmounts.click()"
-      src="../../../../../assets/images/print.png"
-      class="img2"
-      alt=""
-    />
-  </h2>
+  <div class="row mt-2">
+    <div class="col-1">
+      <img
+        (click)="exportExplosion(materialsForFormules, 'כתב כמויות')"
+        src="../../../../../assets/images/excel.png"
+        class="img"
+        alt=""
+      />
+    </div>
+    <div class="col-5"></div>
+    <div class="col-1">
+      <img
+        (click)="printAmounts.click()"
+        src="../../../../../assets/images/print.png"
+        class="img2"
+        alt=""
+      />
+    </div>
+  </div>
+
   <div id="print-amounts">
-    <h2 dir="rtl">
-      כתב כמויות לתכניות עבודה:
-      <span *ngFor="let workPlan of checkedWorkPlans"
-        >{{ workPlan.serialNumber }},
-      </span>
-    </h2>
-    <br />
     <table class="table table-striped mt-4">
+      <thead>
+        <tr>
+          <th dir="rtl" colspan="7" class="text-center">
+            כתב כמויות לתכניות עבודה:
+            <span *ngFor="let workPlan of checkedWorkPlans"
+              >{{ workPlan.serialNumber }},
+            </span>
+          </th>
+        </tr>
+      </thead>
       <thead class="bg-success text-white">
         <tr>
           <th>#</th>

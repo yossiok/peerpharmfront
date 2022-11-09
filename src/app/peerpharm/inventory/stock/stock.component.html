@@ -1962,7 +1962,7 @@
                       <th>Arrival Date</th>
                       <th>Arrived Amount</th>
                       <th>Ordered Amount</th>
-                      <th>Item Price (Foreign)</th>
+                      <th>Item Price (Orig. Coin)</th>
                       <th>Item Price (NIS)</th>
                       <th>Remarks</th>
                     </tr>
@@ -1990,8 +1990,9 @@
                         <td>{{ lastorderitem.arrivedAmount }}</td>
                         <td>{{ lastorderitem.quantity }}</td>
                         <td>
-                          {{ lastorderitem.price }}
-                          {{ lastorderitem.coin | currencySymbol }}
+                          {{
+                            lastorderitem.price | currency: lastorderitem.coin
+                          }}
                         </td>
                         <td>
                           {{ lastorderitem.localPrice | currency: "ILS" }}

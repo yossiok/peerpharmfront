@@ -730,9 +730,8 @@
               <th>Remarks</th>
               <th>Qty</th>
 
-              <th>Unit Price (Foreign)</th>
-              <th>Total Price (Foreign)</th>
-              <th>Total Price (NIS)</th>
+              <th>Unit Price</th>
+              <th>Total Price</th>
             </tr>
           </thead>
           <tbody>
@@ -745,19 +744,16 @@
               <td>{{ item.componentNs }}</td>
               <td>{{ item.name }}</td>
               <td>{{ item.remarks }}</td>
-              <td>{{ item.quantity }}</td>
+              <td>{{ item.quantity | number }}</td>
 
               <td>
                 {{ item.price | number: "1.2" }}
                 {{ item.coin | currencySymbol }}
               </td>
               <td>
-                {{ item.itemPrice | number: "1.2" }}
-                {{ item.coin | currencySymbol }}
-              </td>
-              <td>
-                <span *ngIf="item.localTotal"
-                  >{{ item.localTotal | number: "1.0-2" }}{{ nisSymbol }}</span
+                <span *ngIf="item.totalPrice"
+                  >{{ item.totalPrice | number: "1.0-2"
+                  }}{{ item.coin | currencySymbol }}</span
                 >
               </td>
             </tr>
@@ -777,9 +773,6 @@
                   >{{ totalPrice | number: "1.0-2" }}{{ currCoin }}</b
                 >
               </td>
-              <td>
-                <b>{{ totalPriceNis | number: "1.0-2" }}{{ nisSymbol }}</b>
-              </td>
             </tr>
             <ng-container *ngIf="country == false">
               <tr>
@@ -797,9 +790,6 @@
                   <b *ngIf="printSum"
                     >{{ totalPrice | number: "1.0-2" }}{{ currCoin }}</b
                   >
-                </td>
-                <td>
-                  <b>{{ totalPriceNis | number: "1.0-2" }}{{ nisSymbol }}</b>
                 </td>
               </tr>
             </ng-container>
@@ -1222,7 +1212,7 @@
               <td>{{ item.itemNumber }}</td>
               <td>{{ item.itemName }}</td>
               <td>
-                {{ item.quantity }}
+                {{ item.quantity | number }}
                 <small class="text-success font-weight-bold"
                   ><u>{{ item.changedQuantity }}</u></small
                 >
@@ -1241,7 +1231,7 @@
             <tr *ngIf="!item.changedQuantity && !item.changedItemPrice">
               <td>{{ item.itemNumber }}</td>
               <td>{{ item.itemName }}</td>
-              <td>{{ item.quantity }}</td>
+              <td>{{ item.quantity | number }}</td>
               <td>{{ item.supplierPrice }}</td>
               <td>{{ item.price }}</td>
               <td class="text-success">{{ item.fixedQuantity }}</td>

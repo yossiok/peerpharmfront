@@ -877,6 +877,8 @@ export class ProcurementOrdersComponent implements OnInit {
       this.currentItems[i].itemPrice =
         Number(this.currentItems[i].quantity) *
         Number(this.currentItems[i].price);
+      let price = this.currentItems[i].price ? +this.currentItems[i].price : 0;
+      this.currentItems[i].totalPrice = price * this.currentItems[i].quantity;
       this.currentItems[i].localTotal =
         this.currentItems[i].itemPrice *
         this.currencies[this.currentItems[i].coin.toUpperCase()];

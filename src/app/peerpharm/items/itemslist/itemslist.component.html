@@ -96,7 +96,7 @@
   <div *ngIf="complete" class="row mt-4">
     <div class="col-2">
       <input
-        (keyup)="filterByNumber($event)"
+        (change)="filterByNumber($event)"
         type="text"
         class="form-control"
         placeholder="Filter By Name / Number"
@@ -104,7 +104,7 @@
     </div>
     <div class="col-2">
       <input
-        (keyup)="filterByComponent($event)"
+        (change)="filterByComponent($event)"
         type="text"
         class="form-control"
         placeholder="Filter By Component Number"
