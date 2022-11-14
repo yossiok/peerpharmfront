@@ -204,10 +204,11 @@
     </header>
     <hr />
     <main class="main-certificate">
-      <h2>תעודת שינוי מדף מס' {{ shelfChangeLog.deliveryNote }}</h2>
+      <h2>תעודת שינוי מדף מס' {{ shelfChange.value.deliveryNote }}</h2>
       <h3>מחסן: {{ shelfChange.value.whName }}</h3>
-      <h4>תאריך: {{ printDate | date: "dd/MM/yyyy hh:mm" }}</h4>
-      <h5>שם משתמש: {{ shelfChange.value.user }}</h5>
+      <h4>תאריך: {{ printDate | date: "dd/MM/yyyy" }}</h4>
+      <h4>שעה: {{ printDate | date: "HH:mm" }}</h4>
+      <h5>שם מבצע הפעולה: {{ shelfChange.value.user }}</h5>
       <hr />
       <table>
         <thead>

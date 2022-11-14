@@ -76,6 +76,8 @@ import { NewProcurementComponent } from "./procurement/new-procurement/new-procu
 import { EmailPurchaseOrderComponent } from "./procurement/procumentOrders/email-purchase-order/email-purchase-order.component";
 import { FinanceReportComponent } from "./finance-reports/financereport.component";
 import { WarehousesActionsReportsComponent } from "./inventory/inventory-reports/warehousesActionsReports/warehousesActionsReports.component";
+import { ComaxItemsIndexComponent } from "./comax-items-index/comax-items-index.component";
+
 import { MAT_DIALOG_DEFAULT_OPTIONS } from "@angular/material/dialog";
 
 import { MatSelectModule } from "@angular/material/select";
@@ -407,6 +409,7 @@ import { MkupProductionComponent } from "./forms/mkupForm/mkupProduction/mkupPro
     CmptHistoryComponent,
     MultiForecastsComponent,
     EmailPurchaseOrderComponent,
+    ComaxItemsIndexComponent,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [

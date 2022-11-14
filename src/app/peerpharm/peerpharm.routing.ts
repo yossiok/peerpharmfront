@@ -97,6 +97,7 @@ import { BillUploadComponent } from "./prices/billUpload/billUpload.component";
 import { MkupFormComponent } from "./forms/mkupForm/mkupForm.component";
 import { SearchComponent } from "./search/search.component";
 import { OrdersSimulatorComponent } from "./mrp-tools/orders-simulator.component";
+import { ComaxItemsIndexComponent } from "./comax-items-index/comax-items-index.component";
 // import { ItemIndexNewComponent } from "./item-index-new/item-index-new.component";
 
 export const PeerPharmRputs: Routes = [
@@ -854,5 +855,13 @@ export const PeerPharmRputs: Routes = [
       title: "MRP Tools",
     },
     component: OrdersSimulatorComponent,
+  },
+  {
+    path: "ComaxItems",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Comax Items Index",
+      component: ComaxItemsIndexComponent,
+    },
   },
 ];

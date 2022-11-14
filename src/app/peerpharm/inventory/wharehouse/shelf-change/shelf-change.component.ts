@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
 import { InventoryService } from "src/app/services/inventory.service";
 import { AuthService } from "src/app/services/auth.service";
+import { WarehouseService } from "src/app/services/warehouse.service";
 
 @Component({
   selector: "app-shelf-change",
@@ -13,7 +14,7 @@ export class ShelfChangeComponent implements OnInit {
   @ViewChild("nameSelect") nameSelect: ElementRef;
   @ViewChild("printBtn2") printBtn2: ElementRef;
   @ViewChild("first") first: ElementRef;
-  @ViewChild("print") print!: ElementRef;
+  @ViewChild("print") print: ElementRef;
   @Input() allWhareHouses: any[];
   @Input() reallyAllWhareHouses: any[];
   @Input() itemNumber: number;
@@ -41,12 +42,14 @@ export class ShelfChangeComponent implements OnInit {
     whareHouseID: new FormControl(null, Validators.required),
     whName: new FormControl(""),
     user: new FormControl(""),
+    deliveryNote: new FormControl(""),
   });
 
   constructor(
     private inventoryService: InventoryService,
     private toastr: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private warehouseService: WarehouseService
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +58,7 @@ export class ShelfChangeComponent implements OnInit {
       this.disabled = true;
       this.shelfChange.controls.item.setValue(this.itemNumber);
     }
+    this.getHistoricalCertificates();
     //temporary
     // this.getCleanMinus();
   }
@@ -64,6 +68,40 @@ export class ShelfChangeComponent implements OnInit {
   //     console.log(data);
   //   });
   // }
+
+  getHistoricalCertificates() {
+    this.warehouseService.shelfChangePrintCalled$.subscribe((data) => {
+      if (data && data.msg) {
+        this.toastr.error(data.msg);
+        return;
+      } else if (data) {
+        console.log(data);
+        this.certificateReception = data.logs[0].warehouseReception;
+        this.today = data.dateAndTime;
+        this.printDate = data.dateAndTime;
+
+        this.shelfChange.controls.item.setValue(data.logs[0].item);
+        this.shelfChange.controls.itemName.setValue(data.logs[0].itemName);
+        this.shelfChange.controls.amount.setValue(data.logs[0].amount);
+        this.shelfChange.controls.newPosition.setValue(
+          data.logs[0].shell_position_in_whareHouse_Dest
+        );
+        this.shelfChange.controls.oldPosition.setValue(
+          data.logs[0].shell_position_in_whareHouse_Origin
+        );
+        this.shelfChange.controls.deliveryNote.setValue(data.deliveryNote);
+        this.shelfChange.controls.whName.setValue(data.logs[0].WH_originName);
+        this.shelfChange.controls.user.setValue(data.userName);
+        this.shelfChangeLog = data.logs[0];
+
+        setTimeout(() => {
+          this.print.nativeElement.click();
+          this.shelfChange.reset();
+          this.shelfChangeLog = [];
+        }, 500);
+      }
+    });
+  }
 
   getShelfs() {
     this.inventoryService
@@ -164,10 +202,10 @@ export class ShelfChangeComponent implements OnInit {
         if (data.msg) {
           this.toastr.error(data.msg);
           this.shelfsWithItem = [];
-        } else if (data.savedWhActionlog) {
+        } else if (data[3].savedWhActionlog) {
           //set certificate data
           this.sending = false;
-          this.shelfChangeLog = data.savedWhActionlog;
+          this.shelfChangeLog = data[3].savedWhActionlog;
           console.log(this.shelfChangeLog);
           let user = this.shelfChange.value.user;
           let whName = this.shelfChange.value.whName;
