@@ -94,10 +94,10 @@ export class InvArrivalsComponent implements OnInit {
       console.log(this.allWhareHouses);
     }, 500);
     if (this.itemNumber) {
-      this.disabled = true;
+      // this.disabled = true;
       this.componentArrival.controls.item.setValue(this.itemNumber);
     }
-    this.checkOwnerShip();
+    // this.checkOwnerShip();
     this.getSuppliers();
     this.getHistoricalReceptions();
     this.getCustomers();
@@ -208,11 +208,11 @@ export class InvArrivalsComponent implements OnInit {
   }
 
   checkOwnerShip() {
+    // The origin plan was to have a special shlef for customer owned
     this.componentArrival
       .get("ownerId")
       .valueChanges.subscribe((selectedValue) => {
         console.log(selectedValue);
-
         if (selectedValue != "" && selectedValue != "0001") {
           let shellArr = this.shellNums.filter(
             (sn) => sn.position == "CUSTOMER"
