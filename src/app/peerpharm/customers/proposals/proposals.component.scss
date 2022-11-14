@@ -1,3 +1,30 @@
+#print-section {
+  color: black;
+  table {
+    color: black;
+    th,
+    td {
+      color: black;
+      padding: 3px;
+      font-weight: 400;
+    }
+  }
+}
+#printTable {
+  table {
+    th,
+    td {
+      color: black;
+      padding: 3px;
+      font-weight: 400;
+    }
+  }
+}
+.cell {
+  padding: 3px;
+  font-weight: 400;
+  color: black;
+}
 .form_1 {
   width: 80vw;
 }
@@ -9,7 +36,7 @@
 .textLeft {
   text-align: left;
 }
-smallLoader {
+.smallLoader {
   margin: auto;
   border: 5px solid #f3f3f3;
   border-radius: 50%;

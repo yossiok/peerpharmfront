@@ -535,7 +535,7 @@ export const ROUTES: RouteInfo[] = [
     extralink: false,
     submenu: [
       {
-        path: "/peerpharm/ComaxItems",
+        path: "/peerpharm/comax-items-index",
         title: "Comax Items Index",
         icon: "fas fa-list-ol",
         class: "",

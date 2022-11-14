@@ -764,46 +764,50 @@
         <main>
           <table class="table table-bordered">
             <tbody>
-              <tr>
-                <th>#</th>
-                <th>מספר פריט</th>
-                <th>ברקוד</th>
-                <th>תאור</th>
-                <th>כמות</th>
-                <th>מחיר יחידה</th>
-                <th>הנחה %</th>
-                <th>סה"כ</th>
-                <th>תאריך משוער</th>
+              <tr class="font-weight-bold">
+                <th class="cell">#</th>
+                <th class="cell">מספר פריט</th>
+                <th class="cell">ברקוד</th>
+                <th class="cell">תאור</th>
+                <th class="cell">כמות</th>
+                <th class="cell">מחיר יחידה</th>
+                <th class="cell">הנחה %</th>
+                <th class="cell">סה"כ</th>
+                <th class="cell">תאריך משוער</th>
               </tr>
               <ng-container *ngIf="items">
-                <tr *ngFor="let item of items.value; let i = index">
-                  <td class="cellPadding">{{ i + 1 }}</td>
-                  <td>{{ item.itemNumber }}</td>
-                  <td>{{ item.barcode }}</td>
-                  <td>{{ item.itemName }}</td>
-                  <td>{{ item.quantity | number }}</td>
-                  <td>
+                <tr
+                  *ngFor="let item of items.value; let i = index"
+                  class="text-center"
+                >
+                  <td class="cell">{{ i + 1 }}</td>
+                  <td class="cell">{{ item.itemNumber }}</td>
+                  <td class="cell">{{ item.barcode }}</td>
+                  <td class="text-justify cell">{{ item.itemName }}</td>
+                  <td class="cell">{{ item.quantity | number: "1.0" }}</td>
+                  <td class="cell">
                     {{ item.price | currency: newProposalForm.value.currency }}
                   </td>
-                  <td>{{ item.discount }}%</td>
-                  <td>
+                  <td class="cell">{{ item.discount }}%</td>
+                  <td class="cell">
                     {{ item.total | currency: newProposalForm.value.currency }}
                   </td>
-                  <td>{{ item.deliveryDate | date: "dd/MM/yyyy" }}</td>
+                  <td class="cell">
+                    {{ item.deliveryDate | date: "dd/MM/yyyy" }}
+                  </td>
                 </tr>
                 <tr>
-                  <td colspan="3"></td>
-                  <td>{{ findTotalQty() | number }}</td>
-                  <td></td>
-                  <td>סה"כ לפני מע"מ</td>
-                  <td>
+                  <td class="cell" colspan="4"></td>
+                  <td class="cell">{{ findTotalQty() | number: "1.0" }}</td>
+                  <td class="cell">סה"כ לפני מע"מ</td>
+                  <td class="cell">
                     {{ findSum() | currency: newProposalForm.value.currency }}
                   </td>
                 </tr>
                 <tr>
                   <td colspan="5"></td>
-                  <td>17.00% מע"מ</td>
-                  <td>
+                  <td class="cell">17.00% מע"מ</td>
+                  <td class="cell">
                     {{
                       findSum() * 0.17
                         | currency: newProposalForm.value.currency
@@ -812,8 +816,8 @@
                 </tr>
                 <tr>
                   <td colspan="5"></td>
-                  <td>סה"כ כולל מע"מ</td>
-                  <td>
+                  <td class="cell">סה"כ כולל מע"מ</td>
+                  <td class="cell">
                     {{
                       findSum() * 1.17
                         | currency: newProposalForm.value.currency
@@ -1011,38 +1015,40 @@
           <table class="table table-bordered">
             <tbody>
               <tr>
-                <th>#</th>
-                <th>Cat. No.</th>
-                <th>Barcode</th>
-                <th>Description</th>
-                <th>Quantity</th>
-                <th>Unit price</th>
+                <th class="cell">#</th>
+                <th class="cell">Cat. No.</th>
+                <th class="cell">Barcode</th>
+                <th class="cell">Description</th>
+                <th class="cell">Quantity</th>
+                <th class="cell">Unit price</th>
                 <!-- <th>Discount %</th> -->
-                <th>Total</th>
-                <th>Estimated Readiness</th>
+                <th class="cell">Total</th>
+                <th class="cell">Estimated Readiness</th>
               </tr>
               <ng-container *ngIf="items">
                 <tr *ngFor="let item of items.value; let i = index">
-                  <td class="cellPadding">{{ i + 1 }}</td>
-                  <td>{{ item.itemNumber }}</td>
-                  <td>{{ item.barcode }}</td>
-                  <td>{{ item.itemName }}</td>
-                  <td>{{ item.quantity | number }}</td>
-                  <td>
+                  <td class="cell">{{ i + 1 }}</td>
+                  <td class="cell">{{ item.itemNumber }}</td>
+                  <td class="cell">{{ item.barcode }}</td>
+                  <td class="cell">{{ item.itemName }}</td>
+                  <td class="cell">{{ item.quantity | number: "1.0" }}</td>
+                  <td class="cell">
                     {{ item.price | currency: newProposalForm.value.currency }}
                   </td>
                   <!-- <td>{{ item.discount }}%</td> -->
-                  <td>
+                  <td class="cell">
                     {{ item.total | currency: newProposalForm.value.currency }}
                   </td>
-                  <td>{{ item.deliveryDate | date: "dd/MM/yyyy" }}</td>
+                  <td class="cell">
+                    {{ item.deliveryDate | date: "dd/MM/yyyy" }}
+                  </td>
                 </tr>
                 <tr>
-                  <td colspan="4">Grand Total</td>
-                  <td>{{ findTotalQty() | number }}</td>
+                  <td colspan="4" class="cell">Grand Total</td>
+                  <td class="cell">{{ findTotalQty() | number: "1.0" }}</td>
                   <td></td>
                   <!-- <td></td> -->
-                  <td>
+                  <td class="cell">
                     {{ findSum() | currency: newProposalForm.value.currency }}
                   </td>
                   <td colspan="2"></td>

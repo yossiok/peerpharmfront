@@ -407,9 +407,9 @@ import { MkupProductionComponent } from "./forms/mkupForm/mkupProduction/mkupPro
     ItemsExplosionComponent,
     FormulesExplosionComponent,
     CmptHistoryComponent,
+    ComaxItemsIndexComponent,
     MultiForecastsComponent,
     EmailPurchaseOrderComponent,
-    ComaxItemsIndexComponent,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [
