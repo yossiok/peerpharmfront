@@ -857,7 +857,7 @@ export const PeerPharmRputs: Routes = [
     component: OrdersSimulatorComponent,
   },
   {
-    path: "ComaxItems",
+    path: "comax-items-index",
     canActivate: [ScreenGuard],
     data: {
       title: "Comax Items Index",
