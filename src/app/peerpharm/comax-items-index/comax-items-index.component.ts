@@ -17,6 +17,7 @@ export class ComaxItemsIndexComponent implements OnInit {
   groups: any[] = [];
   groupsCopy: any[] = [];
   subGroups: any[] = [];
+  loading: boolean = false;
   // subGroups: any[] = [
   //   { id: "120", name: "מדיסקין" },
   //   { id: "5000", name: "Argan" },
@@ -112,9 +113,11 @@ export class ComaxItemsIndexComponent implements OnInit {
       alert("יש לבחור לפחות שדה אחד");
       return;
     }
+    this.loading = true;
     this.comaxItemsService
       .getComaxItemsByQuery(this.searchMenu.value)
       .subscribe((data) => {
+        this.loading = false;
         console.log(data);
         if (data && data.msg) {
           this.toastService.error(data.msg);

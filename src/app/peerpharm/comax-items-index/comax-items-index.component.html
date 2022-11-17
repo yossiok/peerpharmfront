@@ -2,9 +2,13 @@
   <h2 class="text-center">אינדקס פריטים</h2>
   <form action="" [formGroup]="searchMenu">
     <div class="row mt-2">
-      <div class="col-2">
+      <div class="col-1">
         <label for="">מק"ט פריט</label>
         <input type="text" formControlName="itemNumber" class="form-control" />
+      </div>
+      <div class="col-1">
+        <label for="">ברקוד</label>
+        <input type="text" formControlName="barcode" class="form-control" />
       </div>
       <div class="col-2">
         <label for="">שם פריט</label>
@@ -55,6 +59,7 @@
       </div>
     </div>
   </form>
+  <div *ngIf="loading" class="loading"></div>
   <h3 class="text-center">רשימת פריטים</h3>
   <div class="row mt-2">
     <table class="table table-border">
