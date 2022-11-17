@@ -861,7 +861,7 @@ export const PeerPharmRputs: Routes = [
     canActivate: [ScreenGuard],
     data: {
       title: "Comax Items Index",
-      component: ComaxItemsIndexComponent,
     },
+    component: ComaxItemsIndexComponent,
   },
 ];

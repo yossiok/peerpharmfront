@@ -956,7 +956,12 @@ export class PlanningDetailsComponent implements OnInit {
             ? formule.barrelsWeight
             : 0;
           let prodWeight = formule.totalKG - formule.barrelsWeight;
-
+          if (!formule.formuleData) {
+            this.toastr.error(
+              "הפורמולה לא קיימת. יש לבדוק הימצאות הפרומולה או פורמולת האב"
+            );
+            return;
+          }
           let newFormuleData = this.formuleCalculate(
             formule.formuleData,
             prodWeight

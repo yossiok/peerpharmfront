@@ -398,7 +398,7 @@ export class BetweenWHComponent implements OnInit {
           let error = er.msg ? er.msg : er;
           this.toastr.error(er.msg);
         }
-      } else if (data.savedMovements.length == 0) {
+      } else if (!data.savedMovements || data.savedMovements.length == 0) {
         this.toastr.error("הפעולה נכשלה, לא נעשה שינוי למלאי");
         alert("הפעולה נכשלה, לא נעשה שינוי למלאי");
         setTimeout(() => {

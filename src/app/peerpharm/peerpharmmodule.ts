@@ -63,6 +63,7 @@ import { ItemsExplosionComponent } from "./mrp-tools/items-explosion/items-explo
 import { FormulesExplosionComponent } from "./mrp-tools/formules-explosion/formules-explosion.component";
 import { CmptHistoryComponent } from "./mrp-tools/cmpt-history/cmpt-history.component";
 import { MultiForecastsComponent } from "./mrp-tools/multi-forecasts/multi-forecasts.component";
+import { ComaxItemsIndexComponent } from "./comax-items-index/comax-items-index.component";
 
 import { WharehouseComponent } from "./inventory/wharehouse/wharehouse.component";
 import { InventoryRequestsComponent } from "./inventory/wharehouse/inventory-requests/inventory-requests.component";
@@ -76,7 +77,6 @@ import { NewProcurementComponent } from "./procurement/new-procurement/new-procu
 import { EmailPurchaseOrderComponent } from "./procurement/procumentOrders/email-purchase-order/email-purchase-order.component";
 import { FinanceReportComponent } from "./finance-reports/financereport.component";
 import { WarehousesActionsReportsComponent } from "./inventory/inventory-reports/warehousesActionsReports/warehousesActionsReports.component";
-import { ComaxItemsIndexComponent } from "./comax-items-index/comax-items-index.component";
 
 import { MAT_DIALOG_DEFAULT_OPTIONS } from "@angular/material/dialog";
 

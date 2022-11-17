@@ -1530,8 +1530,10 @@
                   <table class="table table-striped table-hover">
                     <thead class="bg-success text-white">
                       <tr>
-                        <th>מחסן מקור</th>
+                        <th>מקור</th>
                         <th>מיקום מקורי</th>
+                        <th>מלאי לפני</th>
+                        <th>מלאי אחרי</th>
                         <th>כמות</th>
                         <th>סוג התנועה</th>
                         <th>מחסן יעד</th>
@@ -1551,12 +1553,19 @@
                     <tbody>
                       <ng-container *ngFor="let itemMovement of itemMovements">
                         <tr *ngIf="itemMovement.WH_originName != 'Filling'">
-                          <td>{{ itemMovement.WH_originName }}</td>
+                          <td *ngIf="itemMovement.sourceType != 'supplier'">
+                            {{ itemMovement.WH_originName }}
+                          </td>
+                          <td *ngIf="itemMovement.sourceType == 'supplier'">
+                            ספק: {{ itemMovement.suplierN }}
+                          </td>
                           <td>
                             {{
                               itemMovement.shell_position_in_whareHouse_Origin
                             }}
                           </td>
+                          <td>{{ itemMovement.stockBeforeMove }}</td>
+                          <td>{{ itemMovement.stockAfterMove }}</td>
                           <td>{{ itemMovement.amount }}</td>
                           <td>{{ itemMovement.movementType }}</td>
                           <td>{{ itemMovement.WH_destName }}</td>

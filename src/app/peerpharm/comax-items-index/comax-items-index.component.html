@@ -1,4 +1,87 @@
-<p>comax-items-index works!</p>
-<p>comax-items-index works!</p>
-<p>comax-items-index works!</p>
-<p>comax-items-index works!</p>
+<div class="container-fluid" dir="rtl">
+  <h2 class="text-center">אינדקס פריטים</h2>
+  <form action="" [formGroup]="searchMenu">
+    <div class="row mt-2">
+      <div class="col-2">
+        <label for="">מק"ט פריט</label>
+        <input type="text" formControlName="itemNumber" class="form-control" />
+      </div>
+      <div class="col-2">
+        <label for="">שם פריט</label>
+        <input type="text" formControlName="itemName" class="form-control" />
+      </div>
+      <div class="col-2">
+        <label>מחלקה</label>
+        <select
+          name=""
+          id=""
+          formControlName="department"
+          class="form-control"
+          (change)="filterGroup()"
+        >
+          <option value="" disabled selected="true">מחלקה</option>
+          <option value="">הכל</option>
+          <option [value]="dep.departmentId" *ngFor="let dep of departments">
+            {{ dep.departmentId }}-{{ dep.departmentName }}
+          </option>
+        </select>
+      </div>
+      <div class="col-2">
+        <label>קבוצה</label>
+        <select name="" id="" formControlName="group" class="form-control">
+          <option value="" disabled selected="true">קבוצה</option>
+          <option value="">הכל</option>
+          <option [value]="group.groupId" *ngFor="let group of groups">
+            {{ group.groupId }}-{{ group.groupName }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-1">
+        <button
+          class="btn btn-outline-success form-control mt-4"
+          (click)="getItems()"
+        >
+          חפש
+        </button>
+      </div>
+      <div class="col-1">
+        <button
+          class="btn btn-outline-danger form-control mt-4"
+          (click)="clearSearch()"
+        >
+          נקה
+        </button>
+      </div>
+    </div>
+  </form>
+  <h3 class="text-center">רשימת פריטים</h3>
+  <div class="row mt-2">
+    <table class="table table-border">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>מק"ט פריט</th>
+          <th>ברקוד</th>
+          <th>שם פריט</th>
+          <th>מחלקה</th>
+          <th>קבוצה</th>
+          <th>תת קבוצה</th>
+          <th>שם ספק</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="itemsList && itemsList.length > 0">
+        <tr *ngFor="let item of itemsList; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ item.itemNumber }}</td>
+          <td>{{ item.barcode }}</td>
+          <td>{{ item.itemName }}</td>
+          <td>{{ item.departmentCode }}-{{ item.departmentName }}</td>
+          <td>{{ item.groupId }}-{{ item.groupName }}</td>
+          <td>{{ item.subGroupCode }}-{{ item.subGrouName }}</td>
+          <td>{{ item.supplierId }}-{{ item.supplierName }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
