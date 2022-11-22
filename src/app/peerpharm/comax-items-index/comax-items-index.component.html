@@ -15,6 +15,23 @@
         <input type="text" formControlName="itemName" class="form-control" />
       </div>
       <div class="col-2">
+        <label for="">מותג</label>
+        <select name="" id="" formControlName="brandId" class="form-control">
+          <option value="">הכל</option>
+          <option [value]="brand.brandId" *ngFor="let brand of brands">
+            {{ brand.brandId }} - {{ brand.brandName }}
+          </option>
+        </select>
+      </div>
+      <div class="col-4"></div>
+      <div class="col-2" *ngIf="syncAuthorized">
+        <button class="btn btn-outline-info" (click)="syncComax()">
+          סנכרון קומקס
+        </button>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-2">
         <label>מחלקה</label>
         <select
           name=""
@@ -23,7 +40,6 @@
           class="form-control"
           (change)="filterGroup()"
         >
-          <option value="" disabled selected="true">מחלקה</option>
           <option value="">הכל</option>
           <option [value]="dep.departmentId" *ngFor="let dep of departments">
             {{ dep.departmentId }}-{{ dep.departmentName }}
@@ -32,15 +48,33 @@
       </div>
       <div class="col-2">
         <label>קבוצה</label>
-        <select name="" id="" formControlName="group" class="form-control">
-          <option value="" disabled selected="true">קבוצה</option>
+        <select
+          name=""
+          id=""
+          formControlName="group"
+          class="form-control"
+          (change)="filterSubGroups()"
+        >
           <option value="">הכל</option>
           <option [value]="group.groupId" *ngFor="let group of groups">
             {{ group.groupId }}-{{ group.groupName }}
           </option>
         </select>
       </div>
-
+      <div class="col-2">
+        <label for="">תת קבוצה</label>
+        <select name="" id="" formControlName="subGroup" class="form-control">
+          <option value="">הכל</option>
+          <option
+            [value]="subGroup.subGroupId"
+            *ngFor="let subGroup of subGroups"
+          >
+            {{ subGroup.subGroupId }} - {{ subGroup.subGroupName }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row mt-2">
       <div class="col-1">
         <button
           class="btn btn-outline-success form-control mt-4"
@@ -57,6 +91,7 @@
           נקה
         </button>
       </div>
+      <div class="col-4"></div>
     </div>
   </form>
   <div *ngIf="loading" class="loading"></div>
@@ -69,6 +104,7 @@
           <th>מק"ט פריט</th>
           <th>ברקוד</th>
           <th>שם פריט</th>
+          <th>מותג</th>
           <th>מחלקה</th>
           <th>קבוצה</th>
           <th>תת קבוצה</th>
@@ -81,9 +117,10 @@
           <td>{{ item.itemNumber }}</td>
           <td>{{ item.barcode }}</td>
           <td>{{ item.itemName }}</td>
-          <td>{{ item.departmentCode }}-{{ item.departmentName }}</td>
+          <td>{{ item.brandId }} - {{ item.brandName }}</td>
+          <td>{{ item.departmentId }}-{{ item.departmentName }}</td>
           <td>{{ item.groupId }}-{{ item.groupName }}</td>
-          <td>{{ item.subGroupCode }}-{{ item.subGrouName }}</td>
+          <td>{{ item.subGroupId }}-{{ item.subGroupName }}</td>
           <td>{{ item.supplierId }}-{{ item.supplierName }}</td>
         </tr>
       </tbody>

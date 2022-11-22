@@ -52,11 +52,12 @@ img {
 input,
 textarea,
 select {
-  padding: 4px 4px;
+  padding: 3px 3px;
   display: inline-block;
   border-radius: 4px;
   box-sizing: border-box;
   border: 1px solid #ccc;
+  height: 2rem;
 }
 input:focus {
   background-color: wheat;
@@ -68,7 +69,6 @@ input:focus {
 .pictureTabImg:hover {
   transform: scale(3.5);
 }
-
 
 .stock-bg {
   background-color: #dee378;
@@ -224,6 +224,6 @@ input:focus {
 
 @media screen and (max-width: 992px) {
   .myScale:hover {
-    transform: scale(3)
+    transform: scale(3);
   }
 }

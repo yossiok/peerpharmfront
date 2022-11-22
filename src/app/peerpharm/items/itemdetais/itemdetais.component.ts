@@ -30,6 +30,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { PlateService } from "src/app/services/plate.service";
 import { log } from "console";
 import { Procurementservice } from "src/app/services/procurement.service";
+import { ComaxItemsService } from "src/app/services/comax-items.service";
 
 @Component({
   selector: "app-itemdetais",
@@ -96,6 +97,8 @@ export class ItemdetaisComponent implements OnInit {
   notActiveAlert: Boolean = false;
   editSpecTable: Boolean = false;
   productPriceModal: Boolean = false;
+  catNumber: string = "";
+  syncAuthorized: boolean = false;
 
   PAO: Boolean = false;
   setUnits: Boolean = false;
@@ -467,7 +470,8 @@ export class ItemdetaisComponent implements OnInit {
     private toastr: ToastrService,
     private authService: AuthService,
     private purchaseService: Procurementservice,
-    private router: Router
+    private router: Router,
+    private comaxItemsService: ComaxItemsService
   ) {
     this.itemCopy = Object.assign({}, this.itemShown);
     this.newItem = fb.group({
@@ -672,6 +676,8 @@ export class ItemdetaisComponent implements OnInit {
         this.itemShown.bottlePurchases = data.purchases;
         this.itemShown.bottleOrderedAmount = data.purchaseAmount;
         this.itemShown.bottleExpected = data.realAmount;
+
+        console.log(this.itemShown);
       });
     } else if (bottleNumber == "---") {
       this.itemShown.bottleTube = "";
@@ -1310,6 +1316,10 @@ export class ItemdetaisComponent implements OnInit {
       return "backgroundRed";
     }
   }
+  // getProductByNumber() {
+  //   this.route.params.mapTo(`/peerpahrm/items/itemDetails/${this.catNumber}`);
+  //   console.log(this.route.params);
+  // }
 
   getItemData() {
     // debugger;
@@ -1319,6 +1329,10 @@ export class ItemdetaisComponent implements OnInit {
         this.editOrAdd = "Edit";
         this.itemsService.getItemData(number).subscribe((res) => {
           console.log(res);
+          if (res.length == 0) {
+            alert("לא קיים מוצר במקט זה");
+            return;
+          }
           this.itemExist = true;
           this.item = res[0];
           this.itemShown = res[0];
@@ -1346,6 +1360,8 @@ export class ItemdetaisComponent implements OnInit {
           this.dataDiv = res[0].goddet;
           this.showGoddetData();
         });
+      } else {
+        return;
       }
     });
   }
@@ -2309,6 +2325,7 @@ export class ItemdetaisComponent implements OnInit {
   getUserInfo() {
     if (this.authService.loggedInUser) {
       this.user = this.authService.loggedInUser;
+      this.syncAuthorized = this.user.authorization.includes("updateItemTree");
       if (this.user.authorization) {
         if (
           this.authService.loggedInUser.authorization.includes("updateItemTree")
@@ -2355,5 +2372,33 @@ export class ItemdetaisComponent implements OnInit {
     } else {
       this.itemShown.setUnits--;
     }
+  }
+
+  syncComax() {
+    let conf = confirm(
+      "פעולה זו תסנכרן את המערכת עם פריטי קומקס מהימים האחרונים, האם להמשיך?"
+    );
+    if (!conf) return;
+    if (!this.syncAuthorized) {
+      alert("אינך מורשה לבצע פעולה זו.");
+      return;
+    }
+    this.smallLoader = true;
+    this.comaxItemsService.getLastUpdateFrom().subscribe((data) => {
+      this.smallLoader = false;
+      if (data && data.msg) {
+        console.log(data);
+        this.toastr.error(data.msg);
+        return;
+      }
+      if (data && data.length > 0) {
+        this.toastr.success(`${data.length} items received from Comax`);
+        return;
+      }
+      if (!data || data.length == 0) {
+        this.toastr.warning("לא התקבלו פריטים חדשים מהקומקס");
+        return;
+      }
+    });
   }
 }

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { AuthService } from "src/app/services/auth.service";
 import { ToastrService } from "ngx-toastr";
 import { ComaxItemsService } from "src/app/services/comax-items.service";
+import { bool } from "aws-sdk/clients/signer";
 
 @Component({
   selector: "app-comax-items-index",
@@ -17,25 +18,12 @@ export class ComaxItemsIndexComponent implements OnInit {
   groups: any[] = [];
   groupsCopy: any[] = [];
   subGroups: any[] = [];
+  subGroupsCopy: any[] = [];
+  brands: any[] = [];
+  brandsCopy: any[] = [];
   loading: boolean = false;
-  // subGroups: any[] = [
-  //   { id: "120", name: "מדיסקין" },
-  //   { id: "5000", name: "Argan" },
-  //   { id: "5001", name: "Conditioner" },
-  //   { id: "5002", name: "Curly" },
-  //   { id: "5003", name: "Dry" },
-  //   { id: "5004", name: "Dry & Damaged" },
-  //   { id: "5005", name: "Dry & Frizzy" },
-  //   { id: "5006", name: "For All" },
-  //   { id: "5007", name: "Keratin" },
-  //   { id: "5008", name: "Keraxir" },
-  //   { id: "5009", name: "Mineral" },
-  //   { id: "5010", name: "Mud" },
-  //   { id: "5011", name: "Recover" },
-  //   { id: "5012", name: "Salt Free" },
-  //   { id: "5013", name: "Silk" },
-  //   { id: "9915", name: "מארז" },
-  // ];
+  syncAuthorized: boolean = false;
+  user: any = null;
 
   searchMenu: FormGroup = new FormGroup({
     itemNumber: new FormControl(""),
@@ -45,6 +33,7 @@ export class ComaxItemsIndexComponent implements OnInit {
     subGroup: new FormControl(""),
     barcode: new FormControl(""),
     customerName: new FormControl(""),
+    brandId: new FormControl(""),
   });
 
   constructor(
@@ -56,6 +45,43 @@ export class ComaxItemsIndexComponent implements OnInit {
   ngOnInit(): void {
     this.getAllDepartments();
     this.getAllGroups();
+    this.getAllSubgroups();
+    this.getAllBrands();
+    this.getUser();
+  }
+
+  getUser() {
+    this.user = this.authService.loggedInUser;
+    this.syncAuthorized = this.user.authorization.includes("updateItemTree");
+    console.log(this.syncAuthorized);
+  }
+
+  syncComax() {
+    if (!this.syncAuthorized) {
+      alert("אינך מורשה לבצע פעולה זו.");
+      return;
+    }
+    let conf = confirm(
+      "פעולה זו תסנכרן את המערכת עם פריטי קומקס מהימים האחרונים, האם להמשיך?"
+    );
+    if (!conf) return;
+    this.loading = true;
+    this.comaxItemsService.getLastUpdateFrom().subscribe((data) => {
+      this.loading = false;
+      if (data && data.msg) {
+        console.log(data);
+        this.toastService.error(data.msg);
+        return;
+      }
+      if (data && data.length > 0) {
+        this.toastService.success(`${data.length} items received from Comax`);
+        return;
+      }
+      if (!data || data.length == 0) {
+        this.toastService.warning("לא התקבלו פריטים חדשים מהקומקס");
+        return;
+      }
+    });
   }
 
   getAllDepartments() {
@@ -99,6 +125,37 @@ export class ComaxItemsIndexComponent implements OnInit {
       }
     });
   }
+  getAllSubgroups() {
+    this.comaxItemsService.getAllCmxSubGroups().subscribe((data) => {
+      console.log(data);
+      if (data && data.msg) {
+        console.log(data);
+        this.toastService.error(data.msg);
+        return;
+      }
+      if (data && data.length > 0) {
+        this.subGroups = data;
+        this.subGroupsCopy = data;
+        return;
+      }
+    });
+  }
+
+  getAllBrands() {
+    this.comaxItemsService.getAllCmxBrands().subscribe((data) => {
+      console.log(data);
+      if (data && data.msg) {
+        console.log(data);
+        this.toastService.error(data.msg);
+        return;
+      }
+      if (data && data.length > 0) {
+        this.brands = data;
+        this.brandsCopy = data;
+        return;
+      }
+    });
+  }
 
   getItems() {
     console.log(this.searchMenu.value);
@@ -113,6 +170,7 @@ export class ComaxItemsIndexComponent implements OnInit {
       alert("יש לבחור לפחות שדה אחד");
       return;
     }
+    this.itemsList = [];
     this.loading = true;
     this.comaxItemsService
       .getComaxItemsByQuery(this.searchMenu.value)
@@ -141,8 +199,21 @@ export class ComaxItemsIndexComponent implements OnInit {
     }
   }
 
+  filterSubGroups() {
+    let group = this.searchMenu.value.group;
+    if (group) {
+      this.subGroups = this.subGroupsCopy.filter((sg) => sg.groupId == group);
+    } else {
+      this.subGroups = this.subGroupsCopy;
+    }
+  }
+
   clearSearch() {
     this.searchMenu.reset();
     this.itemsList = [];
+    this.brands = this.brandsCopy;
+    this.subGroups = this.subGroupsCopy;
+    this.groups = this.groupsCopy;
+    this.departments = this.departmentsCopy;
   }
 }

@@ -28,4 +28,19 @@ export class ComaxItemsService {
 
     return this.http.get(url).pipe(map((response) => response.json()));
   }
+  getAllCmxSubGroups() {
+    let url = this.baseUrl + "comaxitem/getAllCmxSubGroups";
+
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+  getAllCmxBrands() {
+    let url = this.baseUrl + "comaxitem/getAllCmxBrands";
+
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+
+  getLastUpdateFrom() {
+    let url = this.baseUrl + "comaxitem/getLastUpdateFrom";
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
 }
