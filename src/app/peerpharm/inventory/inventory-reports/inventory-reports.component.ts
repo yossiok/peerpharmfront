@@ -3,7 +3,8 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ExcelService } from "src/app/services/excel.service";
 import { InventoryService } from "src/app/services/inventory.service";
 import { Procurementservice } from "src/app/services/procurement.service";
-import { Router } from '@angular/router';
+import { AuthService } from "src/app/services/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-inventory-reports",
@@ -17,7 +18,9 @@ export class InventoryReportsComponent implements OnInit {
   allWarehouses: any[] = [];
   reportData: any[] = [];
   shelvesList: any[] = [];
-  showWareHousesActions:boolean = false
+  showWareHousesActions: boolean = false;
+  user: any = null;
+  authorized: boolean = false;
 
   reportForm = new FormGroup({
     cmptType: new FormControl(""),
@@ -34,12 +37,19 @@ export class InventoryReportsComponent implements OnInit {
     private inventorySer: InventoryService,
     private excelService: ExcelService,
     private purchaseService: Procurementservice,
+    private authSerice: AuthService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
     this.getTypes();
     this.getAllWhs();
+    this.getUser();
+  }
+
+  getUser() {
+    this.user = this.authSerice.loggedInUser;
+    this.authorized = this.user.authorization.includes("adminPanel");
   }
 
   getTypes() {
@@ -83,31 +93,37 @@ export class InventoryReportsComponent implements OnInit {
       console.log(data);
       if (this.reportForm.value.itemType == "product") {
         data.map((item) => {
-          item.itemNumber = item._id;
-          item.itemName =
-            item.name[0] + " " + item.subName[0] + ", " + item.description[0];
-          item.totalAmount = item.total;
-          item.warehouse = this.reportForm.controls.warehouse.value;
-          delete item.name;
-          delete item.subName;
-          delete item.description;
-          delete item._id;
+          item.lastOrderPrice = item.productPrice;
+          item.lastOrderShippingPrice = 0;
+          item.lastOrderCoin = "ILS";
         });
-        sortOrder = ["_id", "name", "position", "total"];
+        // sortOrder = ["_id", "name", "position", "total"];
         this.reportData = data;
       } else {
         this.reportData = data;
       }
-
-      // this.excelService.exportAsExcelFile(data, "Inventory Report", sortOrder);
     });
   }
   exportToExcel() {
-    let sortOrder = ["itemNumber", "itemName", "totalAmount"];
-    this.excelService.exportAsExcelFile(
-      this.reportData,
-      "Inventory Report",
-      sortOrder
-    );
+    let exportData = [];
+
+    for (let component of this.reportData) {
+      let line = {
+        "מק''ט": component.itemNumber,
+        "שם הפריט/מוצר": component.itemName,
+        "סוג הפריט": component.itemType,
+        כמות: component.totalAmount,
+        "מחיר אחרון": component.lastOrderPrice,
+        "העמסה למחיר אחרון": component.lastOrderShippingPrice,
+        "מטבע  מחיר אחרון": component.lastOrderCoin,
+        "מחיר ידני": component.manualPrice,
+        "מטבע מחיר ידני": component.manualCoin,
+        מחסן: this.reportForm.value.warehouse,
+        הערות: component.remark,
+      };
+      exportData.push(line);
+    }
+
+    this.excelService.exportAsExcelFile(exportData, "Inventory Report");
   }
 }

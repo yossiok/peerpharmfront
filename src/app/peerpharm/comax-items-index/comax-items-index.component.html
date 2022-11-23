@@ -24,11 +24,6 @@
         </select>
       </div>
       <div class="col-4"></div>
-      <div class="col-2" *ngIf="syncAuthorized">
-        <button class="btn btn-outline-info" (click)="syncComax()">
-          סנכרון קומקס
-        </button>
-      </div>
     </div>
     <div class="row mt-2">
       <div class="col-2">
@@ -91,7 +86,12 @@
           נקה
         </button>
       </div>
-      <div class="col-4"></div>
+      <div class="col-8"></div>
+      <div class="col-2" *ngIf="syncAuthorized">
+        <button class="btn btn-outline-info" (click)="syncComax()">
+          סנכרון קומקס
+        </button>
+      </div>
     </div>
   </form>
   <div *ngIf="loading" class="loading"></div>

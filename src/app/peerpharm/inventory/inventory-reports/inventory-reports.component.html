@@ -1,9 +1,6 @@
-
 <div dir="rtl">
   <mat-tab-group>
-    <mat-tab label="תנועות מחסנים" > <app-warehousesActionsReports></app-warehousesActionsReports></mat-tab>
-    <mat-tab label="דוחות מלאי" >
-
+    <mat-tab label="דוחות מלאי">
       <div *ngIf="!loader" dir="rtl">
         <form [formGroup]="reportForm" (ngSubmit)="getInvRep()">
           <div class="row mt-2">
@@ -26,21 +23,28 @@
                 <option value="all">All</option>
                 <option value="material">Materials</option>
                 <option value="component">Components</option>
-                <option value="product">Products</option>
+                <option *ngIf="authorized" value="product">Products</option>
               </select>
             </div>
             <div class="col-2">
               <label for="">מדף</label>
               <select class="form-control" formControlName="position">
                 <option value="all">All</option>
-                <option *ngFor="let shelf of shelvesList" [value]="shelf.position">
+                <option
+                  *ngFor="let shelf of shelvesList"
+                  [value]="shelf.position"
+                >
                   {{ shelf.position }}
                 </option>
               </select>
             </div>
             <div class="col-2">
               <label for="">מק"ט</label>
-              <input type="text" class="form-control" formControlName="componentN" />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="componentN"
+              />
             </div>
           </div>
           <div class="row mt-2">
@@ -52,7 +56,10 @@
             </div>
             <div class="col-2">
               <label for="">&nbsp;</label>
-              <button class="form-control btn btn-danger" (click)="minusReport()">
+              <button
+                class="form-control btn btn-danger"
+                (click)="minusReport()"
+              >
                 דו"ח מינוסים
               </button>
             </div>
@@ -95,9 +102,11 @@
           </div>
         </div>
       </div>
-
     </mat-tab>
-  </mat-tab-group>        
+    <mat-tab label="תנועות מחסנים">
+      <app-warehousesActionsReports></app-warehousesActionsReports
+    ></mat-tab>
+  </mat-tab-group>
 </div>
 
 <div class="bigLoader" *ngIf="loader"></div>
