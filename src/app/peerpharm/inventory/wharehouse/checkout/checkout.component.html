@@ -1,74 +1,126 @@
 <div dir="rtl">
-
-
   <form [formGroup]="componentCheckout" (ngSubmit)="addToOutGoing()">
     <h3>הוצאת סחורה</h3>
     <div class="row mt-4">
       <p class="h5">* = שדה חובה</p>
     </div>
     <div class="row mt-4">
-
       <div class="col-2">
         <label>מחסן *</label>
-        <select class="form-control" (change)="itemNumber ? getShelfs() : null" formControlName="whareHouseID" #first>
+        <select
+          class="form-control"
+          (change)="itemNumber ? getShelfs() : null"
+          formControlName="whareHouseID"
+          #first
+        >
           <option disabled value="">בחר מחסן</option>
-          <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
+          <option
+            *ngFor="let whareHouse of allWhareHouses"
+            [value]="whareHouse._id"
+          >
+            {{ whareHouse.name }}
           </option>
         </select>
-
       </div>
 
       <div *ngIf="!disabled" class="col-2">
-        <label>
-          מק"ט *
-        </label>
-        <input type="text" [disabled]="disabled" formControlName="item" (blur)="getShelfs()" class="form-control">
+        <label> מק"ט * </label>
+        <input
+          type="text"
+          [disabled]="disabled"
+          formControlName="item"
+          (blur)="getShelfs()"
+          class="form-control"
+        />
       </div>
       <div *ngIf="!disabled" class="col-2">
-        <label class="d-block">
-          שם
-        </label>
-        <input class="d-inline form-control" type="text" #name formControlName="itemName">
-        <button class="d-inline" type="button" (click)="getNames()">Find</button>
+        <label class="d-block"> שם </label>
+        <input
+          class="d-inline form-control"
+          type="text"
+          #name
+          formControlName="itemName"
+        />
+        <button class="d-inline" type="button" (click)="getNames()">
+          Find
+        </button>
         <select class="form-control" (change)="setItemDetailsNumber($event)">
-          <option *ngFor="let itemName of itemNames" [value]="itemName.componentN">{{itemName.componentName}}
+          <option
+            *ngFor="let itemName of itemNames"
+            [value]="itemName.componentN"
+          >
+            {{ itemName.componentName }}
           </option>
         </select>
       </div>
       <div class="col-2">
         <label>מדף *</label>
-        <select class="form-control" formControlName="shell_id_in_whareHouse" (change)="setShelf($event)">
+        <select
+          class="form-control"
+          formControlName="shell_id_in_whareHouse"
+          (change)="setShelf($event)"
+        >
           <option disabled value="">בחר מדף</option>
-          <option *ngFor="let shellNum of shellNums" [disabled]="shellNum.position == 'MINUS'"
-            [value]="shellNum.shell_id_in_whareHouse" [ngStyle]="{'color': shellNum.amount >=0 ? 'black' : 'red' }">
-            {{shellNum.position}} - {{shellNum.amount}} pcs
+          <option
+            *ngFor="let shellNum of shellNums"
+            [disabled]="shellNum.position == 'MINUS'"
+            [value]="shellNum.shell_id_in_whareHouse"
+            [ngStyle]="{ color: shellNum.amount >= 0 ? 'black' : 'red' }"
+          >
+            {{ shellNum.position }} - {{ shellNum.amount }} pcs
           </option>
         </select>
-        <input type="checkbox" (change)="shaulyShutUp()" class="return">
+        <input type="checkbox" (change)="shaulyShutUp()" class="return" />
         <h3 class="return-label">החזרת סחורה</h3>
       </div>
       <div class="col-2">
         <label>כמות *</label>
-        <input type="number" min="1" formControlName="amount" (change)="checkAmount()" class="form-control">
-        <div style="color:red; font-size: 1.2rem;font-weight: bold;"
-          *ngIf="componentCheckout.controls.amount.errors?.min">* הכמות חייבת
-          להיות גדולה מאפס
+        <input
+          type="number"
+          min="1"
+          formControlName="amount"
+          (change)="checkAmount()"
+          class="form-control"
+        />
+        <div
+          style="color: red; font-size: 1.2rem; font-weight: bold"
+          *ngIf="componentCheckout.controls.amount.errors?.min"
+        >
+          * הכמות חייבת להיות גדולה מאפס
         </div>
-        <label>סיבת <span *ngIf="!isReturn">יציאה</span><span *ngIf="isReturn">החזרה</span> *</label>
-        <input type="text" class="form-control" formControlName="destination">
+        <label
+          >סיבת <span *ngIf="!isReturn">יציאה</span
+          ><span *ngIf="isReturn">החזרה</span> *</label
+        >
+        <input type="text" class="form-control" formControlName="destination" />
       </div>
       <div class="col-2 d-flex flex-column justify-content-around">
-        <button type="submit" [disabled]="!componentCheckout.valid"
-          [style.cursor]="componentCheckout.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">הוצא</button>
-        <button type="button" class="btn btn-secondary" (click)="componentCheckout.reset()">נקה נתונים</button>
+        <button
+          type="submit"
+          [disabled]="!componentCheckout.valid"
+          [style.cursor]="componentCheckout.valid ? 'pointer' : 'not-allowed'"
+          class="btn btn-info"
+        >
+          הוצא
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="componentCheckout.reset()"
+        >
+          נקה נתונים
+        </button>
       </div>
-      <div class="col-1">
-      </div>
+      <div class="col-1"></div>
     </div>
     <div class="row mt-4">
       <div class="col-8"></div>
       <div class="col-2" *ngIf="itemNames">
-        <img [src]=itemNames[0].img alt=" חסרה תמונה ראשית" class="pictureTabImg">
+        <img
+          [src]="itemNames[0].img"
+          alt=" חסרה תמונה ראשית"
+          class="pictureTabImg"
+        />
       </div>
     </div>
   </form>
@@ -87,33 +139,47 @@
       </thead>
       <tbody>
         <tr *ngFor="let arrival of outGoing; let i = index">
-          <td class="text-center">{{arrival.item}}</td>
-          <td class="text-center">{{arrival.amount}}</td>
-          <td class="text-center">{{arrival.whareHouse}}</td>
-          <td class="text-center">{{arrival.position}}</td>
-          <td class="text-center"><i (click)="removeFromArrivals(i)" class="fa fa-times text-danger"></i></td>
+          <td class="text-center">{{ arrival.item }}</td>
+          <td class="text-center">{{ arrival.amount }}</td>
+          <td class="text-center">{{ arrival.whareHouse }}</td>
+          <td class="text-center">{{ arrival.position }}</td>
+          <td class="text-center">
+            <i
+              (click)="removeFromArrivals(i)"
+              class="fa fa-times text-danger"
+            ></i>
+          </td>
         </tr>
       </tbody>
-
     </table>
   </div>
 
   <div class="row mt-2 d-flex flex-row justify-content-around w-50">
-    <button *ngIf="!sending" class="btn btn-info" (click)="checkout()" [disabled]="outGoing.length == 0"
-      [style.cursor]="outGoing.length == 0 ? 'not-allowed' : 'pointer'">
+    <button
+      *ngIf="!sending"
+      class="btn btn-info"
+      (click)="checkout()"
+      [disabled]="outGoing.length == 0"
+      [style.cursor]="outGoing.length == 0 ? 'not-allowed' : 'pointer'"
+    >
       הוצא מהמלאי (שלח שינויים) <i class="fa fa-check"></i>
     </button>
     <div class="smallerLoader" *ngIf="sending"></div>
-    <button class="btn btn-success" (click)="justPrint()">הדפס <i class="fa fa-print"></i></button>
-    <button class="btn btn-warning" (click)="clearArrivals()">נקה טבלה <i class="fas fa-trash-alt"></i></button>
+    <!-- <button class="btn btn-success" (click)="justPrint()">הדפס <i class="fa fa-print"></i></button> -->
+    <button class="btn btn-warning" (click)="clearArrivals()">
+      נקה טבלה <i class="fas fa-trash-alt"></i>
+    </button>
   </div>
 
   <!-- תעודת יציאה -->
   <div class="row mt-4">
-    <div id="print-section2" style="direction: rtl; text-align: right; display: none; ">
+    <div
+      id="print-section2"
+      style="direction: rtl; text-align: right; display: none"
+    >
       <header>
         <h1>פאר פארם בע"מ</h1>
-        <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256 </p>
+        <p>עמל 17 אזור תעשיה ,אפק ראש העין 4809256</p>
         <p>
           <span>טלפון 03-9024055</span>&nbsp;&nbsp;
           <span>פקס 03-9024015</span>&nbsp;&nbsp;
@@ -122,14 +188,16 @@
         </p>
       </header>
       <main>
-        <h2>תעודת <span *ngIf="!isReturn">יציאה</span><span *ngIf="isReturn">החזרה</span> מס' {{certificateReception}}
+        <h2>
+          תעודת <span *ngIf="!isReturn">יציאה</span
+          ><span *ngIf="isReturn">החזרה</span> מס' {{ certificateReception }}
         </h2>
-        <p class='originDestWh'>
-          <span><u>תאריך:</u></span>&nbsp;&nbsp;
-          <span>{{today | date :'dd-MM-yyyy' }}</span>&nbsp;&nbsp;
-
+        <p class="originDestWh">
+          <span><u>תאריך:</u></span
+          >&nbsp;&nbsp; <span>{{ today | date: "dd-MM-yyyy" }}</span
+          >&nbsp;&nbsp;
         </p>
-        <br>
+        <br />
         <table>
           <tbody>
             <tr>
@@ -138,19 +206,20 @@
               <th>מחסן</th>
               <th>מיקום</th>
               <th>כמות</th>
-              <th class='itemNamePrint'>שם פריט</th>
+              <th class="itemNamePrint">שם פריט</th>
               <th>סיבת יציאה / החזרה</th>
-
             </tr>
-            <ng-container *ngFor="let arrival of outGoing; let i =index">
+            <ng-container *ngFor="let arrival of outGoing; let i = index">
               <tr>
-                <td class="cellPadding">{{i+1}}</td>
-                <td>{{arrival.item}}</td>
-                <td>{{arrival.whareHouse}}</td>
-                <td>{{arrival.position}}</td>
-                <td>{{arrival.amount>=0?arrival.amount:-arrival.amount}}</td>
-                <td>{{arrival.itemName}}</td>
-                <td>{{arrival.destination}}</td>
+                <td class="cellPadding">{{ i + 1 }}</td>
+                <td>{{ arrival.item }}</td>
+                <td>{{ arrival.whareHouse }}</td>
+                <td>{{ arrival.position }}</td>
+                <td>
+                  {{ arrival.amount >= 0 ? arrival.amount : -arrival.amount }}
+                </td>
+                <td>{{ arrival.itemName }}</td>
+                <td>{{ arrival.destination }}</td>
               </tr>
             </ng-container>
           </tbody>
@@ -163,42 +232,47 @@
             <u>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </u>
-          </span>&nbsp;&nbsp;
-          <span>חתימה:</span>&nbsp;&nbsp;
+            </u> </span
+          >&nbsp;&nbsp; <span>חתימה:</span>&nbsp;&nbsp;
           <span>
             <u>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </u>
-          </span>&nbsp;&nbsp;
-          <span>תאריך:</span>&nbsp;&nbsp;
+            </u> </span
+          >&nbsp;&nbsp; <span>תאריך:</span>&nbsp;&nbsp;
           <span>
             <u>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            </u>
-          </span>&nbsp;&nbsp;
+            </u> </span
+          >&nbsp;&nbsp;
         </p>
       </div>
-      <footer>
-      </footer>
+      <footer></footer>
     </div>
-    <button style='display: none;' #printBtn2 [printStyle]="{body : {'text-align': 'right', 'direction':'rtl'}, 
-      header : {'border-bottom': 'solid 1px'},
-      main : {'border-bottom': 'solid 1px' },
-      table :{ 'text-align': 'right' },
-      footer : { 'position': 'absolute' , 'width': '100%' },
-      h2 : {'text-align': 'center'},
-      '.originDestWh':{'text-align':'right'},
-      th : {'width': '16%' },
-      td : {'width': '16%' },
-      '.itemNamePrint' : {'width': '35%'},
-      '.signatures' : { 'margin' : '50px'},
-      '.cellPadding' : { 'padding' : '15px 0px'}
-      }" printTitle="תעודת יציאה" printSectionId="print-section2" ngxPrint>print</button>
+    <button
+      style="display: none"
+      #printBtn2
+      [printStyle]="{
+        body: { 'text-align': 'right', direction: 'rtl' },
+        header: { 'border-bottom': 'solid 1px' },
+        main: { 'border-bottom': 'solid 1px' },
+        table: { 'text-align': 'right' },
+        footer: { position: 'absolute', width: '100%' },
+        h2: { 'text-align': 'center' },
+        '.originDestWh': { 'text-align': 'right' },
+        th: { width: '16%' },
+        td: { width: '16%' },
+        '.itemNamePrint': { width: '35%' },
+        '.signatures': { margin: '50px' },
+        '.cellPadding': { padding: '15px 0px' }
+      }"
+      printTitle="תעודת יציאה"
+      printSectionId="print-section2"
+      ngxPrint
+    >
+      print
+    </button>
     <!-- <button (click)="printStockTransferCertificate()">click</button> -->
-
   </div>
-
 </div>
