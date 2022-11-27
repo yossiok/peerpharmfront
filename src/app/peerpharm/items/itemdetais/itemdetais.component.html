@@ -1,24 +1,36 @@
-<div *ngIf="loadingItem">
-  <div class="bigLoader"></div>
-</div>
 <div class="row mt-2">
   <div class="col-2">
-    <label for="">Product Cat. Number</label>
-    <input type="text" calss="form-control" [(ngModel)]="catNumber" />
+    <label for="">
+      {{ "Product" | translate }} {{ "Number" | translate }}</label
+    >
+    <input
+      type="text"
+      calss="form-control"
+      [(ngModel)]="catNumber"
+      (keyDown.enter)="searchForItem(catNumber)"
+    />
   </div>
   <div class="col-1">
-    <button class="btn btn-warning mt-4 form-control text-light">
-      <a routerLink="/peerpharm/items/itemDetails/{{ catNumber }}">
-        Find Tree
-      </a>
+    <button class="btn btn-warning" (click)="searchForItem(catNumber)">
+      Find Tree
     </button>
   </div>
-  <div class="col-7"></div>
+  <!-- <div class="col-1">
+      <button class="btn btn-warning mt-4 form-control text-light">
+        <a routerLink="/peerpharm/items/itemDetails/{{ catNumber }}">
+          Find Tree
+        </a>
+      </button>
+    </div> -->
+  <div class="col-6"></div>
   <div class="col-1" *ngIf="syncAuthorized">
     <button class="btn btn-outline-danger" (click)="syncComax()">
       סנכרון קומקס
     </button>
   </div>
+</div>
+<div *ngIf="loadingItem">
+  <div class="bigLoader"></div>
 </div>
 
 <div
