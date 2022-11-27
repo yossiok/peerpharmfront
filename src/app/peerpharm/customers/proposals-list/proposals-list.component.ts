@@ -15,6 +15,7 @@ export class ProposalsListComponent implements OnInit {
   authorized: boolean = false;
   allUsers: any[] = [];
   ordersList: any[] = [];
+  ordersListCopy: any[] = [];
   edit: number = -1;
 
   constructor(
@@ -38,6 +39,7 @@ export class ProposalsListComponent implements OnInit {
     orderDateTo: new FormControl(null),
     orderStatus: new FormControl(""),
     agent: new FormControl(""),
+    approvalFilter: new FormControl(""),
   });
 
   getUser() {
@@ -121,6 +123,7 @@ export class ProposalsListComponent implements OnInit {
   searchOrders() {
     console.log(this.orderSearchForm.value);
     this.ordersList = [];
+    this.ordersListCopy = [];
     this.salesService
       .getOrdersBySearch(this.orderSearchForm.value)
       .subscribe((data) => {
@@ -131,6 +134,7 @@ export class ProposalsListComponent implements OnInit {
           return;
         } else if (data && data.length > 0) {
           this.ordersList = data;
+          this.ordersListCopy = data;
           return;
         }
       });
@@ -138,11 +142,13 @@ export class ProposalsListComponent implements OnInit {
   clearSearchOrders() {
     this.orderSearchForm.reset();
     this.ordersList = [];
+    this.ordersListCopy = [];
   }
   setEdit(i) {
     this.edit = i;
   }
   setStatus(idx, target) {
+    this.ordersList[idx].proposalStatus = target.value;
     this.ordersList[idx].proposalStatus = target.value;
     this.edit = -1;
   }
@@ -173,5 +179,15 @@ export class ProposalsListComponent implements OnInit {
         );
       }
     });
+  }
+  filterApproved() {
+    let filter = this.orderSearchForm.value.approvalFilter;
+    if (filter) {
+      this.ordersList = this.ordersListCopy.filter(
+        (order) => order.proposalStatus == filter
+      );
+    } else {
+      this.ordersList = this.ordersListCopy;
+    }
   }
 }

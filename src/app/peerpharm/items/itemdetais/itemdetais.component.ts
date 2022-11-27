@@ -1403,6 +1403,7 @@ export class ItemdetaisComponent implements OnInit {
       if (res.length == 0) {
         this.itemExist = false;
         this.toastr.error(item, "Item Not found");
+        this.toastr.error(item, "לא נמצא מוצר התואם למקט זה.");
         this.itemShown = Object.assign({}, this.itemCopy);
         if (this.itemShown.netWeightK && !this.itemShown.unitWeight) {
           this.itemShown.unitWeight = Number(this.itemShown.netWeightK);

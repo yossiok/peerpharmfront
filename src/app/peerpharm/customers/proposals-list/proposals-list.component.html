@@ -81,6 +81,20 @@
         <label for="">תאריך הזמנה עד:</label>
         <input type="date" formControlName="orderDateTo" class="form-control" />
       </div>
+      <div class="col-2">
+        <label for="">סינון:</label>
+        <select
+          name=""
+          id=""
+          formControlName="approvalFilter"
+          class="form-control"
+          (change)="filterApproved()"
+        >
+          <option value="">הכל</option>
+          <option value="waiting">ממתינים לאישור</option>
+          <option value="customerApproved">מאושרים</option>
+        </select>
+      </div>
     </div>
   </form>
   <div class="row mt-4">
