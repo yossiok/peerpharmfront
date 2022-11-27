@@ -118,7 +118,7 @@ export class InventoryReportsComponent implements OnInit {
         "מטבע  מחיר אחרון": component.lastOrderCoin,
         "מחיר ידני": component.manualPrice,
         "מטבע מחיר ידני": component.manualCoin,
-        מחסן: this.reportForm.value.warehouse,
+        מחסן: component.warehouse,
         הערות: component.remark,
       };
       exportData.push(line);

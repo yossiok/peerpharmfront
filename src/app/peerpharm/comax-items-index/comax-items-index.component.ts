@@ -68,6 +68,7 @@ export class ComaxItemsIndexComponent implements OnInit {
     this.loading = true;
     this.comaxItemsService.getLastUpdateFrom().subscribe((data) => {
       this.loading = false;
+      this.clearSearch();
       if (data && data.msg) {
         console.log(data);
         this.toastService.error(data.msg);
