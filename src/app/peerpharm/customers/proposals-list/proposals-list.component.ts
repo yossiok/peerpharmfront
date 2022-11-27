@@ -17,6 +17,7 @@ export class ProposalsListComponent implements OnInit {
   ordersList: any[] = [];
   ordersListCopy: any[] = [];
   edit: number = -1;
+  sortToggle: number = 1;
 
   constructor(
     private salesService: SalesService,
@@ -189,5 +190,13 @@ export class ProposalsListComponent implements OnInit {
     } else {
       this.ordersList = this.ordersListCopy;
     }
+  }
+
+  sortByOrder() {
+    this.ordersList = this.ordersList.sort((a, b) =>
+      a.orderNumber > b.orderNumber ? this.sortToggle : -this.sortToggle
+    );
+
+    this.sortToggle *= -1;
   }
 }
