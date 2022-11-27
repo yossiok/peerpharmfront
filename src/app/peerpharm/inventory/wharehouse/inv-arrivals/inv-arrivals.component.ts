@@ -47,6 +47,7 @@ export class InvArrivalsComponent implements OnInit {
   chosenActionLog: any;
   customerOrders: any[] = [];
   chosenOrder: any[] = [];
+  allWhList: any[] = [];
 
   componentArrival: FormGroup = new FormGroup({
     itemType: new FormControl("component", Validators.required),
@@ -101,6 +102,20 @@ export class InvArrivalsComponent implements OnInit {
     this.getSuppliers();
     this.getHistoricalReceptions();
     this.getCustomers();
+    this.getSourceWarehouses();
+  }
+
+  getSourceWarehouses() {
+    this.inventoryService.getWhareHousesList().subscribe((data) => {
+      console.log(data);
+      if (data && data.msg) {
+        this.toastr.error(data.msg);
+        return;
+      }
+      if (data && data.length > 0) {
+        this.allWhList = data;
+      }
+    });
   }
 
   getCustomers() {
@@ -241,8 +256,23 @@ export class InvArrivalsComponent implements OnInit {
       wh.inList = true;
       wh.color = "#e8e5e5";
     }
+    this.allWhList.forEach((wh) => {
+      wh.inList = false;
+      wh.color = "#fff";
+    });
 
+    wh = this.allWhList.find((wh) => wh._id == whId);
+
+    wh.inList = true;
+    wh.color = "#e8e5e";
+
+    if (wh) {
+      this.componentArrival.controls.whareHouse.setValue(wh.name);
+      wh.inList = true;
+      wh.color = "#e8e5e5";
+    }
     this.resetValues();
+    console.log(this.allWhList);
   }
 
   getShelfs() {

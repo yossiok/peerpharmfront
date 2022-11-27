@@ -1,9 +1,10 @@
 <ng-container *ngIf="isAllowedToView">
-  <mat-tab-group class="mr-5">
+  <mat-tab-group class="mr-5" #tabGroup>
     <mat-tab>
       <ng-template mat-tab-label>
         <label
           class="p-2 click"
+          (click)="clearSearch()"
           style="background-color: rgb(2, 35, 128); color: white"
           >Now</label
         >
@@ -114,6 +115,7 @@
         <label
           class="p-2 click"
           style="background-color: rgb(206, 172, 19); color: white"
+          (click)="clearSearch()"
           >History</label
         >
       </ng-template>

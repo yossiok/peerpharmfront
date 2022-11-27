@@ -85,12 +85,12 @@
           >
             <option>שם מחסן המקור</option>
             <option
-              *ngFor="let whareHouse of allWhareHouses"
-              [value]="whareHouse._id"
-              [disabled]="whareHouse.inList"
-              [style.background-color]="whareHouse.color"
+              *ngFor="let wh of allWhList"
+              [value]="wh._id"
+              [disabled]="wh.inList"
+              [style.background-color]="wh.color"
             >
-              {{ whareHouse.name }}
+              {{ wh.name }}
             </option>
           </select>
         </div>

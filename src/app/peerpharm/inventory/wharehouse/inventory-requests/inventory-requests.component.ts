@@ -1,4 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from "@angular/core";
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  ViewChild,
+} from "@angular/core";
 import { InventoryService } from "src/app/services/inventory.service";
 import { InventoryRequestService } from "src/app/services/inventory-request.service";
 import { NotificationService } from "src/app/services/notification.service";
@@ -30,6 +36,7 @@ export class InventoryRequestsComponent implements OnInit {
   allRequestsCopy: any[] = [];
   isAllowedToView: boolean = false;
   @Output() outPutItemsArray = new EventEmitter();
+  @ViewChild("tabGroup") tabGroup;
 
   component: string = "";
 
@@ -85,9 +92,18 @@ export class InventoryRequestsComponent implements OnInit {
 
   //export to excel
   export() {
+    console.log(this.tabGroup.selectedIndex);
     console.log(this.ordersDemands);
+    console.log(this.allRequests);
+    let array2Export =
+      this.tabGroup.selectedIndex == 0
+        ? this.ordersDemands
+        : this.tabGroup.selectedIndex == 1
+        ? this.allRequests
+        : [];
+
     let excel = [];
-    for (let demand of this.ordersDemands) {
+    for (let demand of array2Export) {
       for (let req of demand.reqList) {
         excel.push({
           "Request Number": demand.reqNum,

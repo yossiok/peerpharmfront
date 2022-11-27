@@ -1,8 +1,12 @@
 .new-req-div {
   z-index: 2;
   position: fixed;
-  // margin-left: 30%;
-  max-width: 30vh;
+  top: 0;
+  margin-left: 20%;
+  max-width: 70vw;
+  max-height: 80vh;
+  overflow: auto;
+  transform: translate(0, 15vh);
 }
 
 input,
