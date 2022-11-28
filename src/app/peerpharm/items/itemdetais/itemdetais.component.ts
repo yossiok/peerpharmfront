@@ -2384,9 +2384,9 @@ export class ItemdetaisComponent implements OnInit {
       alert("אינך מורשה לבצע פעולה זו.");
       return;
     }
-    this.smallLoader = true;
+    this.loadingItem = true;
     this.comaxItemsService.getLastUpdateFrom().subscribe((data) => {
-      this.smallLoader = false;
+      this.loadingItem = false;
       if (data && data.msg) {
         console.log(data);
         this.toastr.error(data.msg);
@@ -2394,6 +2394,10 @@ export class ItemdetaisComponent implements OnInit {
       }
       if (data && data.length > 0) {
         this.toastr.success(`${data.length} items received from Comax`);
+        if (this.catNumber) {
+          this.searchForItem(this.catNumber);
+        }
+
         return;
       }
       if (!data || data.length == 0) {

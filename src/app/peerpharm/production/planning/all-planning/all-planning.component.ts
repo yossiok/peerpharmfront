@@ -48,6 +48,7 @@ export class AllPlanningComponent implements OnInit {
   itemNumberReportFilter = "";
   orderNumberReportFilter = "";
   showReport = false;
+  myRefresh: any = null;
 
   constructor(
     private productionService: ProductionService,
@@ -74,6 +75,26 @@ export class AllPlanningComponent implements OnInit {
         this.openWorkPlan(Number(params["params"].workPlanId));
       }
     });
+
+    this.startInterval();
+    if (confirm("האם אתה רוצה שהפקעות יתרעננו על חמש דקות?")) {
+    } else {
+      this.stopInterval();
+    }
+  }
+
+  stopInterval() {
+    try {
+      clearInterval(this.myRefresh);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  startInterval() {
+    this.myRefresh = setInterval(() => {
+      this.getWorkPlans();
+    }, 1000 * 60 * 5);
   }
 
   getWorkPlans() {
