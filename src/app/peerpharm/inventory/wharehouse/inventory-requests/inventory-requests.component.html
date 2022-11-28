@@ -1,4 +1,13 @@
 <ng-container *ngIf="isAllowedToView">
+  <div *ngIf="editRequest" class="new-req-div">
+    <i
+      class="fa fa-times float-right p-2 h3 click"
+      (click)="editRequest = false"
+    ></i>
+    <app-inventory-new-request
+      [requestNum]="this.reqNum"
+    ></app-inventory-new-request>
+  </div>
   <mat-tab-group class="mr-5" #tabGroup>
     <mat-tab>
       <ng-template mat-tab-label>
@@ -75,6 +84,7 @@
             <td>{{ demand.fromWH }}</td>
             <td>{{ demand.toDepartment }}</td>
             <td>{{ demand.userName }}</td>
+
             <td>
               <i
                 class="ti-check text-success m-r-10"

@@ -2,8 +2,10 @@ import {
   Component,
   OnInit,
   Output,
+  Input,
   EventEmitter,
   ViewChild,
+  OnChanges,
 } from "@angular/core";
 import { InventoryService } from "src/app/services/inventory.service";
 import { InventoryRequestService } from "src/app/services/inventory-request.service";
@@ -35,8 +37,12 @@ export class InventoryRequestsComponent implements OnInit {
   allRequests: any[] = [];
   allRequestsCopy: any[] = [];
   isAllowedToView: boolean = false;
+  editRequest: boolean = false;
+  reqNum: number = null;
+
   @Output() outPutItemsArray = new EventEmitter();
   @ViewChild("tabGroup") tabGroup;
+  @Input() refreshMessage: String;
 
   component: string = "";
 
@@ -50,6 +56,12 @@ export class InventoryRequestsComponent implements OnInit {
       if (data == "newInventoryReq") this.newReqIncoming = true;
       else this.getAllGeneralDemands();
     });
+    this.getAllGeneralDemands();
+  }
+
+  ngOnChanges() {
+    console.log(this.refreshMessage);
+    this.getAllHistoryRequests();
     this.getAllGeneralDemands();
   }
 
@@ -213,5 +225,10 @@ export class InventoryRequestsComponent implements OnInit {
       }
     });
     console.log(this.allRequests);
+  }
+
+  editRequestView(reqNum) {
+    this.reqNum = reqNum;
+    this.editRequest = true;
   }
 }

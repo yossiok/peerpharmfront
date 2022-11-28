@@ -37,6 +37,7 @@ export class WharehouseComponent implements OnInit {
   stickerQty: any;
   stickerRemarks: any;
   certificateReception: number;
+  reqNum: string = "";
 
   currItemShelfs: Array<any>;
   multiInputLines: Boolean = false;
@@ -96,6 +97,7 @@ export class WharehouseComponent implements OnInit {
   isJew: boolean = true;
   allowNewRequest: boolean = false;
   showNewReq: boolean = false;
+  refreshMessage: boolean = false;
 
   shelves: Array<any>;
 
@@ -978,5 +980,14 @@ export class WharehouseComponent implements OnInit {
 
   initTabByName(name) {
     this.dirSet("stkManagment", name);
+  }
+
+  editRequest() {
+    if (!this.reqNum || this.reqNum.trim() == "") {
+      alert("יש להכניס מספר דרישה לעריכה");
+      return;
+    } else {
+      this.showNewReq = true;
+    }
   }
 }

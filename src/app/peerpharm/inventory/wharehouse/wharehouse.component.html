@@ -3,7 +3,11 @@
     class="fa fa-times float-right p-2 h3 click"
     (click)="showNewReq = false"
   ></i>
-  <app-inventory-new-request></app-inventory-new-request>
+  <app-inventory-new-request
+    [requestNum]="reqNum"
+    (refreshList)="refreshMessage = !refreshMessage; reqNum = ''"
+    (closeWindow)="showNewReq = false"
+  ></app-inventory-new-request>
 </div>
 
 <div
@@ -596,18 +600,38 @@
 
     <div class="col-5 pt-3">
       <div style="display: inline-block; vertical-align: top; max-width: 100%">
-        <button
-          class="btn btn-success"
-          *ngIf="allowNewRequest"
-          (click)="showNewReq = true"
-        >
-          &nbsp;
-          <i class="fas fa-plus"></i>
-          <span class="h4"> Add new request</span>
-        </button>
+        <div class="row">
+          <div class="col-4">
+            <button
+              class="btn btn-success"
+              *ngIf="allowNewRequest"
+              (click)="showNewReq = true"
+            >
+              &nbsp;
+              <i class="fas fa-plus"></i>
+              <span class="h4"> Add new request</span>
+            </button>
+          </div>
+          <div class="col-3">
+            <input type="text" class="form-control" [(ngModel)]="reqNum" />
+          </div>
+          <div class="col-4">
+            <button
+              class="btn btn-info"
+              *ngIf="allowNewRequest"
+              (click)="editRequest()"
+            >
+              &nbsp;
+              <i class="fas fa-edit"></i>
+              <span class="h4"> Edit request</span>
+            </button>
+          </div>
+        </div>
+
         <app-inventory-requests
           *ngIf="screen != 'whManagment'"
           (outPutItemsArray)="getChildArr($event)"
+          [refreshMessage]="refreshMessage"
         >
         </app-inventory-requests>
       </div>
