@@ -283,7 +283,7 @@
 <!--Work Plan modal-->
 <div class="position-fixed work-plan" *ngIf="showWorkPlan">
   <app-planning-details
-    (updateWorkPlans)="getWorkPlansList()"
+    (updateWorkPlans)="getWorkPlans()"
     (closeWorkPlanEmitter)="closeWorkPlan($event)"
     [workPlan]="currentWorkPlan"
   >
