@@ -27,11 +27,6 @@ export class ProposalsListComponent implements OnInit {
   ) {}
   @Input("allCustomersList") allCustomersList: any[];
 
-  ngOnInit(): void {
-    this.getUser();
-    this.getAllUsers();
-  }
-
   orderSearchForm: FormGroup = new FormGroup({
     customerName: new FormControl(""),
     customerId: new FormControl(""),
@@ -42,6 +37,10 @@ export class ProposalsListComponent implements OnInit {
     agent: new FormControl(""),
     approvalFilter: new FormControl(""),
   });
+  ngOnInit(): void {
+    this.getUser();
+    this.getAllUsers();
+  }
 
   getUser() {
     this.user = this.authService.loggedInUser;

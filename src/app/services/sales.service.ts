@@ -65,4 +65,19 @@ export class SalesService {
       .post(url, salesOrder)
       .pipe(map((response) => response.json()));
   }
+
+  getInvoicesBySearch(query) {
+    let url = this.baseUrl + "invoices/getInvoicesBySearch";
+
+    return this.http.post(url, query).pipe(map((response) => response.json()));
+  }
+  getAllCmxAgents() {
+    let url = this.baseUrl + "invoices/getAllCmxAgents";
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+
+  syncLastDayInvoices() {
+    let url = this.baseUrl + "invoices/syncLastDayInvoices";
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
 }

@@ -19,6 +19,7 @@ export class CustomersComponent implements OnInit {
   customersListView: boolean = false;
   priceListsView: boolean = false;
   stockPropsalView: boolean = false;
+  invoicesListView: boolean = false;
 
   constructor(
     private toastr: ToastrService,
@@ -58,6 +59,7 @@ export class CustomersComponent implements OnInit {
     this.customersListView = false;
     this.priceListsView = false;
     this.stockPropsalView = false;
+    this.invoicesListView = false;
   }
 
   proposalsListMenu() {
@@ -66,6 +68,7 @@ export class CustomersComponent implements OnInit {
     this.customersListView = false;
     this.priceListsView = false;
     this.stockPropsalView = false;
+    this.invoicesListView = false;
   }
 
   customersListMenu() {
@@ -74,6 +77,7 @@ export class CustomersComponent implements OnInit {
     this.customersListView = true;
     this.priceListsView = false;
     this.stockPropsalView = false;
+    this.invoicesListView = false;
   }
   priceListsMenu() {
     this.newProposalView = false;
@@ -81,6 +85,7 @@ export class CustomersComponent implements OnInit {
     this.customersListView = false;
     this.priceListsView = true;
     this.stockPropsalView = false;
+    this.invoicesListView = false;
   }
 
   stockProposal() {
@@ -89,5 +94,14 @@ export class CustomersComponent implements OnInit {
     this.customersListView = false;
     this.priceListsView = false;
     this.stockPropsalView = true;
+    this.invoicesListView = false;
+  }
+  invoicesListMenu() {
+    this.newProposalView = false;
+    this.proposalsListView = false;
+    this.customersListView = false;
+    this.priceListsView = false;
+    this.stockPropsalView = false;
+    this.invoicesListView = true;
   }
 }

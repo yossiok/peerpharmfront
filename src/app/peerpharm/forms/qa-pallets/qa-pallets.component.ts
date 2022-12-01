@@ -499,6 +499,7 @@ export class QaPalletsComponent implements OnInit {
   saveBillNumber(id) {
     var billNumber = this.billNumberToUpdate.nativeElement.value;
     this.formService.insertBillNumber(id, billNumber).subscribe((data) => {
+      console.log(data);
       if (data) {
         for (let i = 0; i < this.allReadyPackedLists.length; i++) {
           if (this.allReadyPackedLists[i]._id == data._id) {
@@ -579,14 +580,21 @@ export class QaPalletsComponent implements OnInit {
 
   //מוכנים לחשבונית
   filterReadyPackedListsByCustomer(ev) {
-    this.allReadyPackedLists = this.allReadyPackedListsCopy;
+    if (!ev.target.value) {
+      this.allReadyPackedLists = this.allReadyPackedListsCopy;
+      return;
+    }
     let customerName = ev.target.value.toLowerCase();
-    let tempArray = this.allReadyPackedLists.filter(
-      (list) =>
-        list.costumerName &&
-        list.costumerName.toLowerCase().includes(customerName)
+    this.allReadyPackedLists = this.allReadyPackedListsCopy.filter(
+      (pl) =>
+        pl.costumerName && pl.costumerName.toLowerCase().includes(customerName)
     );
-    this.allReadyPackedLists = tempArray;
+    // let tempArray = this.allReadyPackedLists.filter(
+    //   (list) =>
+    //     list.costumerName &&
+    //     list.costumerName.toLowerCase().includes(customerName)
+    // );
+    // this.allReadyPackedLists = tempArray;
   }
 
   filterReadyBillsByBillNumber(ev) {
@@ -1019,6 +1027,7 @@ export class QaPalletsComponent implements OnInit {
         });
 
         this.allReadyPackedLists = data;
+        this.allReadyPackedListsCopy = data;
       }
     });
   }

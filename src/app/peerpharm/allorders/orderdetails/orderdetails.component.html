@@ -195,17 +195,17 @@
           <th>Batch Status</th>
           <th>
             <button
-          ngxPrint
-          printSectionId="print-order"
-          styleSheetFile="../../../../assets/stylesheets/orderPrint.css"
-          style="background-color:inherit;border:none"
-        >
-        <img
-              src="../../../../assets/images/print.png"
-              ngbTooltip="Print Order Details"
-              class="reportImg click"
-            />
-        </button>
+              ngxPrint
+              printSectionId="print-order"
+              styleSheetFile="../../../../assets/stylesheets/orderPrint.css"
+              style="background-color: inherit; border: none"
+            >
+              <img
+                src="../../../../assets/images/print.png"
+                ngbTooltip="Print Order Details"
+                class="reportImg click"
+              />
+            </button>
           </th>
           <th *ngIf="showingAllOrders || multi">Order Number</th>
           <th style="width: 200px" class="header">Item Number</th>
@@ -472,6 +472,7 @@
             </td>
             <td>
               <input
+                [disabled]="item.nonItem"
                 type="checkbox"
                 [checked]="item.isSelected"
                 (change)="isSelected($event, item)"
@@ -491,6 +492,7 @@
             </td>
 
             <td
+              *ngIf="!item.nonItem"
               class="click paka-status"
               (click)="openPAKA(pakaStatus)"
               (click)="currentItem = item"
@@ -515,6 +517,15 @@
                 "
                 >{{ item.workPlans[0].quantity }}</span
               >
+            </td>
+            <td
+              style="
+                background-color: rgba(12, 10, 131, 0.692);
+                font-size: large;
+              "
+              *ngIf="item.nonItem"
+            >
+              Non Product - לא מוצר!
             </td>
             <td *ngIf="multi == true">{{ item.orderNumber }}</td>
 
@@ -2064,207 +2075,254 @@
     </div>
   </ng-template>
   <!-- PRINT START -->
-  <div id="print-order" style="display:none;" class="bg-light printTable">    
+  <div id="print-order" style="display: none" class="bg-light printTable">
     <div class="row">
       <div class="col-4">
-        <img
-              style="width: 300px;"
-              src="../../../assets/images/peerpharm.png"
-            />
-            <div class="orderNumber">
-              <h3>Order {{ number }}</h3>
-            </div>
+        <img style="width: 300px" src="../../../assets/images/peerpharm.png" />
+        <div class="orderNumber">
+          <h3>Order {{ number }}</h3>
+        </div>
       </div>
-    <br /><br />
-    <div class="row">
-      <span class="spanTitle">Total Items: {{ totalOrderQty }}</span>
-      <span class="spanTitle"> Order Date:</span
-      ><span class="orderSpanDetails">
-        {{ orderDate | date: "dd/MM/YYYY" }} </span
-      ><span class="spanTitle"> Delivery Date: </span
-      ><span class="orderSpanDetails">{{
-        deliveryDate | date: "dd/MM/YYYY"
-      }}</span>
-    </div>
-    <br /><br />
-    <div class="row">
-      <span class="spanTitle"> Customer :</span
-      ><span class="orderSpanDetails"> {{ costumer }} </span>
-      <span class="spanTitle">Customer Number:</span
-      ><span class="orderSpanDetails"> {{ costumerInternalId }} </span>
-      <span class="spanTitle"> Customer <strong>Order</strong> Number :</span>
-      <span class="orderSpanDetails">{{ customerOrderNum }} </span>
-    </div>
-    <br /><br />
-    <div class="row">
-      <span class="spanTitle"> Remarks:</span
-      ><span class="orderSpanDetails">{{ remarks }}</span>
-    </div>
-    <br /><br />
-    <table class="table table-striped" style="border-collapse: collapse;">
-      <thead>
-        <tr>
-          <th colspan="2" style="border: 1px solid; border-collapse: collapse;">Item</th>
-          <th style="border: 1px solid; border-collapse: collapse;">Barcode</th>
-          <th style="border: 1px solid; border-collapse: collapse;">Netto Weight</th>
-          <th style="border: 1px solid; border-collapse: collapse;">Required Quantity</th>
-          <th style="border: 1px solid; border-collapse: collapse;">Remaining Quantity</th>
-          <th style="border: 1px solid; border-collapse: collapse;">Item Order Date</th>
-          <th style="border: 1px solid; border-collapse: collapse;">Item Packing Date</th>
-          <th style="border: 1px solid; border-collapse: collapse;">Item Delivery Date</th>
-          <th style="border: 1px solid; border-collapse: collapse;">Printed?</th>
-          <th style="border: 1px solid; border-collapse: collapse;">Filling Status</th>
-          <th colspan="2" style="border: 1px solid; border-collapse: collapse;">Remarks</th>
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngFor="let item of ordersItems; let i = index">
+      <br /><br />
+      <div class="row">
+        <span class="spanTitle">Total Items: {{ totalOrderQty }}</span>
+        <span class="spanTitle"> Order Date:</span
+        ><span class="orderSpanDetails">
+          {{ orderDate | date: "dd/MM/YYYY" }} </span
+        ><span class="spanTitle"> Delivery Date: </span
+        ><span class="orderSpanDetails">{{
+          deliveryDate | date: "dd/MM/YYYY"
+        }}</span>
+      </div>
+      <br /><br />
+      <div class="row">
+        <span class="spanTitle"> Customer :</span
+        ><span class="orderSpanDetails"> {{ costumer }} </span>
+        <span class="spanTitle">Customer Number:</span
+        ><span class="orderSpanDetails"> {{ costumerInternalId }} </span>
+        <span class="spanTitle"> Customer <strong>Order</strong> Number :</span>
+        <span class="orderSpanDetails">{{ customerOrderNum }} </span>
+      </div>
+      <br /><br />
+      <div class="row">
+        <span class="spanTitle"> Remarks:</span
+        ><span class="orderSpanDetails">{{ remarks }}</span>
+      </div>
+      <br /><br />
+      <table class="table table-striped" style="border-collapse: collapse">
+        <thead>
           <tr>
-            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.itemNumber }}</td>
-            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.discription }}</td>
-            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.barcodeK }}</td>
-            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.netWeightGr }}</td>
-            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.quantity }}</td>
-            <td style="border: 1px solid; border-collapse: collapse; ">{{item.quantityRemained}}</td>
-            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.itemOrderDate | date: "dd/MM/yyyy" }}</td>
-            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.packingDate | date: "dd/MM/yyyy" }}</td>
-            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.itemDeliveryDate | date: "dd/MM/yyyy" }}</td>
-            <td style="border: 1px solid; border-collapse: collapse; ">
-              <img
-                *ngIf="item.printStatus === 'printed'"
-                style="width: 15px"
-                src="../../../../assets/images/aprroved.png"
-              />
-            </td>
-            <td style="border: 1px solid; border-collapse: collapse; ">
-              <img
-                *ngIf="item.fillingStatus === 'filled'"
-                style="width: 15px"
-                src="../../../../assets/images/aprroved.png"
-              />
-            </td>
-            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.itemImpRemark }}</td>
-            <td style="border: 1px solid; border-collapse: collapse; ">{{ item.itemRemarks }}</td>
+            <th
+              colspan="2"
+              style="border: 1px solid; border-collapse: collapse"
+            >
+              Item
+            </th>
+            <th style="border: 1px solid; border-collapse: collapse">
+              Barcode
+            </th>
+            <th style="border: 1px solid; border-collapse: collapse">
+              Netto Weight
+            </th>
+            <th style="border: 1px solid; border-collapse: collapse">
+              Required Quantity
+            </th>
+            <th style="border: 1px solid; border-collapse: collapse">
+              Remaining Quantity
+            </th>
+            <th style="border: 1px solid; border-collapse: collapse">
+              Item Order Date
+            </th>
+            <th style="border: 1px solid; border-collapse: collapse">
+              Item Packing Date
+            </th>
+            <th style="border: 1px solid; border-collapse: collapse">
+              Item Delivery Date
+            </th>
+            <th style="border: 1px solid; border-collapse: collapse">
+              Printed?
+            </th>
+            <th style="border: 1px solid; border-collapse: collapse">
+              Filling Status
+            </th>
+            <th
+              colspan="2"
+              style="border: 1px solid; border-collapse: collapse"
+            >
+              Remarks
+            </th>
           </tr>
-        </ng-container>
-      </tbody>
-    </table>
-  </div>
-  <!-- PRINT end -->
-
-  <ng-template #pakaStatus>
-    <div class="p-5">
-      <h1 class="border border-black">
-        Item {{ currentItem.itemNumber }}, Order {{ currentItem.orderNumber }}
-      </h1>
-      <h2 class="mt-5 font-weight-bolder">Work Plans:</h2>
-      <div
-        class="mt-5"
-        *ngFor="let workPlan of currentItem.workPlans; let i = index"
-      >
-        <h3 class="text-center text-decoration-underline">
-          Work Plan {{ workPlan.workPlanId }}
-        </h3>
-        <h4
-          [style.background]="workPlan.WPstatus | orderItemBatchStatusColor"
-          class="text-center p-2 m-2"
-        >
-          Work Plan Status: {{ workPlan.WPstatus | orderItemBatchStatus }}
-        </h4>
-        <h4
-          [style.background]="workPlan.itemStatus | orderItemBatchStatusColor"
-          class="text-center p-2 m-2"
-        >
-          Item Status: {{ workPlan.itemStatus | orderItemBatchStatus }}
-        </h4>
-        <h4 class="text-center p-2 m-2">Quantity: {{ workPlan.quantity }}</h4>
-        <h4 class="text-center p-2 m-2">
-          Due Date: {{ workPlan.dueDate | date: "dd/MM" }}
-        </h4>
-        <h4 class="text-center p-2 m-2">Batch: {{ workPlan.batch }}</h4>
-      </div>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of ordersItems; let i = index">
+            <tr>
+              <td style="border: 1px solid; border-collapse: collapse">
+                {{ item.itemNumber }}
+              </td>
+              <td style="border: 1px solid; border-collapse: collapse">
+                {{ item.discription }}
+              </td>
+              <td style="border: 1px solid; border-collapse: collapse">
+                {{ item.barcodeK }}
+              </td>
+              <td style="border: 1px solid; border-collapse: collapse">
+                {{ item.netWeightGr }}
+              </td>
+              <td style="border: 1px solid; border-collapse: collapse">
+                {{ item.quantity }}
+              </td>
+              <td style="border: 1px solid; border-collapse: collapse">
+                {{ item.quantityRemained }}
+              </td>
+              <td style="border: 1px solid; border-collapse: collapse">
+                {{ item.itemOrderDate | date: "dd/MM/yyyy" }}
+              </td>
+              <td style="border: 1px solid; border-collapse: collapse">
+                {{ item.packingDate | date: "dd/MM/yyyy" }}
+              </td>
+              <td style="border: 1px solid; border-collapse: collapse">
+                {{ item.itemDeliveryDate | date: "dd/MM/yyyy" }}
+              </td>
+              <td style="border: 1px solid; border-collapse: collapse">
+                <img
+                  *ngIf="item.printStatus === 'printed'"
+                  style="width: 15px"
+                  src="../../../../assets/images/aprroved.png"
+                />
+              </td>
+              <td style="border: 1px solid; border-collapse: collapse">
+                <img
+                  *ngIf="item.fillingStatus === 'filled'"
+                  style="width: 15px"
+                  src="../../../../assets/images/aprroved.png"
+                />
+              </td>
+              <td style="border: 1px solid; border-collapse: collapse">
+                {{ item.itemImpRemark }}
+              </td>
+              <td style="border: 1px solid; border-collapse: collapse">
+                {{ item.itemRemarks }}
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
     </div>
-  </ng-template>
+    <!-- PRINT end -->
 
-  <ng-template #similarFormulesEref>
-    <div class="p-5">
-      <h1 class="border border-black bg-info text-white rounded">
-        Similar Formules and Barrels
-      </h1>
-      <div class="mt-5">
-        <h3>Formules</h3>
-        <table class="table table-hover">
-          <thead class="bg-dark text-white">
-            <th class="text-center">Order</th>
-            <th class="text-center">item</th>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let item of similarFormules">
+    <ng-template #pakaStatus>
+      <div class="p-5">
+        <h1 class="border border-black">
+          Item {{ currentItem.itemNumber }}, Order {{ currentItem.orderNumber }}
+        </h1>
+        <h2 class="mt-5 font-weight-bolder">Work Plans:</h2>
+        <div
+          class="mt-5"
+          *ngFor="let workPlan of currentItem.workPlans; let i = index"
+        >
+          <h3 class="text-center text-decoration-underline">
+            Work Plan {{ workPlan.workPlanId }}
+          </h3>
+          <h4
+            [style.background]="workPlan.WPstatus | orderItemBatchStatusColor"
+            class="text-center p-2 m-2"
+          >
+            Work Plan Status: {{ workPlan.WPstatus | orderItemBatchStatus }}
+          </h4>
+          <h4
+            [style.background]="workPlan.itemStatus | orderItemBatchStatusColor"
+            class="text-center p-2 m-2"
+          >
+            Item Status: {{ workPlan.itemStatus | orderItemBatchStatus }}
+          </h4>
+          <h4 class="text-center p-2 m-2">Quantity: {{ workPlan.quantity }}</h4>
+          <h4 class="text-center p-2 m-2">
+            Due Date: {{ workPlan.dueDate | date: "dd/MM" }}
+          </h4>
+          <h4 class="text-center p-2 m-2">Batch: {{ workPlan.batch }}</h4>
+        </div>
+      </div>
+    </ng-template>
+
+    <ng-template #similarFormulesEref>
+      <div class="p-5">
+        <h1 class="border border-black bg-info text-white rounded">
+          Similar Formules and Barrels
+        </h1>
+        <div class="mt-5">
+          <h3>Formules</h3>
+          <table class="table table-hover">
+            <thead class="bg-dark text-white">
+              <th class="text-center">Order</th>
+              <th class="text-center">item</th>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let item of similarFormules">
+                <tr>
+                  <td>
+                    <a
+                      class="pointer"
+                      target="_blank"
+                      routerLink="/peerpharm/allorders/orderitems/{{
+                        item.orderNumber
+                      }}"
+                    >
+                      <u>
+                        {{ item.orderNumber }}
+                      </u>
+                    </a>
+                  </td>
+                  <td>{{ item.itemNumber }}</td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+          <h3>Barrels - חביות</h3>
+          <table class="table table-striped" dir="rtl">
+            <thead>
               <tr>
+                <th>מספר חבית</th>
+                <th>מספר פריט</th>
+                <th>משקל</th>
+                <th>מיועד להזמנה</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let barrel of similarBarrels">
+                <td>
+                  <a
+                    class="pointer"
+                    target="_blank"
+                    routerLink="/peerpharm/batches/bulksInventory"
+                  >
+                    <u>
+                      {{ barrel.barrelNumber }}
+                    </u>
+                  </a>
+                </td>
+                <td>{{ barrel.itemNumber }}</td>
+                <td>{{ barrel.barrelWeight }}</td>
                 <td>
                   <a
                     class="pointer"
                     target="_blank"
                     routerLink="/peerpharm/allorders/orderitems/{{
-                      item.orderNumber
+                      barrel.orderNumber
                     }}"
                   >
                     <u>
-                      {{ item.orderNumber }}
+                      {{ barrel.orderNumber }}
                     </u>
                   </a>
                 </td>
-                <td>{{ item.itemNumber }}</td>
               </tr>
-            </ng-container>
-          </tbody>
-        </table>
-        <h3>Barrels - חביות</h3>
-        <table class="table table-striped" dir="rtl">
-          <thead>
-            <tr>
-              <th>מספר חבית</th>
-              <th>מספר פריט</th>
-              <th>משקל</th>
-              <th>מיועד להזמנה</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let barrel of similarBarrels">
-              <td>
-                <a
-                  class="pointer"
-                  target="_blank"
-                  routerLink="/peerpharm/batches/bulksInventory"
-                >
-                  <u>
-                    {{ barrel.barrelNumber }}
-                  </u>
-                </a>
-              </td>
-              <td>{{ barrel.itemNumber }}</td>
-              <td>{{ barrel.barrelWeight }}</td>
-              <td>
-                <a
-                  class="pointer"
-                  target="_blank"
-                  routerLink="/peerpharm/allorders/orderitems/{{
-                    barrel.orderNumber
-                  }}"
-                >
-                  <u>
-                    {{ barrel.orderNumber }}
-                  </u>
-                </a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  </ng-template>
+    </ng-template>
 
-  <!-- <ng-template #problematics>
+    <!-- <ng-template #problematics>
   <div class="p-5">
     <h1 class="border border-black bg-info text-white rounded">Similar Formule:</h1>
     <div class="mt-5">
@@ -2285,4 +2343,5 @@
     </div>
   </div>
 </ng-template> -->
+  </div>
 </div>

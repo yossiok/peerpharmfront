@@ -1,0 +1,279 @@
+<div *ngIf="!authorized">אינך מורשה לראות מסך זה</div>
+<div dir="rtl" *ngIf="authorized">
+  <form action="" [formGroup]="invoicesSearchForm" class="form_02">
+    <div class="row mt-4">
+      <div class="col-1"></div>
+      <div class="col-1">
+        <label for="">מספר הלקוח</label>
+        <input
+          type="text"
+          class="form-control"
+          formControlName="customerId"
+          (blur)="getCustomerByNumber()"
+        />
+      </div>
+      <div class="col-3">
+        <label>שם הלקוח</label>
+        <input
+          class="form-control"
+          type="select"
+          list="customers"
+          formControlName="customerName"
+          (change)="getCustomerByName()"
+        />
+        <datalist id="customers">
+          <option value="null" disabled>בחר לקוח</option>
+          <ng-container *ngIf="allCustomersList.length > 0">
+            <option
+              *ngFor="let customer of allCustomersList"
+              [value]="customer.costumerName"
+            >
+              {{ customer.costumerId }} - {{ customer.costumerName }}
+            </option>
+          </ng-container>
+        </datalist>
+      </div>
+      <div class="col-2">
+        <label for="">שם מנהל לקוח</label>
+        <select class="form-control" formControlName="agentId">
+          <option value="" disabled>בחר</option>
+          <option [value]="agent.agentId" *ngFor="let agent of agentsList">
+            {{ agent.agentName }}
+          </option>
+        </select>
+      </div>
+      <div class="col-1">
+        <br />
+        <button class="btn btn-outline-success mt-2" (click)="searchInvoices()">
+          חפש
+        </button>
+      </div>
+      <div class="col-1">
+        <br />
+        <button
+          class="btn btn-outline-danger mt-2"
+          (click)="clearSearchInvoices()"
+        >
+          נקה
+        </button>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-1"></div>
+      <div class="col-2">
+        <label for="">תעודת משלוח</label>
+        <input
+          type="text"
+          formControlName="packingListId"
+          class="form-control"
+        />
+      </div>
+      <div class="col-2">
+        <label for="">מספר חשבונית</label>
+        <input
+          type="text"
+          formControlName="invoiceNumber"
+          class="form-control"
+        />
+      </div>
+      <div class="col-2">
+        <label for="">תאריך חשבונית מ:</label>
+        <input
+          type="date"
+          formControlName="invoiceDateFrom"
+          class="form-control"
+        />
+      </div>
+      <div class="col-2">
+        <label for="">תאריך חשבונית עד:</label>
+        <input
+          type="date"
+          formControlName="invoiceDateTo"
+          class="form-control"
+        />
+      </div>
+      <div class="col-2"></div>
+      <div class="col-1">
+        <br />
+        <button class="btn btn-outline-primary" (click)="syncComaxLastDay()">
+          Comax סנכרון
+        </button>
+      </div>
+      <!-- <div class="col-2">
+          <label for="">סינון:</label>
+          <select
+            name=""
+            id=""
+            formControlName="approvalFilter"
+            class="form-control"
+            (change)="filterApproved()"
+          >
+            <option value="">הכל</option>
+            <option value="waiting">ממתינים לאישור</option>
+            <option value="customerApproved">מאושרים</option>
+          </select>
+        </div> -->
+    </div>
+  </form>
+  <div *ngIf="loading" class="loading">Loading&#8230;</div>
+  <div class="row mt-4">
+    <div class="col-12 text-center">
+      <h3>רשימת חשבוניות לקוח</h3>
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-1"></div>
+    <div class="col-10">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th (click)="sortByInvoice()" class="click">
+              מס' חשבונית<i class="fas fa-filter"></i>
+            </th>
+            <th>שם הלקוח</th>
+            <th>מספר הלקוח</th>
+            <th>תאריך החשבונית</th>
+            <th>מס תעודת משלוח</th>
+            <th>מספר פריטים</th>
+            <th>סוכן</th>
+            <th>סוג לקוח</th>
+            <th>סכום ללא מע"מ</th>
+            <th>סכום עם מע"מ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let invoice of invoicesList; let i = index"
+            (click)="openInvoice(i)"
+            class="click"
+          >
+            <td>{{ i + 1 }}</td>
+            <td>{{ invoice.invoiceNumber }}</td>
+            <td>{{ invoice.customerName }}</td>
+            <td>{{ invoice.customerId }}</td>
+            <td>{{ invoice.invoiceDate | date: "dd/MM/yyyy" }}</td>
+            <td>{{ invoice.packingListId }}</td>
+            <td>{{ invoice.items.length }}</td>
+            <td>{{ invoice.agentName }}</td>
+            <td>{{ invoice.customerType }}</td>
+            <td
+              dir="ltr"
+              [style.color]="invoice.totalPrice < 0 ? 'red' : 'black'"
+            >
+              {{ invoice.totalPrice | number }}
+            </td>
+            <td
+              dir="ltr"
+              [style.color]="invoice.totalPriceVat < 0 ? 'red' : 'black'"
+            >
+              {{ invoice.totalPriceVat | number }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div
+    *ngIf="invoiceView == true"
+    dir="rtl"
+    class="border border-dark text-dark bg-light shadow-lg fixed-top mx-auto p-1 w-75 h-75"
+    style="overflow: auto"
+  >
+    <div class="row">
+      <div class="col-11">
+        <h3 *ngIf="chosenInvoice">
+          <center>פרטי חשבונית מספר {{ chosenInvoice.invoiceNumber }}</center>
+        </h3>
+      </div>
+      <div class="col-1">
+        <button class="btn outline-primary">
+          <i (click)="invoiceView = false" class="click fa fa-times"></i>
+        </button>
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-1"></div>
+      <div class="col-1"><label for="">שם הלקוח:</label></div>
+      <div class="co-4">{{ chosenInvoice.customerName }}</div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-1"></div>
+      <div class="col-1">
+        <label for="">תאריך:</label>
+      </div>
+      <div class="col-2">
+        {{ chosenInvoice.invoiceDate | date: "dd/MM/yyyy " }}
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-1"></div>
+      <div class="col-1">
+        <label for="">שעה:</label>
+      </div>
+      <div class="col-2">
+        {{ chosenInvoice.invoiceDate | date: "hh:mm" }}
+      </div>
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-1"></div>
+      <div class="col-10">
+        <table class="table striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>מק"ט</th>
+              <th>ברקוד</th>
+              <th>שם פריט</th>
+              <th>כמות</th>
+              <th>מחיר</th>
+              <th>%הנחה</th>
+              <th>סכום</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of chosenInvoice.items; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.itemNumber }}</td>
+              <td>{{ item.barcode }}</td>
+              <td>{{ item.itemName }}</td>
+              <td>{{ item.itemQty }}</td>
+              <td>{{ item.itemPrice | number: "1.2" }}</td>
+              <td>{{ item.itemDiscount }}</td>
+              <td>{{ item.itemQty * item.itemPrice | number: "1.2" }}</td>
+            </tr>
+            <tr>
+              <td colspan="4"></td>
+              <td>{{ summationObj.grandTotal | number }}</td>
+              <td בםךדפשמ="2"></td>
+              <td>סה"כ</td>
+              <td>{{ summationObj.totalSum | number: "1.2" }}</td>
+            </tr>
+            <tr>
+              <td colspan="6"></td>
+              <td colspan="1">סה"כ לפני מע"מ</td>
+              <td>{{ summationObj.totalSumBeforeVat | number: "1.2" }}</td>
+            </tr>
+            <tr>
+              <td colspan="6"></td>
+              <td>17% מע"מ</td>
+              <td>
+                {{
+                  summationObj.totalSumWithVat - summationObj.totalSumBeforeVat
+                    | number: "1.2"
+                }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="6"></td>
+              <td>סה"כ כולל מע"מ</td>
+              <td>{{ summationObj.totalSumWithVat | number: "1.2" }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

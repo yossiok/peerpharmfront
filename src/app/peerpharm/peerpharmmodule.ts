@@ -64,7 +64,7 @@ import { FormulesExplosionComponent } from "./mrp-tools/formules-explosion/formu
 import { CmptHistoryComponent } from "./mrp-tools/cmpt-history/cmpt-history.component";
 import { MultiForecastsComponent } from "./mrp-tools/multi-forecasts/multi-forecasts.component";
 import { ComaxItemsIndexComponent } from "./comax-items-index/comax-items-index.component";
-
+import { CmxInvoicesComponent } from "./customers/cmx-invoices/cmx-invoices.component";
 import { WharehouseComponent } from "./inventory/wharehouse/wharehouse.component";
 import { InventoryRequestsComponent } from "./inventory/wharehouse/inventory-requests/inventory-requests.component";
 import { HistMovementsComponent } from "./inventory/wharehouse/hist-movements/hist-movements.component";
@@ -393,6 +393,7 @@ import { MkupProductionComponent } from "./forms/mkupForm/mkupProduction/mkupPro
     ProposalsComponent,
     ProposalsListComponent,
     PriceListsComponent,
+    CmxInvoicesComponent,
     StockProposalComponent,
     BulksReportComponent,
     OpenOrderitemsComponent,

@@ -720,8 +720,7 @@ export class ProposalsComponent implements OnInit {
     }
     this.itemsService.getItemData(ittem.value.itemNumber).subscribe((items) => {
       if (items.length == 0) {
-        this.toastr.error("מקט זה לא קיים  במערכת, יש להגדיר עץ מוצר עבורו");
-        return;
+        this.toastr.warning("מקט זה לא קיים  במערכת, יש להגדיר עץ מוצר עבורו");
       }
 
       console.log(this.items.value[i].itemNumber);

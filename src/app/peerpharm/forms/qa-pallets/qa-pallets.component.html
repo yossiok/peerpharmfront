@@ -702,6 +702,7 @@
                 <thead class="text-white bg-info">
                   <tr>
                     <th>#</th>
+                    <th>מס רשימה</th>
                     <th>שם לקוח</th>
                     <th>מספר הזמנה</th>
                     <th>מספר לחשבונית</th>
@@ -715,6 +716,17 @@
                     *ngFor="let packlist of allReadyPackedLists; let i = index"
                   >
                     <td>{{ i + 1 }}</td>
+                    <td>
+                      <label
+                        (click)="openProductForm(packlist, 'HE')"
+                        style="
+                          color: blue;
+                          text-decoration: underline;
+                          cursor: pointer;
+                        "
+                        >{{ packlist.packListNumber }}</label
+                      >
+                    </td>
                     <td>
                       <label
                         (click)="openProductForm(packlist, 'HE')"

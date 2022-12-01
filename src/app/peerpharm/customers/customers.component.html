@@ -38,9 +38,10 @@
           <li
             style="cursor: pointer"
             class="task-item d-flex complete pr-2 border-bottom heb-menu"
-            (click)="customersListMenu()"
+            (click)="invoicesListMenu()"
           >
-            רשימת לקוחות<span
+            חשבוניות
+            <span
               class="badge badge-success ml-auto pt-1"
               [style.background]="3 | orderItemBatchStatusColor"
             >
@@ -95,10 +96,10 @@
               </h1>
             </div>
           </div>
-          <div class="row mt-4" *ngIf="customersListView">
+          <div class="row mt-4" *ngIf="invoicesListView">
             <div class="col-12">
               <h1 style="text-shadow: 2px 2px 4px #000000" class="text-info">
-                רשימת לקוחות - Customers List
+                Invoices - חשבוניות
               </h1>
             </div>
           </div>
@@ -139,6 +140,12 @@
               *ngIf="stockPropsalView"
               [allCustomersList]="allCustomersList"
             ></app-stock-proposal>
+          </div>
+          <div dir="rtl" class="row mt-4">
+            <app-cmx-invoices
+              *ngIf="invoicesListView"
+              [allCustomersList]="allCustomersList"
+            ></app-cmx-invoices>
           </div>
         </div>
       </div>
