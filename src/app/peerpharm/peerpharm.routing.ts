@@ -328,22 +328,22 @@ export const PeerPharmRputs: Routes = [
     },
     component: StoragesComponent,
   },
-  {
-    path: "inventory/shelf-list",
-    canActivate: [ScreenGuard],
-    data: {
-      title: "Shelf List",
-    },
-    component: ShelfListComponent,
-  },
-  {
-    path: "inventory/creamBarrels",
-    canActivate: [ScreenGuard],
-    data: {
-      title: "cream Barrels",
-    },
-    component: CreamBarrelComponent,
-  },
+  // {
+  //   path: "inventory/shelf-list",
+  //   canActivate: [ScreenGuard],
+  //   data: {
+  //     title: "Shelf List",
+  //   },
+  //   component: ShelfListComponent,
+  // },
+  // {
+  //   path: "inventory/creamBarrels",
+  //   canActivate: [ScreenGuard],
+  //   data: {
+  //     title: "cream Barrels",
+  //   },
+  //   component: CreamBarrelComponent,
+  // },
   {
     path: "suppliers/suppliers",
     canActivate: [ScreenGuard],
