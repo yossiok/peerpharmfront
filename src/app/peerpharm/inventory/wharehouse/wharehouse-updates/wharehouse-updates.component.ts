@@ -49,6 +49,8 @@ export class WhareHouseUpdatesComponent implements OnInit {
   currencies: any = {};
   authWarehouses: any = [];
   pageType: string = "";
+  lotNumbersList: any[] = [];
+  lotNotExist: boolean = false;
 
   @ViewChild("shelfPosition") shelfPosition: ElementRef;
   @ViewChild("shelfAmount") shelfAmount: ElementRef;
@@ -62,6 +64,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
 
   newShelfForm: FormGroup = new FormGroup({
     item: new FormControl("", Validators.required),
+    itemName: new FormControl(""),
     itemType: new FormControl(""),
     whareHouse: new FormControl("", Validators.required),
     warehouseId: new FormControl("", Validators.required),
@@ -279,12 +282,15 @@ export class WhareHouseUpdatesComponent implements OnInit {
     });
 
     let lastWall = this.allShelfs.filter((sh) => {
-      return (
-        !isNaN(sh.position.substr(1, 1)) ||
-        (isNaN(sh.position.substr(1, 1)) &&
-          (sh.position.length < 3 || sh.position.length > 4))
-      );
+      return isNaN(sh.position.substr(0, 1));
     });
+    // let lastWall = this.allShelfs.filter((sh) => {
+    //   return (
+    //     !isNaN(sh.position.substr(, 1)) ||
+    //     (isNaN(sh.position.substr(1, 1)) &&
+    //       (sh.position.length < 3 || sh.position.length > 4))
+    //   );
+    // });
     let walls = [];
     if (i == 1) {
       walls = [firstWall, secondWall, thirdWall, fourthWall, lastWall];
@@ -668,11 +674,15 @@ export class WhareHouseUpdatesComponent implements OnInit {
   // }
 
   validateItem() {
-    if (!this.newShelfForm.controls.warehouseId)
-      this.toastSrv.error("", "יש להגדיר מחסן");
-    else {
+    if (!this.newShelfForm.value.warehouseId) {
+      alert("יש להגדיר מחסן");
+      return;
+    } else if (!this.newShelfForm.value.item) {
+      return;
+    } else {
+      this.lotNumbersList = [];
       this.inventorySrv
-        .getCmptByitemNumber(this.newShelfForm.value.item)
+        .getComponentByitemNumber(this.newShelfForm.value.item)
         .subscribe((data) => {
           console.log(data);
 
@@ -680,13 +690,41 @@ export class WhareHouseUpdatesComponent implements OnInit {
             this.toastSrv.error("", "!פריט לא קיים");
             this.validItem = false;
           } else {
-            this.itemType = data[0].itemType;
-            this.newShelfForm.controls.itemType.setValue(data[0].itemType);
+            this.itemType = data.itemType;
+            this.newShelfForm.controls.itemType.setValue(data.itemType);
+            this.newShelfForm.controls.itemName.setValue(data.componentName);
+            this.lotNumbersList = data.materials;
             this.validItem = true;
             console.log(this.newShelfForm);
             console.log(this.newShelfForm.valid);
           }
         });
+    }
+  }
+
+  updateLotNumber() {
+    let lotNumber = this.newShelfForm.value.batchNumber;
+    if (lotNumber != "other") {
+      let lot = this.lotNumbersList.find((lot) => lot.lotNumber == lotNumber);
+
+      if (lot) {
+        console.log(lot);
+        let productionDate = lot.productionDate
+          ? new Date(lot.productionDate).toISOString().substring(0, 10)
+          : null;
+        let expirationDate = lot.expiryDate
+          ? new Date(lot.expiryDate).toISOString().substring(0, 10)
+          : null;
+        this.newShelfForm.controls.productionDate.setValue(productionDate);
+        this.newShelfForm.controls.expirationDate.setValue(expirationDate);
+        this.lotNotExist = false;
+      }
+      console.log(this.newShelfForm.value);
+    } else {
+      this.newShelfForm.controls.productionDate.reset();
+      this.newShelfForm.controls.expirationDate.reset();
+
+      this.lotNotExist = true;
     }
   }
 
@@ -712,15 +750,15 @@ export class WhareHouseUpdatesComponent implements OnInit {
         } else if (data.itemShelf) {
           this.toastSrv.success("מדף הוקם בהצלחה");
           console.log(this.newShelfForm.value);
-          this.newShelfForm.controls.position.setValue("");
-          this.newShelfForm.controls.amount.setValue(null);
-          this.newShelfForm.controls.item.setValue("");
-          // this.newShelfForm.reset();
+          let position = this.newShelfForm.value.position;
+          this.newShelfForm.reset();
           this.itemType = "";
-
+          this.lotNotExist = false;
+          this.lotNumbersList = [];
           this.validItem = false;
           console.log(this.newShelfForm.value);
           this.newShelfForm.controls.whareHouse.setValue(this.whareHouse);
+          this.newShelfForm.controls.position.setValue(position);
 
           this.inventorySrv
             .getItemShellsByWhouseName(this.whareHouse)

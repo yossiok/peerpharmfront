@@ -155,10 +155,19 @@
     *ngIf="allowedCountYear"
     class="new-shelf d-flex flex-row justify-content-around p-5 mt-5 mb-5"
   >
-    <form [formGroup]="newShelfForm" style="position: relative">
+    <form [formGroup]="newShelfForm" style="position: relative; width: 100%">
       <h3>הוספת פריט למדף חדש</h3>
-      <div class="row mt-2" *ngIf="itemType != 'material'">
-        <div class="col-3">
+      <div class="row mt-2 w-100" *ngIf="itemType != 'material'">
+        <div class="col-3"></div>
+        <div class="col-1">
+          <select class="form-control" formControlName="position">
+            <option value="">Choose Position</option>
+            <option *ngFor="let shelf of shellNums" [value]="shelf.position">
+              {{ shelf.position }}
+            </option>
+          </select>
+        </div>
+        <div class="col-1">
           <input
             type="number"
             class="form-control"
@@ -167,16 +176,17 @@
             placeholder="item number"
           />
         </div>
-
-        <div class="col-3">
-          <select class="form-control" formControlName="position">
-            <option value="">Choose Position</option>
-            <option *ngFor="let shelf of shellNums" [value]="shelf.position">
-              {{ shelf.position }}
-            </option>
-          </select>
+        <div class="col-4">
+          <input
+            disabled="true"
+            type="text"
+            class="form-control"
+            formControlName="itemName"
+            placeholder="Item Name"
+          />
         </div>
-        <div class="col-3">
+
+        <div class="col-1">
           <input
             type="number"
             class="form-control"
@@ -184,7 +194,7 @@
             placeholder="Amount"
           />
         </div>
-        <div class="col-3">
+        <div class="col-1">
           <button
             [disabled]="!newShelfForm.valid"
             [style.cursor]="newShelfForm.valid ? 'pointer' : 'not-allowed'"
@@ -197,7 +207,16 @@
         </div>
       </div>
       <div class="row" *ngIf="itemType == 'material'">
-        <div class="col-2">
+        <div class="col-1">
+          <label>Shelf Name</label>
+          <select class="form-control" formControlName="position">
+            <option value="">Choose Position</option>
+            <option *ngFor="let shelf of shellNums" [value]="shelf.position">
+              {{ shelf.position }}
+            </option>
+          </select>
+        </div>
+        <div class="col-1">
           <label>Item Number</label>
           <input
             type="text"
@@ -208,15 +227,40 @@
           />
         </div>
         <div class="col-2">
-          <label>Batch Number</label>
+          <label>Item Name</label>
           <input
             type="text"
             class="form-control"
-            formControlName="batchNumber"
-            placeholder="Batch Number"
+            formControlName="itemName"
+            placeholder="Item Name"
           />
         </div>
         <div class="col-2">
+          <label>Batch Number</label>
+          <select
+            class="form-control"
+            formControlName="batchNumber"
+            placeholder="Batch Number"
+            (change)="updateLotNumber()"
+          >
+            <option [value]="lot.lotNumber" *ngFor="let lot of lotNumbersList">
+              {{ lot.lotNumber }}
+            </option>
+            <option value="other">לא קיים ברשימה</option>
+          </select>
+        </div>
+        <ng-container *ngIf="lotNotExist">
+          <div class="col-2">
+            <label>Batch Number</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="batchNumber"
+              placeholder="Batch Number"
+            />
+          </div>
+        </ng-container>
+        <div class="col-1">
           <label>Production Date</label>
           <input
             type="date"
@@ -225,7 +269,7 @@
             placeholder="Production Date"
           />
         </div>
-        <div class="col-2">
+        <div class="col-1">
           <label>Expiration Date</label>
           <input
             type="date"
@@ -234,15 +278,7 @@
             placeholder="Expiration Date"
           />
         </div>
-        <div class="col-2">
-          <label>Shelf Name</label>
-          <select class="form-control" formControlName="position">
-            <option value="">Choose Position</option>
-            <option *ngFor="let shelf of shellNums" [value]="shelf.position">
-              {{ shelf.position }}
-            </option>
-          </select>
-        </div>
+
         <div class="col-1">
           <label>Amount</label>
           <input

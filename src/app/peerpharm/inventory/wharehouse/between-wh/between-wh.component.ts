@@ -59,7 +59,7 @@ export class BetweenWHComponent implements OnInit {
   destinationWHId: any;
   historic: boolean;
   user: string = "";
-  userWH: Array<any>;
+  userWH: any[] = [];
   constructor(
     private inventoryService: InventoryService,
     private toastr: ToastrService,
@@ -78,7 +78,7 @@ export class BetweenWHComponent implements OnInit {
     this.getLastReception();
     this.user = this.authService.loggedInUser.userName;
     // this.userWH = this.authService.loggedInUser.allowedWH;
-    this.userWH = this.reallyAllWhareHouses.filter((wh) =>
+    this.userWH = this.allWhareHouses.filter((wh) =>
       this.authService.loggedInUser.allowedWH.includes(wh._id)
     );
     console.log(this.userWH);

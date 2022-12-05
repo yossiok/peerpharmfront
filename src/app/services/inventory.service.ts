@@ -203,6 +203,11 @@ export class InventoryService {
     let url = this.baseUrl + "component?componentN=" + cmptNumber;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
   }
+  getComponentByitemNumber(cmptNumber): Observable<any> {
+    let url =
+      this.baseUrl + "component/getComponentByNumber?itemNumber=" + cmptNumber;
+    return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
 
   getCmptPPCDetails(componentN): Observable<any> {
     let url =
