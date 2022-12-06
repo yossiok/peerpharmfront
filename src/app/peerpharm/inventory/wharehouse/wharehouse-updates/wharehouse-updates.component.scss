@@ -23,19 +23,19 @@
   -webkit-animation: spin 2s linear infinite; /* Safari */
   animation: spin 2s linear infinite;
 }
-table {
-  position: relative;
-  tr {
-    td {
-      text-align: left;
-    }
-    th {
-      background: white;
-      position: sticky;
-      top: 0; /* Don't forget this, required for the stickiness */
-    }
-  }
-}
+// table {
+//   position: relative;
+//   tr {
+//     td {
+//       text-align: left;
+//     }
+//     th {
+//       background: white;
+//       position: sticky;
+//       top: 0; /* Don't forget this, required for the stickiness */
+//     }
+//   }
+// }
 /*   It doesn't work!!!!       */
 .sticky {
   background: white;

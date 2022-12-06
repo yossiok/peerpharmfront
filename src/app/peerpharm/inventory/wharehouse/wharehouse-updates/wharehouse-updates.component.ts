@@ -44,6 +44,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
   sortPriceOrder: number = 1;
   sortValueOrder: number = 1;
   sortCoinOrder: number = 1;
+  sortDiffOrder: number = -1;
   updates: any = [];
   today: Date = new Date();
   currencies: any = {};
@@ -51,6 +52,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
   pageType: string = "";
   lotNumbersList: any[] = [];
   lotNotExist: boolean = false;
+  missingLotReport: any[] = [];
 
   @ViewChild("shelfPosition") shelfPosition: ElementRef;
   @ViewChild("shelfAmount") shelfAmount: ElementRef;
@@ -72,6 +74,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
     shelfId: new FormControl(""),
     amount: new FormControl(null, Validators.required),
     batchNumber: new FormControl(""),
+    supplierBatchNumber: new FormControl(""),
     productionDate: new FormControl(null),
     expirationDate: new FormControl(null),
     userName: new FormControl(""),
@@ -89,6 +92,13 @@ export class WhareHouseUpdatesComponent implements OnInit {
     fromDate: new FormControl(null),
     toDate: new FormControl(new Date()),
   });
+  missingLotNumbersForm: FormGroup = new FormGroup({
+    warehouseName: new FormControl(""),
+    itemType: new FormControl(""),
+    fromDate: new FormControl(null),
+    toDate: new FormControl(new Date()),
+  });
+
   shellNums: any;
   printing: boolean = false;
   validItem: boolean = false;
@@ -239,6 +249,14 @@ export class WhareHouseUpdatesComponent implements OnInit {
       );
       this.sortPositionOrder = 1;
     }
+  }
+
+  sortByDiff() {
+    let val = this.sortDiffOrder;
+    this.allShelfs = this.allShelfs.sort((a, b) =>
+      a.difference > b.difference ? val : a.difference < b.difference ? -val : 0
+    );
+    this.sortDiffOrder *= -1;
   }
 
   sortByPositionNew() {
@@ -649,6 +667,25 @@ export class WhareHouseUpdatesComponent implements OnInit {
         index++;
         shelfs.push(xlLine);
       }
+    } else if (this.pageType == "missingLotReport") {
+      for (let shelf of this.allShelfs) {
+        let xlLine = {
+          "No.": index,
+          "Item Number": shelf.item,
+          "Item Name": shelf.componentName,
+          "Manual Lot Number": shelf.manualLotNumber,
+          "Production Date": shelf.productionDate,
+          "Expiration Date": shelf.expirationDate,
+          // "Batch Number": shelf.supplierBatchNumber,
+          Amount: shelf.amount,
+          Position: shelf.position,
+          Warehouse: shelf.whareHouse,
+          "Item Type": shelf.itemType,
+          "User Name": shelf.userName,
+        };
+        index++;
+        shelfs.push(xlLine);
+      }
     }
 
     this.xlSrv.exportAsExcelFile(shelfs, "Shelf Report");
@@ -703,7 +740,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
   }
 
   updateLotNumber() {
-    let lotNumber = this.newShelfForm.value.batchNumber;
+    let lotNumber = this.newShelfForm.value.supplierBatchNumber;
     if (lotNumber != "other") {
       let lot = this.lotNumbersList.find((lot) => lot.lotNumber == lotNumber);
 
@@ -867,10 +904,35 @@ export class WhareHouseUpdatesComponent implements OnInit {
     this.toastSrv.success("Report is under construction");
   }
 
+  missingLotNumbersReport() {
+    this.fetchingShelfs = true;
+    this.inventorySrv
+      .getMissingLotNumbersReport(this.missingLotNumbersForm.value)
+      .subscribe((data) => {
+        this.fetchingShelfs = false;
+        this.missingLotNumbersForm.reset();
+        this.missingLotReport = [];
+        this.modalService.dismissAll();
+        console.log(data);
+        if (data && data.msg) {
+          this.toastSrv.error(data.msg);
+          return;
+        } else if (data && data.length > 0) {
+          this.pageType = "missingLotReport";
+          this.missingLotReport = data;
+          this.allShelfs = data;
+          return;
+        } else {
+          this.toastSrv.error("לא נמצאו פריטים המתאימים לחיפוש");
+          return;
+        }
+      });
+  }
+
   previousStockReport() {
-    this.fetchingShelfs;
     console.log(this.previousStockForm.value);
     if (this.previousStockForm.controls.itemType.value != "product") {
+      this.fetchingShelfs = true;
       this.inventorySrv
         .getPreviousStockReport(this.previousStockForm.value)
         .subscribe((data) => {

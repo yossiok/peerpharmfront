@@ -1,7 +1,5 @@
-<div
-  class="text-center shadow green w-95 mx-auto rounded p-5"
-  style="position: relative"
->
+<div class="text-center shadow green w-95 mx-auto rounded p-5">
+  >
   <div class="row mt-4">
     <div class="col-12">
       <h1 style="text-shadow: 2px 2px 4px #000000">
@@ -77,7 +75,7 @@
     </div>
   </div>
   <div class="row mt-2" dir="rtl" style="position: relative">
-    <div class="col-2">
+    <div class="col-1">
       <button
         [printStyle]="{
           table: { 'border-collapse': 'collapse', border: 'solid 2px black' },
@@ -93,7 +91,7 @@
         הדפס דפי ספירה
       </button>
     </div>
-    <div class="col-2">
+    <div class="col-1">
       <button
         class="btn btn-outline-primary"
         (click)="modalService.open(this.diffReportModal)"
@@ -101,12 +99,12 @@
         דו"ח הפרשים
       </button>
     </div>
-    <div class="col-2">
+    <!-- <div class="col-2">
       <button class="btn btn-outline-primary" (click)="currentStockReport()">
         דו"ח מלאי נוכחי
       </button>
-    </div>
-    <div class="col-2">
+    </div> -->
+    <div class="col-1">
       <button
         class="btn btn-outline-primary"
         (click)="modalService.open(previousStockModal)"
@@ -114,6 +112,15 @@
         דו"ח מלאי קודם
       </button>
     </div>
+    <div class="col-2">
+      <button
+        class="btn btn-outline-primary"
+        (click)="modalService.open(missingLotNumbers)"
+      >
+        דו"ח חוסר Batch Number
+      </button>
+    </div>
+    <div class="col-2"></div>
     <div class="col-2">
       <button
         [printStyle]="{
@@ -153,7 +160,7 @@
 
   <div
     *ngIf="allowedCountYear"
-    class="new-shelf d-flex flex-row justify-content-around p-5 mt-5 mb-5"
+    class="new-shelf d-flex flex-row justify-content-around py-5 px-1 mt-5 mb-5"
   >
     <form [formGroup]="newShelfForm" style="position: relative; width: 100%">
       <h3>הוספת פריט למדף חדש</h3>
@@ -208,7 +215,7 @@
       </div>
       <div class="row" *ngIf="itemType == 'material'">
         <div class="col-1">
-          <label>Shelf Name</label>
+          <label>Shelf</label>
           <select class="form-control" formControlName="position">
             <option value="">Choose Position</option>
             <option *ngFor="let shelf of shellNums" [value]="shelf.position">
@@ -217,7 +224,7 @@
           </select>
         </div>
         <div class="col-1">
-          <label>Item Number</label>
+          <label>Item</label>
           <input
             type="text"
             class="form-control"
@@ -239,7 +246,7 @@
           <label>Batch Number</label>
           <select
             class="form-control"
-            formControlName="batchNumber"
+            formControlName="supplierBatchNumber"
             placeholder="Batch Number"
             (change)="updateLotNumber()"
           >
@@ -261,7 +268,7 @@
           </div>
         </ng-container>
         <div class="col-1">
-          <label>Production Date</label>
+          <label>Prod.</label>
           <input
             type="date"
             class="form-control"
@@ -270,7 +277,7 @@
           />
         </div>
         <div class="col-1">
-          <label>Expiration Date</label>
+          <label>Exp.</label>
           <input
             type="date"
             class="form-control"
@@ -305,7 +312,10 @@
   </div>
 
   <div id="print-section-1" class="row mt-4">
-    <table class="table table-bordered table-hover" style="position: relative">
+    <table
+      class="table table-bordered p-2"
+      style="display: block; overflow: auto"
+    >
       <thead>
         <tr>
           <th colspan="3" *ngIf="pageType == 'diffReport'" class="sticky">
@@ -317,7 +327,7 @@
           <th colspan="3" *ngIf="pageType == 'countPage'" class="sticky">
             <h1>דפי ספירה</h1>
           </th>
-          <th colspan="8" class="sticky">
+          <th colspan="12" class="sticky">
             <h1 *ngIf="whareHouse">
               {{ whareHouse }} - {{ today | date: "dd/MM/yyyy" }}
             </h1>
@@ -328,58 +338,58 @@
           <th class="sticky">#</th>
           <!--1-->
           <th class="sortable" (click)="sortByItem()">
-            <i class="fas fa-filter"></i> Item Number
+            <i class="fas fa-sort"></i> Item Number
           </th>
           <th class="sortable" (click)="sortByName()">
-            <i class="fas fa-filter"></i> Item Name
+            <i class="fas fa-sort"></i> Item Name
           </th>
           <th
             *ngIf="itemType == 'material'"
             class="sortable"
             (click)="sortByBatch()"
           >
-            <i class="fas fa-filter"></i> Batch
+            <i class="fas fa-sort"></i> Batch
           </th>
           <th class="sortable" (click)="sortByItemType()">
-            <i class="fas fa-filter"></i> Item Type
+            <i class="fas fa-sort"></i> Item Type
           </th>
           <th class="sortable small-cell" (click)="sortByPrice()">
-            <i class="fas fa-filter"></i> Price
+            <i class="fas fa-sort"></i> Price
           </th>
           <th class="sortable small-cell" (click)="sortByCoin()">
-            <i class="fas fa-filter"></i> Coin
+            <i class="fas fa-sort"></i> Coin
           </th>
           <th
             *ngIf="pageType == 'previousStock' || pageType == 'diffReport'"
             class="sortable"
             (click)="sortByAmount()"
           >
-            <i class="fas fa-filter"></i> Previous Amount
+            <i class="fas fa-sort"></i> Previous Amount
           </th>
           <th
             class="sortable"
             (click)="sortByAmount()"
             *ngIf="pageType != 'diffReport'"
           >
-            <i class="fas fa-filter"></i> Current Amount
+            <i class="fas fa-sort"></i> Current Amount
           </th>
           <th
             *ngIf="pageType == 'previousStock'"
             class="sortable"
             (click)="sortByDiff()"
           >
-            Count Diff
+            <i class="fas fa-sort"></i>Count Diff
           </th>
           <th
             class="sortable"
             (click)="sortByValue()"
             *ngIf="pageType == 'previousStock'"
           >
-            <i class="fas fa-filter"></i> Previous Value
+            <i class="fas fa-sort"></i> Previous Value
           </th>
           <!--1-->
           <th class="sortable" (click)="sortByValue()">
-            <i class="fas fa-filter"></i> Total Value (Current)
+            <i class="fas fa-sort"></i> Total Value (Current)
           </th>
           <!--3.5-->
           <th
@@ -387,7 +397,7 @@
             class="sortable"
             (click)="sortByPositionNew()"
           >
-            <i class="fas fa-filter"></i> Position
+            <i class="fas fa-sort"></i> Position
           </th>
           <!--2-->
           <!--3-->
@@ -563,28 +573,28 @@
           <th>#</th>
           <!--1-->
           <th class="sortable" (click)="sortByItem()">
-            <i class="fas fa-filter"></i> Item Number
+            <i class="fas fa-sort"></i> Item Number
           </th>
           <th class="sortable" (click)="sortByItem()">
-            <i class="fas fa-filter"></i> Item Name
+            <i class="fas fa-sort"></i> Item Name
           </th>
           <th class="sortable" (click)="sortByItemType()">
-            <i class="fas fa-filter"></i> Item Type
+            <i class="fas fa-sort"></i> Item Type
           </th>
           <th class="sortable small-cell" (click)="sortByItem()">
-            <i class="fas fa-filter"></i> INCI Name
+            <i class="fas fa-sort"></i> INCI Name
           </th>
           <!--1-->
           <th class="sortable" (click)="sortByBatch()">
-            <i class="fas fa-filter"></i> Batch
+            <i class="fas fa-sort"></i> Batch
           </th>
           <!--3.5-->
           <th class="sortable" (click)="sortByPositionNew()">
-            <i class="fas fa-filter"></i> Position
+            <i class="fas fa-sort"></i> Position
           </th>
           <!--2-->
           <!-- <th class="sortable" (click)="sortByAmount()">
-            <i class="fas fa-filter"></i> Amount
+            <i class="fas fa-sort"></i> Amount
           </th> -->
           <!--3-->
           <!-- <th>Last Count Date</th> -->
@@ -838,6 +848,73 @@
         <h4>הצג דו"ח</h4>
         <div class="m-4 d-flex flex-row justify-content-around w-75">
           <button class="btn btn-danger" (click)="previousStockReport()">
+            הצג
+          </button>
+          <button class="btn btn-secondary" (click)="modalService.dismissAll()">
+            ביטול
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer"></div>
+  </div>
+</ng-template>
+<ng-template #missingLotNumbers let-modal>
+  <div dir="rtl" class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">
+        דו"ח חומרי גלם עם מספר אצווה ידני
+      </h4>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="missingLotNumbersForm">
+        <div class="row mt-2">
+          <div class="col-5">
+            <label for="">שם המחסן</label>
+            <select class="form-control" formControlName="warehouseName">
+              <option value="" disabled selected value="">בחר מחסן</option>
+              <option *ngFor="let wh of authWarehouses" [value]="wh.name">
+                {{ wh.name }}
+              </option>
+            </select>
+          </div>
+          <div class="col-2"></div>
+          <div class="col-5">
+            <label for="">סוג הפריט</label>
+            <select class="form-control" formControlName="itemType">
+              <option value="" disabled selected>בחר סוג</option>
+              <option value="all">All</option>
+              <option value="component">Component</option>
+              <option value="material">Material</option>
+              <option value="product">Product</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <h4>העדכונים בוצעו בין התאריכים הבאים:</h4>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-5">
+            <label for="">מתאריך</label>
+            <input
+              type="date"
+              class="form-control"
+              formControlName="fromDate"
+            />
+          </div>
+          <div class="col-2"></div>
+          <div class="col-5">
+            <label for="">עד תאריך</label>
+            <input type="date" class="form-control" formControlName="toDate" />
+          </div>
+        </div>
+      </form>
+      <div class="row mt-4">
+        <h4>הצג דו"ח</h4>
+        <div class="m-4 d-flex flex-row justify-content-around w-75">
+          <button class="btn btn-danger" (click)="missingLotNumbersReport()">
             הצג
           </button>
           <button class="btn btn-secondary" (click)="modalService.dismissAll()">

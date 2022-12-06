@@ -1127,6 +1127,12 @@ export class InventoryService {
 
     return this.http.get(url).pipe(map((response) => response.json()));
   }
+
+  getMissingLotNumbersReport(query) {
+    let url = this.baseUrl + "itemShell/getMissingLotNumbersReport";
+
+    return this.http.post(url, query).pipe(map((response) => response.json()));
+  }
 }
 
 // startNewItemObservable() {
