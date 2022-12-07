@@ -606,8 +606,17 @@ export class InvArrivalsComponent implements OnInit {
       .addComponentsToStock(this.allArrivals)
       .subscribe((data) => {
         console.log(data);
+        if (data && data.msg) {
+          this.toastr.error(data.msg);
 
-        if (data) {
+          alert("פעולת ההעברה נכשלה, נא לפנות למנהל המערכת");
+          alert(data.msg);
+          return;
+        } else if (
+          data &&
+          data.savedMovement &&
+          data.savedMovement.length > 0
+        ) {
           console.log(data);
           //set certificate data
           this.certificateReception = data.savedMovement[0].warehouseReception;
@@ -631,6 +640,8 @@ export class InvArrivalsComponent implements OnInit {
 
           if (data.msg.length == 0 && data.warning.length == 0) {
             this.toastr.success("נשמר", "הנתונים נשמרו בהצלחה");
+          } else {
+            alert("חלק מהנתונים לא נשמרו");
           }
           this.sending = false;
           // this.componentArrival.controls.itemType.setValue("component");
@@ -650,7 +661,30 @@ export class InvArrivalsComponent implements OnInit {
               this.chosenActionLog = null;
             }, 1000);
           }, 500);
-        } else {
+        } else if (data && data.msg && data.msg.length > 0) {
+          if (data.msg.length > 0) {
+            for (let message of data.msg) {
+              this.toastr.error(message);
+            }
+          }
+          if (data.warning.length > 0) {
+            for (let warning of data.warning) this.toastr.warning(warning);
+          }
+
+          alert("יש להדפיס את תעודת הקליטה דרך שחזור תעודות היסטוריות");
+          this.allArrivals = [];
+          this.itemNames = [];
+          // this.printSticker = false
+          this.componentArrival.reset();
+          this.chosenPO = null;
+          this.shellNums = [];
+          this.componentArrival.controls.isNewItemShell.setValue(false);
+          this.purchaseOrders = [];
+          this.supplierView = false;
+          this.chosenActionLog = null;
+
+          return;
+
           this.toastr.error("לא נוצר קשר עם השרת, הפעולה לא הצליחה");
         }
       });

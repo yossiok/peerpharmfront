@@ -723,9 +723,10 @@ export class WhareHouseUpdatesComponent implements OnInit {
         .subscribe((data) => {
           console.log(data);
 
-          if (data.length == 0) {
-            this.toastSrv.error("", "!פריט לא קיים");
+          if (data && data.msg) {
+            this.toastSrv.error(data.msg);
             this.validItem = false;
+            this.newShelfForm.controls.item.reset();
           } else {
             this.itemType = data.itemType;
             this.newShelfForm.controls.itemType.setValue(data.itemType);

@@ -85,6 +85,10 @@ export class CheckoutComponent implements OnInit {
         console.log(data);
         if (data.length > 0) {
           this.itemNames = data;
+        } else {
+          this.componentCheckout.controls.item.reset();
+          this.toastr.error("מספר פריט לא קיים במערכת");
+          return;
         }
       });
 
@@ -186,6 +190,8 @@ export class CheckoutComponent implements OnInit {
           // this.toastr.error("ייתכן שהפעולה בוצעה. אנא פנה לצוות הפיתוח.","היתה בעיה");
           this.toastr.error(data.msg, "שגיאה:");
           console.log(data.msg);
+          alert(data.msg);
+          return;
         } else if (data.actionLogs == 0) {
           this.toastr.error(" הפעולה נכשלה, לא בוצעו עדכוני מלאי");
           this.sending = false;

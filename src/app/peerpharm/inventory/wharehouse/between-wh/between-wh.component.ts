@@ -134,7 +134,8 @@ export class BetweenWHComponent implements OnInit {
             resolve(true);
           } else {
             this.noItem = true;
-            resolve("פריט זה לא נמצא במחסן שנבחר :(");
+            this.itemNames = [];
+            reject("פריט זה לא נמצא במחסן שנבחר :(");
           }
         });
     });
@@ -289,6 +290,8 @@ export class BetweenWHComponent implements OnInit {
       })
       .catch((e) => {
         console.log("error: ", e);
+        this.movementForm.controls.item.reset();
+        alert(e);
         this.toastr.error("", e);
       });
   }
