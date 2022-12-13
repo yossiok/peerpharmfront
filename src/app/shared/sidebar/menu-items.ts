@@ -4,7 +4,7 @@ export const ROUTES: RouteInfo[] = [
   {
     path: "",
     // title: 'menu.Orders', // for translation in he.json file
-    title: "Orders",
+    title: "menu.ORDERS",
     icon: "fas fa-chart-line",
     class: "has-arrow",
     extralink: false,
@@ -46,7 +46,7 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: "",
-    title: "Schedule",
+    title: "menu.SCHEDULE",
     icon: " far fa-calendar-alt",
     class: "has-arrow",
     extralink: false,
@@ -96,7 +96,7 @@ export const ROUTES: RouteInfo[] = [
 
   {
     path: "",
-    title: "Products",
+    title: "menu.PRODUCTS",
     icon: " fas fa-sitemap",
     class: "has-arrow",
     extralink: false,
@@ -137,7 +137,7 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: "",
-    title: "Formulas",
+    title: "menu.FORMULAS",
     icon: "  fab fa-hubspot",
     class: "has-arrow",
     extralink: false,
@@ -171,7 +171,7 @@ export const ROUTES: RouteInfo[] = [
 
   {
     path: "",
-    title: " Batches",
+    title: "menu.BATCHES",
     icon: "  fas fa-vial",
     class: "has-arrow",
     extralink: false,
@@ -213,7 +213,7 @@ export const ROUTES: RouteInfo[] = [
 
   {
     path: "",
-    title: "Purchase",
+    title: "menu.PURCHASE",
     icon: " icon-plane",
     class: "has-arrow",
     extralink: false,
@@ -231,7 +231,7 @@ export const ROUTES: RouteInfo[] = [
 
   {
     path: "",
-    title: "Plates",
+    title: "menu.PLATES",
     icon: " fas fa-inbox",
     class: "has-arrow",
     extralink: false,
@@ -246,9 +246,9 @@ export const ROUTES: RouteInfo[] = [
       },
     ],
   },
-  {
+  { 
     path: "",
-    title: " Inventory",
+    title: "menu.INVENTORY",
     icon: " fas fa-dolly",
     class: "has-arrow",
     extralink: false,
@@ -322,7 +322,7 @@ export const ROUTES: RouteInfo[] = [
 
   {
     path: "",
-    title: "QA",
+    title: "menu.QA",
     icon: " fab fa-wpforms",
     class: "has-arrow",
     extralink: false,
@@ -396,7 +396,7 @@ export const ROUTES: RouteInfo[] = [
 
   {
     path: "",
-    title: "Reports",
+    title: "menu.REPORTS",
     icon: "fab fa-gitter",
     class: "has-arrow",
     extralink: false,
@@ -430,7 +430,7 @@ export const ROUTES: RouteInfo[] = [
 
   {
     path: "",
-    title: "Production",
+    title: "menu.PRODUCTION",
     icon: " fas fa-diagnoses",
     class: "has-arrow",
     extralink: false,
@@ -480,7 +480,7 @@ export const ROUTES: RouteInfo[] = [
 
   {
     path: "",
-    title: "Finance",
+    title: "menu.FINANCE",
     icon: "fas fa-dollar-sign",
     class: "has-arrow",
     extralink: false,
@@ -529,7 +529,7 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: "",
-    title: "Index",
+    title: "menu.INDEX",
     icon: "fas fa-book",
     class: "has-arrow",
     extralink: false,
@@ -578,7 +578,7 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: "",
-    title: "Customers",
+    title: "menu.CUSTOMERS",
     icon: "fas fa-address-book",
     class: "has-arrow",
     extralink: false,
@@ -595,7 +595,7 @@ export const ROUTES: RouteInfo[] = [
   },
   {
     path: "",
-    title: "MRP Tools",
+    title: "menu.MRP-TOOLS",
     icon: "fas fa-dollar-sign",
     class: "has-arrow",
     extralink: false,
