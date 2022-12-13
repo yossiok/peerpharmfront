@@ -273,7 +273,7 @@ export class PlanningDetailsComponent implements OnInit {
     return new Promise((resolve, reject) => {
       // resolve(true)
       this.modalService.userAnserEventEmitter.subscribe((userChoice) => {
-        if (userChoice) resolve(userChoice);
+        if (userChoice) resolve(userChoice as boolean);
         else resolve(false);
       });
       this.modalService.confirm({ title: "title", message: "message" });

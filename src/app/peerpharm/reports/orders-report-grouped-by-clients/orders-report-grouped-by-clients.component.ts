@@ -1,10 +1,15 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { ColDef, GetDataPath } from "ag-grid-community";
-import { CostumersService } from "src/app/services/costumers.service";
+import {
+  ColDef,
+  GetDataPath,
+  GridApi,
+  GridReadyEvent,
+} from "ag-grid-community";
 import { OrdersService } from "src/app/services/orders.service";
 import "ag-grid-enterprise";
 import * as moment from "moment";
+import { groupBy } from "lodash";
 
 export interface OrdersGroupbyCustomersForm {
   customers: string[];
@@ -22,19 +27,27 @@ export class OrdersReportGroupedByClientsComponent implements OnInit {
   customers: { id: string; text: string }[] = [{ id: "all", text: "All" }];
   submitted: boolean = false;
 
+  private gridApi!: GridApi;
   public columnDefs: ColDef[] = [
     { field: "orderNumber" },
-    { field: "costumer" },
     {
       field: "orderDate",
       valueGetter: (params) => {
         return (
           params.data.orderDate &&
-          moment(params.data.orderDate).format("dd/MM/yyyy")
+          moment(params.data.orderDate).format("DD/MM/yyyy")
         );
       },
     },
-    { field: "deliveryDate" },
+    {
+      field: "deliveryDate",
+      valueGetter: (params) => {
+        return (
+          params.data.deliveryDate &&
+          moment(params.data.deliveryDate).format("DD/MM/yyyy")
+        );
+      },
+    },
     { field: "orderRemarks" },
     { field: "type" },
     { field: "status" },
@@ -55,11 +68,7 @@ export class OrdersReportGroupedByClientsComponent implements OnInit {
     return data.costumer;
   };
 
-  constructor(
-    private fb: FormBuilder,
-    private customersService: CostumersService,
-    private ordersService: OrdersService
-  ) {}
+  constructor(private fb: FormBuilder, private ordersService: OrdersService) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -68,11 +77,11 @@ export class OrdersReportGroupedByClientsComponent implements OnInit {
       endOrderDate: this.fb.control("", Validators.required),
     });
 
-    // this.customersService.getAllCostumers().subscribe((customers) => {
-    //   customers.forEach((customer) => {
-    //     this.customers.push({ id: customer._id, text: customer.costumerName })
-    //   })
-    // });
+    this.ordersService.getOrdersCustomers().subscribe((customers) => {
+      customers.forEach((customer) => {
+        this.customers.push({ id: customer._id, text: customer._id });
+      });
+    });
   }
 
   onSubmit = () => {
@@ -81,11 +90,30 @@ export class OrdersReportGroupedByClientsComponent implements OnInit {
       this.ordersService
         .getOrdersGroupByClient(this.form.value)
         .subscribe((orders) => {
-          this.rowData = orders.map((o) => ({
-            ...o,
-            costumer: [o.costumer],
-          }));
+          const groupedByOrder = groupBy(orders, "costumer");
+          this.rowData = [];
+          for (var i in groupedByOrder) {
+            const orders = groupedByOrder[i];
+            orders.forEach((or, index) => {
+              if (index === 0) {
+                this.rowData.push({ costumer: [or.costumer] });
+              }
+              this.rowData.push({
+                ...or,
+                costumer: [or.costumer, or.orderNumber],
+              });
+            });
+          }
         });
     }
   };
+
+  onGridReady(params: GridReadyEvent) {
+    this.gridApi = params.api;
+  }
+
+  handleExport($event) {
+    $event.preventDefault();
+    this.gridApi.exportDataAsCsv();
+  }
 }

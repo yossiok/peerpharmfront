@@ -494,4 +494,9 @@ export class OrdersService {
     return this.http.post(url, values).pipe(map((res) => res.json()));
   }
 
+  getOrdersCustomers() {
+    let url = this.baseUrl + "order/orders-customers";
+    return this.http.get(url).pipe(map((res) => res.json()));
+  }
+
 }

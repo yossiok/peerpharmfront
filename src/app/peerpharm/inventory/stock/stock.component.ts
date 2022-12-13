@@ -1714,7 +1714,7 @@ export class StockComponent implements OnInit {
   }
 
   getUserInfo() {
-    this.authService.userEventEmitter.subscribe((user) => {
+    this.authService.userEventEmitter.subscribe((user:any) => {
       this.user = user.loggedInUser;
     });
     if (!this.authService.loggedInUser) {
@@ -2435,12 +2435,12 @@ export class StockComponent implements OnInit {
 
   /**
    async openAllocatedOrders(componentN, index?, forEach?) {
-   * 
+   *
    *   this.openModalHeader = "הקצאות מלאי"
               this.openOrderAmountsModal = true;
               this.allocatedOrders = data
-   * 
-   * 
+   *
+   *
    */
 
   openAllocatedOrders(component) {

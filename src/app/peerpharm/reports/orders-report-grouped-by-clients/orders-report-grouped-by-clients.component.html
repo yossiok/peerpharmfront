@@ -69,24 +69,40 @@
             </ng-container>
           </div>
         </div>
-        <div class="col-6">
+        <div class="col-6 center d-flex">
           <div class="form-group">
             <button class="btn btn-outline-primary">Submit</button>
+          </div>
+          <div class="form-group ml-2">
+            <button
+              class="btn btn-outline-info"
+              type="button"
+              (click)="handleExport($event)"
+            >
+              Export as CSV
+            </button>
           </div>
         </div>
       </div>
     </div>
   </form>
-  <ag-grid-angular
-    style="width: 100%; height: calc(100vh - 320px)"
-    class="ag-theme-alpine"
-    [columnDefs]="columnDefs"
-    [defaultColDef]="defaultColDef"
-    [autoGroupColumnDef]="autoGroupColumnDef"
-    [rowData]="rowData"
-    [treeData]="true"
-    [animateRows]="true"
-    [groupDefaultExpanded]="groupDefaultExpanded"
-    [getDataPath]="getDataPath"
-  ></ag-grid-angular>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="col-12">
+        <ag-grid-angular
+          style="width: 100%; height: calc(100vh - 320px)"
+          class="ag-theme-alpine"
+          [columnDefs]="columnDefs"
+          [defaultColDef]="defaultColDef"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [rowData]="rowData"
+          [treeData]="true"
+          [animateRows]="true"
+          [groupDefaultExpanded]="groupDefaultExpanded"
+          [getDataPath]="getDataPath"
+          (gridReady)="onGridReady($event)"
+        ></ag-grid-angular>
+      </div>
+    </div>
+  </div>
 </div>

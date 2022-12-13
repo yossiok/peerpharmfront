@@ -1,35 +1,35 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { ChatService } from '../chat.service';
-import { AuthService } from '../../services/auth.service';
-import * as moment from 'moment';
-import { Jsonp } from '@angular/http';
-import { UserInfo } from '../../peerpharm/taskboard/models/UserInfo';
+import { Component, OnInit, Input } from "@angular/core";
+import { ChatService } from "../chat.service";
+import { AuthService } from "../../services/auth.service";
+import * as moment from "moment";
+import { Jsonp } from "@angular/http";
+import { UserInfo } from "../../peerpharm/taskboard/models/UserInfo";
 
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+  selector: "app-chat",
+  templateUrl: "./chat.component.html",
+  styleUrls: ["./chat.component.scss"],
 })
 export class ChatComponent implements OnInit {
   @Input() public taskid: string;
-  title = 'app';
+  title = "app";
   today: any;
 
   selectedUser: any = {
-    name: 'User',
-    avtar: 'https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?fit=256%2C256&quality=100&ssl=1'
-  }
+    name: "User",
+    avtar:
+      "https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?fit=256%2C256&quality=100&ssl=1",
+  };
   message: any = {
-    body: '',
-    user: '',
-    avtar: '',
-    time: '',
-    taskId: '',
-  }
-  user: UserInfo
-  messages = [{ avtar: '4', name: '1', body: '2', date: '3' }
-  ]
-  constructor(private chat: ChatService, private authService: AuthService) { }
+    body: "",
+    user: "",
+    avtar: "",
+    time: "",
+    taskId: "",
+  };
+  user: UserInfo;
+  messages = [{ avtar: "4", name: "1", body: "2", date: "3" }];
+  constructor(private chat: ChatService, private authService: AuthService) {}
 
   ngOnInit() {
     this.getUserInfo();
@@ -48,36 +48,30 @@ export class ChatComponent implements OnInit {
   }
 
   getOnlineMessage() {
-    this.chat.messages.subscribe(msg => {
-      
+    this.chat.messages.subscribe((msg) => {
       console.log(msg);
       this.messages.push(msg);
-    })
+    });
   }
   getAllSavedMessages() {
-    this.chat.getAllChatMessages(this.taskid).subscribe(res => {
+    this.chat.getAllChatMessages(this.taskid).subscribe((res) => {
       this.messages = res;
-    })
+    });
   }
 
   getUserInfo() {
-    
-      this.authService.userEventEmitter.subscribe(user => {
-      this.user=user.loggedInUser;
-    })
-    
+    this.authService.userEventEmitter.subscribe((user: any) => {
+      this.user = user.loggedInUser;
+    });
+
     if (!this.authService.loggedInUser) {
-      this.authService.userEventEmitter.subscribe(user => {
+      this.authService.userEventEmitter.subscribe((user) => {
         if (user.userName) {
           this.user = user;
         }
       });
-    }
-    else {
+    } else {
       this.user = this.authService.loggedInUser;
     }
   }
-
 }
-
-
