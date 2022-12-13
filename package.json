@@ -60,6 +60,7 @@
     "ngx-pagination": "^5.1.1",
     "ngx-perfect-scrollbar": "6.1.0",
     "ngx-print": "^1.2.1",
+    "ngx-select-ex": "^6.1.2",
     "ngx-toastr": "^9.2.0",
     "normalize.css": "^8.0.1",
     "pace-js": "^1.0.2",

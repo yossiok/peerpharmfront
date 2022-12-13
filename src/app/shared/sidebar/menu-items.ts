@@ -425,6 +425,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
       },
+      {
+        path: "/peerpharm/orders-reports-grouped-by-clients",
+        title: "Orders Grouped By Clients",
+        icon: "fas fa-list-ol",
+        class: "",
+        extralink: false,
+        submenu: [],
+      },
     ],
   },
 
