@@ -218,11 +218,14 @@ import { MkupFormPrintingComponent } from "./forms/mkupForm/mkupFormPrinting/mku
 import { PersonalPackagingComponent } from "./forms/mkupForm/PersonalPackaging/personalPackaging.component";
 import { StickerComponent } from "./forms/mkupForm/sticker/sticker.component";
 import { MkupProductionComponent } from "./forms/mkupForm/mkupProduction/mkupProduction.component";
+import { OrdersReportGroupedByClientsComponent } from "./reports/orders-report-grouped-by-clients/orders-report-grouped-by-clients.component";
+import { NgxSelectModule } from "ngx-select-ex";
 
 @NgModule({
   exports: [
     // MatInputModule,
     AddProcurementItemDialog,
+    NgxSelectModule,
   ],
   imports: [
     NgxBarcodeModule,
@@ -252,6 +255,7 @@ import { MkupProductionComponent } from "./forms/mkupForm/mkupProduction/mkupPro
     Ng2FilterPipeModule,
     NgxPrintModule,
     HttpClientModule,
+    NgxSelectModule.forRoot({ keepSelectedItems: false }),
     //   MatOptionModule,
   ],
   declarations: [
@@ -411,6 +415,7 @@ import { MkupProductionComponent } from "./forms/mkupForm/mkupProduction/mkupPro
     ComaxItemsIndexComponent,
     MultiForecastsComponent,
     EmailPurchaseOrderComponent,
+    OrdersReportGroupedByClientsComponent,
   ],
   entryComponents: [AddProcurementItemDialog],
   providers: [

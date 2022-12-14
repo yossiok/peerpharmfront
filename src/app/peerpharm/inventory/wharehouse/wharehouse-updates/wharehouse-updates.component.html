@@ -15,7 +15,10 @@
       <label>Warehouse</label>
       <select (change)="getShelfsByWH($event)" class="form-control">
         <option selected="true" disabled="disabled">WhareHouse</option>
-        <option value="Kasem">Kasem</option>
+        <option *ngFor="let wh of authWarehouses" [value]="wh.name">
+          {{ wh.name }}
+        </option>
+        <!-- <option value="Kasem">Kasem</option>
         <option value="Rosh HaAyin">Rosh HaAyin - Materials</option>
         <option value="Rosh HaAyin Factory">
           Rosh HaAyin Factory - Components
@@ -24,12 +27,13 @@
         <option value="Rosh HaAyin products">Rosh HaAyin - Products</option>
         <option value="NEW KASEM">New Kasem</option>
         <option value="ARIEL 1">ARIEL 1</option>
+        <option value="Warehouse 44">Warehouse 44</option>
         <option value="ARIEL 2">ARIEL 2</option>
         <option value="ARIEL 3">ARIEL 3</option>
         <option value="ARIEL 4">ARIEL 4</option>
         <option value="Labels">Labels</option>
         <option value="Filling">Filling</option>
-        <option value="Makeup">Makeup</option>
+        <option value="Makeup">Makeup</option> -->
       </select>
     </div>
     <div class="col-2">

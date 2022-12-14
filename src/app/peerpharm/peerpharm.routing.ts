@@ -98,6 +98,7 @@ import { MkupFormComponent } from "./forms/mkupForm/mkupForm.component";
 import { SearchComponent } from "./search/search.component";
 import { OrdersSimulatorComponent } from "./mrp-tools/orders-simulator.component";
 import { ComaxItemsIndexComponent } from "./comax-items-index/comax-items-index.component";
+import { OrdersReportGroupedByClientsComponent } from "./reports/orders-report-grouped-by-clients/orders-report-grouped-by-clients.component";
 // import { ItemIndexNewComponent } from "./item-index-new/item-index-new.component";
 
 export const PeerPharmRputs: Routes = [
@@ -863,5 +864,13 @@ export const PeerPharmRputs: Routes = [
       title: "Comax Items Index",
     },
     component: ComaxItemsIndexComponent,
+  },
+  {
+    path: "orders-reports-grouped-by-clients",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Orders Grouped By Clients",
+    },
+    component: OrdersReportGroupedByClientsComponent,
   },
 ];

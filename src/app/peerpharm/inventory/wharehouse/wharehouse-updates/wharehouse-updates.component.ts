@@ -181,40 +181,6 @@ export class WhareHouseUpdatesComponent implements OnInit {
       .subscribe((data) => {
         this.fetchingShelfs = false;
         if (data) {
-          // for (let item of data) {
-          //   item.actualPrice = item.price
-          //     ? item.price
-          //     : item.manualPrice
-          //     ? item.manualPrice
-          //     : 0;
-          //   item.actualCoin = item.coin
-          //     ? item.coin
-          //     : item.manualCoin
-          //     ? item.manualCoin
-          //     : "ILS";
-          //   if (item.actualPrice == 0) {
-          //     let maxPrice = 0;
-          //     for (let sup of item.alternativeSuppliers) {
-          //       if (sup.price && sup.price > maxPrice) {
-          //         maxPrice = sup.price;
-          //         item.actualPrice = sup.price;
-          //         item.actualCoin = sup.coin;
-          //       }
-          //     }
-          //   }
-          //   item.actualCoin = item.actualCoin.toUpperCase();
-
-          //   item.rate = this.currencies[item.actualCoin];
-
-          //   item.value = item.actualPrice * item.amount * item.rate;
-          // }
-          // let allShelfsWithOrWithoutItems = data.emptyShells.concat(data.itemShells)
-          // allShelfsWithOrWithoutItems.sort((a, b) => (a._id.position > b._id.position ? 1 : -1));
-          // let emptyLines = []
-          // for (let i = 0; i < 50; i++) {
-          //     emptyLines.push({ _id: {} })
-          // }
-          // allShelfsWithOrWithoutItems = allShelfsWithOrWithoutItems.concat(emptyLines)
           this.allShelfs = data;
           this.allShelfsCopy = data;
           this.pageType = "countPage";
@@ -227,6 +193,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
     this.inventorySrv
       .getProductsItemShellByWHName(this.whareHouse)
       .subscribe((data) => {
+        this.fetchingShelfs = false;
         console.log(data);
         this.allShelfs = data;
         this.allShelfsCopy = data;
@@ -270,6 +237,13 @@ export class WhareHouseUpdatesComponent implements OnInit {
     // let lastPart = this.allShelfs.filter((sh) => !pattern.test(sh.position));
     // console.log(firstPart);
     // console.log(lastPart);
+    let zeroWall = this.allShelfs.filter((sh) => {
+      return (
+        sh.position.substr(0, 1) == 0 &&
+        // isNaN(sh.position.substr(1, 1)) &&
+        sh.position.length > 2
+      );
+    });
     let firstWall = this.allShelfs.filter((sh) => {
       return (
         sh.position.substr(0, 1) == 1 &&
@@ -298,9 +272,16 @@ export class WhareHouseUpdatesComponent implements OnInit {
         sh.position.length > 2
       );
     });
+    let fifthWall = this.allShelfs.filter((sh) => {
+      return (
+        sh.position.substr(0, 1) > 4 &&
+        isNaN(sh.position.substr(1, 1)) &&
+        sh.position.length > 2
+      );
+    });
 
     let lastWall = this.allShelfs.filter((sh) => {
-      return isNaN(sh.position.substr(0, 1));
+      return isNaN(sh.position.substr(0, 1)) || sh.position.length < 3;
     });
     // let lastWall = this.allShelfs.filter((sh) => {
     //   return (
@@ -311,9 +292,25 @@ export class WhareHouseUpdatesComponent implements OnInit {
     // });
     let walls = [];
     if (i == 1) {
-      walls = [firstWall, secondWall, thirdWall, fourthWall, lastWall];
+      walls = [
+        zeroWall,
+        firstWall,
+        secondWall,
+        thirdWall,
+        fourthWall,
+        fifthWall,
+        lastWall,
+      ];
     } else {
-      walls = [lastWall, fourthWall, thirdWall, secondWall, firstWall];
+      walls = [
+        lastWall,
+        fifthWall,
+        fourthWall,
+        thirdWall,
+        secondWall,
+        firstWall,
+        zeroWall,
+      ];
     }
     // let walls = [];
     // if (i == 1) {
@@ -674,6 +671,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
           "Item Number": shelf.item,
           "Item Name": shelf.componentName,
           "Manual Lot Number": shelf.manualLotNumber,
+          "Manufacturer Lot Number": shelf.supplierBatchNumber,
           "Production Date": shelf.productionDate,
           "Expiration Date": shelf.expirationDate,
           // "Batch Number": shelf.supplierBatchNumber,
@@ -789,6 +787,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
           this.toastSrv.success("מדף הוקם בהצלחה");
           console.log(this.newShelfForm.value);
           let position = this.newShelfForm.value.position;
+          let warehouseId = this.newShelfForm.value.warehouseId;
           this.newShelfForm.reset();
           this.itemType = "";
           this.lotNotExist = false;
@@ -796,6 +795,7 @@ export class WhareHouseUpdatesComponent implements OnInit {
           this.validItem = false;
           console.log(this.newShelfForm.value);
           this.newShelfForm.controls.whareHouse.setValue(this.whareHouse);
+          this.newShelfForm.controls.warehouseId.setValue(warehouseId);
           this.newShelfForm.controls.position.setValue(position);
 
           this.inventorySrv

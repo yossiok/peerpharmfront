@@ -77,8 +77,6 @@ export class ItemdetaisComponent implements OnInit {
   mainLanguageTwo: Boolean = true;
   mainLanguageThree: Boolean = true;
   mainLanguageFour: Boolean = true;
-  englishLang: Boolean = false;
-  hebrewLang: Boolean = true;
   department: Boolean = true;
   production: Boolean = false;
   productionTwo: Boolean = false;
@@ -455,7 +453,6 @@ export class ItemdetaisComponent implements OnInit {
 
   constructor(
     private plateService: PlateService,
-    private translate: TranslateService,
     private excelService: ExcelService,
     private orderService: OrdersService,
     private batchService: BatchesService,
@@ -463,14 +460,12 @@ export class ItemdetaisComponent implements OnInit {
     private costumersService: CostumersService,
     private route: ActivatedRoute,
     private itemsService: ItemsService,
-    private fb: FormBuilder,
+    fb: FormBuilder,
     private renderer: Renderer2,
     private invtSer: InventoryService,
     private uploadService: UploadFileService,
     private toastr: ToastrService,
     private authService: AuthService,
-    private purchaseService: Procurementservice,
-    private router: Router,
     private comaxItemsService: ComaxItemsService
   ) {
     this.itemCopy = Object.assign({}, this.itemShown);
@@ -644,21 +639,6 @@ export class ItemdetaisComponent implements OnInit {
     this.excelService.exportAsExcelFile([this.itemShown], "data");
   }
 
-  changeLanguage(type) {
-    switch (type) {
-      case "english":
-        this.translate.use("en");
-        this.hebrewLang = true;
-        this.englishLang = false;
-        break;
-      case "hebrew":
-        this.translate.use("he");
-        this.englishLang = true;
-        this.hebrewLang = false;
-        break;
-    }
-  }
-
   fillBottle(bottleNumber) {
     bottleNumber = this.itemShown.bottleNumber;
     if (bottleNumber != "---" && bottleNumber != "") {
@@ -827,7 +807,6 @@ export class ItemdetaisComponent implements OnInit {
       componentNumber: data[0].componentN,
       componentName: data[0].componentName,
     };
-    let price = 0;
     let suppliers = data[0].alternativeSuppliers;
     for (let i = 0; i < suppliers.length; i++) {
       if (
@@ -939,15 +918,6 @@ export class ItemdetaisComponent implements OnInit {
     this.productPriceModal = true;
   }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return "by pressing ESC";
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return "by clicking on a backdrop";
-    } else {
-      return `with: ${reason}`;
-    }
-  }
 
   findInInventory(componentN) {
     window.open(

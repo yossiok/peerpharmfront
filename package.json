@@ -57,6 +57,7 @@
     "ng2-dnd": "^5.0.2",
     "ng2-filter-pipe": "^0.1.10",
     "ngx-barcode": "^0.3.0",
+    "ngx-select-ex": "^6.1.2",
     "ngx-pagination": "^5.1.1",
     "ngx-perfect-scrollbar": "6.1.0",
     "ngx-print": "^1.2.1",

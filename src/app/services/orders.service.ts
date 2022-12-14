@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject, Subject } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { map } from "rxjs/operators";
 import { PeerPharmModule } from "../peerpharm/peerpharmmodule";
+import { OrdersGroupbyCustomersForm } from "../peerpharm/reports/orders-report-grouped-by-clients/orders-report-grouped-by-clients.component";
 
 //import 'rxjs/add/operator/map';
 //import 'rxjs/add/operator/catch';
@@ -78,6 +79,16 @@ export class OrdersService {
     let url =
       this.baseUrl + "order?allOpenOrderItemsByItemNumber=" + itemNumber;
     return this.http.get(url).pipe(map((reponse) => reponse.json()));
+  }
+
+  getOrdersGroupByClient(values: OrdersGroupbyCustomersForm) {
+    let url = this.baseUrl + "order/orders-reports-grouped-by-clients";
+    return this.http.post(url, values).pipe(map((res) => res.json()));
+  }
+
+  getOrdersCustomers() {
+    let url = this.baseUrl + "order/orders-customers";
+    return this.http.get(url).pipe(map((res) => res.json()));
   }
 
   // Name OR(!) Number

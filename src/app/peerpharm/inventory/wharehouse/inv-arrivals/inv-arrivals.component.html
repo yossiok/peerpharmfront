@@ -1,13 +1,13 @@
 <div dir="rtl">
   <form [formGroup]="componentArrival" (ngSubmit)="addToArrivals()">
-    <h3>קבלת סחורה</h3>
+    <h3>{{ "IN" | translate }}</h3>
     <div class="row mt-4">
       <p class="h5">* = שדה חובה</p>
     </div>
-
+ 
     <div class="row mt-2">
       <div class="col-2">
-        <label>מחסן *</label>
+        <label>{{ "wharehouse" | translate }} *</label>
         <select
           class="form-control"
           (change)="getWhName()"
@@ -23,13 +23,13 @@
         </select>
       </div>
       <div class="col-2">
-        <label for=""> מקור הסחורה *</label>
+        <label for="">  {{ "goodsOrigin" | translate }} *</label>
         <select
           class="form-control"
           formControlName="sourceType"
           (change)="chooseSource()"
         >
-          <option disabled value="">בחר מקור הסחורה</option>
+          <option disabled value="">{{ "goodsOrigin" | translate }} </option>
           <option value="supplier">ספק</option>
           <option value="warehouse">מחסן אחר</option>
           <option value="customerSupply">לקוח (קומפוננטים)</option>
@@ -359,7 +359,7 @@
         />
       </div>
       <div *ngIf="!disabled" class="col-2">
-        <label class="d-block"> שם </label>
+        <label class="d-block"> {{ "name" | translate }}  </label>
         <input
           class="d-inline form-control"
           formControlName="itemName"
@@ -382,7 +382,7 @@
         </select>
       </div>
       <div class="col-2">
-        <label>מדף *</label>
+        <label>  {{ "shelf" | translate }} *</label>
         <select class="form-control" formControlName="shell_id_in_whareHouse">
           <option disabled value="">בחר מדף</option>
           <ng-container *ngIf="shellNums && shellNums.length > 0">
@@ -405,7 +405,7 @@
               (click)="getAllShellsOfWhareHouse()"
               class="btn btn-warning"
             >
-              הכנס למדף חדש
+            {{ "put_in_new_shelf" | translate }}
             </button>
           </span>
         </div>
@@ -418,13 +418,13 @@
               (click)="getAllShellsOfWhareHouse()"
               class="btn btn-warning"
             >
-              הכנס למדף חדש
+            {{ "put_in_new_shelf" | translate }}
             </button>
           </span>
         </div>
       </div>
       <div class="col-2">
-        <label>כמות *</label>
+        <label>      {{ "amount" | translate }} *</label>
         <input type="number" formControlName="amount" class="form-control" />
         <div
           style="color: red; font-size: 1.2rem; font-weight: bold"
@@ -440,10 +440,10 @@
           [style.cursor]="componentArrival.valid ? 'pointer' : 'not-allowed'"
           class="btn btn-info"
         >
-          הכנס
+        {{ "enter" | translate }}
         </button>
         <button type="button" class="btn btn-secondary" (click)="resetValues()">
-          נקה נתונים
+            {{ "clear" | translate }}
         </button>
       </div>
     </div>
@@ -523,14 +523,14 @@
       [disabled]="allArrivals.length == 0"
       [style.cursor]="allArrivals.length == 0 ? 'not-allowed' : 'pointer'"
     >
-      הוסף למלאי (שלח שינויים) <i class="fa fa-check"></i>
+    {{ "Add_to_inventory_save_changes_" | translate }}<i class="fa fa-check"></i>
     </button>
     <div class="smallerLoader" *ngIf="sending"></div>
     <!-- <button class="btn btn-success" (click)="justPrint()">
       הדפס <i class="fa fa-print"></i>
     </button> -->
     <button class="btn btn-warning" (click)="clearArrivals()">
-      נקה טבלה <i class="fas fa-trash-alt"></i>
+      {{ "clear_table" | translate }}<i class="fas fa-trash-alt"></i>
     </button>
   </div>
 

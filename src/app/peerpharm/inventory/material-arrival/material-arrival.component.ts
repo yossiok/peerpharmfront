@@ -16,6 +16,7 @@ import {
   MaterialArrivalLine,
 } from "./MaterialArrivalCertif";
 import { fromEventPattern } from "rxjs";
+import { Socket } from "socket.io-client";
 
 const defaultLine = {
   itemInternalNumber: "",
@@ -125,6 +126,7 @@ export class MaterialArrivalComponent implements OnInit {
   requirementsForm: FormGroup;
   requiresFromFull: Boolean = false;
   shellNums: any[] = [];
+  problemMaterialRemark: string = "";
 
   batchNumRemarksInput: Boolean = false;
   orderedQntRemarksInput: Boolean = false;
@@ -306,7 +308,6 @@ export class MaterialArrivalComponent implements OnInit {
   //
   // }
   saveMaterialRequirementsForm() {
-    debugger;
     this.authService.userEventEmitter.subscribe((data) => {
       let user =
         this.authService.loggedInUser.firstName +
@@ -408,7 +409,6 @@ export class MaterialArrivalComponent implements OnInit {
 
   checkShell() {
     // console.log(this.curentWhareHouseId);
-    debugger;
 
     this.invtSer
       .checkIfShelfExist(this.shellPosition, this.curentWhareHouseId)
@@ -461,6 +461,21 @@ export class MaterialArrivalComponent implements OnInit {
                 : stockItem.msg;
             this.toastSrv.error(message);
           } else if (stockItem) {
+            this.problemMaterialRemark = "";
+            if (stockItem[0].problems.includes("אין לאחסן בשמש")) {
+              this.problemMaterialRemark = "אין לאחסן בשמש";
+            }
+            if (stockItem[0].problems.includes("אין להקפיא")) {
+              this.problemMaterialRemark = "אין להקפיא";
+            }
+            if (stockItem[0].problems.includes("לאחסן מעל 10מ''צ")) {
+              this.problemMaterialRemark = "לאחסן מעל 10מ''צ";
+            }
+
+            if (this.problemMaterialRemark == "") {
+              this.problemMaterialRemark = "אין הוראות אחסנה מיוחדות";
+            }
+
             // let elem = document.getElementsByName("itemName")[0];
             // elem.setAttribute("value", stockItem[0].componentName);
             this.materialName = stockItem[0].componentName;
@@ -626,14 +641,12 @@ export class MaterialArrivalComponent implements OnInit {
   }
 
   waitForShelf() {
-    debugger;
     setTimeout(() => {
       this.submitForm();
     }, 500);
   }
 
   async submitForm() {
-    debugger;
     const controls = this.newMaterialArrival.controls;
     for (let name in controls) {
       if (controls[name].invalid) {
@@ -820,7 +833,6 @@ export class MaterialArrivalComponent implements OnInit {
     formToSend.lastUpdateUser = this.user;
     formToSend.materialName = this.materialName;
     this.invtSer.newMatrialArrival(formToSend).subscribe((res) => {
-      debugger;
       this.submittingForm = false;
       console.log(res);
       if (res.msg) {
@@ -851,9 +863,7 @@ export class MaterialArrivalComponent implements OnInit {
         this.materialArrivalLine.wareHouse =
           res.newActionLogs.logs[0].warehouse;
         this.materialArrivalLine.position = formToSend.position;
-        this.materialArrivalLine.amount = Number(
-          formToSend.totalQnt
-        );
+        this.materialArrivalLine.amount = Number(formToSend.totalQnt);
         this.materialArrivalLine.unitsAmount = Number(
           res.newActionLogs.logs[0].packageQnt
         );

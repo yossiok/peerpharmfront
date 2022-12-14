@@ -1,0 +1,108 @@
+<div class="container-fluid bg-white">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="row pt-3">
+      <div class="col-md-12 col-lg-4 col-xl-4 d-flex">
+        <div class="col-6">
+          <div class="form-group">
+            <label for="customers"> Customers </label>
+            <ngx-select
+              id="customers"
+              [allowClear]="false"
+              autocomplete="off"
+              [items]="customers"
+              placeholder="Select"
+              name="customers"
+              [multiple]="true"
+              formControlName="customers"
+            ></ngx-select>
+            <ng-container *ngIf="form.controls.customers.invalid && submitted">
+              <div
+                class="text-danger"
+                *ngIf="form.controls.customers.errors.required"
+              >
+                This field is required
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label for="startOrderDate"> Start Date </label>
+            <input
+              name="start"
+              class="filter-input date-input form-control form-control-1"
+              type="date"
+              #startOrderDate
+              formControlName="startOrderDate"
+            />
+            <ng-container
+              *ngIf="form.controls.startOrderDate.invalid && submitted"
+            >
+              <div
+                class="text-danger"
+                *ngIf="form.controls.startOrderDate.errors.required"
+              >
+                This field is required
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label for="endOrderDate"> End Date </label>
+            <input
+              name="end"
+              class="filter-input date-input form-control form-control-1"
+              type="date"
+              #endOrderDate
+              formControlName="endOrderDate"
+            />
+            <ng-container
+              *ngIf="form.controls.endOrderDate.invalid && submitted"
+            >
+              <div
+                class="text-danger"
+                *ngIf="form.controls.endOrderDate.errors.required"
+              >
+                This field is required
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="col-6 center d-flex">
+          <div class="form-group">
+            <button class="btn btn-outline-primary">Submit</button>
+          </div>
+          <div class="form-group ml-2">
+            <button
+              class="btn btn-outline-info"
+              type="button"
+              (click)="handleExport($event)"
+            >
+              Export as CSV
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="col-12">
+        <ag-grid-angular
+          style="width: 100%; height: calc(100vh - 320px)"
+          class="ag-theme-alpine"
+          [columnDefs]="columnDefs"
+          [defaultColDef]="defaultColDef"
+          [autoGroupColumnDef]="autoGroupColumnDef"
+          [rowData]="rowData"
+          [treeData]="true"
+          [animateRows]="true"
+          [groupDefaultExpanded]="groupDefaultExpanded"
+          [getDataPath]="getDataPath"
+          (gridReady)="onGridReady($event)"
+        ></ag-grid-angular>
+      </div>
+    </div>
+  </div>
+</div>
