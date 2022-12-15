@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Http, Headers, RequestOptions, Jsonp } from "@angular/http";
 import { observable } from "rxjs";
-import { map } from "Rxjs/operators";
+import { map } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root",

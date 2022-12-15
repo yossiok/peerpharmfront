@@ -49,7 +49,7 @@ export class ChatComponent implements OnInit {
 
   getOnlineMessage() {
     this.chat.messages.subscribe(msg => {
-      
+
       console.log(msg);
       this.messages.push(msg);
     })
@@ -61,11 +61,11 @@ export class ChatComponent implements OnInit {
   }
 
   getUserInfo() {
-    
-      this.authService.userEventEmitter.subscribe(user => {
+
+      this.authService.userEventEmitter.subscribe((user:any) => {
       this.user=user.loggedInUser;
     })
-    
+
     if (!this.authService.loggedInUser) {
       this.authService.userEventEmitter.subscribe(user => {
         if (user.userName) {

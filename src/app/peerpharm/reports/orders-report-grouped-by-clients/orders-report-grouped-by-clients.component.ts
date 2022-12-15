@@ -1,3 +1,4 @@
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import {
@@ -10,6 +11,8 @@ import { OrdersService } from "src/app/services/orders.service";
 import "ag-grid-enterprise";
 import * as moment from "moment";
 import { groupBy } from "lodash";
+import { ChartDataSets, ChartOptions, ChartType } from "chart.js";
+import { Label } from "ng2-charts";
 
 export interface OrdersGroupbyCustomersForm {
   customers: string[];
@@ -28,7 +31,8 @@ export class OrdersReportGroupedByClientsComponent implements OnInit {
   submitted: boolean = false;
 
   private gridApi!: GridApi;
-  public columnDefs: ColDef[] = [
+  columnDefs: ColDef[] = [
+    { field: "numberOfOrders" },
     { field: "orderNumber" },
     {
       field: "orderDate",
@@ -52,23 +56,49 @@ export class OrdersReportGroupedByClientsComponent implements OnInit {
     { field: "type" },
     { field: "status" },
   ];
-  public defaultColDef: ColDef = {
+  defaultColDef: ColDef = {
     flex: 1,
+    sortable: true,
   };
-  public autoGroupColumnDef: ColDef = {
+  autoGroupColumnDef: ColDef = {
     headerName: "Customer",
     minWidth: 300,
     cellRendererParams: {
       suppressCount: true,
     },
   };
-  public rowData: any[] | null = [];
-  public groupDefaultExpanded = 0;
-  public getDataPath: GetDataPath = (data: any) => {
+  rowData: any[] | null = [];
+  groupDefaultExpanded = 0;
+  getDataPath: GetDataPath = (data: any) => {
     return data.costumer;
   };
 
-  constructor(private fb: FormBuilder, private ordersService: OrdersService) {}
+  barChartOptions: ChartOptions = {
+    responsive: true,
+    scales: {
+      xAxes: [{}],
+      yAxes: [
+        {
+          display: true,
+          ticks: {
+            suggestedMin: 0,
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
+  };
+  barChartLabels: Label[] = [];
+  barChartType: ChartType = "bar";
+  barChartLegend = true;
+  barChartPlugins = [];
+  barChartData: ChartDataSets[] = [];
+
+  constructor(
+    private fb: FormBuilder,
+    private ordersService: OrdersService,
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -84,19 +114,35 @@ export class OrdersReportGroupedByClientsComponent implements OnInit {
     });
   }
 
+  getPrintStyle = () => {
+    const b = { border: "1px solid #babfc7", padding: "10px" };
+    return {
+      ".ag-header-cell": b,
+      ".ag-cell": b,
+      body: { height: "max-content", "overflow-y": "visible !important" },
+    };
+  };
+
   onSubmit = () => {
     this.submitted = true;
     if (this.form.valid) {
       this.ordersService
         .getOrdersGroupByClient(this.form.value)
         .subscribe((orders) => {
+          const chartData: { [key: string]: number } = {};
           const groupedByOrder = groupBy(orders, "costumer");
           this.rowData = [];
           for (var i in groupedByOrder) {
             const orders = groupedByOrder[i];
+
             orders.forEach((or, index) => {
               if (index === 0) {
-                this.rowData.push({ costumer: [or.costumer] });
+                const total = orders.length;
+                chartData[or.costumer] = total;
+                this.rowData.push({
+                  costumer: [or.costumer],
+                  numberOfOrders: total,
+                });
               }
               this.rowData.push({
                 ...or,
@@ -104,6 +150,10 @@ export class OrdersReportGroupedByClientsComponent implements OnInit {
               });
             });
           }
+          this.barChartLabels = Object.keys(chartData);
+          this.barChartData = [
+            { data: Object.values(chartData), label: "Orders" },
+          ];
         });
     }
   };
@@ -115,5 +165,10 @@ export class OrdersReportGroupedByClientsComponent implements OnInit {
   handleExport($event) {
     $event.preventDefault();
     this.gridApi.exportDataAsCsv();
+  }
+
+  handleChart($event, content) {
+    $event.preventDefault();
+    this.modalService.open(content, { size: "lg", backdrop: "static" });
   }
 }

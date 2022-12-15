@@ -19,7 +19,7 @@ export class TwoFactor implements CanActivate {
 
     return new Promise((resolve, reject) => {
       this.modalService.userAnserEventEmitter.subscribe((userChoice) => {
-        if (userChoice) resolve(userChoice);
+        if (userChoice) resolve(userChoice as boolean);
         else reject(false);
       });
       this.modalService.confirm({ title: "title", message: "message" });

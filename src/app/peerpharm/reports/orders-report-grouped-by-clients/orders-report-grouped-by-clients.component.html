@@ -73,13 +73,35 @@
           <div class="form-group">
             <button class="btn btn-outline-primary">Submit</button>
           </div>
-          <div class="form-group ml-2">
+          <div class="form-group ml-2" *ngIf="rowData.length > 0">
             <button
               class="btn btn-outline-info"
               type="button"
               (click)="handleExport($event)"
             >
               Export as CSV
+            </button>
+          </div>
+          <div class="form-group ml-2" *ngIf="rowData.length > 0">
+            <button
+              class="btn btn-outline-info"
+              type="button"
+              printSectionId="orders-report-grouped-by-client"
+              [useExistingCss]="true"
+              ngxPrint
+            >
+              <!-- [printStyle]="getPrintStyle()"
+              [useExistingCss]="true" -->
+              Print
+            </button>
+          </div>
+          <div class="form-group ml-2" *ngIf="rowData.length > 0">
+            <button
+              class="btn btn-outline-info"
+              type="button"
+              (click)="handleChart($event, content)"
+            >
+              Chart
             </button>
           </div>
         </div>
@@ -90,6 +112,7 @@
     <div class="col-md-12">
       <div class="col-12">
         <ag-grid-angular
+          id="orders-report-grouped-by-client"
           style="width: 100%; height: calc(100vh - 320px)"
           class="ag-theme-alpine"
           [columnDefs]="columnDefs"
@@ -106,3 +129,26 @@
     </div>
   </div>
 </div>
+
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Orders</h4>
+	</div>
+	<div class="modal-body">
+		<div class="chartjs-container">
+      <canvas
+        baseChart
+        [datasets]="barChartData"
+        [labels]="barChartLabels"
+        [options]="barChartOptions"
+        [plugins]="barChartPlugins"
+        [legend]="barChartLegend"
+        [chartType]="barChartType"
+      >
+      </canvas>
+    </div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-dark" (click)="modal.close('Close')">Close</button>
+	</div>
+</ng-template>

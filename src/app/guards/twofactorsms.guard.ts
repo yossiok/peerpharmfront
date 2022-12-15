@@ -26,7 +26,7 @@ export class TwoFactorSms implements CanActivate {
   ): Observable<boolean> | Promise<boolean> | boolean {
     return new Promise((resolve, reject) => {
       this.modalService.userAnserEventEmitter.subscribe((userChoice) => {
-        if (userChoice) resolve(userChoice);
+        if (userChoice) resolve(userChoice as boolean);
         else resolve(false);
       });
       this.modalService.confirm({ title: "title", message: "message" });

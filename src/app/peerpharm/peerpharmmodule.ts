@@ -220,6 +220,8 @@ import { StickerComponent } from "./forms/mkupForm/sticker/sticker.component";
 import { MkupProductionComponent } from "./forms/mkupForm/mkupProduction/mkupProduction.component";
 import { OrdersReportGroupedByClientsComponent } from "./reports/orders-report-grouped-by-clients/orders-report-grouped-by-clients.component";
 import { NgxSelectModule } from "ngx-select-ex";
+import { ChartsModule } from 'ng2-charts';
+
 
 @NgModule({
   exports: [
@@ -256,6 +258,7 @@ import { NgxSelectModule } from "ngx-select-ex";
     NgxPrintModule,
     HttpClientModule,
     NgxSelectModule.forRoot({ keepSelectedItems: false }),
+    ChartsModule,
     //   MatOptionModule,
   ],
   declarations: [
@@ -417,7 +420,9 @@ import { NgxSelectModule } from "ngx-select-ex";
     EmailPurchaseOrderComponent,
     OrdersReportGroupedByClientsComponent,
   ],
-  entryComponents: [AddProcurementItemDialog],
+  entryComponents: [
+    AddProcurementItemDialog,
+  ],
   providers: [
     HttpClientModule,
     WorkPlanStatusPipe,
