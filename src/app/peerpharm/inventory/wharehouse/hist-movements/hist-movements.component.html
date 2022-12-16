@@ -1,14 +1,14 @@
 <div dir="rtl">
   <form [formGroup]="historicalMovements" (ngSubmit)="getReceptions()">
-    <h3>שחזור תעודות היסטוריות</h3>
+    <h3>{{"inventory.RESTORATION_OF_HISTORICAL_DOCUMENTS" | translate}}</h3>
 
     <div class="row mt-2">
       <div class="col-2">
-        <label for="">מספר תעודה</label>
+        <label for="">{{"inventory.CERTIFICATE_NUMBER" | translate}}</label>
         <input type="text" class="form-control" formControlName="warehouseReception">
       </div>
       <div class="col-2">
-        <label for="">מחסן</label>
+        <label for="">{{"inventory.STORAGE" | translate}}</label>
         <select class="form-control" formControlName="WH_originId" #first>
           <!-- <option disabled value="">בחר מחסן</option> -->
           <option *ngFor="let whareHouse of allWhareHouses" [value]="whareHouse._id">{{whareHouse.name}}
@@ -16,7 +16,7 @@
         </select>
       </div>
       <div class="col-2">
-        <label for="">תנועה</label>
+        <label for="">{{"inventory.MOVEMENT" | translate}}</label>
         <select class="form-control" formControlName="movementType">
           <!-- <option disabled>בחר תנועה</option> -->
           <option *ngFor="let action of movementTypes" [value]="action.value">{{action.name}}
@@ -24,25 +24,25 @@
         </select>
       </div>
       <div class="col-2">
-        <label for="">מתאריך (שדה חובה)</label>
+        <label for="">{{"inventory.FROM_DATE" | translate}}</label>
         <input type="date" class="form-control" (change)="consoleForm()" formControlName="fromDate">
       </div>
       <div class="col-2">
-        <label for="">עד תאריך</label>
+        <label for="">{{"inventory.UNTIL" | translate}}</label>
         <input type="date" class="form-control" formControlName="toDate">
       </div>
       <div class="col-2 d-flex flex-column justify-content-end">
         <button type="submit" [disabled]="!historicalMovements.valid"
-          [style.cursor]="historicalMovements.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">חיפוש</button>
+          [style.cursor]="historicalMovements.valid ? 'pointer' : 'not-allowed'" class="btn btn-info">{{"inventory.SEARCH" | translate}}</button>
       </div>
     </div>
     <div class="row mt-2">
       <div class="col-2">
-        <label for="">מספר פריט</label>
+        <label for="">{{"inventory.ITEM_NUMBER" | translate}}</label>
         <input type="text" class="form-control" formControlName="item">
       </div>
       <div class="col-2">
-        <label for="">מספר הזמנת רכש</label>
+        <label for="">{{"inventory.PURCHASE_ORDER_NUMBER" | translate}}</label>
         <input type="text" class="form-control" formControlName="relatedOrderNum">
       </div>
       <div class="col-2">
@@ -50,7 +50,7 @@
       </div>
       <div class="col-1"></div>
       <div class="col-2">
-        <label for="">שם משתמש</label>
+        <label for="">{{"inventory.USERNAME" | translate}}</label>
         <select type="text" class="form-control" formControlName="userName">
           <option dir="ltr" *ngFor="let user of allUsers" [value]="user.userName">{{user.firstName}} {{user.lastName}}
           </option>
@@ -58,7 +58,8 @@
       </div>
       <div class="col-1"></div>
       <div class="col-2 d-flex flex-column justify-content-end">
-        <button type="button" class="btn btn-secondary" (click)="resetTable()">נקה נתונים</button>
+        <button type="button" class="btn btn-secondary" (click)="resetTable()">{{"inventory.CLEAR_DATA" | translate}}
+        </button>
       </div>
     </div>
   </form>
@@ -66,13 +67,13 @@
     <table class="table">
       <thead class="bg-info text-white">
         <tr>
-          <th>תאריך</th>
-          <th>מס' תעודה</th>
-          <th>סוג העברה</th>
-          <th>ממחסן</th>
-          <th>למחסן</th>
-          <th>פריט / כמות / מדף</th>
-          <th>הדפסה</th>
+          <th>{{"inventory.DATE" | translate}}</th>
+          <th>{{"inventory.CERTIFICATE_NO" | translate}}</th>
+          <th>{{"inventory.PASS_TYPE" | translate}}</th>
+          <th>{{"inventory.FROM_WAREHOUSE" | translate}}</th>
+          <th>{{"inventory.TO_WAREHOUSE" | translate}}</th>
+          <th>{{"inventory.ITEM" | translate}} / {{"inventory.QUANTITY" | translate}} / {{"inventory.SHELF" | translate}}</th>
+          <th>{{"inventory.PRINT" | translate}}</th>
         </tr>
       </thead>
       <div *ngIf="fetching" class="smallLoader"></div>
@@ -86,12 +87,12 @@
           <td>
             <table class="table table-striped" style="background: rgb(170, 210, 235);">
               <tr *ngFor="let log of move.logs">
-                <td><strong>פריט:</strong> {{log.item}}</td>
-                <td><strong>ממדף:</strong> {{log.shell_position_in_whareHouse_Origin}}</td>
+                <td><strong>{{"inventory.ITEM" | translate}}:</strong> {{log.item}}</td>
+                <td><strong>{{"inventory.FROM_SHELF" | translate}} :</strong> {{log.shell_position_in_whareHouse_Origin}}</td>
                 <td *ngIf="log.shell_position_in_whareHouse_Dest"><strong>למדף:</strong>
                   {{log.shell_position_in_whareHouse_Dest}}</td>
                 <td *ngIf="!log.shell_position_in_whareHouse_Dest"><strong>יעד:</strong> {{log.destination}}</td>
-                <td><strong>כמות:</strong> {{log.amount}}</td>
+                <td><strong>{{"inventory.QUANTITY" | translate}}:</strong> {{log.amount}}</td>
               </tr>
             </table>
           </td>

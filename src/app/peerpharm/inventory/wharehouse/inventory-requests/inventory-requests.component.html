@@ -15,7 +15,7 @@
           class="p-2 click"
           (click)="clearSearch()"
           style="background-color: rgb(2, 35, 128); color: white"
-          >Now</label
+          >{{"inventory.NOW" | translate}}</label
         >
       </ng-template>
       <div class="row mt-2">
@@ -25,14 +25,14 @@
             type="text"
             class="form-control"
             [(ngModel)]="component"
-            placeholder="Component Number"
+            [placeholder]="'inventory.COMPONENT_NUMBER' | translate"
             (change)="searchDemandByComponent()"
           />
         </col-2>
         <div class="col-1"></div>
         <col-1>
-          <button class="btn btn-outline-danger ml-2" (click)="clearSearch()">
-            Clear
+          <button class="btn btn-outline-danger mr-2" (click)="clearSearch()">
+            {{"CLEAR" | translate}}
           </button></col-1
         >
       </div>
@@ -56,10 +56,10 @@
           </tr>
           <tr>
             <th>#</th>
-            <th>Request Number</th>
-            <th>Date</th>
-            <th>Warehouse</th>
-            <th>To Department:</th>
+            <th>{{"inventory.REQUEST_NUMBER" | translate}}</th>
+            <th>{{"inventory.DATE" | translate}}</th>
+            <th>{{"inventory.WAREHOUSE" | translate}}</th>
+            <th>{{"inventory.TO_DEPARTMENT" | translate}}</th>
             <th></th>
             <th>
               <img
@@ -96,12 +96,12 @@
 
           <tr *ngIf="demand._id == EditRowId2nd && expand == true">
             <th class="cmptTh"></th>
-            <th class="cmptTh">Item Number</th>
-            <th class="cmptTh">Order</th>
-            <th class="cmptTh">Delivery Date</th>
-            <th class="cmptTh">Amount</th>
-            <th class="cmptTh">Supplied</th>
-            <th class="cmptTh">remark</th>
+            <th class="cmptTh">{{"inventory.ITEM_NUMBER" | translate}}</th>
+            <th class="cmptTh">{{"inventory.ORDER" | translate}}</th>
+            <th class="cmptTh">{{"inventory.DELIVERY_DATE" | translate}}</th>
+            <th class="cmptTh">{{"inventory.AMOUNT" | translate}}</th>
+            <th class="cmptTh">{{"inventory.SUPPLIED" | translate }}</th>
+            <th class="cmptTh">{{"inventory.REMARK" | translate }}</th>
           </tr>
           <ng-container *ngFor="let cmpt of demand.reqList">
             <tr
@@ -126,7 +126,7 @@
           class="p-2 click"
           style="background-color: rgb(206, 172, 19); color: white"
           (click)="clearSearch()"
-          >History</label
+          >{{"inventory.HISTORY" | translate}}</label
         >
       </ng-template>
       <div class="row mt-2">
@@ -136,14 +136,14 @@
             type="text"
             class="form-control"
             [(ngModel)]="component"
-            placeholder="Component Number"
+            [placeholder]="'inventory.COMPONENT_NUMBER' | translate"
             (change)="searchRequestByComponent()"
           />
         </col-2>
         <div class="col-1"></div>
         <col-1>
-          <button class="btn btn-outline-danger ml-2" (click)="clearSearch()">
-            Clear
+          <button class="btn btn-outline-danger mr-2" (click)="clearSearch()">
+            {{"CLEAR" | translate}}
           </button></col-1
         >
       </div>
@@ -151,9 +151,9 @@
         <thead style="background-color: rgb(206, 172, 19)" class="text-white">
           <tr>
             <th>#</th>
-            <th>Request Number</th>
-            <th>Date</th>
-            <th>Warehouse</th>
+            <th>{{"inventory.REQUEST_NUMBER" | translate}}</th>
+            <th>{{"inventory.DATE" | translate}}</th>
+            <th>{{"inventory.WAREHOUSE" | translate}}</th>
             <th></th>
             <th>
               <img
@@ -189,11 +189,11 @@
 
           <tr *ngIf="request._id == EditRowId2nd && expand == true">
             <th class="cmptTh"></th>
-            <th class="cmptTh">Item Number</th>
-            <th class="cmptTh">Delivery Date</th>
-            <th class="cmptTh">Amount</th>
-            <th class="cmptTh">Supplied</th>
-            <th class="cmptTh">remark</th>
+            <th class="cmptTh">{{"inventory.ITEM_NUMBER" | translate}}</th>
+            <th class="cmptTh">{{"inventory.DELIVERY_DATE" | translate}}</th>
+            <th class="cmptTh">{{"inventory.AMOUNT" | translate}}</th>
+            <th class="cmptTh">{{"inventory.SUPPLIED" | translate }}</th>
+            <th class="cmptTh">{{"inventory.REMARK" | translate }}</th>
           </tr>
 
           <ng-container *ngFor="let cmpt of request.reqList">

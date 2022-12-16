@@ -1,12 +1,12 @@
 <div dir="rtl">
   <form [formGroup]="shelfChange" (ngSubmit)="changeShelf()">
-    <h3>שינוי מדף</h3>
+    <h3>{{"inventory.CHANGE_SHELF" | translate}}</h3>
     <div class="row mt-4">
-      <p class="h5">* = שדה חובה</p>
+      <p class="h5">{{"inventory.MANDATORY_FIELDS" | translate}}</p>
     </div>
     <div class="row mt-4">
       <div class="col-2">
-        <label>מחסן *</label>
+        <label>{{"inventory.STORAGE" | translate}} *</label>
         <select
           class="form-control"
           formControlName="whareHouseID"
@@ -25,7 +25,7 @@
       </div>
 
       <div *ngIf="!disabled" class="col-2">
-        <label> מק"ט * </label>
+        <label>{{"inventory.SKU" | translate}} * </label>
         <input
           type="text"
           [disabled]="disabled"
@@ -35,10 +35,10 @@
         />
       </div>
       <div *ngIf="!disabled" class="col-2">
-        <label class="d-block"> שם </label>
+        <label class="d-block"> {{"inventory.NAME" | translate}}  </label>
         <input class="d-inline form-control" type="text" #name />
         <button class="d-inline" type="button" (click)="getNames(name)">
-          Find
+          {{"inventory.FIND" | translate}}
         </button>
         <select class="form-control" (change)="setItemDetailsNumber($event)">
           <option
@@ -50,7 +50,7 @@
         </select>
       </div>
       <div class="col-2">
-        <label>מדף ישן *</label>
+        <label>{{"inventory.OLD_SHELF" | translate}} *</label>
         <select
           class="form-control"
           formControlName="old_shell_id_in_whareHouse"
@@ -75,7 +75,7 @@
         </select> -->
       </div>
       <div class="col-2">
-        <label>כמות *</label>
+        <label>{{"inventory.QUANTITY" | translate}} *</label>
         <input type="number" formControlName="amount" class="form-control" />
         <div
           style="color: red; font-size: 1.2rem; font-weight: bold"
@@ -85,7 +85,7 @@
         </div>
       </div>
       <div class="col-2">
-        <label>מדף חדש *</label>
+        <label>{{"inventory.NEW_SHELF_LABEL" | translate}} *</label>
         <select
           class="form-control"
           formControlName="new_shell_id_in_whareHouse"
@@ -112,7 +112,7 @@
           [style.cursor]="shelfChange.valid ? 'pointer' : 'not-allowed'"
           class="btn btn-info"
         >
-          העבר
+          {{"inventory.SEND_PASS" | translate}}
         </button>
         <!-- <button
           type="button"
@@ -138,8 +138,8 @@
           class="btn btn-danger"
           (click)="shelfChange.reset()"
         >
-          נקה נתונים
-        </button>
+        {{"inventory.CLEAR_DATA" | translate}}
+      </button>
       </div>
 
       <!-- <div class="col-6"></div>
@@ -205,19 +205,19 @@
     <hr />
     <main class="main-certificate">
       <h2>תעודת שינוי מדף מס' {{ shelfChange.value.deliveryNote }}</h2>
-      <h3>מחסן: {{ shelfChange.value.whName }}</h3>
-      <h4>תאריך: {{ printDate | date: "dd/MM/yyyy" }}</h4>
+      <h3>{{"inventory.STORAGE" | translate}}: {{ shelfChange.value.whName }}</h3>
+      <h4>{{"inventory.DATE" | translate}}: {{ printDate | date: "dd/MM/yyyy" }}</h4>
       <h4>שעה: {{ printDate | date: "HH:mm" }}</h4>
       <h5>שם מבצע הפעולה: {{ shelfChange.value.user }}</h5>
       <hr />
       <table>
         <thead>
           <tr>
-            <th>מק"ט</th>
+            <th>{{"inventory.SKU" | translate}}</th>
             <th>שם הפריט</th>
-            <th>כמות</th>
-            <th>מדף ישן</th>
-            <th>מדף חדש</th>
+            <th>{{"inventory.QUANTITY" | translate}}</th>
+            <th>{{"inventory.OLD_SHELF" | translate}}</th>
+            <th>{{"inventory.NEW_SHELF" | translate}}</th>
           </tr>
         </thead>
         <tbody>
