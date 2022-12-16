@@ -9,10 +9,11 @@ import {
 } from "ag-grid-community";
 import { OrdersService } from "src/app/services/orders.service";
 import "ag-grid-enterprise";
-import * as moment from "moment";
 import { groupBy } from "lodash";
-import { ChartDataSets, ChartOptions, ChartType } from "chart.js";
+import { ChartDataSets } from "chart.js";
 import { Label } from "ng2-charts";
+import { getAutoGroupColumnDef, getOrdersColumns } from "../utils/grid";
+import { NgxSelectOptions } from "../../../interfaces/general";
 
 export interface OrdersGroupbyCustomersForm {
   customers: string[];
@@ -27,71 +28,23 @@ export interface OrdersGroupbyCustomersForm {
 })
 export class OrdersReportGroupedByClientsComponent implements OnInit {
   form: FormGroup;
-  customers: { id: string; text: string }[] = [{ id: "all", text: "All" }];
+  customers: NgxSelectOptions[] = [{ id: "all", text: "All" }];
   submitted: boolean = false;
 
   private gridApi!: GridApi;
-  columnDefs: ColDef[] = [
-    { field: "numberOfOrders" },
-    { field: "orderNumber" },
-    {
-      field: "orderDate",
-      valueGetter: (params) => {
-        return (
-          params.data.orderDate &&
-          moment(params.data.orderDate).format("DD/MM/yyyy")
-        );
-      },
-    },
-    {
-      field: "deliveryDate",
-      valueGetter: (params) => {
-        return (
-          params.data.deliveryDate &&
-          moment(params.data.deliveryDate).format("DD/MM/yyyy")
-        );
-      },
-    },
-    { field: "orderRemarks" },
-    { field: "type" },
-    { field: "status" },
-  ];
+  columnDefs: ColDef[] = getOrdersColumns();
   defaultColDef: ColDef = {
     flex: 1,
     sortable: true,
   };
-  autoGroupColumnDef: ColDef = {
-    headerName: "Customer",
-    minWidth: 300,
-    cellRendererParams: {
-      suppressCount: true,
-    },
-  };
+  autoGroupColumnDef: ColDef = getAutoGroupColumnDef("Customer");
   rowData: any[] | null = [];
   groupDefaultExpanded = 0;
   getDataPath: GetDataPath = (data: any) => {
     return data.costumer;
   };
 
-  barChartOptions: ChartOptions = {
-    responsive: true,
-    scales: {
-      xAxes: [{}],
-      yAxes: [
-        {
-          display: true,
-          ticks: {
-            suggestedMin: 0,
-            beginAtZero: true,
-          },
-        },
-      ],
-    },
-  };
   barChartLabels: Label[] = [];
-  barChartType: ChartType = "bar";
-  barChartLegend = true;
-  barChartPlugins = [];
   barChartData: ChartDataSets[] = [];
 
   constructor(
@@ -164,7 +117,7 @@ export class OrdersReportGroupedByClientsComponent implements OnInit {
 
   handleExport($event) {
     $event.preventDefault();
-    this.gridApi.exportDataAsCsv();
+    this.gridApi.exportDataAsCsv({fileName: 'orders-report-grouped-by-clients.csv'});
   }
 
   handleChart($event, content) {

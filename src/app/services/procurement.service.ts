@@ -3,6 +3,7 @@ import { Http, Headers, RequestOptions } from "@angular/http";
 import { map } from "rxjs/operators";
 import { Observable } from "../../../node_modules/rxjs";
 import { Currencies } from "../peerpharm/procurement/Currencies";
+import { PurchaseOrdersGroupedBySupplierForm } from "../peerpharm/reports/purchase-orders-grouped-by-supplier/purchase-orders-grouped-by-supplier.component";
 
 @Injectable({
   providedIn: "root",
@@ -511,5 +512,15 @@ export class Procurementservice {
   sendPurchaseOrderByMail(mail) {
     let url = this.baseUrl + "newProcurement/sendPurchaseOrderByMail";
     return this.http.post(url, mail).pipe(map((response) => response.json()));
+  }
+
+  getStockItems = () => {
+    let url = this.baseUrl + "procurementOrderController/get-stock-items";
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+
+  getOrdersGroupBySupplier(values: PurchaseOrdersGroupedBySupplierForm) {
+    let url = this.baseUrl + "procurementOrderController/purchase-orders-grouped-by-supplier";
+    return this.http.post(url, values).pipe(map((res) => res.json()));
   }
 }

@@ -99,6 +99,7 @@ import { SearchComponent } from "./search/search.component";
 import { OrdersSimulatorComponent } from "./mrp-tools/orders-simulator.component";
 import { ComaxItemsIndexComponent } from "./comax-items-index/comax-items-index.component";
 import { OrdersReportGroupedByClientsComponent } from "./reports/orders-report-grouped-by-clients/orders-report-grouped-by-clients.component";
+import { PurchaseOrdersGroupedBySupplierComponent } from "./reports/purchase-orders-grouped-by-supplier/purchase-orders-grouped-by-supplier.component";
 // import { ItemIndexNewComponent } from "./item-index-new/item-index-new.component";
 
 export const PeerPharmRputs: Routes = [
@@ -872,5 +873,13 @@ export const PeerPharmRputs: Routes = [
       title: "Orders Grouped By Clients",
     },
     component: OrdersReportGroupedByClientsComponent,
+  },
+  {
+    path: "purchase-orders-grouped-by-supplier",
+    canActivate: [ScreenGuard],
+    data: {
+      title: "Purchase Orders Grouped By Supplier",
+    },
+    component: PurchaseOrdersGroupedBySupplierComponent,
   },
 ];

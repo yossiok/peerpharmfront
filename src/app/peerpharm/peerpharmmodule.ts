@@ -221,6 +221,8 @@ import { MkupProductionComponent } from "./forms/mkupForm/mkupProduction/mkupPro
 import { OrdersReportGroupedByClientsComponent } from "./reports/orders-report-grouped-by-clients/orders-report-grouped-by-clients.component";
 import { NgxSelectModule } from "ngx-select-ex";
 import { ChartsModule } from 'ng2-charts';
+import { PurchaseOrdersGroupedBySupplierComponent } from "./reports/purchase-orders-grouped-by-supplier/purchase-orders-grouped-by-supplier.component";
+import { BarChartComponent } from "./charts/bar-chart/bar-chart.component";
 
 
 @NgModule({
@@ -419,6 +421,8 @@ import { ChartsModule } from 'ng2-charts';
     MultiForecastsComponent,
     EmailPurchaseOrderComponent,
     OrdersReportGroupedByClientsComponent,
+    PurchaseOrdersGroupedBySupplierComponent,
+    BarChartComponent,
   ],
   entryComponents: [
     AddProcurementItemDialog,

@@ -246,7 +246,7 @@ export const ROUTES: RouteInfo[] = [
       },
     ],
   },
-  { 
+  {
     path: "",
     title: "menu.INVENTORY",
     icon: " fas fa-dolly",
@@ -428,6 +428,14 @@ export const ROUTES: RouteInfo[] = [
       {
         path: "/peerpharm/orders-reports-grouped-by-clients",
         title: "Orders Grouped By Clients",
+        icon: "fas fa-list-ol",
+        class: "",
+        extralink: false,
+        submenu: [],
+      },
+      {
+        path: "/peerpharm/purchase-orders-grouped-by-supplier",
+        title: "Purchase Orders Grouped By Supplier",
         icon: "fas fa-list-ol",
         class: "",
         extralink: false,

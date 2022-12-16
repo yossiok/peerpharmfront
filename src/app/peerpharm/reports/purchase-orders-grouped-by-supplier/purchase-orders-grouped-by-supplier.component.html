@@ -4,43 +4,20 @@
       <div class="col-md-12 col-lg-4 col-xl-4 d-flex">
         <div class="col-6">
           <div class="form-group">
-            <label for="customers"> Customers </label>
-            <ngx-select
-              id="customers"
-              [allowClear]="false"
-              autocomplete="off"
-              [items]="customers"
-              placeholder="Select"
-              name="customers"
-              [multiple]="true"
-              formControlName="customers"
-            ></ngx-select>
-            <ng-container *ngIf="form.controls.customers.invalid && submitted">
-              <div
-                class="text-danger"
-                *ngIf="form.controls.customers.errors.required"
-              >
-                This field is required
-              </div>
-            </ng-container>
-          </div>
-        </div>
-        <div class="col-6">
-          <div class="form-group">
-            <label for="startOrderDate"> Start Date </label>
+            <label for="from"> From </label>
             <input
               name="start"
               class="filter-input date-input form-control form-control-1"
               type="date"
-              #startOrderDate
-              formControlName="startOrderDate"
+              #from
+              formControlName="from"
             />
             <ng-container
-              *ngIf="form.controls.startOrderDate.invalid && submitted"
+              *ngIf="form.controls.from.invalid && submitted"
             >
               <div
                 class="text-danger"
-                *ngIf="form.controls.startOrderDate.errors.required"
+                *ngIf="form.controls.from.errors.required"
               >
                 This field is required
               </div>
@@ -49,24 +26,62 @@
         </div>
         <div class="col-6">
           <div class="form-group">
-            <label for="endOrderDate"> End Date </label>
+            <label for="to"> To </label>
             <input
               name="end"
               class="filter-input date-input form-control form-control-1"
               type="date"
-              #endOrderDate
-              formControlName="endOrderDate"
+              #to
+              formControlName="to"
             />
             <ng-container
-              *ngIf="form.controls.endOrderDate.invalid && submitted"
+              *ngIf="form.controls.to.invalid && submitted"
             >
               <div
                 class="text-danger"
-                *ngIf="form.controls.endOrderDate.errors.required"
+                *ngIf="form.controls.to.errors.required"
               >
                 This field is required
               </div>
             </ng-container>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label for="suppliers"> Suppliers </label>
+            <ngx-select
+              id="suppliers"
+              [allowClear]="false"
+              autocomplete="off"
+              [items]="suppliers"
+              placeholder="Select"
+              name="suppliers"
+              [multiple]="true"
+              formControlName="suppliers"
+            ></ngx-select>
+            <ng-container *ngIf="form.controls.suppliers.invalid && submitted">
+              <div
+                class="text-danger"
+                *ngIf="form.controls.suppliers.errors.required"
+              >
+                This field is required
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="form-group">
+            <label for="items"> Items </label>
+            <ngx-select
+              id="items"
+              [allowClear]="false"
+              autocomplete="off"
+              [items]="items"
+              placeholder="Select"
+              name="items"
+              [multiple]="true"
+              formControlName="items"
+            ></ngx-select>
           </div>
         </div>
         <div class="col-12 center d-flex">
@@ -86,12 +101,10 @@
             <button
               class="btn btn-outline-info"
               type="button"
-              printSectionId="orders-report-grouped-by-client"
+              printSectionId="purchase-orders-grouped-by-supplier"
               [useExistingCss]="true"
               ngxPrint
             >
-              <!-- [printStyle]="getPrintStyle()"
-              [useExistingCss]="true" -->
               Print
             </button>
           </div>
@@ -112,7 +125,7 @@
     <div class="col-md-12">
       <div class="col-12">
         <ag-grid-angular
-          id="orders-report-grouped-by-client"
+          id="purchase-orders-grouped-by-supplier"
           style="width: 100%; height: calc(100vh - 320px)"
           class="ag-theme-alpine"
           [columnDefs]="columnDefs"
@@ -132,7 +145,7 @@
 
 <ng-template #content let-modal>
 	<div class="modal-header">
-		<h4 class="modal-title" id="modal-basic-title">Orders</h4>
+		<h4 class="modal-title" id="modal-basic-title">Purchase Orders</h4>
 	</div>
 	<div class="modal-body">
     <app-bar-chart
