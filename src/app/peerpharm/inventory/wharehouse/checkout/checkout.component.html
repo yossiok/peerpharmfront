@@ -1,12 +1,13 @@
 <div dir="rtl">
   <form [formGroup]="componentCheckout" (ngSubmit)="addToOutGoing()">
-    <h3>הוצאת סחורה</h3>
+    <h3>{{"inventory.SEND_INVENTORY" | translate}}
+    </h3>
     <div class="row mt-4">
-      <p class="h5">* = שדה חובה</p>
+      <p class="h5">{{"inventory.MANDATORY_FIELDS" | translate}}</p>
     </div>
     <div class="row mt-4">
       <div class="col-2">
-        <label>מחסן *</label>
+        <label>{{"inventory.STORAGE" | translate}} *</label>
         <select
           class="form-control"
           (change)="itemNumber ? getShelfs() : null"
@@ -24,7 +25,7 @@
       </div>
 
       <div *ngIf="!disabled" class="col-2">
-        <label> מק"ט * </label>
+        <label>{{"inventory.SKU" | translate}} * </label>
         <input
           type="text"
           [disabled]="disabled"
@@ -34,7 +35,7 @@
         />
       </div>
       <div *ngIf="!disabled" class="col-2">
-        <label class="d-block"> שם </label>
+        <label class="d-block"> {{"inventory.NAME" | translate}}  </label>
         <input
           class="d-inline form-control"
           type="text"
@@ -42,7 +43,7 @@
           formControlName="itemName"
         />
         <button class="d-inline" type="button" (click)="getNames()">
-          Find
+          {{"inventory.FIND" | translate}}
         </button>
         <select class="form-control" (change)="setItemDetailsNumber($event)">
           <option
@@ -54,7 +55,7 @@
         </select>
       </div>
       <div class="col-2">
-        <label>מדף *</label>
+        <label>{{"inventory.SHELF" | translate}} *</label>
         <select
           class="form-control"
           formControlName="shell_id_in_whareHouse"
@@ -71,10 +72,10 @@
           </option>
         </select>
         <input type="checkbox" (change)="shaulyShutUp()" class="return" />
-        <h3 class="return-label">החזרת סחורה</h3>
+        <h3 class="return-label">{{"inventory.MERCHANDISE_RETURN" | translate}}</h3>
       </div>
       <div class="col-2">
-        <label>כמות *</label>
+        <label>{{"inventory.QUANTITY" | translate}} *</label>
         <input
           type="number"
           min="1"
@@ -89,8 +90,8 @@
           * הכמות חייבת להיות גדולה מאפס
         </div>
         <label
-          >סיבת <span *ngIf="!isReturn">יציאה</span
-          ><span *ngIf="isReturn">החזרה</span> *</label
+          ><span *ngIf="!isReturn">{{"inventory.REASON_FOR_LEAVING" | translate}}</span
+          ><span *ngIf="isReturn">{{"inventory.REASON_FOR_RETURN" | translate}} </span> *</label
         >
         <input type="text" class="form-control" formControlName="destination" />
       </div>
@@ -101,14 +102,14 @@
           [style.cursor]="componentCheckout.valid ? 'pointer' : 'not-allowed'"
           class="btn btn-info"
         >
-          הוצא
+        {{"inventory.EXPORT" | translate}}
         </button>
         <button
           type="button"
           class="btn btn-secondary"
           (click)="componentCheckout.reset()"
         >
-          נקה נתונים
+        {{"inventory.CLEAR_DATA" | translate}}
         </button>
       </div>
       <div class="col-1"></div>
@@ -130,10 +131,10 @@
     <table class="table table-hover">
       <thead class="bg-info text-white">
         <tr>
-          <th class="text-center">פריט</th>
-          <th class="text-center">כמות</th>
-          <th class="text-center">יצא ממחסן..</th>
-          <th class="text-center">ממדף..</th>
+          <th class="text-center">{{"inventory.ITEM" | translate}}</th>
+          <th class="text-center">{{"inventory.QUANTITY" | translate}}</th>
+          <th class="text-center">{{"inventory.OUT_OF_STORAGE" | translate}}</th>
+          <th class="text-center">{{"inventory.FROM_SHELF" | translate}}</th>
           <th class="text-center"></th>
         </tr>
       </thead>
@@ -162,12 +163,12 @@
       [disabled]="outGoing.length == 0"
       [style.cursor]="outGoing.length == 0 ? 'not-allowed' : 'pointer'"
     >
-      הוצא מהמלאי (שלח שינויים) <i class="fa fa-check"></i>
+      {{"inventory.OUT_OF_STOCK_SUBMIT" | translate}} <i class="fa fa-check mr-2"></i>
     </button>
     <div class="smallerLoader" *ngIf="sending"></div>
     <!-- <button class="btn btn-success" (click)="justPrint()">הדפס <i class="fa fa-print"></i></button> -->
     <button class="btn btn-warning" (click)="clearArrivals()">
-      נקה טבלה <i class="fas fa-trash-alt"></i>
+      {{"inventory.CLEAR_TABLE" | translate}}<i class="fas fa-trash-alt mr-2"></i>
     </button>
   </div>
 
@@ -193,7 +194,7 @@
           ><span *ngIf="isReturn">החזרה</span> מס' {{ certificateReception }}
         </h2>
         <p class="originDestWh">
-          <span><u>תאריך:</u></span
+          <span><u>{{"inventory.DATE" | translate}}:</u></span
           >&nbsp;&nbsp; <span>{{ today | date: "dd-MM-yyyy" }}</span
           >&nbsp;&nbsp;
         </p>
@@ -202,12 +203,12 @@
           <tbody>
             <tr>
               <th>#</th>
-              <th>מספר פריט</th>
-              <th>מחסן</th>
+              <th>{{"inventory.ITEM_NUMBER" | translate}}</th>
+              <th>{{"inventory.STORAGE" | translate}}</th>
               <th>מיקום</th>
-              <th>כמות</th>
+              <th>{{"inventory.QUANTITY" | translate}}</th>
               <th class="itemNamePrint">שם פריט</th>
-              <th>סיבת יציאה / החזרה</th>
+              <th>{{"inventroy.REASON_FOR_LEAVING" | translate}} / החזרה</th>
             </tr>
             <ng-container *ngFor="let arrival of outGoing; let i = index">
               <tr>
@@ -239,7 +240,7 @@
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </u> </span
-          >&nbsp;&nbsp; <span>תאריך:</span>&nbsp;&nbsp;
+          >&nbsp;&nbsp; <span>{{"inventory.DATE" | translate}}:</span>&nbsp;&nbsp;
           <span>
             <u>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

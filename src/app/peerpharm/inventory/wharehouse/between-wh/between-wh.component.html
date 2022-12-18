@@ -1,12 +1,12 @@
 <div dir="rtl">
   <form [formGroup]="movementForm" (ngSubmit)="addItem()">
-    <h3>העברת סחורה בין מחסנים</h3>
+    <h3>{{"inventory.BETWEEN_WAREHOUSES" | translate}}</h3>
     <div class="row mt-4">
-      <p class="h5">* = שדה חובה</p>
+      <p class="h5">{{"inventory.MANDATORY_FIELDS" | translate}}</p>
     </div>
     <div class="row mt-4">
       <div class="col-2">
-        <label>ממחסן *</label>
+        <label>{{"inventory.FROM_WAREHOUSE" | translate}} *</label>
         <select
           class="form-control"
           formControlName="WH_originId"
@@ -34,7 +34,7 @@
     </div>
     <div class="row mt-4">
       <div *ngIf="!disabled" class="col-2">
-        <label> מק"ט * </label>
+        <label>{{"inventory.SKU" | translate}} * </label>
         <input
           type="text"
           #first
@@ -50,19 +50,14 @@
             movementForm.controls.item.errors?.required
           "
         >
-          **הכנס מק"ט
+          {{"inventory.ENTER_SKU" | translate}}
         </div>
       </div>
       <div *ngIf="!disabled" class="col-2">
-        <label class="d-block"> שם </label>
-        <input
-          class="d-inline form-control"
-          type="text"
-          formControlName="itemName"
-          #name
-        />
+        <label class="d-block">{{"inventory.NAME" | translate}} </label>
+        <input class="d-inline form-control" type="text" #name />
         <button class="d-inline" type="button" (click)="getNames()">
-          Find
+          {{"inventory.FIND" | translate}}
         </button>
         <select class="form-control" (change)="setItemDetailsNumber($event)">
           <option
@@ -74,7 +69,7 @@
         </select>
       </div>
       <div class="col-2">
-        <label>ממדף *</label>
+        <label>{{"inventory.FROM_SHELF" | translate}} *</label>
         <select
           class="form-control"
           (change)="setOriginPosition()"
@@ -93,7 +88,7 @@
       </div>
 
       <div class="col-2">
-        <label>כמות *</label>
+        <label>{{"inventory.QUANTITY" | translate}} *</label>
         <input
           type="number"
           formControlName="amount"
@@ -110,7 +105,7 @@
     </div>
     <div class="row mt-4">
       <div class="col-2">
-        <label>למחסן *</label>
+        <label>{{"inventory.TO_WAREHOUSE" | translate}} *</label>
         <select
           class="form-control"
           formControlName="WH_destId"
@@ -129,7 +124,7 @@
         </select>
       </div>
       <div class="col-2">
-        <label>למדף *</label>
+        <label>{{"inventory.TO_SHELF" | translate}} *</label>
         <select
           class="form-control"
           (change)="setDestPosition()"
@@ -156,7 +151,7 @@
             (click)="getAllShelfsOfDest(whid.value)"
             class="btn btn-warning"
           >
-            הכנס למדף חדש
+            {{"inventory.ADD_TO_NEW_SHELF" | translate}}
           </button>
         </span>
       </div>
@@ -177,7 +172,7 @@
           [style.cursor]="movementForm.valid ? 'pointer' : 'not-allowed'"
           class="btn btn-info"
         >
-          הוסף למשלוח
+          {{"inventory.ADD_TO_SHIPPING" | translate}}
         </button>
       </div>
       <div class="col-2 d-flex flex-column justify-content-between"></div>
@@ -187,7 +182,7 @@
           class="btn btn-secondary"
           (click)="movementForm.reset()"
         >
-          נקה נתונים
+          {{"inventory.CLEAR_DATA" | translate}}
         </button>
       </div>
     </div>
@@ -197,11 +192,11 @@
       <thead class="bg-info text-white">
         <tr>
           <th>#</th>
-          <th class="text-center">מספר פריט</th>
+          <th class="text-center">{{"inventory.ITEM_NUMBER" | translate}}</th>
           <th class="text-center">שם פריט</th>
-          <th class="text-center">כמות</th>
-          <th class="text-center">ממחסן/מדף</th>
-          <th class="text-center">למחסן/מדף</th>
+          <th class="text-center">{{"inventory.QUANTITY" | translate}}</th>
+          <th class="text-center">{{"inventory.FROM_WAREHOUSE" | translate}}/{{"inventory.SHELF" | translate}}</th>
+          <th class="text-center">{{"inventory.TO_WAREHOUSE" | translate}}/{{"inventory.SHELF" | translate}}</th>
           <th></th>
         </tr>
       </thead>
@@ -240,14 +235,14 @@
       [disabled]="allMovements.length == 0"
       [style.cursor]="allMovements.length == 0 ? 'not-allowed' : 'pointer'"
     >
-      נפק תעודה (עדכן מלאים)<i class="fa fa-check"></i>
+      {{"inventory.ISSUE_CERTIFICATE_UPDATE_STOCK" | translate}} <i class="fa fa-check mr-2"></i>
     </button>
     <div class="smallerLoader" *ngIf="sending"></div>
     <!-- <button class="btn btn-success" (click)="justPrint()">
       הדפס <i class="fa fa-print"></i>
     </button> -->
     <button class="btn btn-warning" (click)="clearArrivals()">
-      נקה טבלה <i class="fas fa-trash-alt"></i>
+      {{"inventory.CLEAR_TABLE" | translate}}<i class="fas fa-trash-alt mr-2"></i>
     </button>
   </div>
 
@@ -287,7 +282,7 @@
             תעודת העברה מס' {{ allMovements[0].warehouseReception }}
           </h2>
           <p class="originDestWh">
-            <span><u>תאריך:</u></span
+            <span><u>{{"inventory.DATE" | translate}}:</u></span
             >&nbsp;&nbsp; <span>{{ today | date: "dd-MM-yyyy" }}</span
             >&nbsp;&nbsp;
           </p>
@@ -295,8 +290,8 @@
           <table>
             <thead>
               <tr>
-                <th>למחסן:</th>
-                <th>ממחסן:</th>
+                <th>{{"inventory.TO_WAREHOUSE" | translate}}:</th>
+                <th>{{"inventory.FROM_WAREHOUSE" | translate}}:</th>
               </tr>
             </thead>
             <tbody>
@@ -338,11 +333,11 @@
             <tbody>
               <tr>
                 <td>#</td>
-                <th>מספר פריט</th>
+                <th>{{"inventory.ITEM_NUMBER" | translate}}</th>
                 <th>שם פריט</th>
-                <th>כמות</th>
-                <th>ממחסן/מדף</th>
-                <th>למחסן/מדף</th>
+                <th>{{"inventory.QUANTITY" | translate}}</th>
+                <th>{{"inventory.FROM_WAREHOUSE" | translate}}/{{"inventory.SHELF" | translate}}</th>
+                <th>{{"inventory.TO_WAREHOUSE" | translate}}/{{"inventory.SHELF" | translate}}</th>
               </tr>
               <ng-container *ngIf="allMovements.length > 0">
                 <tr *ngFor="let move of allMovements; let i = index">
@@ -379,7 +374,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               </u> </span
-            >&nbsp;&nbsp; <span>תאריך:</span>&nbsp;&nbsp;
+            >&nbsp;&nbsp; <span>{{"inventory.DATE" | translate}}:</span>&nbsp;&nbsp;
             <span>
               <u>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

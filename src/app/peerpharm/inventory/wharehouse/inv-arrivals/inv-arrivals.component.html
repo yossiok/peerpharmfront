@@ -1,19 +1,19 @@
 <div dir="rtl">
   <form [formGroup]="componentArrival" (ngSubmit)="addToArrivals()">
-    <h3>{{ "IN" | translate }}</h3>
+    <h3>{{"inventory.GET_INVENTORIES" | translate }}</h3>
     <div class="row mt-4">
-      <p class="h5">* = שדה חובה</p>
+      <p class="h5">{{"inventory.MANDATORY_FIELDS" | translate}}</p>
     </div>
  
     <div class="row mt-2">
       <div class="col-2">
-        <label>{{ "wharehouse" | translate }} *</label>
+        <label>{{"inventory.WAREHOUSE" | translate}} *</label>
         <select
           class="form-control"
           (change)="getWhName()"
           formControlName="whareHouseID"
         >
-          <option disabled value="">בחר מחסן</option>
+          <option disabled value="">{{"inventory.SELECT_WAREHOUSE" | translate}}</option>
           <option
             *ngFor="let whareHouse of allWhareHouses"
             [value]="whareHouse._id"
@@ -23,14 +23,14 @@
         </select>
       </div>
       <div class="col-2">
-        <label for="">  {{ "goodsOrigin" | translate }} *</label>
+        <label for="">{{"inventory.ORIGIN_OF_GOODS" | translate}} *</label>
         <select
           class="form-control"
           formControlName="sourceType"
           (change)="chooseSource()"
         >
-          <option disabled value="">{{ "goodsOrigin" | translate }} </option>
-          <option value="supplier">ספק</option>
+          <option disabled value="">{{"inventory.SELECT_ORIGIN_OF_GOODS" | translate}}</option>
+          <option value="supplier">{{"inventory.SUPPLIER" | translate}}</option>
           <option value="warehouse">מחסן אחר</option>
           <option value="customerSupply">לקוח (קומפוננטים)</option>
           <option value="customer">לקוח (החזרות)</option>
@@ -95,7 +95,7 @@
           </select>
         </div>
         <div class="col-2">
-          <label for="">מס' תעודה</label>
+          <label for="">{{"inventory.CERTIFICATE_NO" | translate}}</label>
           <select
             class="form-control"
             formControlName="sourceWhCertificateId"
@@ -185,7 +185,7 @@
           <tr>
             <th>#</th>
             <th class="text-center">סוג פריט</th>
-            <th class="text-center">מק"ט</th>
+            <th class="text-center">{{"inventory.SKU" | translate}}</th>
             <th class="text-center">שם פריט</th>
             <th class="text-center">כמות שהוזמנה</th>
             <th class="text-center">כמות שסופקה</th>
@@ -218,7 +218,7 @@
           <tr>
             <th>#</th>
             <th class="text-center">סוג פריט</th>
-            <th class="text-center">מק"ט</th>
+            <th class="text-center">{{"inventory.SKU" | translate}}</th>
             <th class="text-center">שם פריט</th>
             <th class="text-center">הגיע ממחסן</th>
             <th class="text-center">הגיע ממדף</th>
@@ -251,7 +251,7 @@
           <tr>
             <th>#</th>
             <th class="text-center">סוג פריט</th>
-            <th class="text-center">מק"ט</th>
+            <th class="text-center">{{"inventory.SKU" | translate}}</th>
             <th class="text-center">שם פריט</th>
             <th class="text-center">משקל (גר')</th>
             <th class="text-center">כמות שהוזמנה</th>
@@ -279,7 +279,7 @@
 
     <div class="row mt-2">
       <div *ngIf="!disabled && supplierView" class="col-2">
-        <label> מק"ט * </label>
+        <label> {{"inventory.SKU" | translate}} * </label>
         <select
           formControlName="item"
           (blur)="getShelfs()"
@@ -304,7 +304,7 @@
         </select>
       </div>
       <div *ngIf="!disabled && warehouseView" class="col-2">
-        <label> מק"ט * </label>
+        <label>{{"inventory.SKU" | translate}} * </label>
         <select
           formControlName="itemId"
           (blur)="getShelfs()"
@@ -327,7 +327,7 @@
         </select>
       </div>
       <div *ngIf="!disabled && customerView" class="col-2">
-        <label> מק"ט * </label>
+        <label>{{"inventory.SKU" | translate}} * </label>
         <select
           formControlName="item"
           (blur)="getShelfs()"
@@ -348,7 +348,7 @@
         </select>
       </div>
       <div *ngIf="!disabled && customerSupplyView" class="col-2">
-        <label> מק"ט * </label>
+        <label>{{"inventory.SKU" | translate}} * </label>
         <input
           type="text"
           [disabled]="disabled"
@@ -359,7 +359,7 @@
         />
       </div>
       <div *ngIf="!disabled" class="col-2">
-        <label class="d-block"> {{ "name" | translate }}  </label>
+        <label class="d-block">{{"inventory.NAME" | translate}}</label>
         <input
           class="d-inline form-control"
           formControlName="itemName"
@@ -368,7 +368,7 @@
           (click)="getShelfs()"
         />
         <button class="d-inline" type="button" (click)="getNames()">
-          Find
+          {{"inventory.FIND" | translate}}
         </button>
         <select class="form-control" (change)="setItemDetailsNumber($event)">
           <ng-container *ngIf="itemNames && itemNames.length > 0">
@@ -382,7 +382,7 @@
         </select>
       </div>
       <div class="col-2">
-        <label>  {{ "shelf" | translate }} *</label>
+        <label>{{"inventory.SHELF" | translate}} *</label>
         <select class="form-control" formControlName="shell_id_in_whareHouse">
           <option disabled value="">בחר מדף</option>
           <ng-container *ngIf="shellNums && shellNums.length > 0">
@@ -405,7 +405,7 @@
               (click)="getAllShellsOfWhareHouse()"
               class="btn btn-warning"
             >
-            {{ "put_in_new_shelf" | translate }}
+            {{"inventory.ADD_TO_NEW_SHELF" | translate}}
             </button>
           </span>
         </div>
@@ -418,13 +418,13 @@
               (click)="getAllShellsOfWhareHouse()"
               class="btn btn-warning"
             >
-            {{ "put_in_new_shelf" | translate }}
+            {{"inventory.ADD_TO_NEW_SHELF" | translate}}
             </button>
           </span>
         </div>
       </div>
       <div class="col-2">
-        <label>      {{ "amount" | translate }} *</label>
+        <label>{{"inventory.QUANTITY" | translate}} *</label>
         <input type="number" formControlName="amount" class="form-control" />
         <div
           style="color: red; font-size: 1.2rem; font-weight: bold"
@@ -440,10 +440,10 @@
           [style.cursor]="componentArrival.valid ? 'pointer' : 'not-allowed'"
           class="btn btn-info"
         >
-        {{ "enter" | translate }}
+          {{"inventory.ENTER" | translate}}
         </button>
         <button type="button" class="btn btn-secondary" (click)="resetValues()">
-            {{ "clear" | translate }}
+          {{"inventory.CLEAR_DATA" | translate}}
         </button>
       </div>
     </div>
@@ -479,10 +479,10 @@
       <thead class="bg-info text-white">
         <tr>
           <th>#</th>
-          <th class="text-center">פריט</th>
-          <th class="text-center">כמות</th>
-          <th class="text-center">נכנס למחסן..</th>
-          <th class="text-center">למדף..</th>
+          <th class="text-center">{{"inventory.ITEM" | translate}}</th>
+          <th class="text-center">{{"inventory.QUANTITY" | translate}}</th>
+          <th class="text-center">{{"inventory.IN_STORAGE_ROOM" | translate}}</th>
+          <th class="text-center">{{"inventory.INTO_SHELF" | translate}}</th>
           <th class="text-center"></th>
           <th></th>
         </tr>
@@ -523,14 +523,14 @@
       [disabled]="allArrivals.length == 0"
       [style.cursor]="allArrivals.length == 0 ? 'not-allowed' : 'pointer'"
     >
-    {{ "Add_to_inventory_save_changes_" | translate }}<i class="fa fa-check"></i>
+    {{"inventory.ADD_TO_INVENTORY_SEND_CHANGES" | translate}}<i class="fa fa-check mr-2"></i>
     </button>
     <div class="smallerLoader" *ngIf="sending"></div>
     <!-- <button class="btn btn-success" (click)="justPrint()">
       הדפס <i class="fa fa-print"></i>
     </button> -->
     <button class="btn btn-warning" (click)="clearArrivals()">
-      {{ "clear_table" | translate }}<i class="fas fa-trash-alt"></i>
+      {{"inventory.CLEAR_TABLE" | translate}}<i class="fas fa-trash-alt mr-2"></i>
     </button>
   </div>
 
@@ -555,7 +555,7 @@
           תעודת קליטה מס' {{ certificateReception }}
         </h2>
         <p class="originDestWh">
-          <span><u>תאריך:</u></span
+          <span><u>{{"inventory.DATE" | translate}}:</u></span
           >&nbsp;&nbsp; <span>{{ today | date: "dd-MM-yyyy" }}</span
           >&nbsp;&nbsp;
         </p>
@@ -564,11 +564,11 @@
           <tbody>
             <tr>
               <th>#</th>
-              <th>מספר פריט</th>
+              <th>{{"inventory.ITEM_NUMBER" | translate}}</th>
               <th class="itemNamePrint">שם פריט</th>
               <th>מחסן מקבל</th>
               <th>מיקום במחסן</th>
-              <th>כמות</th>
+              <th>{{"inventory.QUANTITY" | translate}}</th>
               <th>מס' ספק/מחסן/לקוח</th>
               <th>מספר הזמנה/תעודת יציאה</th>
             </tr>
@@ -618,7 +618,7 @@
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </u> </span
-          >&nbsp;&nbsp; <span>תאריך:</span>&nbsp;&nbsp;
+          >&nbsp;&nbsp; <span>{{"inventory.DATE" | translate}}:</span>&nbsp;&nbsp;
           <span>
             <u>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

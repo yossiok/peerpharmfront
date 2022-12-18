@@ -246,7 +246,7 @@ export const ROUTES: RouteInfo[] = [
       },
     ],
   },
-  {
+  { 
     path: "",
     title: "menu.INVENTORY",
     icon: " fas fa-dolly",

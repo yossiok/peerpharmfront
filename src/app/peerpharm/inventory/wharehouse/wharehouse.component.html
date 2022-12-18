@@ -26,7 +26,7 @@
                 style="cursor: pointer"
                 (click)="dirSet('whManagment', '')"
                 [ngStyle]="{ 'background-color': WhMngNavBtnColor }"
-                >ניהול מחסן</a
+                >{{"inventory.MANAGE_STORAGE_ROOM" | translate}}</a
               >
             </li>
             <li class="nav-item">
@@ -35,7 +35,7 @@
                 style="cursor: pointer"
                 (click)="dirSet('stkManagment', '')"
                 [ngStyle]="{ 'background-color': StkMngNavBtnColor }"
-                >ניהול סחורה</a
+                >{{"inventory.MANAGE_INVENTORY" | translate}}</a
               >
             </li>
           </ul>
@@ -238,7 +238,7 @@
               (click)="dirSet('stkManagment', 'whareHouseChange')"
               class="btn form-control"
             >
-              בין מחסנים
+            {{"inventory.BETWEEN_WAREHOUSES" | translate}}
             </button>
           </div>
           <div *ngIf="!isJew" class="col-3"></div>
@@ -250,7 +250,7 @@
               (click)="dirSet('stkManagment', 'shelfChange')"
               class="btn form-control"
             >
-              שינוי מדף
+            {{"inventory.CHANGE_SHELF" | translate}}
             </button>
           </div>
           <div class="col-3">
@@ -259,7 +259,7 @@
               (click)="dirSet('stkManagment', 'out')"
               class="btn form-control"
             >
-              הוצאת סחורה
+            {{"inventory.SEND_INVENTORY" | translate}}
             </button>
           </div>
           <div class="col-3">
@@ -268,7 +268,7 @@
               (click)="dirSet('stkManagment', 'in')"
               class="btn form-control"
             >
-            {{ "IN" | translate }}
+            {{"inventory.GET_INVENTORIES" | translate}}
             </button>
           </div>
         </div>
@@ -361,7 +361,7 @@
                   <form class="form-horizontal itemsList">
                     <div class="form-group row">
                       <div class="col-sm-2">
-                        <label>מספר פריט</label>
+                        <label>{{"inventory.ITEM_NUMBER" | translate}}</label>
                         <input
                           [attr.data-lineid]="i"
                           type="text"
@@ -372,7 +372,7 @@
                         />
                       </div>
                       <div class="col-sm-2">
-                        <label>מדף</label>
+                        <label>{{"inventory.SHELF" | translate}}</label>
                         <input
                           [attr.data-lineid]="i"
                           type="text"
@@ -382,7 +382,7 @@
                         />
                       </div>
                       <div class="col-sm-1">
-                        <label>כמות</label>
+                        <label>{{"inventory.QUANTITY" | translate}}</label>
                         <input
                           #lineqnt{{i}}
                           [attr.data-lineid]="i"
@@ -608,8 +608,8 @@
               (click)="showNewReq = true"
             >
               &nbsp;
-              <i class="fas fa-plus"></i>
-              <span class="h4"> Add new request</span>
+              <i class="fas fa-plus pr-2"></i>
+              <span class="h4">{{"inventory.ADD_NEW_REQUEST" | translate}}</span>
             </button>
           </div>
           <div class="col-3">
@@ -622,8 +622,8 @@
               (click)="editRequest()"
             >
               &nbsp;
-              <i class="fas fa-edit"></i>
-              <span class="h4"> Edit request</span>
+              <i class="fas fa-edit pr-2"></i>
+              <span class="h4">{{"inventory.EDIT_REQUEST" | translate}}</span>
             </button>
           </div>
         </div>
@@ -736,20 +736,20 @@
     <main>
       <h2>תעודת העברה</h2>
       <p class="originDestWh">
-        <span><u>ממחסן:</u></span
+        <span><u>{{"inventory.FROM_WAREHOUSE" | translate}}:</u></span
         >&nbsp;&nbsp;
         <span *ngIf="curentWhareHouseName == 'Kasem'">רכיבים-קאסם</span
         >&nbsp;&nbsp;
         <span *ngIf="curentWhareHouseName == 'Rosh HaAyin'"
           >רכיבים-ראש העין</span
-        >&nbsp;&nbsp; <span><u>למחסן:</u></span
+        >&nbsp;&nbsp; <span><u>{{"inventory.TO_WAREHOUSE" | translate}}:</u></span
         >&nbsp;&nbsp;
         <span *ngIf="curentWhareHouseName == 'Rosh HaAyin'">רכיבים-קאסם</span
         >&nbsp;&nbsp;&nbsp;
         <span *ngIf="curentWhareHouseName == 'Kasem'">רכיבים-ראש העין</span
         >&nbsp;&nbsp;&nbsp;
         <span></span>
-        <span><u>תאריך:</u></span
+        <span><u>{{"inventory.DATE" | translate}}:</u></span
         >&nbsp;&nbsp; <span>{{ today | date: "dd-MM-yyyy" }}</span
         >&nbsp;&nbsp;
       </p>
@@ -759,9 +759,9 @@
           <tr>
             <th>#</th>
             <th>מספר הזמנה</th>
-            <th>מספר פריט</th>
+            <th>{{"inventory.ITEM_NUMBER" | translate}}</th>
             <th>מיקום</th>
-            <th>כמות</th>
+            <th>{{"inventory.QUANTITY" | translate}}</th>
             <th class="itemNamePrint">שם פריט</th>
             <th>פריט מק"ט ספק</th>
           </tr>
@@ -793,7 +793,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           </u> </span
-        >&nbsp;&nbsp; <span>תאריך:</span>&nbsp;&nbsp;
+        >&nbsp;&nbsp; <span>{{"inventory.DATE" | translate}}:</span>&nbsp;&nbsp;
         <span>
           <u>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -965,19 +965,19 @@
   <main>
     <h2>תעודת קליטה מס' {{ certificateReception }}</h2>
     <p class="originDestWh">
-      <span><u>ממחסן:</u></span
+      <span><u>{{"inventory.FROM_WAREHOUSE" | translate}}:</u></span
       >&nbsp;&nbsp;
       <span *ngIf="curentWhareHouseName == 'Kasem'">רכיבים-קאסם</span
       >&nbsp;&nbsp;
       <span *ngIf="curentWhareHouseName == 'Rosh HaAyin'">רכיבים-ראש העין</span
-      >&nbsp;&nbsp; <span><u>למחסן:</u></span
+      >&nbsp;&nbsp; <span><u>{{"inventory.TO_WAREHOUSE" | translate}}:</u></span
       >&nbsp;&nbsp;
       <span *ngIf="curentWhareHouseName == 'Rosh HaAyin'">רכיבים-קאסם</span
       >&nbsp;&nbsp;&nbsp;
       <span *ngIf="curentWhareHouseName == 'Kasem'">רכיבים-ראש העין</span
       >&nbsp;&nbsp;&nbsp;
       <span></span>
-      <span><u>תאריך:</u></span
+      <span><u>{{"inventory.DATE" | translate}}:</u></span
       >&nbsp;&nbsp; <span>{{ today | date: "dd-MM-yyyy" }}</span
       >&nbsp;&nbsp;
     </p>
@@ -986,9 +986,9 @@
       <tbody>
         <tr>
           <th>#</th>
-          <th>מספר פריט</th>
+          <th>{{"inventory.ITEM_NUMBER" | translate}}</th>
           <th>מיקום</th>
-          <th>כמות</th>
+          <th>{{"inventory.QUANTITY" | translate}}</th>
           <th class="itemNamePrint">שם פריט</th>
           <th>פריט מק"ט ספק</th>
         </tr>
@@ -1019,7 +1019,7 @@
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </u> </span
-      >&nbsp;&nbsp; <span>תאריך:</span>&nbsp;&nbsp;
+      >&nbsp;&nbsp; <span>{{"inventory.DATE" | translate}}:</span>&nbsp;&nbsp;
       <span>
         <u>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -1091,8 +1091,8 @@
     <tr>
       <th>מס' פריט</th>
       <th>שם פריט</th>
-      <th>מדף</th>
-      <th>כמות</th>
+      <th>{{"inventory.SHELF" | translate}}</th>
+      <th>{{"inventory.QUANTITY" | translate}}</th>
       <th>מס' הזמנה</th>
       <th>הערות</th>
     </tr>
@@ -1134,8 +1134,8 @@
         <th>#</th>
         <th>מס' פריט</th>
         <th>שם פריט</th>
-        <th>מדף</th>
-        <th>כמות</th>
+        <th>{{"inventory.SHELF" | translate}}</th>
+        <th>{{"inventory.QUANTITY" | translate}}</th>
         <th class="max_width">מס' בקשת מלאי</th>
         <th>מס' הזמנה</th>
         <th>הערות</th>
