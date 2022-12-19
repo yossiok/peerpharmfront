@@ -185,9 +185,5 @@ export class NavigationComponent implements AfterViewInit {
     }
     this.sidebarnavItems = ROUTES.filter(sidebarnavItem => sidebarnavItem);
     this.cdref.detectChanges();
-    
-     }
-
-    
-    
+  }
 }
