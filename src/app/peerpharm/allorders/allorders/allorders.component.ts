@@ -109,8 +109,10 @@ export class AllordersComponent implements OnInit {
         orderId: this.id.nativeElement.value,
         orderNumber: this.orderNumber.nativeElement.value,
         orderDate: this.orderDate.nativeElement.value,
+        orderDateConverted: this.orderDate.nativeElement.value,
         costumer: this.costumer.nativeElement.value,
         deliveryDate: this.deliveryDate.nativeElement.value,
+        deliveryDateConverted: this.deliveryDate.nativeElement.value,
         orderRemarks: this.orderRemarks.nativeElement.value,
         orderType: this.orderType.nativeElement.value,
       };

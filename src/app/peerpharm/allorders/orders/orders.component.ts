@@ -389,8 +389,10 @@ export class OrdersComponent implements OnInit {
         orderId: this.id.nativeElement.value,
         orderNumber: this.orderNumber.nativeElement.value,
         orderDate: this.orderDate.nativeElement.value,
+        orderDateConverted: this.orderDate.nativeElement.value,
         costumer: this.costumer.nativeElement.value,
         deliveryDate: this.deliveryDate.nativeElement.value,
+        deliveryDateConverted: this.deliveryDate.nativeElement.value,
         orderRemarks: this.orderRemarks.nativeElement.value,
         orderType: this.orderType.nativeElement.value,
         stage: this.stage.nativeElement.value,
@@ -752,7 +754,7 @@ export class OrdersComponent implements OnInit {
         }
       }
 
-      
+
       if(type == "delivery"){
 
         if (this.sortByDeliveryDateFlag) {
@@ -784,7 +786,7 @@ export class OrdersComponent implements OnInit {
           });
           this.sortByDeliveryDateFlag = !this.sortByDeliveryDateFlag;
         }
-            
+
       }
     } catch (error) {
       console.log(error);
@@ -1084,7 +1086,6 @@ export class OrdersComponent implements OnInit {
     }
 
     this.sortByCustomerNameFlag = !this.sortByCustomerNameFlag
-    
 
   }
 }
