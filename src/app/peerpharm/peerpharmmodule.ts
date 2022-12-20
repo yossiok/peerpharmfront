@@ -225,6 +225,7 @@ import { PurchaseOrdersGroupedBySupplierComponent } from "./reports/purchase-ord
 import { BarChartComponent } from "./charts/bar-chart/bar-chart.component";
 
 
+
 @NgModule({
   exports: [
     // MatInputModule,

@@ -7,7 +7,7 @@ import {
 } from "@angular/core";
 import { OrdersService } from "../../../services/orders.service";
 import { Router } from "@angular/router";
-import * as moment from "moment";
+import * as moment from "moment-timezone";
 import { ToastrService } from "ngx-toastr";
 import { ChatService } from "src/app/shared/chat.service";
 import { AuthService } from "src/app/services/auth.service";
@@ -1087,5 +1087,9 @@ export class OrdersComponent implements OnInit {
 
     this.sortByCustomerNameFlag = !this.sortByCustomerNameFlag
 
+  }
+
+  getValue = (date: string | Date | null | undefined) => {
+    return date ? moment(date).tz("utc").format("YYYY-MM-DD") : null;
   }
 }

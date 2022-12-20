@@ -172,7 +172,7 @@ export class NeworderComponent implements OnInit {
       //   user: post.user,
       // };
 
-      this.orderSer.addNewOrder(this.orderForm.value).subscribe((res) => {
+      this.orderSer.addNewOrder({...this.orderForm.value, orderDateConverted: this.orderForm.value.orderDate, deliveryDateConverted: this.orderForm.value.deliveryDate}).subscribe((res) => {
         console.log(res);
         if (res.msg) {
           this.toastSrv.error(res.msg);

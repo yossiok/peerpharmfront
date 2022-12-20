@@ -561,7 +561,7 @@
             <input
               #orderDate
               type="date"
-              [value]="order.orderDate"
+              [value]="getValue(order.orderDateConverted)"
             />
           </td>
           <td *ngIf="order._id !== EditRowId" (click)="edit(order._id)">
@@ -569,7 +569,7 @@
               Old: {{ order.orderDate | date: "dd/MM/yyyy" }}
             </div>
             <div>
-              New: {{ order.orderDateConverted | date: "dd/MM/yyyy" }}
+              New: {{ order.orderDateConverted | date: "dd/MM/yyyy" : "GMT" }}
             </div>
           </td>
 
@@ -577,7 +577,7 @@
             <input
               #deliveryDate
               type="date"
-              [value]="order.deliveryDate"
+              [value]="getValue(order.deliveryDateConverted)"
             />
           </td>
 
@@ -586,7 +586,7 @@
               Old: {{ order.deliveryDate | date: "dd/MM/yyyy" }}
             </div>
             <div>
-              New: {{ order.deliveryDateConverted | date: "dd/MM/yyyy" }}
+              New: {{ order.deliveryDateConverted | date: "dd/MM/yyyy" : "GMT" }}
             </div>
           </td>
 
