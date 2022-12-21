@@ -16,6 +16,7 @@ import { Procurementservice } from "src/app/services/procurement.service";
 import { UsersService } from "src/app/services/users.service";
 import { SuppliersService } from "src/app/services/suppliers.service";
 import { WarehouseService } from "src/app/services/warehouse.service";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-hist-movements",
@@ -48,12 +49,14 @@ export class HistMovementsComponent implements OnInit, OnChanges {
   allUsers: any = [];
   histMovements: any = [];
   fetching: boolean = false;
+  stickerItem: any = {};
 
   constructor(
     private inventoryService: InventoryService,
     private toastr: ToastrService,
     private supplierService: SuppliersService,
     private purchaseService: Procurementservice,
+    private modalService: NgbModal,
     private userService: UsersService,
     private warehouseService: WarehouseService
   ) {}
@@ -141,5 +144,15 @@ export class HistMovementsComponent implements OnInit, OnChanges {
   resetTable() {
     this.historicalMovements.reset();
     this.histMovements = [];
+  }
+
+  open(log, modal) {
+    this.stickerItem = {
+      amount: log.amount,
+      item: log.item,
+      supplier: log.suplierN,
+      purchaseOrder: log.purchaseOrder
+    };
+    this.modalService.open(modal);
   }
 }

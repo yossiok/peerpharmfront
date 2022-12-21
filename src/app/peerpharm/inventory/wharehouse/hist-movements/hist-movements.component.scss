@@ -8,3 +8,16 @@
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
   }
+
+.table-details{
+  .action-cell{
+    display: none;
+  }
+
+  &:hover{
+    .action-cell{
+      display: table-cell;
+    }
+  }
+
+}
