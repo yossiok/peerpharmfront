@@ -319,7 +319,7 @@
     </button>
   </div>
   <!-- <div class="bg-primary filterContainer">
-    
+
     <div *ngIf="lodingOrders" class="smallerLoader"></div>
     <button class="shimon-peres" (click)="allOrders([startOrderDate,endOrderDate,startDeliveryDate,endDeliveryDate])">Reset</button>
   </div> -->
@@ -561,25 +561,33 @@
             <input
               #orderDate
               type="date"
-              [value]="order.orderDate"
-              style="width: 170px"
+              [value]="getValue(order.orderDateConverted)"
             />
           </td>
           <td *ngIf="order._id !== EditRowId" (click)="edit(order._id)">
-            {{ order.orderDate | date: "dd/MM/yyyy" }}
+            <div>
+              Old: {{ order.orderDate | date: "dd/MM/yyyy" }}
+            </div>
+            <div>
+              New: {{ order.orderDateConverted | date: "dd/MM/yyyy" : "GMT" }}
+            </div>
           </td>
 
           <td *ngIf="order._id === EditRowId">
             <input
               #deliveryDate
               type="date"
-              [value]="order.deliveryDate"
-              style="width: 170px"
+              [value]="getValue(order.deliveryDateConverted)"
             />
           </td>
 
           <td *ngIf="order._id !== EditRowId" (click)="edit(order._id)">
-            {{ order.deliveryDate | date: "dd/MM/yyyy" }}
+            <div>
+              Old: {{ order.deliveryDate | date: "dd/MM/yyyy" }}
+            </div>
+            <div>
+              New: {{ order.deliveryDateConverted | date: "dd/MM/yyyy" : "GMT" }}
+            </div>
           </td>
 
           <td *ngIf="order._id !== EditRowId" (click)="edit(order._id)">

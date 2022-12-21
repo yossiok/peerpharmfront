@@ -130,11 +130,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 export class AppModule {
   constructor(private translate: TranslateService,  private language: LanguageService) {
     translate.addLangs(["en", "he"]);
-    translate.setDefaultLang("he");
-    translate.use("en");
-
-    ///this.language.getAllLanguages().subscribe(lang => console.log("language", lang))
-
+    translate.setDefaultLang(localStorage.getItem('lang') || "en");
+    translate.use(localStorage.getItem('lang') || "en");
   }
  
 }

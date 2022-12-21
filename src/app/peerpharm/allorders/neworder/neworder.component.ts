@@ -28,6 +28,7 @@ import { InventoryService } from "src/app/services/inventory.service";
 import { ItemsService } from "src/app/services/items.service";
 import { Location } from "@angular/common";
 import { initial } from "lodash";
+import { LanguageService } from "src/app/services/language.service";
 
 @Component({
   selector: "app-neworder",
@@ -125,7 +126,8 @@ export class NeworderComponent implements OnInit {
     private authService: AuthService,
     private inventoryService: InventoryService,
     private itemsService: ItemsService,
-    private location: Location
+    private location: Location,
+    private language: LanguageService
   ) {}
 
   ngOnInit() {
@@ -172,7 +174,7 @@ export class NeworderComponent implements OnInit {
       //   user: post.user,
       // };
 
-      this.orderSer.addNewOrder(this.orderForm.value).subscribe((res) => {
+      this.orderSer.addNewOrder({...this.orderForm.value, orderDateConverted: this.orderForm.value.orderDate, deliveryDateConverted: this.orderForm.value.deliveryDate}).subscribe((res) => {
         console.log(res);
         if (res.msg) {
           this.toastSrv.error(res.msg);
@@ -183,7 +185,7 @@ export class NeworderComponent implements OnInit {
           this.submited = true;
           this.orderSer.refreshOrders.emit(res);
           console.log(res);
-          this.toastSrv.success("הזמנה חדשה נוצרה בהצלחה");
+          this.language.success("messages.NEW_ORDER_CREATED_SUCCESSFULLY")
         } else {
           this.toastSrv.error(
             "הוספת הזמנה חדשה לא הצליחה. אם ניסיון חוזר לא מצליח, יש לפנות למנהל המערכת."

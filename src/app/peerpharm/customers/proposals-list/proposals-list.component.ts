@@ -4,6 +4,7 @@ import { SalesService } from "src/app/services/sales.service";
 import { ToastrService } from "ngx-toastr";
 import { AuthService } from "src/app/services/auth.service";
 import { UsersService } from "src/app/services/users.service";
+import { LanguageService } from "src/app/services/language.service";
 @Component({
   selector: "app-proposals-list",
   templateUrl: "./proposals-list.component.html",
@@ -23,7 +24,8 @@ export class ProposalsListComponent implements OnInit {
     private salesService: SalesService,
     private authService: AuthService,
     private toastr: ToastrService,
-    private userService: UsersService
+    private userService: UsersService,
+    private language: LanguageService,
   ) {}
   @Input("allCustomersList") allCustomersList: any[];
 
@@ -163,7 +165,7 @@ export class ProposalsListComponent implements OnInit {
     this.salesService.updateProposalStatus(status).subscribe((data) => {
       console.log(data);
       if (data.msg) {
-        this.toastr.error(data.msg);
+        this.language.error(data.msg);
         return;
       }
       if (data.updatedProposal) {

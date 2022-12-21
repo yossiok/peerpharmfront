@@ -8,7 +8,7 @@ import {
 import { OrdersService } from "../../../services/orders.service";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Router } from "@angular/router";
-import * as moment from "moment";
+import * as moment from "moment-timezone";
 import { ToastrService } from "ngx-toastr";
 import { ChatService } from "src/app/shared/chat.service";
 import { AuthService } from "src/app/services/auth.service";
@@ -109,8 +109,10 @@ export class AllordersComponent implements OnInit {
         orderId: this.id.nativeElement.value,
         orderNumber: this.orderNumber.nativeElement.value,
         orderDate: this.orderDate.nativeElement.value,
+        orderDateConverted: this.orderDate.nativeElement.value,
         costumer: this.costumer.nativeElement.value,
         deliveryDate: this.deliveryDate.nativeElement.value,
+        deliveryDateConverted: this.deliveryDate.nativeElement.value,
         orderRemarks: this.orderRemarks.nativeElement.value,
         orderType: this.orderType.nativeElement.value,
       };
@@ -300,5 +302,9 @@ export class AllordersComponent implements OnInit {
     this.orderFilter.nativeElement.value = "";
     this.itemFilter.nativeElement.value = "";
     this.orderNum.nativeElement.value = "";
+  }
+
+  getValue = (date: string | Date | null | undefined) => {
+    return date ? moment(date).tz("utc").format("YYYY-MM-DD") : null;
   }
 }

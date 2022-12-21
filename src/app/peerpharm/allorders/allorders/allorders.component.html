@@ -176,24 +176,32 @@
           <td *ngIf="order._id === EditRowId">
             <input
               #orderDate
-              type="text"
-              [value]="order.orderDate"
-              style="width: 170px"
+              type="date"
+              [value]="getValue(order.orderDateConverted)"
             />
           </td>
           <td *ngIf="order._id !== EditRowId" (click)="edit(order._id)">
-            {{ order.orderDate | date: "dd/MM/yyyy" }}
+            <div>
+              Old: {{ order.orderDate | date: "dd/MM/yyyy" }}
+            </div>
+            <div>
+              New: {{ order.orderDateConverted | date: "dd/MM/yyyy" : "GMT" }}
+            </div>
           </td>
           <td *ngIf="order._id === EditRowId">
             <input
               #deliveryDate
-              type="text"
-              [value]="order.deliveryDate"
-              style="width: 170px"
+              type="date"
+              [value]="getValue(order.deliveryDateConverted)"
             />
           </td>
           <td *ngIf="order._id !== EditRowId" (click)="edit(order._id)">
-            {{ order.deliveryDate | date: "dd/MM/yyyy" }}
+            <div>
+              Old: {{ order.deliveryDate | date: "dd/MM/yyyy" }}
+            </div>
+            <div>
+              New: {{ order.deliveryDateConverted | date: "dd/MM/yyyy" : "GMT" }}
+            </div>
           </td>
           <td style="width: 15%" *ngIf="order._id === EditRowId">
             <input
