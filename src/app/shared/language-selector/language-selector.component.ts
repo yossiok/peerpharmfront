@@ -14,18 +14,8 @@ export class LanguageSelectorComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  changeLanguage(type) {
-    switch (type) {
-      case "english":
-        this.translate.use("en");
-        this.hebrewLang = true;
-        this.englishLang = false;
-        break;
-      case "hebrew":
-        this.translate.use("he");
-        this.englishLang = true;
-        this.hebrewLang = false;
-        break;
-    }
+  changeLanguage(type:string) {
+    this.translate.use(type);
+    localStorage.setItem("lang", type);
   }
 }

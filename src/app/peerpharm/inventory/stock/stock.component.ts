@@ -42,6 +42,7 @@ import { FormsService } from "src/app/services/forms.service";
 import { Currencies } from "../../procurement/Currencies";
 import * as Braket from "aws-sdk/clients/braket";
 import { Breakpoints } from "@angular/cdk/layout";
+import { LanguageService } from "src/app/services/language.service";
 
 const defaultCmpt = {
   whoPays: "",
@@ -487,7 +488,8 @@ export class StockComponent implements OnInit {
     private batchService: BatchesService,
     private itemService: ItemsService,
     private fb: FormBuilder,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private language: LanguageService,
   ) {
     this.editVersionForm = new FormGroup({
       date: new FormControl(new Date(this.today), Validators.required),
@@ -1222,7 +1224,7 @@ export class StockComponent implements OnInit {
           if (data) {
             console.log(data);
             if (data.msg) {
-              this.toastSrv.error(data.msg);
+              this.language.error(data.msg);
               return;
             } else if (data && data.length > 0) {
               let item = data[0];
@@ -3440,7 +3442,7 @@ export class StockComponent implements OnInit {
         console.log(data);
         if (data.msg) {
           console.log(data.msg);
-          this.toastSrv.error(data.msg);
+          this.language.error(data.msg);
           this.componentUsage = data;
           return;
         } else if (data) {
