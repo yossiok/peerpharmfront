@@ -80,7 +80,12 @@
       <tbody *ngIf="!fetching">
         <tr *ngFor="let move of histMovements">
           <td>{{move.dateAndTime | date: 'dd/MM/yyyy'}}</td>
-          <td>{{move.logs[0] ? move.logs[0].warehouseReception : ''}}</td>
+          <td>
+            <div class="remove-block">
+              {{move.logs[0] ? move.logs[0].warehouseReception : ''}}
+              <img src="assets/images/delete.png" alt="delete" width="20" (click)="handleReventTransaction($event, move._id)" *ngIf="!move?.isReverted">
+            </div>
+          </td>
           <td class="text-info">{{move.movementName}}</td>
           <td>{{move.logs[0] ? move.logs[0].WH_originName : ''}}</td>
           <td>{{move.logs[0] ? move.logs[0].WH_destName : ''}}</td>

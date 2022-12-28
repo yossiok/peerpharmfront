@@ -1133,6 +1133,10 @@ export class InventoryService {
 
     return this.http.post(url, query).pipe(map((response) => response.json()));
   }
+
+  revertTransaction(id: string, username: string) {
+    return this.http.post(`${this.baseUrl}itemShell/revert-transaction/${id}`, {username: username}).pipe(map((response) => response.json()));
+  }
 }
 
 // startNewItemObservable() {

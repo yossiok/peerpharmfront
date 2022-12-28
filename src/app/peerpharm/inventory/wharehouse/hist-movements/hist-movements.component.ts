@@ -17,6 +17,8 @@ import { UsersService } from "src/app/services/users.service";
 import { SuppliersService } from "src/app/services/suppliers.service";
 import { WarehouseService } from "src/app/services/warehouse.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { AuthService } from "src/app/services/auth.service";
+import { LoaderService } from "src/app/services/loader.service";
 
 @Component({
   selector: "app-hist-movements",
@@ -53,12 +55,14 @@ export class HistMovementsComponent implements OnInit, OnChanges {
 
   constructor(
     private inventoryService: InventoryService,
-    private toastr: ToastrService,
+    private toastrService: ToastrService,
     private supplierService: SuppliersService,
     private purchaseService: Procurementservice,
     private modalService: NgbModal,
     private userService: UsersService,
-    private warehouseService: WarehouseService
+    private warehouseService: WarehouseService,
+    private authService: AuthService,
+    private loaderService: LoaderService,
   ) {}
 
   ngOnInit(): void {
@@ -154,5 +158,28 @@ export class HistMovementsComponent implements OnInit, OnChanges {
       purchaseOrder: log.purchaseOrder
     };
     this.modalService.open(modal);
+  }
+  handleReventTransaction = ($event, id:string) => {
+    $event.preventDefault();
+    $event.stopPropagation();
+    let result = confirm("Are you sure want to revert transaction?");
+    if (result) {
+      this.loaderService.add();
+      this.inventoryService.revertTransaction(id, this.authService.loggedInUser.userName).subscribe(
+        () => {
+          this.loaderService.remove();
+          this.toastrService.success("Transaction reverted successfully.");
+          this.histMovements = this.histMovements.map(h => {
+            if(h._id === id) h.isReverted = true;
+            return h;
+          })
+        },
+        (err) => {
+          this.loaderService.remove();
+          const body = err._body ? JSON.parse(err._body) : null
+          this.toastrService.error(body ? body.msg : "Something went wrong! Please try again later.");
+        }
+      )
+    }
   }
 }

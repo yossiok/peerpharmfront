@@ -133,7 +133,7 @@ export class AppModule {
     translate.setDefaultLang(localStorage.getItem('lang') || "en");
     translate.use(localStorage.getItem('lang') || "en");
   }
- 
+
 }
 
 
