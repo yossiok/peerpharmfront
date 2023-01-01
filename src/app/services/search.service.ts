@@ -1,8 +1,7 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Http,  Headers, RequestOptions, Jsonp } from '@angular/http';
-import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { map } from 'rxjs/operators';
+import { Headers, RequestOptions } from '@angular/http';
+import { zip } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,13 +12,20 @@ export class SearchService {
 
   private baseUrl = '/';
 
-  constructor(private http:Http) { }
+  constructor(private httpClient:HttpClient) { }
+  searchByText(searchterm:string) {
+    const sources = ["items", "order-items", "customers", "customer-orders", "orders", "purchase-orders"];
+    return zip(...sources.map(source => this.search(source, searchterm, "4")));
+  }
 
+  search(source: string, searchterm:string, limit: string | undefined = undefined){
+    let params = new HttpParams();
+    params = params.append("searchterm",searchterm);
+    if (limit) params = params.append("limit", limit);
 
-  searchByText(searchterm) {
-    
-    let url = this.baseUrl + "globalsearch?searchterm="+searchterm;
-    return this.http.get(url ).pipe(map(res => res.json()))
+    let url = this.baseUrl + `search/${source}` ;
+    const requestOptions = { params: params };
+    return this.httpClient.get<any[]>(url, requestOptions)
   }
  
 }

@@ -1,0 +1,31 @@
+::ng-deep{
+  .mat-button-toggle-group{
+    border: none;
+    .mat-button-toggle{
+      background-color: transparent;
+      border-left: none !important;
+      border-right: none !important;
+      border-bottom: 5px solid transparent;
+      transition: all 300ms ease;
+      opacity: .5;
+      button{
+        border: none;
+        span{
+          font-size: 1.5em;
+          font-weight: 700;
+        }
+      }
+    
+      &.mat-button-toggle-checked, &:hover{
+        border-bottom-color: #13135F;
+        opacity: 1;
+
+      }
+    }
+  }
+
+  button.btn.see-more{
+    font-size: 1.5em;
+  }
+
+}
