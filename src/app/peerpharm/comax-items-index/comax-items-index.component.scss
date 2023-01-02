@@ -281,3 +281,19 @@ input[type="number"] {
     transform: rotate(360deg);
   }
 }
+
+.table-block {
+  max-height: 200px;
+  overflow-y: scroll;
+  .custom-table {
+    border-collapse: collapse;
+    width: 100%;
+
+    td,
+    th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+  }
+}
