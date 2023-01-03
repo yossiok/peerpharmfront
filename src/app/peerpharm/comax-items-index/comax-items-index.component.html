@@ -146,7 +146,7 @@
 	<div class="modal-body">
     <p>Are you sure want to delete item {{ deleteItem?.item?.itemNumber }}?</p>
     <p *ngIf="(deleteItem?.orders && deleteItem?.orders?.length > 0) || (deleteItem?.products && deleteItem?.products?.length > 0) || (deleteItem?.formulas && deleteItem?.formulas?.length > 0)">This items belongs below values.</p>
-    <div *ngIf="deleteItem?.orders && deleteItem?.orders?.length > 0">
+    <div>
       <h4>Orders</h4>
       <div class="table-block special-scrollbar">
         <table class="custom-table">
@@ -157,34 +157,48 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let order of deleteItem?.orders; let n = index">
-              <td>{{ order?.orderNumber }}</td>
-              <td>{{ order?.status }}</td>
-            </tr>
+            <ng-container *ngIf="deleteItem?.orders && deleteItem?.orders?.length > 0">
+              <tr *ngFor="let order of deleteItem?.orders; let n = index">
+                <td>{{ order?.orderNumber }}</td>
+                <td>{{ order?.status }}</td>
+              </tr>
+            </ng-container>
+            <ng-container *ngIf="!deleteItem?.orders || deleteItem?.orders?.length === 0">
+              <tr>
+                <td colspan="2" class="text-center">No data found</td>
+              </tr>
+            </ng-container>
           </tbody>
         </table>
       </div>
     </div>
-    <div *ngIf="deleteItem?.products && deleteItem?.products?.length > 0" class="mt-4">
+    <div class="mt-4">
       <h4>Products</h4>
       <div class="table-block special-scrollbar">
         <table class="custom-table">
           <thead>
             <tr>
-              <th>ComponentN</th>
-              <th>Component name</th>
+              <th>Product item number</th>
+              <th>Product name</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let product of deleteItem?.products; let n = index">
-              <td>{{ product?.componentN }}</td>
-              <td>{{ product?.componentName }}</td>
-            </tr>
+            <ng-container *ngIf="deleteItem?.products && deleteItem?.products?.length > 0">
+              <tr *ngFor="let product of deleteItem?.products; let n = index">
+                <td>{{ product?.itemNumber }}</td>
+                <td>{{ product?.name }}</td>
+              </tr>
+            </ng-container>
+            <ng-container *ngIf="!deleteItem?.products || deleteItem?.products?.length === 0">
+              <tr>
+                <td colspan="2" class="text-center">No data found</td>
+              </tr>
+            </ng-container>
           </tbody>
         </table>
       </div>
     </div>
-    <div *ngIf="deleteItem?.formulas && deleteItem?.formulas?.length > 0" class="mt-4">
+    <div class="mt-4">
       <h4>Formulas</h4>
       <div class="table-block special-scrollbar">
         <table class="custom-table">
@@ -196,11 +210,18 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let formula of deleteItem?.formulas; let n = index">
-              <td>{{ formula?.formuleNumber }}</td>
-              <td>{{ formula?.formuleName }}</td>
-              <td>{{ formula?.formuleType }}</td>
-            </tr>
+            <ng-container *ngIf="deleteItem?.formulas && deleteItem?.formulas?.length > 0">
+              <tr *ngFor="let formula of deleteItem?.formulas; let n = index">
+                <td>{{ formula?.formuleNumber }}</td>
+                <td>{{ formula?.formuleName }}</td>
+                <td>{{ formula?.formuleType }}</td>
+              </tr>
+            </ng-container>
+            <ng-container *ngIf="!deleteItem?.formulas || deleteItem?.formulas?.length === 0">
+              <tr>
+                <td colspan="3" class="text-center">No data found</td>
+              </tr>
+            </ng-container>
           </tbody>
         </table>
       </div>
