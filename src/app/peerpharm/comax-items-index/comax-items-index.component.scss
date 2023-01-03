@@ -283,11 +283,20 @@ input[type="number"] {
 }
 
 .table-block {
-  max-height: 200px;
+  max-height: 250px;
   overflow-y: scroll;
   .custom-table {
     border-collapse: collapse;
     width: 100%;
+
+    thead {
+      tr {
+        position: sticky;
+        z-index: 11;
+        background: white;
+        top: 0;
+      }
+    }
 
     td,
     th {

@@ -148,7 +148,7 @@
     <p *ngIf="(deleteItem?.orders && deleteItem?.orders?.length > 0) || (deleteItem?.products && deleteItem?.products?.length > 0) || (deleteItem?.formulas && deleteItem?.formulas?.length > 0)">This items belongs below values.</p>
     <div *ngIf="deleteItem?.orders && deleteItem?.orders?.length > 0">
       <h4>Orders</h4>
-      <div class="table-block">
+      <div class="table-block special-scrollbar">
         <table class="custom-table">
           <thead>
             <tr>
@@ -167,7 +167,7 @@
     </div>
     <div *ngIf="deleteItem?.products && deleteItem?.products?.length > 0" class="mt-4">
       <h4>Products</h4>
-      <div class="table-block">
+      <div class="table-block special-scrollbar">
         <table class="custom-table">
           <thead>
             <tr>
@@ -186,7 +186,7 @@
     </div>
     <div *ngIf="deleteItem?.formulas && deleteItem?.formulas?.length > 0" class="mt-4">
       <h4>Formulas</h4>
-      <div class="table-block">
+      <div class="table-block special-scrollbar">
         <table class="custom-table">
           <thead>
             <tr>
