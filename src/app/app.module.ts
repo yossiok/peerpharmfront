@@ -54,6 +54,9 @@ import { ErrorHandlerService } from "./services/error-handler.service";
 import { ConfirmModalSMSComponent } from "./services/confirmsms.modal.service";
 import { LanguageSelectorComponent } from './shared/language-selector/language-selector.component';
 import { LanguageService } from "./services/language.service";
+import { GlobalSearchComponent } from './shared/global-search/global-search.component';
+import { RouterLinkRendererComponent } from './shared/grid/router-link-renderer/router-link-renderer.component';
+import { AgGridModule } from "ag-grid-angular";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -80,8 +83,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     AlertModalComponent,
     ConfirmModalSMSComponent,
     LanguageSelectorComponent,
+    GlobalSearchComponent,
+    RouterLinkRendererComponent,
+
   ],
-  entryComponents: [ConfirmModalComponent, ConfirmModalSMSComponent],
+  entryComponents: [ConfirmModalComponent, ConfirmModalSMSComponent, RouterLinkRendererComponent],
   imports: [
     ReactiveFormsModule,
     TranslateModule.forRoot({
@@ -133,7 +139,6 @@ export class AppModule {
     translate.setDefaultLang(localStorage.getItem('lang') || "en");
     translate.use(localStorage.getItem('lang') || "en");
   }
- 
 }
 
 

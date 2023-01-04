@@ -1,0 +1,11 @@
+<div class="position-relative search-wrapper">
+    <i class="fa fa-times" (click)="doClear()"></i>
+    <input
+    class="globalsearch"
+    [placeholder]="'common.SEARCH-EVERYTHING' | translate"
+    [(ngModel)]="searchTerm"
+    (keyup.enter)="doSearch()"
+    required
+    #searchInput/><i class="fa fa-search" (click)="doSearch()"></i>
+</div>
+

@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { MatTab, MatTabGroup } from "@angular/material/tabs";
 import { ActivatedRoute } from "@angular/router";
+import { ColDef, GridOptions } from "ag-grid-community";
 import { SearchService } from "src/app/services/search.service";
+import { RouterLinkRendererComponent } from "src/app/shared/grid/router-link-renderer/router-link-renderer.component";
 import {
   getCustomerSearchColumns,
   getItemSearchColumns,
@@ -22,7 +24,32 @@ export class SearchComponent implements OnInit {
   orders = [];
   purchaseOrders = [];
   customerOrders = [];
-  customerSearchColumns = getCustomerSearchColumns();
+  customerSearchColumns = 
+  [
+    { 
+      field: "costumerId",
+      cellRenderer: RouterLinkRendererComponent,
+      cellRendererParams: {
+        'color': 'green'
+      }
+  
+    },
+    { field: "costumerName" },
+    { field: "fax"},
+    { field: "invoice"},
+    { field: "delivery"},
+    { field: "country"},
+    { field: "pallet"},
+    { field: "marks"},
+    { field: "impRemark"},
+    { field: "brand"},
+    { field: "area"},
+  ];
+  gridOptions:GridOptions =  {
+    frameworkComponents: {
+      'routerLink': RouterLinkRendererComponent
+    }
+  }
   itemSearchColumns = getItemSearchColumns();
   orderItemColumns = getOrderItemSearchColumns();
   orderSearchColumns = getOrderSearchColumns();
@@ -32,6 +59,9 @@ export class SearchComponent implements OnInit {
   activeTab: MatTab = null;
   resultView = "";
   loading = false;
+  components = {
+    "routerLink": RouterLinkRendererComponent
+  }
   constructor(
     private route: ActivatedRoute,
     private searchService: SearchService

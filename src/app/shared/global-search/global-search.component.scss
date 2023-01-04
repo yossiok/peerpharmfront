@@ -1,0 +1,41 @@
+.search-wrapper{
+    display: flex;
+    gap:10px;
+    align-items: center;
+    border-bottom: 2px solid #fff;
+    margin-top:10px;
+    i.fa{
+        font-size: 1.25rem;
+        cursor: pointer;
+    }
+    i.fa-times{
+        display:none;
+        &:has(+ input:valid){
+            display: block;
+    
+        }
+    }
+    
+    input {
+        font-size: 1.25em;
+        color: #fff;
+        background: transparent;
+        border: 0;
+        width: 0px;
+        transition: all ease 300ms;
+        &::placeholder{
+            color: transparent
+        }
+        &:active, &:focus, &:valid{
+            width: 200px;
+            &::placeholder{
+                color: #fff;
+            }
+        }
+    }
+    
+    i{
+        color: #fff;
+    }
+}
+

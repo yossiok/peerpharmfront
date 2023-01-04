@@ -1,4 +1,6 @@
+import { ColDef } from "ag-grid-community";
 import * as moment from "moment";
+import { RouterLinkRendererComponent } from "src/app/shared/grid/router-link-renderer/router-link-renderer.component";
 
 const formatDate = (params) => {
   const field = params.colDef.field;
@@ -68,9 +70,12 @@ export const getOrdersColumns = () => {
 }
 
 
-export const getCustomerSearchColumns = () => {
+export const getCustomerSearchColumns = ():ColDef[] => {
   return [
-    { field: "costumerId" },
+    { 
+      field: "costumerId",
+      cellRenderer: () => "Wwwww"
+    },
     { field: "costumerName" },
     { field: "fax"},
     { field: "invoice"},

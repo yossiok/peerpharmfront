@@ -119,6 +119,7 @@
         [rowData]="resultView ? orders : orders.slice(0, 4)"
         [domLayout]="resultView ? 'normal' : 'autoHeight'"
         [enableRtl]="true"
+        [components]="components"
       ></ag-grid-angular>
       <div *ngIf="!resultView" class="d-flex justify-content-end">
         <button (click)="setView('orders')" class="btn see-more">

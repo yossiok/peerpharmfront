@@ -1,4 +1,4 @@
-import { HttpClientModule, HttpClient } from "@angular/common/http";
+import { HttpClientModule } from "@angular/common/http";
 import {
   NgModule,
   NO_ERRORS_SCHEMA,
@@ -21,12 +21,7 @@ import { AllordersComponent } from "./allorders/allorders/allorders.component";
 import { OpenOrderitemsComponent } from "./allorders/open-orderitems/open-orderitems.component";
 import {
   TranslateModule,
-  TranslateLoader,
-  TranslateCompiler,
-  TranslateParser,
-  MissingTranslationHandler,
 } from "@ngx-translate/core";
-import { TranslateHttpLoader } from "@ngx-translate/http-loader";
 
 import { OrderdetailsComponent } from "./allorders/orderdetails/orderdetails.component";
 import { ScheduleComponent } from "./schedule/filling/schedule.component";
@@ -117,9 +112,7 @@ import { SubTaskCardComponent } from "./taskboard/board/shared/sub-task-card/sub
 import { DndModule } from "ng2-dnd";
 import { DatepickerModule } from "angular2-material-datepicker";
 import { Ng2FilterPipeModule } from "ng2-filter-pipe";
-import { AuthService } from "../services/auth.service";
 import { InventoryNewRequestComponent } from "./inventory/wharehouse/inventory-requests/inventory-new-request/inventory-new-request.component";
-import { SpinnerComponent } from "../shared/spinner.component";
 import { HeadingsWHPipe } from "../pipes/headings-wh.pipe";
 import { OrderStagePipe } from "../pipes/order-stage.pipe";
 import { MatMenuModule } from "@angular/material/menu";
@@ -225,7 +218,6 @@ import { PurchaseOrdersGroupedBySupplierComponent } from "./reports/purchase-ord
 import { BarChartComponent } from "./charts/bar-chart/bar-chart.component";
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-
 
 @NgModule({
   exports: [
