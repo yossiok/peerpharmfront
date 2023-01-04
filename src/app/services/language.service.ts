@@ -22,11 +22,11 @@ export class LanguageService implements TranslateLoader {
   private baseUrl = '/';
 
   constructor(private httpClient: HttpClient, private toastr: ToastrService, private translate: TranslateService) { }
-  
+
   getTranslation(lang: string): Observable<any> {
     return this.httpClient.get<Language>(`/languages/${lang}`)
     .map((response) => {
-     return response.translations; 
+     return response.translations;
     });
   }
 
