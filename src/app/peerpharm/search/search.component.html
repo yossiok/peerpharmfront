@@ -1,48 +1,156 @@
-<div>
-  <h1>Items</h1>
-  <table  class="table table-striped">
-	<tr  >
-		<th>
-		Item Number
-		</th>
-		<th  >
-		  Text
-		</th>
-	  </tr>
-    <tr *ngFor="let item of allItems">
-      <td>
-		<a href="{{'/#/peerpharm/items/itemDetails/' + item.itemNumber }}" >{{ item.itemNumber }}</a> 
-      </td>
-      <td  [innerHTML]="item.toText" >
-        
-      </td>
-    </tr>
-  </table>
+<div dir="rtl">
+  <mat-button-toggle-group [(ngModel)]="resultView" (change)="viewChange()">
+    <mat-button-toggle value="">{{
+      "search.ALL-RESULTS" | translate
+    }}</mat-button-toggle>
+    <mat-button-toggle value="items">{{
+      "search.ITEMS" | translate
+    }}</mat-button-toggle>
+    <mat-button-toggle value="order-items">{{
+      "search.ORDER-ITEMS" | translate
+    }}</mat-button-toggle>
+    <mat-button-toggle value="customers">{{
+      "search.CUSTOMERS" | translate
+    }}</mat-button-toggle>
+    <mat-button-toggle value="customer-orders">{{
+      "search.CUSTOMER-ORDERS" | translate
+    }}</mat-button-toggle>
+    <mat-button-toggle value="orders">{{
+      "search.ORDERS" | translate
+    }}</mat-button-toggle>
+    <mat-button-toggle value="purchase-orders">{{
+      "search.PURCHASE-ORDERS" | translate
+    }}</mat-button-toggle>
+  </mat-button-toggle-group>
 
-  <h1>Order Items</h1>
+  <div *ngIf="!loading; else spinner">
+    <div *ngIf="!resultView || resultView === 'items'" class="mt-5">
+      <h2 class="mb-3">{{ "search.ITEMS" | translate }}</h2>
+      <ag-grid-angular
+        id="item-result"
+        [style]="
+          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : '')
+        "
+        class="ag-theme-alpine"
+        [columnDefs]="itemSearchColumns"
+        [rowData]="resultView ? items : items.slice(0, 4)"
+        [domLayout]="resultView ? 'normal' : 'autoHeight'"
+        [enableRtl]="true"
+      ></ag-grid-angular>
+      <div *ngIf="!resultView" class="d-flex justify-content-end">
+        <button (click)="setView('items')" class="btn see-more">
+          {{ "general.SEE-MORE" | translate }}
+        </button>
+      </div>
+    </div>
 
-  <table  class="table table-striped">
-	<tr  >
-		<th>
-		Item Number
-		</th>
-		<th  >
-			Order Number
-		  </th>
-		<th  >
-		  Text
-		</th>
-	  </tr>
-	<tr *ngFor="let oi of allOrderItems">
-		<td>
-			{{ oi.itemNumber }}
-		  </td>
-		  <td>
-			{{ oi.orderNumber }}
-		  </td>
-		  <td  [innerHTML]="oi.toText">
-		 
-		  </td>
-    </tr>
-  </table>
+    <div *ngIf="!resultView || resultView === 'order-items'" class="mt-5">
+      <h2 class="mb-3">{{ "search.ORDER-ITEMS" | translate }}</h2>
+      <ag-grid-angular
+        id="item-result"
+        [style]="
+          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : '')
+        "
+        class="ag-theme-alpine"
+        [columnDefs]="orderItemColumns"
+        [rowData]="resultView ? orderItems : orderItems.slice(0, 4)"
+        [domLayout]="resultView ? 'normal' : 'autoHeight'"
+        enableRtl="true"
+      ></ag-grid-angular>
+      <div *ngIf="!resultView" class="d-flex justify-content-end">
+        <button (click)="setView('order-items')" class="btn see-more">
+          {{ "general.SEE-MORE" | translate }}
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="!resultView || resultView === 'customers'" class="mt-5">
+      <h2 class="mb-3">{{ "search.CUSTOMERS" | translate }}</h2>
+      <ag-grid-angular
+        id="customer-result"
+        [style]="
+          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : '')
+        "
+        class="ag-theme-alpine"
+        [columnDefs]="customerSearchColumns"
+        [rowData]="resultView ? customers : customers.slice(0, 4)"
+        [domLayout]="resultView ? 'normal' : 'autoHeight'"
+        enableRtl="true"
+      ></ag-grid-angular>
+      <div *ngIf="!resultView" class="d-flex justify-content-end">
+        <button (click)="setView('customer')" class="btn see-more">
+          {{ "general.SEE-MORE" | translate }}
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="!resultView || resultView === 'customer-orders'" class="mt-5">
+      <h2 class="mb-3">{{ "search.CUSTOMER-ORDERS" | translate }}</h2>
+      <ag-grid-angular
+        id="customer-order-result"
+        [style]="
+          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : '')
+        "
+        class="ag-theme-alpine"
+        [columnDefs]="orderSearchColumns"
+        [rowData]="resultView ? customerOrders : customerOrders.slice(0, 4)"
+        [domLayout]="resultView ? 'normal' : 'autoHeight'"
+        [enableRtl]="true"
+      ></ag-grid-angular>
+      <div *ngIf="!resultView" class="d-flex justify-content-end">
+        <button
+          (click)="setView('customer-orders')"
+          class="btn border-0 bg-transparent see-more"
+        >
+          {{ "general.SEE-MORE" | translate }}
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="!resultView || resultView === 'orders'" class="mt-5">
+      <h2 class="mb-3">{{ "search.ORDERS" | translate }}</h2>
+      <ag-grid-angular
+        id="order-result"
+        [style]="
+          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : '')
+        "
+        class="ag-theme-alpine"
+        [columnDefs]="orderSearchColumns"
+        [rowData]="resultView ? orders : orders.slice(0, 4)"
+        [domLayout]="resultView ? 'normal' : 'autoHeight'"
+        [enableRtl]="true"
+      ></ag-grid-angular>
+      <div *ngIf="!resultView" class="d-flex justify-content-end">
+        <button (click)="setView('orders')" class="btn see-more">
+          {{ "general.SEE-MORE" | translate }}
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="!resultView || resultView === 'purchase-orders'" class="mt-5">
+      <h2 class="mb-3">{{ "search.PURCHASE-ORDERS" | translate }}</h2>
+      <ag-grid-angular
+        id="puchase-order-result"
+        [style]="
+          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : '')
+        "
+        class="ag-theme-alpine"
+        [columnDefs]="purchaseOrderSearchColumns"
+        [rowData]="resultView ? purchaseOrders : purchaseOrders.slice(0, 4)"
+        [domLayout]="resultView ? 'normal' : 'autoHeight'"
+        [enableRtl]="true"
+      ></ag-grid-angular>
+      <div *ngIf="!resultView" class="d-flex justify-content-end">
+        <button (click)="setView('puchase-orders')" class="btn see-more">
+          {{ "general.SEE-MORE" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #spinner>
+    <div class="d-flex justify-content-center">
+      <div class="p-5"><mat-spinner></mat-spinner></div>
+    </div>
+  </ng-template>
 </div>

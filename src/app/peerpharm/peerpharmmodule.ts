@@ -223,7 +223,8 @@ import { NgxSelectModule } from "ngx-select-ex";
 import { ChartsModule } from 'ng2-charts';
 import { PurchaseOrdersGroupedBySupplierComponent } from "./reports/purchase-orders-grouped-by-supplier/purchase-orders-grouped-by-supplier.component";
 import { BarChartComponent } from "./charts/bar-chart/bar-chart.component";
-
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -254,6 +255,8 @@ import { BarChartComponent } from "./charts/bar-chart/bar-chart.component";
     FormsModule,
     ReactiveFormsModule,
     MatTabsModule,
+    MatButtonToggleModule,
+    MatProgressSpinnerModule,
     MatSelectModule,
     DndModule.forRoot(),
     DatepickerModule,
