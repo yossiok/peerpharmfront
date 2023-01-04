@@ -153,6 +153,8 @@ import { ReportBuilderComponent } from "./reports/report-builder/report-builder.
 import { UserSettingsComponent } from "./user/user-settings/user-settings.component";
 import { MatTabsModule } from "@angular/material/tabs";
 import { AgGridModule } from "ag-grid-angular";
+import 'ag-grid-community';
+import 'ag-grid-enterprise';
 import { CalendarModule, DateAdapter } from "angular-calendar";
 import { adapterFactory } from "angular-calendar/date-adapters/date-fns";
 import { CalendarComponent } from "./calendar/calendar.component";
@@ -218,12 +220,16 @@ import { PurchaseOrdersGroupedBySupplierComponent } from "./reports/purchase-ord
 import { BarChartComponent } from "./charts/bar-chart/bar-chart.component";
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { LicenseManager } from "ag-grid-enterprise";
+import { CustomClickRendererComponent } from "../shared/grid-component/custom-click-renderer.component";
+LicenseManager.setLicenseKey("For_Trialing_ag-Grid_Only-Not_For_Real_Development_Or_Production_Projects-Valid_Until-22_October_2022_[v2]_MTY2NjM5MzIwMDAwMA==820a9bb4c347c00c2985fc2a21d7a5b4");
 
 @NgModule({
   exports: [
     // MatInputModule,
     AddProcurementItemDialog,
     NgxSelectModule,
+    AgGridModule,
   ],
   imports: [
     NgxBarcodeModule,
@@ -419,6 +425,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     OrdersReportGroupedByClientsComponent,
     PurchaseOrdersGroupedBySupplierComponent,
     BarChartComponent,
+    CustomClickRendererComponent,
   ],
   entryComponents: [
     AddProcurementItemDialog,

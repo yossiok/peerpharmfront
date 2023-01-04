@@ -23,19 +23,21 @@
     }}</mat-button-toggle>
   </mat-button-toggle-group>
 
-  <div *ngIf="!loading; else spinner">
+  <div *ngIf="!loading;">
     <div *ngIf="!resultView || resultView === 'items'" class="mt-5">
       <h2 class="mb-3">{{ "search.ITEMS" | translate }}</h2>
       <ag-grid-angular
         id="item-result"
         [style]="
-          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : '')
+          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : 'height: 250px')
         "
         class="ag-theme-alpine"
         [columnDefs]="itemSearchColumns"
-        [rowData]="resultView ? items : items.slice(0, 4)"
-        [domLayout]="resultView ? 'normal' : 'autoHeight'"
+        [rowData]="items"
         [enableRtl]="true"
+        [defaultColDef]="defaultColDef"
+        (rowClicked)="rowClicked($event, 'item')"
+        (sortChanged)="onSortChanged($event)"
       ></ag-grid-angular>
       <div *ngIf="!resultView" class="d-flex justify-content-end">
         <button (click)="setView('items')" class="btn see-more">
@@ -47,15 +49,14 @@
     <div *ngIf="!resultView || resultView === 'order-items'" class="mt-5">
       <h2 class="mb-3">{{ "search.ORDER-ITEMS" | translate }}</h2>
       <ag-grid-angular
-        id="item-result"
+        id="order-items"
         [style]="
-          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : '')
+          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : 'height: 250px')
         "
         class="ag-theme-alpine"
         [columnDefs]="orderItemColumns"
-        [rowData]="resultView ? orderItems : orderItems.slice(0, 4)"
-        [domLayout]="resultView ? 'normal' : 'autoHeight'"
-        enableRtl="true"
+        [rowData]="orderItems"
+        [enableRtl]="true"
       ></ag-grid-angular>
       <div *ngIf="!resultView" class="d-flex justify-content-end">
         <button (click)="setView('order-items')" class="btn see-more">
@@ -67,15 +68,14 @@
     <div *ngIf="!resultView || resultView === 'customers'" class="mt-5">
       <h2 class="mb-3">{{ "search.CUSTOMERS" | translate }}</h2>
       <ag-grid-angular
-        id="customer-result"
+        id="customers"
         [style]="
-          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : '')
+          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : 'height: 250px')
         "
         class="ag-theme-alpine"
         [columnDefs]="customerSearchColumns"
-        [rowData]="resultView ? customers : customers.slice(0, 4)"
-        [domLayout]="resultView ? 'normal' : 'autoHeight'"
-        enableRtl="true"
+        [rowData]="customers"
+        [enableRtl]="true"
       ></ag-grid-angular>
       <div *ngIf="!resultView" class="d-flex justify-content-end">
         <button (click)="setView('customer')" class="btn see-more">
@@ -87,14 +87,13 @@
     <div *ngIf="!resultView || resultView === 'customer-orders'" class="mt-5">
       <h2 class="mb-3">{{ "search.CUSTOMER-ORDERS" | translate }}</h2>
       <ag-grid-angular
-        id="customer-order-result"
+        id="customer-orders"
         [style]="
-          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : '')
+          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : 'height: 250px')
         "
         class="ag-theme-alpine"
         [columnDefs]="orderSearchColumns"
-        [rowData]="resultView ? customerOrders : customerOrders.slice(0, 4)"
-        [domLayout]="resultView ? 'normal' : 'autoHeight'"
+        [rowData]="customerOrders"
         [enableRtl]="true"
       ></ag-grid-angular>
       <div *ngIf="!resultView" class="d-flex justify-content-end">
@@ -110,16 +109,15 @@
     <div *ngIf="!resultView || resultView === 'orders'" class="mt-5">
       <h2 class="mb-3">{{ "search.ORDERS" | translate }}</h2>
       <ag-grid-angular
-        id="order-result"
+        id="orders"
         [style]="
-          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : '')
+          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : 'height: 250px')
         "
         class="ag-theme-alpine"
         [columnDefs]="orderSearchColumns"
-        [rowData]="resultView ? orders : orders.slice(0, 4)"
-        [domLayout]="resultView ? 'normal' : 'autoHeight'"
+        [rowData]="orders"
         [enableRtl]="true"
-        [components]="components"
+        (rowClicked)="rowClicked($event, 'order')"
       ></ag-grid-angular>
       <div *ngIf="!resultView" class="d-flex justify-content-end">
         <button (click)="setView('orders')" class="btn see-more">
@@ -131,14 +129,14 @@
     <div *ngIf="!resultView || resultView === 'purchase-orders'" class="mt-5">
       <h2 class="mb-3">{{ "search.PURCHASE-ORDERS" | translate }}</h2>
       <ag-grid-angular
-        id="puchase-order-result"
+        id="purchase-orders"
         [style]="
-          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : '')
+          'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : 'height: 250px')
         "
         class="ag-theme-alpine"
+        [columnDefs]="orderSearchColumns"
         [columnDefs]="purchaseOrderSearchColumns"
         [rowData]="resultView ? purchaseOrders : purchaseOrders.slice(0, 4)"
-        [domLayout]="resultView ? 'normal' : 'autoHeight'"
         [enableRtl]="true"
       ></ag-grid-angular>
       <div *ngIf="!resultView" class="d-flex justify-content-end">

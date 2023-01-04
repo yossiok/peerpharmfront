@@ -12,20 +12,23 @@ export class SearchService {
 
   private baseUrl = '/';
 
-  constructor(private httpClient:HttpClient) { }
-  searchByText(searchterm:string) {
+  constructor(
+    private httpClient: HttpClient
+  ) { }
+
+  searchByText(searchterm: string) {
     const sources = ["items", "order-items", "customers", "customer-orders", "orders", "purchase-orders"];
     return zip(...sources.map(source => this.search(source, searchterm, "4")));
   }
 
-  search(source: string, searchterm:string, limit: string | undefined = undefined){
+  search(source: string, searchterm: string, limit: string | undefined = undefined) {
     let params = new HttpParams();
-    params = params.append("searchterm",searchterm);
+    params = params.append("searchterm", searchterm);
     if (limit) params = params.append("limit", limit);
 
-    let url = this.baseUrl + `search/${source}` ;
+    let url = this.baseUrl + `search/${source}`;
     const requestOptions = { params: params };
     return this.httpClient.get<any[]>(url, requestOptions)
   }
- 
+
 }

@@ -43,4 +43,14 @@ export class ComaxItemsService {
     let url = this.baseUrl + "comaxitem/getLastUpdateFrom";
     return this.http.get(url).pipe(map((response) => response.json()));
   }
+
+  getItemIsInData(itemId: string) {
+    let url = `${this.baseUrl}comaxitem/get-item-is-in-data/${itemId}`;
+    return this.http.get(url).pipe(map((response) => response.json()));
+  }
+
+  deleteItem(itemId: string) {
+    let url = `${this.baseUrl}comaxitem/delete-item/${itemId}`;
+    return this.http.delete(url).pipe(map((response) => response.json()));
+  }
 }

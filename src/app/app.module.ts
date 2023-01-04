@@ -56,7 +56,6 @@ import { LanguageSelectorComponent } from './shared/language-selector/language-s
 import { LanguageService } from "./services/language.service";
 import { GlobalSearchComponent } from './shared/global-search/global-search.component';
 import { RouterLinkRendererComponent } from './shared/grid/router-link-renderer/router-link-renderer.component';
-import { AgGridModule } from "ag-grid-angular";
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -140,7 +139,6 @@ export class AppModule {
     translate.use(localStorage.getItem('lang') || "en");
   }
 }
-
 
 declare module "@angular/core" {
   interface ModuleWithProviders<T = any> {

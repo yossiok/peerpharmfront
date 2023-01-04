@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { MatTab, MatTabGroup } from "@angular/material/tabs";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { ColDef, GridOptions } from "ag-grid-community";
+import { LoaderService } from "src/app/services/loader.service";
 import { SearchService } from "src/app/services/search.service";
 import { RouterLinkRendererComponent } from "src/app/shared/grid/router-link-renderer/router-link-renderer.component";
 import {
@@ -24,28 +25,27 @@ export class SearchComponent implements OnInit {
   orders = [];
   purchaseOrders = [];
   customerOrders = [];
-  customerSearchColumns = 
-  [
-    { 
-      field: "costumerId",
-      cellRenderer: RouterLinkRendererComponent,
-      cellRendererParams: {
-        'color': 'green'
-      }
-  
-    },
-    { field: "costumerName" },
-    { field: "fax"},
-    { field: "invoice"},
-    { field: "delivery"},
-    { field: "country"},
-    { field: "pallet"},
-    { field: "marks"},
-    { field: "impRemark"},
-    { field: "brand"},
-    { field: "area"},
-  ];
-  gridOptions:GridOptions =  {
+  customerSearchColumns =
+    [
+      {
+        field: "costumerId",
+        cellRenderer: RouterLinkRendererComponent,
+        cellRendererParams: {
+          'color': 'green'
+        }
+      },
+      { field: "costumerName" },
+      { field: "fax" },
+      { field: "invoice" },
+      { field: "delivery" },
+      { field: "country" },
+      { field: "pallet" },
+      { field: "marks" },
+      { field: "impRemark" },
+      { field: "brand" },
+      { field: "area" },
+    ];
+  gridOptions: GridOptions = {
     frameworkComponents: {
       'routerLink': RouterLinkRendererComponent
     }
@@ -62,16 +62,24 @@ export class SearchComponent implements OnInit {
   components = {
     "routerLink": RouterLinkRendererComponent
   }
+  defaultColDef: ColDef = {
+    flex: 1,
+    sortable: true,
+  };
   constructor(
     private route: ActivatedRoute,
-    private searchService: SearchService
-  ) {}
+    private searchService: SearchService,
+    private loaderService: LoaderService,
+    private router: Router,
+  ) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe((data) => {
       this.resultView = "";
       const searchterm = data.search;
+      this.loaderService.add();
       this.searchService.searchByText(searchterm).subscribe((data) => {
+        this.loaderService.remove();
         this.items = data[0];
         this.orderItems = data[1];
         this.customers = data[2];
@@ -90,6 +98,7 @@ export class SearchComponent implements OnInit {
     const searchTerm = this.route.snapshot.queryParams.search;
     if (!this.resultView || !searchTerm) return;
     this.loading = true;
+    this.loaderService.add();
     this.searchService
       .search(this.resultView, searchTerm)
       .subscribe((result) => {
@@ -114,6 +123,21 @@ export class SearchComponent implements OnInit {
             break;
         }
       })
-      .add(() => (this.loading = false));
+      .add(() => {
+        this.loading = false;
+        this.loaderService.remove();
+      });
   };
+
+  rowClicked(event, type) {
+    if(type === "item"){
+      this.router.navigate([`/peerpharm/items/itemDetails/${event.data.itemNumber}`]);
+    } else if(type === "order"){
+      this.router.navigate([`/peerpharm/items/itemDetails/${event.data.orderNumber}`]);
+    }
+  }
+
+  onSortChanged(params) {
+    console.log('params', params);
+  }
 }

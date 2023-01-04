@@ -70,22 +70,19 @@ export const getOrdersColumns = () => {
 }
 
 
-export const getCustomerSearchColumns = ():ColDef[] => {
+export const getCustomerSearchColumns = (): ColDef[] => {
   return [
-    { 
-      field: "costumerId",
-      cellRenderer: () => "Wwwww"
-    },
+    { field: "costumerId" },
     { field: "costumerName" },
-    { field: "fax"},
-    { field: "invoice"},
-    { field: "delivery"},
-    { field: "country"},
-    { field: "pallet"},
-    { field: "marks"},
-    { field: "impRemark"},
-    { field: "brand"},
-    { field: "area"},
+    { field: "fax" },
+    { field: "invoice" },
+    { field: "delivery" },
+    { field: "country" },
+    { field: "pallet" },
+    { field: "marks" },
+    { field: "impRemark" },
+    { field: "brand" },
+    { field: "area" },
   ]
 }
 
@@ -93,10 +90,10 @@ export const getItemSearchColumns = () => {
   return [
     { field: "itemNumber" },
     { field: "name" },
-    { field: "subName"},
-    { field: "discriptionK"},
-    { field: "proRemarks"},
-    { field: "impRemarks"},
+    { field: "subName" },
+    { field: "discriptionK" },
+    { field: "proRemarks" },
+    { field: "impRemarks" },
   ]
 }
 
@@ -104,10 +101,10 @@ export const getOrderItemSearchColumns = () => {
   return [
     { field: "itemNumber" },
     { field: "discription" },
-    { field: "itemRemarks"},
-    { field: "batch"},
-    { field: "orderId"},
-    { field: "orderNumber"},
+    { field: "itemRemarks" },
+    { field: "batch" },
+    { field: "orderId" },
+    { field: "orderNumber" },
   ]
 }
 
@@ -115,16 +112,16 @@ export const getOrderSearchColumns = () => {
   return [
     { field: "orderNumber" },
     { field: "costumer" },
-    { field: "costumerInternalId"},
-    { field: "orderDate"},
-    { field: "customerOrderNum"},
-    { field: "deliveryDate"},
+    { field: "costumerInternalId" },
+    { field: "orderDate" },
+    { field: "customerOrderNum" },
+    { field: "deliveryDate" },
     { field: "orderRemarks" },
     { field: "status" },
-    { field: "type"},
-    { field: "poNumber"},
-    { field: "stage"},
-    { field: "salesOrder"},
+    { field: "type" },
+    { field: "poNumber" },
+    { field: "stage" },
+    { field: "salesOrder" },
   ]
 }
 
@@ -132,15 +129,15 @@ export const getPurchaseOrderSearchColumns = () => {
   return [
     { field: "supplierName" },
     { field: "supplierNumber" },
-    { field: "itemName"},
-    { field: "itemNumber"},
-    { field: "outDate"},
-    { field: "validDate"},
+    { field: "itemName" },
+    { field: "itemNumber" },
+    { field: "outDate" },
+    { field: "validDate" },
     { field: "measurement" },
     { field: "coin" },
-    { field: "color"},
-    { field: "supplierPrice"},
-    { field: "supplierAmount"},
-    { field: "orderNumber"},
+    { field: "color" },
+    { field: "supplierPrice" },
+    { field: "supplierAmount" },
+    { field: "orderNumber" },
   ]
 }

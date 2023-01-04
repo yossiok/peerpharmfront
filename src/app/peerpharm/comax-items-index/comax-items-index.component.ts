@@ -4,6 +4,7 @@ import { AuthService } from "src/app/services/auth.service";
 import { ToastrService } from "ngx-toastr";
 import { ComaxItemsService } from "src/app/services/comax-items.service";
 import { bool } from "aws-sdk/clients/signer";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: "app-comax-items-index",
@@ -36,10 +37,18 @@ export class ComaxItemsIndexComponent implements OnInit {
     brandId: new FormControl(""),
   });
 
+  deleteItem: {
+    item: any;
+    orders: any;
+    products: any;
+    formulas: any;
+  } = null;
+
   constructor(
     private authService: AuthService,
     private toastService: ToastrService,
-    private comaxItemsService: ComaxItemsService
+    private comaxItemsService: ComaxItemsService,
+    private modalService: NgbModal
   ) {}
 
   ngOnInit(): void {
@@ -217,4 +226,44 @@ export class ComaxItemsIndexComponent implements OnInit {
     this.groups = this.groupsCopy;
     this.departments = this.departmentsCopy;
   }
+
+  handleDeleteItem = ($event, itemId, content) => {
+    $event.stopPropagation();
+    $event.preventDefault();
+    this.comaxItemsService.getItemIsInData(itemId).subscribe(
+      (item) => {
+        this.deleteItem = item;
+        this.modalService.open(content, { size: "lg", backdrop: "static" });
+      },
+      (err) => {
+        const body = err._body ? JSON.parse(err._body) : null
+        this.toastService.error(body ? body.msg : "Something went wrong! Please try again later.");
+      },
+    );
+  }
+
+  handleDeleteOk = ($event) => {
+    $event.stopPropagation();
+    $event.preventDefault();
+    if(this.deleteItem?.item){
+      this.comaxItemsService.deleteItem(this.deleteItem?.item?._id).subscribe(
+        (item) => {
+          this.modalService.dismissAll('Close');
+          const index = this.itemsList.findIndex(i => i._id.toString() === this.deleteItem?.item?._id.toString());
+          if(index > -1){
+            this.itemsList[index] = {
+              ...this.itemsList[index],
+              isDeleted: true,
+            }
+          }
+          this.toastService.success("Item deleted successfully.");
+        },
+        (err) => {
+          const body = err._body ? JSON.parse(err._body) : null
+          this.toastService.error(body ? body.msg : "Something went wrong! Please try again later.");
+        },
+      )
+    }
+  }
+
 }

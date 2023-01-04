@@ -66,16 +66,14 @@ export class WharehouseComponent implements OnInit {
     itemNumber: "",
   };
 
-  @ViewChild("container")
-  @ViewChild("lineqnt")
-  @ViewChild("wh")
-  wh: ElementRef;
+  @ViewChild("container") container: ElementRef
+  @ViewChild("lineqnt") lineqnt: ElementRef
+  @ViewChild("wh") wh: ElementRef
   @ViewChild("shelfSearch") shelfSearch: ElementRef;
   @ViewChild("printBtn") printBtn: ElementRef;
   @ViewChild("printBtn2") printBtn2: ElementRef;
   @ViewChild("printBtn3") printBtn3: ElementRef;
 
-  private container: ElementRef;
   mainDivArr: any = [];
   whareHouses: any = []; // user allowed whs
   allWhareHouses: any = []; // all whs

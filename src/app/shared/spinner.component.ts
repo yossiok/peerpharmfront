@@ -3,7 +3,8 @@ import {
   Input,
   OnDestroy,
   Inject,
-  ViewEncapsulation
+  ViewEncapsulation,
+  OnInit
 } from '@angular/core';
 import {
   Router,
@@ -13,10 +14,11 @@ import {
   NavigationError
 } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
+import { LoaderService } from '../services/loader.service';
 
 @Component({
   selector: 'app-spinner',
-  template: `<div class="preloader" *ngIf="isSpinnerVisible">
+  template: `<div class="modal-backdrop fade show" style="z-index: 1111111;" *ngIf="isSpinnerVisible">
         <div class="spinner">
           <div class="double-bounce1"></div>
           <div class="double-bounce2"></div>
@@ -24,31 +26,41 @@ import { DOCUMENT } from '@angular/common';
     </div>`,
   encapsulation: ViewEncapsulation.None
 })
-export class SpinnerComponent implements OnDestroy {
+export class SpinnerComponent implements OnInit, OnDestroy {
   public isSpinnerVisible = true;
 
   @Input() public backgroundColor = 'rgba(0, 115, 170, 0.69)';
 
   constructor(
     private router: Router,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    private loaderService: LoaderService
   ) {
     this.router.events.subscribe(
       event => {
         if (event instanceof NavigationStart) {
           this.isSpinnerVisible = true;
         } else if (
-          event instanceof NavigationEnd ||
           event instanceof NavigationCancel ||
           event instanceof NavigationError
         ) {
           this.isSpinnerVisible = false;
+        }else if(
+          event instanceof NavigationEnd
+        ){
+          if(!event.url.includes("/peerpharm/search?")) this.isSpinnerVisible = false;
         }
       },
       () => {
         this.isSpinnerVisible = false;
       }
     );
+  }
+
+  ngOnInit(): void{
+    this.loaderService.loadingSubject.subscribe(loading=>{
+      this.isSpinnerVisible = loading;
+    })
   }
 
   ngOnDestroy(): void {

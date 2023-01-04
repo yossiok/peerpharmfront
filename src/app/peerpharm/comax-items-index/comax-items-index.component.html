@@ -109,6 +109,7 @@
           <th>קבוצה</th>
           <th>תת קבוצה</th>
           <th>שם ספק</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody *ngIf="itemsList && itemsList.length > 0">
@@ -122,8 +123,113 @@
           <td>{{ item.groupId }}-{{ item.groupName }}</td>
           <td>{{ item.subGroupId }}-{{ item.subGroupName }}</td>
           <td>{{ item.supplierId }}-{{ item.supplierName }}</td>
+          <td>
+            <button
+              class="btn btn-danger"
+              type="button"
+              (click)="handleDeleteItem($event, item._id, content)"
+              *ngIf="!item.isDeleted"
+            >
+              Delete
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
+
+<ng-template #content let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title" id="modal-basic-title">Delete confimation of item {{ deleteItem?.item?.itemNumber }}</h4>
+	</div>
+	<div class="modal-body">
+    <p>Are you sure want to delete item {{ deleteItem?.item?.itemNumber }}?</p>
+    <p *ngIf="(deleteItem?.orders && deleteItem?.orders?.length > 0) || (deleteItem?.products && deleteItem?.products?.length > 0) || (deleteItem?.formulas && deleteItem?.formulas?.length > 0)">This items belongs below values.</p>
+    <div>
+      <h4>Orders</h4>
+      <div class="table-block special-scrollbar">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Order number</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="deleteItem?.orders && deleteItem?.orders?.length > 0">
+              <tr *ngFor="let order of deleteItem?.orders; let n = index">
+                <td>{{ order?.orderNumber }}</td>
+                <td>{{ order?.status }}</td>
+              </tr>
+            </ng-container>
+            <ng-container *ngIf="!deleteItem?.orders || deleteItem?.orders?.length === 0">
+              <tr>
+                <td colspan="2" class="text-center">No data found</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mt-4">
+      <h4>Products</h4>
+      <div class="table-block special-scrollbar">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Product item number</th>
+              <th>Product name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="deleteItem?.products && deleteItem?.products?.length > 0">
+              <tr *ngFor="let product of deleteItem?.products; let n = index">
+                <td>{{ product?.itemNumber }}</td>
+                <td>{{ product?.name }}</td>
+              </tr>
+            </ng-container>
+            <ng-container *ngIf="!deleteItem?.products || deleteItem?.products?.length === 0">
+              <tr>
+                <td colspan="2" class="text-center">No data found</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mt-4">
+      <h4>Formulas</h4>
+      <div class="table-block special-scrollbar">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Formule number</th>
+              <th>Formule name</th>
+              <th>Formule type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngIf="deleteItem?.formulas && deleteItem?.formulas?.length > 0">
+              <tr *ngFor="let formula of deleteItem?.formulas; let n = index">
+                <td>{{ formula?.formuleNumber }}</td>
+                <td>{{ formula?.formuleName }}</td>
+                <td>{{ formula?.formuleType }}</td>
+              </tr>
+            </ng-container>
+            <ng-container *ngIf="!deleteItem?.formulas || deleteItem?.formulas?.length === 0">
+              <tr>
+                <td colspan="3" class="text-center">No data found</td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-dark" (click)="modal.close('Close')">Close</button>
+    <button type="button" class="btn btn-outline-primary" *ngIf="deleteItem?.item?._id" (click)="handleDeleteOk($event)">Confirm</button>
+	</div>
+</ng-template>
+
