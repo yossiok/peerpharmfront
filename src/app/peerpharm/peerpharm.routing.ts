@@ -54,6 +54,7 @@ import { QaPalletsComponent } from "./forms/qa-pallets/qa-pallets.component";
 import { NewFormuleComponent } from "./new-formule/new-formule.component";
 import { FormuleProductionComponent } from "./production/formule-production/formule-production.component";
 import { WeightProductionComponent } from "./production/weight-production/weight-production.component";
+import { WeightProductionWizardComponent } from "./production/weight-production-wizard/weight-production-wizard.component";
 import { StoragesComponent } from "./inventory/storages/storages.component";
 import { ShelfListComponent } from "./inventory/shelf-list/shelf-list.component";
 import { AdminpanelComponent } from "./adminpanel/adminpanel.component";
@@ -482,6 +483,14 @@ export const PeerPharmRputs: Routes = [
     component: WeightProductionComponent,
     canActivate: [TwoFactor],
   },
+  {
+    path: "formules/weight-production-wizard",    
+    data: {
+      title: "Weight Production Wizard",
+    },
+    component: WeightProductionWizardComponent,
+  },
+  
   {
     path: "production/scanMaterial",
     canActivate: [ScreenGuard],

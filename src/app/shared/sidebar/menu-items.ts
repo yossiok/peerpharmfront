@@ -166,6 +166,14 @@ export const ROUTES: RouteInfo[] = [
         extralink: false,
         submenu: [],
       },
+      {
+        path: "/peerpharm/formules/weight-production-wizard",
+        title: "Weight Production Wizard",
+        icon: "fas fa-list-ol",
+        class: "",
+        extralink: false,
+        submenu: [],
+      },
     ],
   },
 

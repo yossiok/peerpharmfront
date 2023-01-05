@@ -164,3 +164,14 @@ export const getPurchaseOrderSearchColumns = (): ColDef[] => {
     { field: "user" },
   ]
 }
+
+export const getWeightProductionWizardColumns = (): ColDef[] => {
+  return [
+    {field: "phaseName", headerName: "Phase"},
+    {field: "itemNumber", headerName: "Item"},
+    {field: "itemName", headerName: "Raw Material Name"},
+    {field: "percentage", headerName: "Percentage"},
+    {field: "kgProd", headerName: "KG"}
+
+  ]
+} 

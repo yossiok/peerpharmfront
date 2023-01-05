@@ -141,6 +141,7 @@ import { ItemdetaisComponent } from "./items/itemdetais/itemdetais.component";
 import { NewFormuleComponent } from "./new-formule/new-formule.component";
 import { FormuleProductionComponent } from "./production/formule-production/formule-production.component";
 import { WeightProductionComponent } from "./production/weight-production/weight-production.component";
+import { WeightProductionWizardComponent } from "./production/weight-production-wizard/weight-production-wizard.component";
 import { StoragesComponent } from "./inventory/storages/storages.component";
 import { ShelfListComponent } from "./inventory/shelf-list/shelf-list.component";
 import { RandomcolorModule } from "angular-randomcolor";
@@ -296,6 +297,7 @@ LicenseManager.setLicenseKey("For_Trialing_ag-Grid_Only-Not_For_Real_Development
     ScheduleOrdersComponent,
     ProductionOrdersComponent,
     WeightProductionComponent,
+    WeightProductionWizardComponent,
     AddFormuleItemComponent,
     CleaningFormsComponent,
     FirstAidComponent,

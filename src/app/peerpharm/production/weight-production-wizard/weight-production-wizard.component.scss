@@ -1,0 +1,52 @@
+select:focus,
+input:focus,
+textarea:focus {
+  border-color: #2962FF;
+  box-shadow: 0 0 5px #2962FF;
+}
+
+.click {
+  cursor: pointer;
+}
+
+.minimizer:hover {
+  background-color: rgb(145, 186, 228);
+}
+
+.header-detail {
+  color: #2962FF;
+}
+
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #2962FF;
+  ;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #183ca0;
+  ;
+}
+
+.high {
+  height: 60px;
+}
+
+.modal-content {
+  min-width: 900px;
+
+
+}
