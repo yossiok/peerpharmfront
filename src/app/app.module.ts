@@ -55,7 +55,6 @@ import { ConfirmModalSMSComponent } from "./services/confirmsms.modal.service";
 import { LanguageSelectorComponent } from './shared/language-selector/language-selector.component';
 import { LanguageService } from "./services/language.service";
 import { GlobalSearchComponent } from './shared/global-search/global-search.component';
-import { RouterLinkRendererComponent } from './shared/grid/router-link-renderer/router-link-renderer.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -83,10 +82,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ConfirmModalSMSComponent,
     LanguageSelectorComponent,
     GlobalSearchComponent,
-    RouterLinkRendererComponent,
 
   ],
-  entryComponents: [ConfirmModalComponent, ConfirmModalSMSComponent, RouterLinkRendererComponent],
+  entryComponents: [ConfirmModalComponent, ConfirmModalSMSComponent],
   imports: [
     ReactiveFormsModule,
     TranslateModule.forRoot({

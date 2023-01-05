@@ -14,6 +14,7 @@ import { ChartDataSets } from "chart.js";
 import { Label } from "ng2-charts";
 import { getAutoGroupColumnDef, getOrdersColumns } from "../utils/grid";
 import { NgxSelectOptions } from "../../../interfaces/general";
+import { LoaderService } from "src/app/services/loader.service";
 
 export interface OrdersGroupbyCustomersForm {
   customers: string[];
@@ -50,10 +51,12 @@ export class OrdersReportGroupedByClientsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private ordersService: OrdersService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private loaderService: LoaderService,
   ) {}
 
   ngOnInit(): void {
+    this.loaderService.add();
     this.form = this.fb.group({
       customers: this.fb.control(["all"], Validators.required),
       startOrderDate: this.fb.control("", Validators.required),
@@ -64,6 +67,7 @@ export class OrdersReportGroupedByClientsComponent implements OnInit {
       customers.forEach((customer) => {
         this.customers.push({ id: customer._id, text: customer._id });
       });
+      this.loaderService.remove();
     });
   }
 
@@ -79,6 +83,7 @@ export class OrdersReportGroupedByClientsComponent implements OnInit {
   onSubmit = () => {
     this.submitted = true;
     if (this.form.valid) {
+      this.loaderService.add();
       this.ordersService
         .getOrdersGroupByClient(this.form.value)
         .subscribe((orders) => {
@@ -107,6 +112,7 @@ export class OrdersReportGroupedByClientsComponent implements OnInit {
           this.barChartData = [
             { data: Object.values(chartData), label: "Orders" },
           ];
+          this.loaderService.remove();
         });
     }
   };

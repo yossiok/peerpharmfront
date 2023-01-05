@@ -154,6 +154,7 @@ export class ProcurementOrdersComponent implements OnInit {
   problematicsModalSelect: boolean = false;
   problematicItems: any[];
   problematicsType: string;
+  orderNumberSearch = "";
 
   @HostListener("document:keydown.escape", ["$event"]) onKeydownHandler(
     event: KeyboardEvent
@@ -295,6 +296,15 @@ export class ProcurementOrdersComponent implements OnInit {
           this.procurementData = this.procurementData.filter(
             (order) => order.status != "canceled"
           );
+          const pId = localStorage.getItem("_purchase_order_id");
+          if(pId){
+            this.orderNumberSearch = pId;
+            this.procurementData = this.procurementDataCopy.filter(costumer => costumer['orderNumber'] && costumer['orderNumber'] == pId);
+            if(this.procurementData.length > 0){
+              this.viewOrderDetails(0);
+            }
+            localStorage.removeItem("_purchase_order_id")
+          }
         }
       },
       () => {},

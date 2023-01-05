@@ -20,7 +20,7 @@
         <input type="text" placeholder="Customer Name" (keyup)="filterCustomers('costumerName', $event)">
       </div>
       <div>
-        <input type="text" placeholder="Customer Number" (keyup)="filterCustomers('costumerId', $event)">
+        <input type="text" placeholder="Customer Number" (keyup)="filterCustomers('costumerId', $event)" [(ngModel)]="customerNumberSearch">
       </div>
       <div>
         <input type="text" placeholder="Customer Address" (keyup)="filterCustomers('invoice', $event)">

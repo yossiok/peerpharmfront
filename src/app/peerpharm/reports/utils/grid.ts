@@ -1,6 +1,5 @@
 import { ColDef } from "ag-grid-community";
 import * as moment from "moment";
-import { RouterLinkRendererComponent } from "src/app/shared/grid/router-link-renderer/router-link-renderer.component";
 
 const formatDate = (params) => {
   const field = params.colDef.field;
@@ -86,7 +85,7 @@ export const getCustomerSearchColumns = (): ColDef[] => {
   ]
 }
 
-export const getItemSearchColumns = () => {
+export const getItemSearchColumns = (): ColDef[] => {
   return [
     { field: "itemNumber" },
     { field: "name" },
@@ -97,23 +96,36 @@ export const getItemSearchColumns = () => {
   ]
 }
 
-export const getOrderItemSearchColumns = () => {
+export const getOrderItemSearchColumns = (): ColDef[] => {
   return [
-    { field: "itemNumber" },
+    {
+      field: "itemNumber",
+      cellStyle: {
+        cursor: "pointer",
+      }
+    },
     { field: "discription" },
     { field: "itemRemarks" },
     { field: "batch" },
     { field: "orderId" },
-    { field: "orderNumber" },
+    {
+      field: "orderNumber",
+      cellStyle: {
+        cursor: "pointer",
+      }
+    },
   ]
 }
 
-export const getOrderSearchColumns = () => {
+export const getOrderSearchColumns = (): ColDef[] => {
   return [
     { field: "orderNumber" },
     { field: "costumer" },
     { field: "costumerInternalId" },
-    { field: "orderDate" },
+    {
+      field: "orderDate",
+      valueGetter: (params) => formatDate(params)
+    },
     { field: "customerOrderNum" },
     { field: "deliveryDate" },
     { field: "orderRemarks" },
@@ -125,19 +137,30 @@ export const getOrderSearchColumns = () => {
   ]
 }
 
-export const getPurchaseOrderSearchColumns = () => {
+export const getPurchaseOrderSearchColumns = (): ColDef[] => {
   return [
-    { field: "supplierName" },
-    { field: "supplierNumber" },
-    { field: "itemName" },
-    { field: "itemNumber" },
-    { field: "outDate" },
-    { field: "validDate" },
-    { field: "measurement" },
-    { field: "coin" },
-    { field: "color" },
-    { field: "supplierPrice" },
-    { field: "supplierAmount" },
     { field: "orderNumber" },
+    { field: "supplierNumber" },
+    { field: "supplierName" },
+    { field: "origin" },
+    {
+      field: "creationDate",
+      valueGetter: (params) => formatDate(params)
+    },
+    {
+      field: "requestedDate",
+      valueGetter: (params) => formatDate(params)
+    },
+    {
+      field: "arrivalDate",
+      valueGetter: (params) => formatDate(params)
+    },
+    { field: "remarks" },
+    { field: "status" },
+    {
+      field: "statusChange",
+      valueGetter: (params) => formatDate(params)
+    },
+    { field: "user" },
   ]
 }

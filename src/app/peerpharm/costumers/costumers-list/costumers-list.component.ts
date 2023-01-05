@@ -14,7 +14,7 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./costumers-list.component.scss']
 })
 export class CostumersListComponent implements OnInit {
-  
+
   @ViewChild("container")  container: ElementRef=null;
 
   addContactModal:boolean = false;
@@ -49,19 +49,20 @@ export class CostumersListComponent implements OnInit {
   counter: number = 0;
   countries: any[] = []
   agents: any[] = []
+  customerNumberSearch="";
 
   constructor(
     private orderService:OrdersService,
     private excelService:ExcelService,
-    private modalService: NgbModal, 
-    private costumersService: CostumersService, 
-    private renderer: Renderer2, 
+    private modalService: NgbModal,
+    private costumersService: CostumersService,
+    private renderer: Renderer2,
     private authService: AuthService,
     private userService: UsersService,
     private toastSrv: ToastrService) { }
 
   ngOnInit() {
-    this.getCostumers(); 
+    this.getCostumers();
     this.getAllUsers()
 
   }
@@ -69,7 +70,7 @@ export class CostumersListComponent implements OnInit {
   checkPermission() {
     return this.authService.loggedInUser.screenPermission == '5'
   }
-  
+
   getAllUsers(){
     this.userService.getAllUserNames().subscribe(res=>{
       res.map(user=> this.agents.push(user.userName))
@@ -107,7 +108,7 @@ export class CostumersListComponent implements OnInit {
 
 
 
- 
+
 
   private getDismissReason(reason: any): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -126,12 +127,21 @@ export class CostumersListComponent implements OnInit {
       this.costumersCopy = res
       this.countries = this.costumers.map(costumer => {
         if(!countries.includes(costumer.country)) countries.push(costumer.country)
-      }) 
+      })
       this.countries = countries
+      const cId = localStorage.getItem("_customer_id");
+      if(cId){
+        this.customerNumberSearch = cId;
+        this.costumers = this.costumersCopy.filter(costumer => costumer['costumerId'] && costumer['costumerId'] == cId);
+        if(this.costumers.length > 0){
+          this.openDetails(0);
+        }
+        localStorage.removeItem("_customer_id")
+      }
     });
   }
 
-  saveCostumer() { 
+  saveCostumer() {
     if(this.contact.mail != "" || this.contact.phone != "" || this.contact.name != "") {
       this.costumer.contact.push(this.contact);
     }
@@ -146,14 +156,14 @@ export class CostumersListComponent implements OnInit {
     })
   }
 
-  openDetails(i) { 
+  openDetails(i) {
     console.log(this.costumers[i]);
     this.costumer = this.costumers[i];
     this.getOrderDetailsForCustomer(this.costumer.costumerName)
     this.getAllCustomerOrderedItems(this.costumer.costumerName)
     this.showCustomerModal = true;
     // this.contact = this.costumers[i].contact[0];
- 
+
   }
 
   getOrderDetailsForCustomer(customer){
@@ -199,7 +209,7 @@ export class CostumersListComponent implements OnInit {
   }
 
   filterCustomers(by, e){
-    this.costumers = this.costumersCopy.filter(costumer => costumer[by] && costumer[by].includes(e.target.value)) 
+    this.costumers = this.costumersCopy.filter(costumer => costumer[by] && costumer[by].includes(e.target.value))
   }
 
   checkIfExist(ev){
@@ -218,8 +228,8 @@ export class CostumersListComponent implements OnInit {
       for (let i = 0; i < this.costumer.contact.length; i++) {
         if(this.costumer.contact[i].phone == contact.phone){
           this.costumer.contact.splice(i,1);
-        }  
-        
+        }
+
       }
     }
   }
@@ -233,10 +243,10 @@ export class CostumersListComponent implements OnInit {
         this.contact.name = "";
         this.contact.mail = "";
         this.addContactModal = false;
-      } else { 
+      } else {
         this.toastSrv.error("Please fill all the fields")
       }
-     
+
     // const childElements = this.container.nativeElement.children;
 //     const rowDiv = this.renderer.createElement('div');
 //     const inputName = this.renderer.createElement('input');
@@ -252,6 +262,6 @@ export class CostumersListComponent implements OnInit {
 
   }
 
- 
+
 
 }

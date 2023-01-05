@@ -14,6 +14,7 @@ import { Procurementservice } from "src/app/services/procurement.service";
 import { SuppliersService } from "src/app/services/suppliers.service";
 import { getAutoGroupColumnDef, getPurchaseColumns } from "../utils/grid";
 import { NgxSelectOptions } from "../../../interfaces/general";
+import { LoaderService } from "src/app/services/loader.service";
 
 export interface PurchaseOrdersGroupedBySupplierForm {
   suppliers: string[];
@@ -53,10 +54,12 @@ export class PurchaseOrdersGroupedBySupplierComponent implements OnInit {
     private fb: FormBuilder,
     private modalService: NgbModal,
     private supplierService: SuppliersService,
-    private procurementService: Procurementservice
+    private procurementService: Procurementservice,
+    private loaderService: LoaderService,
   ) {}
 
   ngOnInit(): void {
+    this.loaderService.add();
     this.form = this.fb.group({
       suppliers: this.fb.control(["all"], Validators.required),
       items: this.fb.control([]),
@@ -75,6 +78,7 @@ export class PurchaseOrdersGroupedBySupplierComponent implements OnInit {
           text: `${supplier.suplierNumber} - ${supplier.suplierName}`,
         });
       });
+      this.loaderService.remove();
     });
   };
 
@@ -83,16 +87,19 @@ export class PurchaseOrdersGroupedBySupplierComponent implements OnInit {
       items.forEach((item) => {
         this.items.push({ id: item._id, text: `${item._id} - ${item.name}` });
       });
+      this.loaderService.remove();
     });
   };
 
   onSubmit = () => {
     this.submitted = true;
     if (this.form.valid) {
+      this.loaderService.add();
       this.procurementService
         .getOrdersGroupBySupplier(this.form.value)
         .subscribe((orders) => {
           this.processData(orders);
+          this.loaderService.remove();
         });
     }
   };

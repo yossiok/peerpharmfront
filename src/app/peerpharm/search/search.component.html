@@ -24,7 +24,7 @@
   </mat-button-toggle-group>
 
   <div *ngIf="!loading;">
-    <div *ngIf="!resultView || resultView === 'items'" class="mt-5">
+    <div *ngIf="!resultView || resultView === 'items'" class="mt-2">
       <h2 class="mb-3">{{ "search.ITEMS" | translate }}</h2>
       <ag-grid-angular
         id="item-result"
@@ -37,16 +37,15 @@
         [enableRtl]="true"
         [defaultColDef]="defaultColDef"
         (rowClicked)="rowClicked($event, 'item')"
-        (sortChanged)="onSortChanged($event)"
       ></ag-grid-angular>
       <div *ngIf="!resultView" class="d-flex justify-content-end">
         <button (click)="setView('items')" class="btn see-more">
-          {{ "general.SEE-MORE" | translate }}
+          {{ "general.SEE-MORE" | translate }} >>
         </button>
       </div>
     </div>
 
-    <div *ngIf="!resultView || resultView === 'order-items'" class="mt-5">
+    <div *ngIf="!resultView || resultView === 'order-items'" class="">
       <h2 class="mb-3">{{ "search.ORDER-ITEMS" | translate }}</h2>
       <ag-grid-angular
         id="order-items"
@@ -57,15 +56,17 @@
         [columnDefs]="orderItemColumns"
         [rowData]="orderItems"
         [enableRtl]="true"
+        [defaultColDef]="defaultColDefWithoutStyle"
+        (cellClicked)="cellClicked($event)"
       ></ag-grid-angular>
       <div *ngIf="!resultView" class="d-flex justify-content-end">
         <button (click)="setView('order-items')" class="btn see-more">
-          {{ "general.SEE-MORE" | translate }}
+          {{ "general.SEE-MORE" | translate }} >>
         </button>
       </div>
     </div>
 
-    <div *ngIf="!resultView || resultView === 'customers'" class="mt-5">
+    <div *ngIf="!resultView || resultView === 'customers'" class="">
       <h2 class="mb-3">{{ "search.CUSTOMERS" | translate }}</h2>
       <ag-grid-angular
         id="customers"
@@ -76,15 +77,17 @@
         [columnDefs]="customerSearchColumns"
         [rowData]="customers"
         [enableRtl]="true"
+        [defaultColDef]="defaultColDef"
+        (rowClicked)="rowClicked($event, 'customer')"
       ></ag-grid-angular>
       <div *ngIf="!resultView" class="d-flex justify-content-end">
-        <button (click)="setView('customer')" class="btn see-more">
-          {{ "general.SEE-MORE" | translate }}
+        <button (click)="setView('customers')" class="btn see-more">
+          {{ "general.SEE-MORE" | translate }} >>
         </button>
       </div>
     </div>
 
-    <div *ngIf="!resultView || resultView === 'customer-orders'" class="mt-5">
+    <div *ngIf="!resultView || resultView === 'customer-orders'" class="">
       <h2 class="mb-3">{{ "search.CUSTOMER-ORDERS" | translate }}</h2>
       <ag-grid-angular
         id="customer-orders"
@@ -95,18 +98,20 @@
         [columnDefs]="orderSearchColumns"
         [rowData]="customerOrders"
         [enableRtl]="true"
+        [defaultColDef]="defaultColDef"
+        (rowClicked)="rowClicked($event, 'order')"
       ></ag-grid-angular>
       <div *ngIf="!resultView" class="d-flex justify-content-end">
         <button
           (click)="setView('customer-orders')"
           class="btn border-0 bg-transparent see-more"
         >
-          {{ "general.SEE-MORE" | translate }}
+          {{ "general.SEE-MORE" | translate }} >>
         </button>
       </div>
     </div>
 
-    <div *ngIf="!resultView || resultView === 'orders'" class="mt-5">
+    <div *ngIf="!resultView || resultView === 'orders'" class="">
       <h2 class="mb-3">{{ "search.ORDERS" | translate }}</h2>
       <ag-grid-angular
         id="orders"
@@ -117,16 +122,17 @@
         [columnDefs]="orderSearchColumns"
         [rowData]="orders"
         [enableRtl]="true"
+        [defaultColDef]="defaultColDef"
         (rowClicked)="rowClicked($event, 'order')"
       ></ag-grid-angular>
       <div *ngIf="!resultView" class="d-flex justify-content-end">
         <button (click)="setView('orders')" class="btn see-more">
-          {{ "general.SEE-MORE" | translate }}
+          {{ "general.SEE-MORE" | translate }} >>
         </button>
       </div>
     </div>
 
-    <div *ngIf="!resultView || resultView === 'purchase-orders'" class="mt-5">
+    <div *ngIf="!resultView || resultView === 'purchase-orders'" class="">
       <h2 class="mb-3">{{ "search.PURCHASE-ORDERS" | translate }}</h2>
       <ag-grid-angular
         id="purchase-orders"
@@ -134,14 +140,15 @@
           'width: 100%;' + (resultView ? 'height: calc(100vh - 320px)' : 'height: 250px')
         "
         class="ag-theme-alpine"
-        [columnDefs]="orderSearchColumns"
         [columnDefs]="purchaseOrderSearchColumns"
-        [rowData]="resultView ? purchaseOrders : purchaseOrders.slice(0, 4)"
+        [defaultColDef]="defaultColDef"
+        [rowData]="purchaseOrders"
         [enableRtl]="true"
+        (rowClicked)="rowClicked($event, 'purchase-order')"
       ></ag-grid-angular>
       <div *ngIf="!resultView" class="d-flex justify-content-end">
-        <button (click)="setView('puchase-orders')" class="btn see-more">
-          {{ "general.SEE-MORE" | translate }}
+        <button (click)="setView('purchase-orders')" class="btn see-more">
+          {{ "general.SEE-MORE" | translate }} >>
         </button>
       </div>
     </div>
