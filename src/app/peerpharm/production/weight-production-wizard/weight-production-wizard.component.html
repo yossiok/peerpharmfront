@@ -130,7 +130,7 @@
     class="mt-2 text-center p-2 rounded shadow"
   >
     <div class="row mt-3 d-flex flex-row">
-      <div *ngFor="let formule of formules; let i = index" class="col-3">
+      <div *ngFor="let formule of formules; let i = index;" class="col-12">
         <div>
           <div class="d-flex flex-row justify-content-between">
             <div>
@@ -195,15 +195,18 @@
             >
           </span>
         </div>
-        <ag-grid-angular
-          id="weight-production-wizard"
-          style="width: 100%;"
-          class="ag-theme-alpine"
-          [columnDefs]="columnDefs"
-          [rowData]="getPhasesData(formule.data.phases)"
-          domLayout="autoHeight"
-        ></ag-grid-angular>
-
+        <ng-container>
+          <ag-grid-angular
+            id="weight-production-wizard"
+            style="width: 100%;"
+            class="ag-theme-alpine"
+            [columnDefs]="columnDefs"
+            [defaultColDef]="defaultColDef"
+            [rowData]="formule.gridData"
+            [gridOptions]="gridOptions"
+            domLayout="autoHeight"
+          ></ag-grid-angular>
+        </ng-container>
       </div>
     </div>
   </div>

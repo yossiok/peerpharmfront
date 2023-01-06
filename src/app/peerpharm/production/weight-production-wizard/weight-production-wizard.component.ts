@@ -19,6 +19,8 @@ import { Location } from "@angular/common";
 import { AuthService } from "src/app/services/auth.service";
 import { getWeightProductionWizardColumns } from "../../reports/utils/grid";
 import { ItemDetailsTabComponent } from "../../items/item-details-tab/item-details-tab.component";
+import { ColDef } from "ag-grid-community";
+import { CustomClickRendererComponent } from "src/app/shared/grid-component/custom-click-renderer.component";
 
 interface FormuleWeight {
   formuleNumber: any;
@@ -26,6 +28,7 @@ interface FormuleWeight {
   formuleOrder: any;
   formuleUnitWeight: any;
   data: any;
+  gridData: any;
 }
 
 @Component({
@@ -79,6 +82,17 @@ export class WeightProductionWizardComponent  implements OnInit {
   columnDefs = getWeightProductionWizardColumns();
   rowData = [];
   groupDefaultExpanded = 0;
+  defaultColDef: ColDef = {
+    flex: 1,
+    sortable: false,
+  };
+  gridOptions = {
+    enableFilter: true,
+    enableSorting: true,
+    frameworkComponents: {
+      customClick: CustomClickRendererComponent,
+    }
+  }
 
 
   @HostListener("document:keydown", ["$event"]) handleKeyboardEvent(
@@ -231,9 +245,10 @@ export class WeightProductionWizardComponent  implements OnInit {
               formuleOrder: orderItem.orderNumber,
               formuleUnitWeight: orderItem.netWeightGr,
               data: orderItem.formule,
+              gridData: []
             };
             this.finalWeight += Number(formuleWeight.formuleWeight);
-            this.formules.push(formuleWeight);
+            this.formules.push({...formuleWeight, gridData: this.getPhasesData(formuleWeight.data.phases)});
           }
         }
       } else {
@@ -252,6 +267,7 @@ export class WeightProductionWizardComponent  implements OnInit {
       formuleUnitWeight: itemData[0].netWeightK,
       // formuleUnitWeight: itemData[0] ? itemData[0].netWeightK : 0,
       data: {},
+      gridData: []
     };
     this.formuleSrv
       .getFormuleByNumber(formuleWeight.formuleNumber)
@@ -270,7 +286,8 @@ export class WeightProductionWizardComponent  implements OnInit {
             formuleWeight.formuleWeight
           );
           this.finalWeight += Number(formuleWeight.formuleWeight);
-          this.formules.push(formuleWeight);
+
+          this.formules.push({...formuleWeight, gridData: this.getPhasesData(formuleWeight.data.phases)});
         }
         this.formuleNumber.nativeElement.value = "";
         this.formuleWeight.nativeElement.value = "";

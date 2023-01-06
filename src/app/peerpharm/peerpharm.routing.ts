@@ -484,13 +484,12 @@ export const PeerPharmRputs: Routes = [
     canActivate: [TwoFactor],
   },
   {
-    path: "formules/weight-production-wizard",    
+    path: "formules/weight-production-wizard",
     data: {
       title: "Weight Production Wizard",
     },
     component: WeightProductionWizardComponent,
   },
-  
   {
     path: "production/scanMaterial",
     canActivate: [ScreenGuard],

@@ -239,7 +239,9 @@ LicenseManager.setLicenseKey("For_Trialing_ag-Grid_Only-Not_For_Real_Development
     CommonModule,
     RandomcolorModule,
     RouterModule.forChild(PeerPharmRputs),
-    AgGridModule.withComponents([]),
+    AgGridModule.withComponents([
+      CustomClickRendererComponent
+    ]),
     TranslateModule.forChild({}),
     JsonpModule,
     HttpClientModule,

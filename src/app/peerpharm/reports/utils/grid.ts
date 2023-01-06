@@ -166,12 +166,34 @@ export const getPurchaseOrderSearchColumns = (): ColDef[] => {
 }
 
 export const getWeightProductionWizardColumns = (): ColDef[] => {
-  return [
-    {field: "phaseName", headerName: "Phase"},
-    {field: "itemNumber", headerName: "Item"},
-    {field: "itemName", headerName: "Raw Material Name"},
-    {field: "percentage", headerName: "Percentage"},
-    {field: "kgProd", headerName: "KG"}
+  const itemLink = (params) => {
+    window.open(`#/peerpharm/items/itemDetails/${params.rowData.itemNumber}`, '_blank');
+  }
 
+  return [
+    {
+      field: "phaseName",
+      headerName: "Phase"
+    },
+    {
+      field: "itemNumber",
+      headerName: "Item",
+      cellRenderer: "customClick", cellRendererParams: {
+        onClick: itemLink.bind(this),
+        field: "itemNumber"
+      }
+    },
+    {
+      field: "itemName",
+      headerName: "Raw Material Name"
+    },
+    {
+      field: "percentage",
+      headerName: "Percentage"
+    },
+    {
+      field: "kgProd",
+      headerName: "KG"
+    }
   ]
-} 
+}
