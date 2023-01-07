@@ -1,0 +1,9 @@
+<div *ngIf="rowData" class="wrapper">
+    <ng-container *ngIf="show">
+        <input type="text" [(ngModel)]="actualItemNumber" [disabled]="completed || itemNumberValidated"/>
+        <button class="btn btn-primary" (click)="setActualItemNumber()" [disabled]="completed || rowData?.itemNumber !== actualItemNumber || itemNumberValidated"><i class="fa fa-arrow-right"></i></button>
+        <input type="text" (keyup)="onActualKgProdChange()" [(ngModel)]="actualKgProd" [disabled]="completed || !itemNumberValidated" #actualKgProdElement/>
+        <button class="btn btn-primary" (click)="completeStep()" *ngIf="!completed" [disabled]="!isValid">Submit</button>
+        <button class="btn btn-warning" (click)="cancelStep()" *ngIf="showCancel">Cancel</button>
+    </ng-container>
+</div>

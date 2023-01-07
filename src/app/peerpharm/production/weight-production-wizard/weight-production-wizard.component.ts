@@ -21,6 +21,7 @@ import { getWeightProductionWizardColumns } from "../../reports/utils/grid";
 import { ItemDetailsTabComponent } from "../../items/item-details-tab/item-details-tab.component";
 import { ColDef } from "ag-grid-community";
 import { CustomClickRendererComponent } from "src/app/shared/grid-component/custom-click-renderer.component";
+import { WeightProductionStepRendererComponent } from "src/app/shared/grid-component/weight-production-step-renderer/weight-production-step-renderer.component";
 
 interface FormuleWeight {
   formuleNumber: any;
@@ -91,6 +92,7 @@ export class WeightProductionWizardComponent  implements OnInit {
     enableSorting: true,
     frameworkComponents: {
       customClick: CustomClickRendererComponent,
+      wizardStep: WeightProductionStepRendererComponent,
     }
   }
 
@@ -556,7 +558,7 @@ export class WeightProductionWizardComponent  implements OnInit {
     const data =  [];
     phases.forEach(
       phase => phase.items.forEach((item, index) => {
-        data.push({phaseName: index > 0 ? "" : phase.phaseName, ...item})
+        data.push({phaseName: phase.phaseName, phaseRowIndex: index, ...item})
 
       })
     )

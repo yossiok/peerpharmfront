@@ -173,7 +173,8 @@ export const getWeightProductionWizardColumns = (): ColDef[] => {
   return [
     {
       field: "phaseName",
-      headerName: "Phase"
+      headerName: "Phase",
+      valueFormatter: (params) => params.data.phaseRowIndex > 0 ? "" : params.value,
     },
     {
       field: "itemNumber",
@@ -193,7 +194,13 @@ export const getWeightProductionWizardColumns = (): ColDef[] => {
     },
     {
       field: "kgProd",
-      headerName: "KG"
+      headerName: "KG",
+      valueFormatter: (params) => parseFloat(params.value).toFixed(2)
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      cellRenderer: "wizardStep"
     }
   ]
 }
