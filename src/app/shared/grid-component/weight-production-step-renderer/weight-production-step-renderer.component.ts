@@ -1,9 +1,15 @@
 // Author: T4professor
 
-import { Component, ViewChild } from "@angular/core";
+import { Component, ElementRef, ViewChild } from "@angular/core";
 import { faLeaf } from "@fortawesome/free-solid-svg-icons";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ICellRendererAngularComp } from "ag-grid-angular";
-import { GridApi, IAfterGuiAttachedParams, ICellRendererParams } from "ag-grid-community";
+import {
+  GridApi,
+  IAfterGuiAttachedParams,
+  ICellRendererParams,
+} from "ag-grid-community";
+import { ItemsService } from "src/app/services/items.service";
 
 @Component({
   selector: "app-weight-production-step-renderer",
@@ -13,22 +19,27 @@ import { GridApi, IAfterGuiAttachedParams, ICellRendererParams } from "ag-grid-c
 export class WeightProductionStepRendererComponent
   implements ICellRendererAngularComp
 {
-  public rowIndex:number;
-  public show:boolean;
-  public api:GridApi;
+  @ViewChild("itemModal") itemModal: ElementRef;
+  @ViewChild("actualKgProdElement") actualKgProdElement;
+  public rowIndex: number;
+  public show: boolean;
+  public api: GridApi;
   public rowData: any;
   public actualItemNumber: string;
   public actualKgProd: string;
   public completed: boolean = false;
   public isValid: boolean = false;
-  public itemNumberValidated: boolean =  false;
+  public itemNumberValidated: boolean = false;
   public showCancel: boolean = false;
-
-  @ViewChild('actualKgProdElement') actualKgProdElement;
+  public item: any = {};
+  constructor(
+    private itemsService: ItemsService,
+    private modalService: NgbModal
+  ) {}
 
   agInit(params: ICellRendererParams): void {
     if (!params.data) return;
-    const rows = this.getAllRow(params.api)
+    const rows = this.getAllRow(params.api);
     this.api = params.api;
     this.rowData = params.data;
     this.rowIndex = params.rowIndex;
@@ -36,51 +47,70 @@ export class WeightProductionStepRendererComponent
     this.actualItemNumber = params.data.actualItemNumber || "";
     this.actualKgProd = params.data.actualKgProd || "";
     this.completed = !!params.data.completed;
-    this.showCancel = params.data.completed && (params.rowIndex === rows.length - 1 || !rows[params.rowIndex + 1].completed)
+    this.showCancel =
+      params.data.completed &&
+      (params.rowIndex === rows.length - 1 ||
+        !rows[params.rowIndex + 1].completed);
   }
 
-
-  getAllRow(api: GridApi){
+  getAllRow(api: GridApi) {
     let items: any[] = [];
-    api.forEachNode(function(node) { 
-        items.push(node.data);
+    api.forEachNode(function (node) {
+      items.push(node.data);
     });
     return items;
   }
 
-  refresh = (params?: any): boolean =>{
+  refresh = (params?: any): boolean => {
     return true;
-  }
+  };
 
+  validateItemNumber = () => {
+    if (this.actualItemNumber.length < 24) return false;
+
+    this.itemsService
+      .getItemShellById(this.actualItemNumber)
+      .subscribe((itemShell) => {
+        this.item = {
+          item: itemShell.item
+        }
+        console.log(this.item)
+        this.modalService.open(this.itemModal);
+      });
+  };
   setActualItemNumber = () => {
-    if (!this.actualItemNumber || this.actualItemNumber !== this.rowData.itemNumber) return false;
+    if (
+      !this.actualItemNumber ||
+      this.actualItemNumber !== this.rowData.itemNumber
+    )
+      return false;
     this.itemNumberValidated = true;
     setTimeout(() => {
       this.actualKgProdElement.nativeElement.focus();
-    },0);
-  }
+    }, 0);
+  };
 
   onActualKgProdChange = () => {
     this.isValid = this.validate();
-  }
+  };
 
-  validate = () =>{
-    if (!this.actualItemNumber || !this.actualKgProd){
+  validate = () => {
+    if (!this.actualItemNumber || !this.actualKgProd) {
       return false;
     }
 
-    if (this.actualItemNumber !== this.rowData.itemNumber){
+    if (this.actualItemNumber !== this.rowData.itemNumber) {
       return false;
     }
 
     const actualKgProd = parseFloat(this.actualKgProd).toFixed(2);
     const kgProd = parseFloat(this.rowData.kgProd).toFixed(2);
-    if (actualKgProd !== kgProd){
+    if (actualKgProd !== kgProd) {
       return false;
     }
 
     return true;
-  }
+  };
 
   completeStep = () => {
     const rows = this.getAllRow(this.api);
@@ -89,7 +119,7 @@ export class WeightProductionStepRendererComponent
     this.rowData.completed = true;
     rows.splice(this.rowIndex, 1, this.rowData);
     this.api.setRowData(rows);
-  }
+  };
 
   cancelStep = () => {
     const rows = this.getAllRow(this.api);
@@ -98,6 +128,5 @@ export class WeightProductionStepRendererComponent
     this.rowData.completed = false;
     rows.splice(this.rowIndex, 1, this.rowData);
     this.api.setRowData(rows);
-  }
-
+  };
 }

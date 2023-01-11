@@ -328,4 +328,10 @@ export class ItemsService {
 
     return this.http.delete(url).pipe(map((response) => response.json()));
   }
+
+  getItemShellById(id: string){
+    let url = `${this.baseUrl}api/v1/itemShell/${id}`;
+    return this.http.get(url).pipe(map((response) => response.json()));
+
+  }
 }
