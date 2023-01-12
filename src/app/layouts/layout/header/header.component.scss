@@ -1,0 +1,19 @@
+@import '../../../../assets/scss/bootstrap/functions';
+@import '../../../../assets/scss/bootstrap/variables';
+@import '../../../../assets/scss/bootstrap/mixins';
+@import '../../../../assets/scss/bootstrap/navbar';
+@import '../../../../assets/scss/bootstrap/nav';
+@import '../../../../assets/scss/app/variables';
+
+.topnavbar {
+  margin-left: 60px;
+  padding: 20px;
+  &.sidebarExpanded{
+    margin-left: 220px;
+  }
+  height: 52px;
+  width: 100%;
+  background-color: $header-color;
+  line-height: 2px;
+  border-bottom: 1px solid $color-b1b1b1;
+}

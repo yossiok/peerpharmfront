@@ -1,0 +1,12 @@
+@import '../../../assets/scss/app/variables';
+
+.section-container {
+  background-color: $header-color;
+  margin-left: 60px;
+  transition: 0.3s;
+  padding: 20px;
+  min-height: calc(100vh - 52px);
+  &.sidebarExpanded {
+    margin-left: 220px;
+  }
+}

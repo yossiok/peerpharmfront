@@ -1,0 +1,64 @@
+<div class="sidebar" [ngClass]="{ 'expanded': isExpanded }">
+  <div class="header">
+    <app-company-avatar></app-company-avatar>
+    <div class="toggle" (click)="handleSidebarToggle()">
+      <span class="chevron"></span>
+    </div>
+  </div>
+  <div class="content">
+    <div class="link">
+      <div class="content" [routerLink]="['/#/dashboard']" [routerLinkActive]="'active'">
+        <div class="icon">
+          <img src="assets/images/menu/dashboard.svg" alt="menu">
+        </div>
+        <div class="title">Dashboard</div>
+      </div>
+    </div>
+    <div class="link with-children">
+      <div class="content" [routerLink]="['/#/dashboard']" [routerLinkActive]="'active'">
+        <div class="icon">
+          <img src="assets/images/menu/dashboard.svg" alt="menu">
+        </div>
+        <div class="title">Orders</div>
+      </div>
+      <div class="children">
+        <div class="link">
+          <div class="content" [routerLink]="['/#/dashboard']" [queryParams]="{ 'child': '1' }"
+            [routerLinkActive]="'active'">
+            <div class="icon">
+              <img src="assets/images/menu/dashboard.svg" alt="menu">
+            </div>
+            <div class="title">All Orders</div>
+          </div>
+        </div>
+        <div class="link">
+          <div class="content" [routerLink]="['/#/dashboard']" [queryParams]="{ 'child': '2' }"
+            [routerLinkActive]="'active'">
+            <div class="icon">
+              <img src="assets/images/menu/dashboard.svg" alt="menu">
+            </div>
+            <div class="title">Sub Orders</div>
+          </div>
+        </div>
+        <div class="link">
+          <div class="content" [routerLink]="['/#/dashboard']" [queryParams]="{ 'child': '3' }"
+            [routerLinkActive]="'active'">
+            <div class="icon">
+              <img src="assets/images/menu/dashboard.svg" alt="menu">
+            </div>
+            <div class="title">child 3</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="link">
+      <div class="content" [routerLink]="['/#/dashboard']" [routerLinkActive]="'active'">
+        <div class="icon">
+          <img src="assets/images/menu/dashboard.svg" alt="menu">
+        </div>
+        <div class="title">Bookings</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer"></div>
+</div>

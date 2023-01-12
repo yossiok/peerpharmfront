@@ -54,6 +54,8 @@ import { ErrorHandlerService } from "./services/error-handler.service";
 import { ConfirmModalSMSComponent } from "./services/confirmsms.modal.service";
 import { LanguageSelectorComponent } from './shared/language-selector/language-selector.component';
 import { LanguageService } from "./services/language.service";
+import { LayoutModule } from "./layouts/layout.module";
+import { SharedModule } from './shared/shared.module';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -104,7 +106,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     HttpModule,
     BrowserModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(Approutes, { useHash: false }),
+    SharedModule.forRoot(),
+    LayoutModule,
+    RouterModule.forRoot(Approutes),
     PerfectScrollbarModule,
     NgxBarcodeModule.forRoot(),
   ],

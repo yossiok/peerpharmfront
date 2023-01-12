@@ -1,0 +1,22 @@
+<div *ngIf="loading.length > 0">
+  <div class="modal-backdrop fade in show"></div>
+  <div [@fadeInOut] class="modal fade show" tabindex="-1" role="dialog" aria-labelledby="exampleModalLiveLabel" style="padding-right: 15px; display: block;">
+    <div class="modal-dialog modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="text-center">
+            <div class="lds-ring">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+          <div class="mt-2 text-center loading-message">
+            {{getMessage()}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

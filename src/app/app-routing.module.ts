@@ -1,14 +1,10 @@
-import { ContentComponent } from "./peerpharm/taskboard/core/content/content.component";
 import { LoginComponent } from "./shared/auth/login.component";
-import { PeerPharmModule } from "./peerpharm/peerpharmmodule";
-
-import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
-
+import { Routes } from "@angular/router";
 import { FullComponent } from "./layouts/full/full.component";
 import { UserloggedinGuard } from "./guards/userloggedin.guard";
 import { SignupComponent } from "./shared/auth/signup.component";
 import { MyiframeComponent } from "./myiframe/myiframe.component";
+import { LayoutComponent } from "./layouts/layout/layout.component";
 
 export const Approutes: Routes = [
   {
@@ -29,7 +25,6 @@ export const Approutes: Routes = [
         path: "starter",
         loadChildren: "./starter/starter.module#StarterModule",
       },
-
       {
         path: "component",
         loadChildren: "./component/component.module#ComponentsModule",
@@ -42,14 +37,27 @@ export const Approutes: Routes = [
         path: 'taskboard',
         loadChildren: './peerpharm/taskboard/app.module#TaskModule'
       }*/
-
       {
         path: "batch",
         component: MyiframeComponent,
+      }
+    ],
+  },
+  {
+    path: "",
+    component: LayoutComponent,
+    canActivate: [UserloggedinGuard],
+    children: [
+      {
+        path: "dashboard",
+        loadChildren: "./routes/dashboard/dashboard.module#DashboardModule",
+      },
+      {
+        path: "design",
+        loadChildren: "./routes/design/design.module#DesignModule",
       },
     ],
   },
-
   {
     path: "**",
     redirectTo: "/starter",

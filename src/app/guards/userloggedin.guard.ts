@@ -10,10 +10,10 @@ import { map } from 'rxjs/operators';
 export class UserloggedinGuard implements CanActivate {
 
   constructor(private auth: AuthService, private router:Router) { }
-  
+
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean { 
+    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
 
 
@@ -26,7 +26,7 @@ export class UserloggedinGuard implements CanActivate {
 
 if(this.auth.isLoggedIn)
 {
- 
+
   return true;
 }
 else{
@@ -37,20 +37,20 @@ else{
     localStorage.setItem('url', state.url);
   }
   return this.auth.isUserLoggedIn().pipe(
-    map((response) => { 
+    map((response) => {
 
-    
+
      if(!response)
      {
-       this.router.navigate([ '/login' ]); 
+       this.router.navigate([ '/login' ]);
      }
     return response;
-   })) ; 
+   })) ;
 
 }
-      
-  
-       
+
+
+
   }
 // }
 }
