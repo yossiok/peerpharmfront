@@ -1,15 +1,20 @@
 // Author: T4professor
 
 import { Component, ElementRef, ViewChild } from "@angular/core";
-import { faLeaf } from "@fortawesome/free-solid-svg-icons";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { TranslateService } from "@ngx-translate/core";
 import { ICellRendererAngularComp } from "ag-grid-angular";
 import {
   GridApi,
-  IAfterGuiAttachedParams,
   ICellRendererParams,
 } from "ag-grid-community";
+import { ToastrService } from "ngx-toastr";
+import { forkJoin, of } from "rxjs";
+import { catchError, map, mergeMap, tap } from "rxjs/operators";
 import { ItemsService } from "src/app/services/items.service";
+import { LoaderService } from "src/app/services/loader.service";
+import { ShellsService } from "src/app/services/shells.service";
+import { WarehouseService } from "src/app/services/warehouse.service";
 
 @Component({
   selector: "app-weight-production-step-renderer",
@@ -21,6 +26,7 @@ export class WeightProductionStepRendererComponent
 {
   @ViewChild("itemModal") itemModal: ElementRef;
   @ViewChild("actualKgProdElement") actualKgProdElement;
+  @ViewChild("actualItemNumberElement") actualItemNumberElement;
   public rowIndex: number;
   public show: boolean;
   public api: GridApi;
@@ -30,11 +36,19 @@ export class WeightProductionStepRendererComponent
   public completed: boolean = false;
   public isValid: boolean = false;
   public itemNumberValidated: boolean = false;
+  public itemNumberConfirmed: boolean = false;
   public showCancel: boolean = false;
   public item: any = {};
+  public results: any[] = [];
+
   constructor(
     private itemsService: ItemsService,
-    private modalService: NgbModal
+    private shellService: ShellsService,
+    private warehouseService: WarehouseService,
+    private toaster: ToastrService,
+    private loaderService: LoaderService,
+    private modalService: NgbModal,
+    private translateService: TranslateService
   ) {}
 
   agInit(params: ICellRendererParams): void {
@@ -65,24 +79,76 @@ export class WeightProductionStepRendererComponent
     return true;
   };
 
-  validateItemNumber = () => {
+  validateItemNumber = async () => {
     if (this.actualItemNumber.length < 24) return false;
-
-    this.itemsService
+    this.loaderService.add();
+    const itemShell = await this.itemsService
       .getItemShellById(this.actualItemNumber)
-      .subscribe((itemShell) => {
-        this.item = {
-          item: itemShell.item
-        }
-        console.log(this.item)
-        this.modalService.open(this.itemModal);
-      });
+      .pipe(
+        catchError(() => of(null)),
+        tap(() => this.loaderService.remove())
+      )
+      .toPromise();
+
+    if (!itemShell || itemShell.item != this.rowData.itemNumber) {
+      this.toaster.error(this.translateService.instant("formule.messages.INCORRECT-ITEM"));
+      return;
+    }
+
+    this.item = itemShell;
+    this.loaderService.add();
+    this.results = await this.itemsService
+      .getItemShellByItem(itemShell.item)
+      .pipe(
+        mergeMap((items: any[]) =>
+          forkJoin(
+            items.map((itemShell) =>
+              this.shellService
+                .getShellById(itemShell.shell_id_in_whareHouse)
+                .pipe(
+                  catchError(() => of(null)),
+                  map((shell) => {
+                    return { itemShell, shell };
+                  })
+                )
+            )
+          )
+        ),
+        mergeMap((results: { itemShell: any; shell: any }[]) =>
+          forkJoin(
+            results.map(({ itemShell, shell }) =>
+              !shell
+                ? of({ itemShell, shell, warehouse: null })
+                : this.warehouseService
+                    .getWarehouseById(shell.whareHouseId)
+                    .pipe(
+                      catchError(() => of(null)),
+                      map((warehouse) => {
+                        return { itemShell, shell, warehouse };
+                      })
+                    )
+            )
+          )
+        ),
+        tap(() => this.loaderService.remove())
+      )
+      .toPromise();
+    this.modalService.open(this.itemModal, {windowClass: "modal-dialog-centered"}).result.then(
+      () => {
+        this.itemNumberConfirmed = true;
+      },
+      () => {
+        this.itemNumberConfirmed = false;
+        this.actualItemNumber = "";
+        setTimeout(() => {
+          this.actualItemNumberElement.nativeElement.focus();
+        }, 0);
+      }
+    );
   };
+
   setActualItemNumber = () => {
-    if (
-      !this.actualItemNumber ||
-      this.actualItemNumber !== this.rowData.itemNumber
-    )
+    if (!this.actualItemNumber || this.actualItemNumber !== this.item._id)
       return false;
     this.itemNumberValidated = true;
     setTimeout(() => {
@@ -99,7 +165,10 @@ export class WeightProductionStepRendererComponent
       return false;
     }
 
-    if (this.actualItemNumber !== this.rowData.itemNumber) {
+    if (
+      this.actualItemNumber !== this.item._id ||
+      this.item.item !== this.rowData.itemNumber
+    ) {
       return false;
     }
 
@@ -128,5 +197,9 @@ export class WeightProductionStepRendererComponent
     this.rowData.completed = false;
     rows.splice(this.rowIndex, 1, this.rowData);
     this.api.setRowData(rows);
+  };
+
+  confirmItemNumber = () => {
+    this.itemNumberConfirmed = true;
   };
 }

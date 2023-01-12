@@ -6,6 +6,7 @@ import { Subject } from "rxjs";
   providedIn: "root",
 })
 export class WarehouseService {
+  private restUrl = "/api/v1/wharehouse";
   private inPrintAnnounce = new Subject<any>();
   private outPrintAnnounce = new Subject<any>();
   private moveWHPrintAnnounce = new Subject<any>();
@@ -15,6 +16,8 @@ export class WarehouseService {
   outPrintCalled$ = this.outPrintAnnounce.asObservable();
   moveWHPrintCalled$ = this.moveWHPrintAnnounce.asObservable();
   shelfChangePrintCalled$ = this.shelfChangePrintAnnounce.asObservable();
+
+  constructor(private http: HttpClient) {}
 
   inCalledMethod(data) {
     this.inPrintAnnounce.next(data);
@@ -30,4 +33,8 @@ export class WarehouseService {
   shelfChangeCalledMethod(data) {
     this.shelfChangePrintAnnounce.next(data);
   }
+
+  getWarehouseById = (id: string) => {
+    return this.http.get<any>(`${this.restUrl}/${id}`);
+  };
 }

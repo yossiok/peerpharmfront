@@ -1,7 +1,7 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Http, Headers, RequestOptions, Jsonp } from "@angular/http";
+import { Http, Headers, RequestOptions } from "@angular/http";
 import { Observable } from "rxjs";
-import { catchError } from "rxjs/operators";
 import { map } from "rxjs/operators";
 
 export interface Response {
@@ -12,11 +12,12 @@ export interface Response {
   providedIn: "root",
 })
 export class ItemsService {
-  constructor(private http: Http) {}
+  constructor(private http: Http, private httpClient: HttpClient) {}
 
   private headers = new Headers({ "Content-Type": "application/json" });
   private options = new RequestOptions({ headers: this.headers });
   private baseUrl = "/";
+private restUrl = "/api/v1/itemShell";
 
   getOpenOrdersForItem(item: any): Observable<any> {
     let url =
@@ -329,9 +330,15 @@ export class ItemsService {
     return this.http.delete(url).pipe(map((response) => response.json()));
   }
 
-  getItemShellById(id: string){
-    let url = `${this.baseUrl}api/v1/itemShell/${id}`;
-    return this.http.get(url).pipe(map((response) => response.json()));
+  getItemShellById = (id: string) =>{
+    let url = `${this.restUrl}/${id}`;
+    return this.http.get(url).pipe(
+      map((response) => response.json()),
+    );
+  }
 
+  getItemShellByItem = (item: string) =>{
+    let url = `${this.restUrl}?query={"item":"${item}"}`;
+    return this.httpClient.get<any[]>(url);
   }
 }

@@ -1,32 +1,43 @@
 <div *ngIf="rowData" class="wrapper">
     <ng-container *ngIf="show">
-        <input type="text" [(ngModel)]="actualItemNumber" [disabled]="completed || itemNumberValidated" (change)="validateItemNumber()"/>
-        <button class="btn btn-primary" (click)="setActualItemNumber()" [disabled]="completed || rowData?.itemNumber !== actualItemNumber || itemNumberValidated"><i class="fa fa-arrow-right"></i></button>
+        <input type="text" [(ngModel)]="actualItemNumber" [disabled]="completed || itemNumberValidated" (change)="validateItemNumber()" #actualItemNumberElement/>
+        <button class="btn btn-primary" (click)="setActualItemNumber()" [disabled]="completed || itemNumberValidated || !itemNumberConfirmed"><i class="fa fa-arrow-right"></i></button>
         <input type="text" (keyup)="onActualKgProdChange()" [(ngModel)]="actualKgProd" [disabled]="completed || !itemNumberValidated" #actualKgProdElement/>
-        <button class="btn btn-primary" (click)="completeStep()" *ngIf="!completed" [disabled]="!isValid">Submit</button>
-        <button class="btn btn-warning" (click)="cancelStep()" *ngIf="showCancel">Cancel</button>
+        <button class="btn btn-primary" (click)="completeStep()" *ngIf="!completed" [disabled]="!isValid">{{"general.SUBMIT" | translate}}</button>
+        <button class="btn btn-warning" (click)="cancelStep()" *ngIf="showCancel">{{"general.CANCEL" | translate}}</button>
     </ng-container>
 </div>
 
-<ng-template #itemModal>
-    <div class="container">
-        <div class="row">
-            <div class="col-sx-6 text-align-right">
-                Item
-            </div>
-            <div class="col-xs-6">
-                {{item.item}}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sx-6 text-align-right">
-                Arrival Date
-            </div>
-            <div class="col-xs-6">
-                {{item.arrival}}
+<ng-template #itemModal let-c="close" let-d="dismiss">
+
+    <div class="modal-header">
+        <h3>{{item.item}}</h3>
+    </div>
+    <div class="modal-body">
+        <div class="card" *ngFor="let result of results">
+            <div class="container mb-4">
+                <div class="row">
+                    <div class="col-6">{{"wharehouse" | translate}}</div>
+                    <div class="col-6">{{result.warehouse?.name}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-6">{{"formule.ARRIVAL_DATE" | translate}}</div>
+                    <div class="col-6">{{result.itemShell?.arrivalDate}}</div>
+                </div>
+                <div class="row">
+                    <div class="col-6">{{"formule.EXPIRATION_DATE" | translate}}</div>
+                    <div class="col-6">{{result.itemShell?.expirationDate}}</div>
+                </div>
             </div>
         </div>
     </div>
-
+    <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="d()">
+            {{"general.CANCEL" | translate}}
+        </button>
+        <button class="btn btn-primary" (click)="c(item._id)">
+            {{"general.CONFIRM" | translate}}
+        </button>
+    </div>
 
 </ng-template>
